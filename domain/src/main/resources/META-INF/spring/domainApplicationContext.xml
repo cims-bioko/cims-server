@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:context="http://www.springframework.org/schema/context" xmlns:lang="http://www.springframework.org/schema/lang"
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:lang="http://www.springframework.org/schema/lang"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
         http://www.springframework.org/schema/context
@@ -8,15 +9,18 @@
         http://www.springframework.org/schema/lang
         http://www.springframework.org/schema/lang/spring-lang-3.1.xsd">
 
+    <context:annotation-config />
 
-    <bean id="appSettings" class="org.openhds.domain.model.AppSettings" scope="prototype">
+    <bean id="appSettings" class="org.openhds.domain.model.AppSettings"
+        scope="prototype">
         <property name="versionNumber">
             <value>${openhdsVersion}</value>
         </property>
     </bean>
 
     <bean id="appContextAware" class="org.openhds.domain.constraint.AppContextAware" />
-    <bean id="valueConstraintService" class="org.openhds.domain.service.impl.ValueConstraintServiceImpl" />
+    <bean id="valueConstraintService"
+        class="org.openhds.domain.service.impl.ValueConstraintServiceImpl" />
 
     <bean id="calendarUtil" class="org.openhds.domain.util.CalendarUtil">
         <property name="siteProperties" ref="siteProperties" />
@@ -29,32 +33,38 @@
                 <value>org.openhds.domain.model.FieldWorker</value>
                 <value>org.openhds.domain.model.Individual</value>
                 <value>org.openhds.domain.model.InMigration</value>
-                <value>org.openhds.domain.model.LocationHierarchy</value>
+                <value>org.openhds.domain.model.LocationHierarchy
+                </value>
                 <value>org.openhds.domain.model.Location</value>
                 <value>org.openhds.domain.model.Membership</value>
                 <value>org.openhds.domain.model.OutMigration</value>
-                <value>org.openhds.domain.model.PregnancyObservation</value>
+                <value>org.openhds.domain.model.PregnancyObservation
+                </value>
                 <value>org.openhds.domain.model.PregnancyOutcome</value>
                 <value>org.openhds.domain.model.Relationship</value>
                 <value>org.openhds.domain.model.Round</value>
                 <value>org.openhds.domain.model.SocialGroup</value>
                 <value>org.openhds.domain.model.Visit</value>
-                
-                <value>org.openhds.domain.model.wrappers.FieldWorkers</value>
-                <value>org.openhds.domain.model.wrappers.Individuals</value>
-                <value>org.openhds.domain.model.wrappers.LocationHierarchies</value>
-                <value>org.openhds.domain.model.wrappers.Locations</value>
-                <value>org.openhds.domain.model.wrappers.Relationships</value>
+
+                <value>org.openhds.domain.model.wrappers.FieldWorkers
+                </value>
+                <value>org.openhds.domain.model.wrappers.Individuals
+                </value>
+                <value>org.openhds.domain.model.wrappers.LocationHierarchies
+                </value>
+                <value>org.openhds.domain.model.wrappers.Locations
+                </value>
+                <value>org.openhds.domain.model.wrappers.Relationships
+                </value>
                 <value>org.openhds.domain.model.wrappers.Rounds</value>
-                <value>org.openhds.domain.model.wrappers.SocialGroups</value>
+                <value>org.openhds.domain.model.wrappers.SocialGroups
+                </value>
                 <value>org.openhds.domain.model.wrappers.Visits</value>
             </array>
         </property>
         <property name="adapters">
             <array>
-                <bean id="calendarAdapter" class="org.openhds.domain.util.CalendarAdapter">
-                    <constructor-arg ref="calendarUtil" />
-                </bean>
+                <bean id="calendarAdapter" class="org.openhds.domain.util.CalendarAdapter" />
             </array>
         </property>
     </bean>

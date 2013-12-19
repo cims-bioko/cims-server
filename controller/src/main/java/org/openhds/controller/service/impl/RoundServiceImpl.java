@@ -33,6 +33,13 @@ public class RoundServiceImpl implements RoundService {
 
     @Override
     public List<Round> getAllRounds() {
-        return genericDao.findAll(Round.class, false);
+
+        List<Round> roundList = null;
+        try {
+            roundList = genericDao.findAll(Round.class, false);
+        } catch (Exception e) {
+            roundList = null;
+        }
+        return roundList;
     }
 }
