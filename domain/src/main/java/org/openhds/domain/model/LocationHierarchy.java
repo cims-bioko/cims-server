@@ -29,7 +29,7 @@ import org.openhds.domain.constraint.Searchable;
 @Entity
 @Table(name="locationhierarchy")
 @XmlRootElement
-public class LocationHierarchy implements Serializable {
+public class LocationHierarchy extends AuditableCollectedEntity implements Serializable {
 	
 	private static final long serialVersionUID = -5334850119671675888L;
 	

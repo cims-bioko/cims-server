@@ -4,6 +4,7 @@ import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.LocationHierarchy;
+import org.openhds.domain.model.LocationHierarchyLevel;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.Relationship;
 import org.openhds.domain.model.Residency;
@@ -87,6 +88,27 @@ public class ShallowCopier {
 
         FieldWorker fw = new FieldWorker();
         fw.setExtId(loc.getCollectedBy().getExtId());
+        copy.setCollectedBy(fw);
+        return copy;
+    }
+
+    public static LocationHierarchy copyLocationHierarchy(LocationHierarchy locationHierarchy) {
+        LocationHierarchy copy = new LocationHierarchy();
+
+        copy.setExtId(locationHierarchy.getExtId());
+        copy.setName(locationHierarchy.getName());
+
+        LocationHierarchy parent = new LocationHierarchy();
+        parent.setExtId(locationHierarchy.getParent().getExtId());
+        copy.setParent(parent);
+        
+        LocationHierarchyLevel level = new LocationHierarchyLevel();
+        level.setName(locationHierarchy.getLevel().getName());
+        level.setKeyIdentifier(locationHierarchy.getLevel().getKeyIdentifier());
+        copy.setLevel(level);
+
+        FieldWorker fw = new FieldWorker();
+        fw.setExtId(locationHierarchy.getCollectedBy().getExtId());
         copy.setCollectedBy(fw);
         return copy;
     }
