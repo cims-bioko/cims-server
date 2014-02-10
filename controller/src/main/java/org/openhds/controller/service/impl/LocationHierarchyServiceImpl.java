@@ -360,8 +360,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     	List<LocationHierarchy> hierarchyList = genericDao.findAll(LocationHierarchy.class, false);
     	
     	for (LocationHierarchy item : hierarchyList) {
-    		if (locationHierarchyId.equals(item.getExtId()) && 
-    			item.getLevel().equals(getLowestLevel()))
+    		if (locationHierarchyId.equals(item.getExtId()))
     			return item;
     	}
     	return null;
@@ -454,12 +453,30 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
             throw new ConstraintViolations("There was a problem saving the location to the database");
         }
     }
-
-	private void assignId(Location location) throws ConstraintViolations {
-	    String id = location.getExtId() == null ? "" : location.getExtId();
-	    if (id.trim().isEmpty() && locationGenerator.generated) {
-	        generateId(location);
-	    }
+    
+    private void assignId(Location location) throws ConstraintViolations {
+        String id = location.getExtId() == null ? "" : location.getExtId();
+        if (id.trim().isEmpty() && locationGenerator.generated) {
+            generateId(location);
+        }
+    }
+    
+    public void createLocationHierarchy(LocationHierarchy locationHierarchy) throws ConstraintViolations {
+        assignId(locationHierarchy);
+        evaluateLocationHierarchy(locationHierarchy);
+        try {
+            entityService.create(locationHierarchy);
+        } catch (IllegalArgumentException e) {
+        } catch (SQLException e) {
+            throw new ConstraintViolations("There was a problem saving the location hierarchy to the database");
+        }
+    }
+    
+    private void assignId(LocationHierarchy locationHierarchy) throws ConstraintViolations {
+        String id = locationHierarchy.getExtId() == null ? "" : locationHierarchy.getExtId();
+        if (id.trim().isEmpty() && locationHierarchyGenerator.generated) {
+            generateId(locationHierarchy);
+        }
     }
 
     @Override
