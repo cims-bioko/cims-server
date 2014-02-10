@@ -85,6 +85,11 @@ public class LocationResource {
         ConstraintViolations cv = new ConstraintViolations();
         location.setCollectedBy(fieldBuilder.referenceField(location.getCollectedBy(), cv));
         location.setLocationLevel(fieldBuilder.referenceField(location.getLocationLevel(), cv));
+        
+        // TODO: can we remove this constraint?
+        if (!location.getLocationLevel().getLevel().equals(locationHierarchyService.getLowestLevel())) {
+            cv.addViolations("New location must be placed at bottom of location hierarchy.");
+        }
 
         if (cv.hasViolations()) {
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
