@@ -67,7 +67,6 @@ public class LocationHierarchyResource {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<? extends Serializable> insert(@RequestBody LocationHierarchy locationHierarchy) {
         ConstraintViolations cv = new ConstraintViolations();
-        // TODO: when do we resolve the parent LocationHierarchy and the collectedBy FieldWorker?
         locationHierarchy.setCollectedBy(fieldBuilder.referenceField(locationHierarchy.getCollectedBy(), cv));
         locationHierarchy.setParent(fieldBuilder.referenceField(locationHierarchy.getParent(), cv));
 

@@ -33,12 +33,6 @@ public class LocationHierarchy extends AuditableCollectedEntity implements Seria
 	
 	private static final long serialVersionUID = -5334850119671675888L;
 	
-	@Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @Column(length=32)
-	String uuid;
-	
 	@CheckFieldNotBlank
 	@NotNull
 	@Searchable
@@ -59,14 +53,6 @@ public class LocationHierarchy extends AuditableCollectedEntity implements Seria
 	@ManyToOne
 	LocationHierarchyLevel level;
 	   	
-	public String getUuid() {
-		return uuid;
-	}
-	
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-	
 	public String getExtId() {
 		return extId;
 	}
