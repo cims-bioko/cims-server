@@ -28,103 +28,106 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @ContextConfiguration("/testContext.xml")
 public class LocationTest extends AbstractTransactionalJUnit4SpringContextTests {
-		 	 
-	 @Autowired
-	 @Qualifier("locationCrud")
-	 LocationCrudImpl locationCrud;
-	 
-	 @Autowired
-	 @Qualifier("locationHierarchyCrud")
-	 LocationHierarchyCrudImpl locationHierarchyCrud;
-	 
-	 @Autowired
-	 @Qualifier("locationHierarchyService")
-	 LocationHierarchyService locationHierarchyService;
-	 	 
-	 @Autowired
-	 SessionFactory sessionFactory;
-	 
-	 @Autowired
-	 GenericDao genericDao;
-	 
-	 @Autowired
-	 SitePropertiesService siteProperties;
-	 
-	 @Autowired
-	 JsfService jsfService;
-	 	 
-	 @Autowired
-	 @Qualifier("currentUser")
-	 CurrentUser currentUser;
-	 
-	 LocationHierarchy locH2;
-	 LocationHierarchy item;
-	 FieldWorker fieldWorker;
-	 JsfServiceMock jsfServiceMock;
-	 
-	 @Before
-	 public void setUp() {
-		 jsfServiceMock = (JsfServiceMock)jsfService;
-		 currentUser.setProxyUser("admin", "test", new String[] {"VIEW_ENTITY", "CREATE_ENTITY"});
-		 createLocationHierarchy();
-		 
-		 fieldWorker = genericDao.findByProperty(FieldWorker.class, "extId", "FWEK1D");
-	 }
-	 
-	 @Test
-	 public void testLocationCreate() {		
-		 
-		 Location location = new Location();
-		 location.setLocationName("locationName");
-		 location.setLocationType("RUR");
-		 location.setLocationLevel(item);
-		 location.setCollectedBy(fieldWorker);
-		 locationCrud.setItem(location);
-	     locationCrud.create();
-	     
-	     Location savedLocation = genericDao.findByProperty(Location.class, "extId", location.getExtId());
-	     assertNotNull(savedLocation);
-	 }
-	 
-	 @Test
-	 public void testInvalidLocationCreate() {	
-		 
-		 Location location = new Location();
-		 location.setLocationName("locationName");
-		 location.setLocationType("RUR");
-		 location.setLocationLevel(locH2);
-		 location.setCollectedBy(fieldWorker);
-		 locationCrud.setItem(location);
-	     
-		 assertNull(locationCrud.create());
-		 assertTrue(jsfServiceMock.getErrors().size() > 0);
-	 }
-	 
-	 private void createLocationHierarchy() {
-		 
-    	 LocationHierarchy locH1 = new LocationHierarchy();
-    	
-    	 locH1.setParent(new LocationHierarchy());
-    	 locH1.setName(locationHierarchyService.getLevel(1).getName());
-    	 locH1.setExtId("MOR");
-    	
-    	 locationHierarchyCrud.setItem(locH1);
-    	 locationHierarchyCrud.create();
-	   
-	     locH2 = new LocationHierarchy();
-	     locH2.setParent(locH1);
-	     locH2.setName(locationHierarchyService.getLevel(2).getName());
-	     locH2.setExtId("IFA");
-   	    
- 	     locationHierarchyCrud.setItem(locH2);
-	     locationHierarchyCrud.create();
-	  
-	     item = new LocationHierarchy();
-	     item.setParent(locH2);
-	     item.setName(locationHierarchyService.getLevel(3).getName());
-	     item.setExtId("MBI");
-   	    
-	     locationHierarchyCrud.setItem(item);
- 	     locationHierarchyCrud.create();
-	 }
+
+    @Autowired
+    @Qualifier("locationCrud")
+    LocationCrudImpl locationCrud;
+
+    @Autowired
+    @Qualifier("locationHierarchyCrud")
+    LocationHierarchyCrudImpl locationHierarchyCrud;
+
+    @Autowired
+    @Qualifier("locationHierarchyService")
+    LocationHierarchyService locationHierarchyService;
+
+    @Autowired
+    SessionFactory sessionFactory;
+
+    @Autowired
+    GenericDao genericDao;
+
+    @Autowired
+    SitePropertiesService siteProperties;
+
+    @Autowired
+    JsfService jsfService;
+
+    @Autowired
+    @Qualifier("currentUser")
+    CurrentUser currentUser;
+
+    LocationHierarchy locH2;
+    LocationHierarchy item;
+    FieldWorker fieldWorker;
+    JsfServiceMock jsfServiceMock;
+
+    @Before
+    public void setUp() {
+        jsfServiceMock = (JsfServiceMock) jsfService;
+        currentUser.setProxyUser("admin", "test", new String[] { "VIEW_ENTITY", "CREATE_ENTITY" });
+
+        fieldWorker = genericDao.findByProperty(FieldWorker.class, "extId", "FWEK1D");
+        createLocationHierarchy();
+    }
+
+    @Test
+    public void testLocationCreate() {
+
+        Location location = new Location();
+        location.setLocationName("locationName");
+        location.setLocationType("RUR");
+        location.setLocationLevel(item);
+        location.setCollectedBy(fieldWorker);
+        locationCrud.setItem(location);
+        locationCrud.create();
+
+        Location savedLocation = genericDao.findByProperty(Location.class, "extId", location.getExtId());
+        assertNotNull(savedLocation);
+    }
+
+    @Test
+    public void testInvalidLocationCreate() {
+
+        Location location = new Location();
+        location.setLocationName("locationName");
+        location.setLocationType("RUR");
+        location.setLocationLevel(locH2);
+        location.setCollectedBy(fieldWorker);
+        locationCrud.setItem(location);
+
+        assertNull(locationCrud.create());
+        assertTrue(jsfServiceMock.getErrors().size() > 0);
+    }
+
+    private void createLocationHierarchy() {
+
+        LocationHierarchy locH1 = new LocationHierarchy();
+
+        locH1.setParent(new LocationHierarchy());
+        locH1.setName(locationHierarchyService.getLevel(1).getName());
+        locH1.setCollectedBy(fieldWorker);
+        locH1.setExtId("MOR");
+
+        locationHierarchyCrud.setItem(locH1);
+        locationHierarchyCrud.create();
+
+        locH2 = new LocationHierarchy();
+        locH2.setParent(locH1);
+        locH2.setName(locationHierarchyService.getLevel(2).getName());
+        locH2.setCollectedBy(fieldWorker);
+        locH2.setExtId("IFA");
+
+        locationHierarchyCrud.setItem(locH2);
+        locationHierarchyCrud.create();
+
+        item = new LocationHierarchy();
+        item.setParent(locH2);
+        item.setName(locationHierarchyService.getLevel(3).getName());
+        item.setCollectedBy(fieldWorker);
+        item.setExtId("MBI");
+
+        locationHierarchyCrud.setItem(item);
+        locationHierarchyCrud.create();
+    }
 }

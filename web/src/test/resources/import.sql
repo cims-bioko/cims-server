@@ -40,9 +40,6 @@ INSERT INTO user_roles (user_uuid, role_uuid) VALUES ('User 2', 'ROLE4')
 INSERT INTO user (uuid, firstName, lastName, fullName, description, username, password, lastLoginTime, deleted) VALUES ('User 3', 'DataClerk', 'Account', 'Test Account', 'Test User Account', 'dataclerk', 'dataclerk', 0, false)
 INSERT INTO user_roles (user_uuid, role_uuid) VALUES ('User 3', 'ROLE2')
 
--- Location Hierarchy root
-INSERT INTO locationhierarchy(uuid,name,extId,level_uuid,parent_uuid) VALUES('hierarchy_root','', 'HIERARCHY_ROOT', NULL,NULL)
-
 -- Field Worker
 INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES ('UnknownFieldWorker','UNK', 'Unknown', 'FieldWorker', false)
 INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES ('FieldWorker1','FWEK1D', 'Editha', 'Kaweza', false)
@@ -53,6 +50,9 @@ INSERT INTO individual(uuid,extId,firstName,middleName,lastName,gender,dob,mothe
 INSERT INTO individual(uuid,extId,firstName,middleName,lastName,gender,dob,mother_uuid,father_uuid,insertBy_uuid,insertDate,status,dobAspect,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid) VALUES ('Individual3','BJOH1J','Bob',NULL,'Johnson','M', '1965-12-19', 'Unknown Individual', 'Unknown Individual','User 1','2009-12-19','P','1',NULL,NULL,NULL,false,'FieldWorker1')
 INSERT INTO individual(uuid,extId,firstName,middleName,lastName,gender,dob,mother_uuid,father_uuid,insertBy_uuid,insertDate,status,dobAspect,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid) VALUES ('Individual4','CBLA1H','Cristen',NULL,'Blake','F', '1960-12-19', 'Unknown Individual', 'Unknown Individual','User 1','2009-12-19','P','1',NULL,NULL,NULL,false,'FieldWorker1')
 INSERT INTO individual(uuid,extId,firstName,middleName,lastName,gender,dob,mother_uuid,father_uuid,insertBy_uuid,insertDate,status,dobAspect,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid) VALUES ('Individual5','BHAR1K','Brian',NULL,'Blake','M', '1965-12-19', 'Unknown Individual', 'Unknown Individual','User 1','2009-12-19','P','1',NULL,NULL,NULL,false,'FieldWorker1')
+
+-- Location Hierarchy root
+INSERT INTO locationhierarchy(uuid,name,extId,level_uuid,parent_uuid,insertBy_uuid,insertDate,status,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid) VALUES('hierarchy_root','', 'HIERARCHY_ROOT', NULL, NULL, 'User 1', '1900-12-19', 'P', NULL,NULL,NULL,false,'UnknownFieldWorker')
 
 -- Location Hierarchy Levels, these must be configured
 INSERT INTO locationhierarchylevel(uuid,keyIdentifier,name) VALUES('HierarchyLevel1',1,'LGA')

@@ -43,7 +43,7 @@ INSERT INTO user (uuid, firstName, lastName, fullName, description, username, pa
 INSERT INTO user_roles (user_uuid, role_uuid) VALUES ('User 3', 'ROLE2')
 
 -- Location Hierarchy root
-INSERT INTO locationhierarchy(uuid,name,extId,level_uuid,parent_uuid) VALUES('hierarchy_root','', 'HIERARCHY_ROOT', NULL,NULL)
+INSERT INTO locationhierarchy(uuid,name,extId,level_uuid,parent_uuid,insertBy_uuid,insertDate,status,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid) VALUES('hierarchy_root','', 'HIERARCHY_ROOT', NULL, NULL, 'User 1', '1900-12-19', 'P', NULL,NULL,NULL,false,'UnknownFieldWorker')
 
 -- Field Worker
 INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES ('UnknownFieldWorker','UNK', 'Unknown', 'FieldWorker', false)

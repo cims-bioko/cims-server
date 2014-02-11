@@ -36,14 +36,14 @@ INSERT INTO role_privileges (role_uuid, privilege_uuid) VALUES ('ROLE2', 'PRIVIL
 INSERT INTO user (uuid, firstName, lastName, fullName, description, username, password, lastLoginTime, deleted) VALUES ('User 1', 'FirstName', 'LastName', 'Administrator', 'Administrator User', 'admin', 'test', 0, false);
 INSERT INTO user_roles (user_uuid, role_uuid) VALUES ('User 1', 'ROLE1');
 
--- Location Hierarchy root
-INSERT INTO locationhierarchy(uuid,name,extId,level_uuid,parent_uuid) VALUES('hierarchy_root','', 'HIERARCHY_ROOT', NULL,NULL);
-
 -- Field Worker
 INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES ('UnknownFieldWorker','UNK', 'Unknown', 'FieldWorker', false);
 
 -- Unknown Individual: This should always be pre-populated
 INSERT INTO individual(uuid,extId,firstName,middleName,lastName,gender,dob,mother_uuid,father_uuid,insertBy_uuid,insertDate,status,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid) VALUES('Unknown Individual','UNK','Unknown',NULL,'UNKNOWN','MALE', '1900-12-19 15:07:43', NULL, NULL,'User 1','2009-12-19 15:07:43','PENDING',NULL,NULL,NULL,false,'UnknownFieldWorker');
+
+-- Location Hierarchy root
+INSERT INTO locationhierarchy(uuid,name,extId,level_uuid,parent_uuid,insertBy_uuid,insertDate,status,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid) VALUES('hierarchy_root','', 'HIERARCHY_ROOT', NULL, NULL, 'User 1', '1900-12-19', 'P', NULL,NULL,NULL,false,'UnknownFieldWorker')
 
 INSERT INTO `whitelist` (uuid, address) VALUES ('LOCALHOST1', '127.0.0.1');
 INSERT INTO `whitelist` (uuid, address) VALUES ('LOCALHOST2', 'localhost');
