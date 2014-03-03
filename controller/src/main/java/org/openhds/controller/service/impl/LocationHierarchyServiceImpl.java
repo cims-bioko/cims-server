@@ -41,17 +41,17 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
         // constraints
         if (entityItem.getParent().getExtId() != null) {
             if (!checkValidParentLocation(entityItem.getParent().getExtId()))
-                throw new ConstraintViolations("The Parent Location name does not exist.");
-            else if (!checkValidChildLocation(entityItem.getName()))
-                throw new ConstraintViolations("The Child Location Name already exists.");
-            else if (!checkValidParentLevel(entityItem.getParent().getName()))
+                throw new ConstraintViolations("The Parent Location does not exist.");
+            else if (!checkValidChildLocation(entityItem.getExtId()))
+                throw new ConstraintViolations("The Child Location already exists.");
+            else if (!checkValidParentLevel(entityItem.getParent().getExtId()))
                 throw new ConstraintViolations("The Parent Location specified "
                         + "exceeds the deepest level in the hierarchy.");
             else if (!checkDuplicateLocationHierarchyExtId(entityItem.getExtId()))
                 throw new ConstraintViolations("The Location Hierarchy Id specified already exists.");
 
             // get the Parent
-            item = genericDao.findByProperty(LocationHierarchy.class, "name", entityItem.getParent().getName());
+            item = genericDao.findByProperty(LocationHierarchy.class, "extId", entityItem.getParent().getExtId());
         }
 
         // set the external id on the hierarchy item
@@ -87,18 +87,18 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
         if (getHierarchyItemHighestLevel().equals(persistedItem))
             throw new ConstraintViolations("The root Location Hierarchy item cannot be modified.");
         if (!checkValidParentLocation(entityItem.getParent().getExtId()))
-            throw new ConstraintViolations("The Parent Location name does not exist.");
-        if (!checkValidParentLevel(entityItem.getParent().getName()))
+            throw new ConstraintViolations("The Parent Location does not exist.");
+        if (!checkValidParentLevel(entityItem.getParent().getExtId()))
             throw new ConstraintViolations("The Parent Location specified "
                     + "exceeds the deepest level in the hierarchy.");
         if (!entityItem.getName().equals(persistedItem.getName())) {
-            if (!checkValidChildLocation(entityItem.getName()))
-                throw new ConstraintViolations("The Child Location Name already exists.");
+            if (!checkValidChildLocation(entityItem.getExtId()))
+                throw new ConstraintViolations("The Child Location already exists.");
         }
 
         // get the Parent
-        LocationHierarchy item = genericDao.findByProperty(LocationHierarchy.class, "name", entityItem.getParent()
-                .getName());
+        LocationHierarchy item = genericDao.findByProperty(LocationHierarchy.class, "extId", entityItem.getParent()
+                .getExtId());
 
         if (item == null)
             entityItem.setLevel(getHeighestLevel());
@@ -184,11 +184,11 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     }
 
     /**
-     * Checks if a Child Location name already exists
+     * Checks if a Child Location already exists
      */
-    public boolean checkValidChildLocation(String name) {
+    public boolean checkValidChildLocation(String extId) {
 
-        LocationHierarchy item = genericDao.findByProperty(LocationHierarchy.class, "name", name);
+        LocationHierarchy item = genericDao.findByProperty(LocationHierarchy.class, "extId", extId);
 
         if (item == null)
             return true;
@@ -221,9 +221,9 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     /**
      * Checks that the lowest Hierarchy level has not been exceeded.
      */
-    public boolean checkValidParentLevel(String parent) {
+    public boolean checkValidParentLevel(String extId) {
 
-        LocationHierarchy item = genericDao.findByProperty(LocationHierarchy.class, "name", parent);
+        LocationHierarchy item = genericDao.findByProperty(LocationHierarchy.class, "extId", extId);
 
         if (item != null && item.getLevel().equals(getLowestLevel()))
             return false;
