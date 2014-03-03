@@ -179,7 +179,9 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     }
 
     public LocationHierarchy generateId(LocationHierarchy entityItem) throws ConstraintViolations {
-        entityItem.setExtId(locationHierarchyGenerator.generateId(entityItem));
+        if (null == entityItem.getExtId()) {
+            entityItem.setExtId(locationHierarchyGenerator.generateId(entityItem));
+        }
         return entityItem;
     }
 
@@ -197,10 +199,10 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     }
 
     /**
-     * Checks if a Parent Location is valid. A Parent Location is
-     * valid if the Hierarchy hasn't been specified, which means it would be
-     * treated as the root. If the Hierarchy has been specified and Parent
-     * Location extId exists, then it is valid.
+     * Checks if a Parent Location is valid. A Parent Location is valid if the
+     * Hierarchy hasn't been specified, which means it would be treated as the
+     * root. If the Hierarchy has been specified and Parent Location extId
+     * exists, then it is valid.
      */
     public boolean checkValidParentLocation(String extId) {
 
