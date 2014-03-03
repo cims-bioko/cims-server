@@ -40,7 +40,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
         // if the Parent is specified, proceed with checking the normal
         // constraints
         if (entityItem.getParent().getExtId() != null) {
-            if (!checkValidParentLocation(entityItem.getParent().getName()))
+            if (!checkValidParentLocation(entityItem.getParent().getExtId()))
                 throw new ConstraintViolations("The Parent Location name does not exist.");
             else if (!checkValidChildLocation(entityItem.getName()))
                 throw new ConstraintViolations("The Child Location Name already exists.");
@@ -86,7 +86,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
         // when editing the Hierarchy, particular constraints must be enforced
         if (getHierarchyItemHighestLevel().equals(persistedItem))
             throw new ConstraintViolations("The root Location Hierarchy item cannot be modified.");
-        if (!checkValidParentLocation(entityItem.getParent().getName()))
+        if (!checkValidParentLocation(entityItem.getParent().getExtId()))
             throw new ConstraintViolations("The Parent Location name does not exist.");
         if (!checkValidParentLevel(entityItem.getParent().getName()))
             throw new ConstraintViolations("The Parent Location specified "
@@ -197,20 +197,20 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     }
 
     /**
-     * Checks if a Parent Location Name is valid. A Parent Location Name is
+     * Checks if a Parent Location is valid. A Parent Location is
      * valid if the Hierarchy hasn't been specified, which means it would be
      * treated as the root. If the Hierarchy has been specified and Parent
-     * Location Name exists, then it is valid.
+     * Location extId exists, then it is valid.
      */
-    public boolean checkValidParentLocation(String parent) {
+    public boolean checkValidParentLocation(String extId) {
 
         LocationHierarchy item = null;
 
         // Must check that the location exists
-        item = genericDao.findByProperty(LocationHierarchy.class, "name", parent);
+        item = genericDao.findByProperty(LocationHierarchy.class, "extId", extId);
 
         if (genericDao.getTotalCount(LocationHierarchy.class) == 0) {
-            if (item == null && parent == "")
+            if (item == null && extId == "")
                 return true;
         } else if (item != null)
             return true;
