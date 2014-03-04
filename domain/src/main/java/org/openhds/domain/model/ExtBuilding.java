@@ -24,11 +24,6 @@ public class ExtBuilding extends AuditableCollectedEntity implements Serializabl
 
     private static final long serialVersionUID = 5776461914132139824L;
 
-    @Temporal(TemporalType.DATE)
-    @Description(description = "Date when building information was collected for OpenHDS.")
-    @CheckFieldNotBlank
-    private Calendar collectionDate;
-
     @Description(description = "LocationHierarchy entry described by this ExtBuilding.")
     @Cascade(CascadeType.SAVE_UPDATE)
     @CheckFieldNotBlank
@@ -51,14 +46,6 @@ public class ExtBuilding extends AuditableCollectedEntity implements Serializabl
 
     @Description(description = "The altitude for the building")
     private String altitude;
-
-    public Calendar getCollectionDate() {
-        return collectionDate;
-    }
-
-    public void setCollectionDate(Calendar collectionDate) {
-        this.collectionDate = collectionDate;
-    }
 
     public LocationHierarchy getLocationHierarchy() {
         return locationHierarchy;

@@ -117,7 +117,6 @@ public class ShallowCopier {
     public static ExtBuilding copyExtBuilding(ExtBuilding extBuilding) {
         ExtBuilding copy = new ExtBuilding();
 
-        copy.setCollectionDate(extBuilding.getCollectionDate());
         copy.setLatitude(extBuilding.getLatitude());
         copy.setLongitude(extBuilding.getLongitude());
         copy.setAltitude(extBuilding.getAltitude());
