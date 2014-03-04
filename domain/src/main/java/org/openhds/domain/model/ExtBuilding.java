@@ -30,10 +30,6 @@ public class ExtBuilding extends AuditableCollectedEntity implements Serializabl
     @Cascade(CascadeType.SAVE_UPDATE)
     private LocationHierarchy locationHierarchy = new LocationHierarchy();
 
-    @Description(description = "External Id of the locationHierarchy described by this ExtBuilding.")
-    @CheckFieldNotBlank
-    private String locationHierarchyExtId;
-
     @Description(description = "The longitude for the building")
     @CheckFieldNotBlank
     private String longitude;
@@ -56,10 +52,6 @@ public class ExtBuilding extends AuditableCollectedEntity implements Serializabl
         this.locationHierarchy = locationHierarchy;
     }
     
-    public String getLocationHierarchyExtId() {
-        return locationHierarchy.getExtId();
-    }
-
     public String getLongitude() {
         return longitude;
     }

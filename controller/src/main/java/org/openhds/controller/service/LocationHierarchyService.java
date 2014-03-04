@@ -84,9 +84,9 @@ public interface LocationHierarchyService {
 
     @Authorized({ PrivilegeConstants.VIEW_ENTITY })
     LocationHierarchy findLocationHierarchyById(String locationHierarchyId, String msg) throws Exception;
-    
+
     @Authorized({ PrivilegeConstants.VIEW_ENTITY })
-    ExtBuilding findExtBuildingByHierarchyId(String locationHierarchyId);
+    ExtBuilding findExtBuildingByHierarchy(LocationHierarchy locationHierarchy);
 
     @Authorized({ PrivilegeConstants.VIEW_ENTITY })
     List<Location> getAllLocations();

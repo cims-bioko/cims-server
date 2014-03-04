@@ -382,11 +382,10 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     }
 
     /**
-     * Find an extended building data using the extId of its associated
-     * LocationHierarchy.
+     * Find an extended building data associated with a given LocationHierarchy.
      */
-    public ExtBuilding findExtBuildingByHierarchyId(String locationHierarchyExtId) {
-        return genericDao.findByProperty(ExtBuilding.class, "locationHierarchyExtId", locationHierarchyExtId);
+    public ExtBuilding findExtBuildingByHierarchy(LocationHierarchy locationHierarchy) {
+        return genericDao.findByProperty(ExtBuilding.class, "locationHierarchy", locationHierarchy);
     }
 
     public LocationHierarchy getHierarchyItemHighestLevel() {
