@@ -1,5 +1,6 @@
 package org.openhds.domain.util;
 
+import org.openhds.domain.model.ExtBuilding;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Location;
@@ -109,6 +110,25 @@ public class ShallowCopier {
 
         FieldWorker fw = new FieldWorker();
         fw.setExtId(locationHierarchy.getCollectedBy().getExtId());
+        copy.setCollectedBy(fw);
+        return copy;
+    }
+    
+    public static ExtBuilding copyExtBuilding(ExtBuilding extBuilding) {
+        ExtBuilding copy = new ExtBuilding();
+
+        copy.setCollectionDate(extBuilding.getCollectionDate());
+        copy.setLatitude(extBuilding.getLatitude());
+        copy.setLongitude(extBuilding.getLongitude());
+        copy.setAltitude(extBuilding.getAltitude());
+        copy.setAccuracy(extBuilding.getAccuracy());
+        
+        LocationHierarchy locationHierarchy = new LocationHierarchy();
+        locationHierarchy.setExtId(extBuilding.getLocationHierarchy().getExtId());
+        copy.setLocationHierarchy(locationHierarchy);
+        
+        FieldWorker fw = new FieldWorker();
+        fw.setExtId(extBuilding.getCollectedBy().getExtId());
         copy.setCollectedBy(fw);
         return copy;
     }

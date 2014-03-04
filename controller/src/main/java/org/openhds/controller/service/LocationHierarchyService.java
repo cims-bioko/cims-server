@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.annotations.Authorized;
+import org.openhds.domain.model.ExtBuilding;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.LocationHierarchyLevel;
@@ -83,6 +84,9 @@ public interface LocationHierarchyService {
 
     @Authorized({ PrivilegeConstants.VIEW_ENTITY })
     LocationHierarchy findLocationHierarchyById(String locationHierarchyId, String msg) throws Exception;
+    
+    @Authorized({ PrivilegeConstants.VIEW_ENTITY })
+    ExtBuilding findExtBuildingByHierarchyId(String locationHierarchyId);
 
     @Authorized({ PrivilegeConstants.VIEW_ENTITY })
     List<Location> getAllLocations();
@@ -92,6 +96,9 @@ public interface LocationHierarchyService {
 
     @Authorized({ PrivilegeConstants.CREATE_ENTITY })
     void createLocationHierarchy(LocationHierarchy locationHierarchy) throws ConstraintViolations;
+
+    @Authorized({ PrivilegeConstants.CREATE_ENTITY })
+    void createExtBuilding(ExtBuilding extBuilding) throws ConstraintViolations;
 
     @Authorized({ PrivilegeConstants.VIEW_ENTITY })
     List<LocationHierarchy> getAllLocationHierarchies();

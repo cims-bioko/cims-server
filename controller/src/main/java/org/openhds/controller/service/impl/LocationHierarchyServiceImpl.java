@@ -11,6 +11,7 @@ import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.annotations.Authorized;
+import org.openhds.domain.model.ExtBuilding;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.LocationHierarchyLevel;
@@ -55,7 +56,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
         }
 
         // set the external id on the hierarchy item
-        generateId(entityItem);
+        assignId(entityItem);
 
         // the Parent item is the root so this Hierarchy item may or may not be
         // at the highest level
@@ -380,6 +381,14 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
         return null;
     }
 
+    /**
+     * Find an extended building data using the extId of its associated
+     * LocationHierarchy.
+     */
+    public ExtBuilding findExtBuildingByHierarchyId(String locationHierarchyExtId) {
+        return genericDao.findByProperty(ExtBuilding.class, "locationHierarchyExtId", locationHierarchyExtId);
+    }
+
     public LocationHierarchy getHierarchyItemHighestLevel() {
         LocationHierarchyLevel highestLevel = getHeighestLevel();
         return genericDao.findByProperty(LocationHierarchy.class, "level", highestLevel);
@@ -485,6 +494,14 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
         } catch (IllegalArgumentException e) {
         } catch (SQLException e) {
             throw new ConstraintViolations("There was a problem saving the location hierarchy to the database");
+        }
+    }
+
+    public void createExtBuilding(ExtBuilding extBuilding) throws ConstraintViolations {
+        try {
+            entityService.create(extBuilding);
+        } catch (Exception e) {
+            throw new ConstraintViolations("Error saving building to the database: " + e.getMessage());
         }
     }
 
