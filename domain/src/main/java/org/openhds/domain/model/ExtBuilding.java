@@ -3,6 +3,7 @@ package org.openhds.domain.model;
 import java.io.Serializable;
 import java.util.Calendar;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,8 +26,8 @@ public class ExtBuilding extends AuditableCollectedEntity implements Serializabl
     private static final long serialVersionUID = 5776461914132139824L;
 
     @Description(description = "LocationHierarchy entry described by this ExtBuilding.")
+    @ManyToOne
     @Cascade(CascadeType.SAVE_UPDATE)
-    @CheckFieldNotBlank
     private LocationHierarchy locationHierarchy = new LocationHierarchy();
 
     @Description(description = "External Id of the locationHierarchy described by this ExtBuilding.")
