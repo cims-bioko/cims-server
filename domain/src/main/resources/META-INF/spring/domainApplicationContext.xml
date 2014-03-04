@@ -30,6 +30,7 @@
                 <value>org.openhds.domain.model.Individual</value>
                 <value>org.openhds.domain.model.InMigration</value>
                 <value>org.openhds.domain.model.LocationHierarchy</value>
+                <value>org.openhds.domain.model.ExtBuilding</value>
                 <value>org.openhds.domain.model.Location</value>
                 <value>org.openhds.domain.model.Membership</value>
                 <value>org.openhds.domain.model.OutMigration</value>
