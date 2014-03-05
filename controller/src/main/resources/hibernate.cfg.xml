@@ -19,6 +19,7 @@
 		<mapping class="org.openhds.domain.model.Location"/>
 		<mapping class="org.openhds.domain.model.LocationHierarchy"/>
 		<mapping class="org.openhds.domain.model.LocationHierarchyLevel"/>
+        <mapping class="org.openhds.domain.model.ExtBuilding"/>
 		<mapping class="org.openhds.domain.model.Membership"/>
 		<mapping class="org.openhds.domain.model.Outcome"/>
 		<mapping class="org.openhds.domain.model.OutMigration"/>
