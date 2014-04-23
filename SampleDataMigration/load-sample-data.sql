@@ -29,7 +29,9 @@ PRIMARY KEY (UNIQUEBID)
 
  -- bulk add from csv to new table
  -- IGNORE duplicate UNIQUEBIDs
-LOAD DATA LOCAL INFILE 'Master_DB_All_Houses - Round 19 v1 - bsh-formatting.csv' IGNORE INTO TABLE sample_data
+LOAD DATA LOCAL INFILE 'Master_DB_All_Houses - Round 19 v1 - bsh-formatting.csv' 
+IGNORE
+INTO TABLE sample_data
   FIELDS TERMINATED BY ',' ENCLOSED BY '"'
   LINES TERMINATED BY '\n'
   IGNORE 1 LINES;

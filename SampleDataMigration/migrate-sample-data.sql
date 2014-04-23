@@ -1,6 +1,6 @@
 
 -- province_temp: distinct Province gives children of Bioko Region
---  Region level = e8031610c5ac11e39c1a0800200c9a66
+--  Province level = e8033d20c5ac11e39c1a0800200c9a66
 --  parent = Bioko = 36ec15f0c5ae11e39c1a0800200c9a66
 drop table if exists sample.province_temp;
 create table sample.province_temp (
@@ -28,7 +28,7 @@ UPDATE province_temp SET uuid = replace(uuid(), '-', '');
 UPDATE province_temp SET insertDate = date(now());
 UPDATE province_temp SET extId = Province;
 UPDATE province_temp SET name = Province;
-UPDATE province_temp SET level_uuid = 'e8031610c5ac11e39c1a0800200c9a66';
+UPDATE province_temp SET level_uuid = 'e8033d20c5ac11e39c1a0800200c9a66';
 UPDATE province_temp SET parent_uuid = '36ec15f0c5ae11e39c1a0800200c9a66';
 
 INSERT INTO openhds.locationhierarchy (uuid,name,extId,level_uuid,parent_uuid,insertDate,collectedBy_uuid,insertBy_uuid,status)
