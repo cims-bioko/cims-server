@@ -58,7 +58,8 @@ Province varchar(255)
 
 insert into district_temp (Province, District) 
 SELECT DISTINCT Province, District FROM sample.sample_data
-Where District != 'UnknownDistrict';
+Where Province != 'UnknownProvince'
+And District != 'UnknownDistrict';
 UPDATE district_temp SET uuid = replace(uuid(), '-', '');
 UPDATE district_temp SET insertDate = date(now());
 UPDATE district_temp SET extId = District;
@@ -94,7 +95,9 @@ Province varchar(255)
 
 insert into map_area_temp (Province, District, MapArea) 
 SELECT DISTINCT Province, District, MapArea FROM sample.sample_data
-Where MapArea != 'UnknownMapArea';
+Where Province != 'UnknownProvince'
+And District != 'UnknownDistrict'
+And MapArea != 'UnknownMapArea';
 UPDATE map_area_temp SET uuid = replace(uuid(), '-', '');
 UPDATE map_area_temp SET insertDate = date(now());
 UPDATE map_area_temp SET extId = MapArea;
@@ -131,7 +134,10 @@ Province varchar(255)
 
 insert into sector_temp (Province, District, MapArea, Sector, MapAreaSector) 
 SELECT DISTINCT Province, District, MapArea, Sector, MapAreaAndSector FROM sample.sample_data
-Where Sector IS NOT NULL;
+Where Province != 'UnknownProvince'
+And District != 'UnknownDistrict'
+And MapArea != 'UnknownMapArea'
+And Sector IS NOT NULL;
 UPDATE sector_temp SET uuid = replace(uuid(), '-', '');
 UPDATE sector_temp SET insertDate = date(now());
 UPDATE sector_temp SET name = lpad(format(Sector,0), 4, 'S000');
