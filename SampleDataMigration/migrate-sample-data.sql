@@ -177,7 +177,11 @@ BuildingType int
 );
 
 insert into location_temp (Province, District, MapArea, Sector, Site, SprayArea, UNIQUEBID, Latitude, Longitude, BuildingType)
-SELECT DISTINCT Province, District, MapArea, Sector, Site, SprayArea, UNIQUEBID, Latitude, Longitude, BuildingType FROM sample.sample_data;
+SELECT DISTINCT Province, District, MapArea, Sector, Site, SprayArea, UNIQUEBID, Latitude, Longitude, BuildingType FROM sample.sample_data
+Where Province != 'UnknownProvince'
+And District != 'UnknownDistrict'
+And MapArea != 'UnknownMapArea'
+And Sector IS NOT NULL;
 UPDATE location_temp SET uuid = replace(uuid(), '-', '');
 UPDATE location_temp SET insertDate = date(now());
 UPDATE location_temp SET locationName = concat('LOC', UNIQUEBID);
