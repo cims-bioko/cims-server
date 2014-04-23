@@ -184,9 +184,9 @@ And MapArea != 'UnknownMapArea'
 And Sector IS NOT NULL;
 UPDATE location_temp SET uuid = replace(uuid(), '-', '');
 UPDATE location_temp SET insertDate = date(now());
-UPDATE location_temp SET locationName = concat('LOC', UNIQUEBID);
-UPDATE location_temp SET extId = concat('LOC', UNIQUEBID);
-UPDATE location_temp SET locationType = 'Household Location';
+UPDATE location_temp SET locationName = UNIQUEBID;
+UPDATE location_temp SET extId = UNIQUEBID;
+UPDATE location_temp SET locationType = 'Household';
 UPDATE location_temp, sector_temp SET location_temp.locationLevel_uuid = sector_temp.uuid 
 WHERE sector_temp.Province = location_temp.Province
 AND sector_temp.District = location_temp.District
