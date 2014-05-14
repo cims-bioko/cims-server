@@ -1,4 +1,3 @@
-
 -- province_temp: distinct Province gives children of Bioko Region
 --  Province level = e8033d20c5ac11e39c1a0800200c9a66
 --  parent = Bioko = 36ec15f0c5ae11e39c1a0800200c9a66
@@ -31,8 +30,8 @@ UPDATE province_temp SET name = Province;
 UPDATE province_temp SET level_uuid = 'e8033d20c5ac11e39c1a0800200c9a66';
 UPDATE province_temp SET parent_uuid = '36ec15f0c5ae11e39c1a0800200c9a66';
 
-INSERT INTO openhds.locationhierarchy (uuid,name,extId,level_uuid,parent_uuid,insertDate,collectedBy_uuid,insertBy_uuid,status)
-SELECT uuid,name,extId,level_uuid,parent_uuid,insertDate,collectedBy_uuid,insertBy_uuid,status FROM province_temp;
+INSERT INTO openhds.locationhierarchy (uuid,name,extId,level_uuid,parent_uuid)
+SELECT uuid,name,extId,level_uuid,parent_uuid FROM province_temp;
 
 -- district_temp: distinct Province, District gives children of Provinces
 --  District level = e8033d21c5ac11e39c1a0800200c9a66
@@ -68,8 +67,8 @@ UPDATE district_temp SET level_uuid = 'e8033d21c5ac11e39c1a0800200c9a66';
 UPDATE district_temp, province_temp SET district_temp.parent_uuid = province_temp.uuid 
 WHERE province_temp.Province = district_temp.Province;
 
-INSERT INTO openhds.locationhierarchy (uuid,name,extId,level_uuid,parent_uuid,insertDate,collectedBy_uuid,insertBy_uuid,status)
-SELECT uuid,name,extId,level_uuid,parent_uuid,insertDate,collectedBy_uuid,insertBy_uuid,status FROM district_temp;
+INSERT INTO openhds.locationhierarchy (uuid,name,extId,level_uuid,parent_uuid)
+SELECT uuid,name,extId,level_uuid,parent_uuid FROM district_temp;
 
 -- map_area_temp: distinct Province, District, MapArea gives children of Districts
 --  MapArea level = e8033d22c5ac11e39c1a0800200c9a66
@@ -107,8 +106,8 @@ UPDATE map_area_temp, district_temp SET map_area_temp.parent_uuid = district_tem
 WHERE district_temp.Province = map_area_temp.Province
 AND district_temp.District = map_area_temp.District;
 
-INSERT INTO openhds.locationhierarchy (uuid,name,extId,level_uuid,parent_uuid,insertDate,collectedBy_uuid,insertBy_uuid,status)
-SELECT uuid,name,extId,level_uuid,parent_uuid,insertDate,collectedBy_uuid,insertBy_uuid,status FROM map_area_temp;
+INSERT INTO openhds.locationhierarchy (uuid,name,extId,level_uuid,parent_uuid)
+SELECT uuid,name,extId,level_uuid,parent_uuid FROM map_area_temp;
 
 -- sector_temp: distinct Province, District, MapArea, Sector gives children of MapAreas
 --  Sector level = e8033d23c5ac11e39c1a0800200c9a66
@@ -148,8 +147,8 @@ WHERE map_area_temp.Province = sector_temp.Province
 AND map_area_temp.District = sector_temp.District
 AND map_area_temp.MapArea = sector_temp.MapArea;
 
-INSERT INTO openhds.locationhierarchy (uuid,name,extId,level_uuid,parent_uuid,insertDate,collectedBy_uuid,insertBy_uuid,status)
-SELECT uuid,name,extId,level_uuid,parent_uuid,insertDate,collectedBy_uuid,insertBy_uuid,status FROM sector_temp;
+INSERT INTO openhds.locationhierarchy (uuid,name,extId,level_uuid,parent_uuid)
+SELECT uuid,name,extId,level_uuid,parent_uuid FROM sector_temp;
 
 -- location_temp: distinct District, Site, SprayArea, UNIQUEBID, Latitude, Longitude, BuildingType gives locations
 --  location hierarchy = match Province, District, MapArea, Sector

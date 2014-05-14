@@ -10,5 +10,4 @@ INSERT INTO `locationhierarchylevel` (uuid,keyIdentifier,name) VALUES('e8033d21c
 INSERT INTO `locationhierarchylevel` (uuid,keyIdentifier,name) VALUES('e8033d22c5ac11e39c1a0800200c9a66',4,'MapArea');
 INSERT INTO `locationhierarchylevel` (uuid,keyIdentifier,name) VALUES('e8033d23c5ac11e39c1a0800200c9a66',5,'Sector');
 
-INSERT INTO `locationhierarchy` (uuid,name,extId,level_uuid,parent_uuid,insertDate,collectedBy_uuid,insertBy_uuid,status) VALUES ('36ec15f0c5ae11e39c1a0800200c9a66','Bioko Island','BI','e8031610c5ac11e39c1a0800200c9a66','HIERARCHY_ROOT',date(now()),'4786a2b0c59d11e39c1a0800200c9a66','e67f2870c59c11e39c1a0800200c9a66','A');
-
+INSERT INTO `locationhierarchy` (uuid,name,extId,level_uuid,parent_uuid) VALUES ('36ec15f0c5ae11e39c1a0800200c9a66','Bioko Island','BI','e8031610c5ac11e39c1a0800200c9a66','HIERARCHY_ROOT');
