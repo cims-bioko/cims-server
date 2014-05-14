@@ -7,8 +7,8 @@ PASS=""
 echo
 echo "Initializing OpenHDS Database"
 mysql $USER $PASS openhds < init-openhds-db.sql
-mysql $USER $PASS openhds < openhds-schema.sql
-mysql $USER $PASS openhds < openhds-required-data.sql
+mysql $USER $PASS openhds < ~/OpenHDS/openhds-server/web/src/main/resources/openhds-schema.sql
+mysql $USER $PASS openhds < ~/OpenHDS/openhds-server/web/src/main/resources/openhds-required-data.sql
 mysql $USER $PASS openhds < openhds-baseline-stub.sql
 
 echo
