@@ -44,22 +44,19 @@ public class IndividualFormResource {
     private final LocationHierarchyService locationHierarchyService;
     private final ResidencyService residencyService;
     private final SocialGroupService socialGroupService;
-    private final RelationshipService relationshipService;
     private final FieldBuilder fieldBuilder;
 
     @Autowired
     public IndividualFormResource(FieldWorkerService fieldWorkerService,
             EntityService entityService, IndividualService individualService,
             LocationHierarchyService locationHierarchyService, ResidencyService residencyService,
-            SocialGroupService socialGroupService, RelationshipService relationshipService,
-            FieldBuilder fieldBuilder) {
+            SocialGroupService socialGroupService, FieldBuilder fieldBuilder) {
         this.fieldWorkerService = fieldWorkerService;
         this.entityService = entityService;
         this.individualService = individualService;
         this.locationHierarchyService = locationHierarchyService;
         this.residencyService = residencyService;
         this.socialGroupService = socialGroupService;
-        this.relationshipService = relationshipService;
         this.fieldBuilder = fieldBuilder;
     }
 
@@ -138,7 +135,7 @@ public class IndividualFormResource {
             }
         }
 
-        // TODO: are relationships only for marital relationships?
+        // TODO: do we need relationships?
 
         try {
             createOrSaveIndividual(individual);
