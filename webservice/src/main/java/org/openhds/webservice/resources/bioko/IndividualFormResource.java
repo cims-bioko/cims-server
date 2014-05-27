@@ -63,6 +63,8 @@ public class IndividualFormResource {
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     public ResponseEntity<? extends Serializable> processForm(
             @RequestBody IndividualForm individualForm) {
+        
+        logger.debug("starting to process form");
 
         ConstraintViolations cv = new ConstraintViolations();
 
@@ -151,6 +153,8 @@ public class IndividualFormResource {
             error.getErrors().add("General Exception updating or saving individual: " + e);
             return new ResponseEntity<WebServiceCallException>(error, HttpStatus.BAD_REQUEST);
         }
+        
+        logger.debug("done processing form");
 
         return new ResponseEntity<IndividualForm>(individualForm, HttpStatus.CREATED);
     }
