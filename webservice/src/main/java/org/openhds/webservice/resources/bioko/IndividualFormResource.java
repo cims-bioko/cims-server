@@ -9,15 +9,12 @@ import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.FieldWorkerService;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.LocationHierarchyService;
-import org.openhds.controller.service.MembershipService;
-import org.openhds.controller.service.RelationshipService;
 import org.openhds.controller.service.ResidencyService;
 import org.openhds.controller.service.SocialGroupService;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Membership;
-import org.openhds.domain.model.Relationship;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.bioko.IndividualForm;
@@ -32,6 +29,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/individualForm")
@@ -61,6 +59,7 @@ public class IndividualFormResource {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
+    @ResponseBody
     public ResponseEntity<? extends Serializable> processForm(
             @RequestBody IndividualForm individualForm) {
         
