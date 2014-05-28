@@ -175,7 +175,6 @@ public class IndividualFormResourceTest {
                         .body(INDIVIDUAL_FORM_INCOMPLETE.getBytes()))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
-
     }
 
     private MockHttpSession getMockHttpSession(String username, String password) throws Exception {
