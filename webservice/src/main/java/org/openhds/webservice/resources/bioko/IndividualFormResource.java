@@ -156,7 +156,8 @@ public class IndividualFormResource {
         return new ResponseEntity<IndividualForm>(individualForm, HttpStatus.CREATED);
     }
 
-    private void copyFormDataToIndividual(IndividualForm individualForm, Individual individual) {
+    private void copyFormDataToIndividual(IndividualForm individualForm, Individual individual)
+            throws Exception {
         individual.setExtId(individualForm.getIndividualExtId());
         individual.setFirstName(individualForm.getIndividualFirstName());
         individual.setMiddleName(individualForm.getIndividualOtherNames());
@@ -191,7 +192,7 @@ public class IndividualFormResource {
     }
 
     private Individual makeIndividual(IndividualForm individualForm, FieldWorker collectedBy,
-            ConstraintViolations cv) {
+            ConstraintViolations cv) throws Exception {
         Individual individual = individualService
                 .findIndivById(individualForm.getIndividualExtId());
         if (null == individual) {
@@ -228,7 +229,7 @@ public class IndividualFormResource {
         error.getErrors().add(message);
         return new ResponseEntity<WebServiceCallException>(error, HttpStatus.BAD_REQUEST);
     }
-    
+
     private ResponseEntity<WebServiceCallException> serverError(String message) {
         WebServiceCallException error = new WebServiceCallException();
         error.getErrors().add(message);
