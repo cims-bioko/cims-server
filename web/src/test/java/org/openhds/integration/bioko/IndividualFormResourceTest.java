@@ -70,10 +70,6 @@ public class IndividualFormResourceTest {
             + "<individualDip>12345</individualDip>"
             + "<individualMemberStatus>permanent</individualMemberStatus>" + "</individualForm>";
     private static final String INDIVIDUAL_FORM_INCOMPLETE = "<individualForm>"
-            + "<processedByMirth>false</processedByMirth>"
-            + "<fieldWorkerExtId>FWEK1D</fieldWorkerExtId>" + "<collectionDateTime>" + A_DATE
-            + "</collectionDateTime>" + "<householdExtId>householdId</householdExtId>"
-            + "<individualExtId>123456789012</individualExtId>"
             + "<individualFirstName>Test First</individualFirstName>"
             + "<individualLastName>Test Last</individualLastName>"
             + "<individualOtherNames>Test Other</individualOtherNames>"

@@ -3,6 +3,7 @@ package org.openhds.webservice.resources.bioko;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Date;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
@@ -29,7 +30,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/individualForm")
@@ -64,6 +64,15 @@ public class IndividualFormResource {
 
         ConstraintViolations cv = new ConstraintViolations();
 
+        // collected when?
+        Calendar collectionTime;
+        try {
+            collectionTime = dateToCalendar(individualForm.getCollectionDateTime());
+        } catch (Exception e) {
+            return requestError("Error getting collection time: " + e.getMessage());
+        }
+
+        // collected by whom?
         FieldWorker collectedBy;
         try {
             collectedBy = fieldWorkerService.findFieldWorkerById(
@@ -75,14 +84,11 @@ public class IndividualFormResource {
 
         // the actual individual
         Individual individual;
-        Calendar collectionTime;
         try {
             individual = makeIndividual(individualForm, collectedBy, cv);
             if (cv.hasViolations()) {
                 return requestError(cv);
             }
-            collectionTime = Calendar.getInstance();
-            collectionTime.setTime(individualForm.getCollectionDateTime());
         } catch (Exception e) {
             return requestError("Error finding or creating individual: " + e.getMessage());
         }
@@ -163,9 +169,7 @@ public class IndividualFormResource {
         individual.setMiddleName(individualForm.getIndividualOtherNames());
         individual.setLastName(individualForm.getIndividualLastName());
         individual.setGender(individualForm.getIndividualGender());
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(individualForm.getIndividualDateOfBirth());
-        individual.setDob(cal);
+        individual.setDob(dateToCalendar(individualForm.getIndividualDateOfBirth()));
 
         // TODO: add these to the individual data model
         // private int individualAge;
@@ -206,6 +210,7 @@ public class IndividualFormResource {
         individual.setCollectedBy(fieldBuilder.referenceField(collectedBy, cv));
 
         // Bioko project forms don't include parents!
+        // TODO: strings F and M are codes that can be configured by projects
         Individual mother = getUnknownParent("F");
         individual.setMother(fieldBuilder.referenceField(mother, cv, "Using Unknown Mother"));
         Individual father = getUnknownParent("M");
@@ -222,6 +227,14 @@ public class IndividualFormResource {
         } else {
             individualService.createIndividual(individual);
         }
+    }
+
+    private Calendar dateToCalendar(Date date) throws Exception {
+        Calendar cal = Calendar.getInstance();
+        if (null != date) {
+            cal.setTime(date);
+        }
+        return cal;
     }
 
     private ResponseEntity<WebServiceCallException> requestError(String message) {
