@@ -59,11 +59,8 @@ public class IndividualFormResource {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
-    @ResponseBody
     public ResponseEntity<? extends Serializable> processForm(
             @RequestBody IndividualForm individualForm) {
-
-        logger.error("starting to process form");
 
         ConstraintViolations cv = new ConstraintViolations();
 
@@ -73,20 +70,22 @@ public class IndividualFormResource {
                     individualForm.getFieldWorkerExtId(),
                     "Individual form has nonexistent field worker id.");
         } catch (Exception e) {
-            WebServiceCallException error = new WebServiceCallException();
-            error.getErrors().add(e.toString());
-            return new ResponseEntity<WebServiceCallException>(error, HttpStatus.BAD_REQUEST);
+            return requestError("Error getting field worker: " + e.getMessage());
         }
 
         // the actual individual
-        Individual individual = makeIndividual(individualForm, collectedBy, cv);
-        if (cv.hasViolations()) {
-            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv),
-                    HttpStatus.BAD_REQUEST);
+        Individual individual;
+        Calendar collectionTime;
+        try {
+            individual = makeIndividual(individualForm, collectedBy, cv);
+            if (cv.hasViolations()) {
+                return requestError(cv);
+            }
+            collectionTime = Calendar.getInstance();
+            collectionTime.setTime(individualForm.getCollectionDateTime());
+        } catch (Exception e) {
+            return requestError("Error finding or creating individual: " + e.getMessage());
         }
-
-        Calendar collectionTime = Calendar.getInstance();
-        collectionTime.setTime(individualForm.getCollectionDateTime());
 
         // individual's household social group
         SocialGroup socialGroup;
@@ -95,65 +94,64 @@ public class IndividualFormResource {
                     individualForm.getHouseholdExtId(),
                     "Individual form has nonexistent household social group.");
         } catch (Exception e) {
-            WebServiceCallException error = new WebServiceCallException();
-            error.getErrors().add(e.toString());
-            return new ResponseEntity<WebServiceCallException>(error, HttpStatus.BAD_REQUEST);
+            return requestError("Error getting social group: " + e.getMessage());
         }
 
         // individual's membership in the social group
-        // TODO: handle multiple or expired memberships
-        // TODO: this might handled like residencies
-        if (individual.getAllMemberships().size() == 0) {
-            Membership membership = new Membership();
-            membership.setIndividual(individual);
-            membership.setSocialGroup(socialGroup);
-            membership.setCollectedBy(collectedBy);
-            membership.setStartDate(collectionTime);
-            membership.setStartType("Census Individual Form");
-            membership.setbIsToA(individualForm.getIndividualRelationshipToHeadOfHousehold());
-            individual.getAllMemberships().add(membership);
+        try {
+            if (individual.getAllMemberships().size() == 0) {
+                Membership membership = new Membership();
+                membership.setIndividual(individual);
+                membership.setSocialGroup(socialGroup);
+                membership.setCollectedBy(collectedBy);
+                membership.setStartDate(collectionTime);
+                membership.setStartType("Census Individual Form");
+                membership.setbIsToA(individualForm.getIndividualRelationshipToHeadOfHousehold());
+                individual.getAllMemberships().add(membership);
+            }
+        } catch (Exception e) {
+            return requestError("Error creating membership: " + e.getMessage());
         }
 
         // individual's household location
-        Location location = locationHierarchyService.findLocationById(individualForm
-                .getHouseholdExtId());
-        if (null == location) {
-            WebServiceCallException error = new WebServiceCallException();
-            error.getErrors().add("Individual form has nonexistent household location.");
-            return new ResponseEntity<WebServiceCallException>(error, HttpStatus.BAD_REQUEST);
+        Location location;
+        try {
+
+            location = locationHierarchyService
+                    .findLocationById(individualForm.getHouseholdExtId());
+            if (null == location) {
+                WebServiceCallException error = new WebServiceCallException();
+                error.getErrors().add("Individual form has nonexistent household location.");
+                return new ResponseEntity<WebServiceCallException>(error, HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            return requestError("Error getting location: " + e.getMessage());
         }
 
         // individual's residency at location
-        if (!residencyService.hasOpenResidency(individual)) {
-            Residency residency = residencyService.createResidency(individual, location,
-                    collectionTime, "Census Individual Form", collectedBy);
-            try {
+        Residency residency;
+        try {
+            if (!residencyService.hasOpenResidency(individual)) {
+                residency = residencyService.createResidency(individual, location, collectionTime,
+                        "Census Individual Form", collectedBy);
                 residency = residencyService.evaluateResidency(residency);
                 individual.getAllResidencies().add(residency);
-            } catch (ConstraintViolations e) {
-                return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(e),
-                        HttpStatus.BAD_REQUEST);
             }
+        } catch (ConstraintViolations e) {
+            return requestError(e);
+        } catch (Exception e) {
+            return requestError("Error creating residency: " + e.getMessage());
         }
-
-        // TODO: do we need relationships?
 
         try {
             createOrSaveIndividual(individual);
         } catch (ConstraintViolations e) {
-            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(e),
-                    HttpStatus.BAD_REQUEST);
+            return requestError(e);
         } catch (SQLException e) {
-            WebServiceCallException error = new WebServiceCallException();
-            error.getErrors().add("SQLException updating or saving individual: " + e);
-            return new ResponseEntity<WebServiceCallException>(error, HttpStatus.BAD_REQUEST);
+            return serverError("SQL Error updating or saving individual: " + e.getMessage());
         } catch (Exception e) {
-            WebServiceCallException error = new WebServiceCallException();
-            error.getErrors().add("General Exception updating or saving individual: " + e);
-            return new ResponseEntity<WebServiceCallException>(error, HttpStatus.BAD_REQUEST);
+            return serverError("General Error updating or saving individual: " + e.getMessage());
         }
-
-        logger.error("done processing form");
 
         return new ResponseEntity<IndividualForm>(individualForm, HttpStatus.CREATED);
     }
@@ -223,5 +221,22 @@ public class IndividualFormResource {
         } else {
             individualService.createIndividual(individual);
         }
+    }
+
+    private ResponseEntity<WebServiceCallException> requestError(String message) {
+        WebServiceCallException error = new WebServiceCallException();
+        error.getErrors().add(message);
+        return new ResponseEntity<WebServiceCallException>(error, HttpStatus.BAD_REQUEST);
+    }
+    
+    private ResponseEntity<WebServiceCallException> serverError(String message) {
+        WebServiceCallException error = new WebServiceCallException();
+        error.getErrors().add(message);
+        return new ResponseEntity<WebServiceCallException>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private ResponseEntity<WebServiceCallException> requestError(ConstraintViolations cv) {
+        return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv),
+                HttpStatus.BAD_REQUEST);
     }
 }

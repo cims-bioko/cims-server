@@ -45,7 +45,7 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 public class IndividualFormResourceTest {
 
     private static final String A_DATE = "2000-01-01T00:00:00-05:00";
-    private static final String INDIVIDUAL_FORM_POST_XML = "<individualForm>"
+    private static final String INDIVIDUAL_FORM_GOOD = "<individualForm>"
             + "<processedByMirth>false</processedByMirth>"
             + "<fieldWorkerExtId>FWEK1D</fieldWorkerExtId>" + "<collectionDateTime>"
             + A_DATE
@@ -69,6 +69,16 @@ public class IndividualFormResourceTest {
             + "<individualPointOfContactPhoneNumber></individualPointOfContactPhoneNumber>"
             + "<individualDip>12345</individualDip>"
             + "<individualMemberStatus>permanent</individualMemberStatus>" + "</individualForm>";
+    private static final String INDIVIDUAL_FORM_INCOMPLETE = "<individualForm>"
+            + "<processedByMirth>false</processedByMirth>"
+            + "<fieldWorkerExtId>FWEK1D</fieldWorkerExtId>" + "<collectionDateTime>" + A_DATE
+            + "</collectionDateTime>" + "<householdExtId>householdId</householdExtId>"
+            + "<individualExtId>123456789012</individualExtId>"
+            + "<individualFirstName>Test First</individualFirstName>"
+            + "<individualLastName>Test Last</individualLastName>"
+            + "<individualOtherNames>Test Other</individualOtherNames>"
+            + "<individualAge>10</individualAge>"
+            + "<individualAgeUnits>years</individualAgeUnits>" + "</individualForm>";
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -96,7 +106,7 @@ public class IndividualFormResourceTest {
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(INDIVIDUAL_FORM_POST_XML.getBytes()))
+                        .body(INDIVIDUAL_FORM_GOOD.getBytes()))
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML))
                 .andExpect(xpath("/individualForm/processedByMirth").string("false"))
@@ -129,13 +139,13 @@ public class IndividualFormResourceTest {
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(INDIVIDUAL_FORM_POST_XML.getBytes())).andExpect(status().isCreated())
+                        .body(INDIVIDUAL_FORM_GOOD.getBytes())).andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(INDIVIDUAL_FORM_POST_XML.getBytes())).andExpect(status().isCreated())
+                        .body(INDIVIDUAL_FORM_GOOD.getBytes())).andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
     }
 
@@ -144,7 +154,7 @@ public class IndividualFormResourceTest {
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(INDIVIDUAL_FORM_POST_XML.getBytes())).andExpect(status().isCreated())
+                        .body(INDIVIDUAL_FORM_GOOD.getBytes())).andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
         Individual savedIndividual = genericDao.findByProperty(Individual.class, "extId",
@@ -158,6 +168,18 @@ public class IndividualFormResourceTest {
         List<Residency> savedResidencies = genericDao.findListByProperty(Residency.class,
                 "individual", savedIndividual);
         Assert.assertEquals(1, savedResidencies.size());
+    }
+
+    @Test
+    public void testPostIndividualFormIncomplete() throws Exception {
+
+        mockMvc.perform(
+                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(INDIVIDUAL_FORM_INCOMPLETE.getBytes()))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
     }
 
     private MockHttpSession getMockHttpSession(String username, String password) throws Exception {
