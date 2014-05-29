@@ -3,7 +3,10 @@ package org.openhds.domain.model.bioko;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAccessType;
 
 import org.openhds.domain.annotations.Description;
 
@@ -13,192 +16,229 @@ import org.openhds.domain.annotations.Description;
  */
 @Description(description = "Model data from the Individual xform for the Bioko island project.  Contains Individual, Relationship, and Membership data.")
 @XmlRootElement(name = "individualForm")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class IndividualForm implements Serializable {
 
-	private static final long serialVersionUID = 1143017330340385847L;
+    private static final long serialVersionUID = 1143017330340385847L;
 
-	private boolean processedByMirth;
-	private String fieldWorkerExtId;
-	private Date collectionDateTime;
-	private String householdExtId;
-	private String individualExtId;
-	private String individualFirstName;
-	private String individualLastName;
-	private String individualOtherNames;
-	private int individualAge;
-	private String individualAgeUnits;
-	private Date individualDateOfBirth;
-	private String individualGender;
-	private String individualRelationshipToHeadOfHousehold;
-	private String individualPhoneNumber;
-	private String individualOtherPhoneNumber;
-	private String individualLanguagePreference;
-	private String individualPointOfContactName;
-	private String individualPointOfContactPhoneNumber;
-	private int individualDip;
-	private String individualMemberStatus;
+    @XmlElement(name = "processed_by_mirth")
+    private boolean processedByMirth;
 
-	public boolean isProcessedByMirth() {
-		return processedByMirth;
-	}
+    @XmlElement(name = "field_worker_ext_id")
+    private String fieldWorkerExtId;
 
-	public void setProcessedByMirth(boolean processedByMirth) {
-		this.processedByMirth = processedByMirth;
-	}
+    @XmlElement(name = "collection_date_time")
+    private Date collectionDateTime;
 
-	public String getFieldWorkerExtId() {
-		return fieldWorkerExtId;
-	}
+    @XmlElement(name = "household_ext_id")
+    private String householdExtId;
 
-	public void setFieldWorkerExtId(String fieldWorkerExtId) {
-		this.fieldWorkerExtId = fieldWorkerExtId;
-	}
+    @XmlElement(name = "individual_ext_id")
+    private String individualExtId;
 
-	public Date getCollectionDateTime() {
-		return collectionDateTime;
-	}
+    @XmlElement(name = "individual_first_name")
+    private String individualFirstName;
 
-	public void setCollectionDateTime(Date collectionDateTime) {
-		this.collectionDateTime = collectionDateTime;
-	}
+    @XmlElement(name = "individual_last_name")
+    private String individualLastName;
 
-	public String getHouseholdExtId() {
-		return householdExtId;
-	}
+    @XmlElement(name = "individual_other_names")
+    private String individualOtherNames;
 
-	public void setHouseholdExtId(String householdExtId) {
-		this.householdExtId = householdExtId;
-	}
+    @XmlElement(name = "individual_age")
+    private int individualAge;
 
-	public String getIndividualExtId() {
-		return individualExtId;
-	}
+    @XmlElement(name = "individual_age_units")
+    private String individualAgeUnits;
 
-	public void setIndividualExtId(String individualExtId) {
-		this.individualExtId = individualExtId;
-	}
+    @XmlElement(name = "individual_date_of_birth")
+    private Date individualDateOfBirth;
 
-	public String getIndividualFirstName() {
-		return individualFirstName;
-	}
+    @XmlElement(name = "individual_gender")
+    private String individualGender;
 
-	public void setIndividualFirstName(String individualFirstName) {
-		this.individualFirstName = individualFirstName;
-	}
+    @XmlElement(name = "individual_relationship_to_head_of_household")
+    private String individualRelationshipToHeadOfHousehold;
 
-	public String getIndividualLastName() {
-		return individualLastName;
-	}
+    @XmlElement(name = "individual_phone_number")
+    private String individualPhoneNumber;
 
-	public void setIndividualLastName(String individualLastName) {
-		this.individualLastName = individualLastName;
-	}
+    @XmlElement(name = "individual_other_phone_number")
+    private String individualOtherPhoneNumber;
 
-	public String getIndividualOtherNames() {
-		return individualOtherNames;
-	}
+    @XmlElement(name = "individual_language_preference")
+    private String individualLanguagePreference;
 
-	public void setIndividualOtherNames(String individualOtherNames) {
-		this.individualOtherNames = individualOtherNames;
-	}
+    @XmlElement(name = "individual_point_of_contact_name")
+    private String individualPointOfContactName;
 
-	public int getIndividualAge() {
-		return individualAge;
-	}
+    @XmlElement(name = "individual_point_of_contact_phone_number")
+    private String individualPointOfContactPhoneNumber;
 
-	public void setIndividualAge(int individualAge) {
-		this.individualAge = individualAge;
-	}
+    @XmlElement(name = "individual_dip")
+    private int individualDip;
 
-	public String getIndividualAgeUnits() {
-		return individualAgeUnits;
-	}
+    @XmlElement(name = "individual_member_status")
+    private String individualMemberStatus;
 
-	public void setIndividualAgeUnits(String individualAgeUnits) {
-		this.individualAgeUnits = individualAgeUnits;
-	}
+    public boolean isProcessedByMirth() {
+        return processedByMirth;
+    }
 
-	public Date getIndividualDateOfBirth() {
-		return individualDateOfBirth;
-	}
+    public void setProcessedByMirth(boolean processedByMirth) {
+        this.processedByMirth = processedByMirth;
+    }
 
-	public void setIndividualDateOfBirth(Date individualDateOfBirth) {
-		this.individualDateOfBirth = individualDateOfBirth;
-	}
+    public String getFieldWorkerExtId() {
+        return fieldWorkerExtId;
+    }
 
-	public String getIndividualGender() {
-		return individualGender;
-	}
+    public void setFieldWorkerExtId(String fieldWorkerExtId) {
+        this.fieldWorkerExtId = fieldWorkerExtId;
+    }
 
-	public void setIndividualGender(String individualGender) {
-		this.individualGender = individualGender;
-	}
+    public Date getCollectionDateTime() {
+        return collectionDateTime;
+    }
 
-	public String getIndividualRelationshipToHeadOfHousehold() {
-		return individualRelationshipToHeadOfHousehold;
-	}
+    public void setCollectionDateTime(Date collectionDateTime) {
+        this.collectionDateTime = collectionDateTime;
+    }
 
-	public void setIndividualRelationshipToHeadOfHousehold(
-			String individualRelationshipToHeadOfHousehold) {
-		this.individualRelationshipToHeadOfHousehold = individualRelationshipToHeadOfHousehold;
-	}
+    public String getHouseholdExtId() {
+        return householdExtId;
+    }
 
-	public String getIndividualPhoneNumber() {
-		return individualPhoneNumber;
-	}
+    public void setHouseholdExtId(String householdExtId) {
+        this.householdExtId = householdExtId;
+    }
 
-	public void setIndividualPhoneNumber(String individualPhoneNumber) {
-		this.individualPhoneNumber = individualPhoneNumber;
-	}
+    public String getIndividualExtId() {
+        return individualExtId;
+    }
 
-	public String getIndividualOtherPhoneNumber() {
-		return individualOtherPhoneNumber;
-	}
+    public void setIndividualExtId(String individualExtId) {
+        this.individualExtId = individualExtId;
+    }
 
-	public void setIndividualOtherPhoneNumber(String individualOtherPhoneNumber) {
-		this.individualOtherPhoneNumber = individualOtherPhoneNumber;
-	}
+    public String getIndividualFirstName() {
+        return individualFirstName;
+    }
 
-	public String getIndividualLanguagePreference() {
-		return individualLanguagePreference;
-	}
+    public void setIndividualFirstName(String individualFirstName) {
+        this.individualFirstName = individualFirstName;
+    }
 
-	public void setIndividualLanguagePreference(
-			String individualLanguagePreference) {
-		this.individualLanguagePreference = individualLanguagePreference;
-	}
+    public String getIndividualLastName() {
+        return individualLastName;
+    }
 
-	public String getIndividualPointOfContactName() {
-		return individualPointOfContactName;
-	}
+    public void setIndividualLastName(String individualLastName) {
+        this.individualLastName = individualLastName;
+    }
 
-	public void setIndividualPointOfContactName(
-			String individualPointOfContactName) {
-		this.individualPointOfContactName = individualPointOfContactName;
-	}
+    public String getIndividualOtherNames() {
+        return individualOtherNames;
+    }
 
-	public String getIndividualPointOfContactPhoneNumber() {
-		return individualPointOfContactPhoneNumber;
-	}
+    public void setIndividualOtherNames(String individualOtherNames) {
+        this.individualOtherNames = individualOtherNames;
+    }
 
-	public void setIndividualPointOfContactPhoneNumber(
-			String individualPointOfContactPhoneNumber) {
-		this.individualPointOfContactPhoneNumber = individualPointOfContactPhoneNumber;
-	}
+    public int getIndividualAge() {
+        return individualAge;
+    }
 
-	public int getIndividualDip() {
-		return individualDip;
-	}
+    public void setIndividualAge(int individualAge) {
+        this.individualAge = individualAge;
+    }
 
-	public void setIndividualDip(int individualDip) {
-		this.individualDip = individualDip;
-	}
+    public String getIndividualAgeUnits() {
+        return individualAgeUnits;
+    }
 
-	public String getIndividualMemberStatus() {
-		return individualMemberStatus;
-	}
+    public void setIndividualAgeUnits(String individualAgeUnits) {
+        this.individualAgeUnits = individualAgeUnits;
+    }
 
-	public void setIndividualMemberStatus(String individualMemberStatus) {
-		this.individualMemberStatus = individualMemberStatus;
-	}
+    public Date getIndividualDateOfBirth() {
+        return individualDateOfBirth;
+    }
+
+    public void setIndividualDateOfBirth(Date individualDateOfBirth) {
+        this.individualDateOfBirth = individualDateOfBirth;
+    }
+
+    public String getIndividualGender() {
+        return individualGender;
+    }
+
+    public void setIndividualGender(String individualGender) {
+        this.individualGender = individualGender;
+    }
+
+    public String getIndividualRelationshipToHeadOfHousehold() {
+        return individualRelationshipToHeadOfHousehold;
+    }
+
+    public void setIndividualRelationshipToHeadOfHousehold(
+            String individualRelationshipToHeadOfHousehold) {
+        this.individualRelationshipToHeadOfHousehold = individualRelationshipToHeadOfHousehold;
+    }
+
+    public String getIndividualPhoneNumber() {
+        return individualPhoneNumber;
+    }
+
+    public void setIndividualPhoneNumber(String individualPhoneNumber) {
+        this.individualPhoneNumber = individualPhoneNumber;
+    }
+
+    public String getIndividualOtherPhoneNumber() {
+        return individualOtherPhoneNumber;
+    }
+
+    public void setIndividualOtherPhoneNumber(String individualOtherPhoneNumber) {
+        this.individualOtherPhoneNumber = individualOtherPhoneNumber;
+    }
+
+    public String getIndividualLanguagePreference() {
+        return individualLanguagePreference;
+    }
+
+    public void setIndividualLanguagePreference(String individualLanguagePreference) {
+        this.individualLanguagePreference = individualLanguagePreference;
+    }
+
+    public String getIndividualPointOfContactName() {
+        return individualPointOfContactName;
+    }
+
+    public void setIndividualPointOfContactName(String individualPointOfContactName) {
+        this.individualPointOfContactName = individualPointOfContactName;
+    }
+
+    public String getIndividualPointOfContactPhoneNumber() {
+        return individualPointOfContactPhoneNumber;
+    }
+
+    public void setIndividualPointOfContactPhoneNumber(String individualPointOfContactPhoneNumber) {
+        this.individualPointOfContactPhoneNumber = individualPointOfContactPhoneNumber;
+    }
+
+    public int getIndividualDip() {
+        return individualDip;
+    }
+
+    public void setIndividualDip(int individualDip) {
+        this.individualDip = individualDip;
+    }
+
+    public String getIndividualMemberStatus() {
+        return individualMemberStatus;
+    }
+
+    public void setIndividualMemberStatus(String individualMemberStatus) {
+        this.individualMemberStatus = individualMemberStatus;
+    }
 }
