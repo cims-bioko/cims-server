@@ -36,6 +36,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class IndividualFormResource {
     private static final Logger logger = LoggerFactory.getLogger(IndividualFormResource.class);
 
+    private static final String HEAD_OF_HOUSE_SELF_VALUE = "Head";
+    private static final String HOUSEHOLD_GROUP_TYPE = "Household";
+
     private final FieldWorkerService fieldWorkerService;
     private final EntityService entityService;
     private final IndividualService individualService;
@@ -82,10 +85,10 @@ public class IndividualFormResource {
             return requestError("Error getting field worker: " + e.getMessage());
         }
 
-        // the actual individual
+        // make a new individual, to be persisted below
         Individual individual;
         try {
-            individual = makeIndividual(individualForm, collectedBy, cv);
+            individual = findOrMakeIndividual(individualForm, collectedBy, cv);
             if (cv.hasViolations()) {
                 return requestError(cv);
             }
@@ -93,15 +96,36 @@ public class IndividualFormResource {
             return requestError("Error finding or creating individual: " + e.getMessage());
         }
 
-        // individual's household social group
+        // heads of households trigger special behavior
         SocialGroup socialGroup;
-        try {
-            socialGroup = socialGroupService.findSocialGroupById(
-                    individualForm.getHouseholdExtId(),
-                    "Individual form has nonexistent household social group.");
-        } catch (Exception e) {
-            return requestError("Error getting social group: " + e.getMessage());
+        if (individualForm.getIndividualRelationshipToHeadOfHousehold().equals(
+                HEAD_OF_HOUSE_SELF_VALUE)) {
+
+            // create or update social group
+            try {
+                socialGroup = createOrSaveSocialGroupForHead(individualForm.getHouseholdExtId(),
+                        individual);
+            } catch (Exception e) {
+                return requestError("Error getting social group for head of household: "
+                        + e.getMessage());
+            }
+
+            // update location with hoh name
+
+            // head of household is self
+
+        } else {
+            // get the social group, which must exist
+
+            // query for head of household in that group
+
         }
+
+        // create residency for head at location
+
+        // add membership in the social group
+
+        // create relationship to self as "head"
 
         // individual's membership in the social group
         try {
@@ -162,6 +186,30 @@ public class IndividualFormResource {
         return new ResponseEntity<IndividualForm>(individualForm, HttpStatus.CREATED);
     }
 
+    private Individual findOrMakeIndividual(IndividualForm individualForm, FieldWorker collectedBy,
+            ConstraintViolations cv) throws Exception {
+        Individual individual = individualService
+                .findIndivById(individualForm.getIndividualExtId());
+        if (null == individual) {
+            individual = new Individual();
+        }
+
+        copyFormDataToIndividual(individualForm, individual);
+
+        collectedBy = new FieldWorker();
+        collectedBy.setExtId(individualForm.getFieldWorkerExtId());
+        individual.setCollectedBy(fieldBuilder.referenceField(collectedBy, cv));
+
+        // Bioko project forms don't include parents!
+        // TODO: strings F and M are codes that can be configured by projects
+        Individual mother = getUnknownParent("F");
+        individual.setMother(fieldBuilder.referenceField(mother, cv, "Using Unknown Mother"));
+        Individual father = getUnknownParent("M");
+        individual.setFather(fieldBuilder.referenceField(father, cv, "Using Unknown Father"));
+
+        return individual;
+    }
+
     private void copyFormDataToIndividual(IndividualForm individualForm, Individual individual)
             throws Exception {
         individual.setExtId(individualForm.getIndividualExtId());
@@ -195,30 +243,6 @@ public class IndividualFormResource {
         return parent;
     }
 
-    private Individual makeIndividual(IndividualForm individualForm, FieldWorker collectedBy,
-            ConstraintViolations cv) throws Exception {
-        Individual individual = individualService
-                .findIndivById(individualForm.getIndividualExtId());
-        if (null == individual) {
-            individual = new Individual();
-        }
-
-        copyFormDataToIndividual(individualForm, individual);
-
-        collectedBy = new FieldWorker();
-        collectedBy.setExtId(individualForm.getFieldWorkerExtId());
-        individual.setCollectedBy(fieldBuilder.referenceField(collectedBy, cv));
-
-        // Bioko project forms don't include parents!
-        // TODO: strings F and M are codes that can be configured by projects
-        Individual mother = getUnknownParent("F");
-        individual.setMother(fieldBuilder.referenceField(mother, cv, "Using Unknown Mother"));
-        Individual father = getUnknownParent("M");
-        individual.setFather(fieldBuilder.referenceField(father, cv, "Using Unknown Father"));
-
-        return individual;
-    }
-
     private void createOrSaveIndividual(Individual individual) throws ConstraintViolations,
             SQLException {
         boolean isUpdate = null != individualService.findIndivById(individual.getExtId());
@@ -227,6 +251,33 @@ public class IndividualFormResource {
         } else {
             individualService.createIndividual(individual);
         }
+    }
+
+    private SocialGroup createOrSaveSocialGroupForHead(String socialGroupExtId, Individual head)
+            throws Exception {
+        // TODO: socialGroupService should not force us to catch an
+        // exception just to determine that a group doesn't exist yet
+        SocialGroup socialGroup;
+        try {
+            // update existing social group with head and head's name
+            socialGroup = socialGroupService.findSocialGroupById(socialGroupExtId,
+                    "Individual form has nonexistent household social group.");
+            socialGroup.setGroupHead(head);
+            socialGroup.setGroupName(head.getLastName());
+
+            // should delay this until no errors, below
+            entityService.save(socialGroup);
+
+        } catch (Exception e) {
+            // make a new social group with head and head's name
+            socialGroup = new SocialGroup();
+            socialGroup.setGroupHead(head);
+            socialGroup.setGroupName(head.getLastName());
+            socialGroup.setGroupType(HOUSEHOLD_GROUP_TYPE);
+
+            socialGroupService.createSocialGroup(socialGroup);
+        }
+        return socialGroup;
     }
 
     private Calendar dateToCalendar(Date date) throws Exception {
