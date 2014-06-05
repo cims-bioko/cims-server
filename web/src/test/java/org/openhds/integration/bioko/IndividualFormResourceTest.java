@@ -122,10 +122,14 @@ public class IndividualFormResourceTest {
                         xpath("/individualForm/individual_relationship_to_head_of_household")
                                 .string("2"))
                 .andExpect(xpath("/individualForm/individual_phone_number").string("12345678890"))
-                .andExpect(xpath("/individualForm/individual_other_phone_number").string("0987654321"))
-                .andExpect(xpath("/individualForm/individual_language_preference").string("English"))
+                .andExpect(
+                        xpath("/individualForm/individual_other_phone_number").string("0987654321"))
+                .andExpect(
+                        xpath("/individualForm/individual_language_preference").string("English"))
                 .andExpect(xpath("/individualForm/individual_point_of_contact_name").string(""))
-                .andExpect(xpath("/individualForm/individual_point_of_contact_phone_number").string(""))
+                .andExpect(
+                        xpath("/individualForm/individual_point_of_contact_phone_number")
+                                .string(""))
                 .andExpect(xpath("/individualForm/individual_dip").string("12345"))
                 .andExpect(xpath("/individualForm/individual_member_status").string("permanent"));
     }

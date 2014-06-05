@@ -83,10 +83,10 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @OrderBy("startDate")
     @Description(description = "The set of all residencies that the individual may have.")
     private Set<Residency> allResidencies = new HashSet<Residency>();
-    @OneToMany(mappedBy = "individualA")
+    @OneToMany(mappedBy = "individualA", cascade = { CascadeType.ALL })
     @Description(description = "The set of all relationships that the individual may have with another individual.")
     private Set<Relationship> allRelationships1 = new HashSet<Relationship>();
-    @OneToMany(mappedBy = "individualB")
+    @OneToMany(mappedBy = "individualB", cascade = { CascadeType.ALL })
     @Description(description = "The set of all relationships where another individual may have with this individual.")
     private Set<Relationship> allRelationships2 = new HashSet<Relationship>();
     @OneToMany(mappedBy = "individual", cascade = { CascadeType.ALL })

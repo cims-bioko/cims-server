@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
@@ -16,6 +17,7 @@ import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Membership;
+import org.openhds.domain.model.Relationship;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.bioko.IndividualForm;
@@ -27,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,32 +39,39 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class IndividualFormResource {
     private static final Logger logger = LoggerFactory.getLogger(IndividualFormResource.class);
 
-    private static final String HEAD_OF_HOUSE_SELF_VALUE = "Head";
+    // TODO: value codes can be configured by projects
+    private static final String HEAD_OF_HOUSEHOLD_SELF = "Head";
     private static final String HOUSEHOLD_GROUP_TYPE = "Household";
-
-    private final FieldWorkerService fieldWorkerService;
-    private final EntityService entityService;
-    private final IndividualService individualService;
-    private final LocationHierarchyService locationHierarchyService;
-    private final ResidencyService residencyService;
-    private final SocialGroupService socialGroupService;
-    private final FieldBuilder fieldBuilder;
+    private static final String START_TYPE = "CensusIndividualForm";
+    private static final String MALE = "M";
+    private static final String FEMALE = "F";
+    private static final String UNKNOWN_EXTID = "UNK";
 
     @Autowired
-    public IndividualFormResource(FieldWorkerService fieldWorkerService,
-            EntityService entityService, IndividualService individualService,
-            LocationHierarchyService locationHierarchyService, ResidencyService residencyService,
-            SocialGroupService socialGroupService, FieldBuilder fieldBuilder) {
-        this.fieldWorkerService = fieldWorkerService;
-        this.entityService = entityService;
-        this.individualService = individualService;
-        this.locationHierarchyService = locationHierarchyService;
-        this.residencyService = residencyService;
-        this.socialGroupService = socialGroupService;
-        this.fieldBuilder = fieldBuilder;
-    }
+    private FieldWorkerService fieldWorkerService;
 
+    @Autowired
+    private EntityService entityService;
+
+    @Autowired
+    private IndividualService individualService;
+
+    @Autowired
+    private LocationHierarchyService locationHierarchyService;
+
+    @Autowired
+    private ResidencyService residencyService;
+
+    @Autowired
+    private SocialGroupService socialGroupService;
+
+    @Autowired
+    private FieldBuilder fieldBuilder;
+
+    // This individual form should cause several CRUDS:
+    // location, individual, socialGroup, residency, membership, relationship
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
+    @Transactional
     public ResponseEntity<? extends Serializable> processForm(
             @RequestBody IndividualForm individualForm) {
 
@@ -85,6 +95,18 @@ public class IndividualFormResource {
             return requestError("Error getting field worker: " + e.getMessage());
         }
 
+        // where are we?
+        Location location;
+        try {
+            location = locationHierarchyService
+                    .findLocationById(individualForm.getHouseholdExtId());
+            if (null == location) {
+                return requestError("Location not found: " + individualForm.getHouseholdExtId());
+            }
+        } catch (Exception e) {
+            return requestError("Error getting location: " + e.getMessage());
+        }
+
         // make a new individual, to be persisted below
         Individual individual;
         try {
@@ -96,83 +118,63 @@ public class IndividualFormResource {
             return requestError("Error finding or creating individual: " + e.getMessage());
         }
 
-        // heads of households trigger special behavior
+        // social group for head or member of household
         SocialGroup socialGroup;
         if (individualForm.getIndividualRelationshipToHeadOfHousehold().equals(
-                HEAD_OF_HOUSE_SELF_VALUE)) {
+                HEAD_OF_HOUSEHOLD_SELF)) {
 
             // create or update social group
-            try {
-                socialGroup = createOrSaveSocialGroupForHead(individualForm.getHouseholdExtId(),
-                        individual);
-            } catch (Exception e) {
-                return requestError("Error getting social group for head of household: "
-                        + e.getMessage());
-            }
+            socialGroup = findOrMakeSocialGroup(individualForm.getHouseholdExtId(), individual);
 
             // update location with hoh name
-
-            // head of household is self
+            location.setLocationType(individual.getLastName());
 
         } else {
-            // get the social group, which must exist
-
-            // query for head of household in that group
-
-        }
-
-        // create residency for head at location
-
-        // add membership in the social group
-
-        // create relationship to self as "head"
-
-        // individual's membership in the social group
-        try {
-            if (individual.getAllMemberships().size() == 0) {
-                Membership membership = new Membership();
-                membership.setIndividual(individual);
-                membership.setSocialGroup(socialGroup);
-                membership.setCollectedBy(collectedBy);
-                membership.setStartDate(collectionTime);
-                membership.setStartType("Census Individual Form");
-                membership.setbIsToA(individualForm.getIndividualRelationshipToHeadOfHousehold());
-                individual.getAllMemberships().add(membership);
+            // social group must exist
+            try {
+                socialGroup = findOrMakeSocialGroup(individualForm.getHouseholdExtId(), individual);
+            } catch (Exception e) {
+                return requestError("Error getting social group household member: "
+                        + e.getMessage());
             }
-        } catch (Exception e) {
-            return requestError("Error creating membership: " + e.getMessage());
-        }
-
-        // individual's household location
-        Location location;
-        try {
-
-            location = locationHierarchyService
-                    .findLocationById(individualForm.getHouseholdExtId());
-            if (null == location) {
-                WebServiceCallException error = new WebServiceCallException();
-                error.getErrors().add("Individual form has nonexistent household location.");
-                return new ResponseEntity<WebServiceCallException>(error, HttpStatus.BAD_REQUEST);
-            }
-        } catch (Exception e) {
-            return requestError("Error getting location: " + e.getMessage());
         }
 
         // individual's residency at location
-        Residency residency;
+        Residency residency = findOrMakeResidency(individual, location, collectionTime, collectedBy);
+
+        // individual's membership in the social group
+        Membership membership = findOrMakeMembership(individual, socialGroup, collectedBy,
+                collectionTime, individualForm.getIndividualRelationshipToHeadOfHousehold());
+
+        // create relationship to head of household (may be "self")
+        Relationship relationship = findOrMakeRelationship(individual, socialGroup.getGroupHead(),
+                collectedBy, collectionTime,
+                individualForm.getIndividualRelationshipToHeadOfHousehold());
+
+        // persist the location
         try {
-            if (!residencyService.hasOpenResidency(individual)) {
-                residency = residencyService.createResidency(individual, location, collectionTime,
-                        "Census Individual Form", collectedBy);
-                residency = residencyService.evaluateResidency(residency);
-                individual.getAllResidencies().add(residency);
-            }
+            createOrSaveLocation(location);
         } catch (ConstraintViolations e) {
             return requestError(e);
+        } catch (SQLException e) {
+            return serverError("SQL Error updating or saving location: " + e.getMessage());
         } catch (Exception e) {
-            return requestError("Error creating residency: " + e.getMessage());
+            return serverError("General Error updating or saving location: " + e.getMessage());
         }
 
+        // persist the socialGroup
+        try {
+            createOrSaveSocialGroup(socialGroup);
+        } catch (ConstraintViolations e) {
+            return requestError(e);
+        } catch (SQLException e) {
+            return serverError("SQL Error updating or saving socialGroup: " + e.getMessage());
+        } catch (Exception e) {
+            return serverError("General Error updating or saving socialGroup: " + e.getMessage());
+        }
+
+        // presist the individual
+        // which cascades to residency, membership, and relationship
         try {
             createOrSaveIndividual(individual);
         } catch (ConstraintViolations e) {
@@ -201,10 +203,9 @@ public class IndividualFormResource {
         individual.setCollectedBy(fieldBuilder.referenceField(collectedBy, cv));
 
         // Bioko project forms don't include parents!
-        // TODO: strings F and M are codes that can be configured by projects
-        Individual mother = getUnknownParent("F");
+        Individual mother = makeUnknowParent(FEMALE);
         individual.setMother(fieldBuilder.referenceField(mother, cv, "Using Unknown Mother"));
-        Individual father = getUnknownParent("M");
+        Individual father = makeUnknowParent(MALE);
         individual.setFather(fieldBuilder.referenceField(father, cv, "Using Unknown Father"));
 
         return individual;
@@ -231,10 +232,10 @@ public class IndividualFormResource {
         // private String individualMemberStatus;
     }
 
-    private Individual getUnknownParent(String gender) {
+    private Individual makeUnknowParent(String gender) {
         Individual parent = new Individual();
         parent.setGender(gender);
-        parent.setExtId("UNK");
+        parent.setExtId(UNKNOWN_EXTID);
 
         Calendar dob = Calendar.getInstance();
         dob.set(1900, 0, 1);
@@ -243,41 +244,156 @@ public class IndividualFormResource {
         return parent;
     }
 
-    private void createOrSaveIndividual(Individual individual) throws ConstraintViolations,
-            SQLException {
-        boolean isUpdate = null != individualService.findIndivById(individual.getExtId());
-        if (isUpdate) {
-            entityService.save(individual);
-        } else {
-            individualService.createIndividual(individual);
-        }
-    }
+    private SocialGroup findOrMakeSocialGroup(String socialGroupExtId, Individual head) {
 
-    private SocialGroup createOrSaveSocialGroupForHead(String socialGroupExtId, Individual head)
-            throws Exception {
-        // TODO: socialGroupService should not force us to catch an
-        // exception just to determine that a group doesn't exist yet
+        // TODO: SocialGroupService should not force us to use try/catch for
+        // flow control
         SocialGroup socialGroup;
         try {
             // update existing social group with head and head's name
             socialGroup = socialGroupService.findSocialGroupById(socialGroupExtId,
-                    "Individual form has nonexistent household social group.");
-            socialGroup.setGroupHead(head);
-            socialGroup.setGroupName(head.getLastName());
-
-            // should delay this until no errors, below
-            entityService.save(socialGroup);
+                    "Social group does not exist: " + socialGroupExtId);
 
         } catch (Exception e) {
             // make a new social group with head and head's name
             socialGroup = new SocialGroup();
-            socialGroup.setGroupHead(head);
-            socialGroup.setGroupName(head.getLastName());
-            socialGroup.setGroupType(HOUSEHOLD_GROUP_TYPE);
+            socialGroup.setExtId(socialGroupExtId);
+        }
 
+        socialGroup.setGroupHead(head);
+        socialGroup.setGroupName(head.getLastName());
+        socialGroup.setGroupType(HOUSEHOLD_GROUP_TYPE);
+
+        return socialGroup;
+    }
+
+    private Residency findOrMakeResidency(Individual individual, Location location,
+            Calendar collectionTime, FieldWorker collectedBy) {
+
+        Residency residency = null;
+
+        // try to find an existing residency to modify
+        if (residencyService.hasOpenResidency(individual)) {
+            List<Residency> allResidencies = residencyService.getAllResidencies(individual);
+            for (Residency r : allResidencies) {
+                if (location.equals(r)) {
+                    residency = r;
+                    break;
+                }
+            }
+        }
+
+        // might need to make a new residency
+        if (null == residency) {
+            residency = new Residency();
+        }
+
+        // fill in or update
+        residency.setIndividual(individual);
+        residency.setLocation(location);
+        residency.setCollectedBy(collectedBy);
+        residency.setStartDate(collectionTime);
+        residency.setStartType(START_TYPE);
+
+        // attach to individial
+        individual.getAllResidencies().add(residency);
+
+        return residency;
+    }
+
+    private Membership findOrMakeMembership(Individual individual, SocialGroup socialGroup,
+            FieldWorker collectedBy, Calendar collectionTime, String membershipType) {
+
+        Membership membership = null;
+
+        // try to find existing membership
+        for (Membership m : individual.getAllMemberships()) {
+            if (m.getSocialGroup().equals(socialGroup)) {
+                membership = m;
+            }
+        }
+
+        // might need a brand new memebership
+        if (null == membership) {
+            membership = new Membership();
+        }
+
+        // fill in or update
+        membership.setIndividual(individual);
+        membership.setSocialGroup(socialGroup);
+        membership.setCollectedBy(collectedBy);
+        membership.setStartDate(collectionTime);
+        membership.setStartType(START_TYPE);
+        membership.setbIsToA(membershipType);
+
+        // attach to individual
+        individual.getAllMemberships().add(membership);
+
+        return membership;
+    }
+
+    private Relationship findOrMakeRelationship(Individual individualA, Individual individualB,
+            FieldWorker collectedBy, Calendar collectionTime, String aIsToB) {
+
+        Relationship relationship = null;
+
+        // get relationships where this individualA acts as relationship
+        // individualA
+        for (Relationship r : individualA.getAllRelationships1()) {
+            if (r.getIndividualB().equals(individualB)) {
+                relationship = r;
+                break;
+            }
+        }
+
+        // might need a brand new memebership
+        if (null == relationship) {
+            relationship = new Relationship();
+        }
+
+        // fill in or update
+        relationship.setIndividualA(individualA);
+        relationship.setIndividualB(individualB);
+        relationship.setCollectedBy(collectedBy);
+        relationship.setStartDate(collectionTime);
+        relationship.setaIsToB(aIsToB);
+
+        // attach to individual
+        individualA.getAllRelationships1().add(relationship);
+
+        return relationship;
+    }
+
+    private void createOrSaveLocation(Location location) throws ConstraintViolations, SQLException {
+        if (null == locationHierarchyService.findLocationById(location.getExtId())) {
+            locationHierarchyService.createLocation(location);
+        } else {
+            entityService.save(location);
+        }
+    }
+
+    private void createOrSaveSocialGroup(SocialGroup socialGroup) throws ConstraintViolations,
+            SQLException {
+        // TODO: SocialGroupService should not force us to use try/catch for
+        // flow control
+        try {
+            String socialGroupExtId = socialGroup.getExtId();
+            socialGroupService.findSocialGroupById(socialGroupExtId,
+                    "Social group does not exist: " + socialGroupExtId);
+            entityService.save(socialGroup);
+
+        } catch (Exception e) {
             socialGroupService.createSocialGroup(socialGroup);
         }
-        return socialGroup;
+    }
+
+    private void createOrSaveIndividual(Individual individual) throws ConstraintViolations,
+            SQLException {
+        if (null == individualService.findIndivById(individual.getExtId())) {
+            individualService.createIndividual(individual);
+        } else {
+            entityService.save(individual);
+        }
     }
 
     private Calendar dateToCalendar(Date date) throws Exception {
