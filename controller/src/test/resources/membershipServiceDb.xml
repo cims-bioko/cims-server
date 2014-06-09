@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--This data set taken from web openhds-required-data.sql-->
+<dataset>
+    <privilege uuid="PRIVILEGE1" privilege="CREATE_ENTITY" />
+    <role uuid="ROLE1" name="ADMINISTRATOR" description="Administrator of OpenHDS" deleted="false" />
+    <role_privileges role_uuid="ROLE1" privilege_uuid="PRIVILEGE1" />
+
+    <user uuid="User 1" firstName="OpenHDS" lastName="Administrator" fullName="Administrator"
+          description="Administrator User" username="admin" password="test" lastLoginTime="0" deleted="false" />
+    <user_roles user_uuid="User 1" role_uuid="ROLE1" />)
+
+    <locationhierarchylevel uuid="HierarchyLevel1" keyIdentifier="1" name="Level 1" />
+    <locationhierarchylevel uuid="HierarchyLevel2" keyIdentifier="2" name="Level 2" />
+    <locationhierarchylevel uuid="HierarchyLevel3" keyIdentifier="3" name="Level 3" />
+
+    <locationhierarchy uuid="hierarchy1" name="TAN"
+                       extId="TAN" level_uuid="HierarchyLevel1" parent_uuid="hierarchy_root" />
+    <locationhierarchy uuid="hierarchy2" name="IFA"
+                       extId="IFA" level_uuid="HierarchyLevel2" parent_uuid="hierarchy1" />
+    <locationhierarchy uuid="hierarchy3" name="IFB"
+                       extId="IFB" level_uuid="HierarchyLevel3" parent_uuid="hierarchy2" />
+
+    <fieldworker uuid="UnknownFieldWorker" extid="UNK" firstname="Unknown" lastname="FieldWorker" />
+
+    <individual uuid="Unknown Individual" extId="UNK" firstName="Unknown" middleName="NULL" lastName="Unknown"
+                gender="1" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
+                dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker" />
+
+    <location uuid="LOCATION1" extId="testLocation" locationName="Test Location" locationLevel_uuid="hierarchy3"
+              locationType="RUR" insertDate="2000-12-19" deleted="false" collectedBy_uuid="UnknownFieldWorker"
+              insertBy_uuid="User 1" status="P" />
+
+    <whitelist uuid="LOCALHOST1" address="127.0.0.1" />
+    <whitelist uuid="LOCALHOST2" address="10.0.2.10" />
+    <whitelist uuid="LOCALHOST3" address="10.0.2.14" />
+    <whitelist uuid="LOCALHOST4" address="141.114.156.167" />
+</dataset>
