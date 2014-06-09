@@ -1,28 +1,25 @@
-package org.openhds.web.service.impl;
+package org.openhds.controller.service.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.controller.service.EntityValidationService;
 import org.openhds.domain.model.AuditableCollectedEntity;
 import org.openhds.domain.service.SitePropertiesService;
-import org.openhds.web.service.JsfService;
-import org.openhds.controller.service.EntityValidationService;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("unchecked")
-public class EntityValidationServiceJsfImpl<T> implements EntityValidationService<T> {
+public class EntityValidationServiceImpl<T> implements EntityValidationService<T> {
 
     SitePropertiesService siteProperties;
-    JsfService jsfService;
 
-    EntityValidationServiceJsfImpl(SitePropertiesService siteProperties, JsfService jsfService) {
+    EntityValidationServiceImpl(SitePropertiesService siteProperties) {
         this.siteProperties = siteProperties;
-        this.jsfService = jsfService;
     }
 
     public void setStatusPending(T entityItem) {
@@ -52,10 +49,6 @@ public class EntityValidationServiceJsfImpl<T> implements EntityValidationServic
         Set<ConstraintViolation<T>> constraintViolations = validator.validate(entityItem);
 
         if (constraintViolations.size() > 0) {
-            Iterator<ConstraintViolation<T>> iter = constraintViolations.iterator();
-            while (iter.hasNext()) {
-                jsfService.addError(iter.next().getMessage());
-            }
             return true;
         }
         return false;
