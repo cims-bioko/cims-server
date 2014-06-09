@@ -18,54 +18,51 @@ import org.openhds.domain.constraint.*;
 import org.openhds.domain.constraint.CheckEndDateNotBeforeStartDate;
 import org.openhds.domain.util.CalendarAdapter;
 
-@Description(description="A Relationship is used to associate an Individual " +
-		"with another Indivual in some way. It can be identified by a uniquely " +
-		"generated identifier which the system uses internally. It contains " +
-		"information about the two Indivuals involved, the start and end dates, " +
-		"and the start and end types of the Relationship.")
+@Description(description = "A Relationship is used to associate an Individual "
+        + "with another Indivual in some way. It can be identified by a uniquely "
+        + "generated identifier which the system uses internally. It contains "
+        + "information about the two Indivuals involved, the start and end dates, "
+        + "and the start and end types of the Relationship.")
 @Entity
-@CheckGenderOfRelationship
-@CheckRelatedIndividuals
-@CheckEndDateNotBeforeStartDate(allowNull=true)
+@CheckEndDateNotBeforeStartDate(allowNull = true)
 @CheckEndDateAndEndEventType
-@Table(name="relationship")
+@Table(name = "relationship")
 @XmlRootElement
-public class Relationship extends AuditableCollectedEntity implements GenericEndDateEndEventConstraint, GenericStartEndDateConstraint, Serializable {
+public class Relationship extends AuditableCollectedEntity implements
+        GenericEndDateEndEventConstraint, GenericStartEndDateConstraint, Serializable {
     static final long serialVersionUID = 19L;
-        
+
     @Searchable
     @CheckEntityNotVoided
     @CheckIndividualNotUnknown
-    @CheckRelationshipAge(allowNull = false, message="Individual A is younger than the minimum age required in order to be in a relationship")
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @Description(description="One of the individuals participating in the relationship, identified by external id.")
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @Description(description = "One of the individuals participating in the relationship, identified by external id.")
     Individual individualA;
-    
+
     @Searchable
     @CheckEntityNotVoided
     @CheckIndividualNotUnknown
-    @CheckRelationshipAge(allowNull = false, message="Individual B is younger than the minimum age required in order to be in a relationship")
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @Description(description="One of the individuals participating in the relationship, identified by external id.")
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @Description(description = "One of the individuals participating in the relationship, identified by external id.")
     Individual individualB;
-    
+
     @CheckFieldNotBlank
-    @ExtensionStringConstraint(constraint="maritalStatusConstraint", message="Invalid Value for relationship type",allowNull=false)
-    @Description(description="Relationship type.")
+    @ExtensionStringConstraint(constraint = "relationshipTypeConstraint", message = "Invalid value for relationship type", allowNull = false)
+    @Description(description = "Relationship type.")
     String aIsToB;
-       
-	@NotNull
+
+    @NotNull
     @Past(message = "Start date should be in the past")
     @Temporal(javax.persistence.TemporalType.DATE)
-    @Description(description="Start date of the relationship.")
+    @Description(description = "Start date of the relationship.")
     Calendar startDate;
-    
+
     @Past(message = "End date should be in the past")
     @Temporal(javax.persistence.TemporalType.DATE)
-    @Description(description="End date of the relationship.")
+    @Description(description = "End date of the relationship.")
     Calendar endDate;
-    
-    @Description(description="End type of the relationship.")
+
+    @Description(description = "End type of the relationship.")
     String endType;
 
     public Individual getIndividualA() {
@@ -80,7 +77,7 @@ public class Relationship extends AuditableCollectedEntity implements GenericEnd
         this.individualB = individualB;
     }
 
-    @XmlJavaTypeAdapter(value=CalendarAdapter.class) 
+    @XmlJavaTypeAdapter(value = CalendarAdapter.class)
     public Calendar getStartDate() {
         return startDate;
     }
@@ -89,7 +86,7 @@ public class Relationship extends AuditableCollectedEntity implements GenericEnd
         this.startDate = startDate;
     }
 
-   // @XmlJavaTypeAdapter(value=CalendarAdapter.class) 
+    // @XmlJavaTypeAdapter(value=CalendarAdapter.class)
     public Calendar getEndDate() {
         return endDate;
     }
@@ -103,18 +100,18 @@ public class Relationship extends AuditableCollectedEntity implements GenericEnd
     }
 
     public String getEndType() {
-		return endType;
-	}
+        return endType;
+    }
 
-	public void setEndType(String endType) {
-		this.endType = endType;
-	}
+    public void setEndType(String endType) {
+        this.endType = endType;
+    }
 
-	public String getaIsToB() {
-		return aIsToB;
-	}
+    public String getaIsToB() {
+        return aIsToB;
+    }
 
-	public void setaIsToB(String aIsToB) {
-		this.aIsToB = aIsToB;
-	}
+    public void setaIsToB(String aIsToB) {
+        this.aIsToB = aIsToB;
+    }
 }

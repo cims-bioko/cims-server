@@ -19,12 +19,16 @@
 		<value description="Yes">1</value>
 		<value description="No">2</value>
 	</constraint>
-    <constraint id="maritalStatusConstraint">
-		<value description="Never Married">1</value>
-		<value description="Married">2</value>
-		<value description="Separated/Divorced">3</value>
-		<value description="Widowed">4</value>
-		<value description="Living Together">5</value>
+    <constraint id="relationshipTypeConstraint">
+		<value description="Self">1</value>
+		<value description="Spouse">2</value>
+		<value description="Son/Daughter">3</value>
+		<value description="Brother/Sister">4</value>
+		<value description="Parent">5</value>
+		<value description="Grandchild">6</value>
+		<value description="Not Related">7</value>
+		<value description="Other Relative">8</value>
+		<value description="Don't Know">9</value>
 	</constraint>
     <constraint id="membershipConstraint">
 		<value description="Head">1</value>
