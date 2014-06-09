@@ -24,8 +24,6 @@ import org.openhds.domain.util.CalendarAdapter;
 		"information about the two Indivuals involved, the start and end dates, " +
 		"and the start and end types of the Relationship.")
 @Entity
-@CheckGenderOfRelationship
-@CheckRelatedIndividuals
 @CheckEndDateNotBeforeStartDate(allowNull=true)
 @CheckEndDateAndEndEventType
 @Table(name="relationship")
@@ -36,7 +34,6 @@ public class Relationship extends AuditableCollectedEntity implements GenericEnd
     @Searchable
     @CheckEntityNotVoided
     @CheckIndividualNotUnknown
-    @CheckRelationshipAge(allowNull = false, message="Individual A is younger than the minimum age required in order to be in a relationship")
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @Description(description="One of the individuals participating in the relationship, identified by external id.")
     Individual individualA;
@@ -44,13 +41,12 @@ public class Relationship extends AuditableCollectedEntity implements GenericEnd
     @Searchable
     @CheckEntityNotVoided
     @CheckIndividualNotUnknown
-    @CheckRelationshipAge(allowNull = false, message="Individual B is younger than the minimum age required in order to be in a relationship")
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @Description(description="One of the individuals participating in the relationship, identified by external id.")
     Individual individualB;
     
     @CheckFieldNotBlank
-    @ExtensionStringConstraint(constraint="maritalStatusConstraint", message="Invalid Value for relationship type",allowNull=false)
+    @ExtensionStringConstraint(constraint="relationshipTypeConstraint", message="Invalid value for relationship type",allowNull=false)
     @Description(description="Relationship type.")
     String aIsToB;
        
