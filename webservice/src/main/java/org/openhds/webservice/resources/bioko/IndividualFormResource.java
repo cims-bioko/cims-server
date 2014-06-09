@@ -40,9 +40,9 @@ public class IndividualFormResource {
     private static final Logger logger = LoggerFactory.getLogger(IndividualFormResource.class);
 
     // TODO: value codes can be configured by projects
-    private static final String HEAD_OF_HOUSEHOLD_SELF = "Head";
-    private static final String HOUSEHOLD_GROUP_TYPE = "Household";
-    private static final String START_TYPE = "CensusIndividualForm";
+    private static final String HEAD_OF_HOUSEHOLD_SELF = "1";
+    private static final String HOUSEHOLD_GROUP_TYPE = "COH";
+    private static final String START_TYPE = "IndividualForm";
     private static final String MALE = "M";
     private static final String FEMALE = "F";
     private static final String UNKNOWN_EXTID = "UNK";
@@ -118,23 +118,26 @@ public class IndividualFormResource {
             return requestError("Error finding or creating individual: " + e.getMessage());
         }
 
-        // social group for head or member of household
         SocialGroup socialGroup;
         if (individualForm.getIndividualRelationshipToHeadOfHousehold().equals(
                 HEAD_OF_HOUSEHOLD_SELF)) {
 
-            // create or update social group
-            socialGroup = findOrMakeSocialGroup(individualForm.getHouseholdExtId(), individual);
+            // may create social group for head of household
+            socialGroup = findOrMakeSocialGroup(individualForm.getHouseholdExtId(), individual,
+                    collectionTime, collectedBy);
 
-            // update location with hoh name
-            location.setLocationType(individual.getLastName());
+            // name the location after the head of household
+            location.setLocationName(individual.getLastName());
 
         } else {
-            // social group must exist
+
+            // household must already exist for household member
             try {
-                socialGroup = findOrMakeSocialGroup(individualForm.getHouseholdExtId(), individual);
+                socialGroup = socialGroupService.findSocialGroupById(
+                        individualForm.getHouseholdExtId(), "Social group does not exist: "
+                                + individualForm.getHouseholdExtId());
             } catch (Exception e) {
-                return requestError("Error getting social group household member: "
+                return requestError("Error getting social group for household member: "
                         + e.getMessage());
             }
         }
@@ -173,7 +176,7 @@ public class IndividualFormResource {
             return serverError("General Error updating or saving socialGroup: " + e.getMessage());
         }
 
-        // presist the individual
+        // persist the individual
         // which cascades to residency, membership, and relationship
         try {
             createOrSaveIndividual(individual);
@@ -244,7 +247,8 @@ public class IndividualFormResource {
         return parent;
     }
 
-    private SocialGroup findOrMakeSocialGroup(String socialGroupExtId, Individual head) {
+    private SocialGroup findOrMakeSocialGroup(String socialGroupExtId, Individual head,
+            Calendar collectionTime, FieldWorker collectedBy) {
 
         // TODO: SocialGroupService should not force us to use try/catch for
         // flow control
@@ -255,9 +259,11 @@ public class IndividualFormResource {
                     "Social group does not exist: " + socialGroupExtId);
 
         } catch (Exception e) {
-            // make a new social group with head and head's name
+            // make a new social group
             socialGroup = new SocialGroup();
             socialGroup.setExtId(socialGroupExtId);
+            socialGroup.setCollectedBy(collectedBy);
+            socialGroup.setInsertDate(collectionTime);
         }
 
         socialGroup.setGroupHead(head);

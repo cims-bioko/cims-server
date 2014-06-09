@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <dataset>
-	<locationhierarchy uuid="hierarchy1" name="TAN"
-		extId="TAN" level_uuid="HierarchyLevel1" parent_uuid="hierarchy_root" />
-	<locationhierarchy uuid="hierarchy2" name="IFA"
-		extId="IFA" level_uuid="HierarchyLevel2" parent_uuid="hierarchy1" />
-	<locationhierarchy uuid="hierarchy3" name="IFB"
-		extId="IFB" level_uuid="HierarchyLevel3" parent_uuid="hierarchy2" />
+    <locationhierarchy uuid="hierarchy1" name="TAN" extId="TAN" level_uuid="HierarchyLevel1"
+        parent_uuid="hierarchy_root" />
+    <locationhierarchy uuid="hierarchy2" name="IFA" extId="IFA" level_uuid="HierarchyLevel2"
+        parent_uuid="hierarchy1" />
+    <locationhierarchy uuid="hierarchy3" name="IFB" extId="IFB" level_uuid="HierarchyLevel3"
+        parent_uuid="hierarchy2" />
 
-	<location uuid="LOCATION2" extId="testLocation" locationName="Test Location"
-		locationLevel_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19"
-		deleted="false" collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1"
-		status="P" />
+    <location uuid="LOCATION2" extId="testLocation" locationName="Test Location"
+        locationLevel_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
+        collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
 
-	<location uuid="HOUSEHOLDLOCATION" extId="householdId"
-		locationName="Household Location" locationLevel_uuid="hierarchy3"
-		locationType="RUR" insertDate="2000-12-19" deleted="false"
-		collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
+    <location uuid="NONHOUSEHOLDLOCATION" extId="newHouse_id" locationName="Non-household Location"
+        locationLevel_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
+        collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
 
-	<socialgroup uuid="HOUSEHOLDSOCIALGROUP" extId="householdId"
-		groupName="Household Social Group" groupHead_uuid="Individual2"
-		groupType="household" insertDate="2000-12-19" deleted="false"
-		collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
+    <location uuid="HOUSEHOLDLOCATION" extId="existing_id" locationName="Household Location"
+        locationLevel_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
+        collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
 
-	<whitelist uuid="LOCALHOST1" address="127.0.0.1" />
-	<whitelist uuid="LOCALHOST2" address="10.0.2.10" />
-	<whitelist uuid="LOCALHOST3" address="10.0.2.14" />
-	<whitelist uuid="LOCALHOST4" address="141.114.156.167" />
+    <socialgroup uuid="HOUSEHOLDSOCIALGROUP" extId="existing_id" groupName="Household Social Group"
+        groupHead_uuid="Individual2" groupType="COH" insertDate="2000-12-19" deleted="false"
+        collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
+
+    <whitelist uuid="LOCALHOST1" address="127.0.0.1" />
+    <whitelist uuid="LOCALHOST2" address="10.0.2.10" />
+    <whitelist uuid="LOCALHOST3" address="10.0.2.14" />
+    <whitelist uuid="LOCALHOST4" address="141.114.156.167" />
 </dataset>
