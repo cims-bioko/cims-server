@@ -71,7 +71,7 @@ public class IndividualFormResourceTest {
             + "<individual_dip>12345</individual_dip>"
             + "<individual_member_status>permanent</individual_member_status>"
             + "</individualForm>";
-    private static final String HOUSEHOLD_MEMBER_FORM_XML = "<individualForm>"
+    private static final String MEMBER_OF_HOUSEHOLD_FORM_XML = "<individualForm>"
             + "<processed_by_mirth>false</processed_by_mirth>"
             + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>" + "<collection_date_time>"
             + A_DATE
@@ -137,6 +137,18 @@ public class IndividualFormResourceTest {
     }
 
     @Test
+    public void testPosMemberOfHouseholdFormXml() throws Exception {
+        mockMvc.perform(
+                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(MEMBER_OF_HOUSEHOLD_FORM_XML.getBytes()))
+                .andExpect(status().isCreated())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+        verifyEntityCrud("1234567890bb", "existing_id", "NBAS1I", "2");
+    }
+
+    @Test
     public void testRepeatPostHeadOfHouseholdFormXml() throws Exception {
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
@@ -151,6 +163,27 @@ public class IndividualFormResourceTest {
                         .body(HEAD_OF_HOUSEHOLD_FORM_XML.getBytes()))
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+        verifyEntityCrud("1234567890aa", "newHouse_id", "1234567890aa", "1");
+    }
+
+    @Test
+    public void testRepeatPostMemberOfHouseholdFormXml() throws Exception {
+        mockMvc.perform(
+                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(MEMBER_OF_HOUSEHOLD_FORM_XML.getBytes()))
+                .andExpect(status().isCreated())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+        mockMvc.perform(
+                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(MEMBER_OF_HOUSEHOLD_FORM_XML.getBytes()))
+                .andExpect(status().isCreated())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+        verifyEntityCrud("1234567890bb", "existing_id", "NBAS1I", "2");
     }
 
     @Test
