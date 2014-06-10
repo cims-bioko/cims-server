@@ -78,11 +78,9 @@ public class IndividualFormResource {
         ConstraintViolations cv = new ConstraintViolations();
 
         // collected when?
-        Calendar collectionTime;
-        try {
-            collectionTime = dateToCalendar(individualForm.getCollectionDateTime());
-        } catch (Exception e) {
-            return requestError("Error getting collection time: " + e.getMessage());
+        Calendar collectionTime = individualForm.getCollectionDateTime();
+        if (null == collectionTime) {
+            collectionTime = getDateInPast();
         }
 
         // collected by whom?
@@ -192,7 +190,7 @@ public class IndividualFormResource {
     }
 
     private Individual findOrMakeIndividual(IndividualForm individualForm, FieldWorker collectedBy,
-            ConstraintViolations cv) throws Exception {
+                                            ConstraintViolations cv) throws Exception {
         Individual individual = individualService
                 .findIndivById(individualForm.getIndividualExtId());
         if (null == individual) {
@@ -206,9 +204,9 @@ public class IndividualFormResource {
         individual.setCollectedBy(fieldBuilder.referenceField(collectedBy, cv));
 
         // Bioko project forms don't include parents!
-        Individual mother = makeUnknowParent(FEMALE);
+        Individual mother = makeUnknownParent(FEMALE);
         individual.setMother(fieldBuilder.referenceField(mother, cv, "Using Unknown Mother"));
-        Individual father = makeUnknowParent(MALE);
+        Individual father = makeUnknownParent(MALE);
         individual.setFather(fieldBuilder.referenceField(father, cv, "Using Unknown Father"));
 
         return individual;
@@ -221,7 +219,12 @@ public class IndividualFormResource {
         individual.setMiddleName(individualForm.getIndividualOtherNames());
         individual.setLastName(individualForm.getIndividualLastName());
         individual.setGender(individualForm.getIndividualGender());
-        individual.setDob(dateToCalendar(individualForm.getIndividualDateOfBirth()));
+
+        Calendar dob = individualForm.getIndividualDateOfBirth();
+        if (null == dob) {
+            dob = getDateInPast();
+        }
+        individual.setDob(dob);
 
         // TODO: add these to the individual data model
         // private int individualAge;
@@ -235,20 +238,23 @@ public class IndividualFormResource {
         // private String individualMemberStatus;
     }
 
-    private Individual makeUnknowParent(String gender) {
+    private Individual makeUnknownParent(String gender) {
         Individual parent = new Individual();
         parent.setGender(gender);
         parent.setExtId(UNKNOWN_EXTID);
-
-        Calendar dob = Calendar.getInstance();
-        dob.set(1900, 0, 1);
-        parent.setDob(dob);
+        parent.setDob(getDateInPast());
 
         return parent;
     }
 
+    private static Calendar getDateInPast() {
+        Calendar inPast = Calendar.getInstance();
+        inPast.set(1900, 0, 1);
+        return inPast;
+    }
+
     private SocialGroup findOrMakeSocialGroup(String socialGroupExtId, Individual head,
-            Calendar collectionTime, FieldWorker collectedBy) {
+                                              Calendar collectionTime, FieldWorker collectedBy) {
 
         // TODO: SocialGroupService should not force us to use try/catch for
         // flow control
@@ -274,7 +280,7 @@ public class IndividualFormResource {
     }
 
     private Residency findOrMakeResidency(Individual individual, Location location,
-            Calendar collectionTime, FieldWorker collectedBy) {
+                                          Calendar collectionTime, FieldWorker collectedBy) {
 
         Residency residency = null;
 
@@ -308,7 +314,7 @@ public class IndividualFormResource {
     }
 
     private Membership findOrMakeMembership(Individual individual, SocialGroup socialGroup,
-            FieldWorker collectedBy, Calendar collectionTime, String membershipType) {
+                                            FieldWorker collectedBy, Calendar collectionTime, String membershipType) {
 
         Membership membership = null;
 
@@ -339,7 +345,7 @@ public class IndividualFormResource {
     }
 
     private Relationship findOrMakeRelationship(Individual individualA, Individual individualB,
-            FieldWorker collectedBy, Calendar collectionTime, String aIsToB) {
+                                                FieldWorker collectedBy, Calendar collectionTime, String aIsToB) {
 
         Relationship relationship = null;
 
@@ -400,14 +406,6 @@ public class IndividualFormResource {
         } else {
             entityService.save(individual);
         }
-    }
-
-    private Calendar dateToCalendar(Date date) throws Exception {
-        Calendar cal = Calendar.getInstance();
-        if (null != date) {
-            cal.setTime(date);
-        }
-        return cal;
     }
 
     private ResponseEntity<WebServiceCallException> requestError(String message) {

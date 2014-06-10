@@ -1,14 +1,14 @@
 package org.openhds.domain.model.bioko;
 
-import java.io.Serializable;
-import java.util.Date;
+import org.openhds.domain.annotations.Description;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAccessType;
-
-import org.openhds.domain.annotations.Description;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.Serializable;
+import java.util.Calendar;
 
 /**
  * Written by Ben Heasly to model incoming forms for the bioko island project.
@@ -28,7 +28,8 @@ public class IndividualForm implements Serializable {
     private String fieldWorkerExtId;
 
     @XmlElement(name = "collection_date_time")
-    private Date collectionDateTime;
+    @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
+    private Calendar collectionDateTime;
 
     @XmlElement(name = "household_ext_id")
     private String householdExtId;
@@ -52,7 +53,8 @@ public class IndividualForm implements Serializable {
     private String individualAgeUnits;
 
     @XmlElement(name = "individual_date_of_birth")
-    private Date individualDateOfBirth;
+    @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
+    private Calendar individualDateOfBirth;
 
     @XmlElement(name = "individual_gender")
     private String individualGender;
@@ -97,11 +99,11 @@ public class IndividualForm implements Serializable {
         this.fieldWorkerExtId = fieldWorkerExtId;
     }
 
-    public Date getCollectionDateTime() {
+    public Calendar getCollectionDateTime() {
         return collectionDateTime;
     }
 
-    public void setCollectionDateTime(Date collectionDateTime) {
+    public void setCollectionDateTime(Calendar collectionDateTime) {
         this.collectionDateTime = collectionDateTime;
     }
 
@@ -161,11 +163,11 @@ public class IndividualForm implements Serializable {
         this.individualAgeUnits = individualAgeUnits;
     }
 
-    public Date getIndividualDateOfBirth() {
+    public Calendar getIndividualDateOfBirth() {
         return individualDateOfBirth;
     }
 
-    public void setIndividualDateOfBirth(Date individualDateOfBirth) {
+    public void setIndividualDateOfBirth(Calendar individualDateOfBirth) {
         this.individualDateOfBirth = individualDateOfBirth;
     }
 

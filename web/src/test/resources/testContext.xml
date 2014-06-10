@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:lang="http://www.springframework.org/schema/lang"
-	xmlns:security="http://www.springframework.org/schema/security"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.2.xsd
@@ -15,42 +15,42 @@
         http://www.springframework.org/schema/security/spring-security-3.2.xsd        
 	    http://www.springframework.org/schema/mvc
        	http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
-    
+
     <import resource="classpath*:/META-INF/spring/application-context.xml" />
-    
+
     <!-- This bean is here to override the session scoped baseCrud from the application-context -->
-	<bean id="baseCrud" class="org.openhds.web.crud.impl.EntityCrudImpl"
-		abstract="true">
-		<property name="jsfService" ref="jsfService" />
-		<property name="webFlowService" ref="webFlowService" />
-		<property name="entityService" ref="entityService" />
-		<property name="genericDao" ref="genericDao" />
-		<property name="navMenuBean" ref="navController" />
-		<property name="properties" ref="siteProperties" />
-		<property name="entityValidationService" ref="entityValidator" />
-	</bean>
+    <bean id="baseCrud" class="org.openhds.web.crud.impl.EntityCrudImpl"
+          abstract="true">
+        <property name="jsfService" ref="jsfService" />
+        <property name="webFlowService" ref="webFlowService" />
+        <property name="entityService" ref="entityService" />
+        <property name="genericDao" ref="genericDao" />
+        <property name="navMenuBean" ref="navController" />
+        <property name="properties" ref="siteProperties" />
+        <property name="entityValidationService" ref="entityValidator" />
+    </bean>
 
-	<!-- This bean is here to override the locationLevelsSetter that otherwise loads location levels -->
-	<bean id="locationLevelsSetter" class="org.openhds.dao.service.impl.LocationLevelsSetterImpl"/>
-	
-	<!-- Independent database configuration for test context -->
-	<bean id="databaseConfigurer"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="ignoreUnresolvablePlaceholders" value="true" />
-		<property name="locations">
-			<list>
-				<value>classpath:location-levels.properties</value>
-				<value>classpath:codes.properties</value>
-				<value>classpath:test-database.properties</value>
-				<value>classpath:test-site-config.properties</value>
-			</list>
-		</property>
-	</bean>
+    <!-- This bean is here to override the locationLevelsSetter that otherwise loads location levels -->
+    <bean id="locationLevelsSetter" class="org.openhds.dao.service.impl.LocationLevelsSetterImpl"/>
 
-	<!-- JsfService is mocked for tests -->
-	<bean id="jsfService" class="org.openhds.integration.util.JsfServiceMock" />
+    <!-- Independent database configuration for test context -->
+    <bean id="databaseConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="locations">
+            <list>
+                <value>classpath:location-levels.properties</value>
+                <value>classpath:codes.properties</value>
+                <value>classpath:test-database.properties</value>
+                <value>classpath:test-site-config.properties</value>
+            </list>
+        </property>
+    </bean>
 
-	<!-- Independent data source for test context -->
+    <!-- JsfService is mocked for tests -->
+    <bean id="jsfService" class="org.openhds.integration.util.JsfServiceMock" />
+
+    <!-- Independent data source for test context -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="DriverClassName" value="org.h2.Driver" />
         <property name="Url" value="jdbc:h2:mem:openhds" />
@@ -58,5 +58,5 @@
         <property name="Password" value="" />
     </bean>
 
-     <mvc:annotation-driven />
+    <mvc:annotation-driven />
 </beans>
