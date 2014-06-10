@@ -18,24 +18,31 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 @Component
 public class CalendarAdapter extends XmlAdapter<String, Calendar> {
 
-	private final String SQL_DATE_FORMAT = "yyyy-MM-dd";
-	@Autowired
-	private CalendarUtil calendarUtil;
+    private final String SQL_DATE_FORMAT = "yyyy-MM-dd";
+    @Autowired
+    private CalendarUtil calendarUtil;
 
-	public String marshal(Calendar v) throws Exception {
-		return calendarUtil.formatDate(v);
-	}
+    public String marshal(Calendar v) throws Exception {
 
-	public Calendar unmarshal(String v) throws Exception {
-		DateFormat formatter = new SimpleDateFormat(SQL_DATE_FORMAT);
-		formatter.setLenient(false);
-		try {
-			Date d = formatter.parse(v);
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(d);
-			return cal;
-		} catch(Exception e) {}
+        if (null == calendarUtil) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(SQL_DATE_FORMAT);
+            return dateFormat.format(v.getTime());
+        }
 
-		return calendarUtil.parseDate(v);
-	}
+        return calendarUtil.formatDate(v);
+    }
+
+    public Calendar unmarshal(String v) throws Exception {
+
+        if (null == calendarUtil) {
+            DateFormat formatter = new SimpleDateFormat(SQL_DATE_FORMAT);
+            formatter.setLenient(false);
+            Date date = formatter.parse(v);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            return cal;
+        }
+
+        return calendarUtil.parseDate(v);
+    }
 }
