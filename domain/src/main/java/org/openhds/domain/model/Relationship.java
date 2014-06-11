@@ -114,4 +114,36 @@ public class Relationship extends AuditableCollectedEntity implements
     public void setaIsToB(String aIsToB) {
         this.aIsToB = aIsToB;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (!(other instanceof Relationship)) {
+            return false;
+        }
+
+        final Relationship otherRelationship = (Relationship) other;
+
+        if (!individualA.getExtId().equals(otherRelationship.getIndividualA().getExtId())) {
+            return false;
+        }
+
+        if (!individualB.getExtId().equals(otherRelationship.getIndividualB().getExtId())) {
+            return false;
+        }
+
+        if (!aIsToB.equals(otherRelationship.getaIsToB())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return 31*individualA.getExtId().hashCode() + 29*individualB.getExtId().hashCode() + aIsToB.hashCode();
+    }
 }
