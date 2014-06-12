@@ -46,6 +46,9 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 public class IndividualFormResourceTest {
 
     private static final String A_DATE = "2000-01-01T00:00:00-05:00";
+    private static final String FORMATTED_DATE = "2013-06-13";
+    private static final String FORMATTED_DATETIME = "2013-06-13 12:12:12";
+    
     private static final String HEAD_OF_HOUSEHOLD_FORM_XML = "<individualForm>"
             + "<processed_by_mirth>false</processed_by_mirth>"
             + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>" + "<collection_date_time>"
@@ -102,7 +105,32 @@ public class IndividualFormResourceTest {
             + "<individual_other_names>Test Other</individual_other_names>"
             + "<individual_age>10</individual_age>"
             + "<individual_age_units>years</individual_age_units>" + "</individualForm>";
-
+    private static final String MEMBER_OF_HOUSEHOLD_DATE_FORMATTED = "<individualForm>"
+            + "<processed_by_mirth>false</processed_by_mirth>"
+            + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>" + "<collection_date_time>"
+            + FORMATTED_DATETIME
+            + "</collection_date_time>"
+            + "<household_ext_id>existing_id</household_ext_id>"
+            + "<individual_ext_id>1234599899bb</individual_ext_id>"
+            + "<individual_first_name>DATE Test Member First</individual_first_name>"
+            + "<individual_last_name>DATE Test Member Last</individual_last_name>"
+            + "<individual_other_names>DATE Test Member Other</individual_other_names>"
+            + "<individual_age>100</individual_age>"
+            + "<individual_age_units>years</individual_age_units>"
+            + "<individual_date_of_birth>"
+            + FORMATTED_DATE
+            + "</individual_date_of_birth>"
+            + "<individual_gender>F</individual_gender>"
+            + "<individual_relationship_to_head_of_household>2</individual_relationship_to_head_of_household>"
+            + "<individual_phone_number>12345678890</individual_phone_number>"
+            + "<individual_other_phone_number>0987654321</individual_other_phone_number>"
+            + "<individual_language_preference>English</individual_language_preference>"
+            + "<individual_point_of_contact_name></individual_point_of_contact_name>"
+            + "<individual_point_of_contact_phone_number></individual_point_of_contact_phone_number>"
+            + "<individual_dip>12345</individual_dip>"
+            + "<individual_member_status>permanent</individual_member_status>"
+            + "</individualForm>";
+    
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -194,6 +222,20 @@ public class IndividualFormResourceTest {
                         .body(INDIVIDUAL_FORM_INCOMPLETE.getBytes()))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+    }
+    
+    @Test
+    public void testPostMemberOfHouseholdFormattedDate() throws Exception {
+    	
+        mockMvc.perform(
+                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(MEMBER_OF_HOUSEHOLD_DATE_FORMATTED.getBytes()))
+                .andExpect(status().isCreated())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+        verifyEntityCrud("1234599899bb", "existing_id", "NBAS1I", "2");
+    	
     }
 
     private void verifyEntityCrud(String individualExtId, String householdExtId, String headExtId,
