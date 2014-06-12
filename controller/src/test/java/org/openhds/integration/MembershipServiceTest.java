@@ -75,7 +75,14 @@ public class MembershipServiceTest {
     }
 
     @Test
-    public void testGetExistingMembership() throws Exception {
+    public void testGetAll() throws Exception {
+        List<Membership> membershipList = membershipService.getAllMemberships();
+        assertNotNull(membershipList);
+        assertEquals(1, membershipList.size());
+    }
+
+    @Test
+    public void testGetAllForIndividual() throws Exception {
         List<Membership> membershipList = membershipService.getAllMemberships(individual1);
         assertNotNull(membershipList);
         assertEquals(1, membershipList.size());

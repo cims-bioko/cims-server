@@ -144,6 +144,11 @@ public class MembershipServiceImpl implements MembershipService {
         return items;
     }
 
+    public List<Membership> getAllMemberships() {
+        List<Membership> items = genericDao.findAll(Membership.class, true);
+        return items;
+    }
+
     /**
      * Determine whether the Individual is the head of the Social Group.
      * 
