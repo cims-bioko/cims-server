@@ -197,11 +197,9 @@ public class IndividualFormResource {
             individual = new Individual();
         }
 
-        copyFormDataToIndividual(individualForm, individual);
+        individual.setCollectedBy(collectedBy);
 
-        collectedBy = new FieldWorker();
-        collectedBy.setExtId(individualForm.getFieldWorkerExtId());
-        individual.setCollectedBy(fieldBuilder.referenceField(collectedBy, cv));
+        copyFormDataToIndividual(individualForm, individual);
 
         // Bioko project forms don't include parents!
         Individual mother = makeUnknownParent(FEMALE);
