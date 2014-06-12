@@ -352,7 +352,7 @@
 	</bean>
 
 	<bean id="entityValidator"
-		class="org.openhds.web.service.impl.EntityValidationServiceImpl">
+		class="org.openhds.web.service.impl.EntityValidationServiceJsfImpl">
 		<constructor-arg ref="siteProperties" />
 		<constructor-arg ref="jsfService" />
 	</bean>
