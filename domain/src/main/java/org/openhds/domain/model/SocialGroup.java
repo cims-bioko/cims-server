@@ -99,4 +99,28 @@ public class SocialGroup
         memberships = list;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (!(other instanceof SocialGroup)) {
+            return false;
+        }
+
+        final SocialGroup otherSocialGroup = (SocialGroup) other;
+
+        if (!extId.equals(otherSocialGroup.getExtId())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return extId.hashCode();
+    }
+
 }
