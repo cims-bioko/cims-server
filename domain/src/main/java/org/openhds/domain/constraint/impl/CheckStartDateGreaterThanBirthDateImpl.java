@@ -8,24 +8,25 @@ import javax.validation.ConstraintValidatorContext;
 import org.openhds.domain.constraint.CheckStartDateGreaterThanBirthDate;
 import org.openhds.domain.model.Membership;
 
-public class CheckStartDateGreaterThanBirthDateImpl implements ConstraintValidator<CheckStartDateGreaterThanBirthDate, Membership> {
+public class CheckStartDateGreaterThanBirthDateImpl
+        implements ConstraintValidator<CheckStartDateGreaterThanBirthDate, Membership> {
 
-    public void initialize(CheckStartDateGreaterThanBirthDate arg0) { }
+    public void initialize(CheckStartDateGreaterThanBirthDate checkStartDateGreaterThanBirthDate) {}
 
-    public boolean isValid(Membership arg0,
-            ConstraintValidatorContext arg1) {
+    public boolean isValid(Membership membership, ConstraintValidatorContext constraintValidatorContext) {
 
-        Calendar startDate = arg0.getStartDate();
-        java.util.Date sDate = startDate.getTime();
-        String sDateString = sDate.toString();
-        Calendar dob = arg0.getIndividual().getDob();
+        Calendar startDate = membership.getStartDate();
+        if (null == startDate) {
+            return true;
+        }
 
-        try {
-            if (dob.before(startDate) || dob.equals(startDate)) {
-                return true;
+        Calendar birthDate = membership.getIndividual().getDob();
+        if (null == birthDate) {
+            return true;
+        }
 
-            }
-        } catch (Exception e) {
+        if (birthDate.before(startDate) || birthDate.equals(startDate)) {
+            return true;
         }
 
         return false;
