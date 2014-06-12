@@ -31,6 +31,26 @@
               locationType="RUR" insertDate="2000-12-19" deleted="false" collectedBy_uuid="UnknownFieldWorker"
               insertBy_uuid="User 1" status="P" />
 
+    <individual uuid="Individual1" extId="individual1" firstName="Individual" middleName="" lastName="1"
+                gender="1" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
+                dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker" />
+
+    <individual uuid="Individual2" extId="individual2" firstName="Individual" middleName="" lastName="2"
+                gender="2" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
+                dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker" />
+
+    <socialgroup uuid="SocialGroup1" extId="sg123456789" groupName="Social Group 1"
+                 groupHead_uuid="Individual2" groupType="COH" insertDate="2000-12-19" deleted="false"
+                 collectedBy_uuid="UnknownFieldWorker" insertBy_uuid="User 1" status="P" />
+
+    <socialgroup uuid="SocialGroup2" extId="sg234567890" groupName="Social Group 2"
+                 groupHead_uuid="Unknown Individual" groupType="COH" insertDate="2000-12-19" deleted="false"
+                 collectedBy_uuid="UnknownFieldWorker" insertBy_uuid="User 1" status="P" />
+
+    <membership uuid="Membership1" deleted="false" insertDate="2000-12-19"
+                collectedBy_uuid="UnknownFieldWorker" insertBy_uuid="User 1" status="P"
+                bIsToA="1" individual_uuid="Individual1" socialGroup_uuid="SocialGroup2" />
+
     <whitelist uuid="LOCALHOST1" address="127.0.0.1" />
     <whitelist uuid="LOCALHOST2" address="10.0.2.10" />
     <whitelist uuid="LOCALHOST3" address="10.0.2.14" />
