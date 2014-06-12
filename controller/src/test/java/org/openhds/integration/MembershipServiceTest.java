@@ -101,4 +101,11 @@ public class MembershipServiceTest {
         Membership savedMembership = membershipList.get(0);
         assertEquals(individual2, savedMembership.getIndividual());
     }
+
+    @Test
+    public void testNoSuchMembership() throws Exception {
+        List<Membership> membershipList = membershipService.getAllMemberships(individual2);
+        assertNotNull(membershipList);
+        assertEquals(0, membershipList.size());
+    }
 }
