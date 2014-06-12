@@ -1,7 +1,5 @@
 package org.openhds.webservice.resources;
 
-import java.io.Serializable;
-
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.OutMigrationService;
 import org.openhds.domain.model.OutMigration;
@@ -12,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.io.Serializable;
 
 @Controller
 @RequestMapping("/outmigrations")

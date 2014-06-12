@@ -36,7 +36,7 @@ public class FieldBuilder {
             try {
                 return visitService.findVisitById(visit.getExtId(), INVALID_VISIT_ID);
             } catch (Exception e) {
-                violations.addViolations(INVALID_VISIT_ID);
+                violations.addViolations("Error referencing Visit: " + e.getMessage());
             }
         }
 
@@ -64,7 +64,7 @@ public class FieldBuilder {
             try {
                 return fieldWorkerService.findFieldWorkerById(collectedBy.getExtId(), INVALID_FIELD_WORKER_ID);
             } catch (Exception e) {
-                violations.addViolations(INVALID_FIELD_WORKER_ID);
+                violations.addViolations("Error referencing FieldWorker: " + e.getMessage());
             }
         }
 
