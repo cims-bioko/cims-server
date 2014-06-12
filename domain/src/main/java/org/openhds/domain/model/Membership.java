@@ -118,4 +118,41 @@ public class Membership extends AuditableCollectedEntity implements GenericEndDa
 	public void setbIsToA(String bIsToA) {
 		this.bIsToA = bIsToA;
 	}
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (!(other instanceof Membership)) {
+            return false;
+        }
+
+        final Membership otherMembership = (Membership) other;
+
+        if (!individual.getExtId().equals(otherMembership.getIndividual().getExtId())) {
+            return false;
+        }
+
+        if (!socialGroup.getExtId().equals(otherMembership.getSocialGroup().getExtId())) {
+            return false;
+        }
+
+        if (!startDate.equals(otherMembership.getStartDate())) {
+            return false;
+        }
+
+        if (!startType.equals(otherMembership.getStartType())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return 37*individual.getExtId().hashCode() + 31*socialGroup.getExtId().hashCode()
+                + 29*startDate.hashCode() + startType.hashCode();
+    }
 }

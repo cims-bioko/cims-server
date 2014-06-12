@@ -1,17 +1,15 @@
 package org.openhds.domain.model;
 
-import java.io.Serializable;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.Searchable;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Description(description="A Field Worker represents one who collects the data within " +
 		"the study area. They can be identified by a uniquely generated " +
@@ -62,5 +60,29 @@ public class FieldWorker extends AuditableEntity implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (!(other instanceof FieldWorker)) {
+            return false;
+        }
+
+        final FieldWorker otherFieldWorker = (FieldWorker) other;
+
+        if (!extId.equals(otherFieldWorker.getExtId())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return extId.hashCode();
     }
 }

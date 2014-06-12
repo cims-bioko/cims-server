@@ -1,22 +1,16 @@
 package org.openhds.domain.model;
 
-import java.io.Serializable;
-import java.util.Calendar;
+import org.openhds.domain.annotations.Description;
+import org.openhds.domain.constraint.*;
+import org.openhds.domain.util.CalendarAdapter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.openhds.domain.annotations.Description;
-import org.openhds.domain.constraint.*;
-import org.openhds.domain.constraint.CheckEndDateNotBeforeStartDate;
-import org.openhds.domain.util.CalendarAdapter;
+import java.io.Serializable;
+import java.util.Calendar;
 
 @Description(description = "A Relationship is used to associate an Individual "
         + "with another Indivual in some way. It can be identified by a uniquely "

@@ -21,41 +21,41 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Description(description="A Residency represents a home within the study area. " +
-		"It contains information about the Individual who lives at the Residency " +
-		"which is tied to a particular Location. It also contains information about " +
-		"the date the Residency started and ended as well as the start and end types.")
+        "It contains information about the Individual who lives at the Residency " +
+        "which is tied to a particular Location. It also contains information about " +
+        "the date the Residency started and ended as well as the start and end types.")
 @Entity
 @CheckEndDateNotBeforeStartDate(allowNull=true)
 @Table(name="residency")
 @XmlRootElement
 @JsonInclude(Include.NON_NULL)
 public class Residency extends AuditableCollectedEntity implements GenericStartEndDateConstraint, Serializable {
-	private static final long serialVersionUID = -4666666231598767965L;
-    
-	@Searchable
+    private static final long serialVersionUID = -4666666231598767965L;
+
+    @Searchable
     @ManyToOne
     @Description(description="Individual who resides at this residency, identified by external id.")
     Individual individual;
-    
-	@Searchable
+
+    @Searchable
     @ManyToOne
     @Description(description="Location of the residency, identified by external id.")
     Location location;
-    
+
     @NotNull
     @Past(message = "Insert date should be in the past")
     @Temporal(javax.persistence.TemporalType.DATE)
     @Description(description="Residency start date.")
     Calendar startDate;
-    
+
     @CheckFieldNotBlank
     @Description(description="Residency start type.")
     String startType;
-    
+
     @Temporal(javax.persistence.TemporalType.DATE)
     @Description(description="Residency end date.")
     Calendar endDate;
-    
+
     @Description(description="Residency end type.")
     String endType;
 
@@ -82,7 +82,7 @@ public class Residency extends AuditableCollectedEntity implements GenericStartE
     public void setEndDate(Calendar endDate) {
         this.endDate = endDate;
     }
-    
+
     public Location getLocation() {
         return location;
     }
@@ -90,20 +90,57 @@ public class Residency extends AuditableCollectedEntity implements GenericStartE
     public void setLocation(Location location) {
         this.location = location;
     }
-    
+
     public String getStartType() {
-		return startType;
-	}
+        return startType;
+    }
 
-	public void setStartType(String startType) {
-		this.startType = startType;
-	}
+    public void setStartType(String startType) {
+        this.startType = startType;
+    }
 
-	public String getEndType() {
-		return endType;
-	}
-  
-	public void setEndType(String endType) {
-		this.endType = endType;
-	}
+    public String getEndType() {
+        return endType;
+    }
+
+    public void setEndType(String endType) {
+        this.endType = endType;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (!(other instanceof Residency)) {
+            return false;
+        }
+
+        final Residency otherResidency = (Residency) other;
+
+        if (!individual.getExtId().equals(otherResidency.getIndividual().getExtId())) {
+            return false;
+        }
+
+        if (!location.getExtId().equals(otherResidency.getLocation().getExtId())) {
+            return false;
+        }
+
+        if (!startDate.equals(otherResidency.getStartDate())) {
+            return false;
+        }
+
+        if (!startType.equals(otherResidency.getStartType())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return 37*individual.getExtId().hashCode() + 31*location.getExtId().hashCode()
+                + 29*startDate.hashCode() + startType.hashCode();
+    }
 }
