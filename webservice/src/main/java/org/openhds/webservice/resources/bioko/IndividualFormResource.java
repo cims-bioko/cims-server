@@ -223,15 +223,15 @@ public class IndividualFormResource {
             dob = getDateInPast();
         }
         individual.setDob(dob);
-        individual.setIndividualAge(individualForm.getIndividualAge());
-        individual.setIndividualAgeUnits(individualForm.getIndividualAgeUnits());
-        individual.setIndividualPhoneNumber(individualForm.getIndividualPhoneNumber());
-        individual.setIndividualOtherPhoneNumber(individualForm.getIndividualOtherPhoneNumber());
-        individual.setIndividualLanguagePreference(individualForm.getIndividualLanguagePreference());
-        individual.setIndividualPointOfContactName(individualForm.getIndividualPointOfContactName());
-        individual.setIndividualPointOfContactPhoneNumber(individualForm.getIndividualPointOfContactPhoneNumber());
-        individual.setIndividualDip(individualForm.getIndividualDip());
-        individual.setIndividualMemberStatus(individualForm.getIndividualMemberStatus());
+        individual.setAge(individualForm.getIndividualAge());
+        individual.setAgeUnits(individualForm.getIndividualAgeUnits());
+        individual.setPhoneNumber(individualForm.getIndividualPhoneNumber());
+        individual.setOtherPhoneNumber(individualForm.getIndividualOtherPhoneNumber());
+        individual.setLanguagePreference(individualForm.getIndividualLanguagePreference());
+        individual.setPointOfContactName(individualForm.getIndividualPointOfContactName());
+        individual.setPointOfContactPhoneNumber(individualForm.getIndividualPointOfContactPhoneNumber());
+        individual.setDip(individualForm.getIndividualDip());
+        individual.setMemberStatus(individualForm.getIndividualMemberStatus());
 
     }
 

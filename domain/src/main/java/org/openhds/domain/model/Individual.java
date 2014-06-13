@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -94,15 +95,24 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     private Set<Membership> allMemberships = new HashSet<Membership>();
     
     //Project-specific fields
-    private int individualAge;
-    private String individualAgeUnits;
-    private String individualPhoneNumber;
-    private String individualOtherPhoneNumber;
-    private String individualLanguagePreference;
-    private String individualPointOfContactName;
-    private String individualPointOfContactPhoneNumber;
-    private int individualDip;
-    private String individualMemberStatus;
+    @Column
+    private int age;
+    @Column
+    private String ageUnits;
+    @Column
+    private String phoneNumber;
+    @Column
+    private String otherPhoneNumber;
+    @Column
+    private String languagePreference;
+    @Column
+    private String pointOfContactName;
+    @Column
+    private String pointOfContactPhoneNumber;
+    @Column
+    private int dip;
+    @Column
+    private String memberStatus;
 
     public String getExtId() {
         return extId;
@@ -225,76 +235,77 @@ public class Individual extends AuditableCollectedEntity implements Serializable
         return residency;
     }
     
-    public void setIndividualAge(int individualAge) {
-    	this.individualAge = individualAge;
+    //Project-specific get/set
+    public void setAge(int age) {
+    	this.age = age;
     }
     
-    public int getIndividualAge() {
-    	return individualAge;
+    public int getAge() {
+    	return age;
     }
     
-    public void setIndividualAgeUnits(String individualAgeUnits) {
-    	this.individualAgeUnits = individualAgeUnits;
+    public void setAgeUnits(String ageUnits) {
+    	this.ageUnits = ageUnits;
     }
     
-    public String getIndividualAgeUnits() {
-    	return individualAgeUnits;
+    public String geAgeUnits() {
+    	return ageUnits;
     }
     
-    public void setIndividualPhoneNumber(String individualPhoneNumber) {
-    	this.individualPhoneNumber = individualPhoneNumber;
+    public void setPhoneNumber(String phoneNumber) {
+    	this.phoneNumber = phoneNumber;
     }
     
-    public String getIndividualPhoneNumber() {
-    	return individualPhoneNumber;
+    public String getPhoneNumber() {
+    	return phoneNumber;
     }
     
-    public void setIndividualOtherPhoneNumber(String individualOtherPhoneNumber) {
-    	this.individualOtherPhoneNumber = individualOtherPhoneNumber;
+    public void setOtherPhoneNumber(String otherPhoneNumber) {
+    	this.otherPhoneNumber = otherPhoneNumber;
     }
     
-    public String getIndividualOtherPhoneNumber() {
-    	return individualOtherPhoneNumber;
+    public String getOtherPhoneNumber() {
+    	return otherPhoneNumber;
     }
     
-    public void setIndividualLanguagePreference(String individualLanguagePreference) {
-    	this.individualLanguagePreference = individualLanguagePreference;
+    public void setLanguagePreference(String languagePreference) {
+    	this.languagePreference = languagePreference;
     }
     
-    public String getIndividualLanguagePreference() {
-    	return individualLanguagePreference;
+    public String getLanguagePreference() {
+    	return languagePreference;
     }
     
-    public void setIndividualPointOfContactName(String individualPointOfContactName) {
-    	this.individualPointOfContactName = individualPointOfContactName;
+    public void setPointOfContactName(String pointOfContactName) {
+    	this.pointOfContactName = pointOfContactName;
     }
     
-    public String getIndividualPointOfContactName() {
-    	return individualPointOfContactName;
+    public String getPointOfContactName() {
+    	return pointOfContactName;
     }
     
-    public void setIndividualPointOfContactPhoneNumber(String individualPointOfContactPhoneNumber) {
-    	this.individualPointOfContactPhoneNumber = individualPointOfContactPhoneNumber;
+    public void setPointOfContactPhoneNumber(String pointOfContactPhoneNumber) {
+    	this.pointOfContactPhoneNumber = pointOfContactPhoneNumber;
     }
     
-    public String getIndividualPointOfContactPhoneNumber() {
-    	return individualPointOfContactPhoneNumber;
+    public String getPointOfContactPhoneNumber() {
+    	return pointOfContactPhoneNumber;
     }
     
-    public void setIndividualDip(int individualDip) {
-    	this.individualDip = individualDip;
+    public void setDip(int dip) {
+    	this.dip = dip;
     }
     
-    public int getIndividualDip() {
-    	return individualDip;
+    public int getDip() {
+    	return dip;
     }
     
-    public void setIndividualMemberStatus(String individualMemberStatus) {
-    	this.individualMemberStatus = individualMemberStatus;
+    public void setMemberStatus(String memberStatus) {
+    	this.memberStatus = memberStatus;
     }
     
-    public String getIndividualMemberStatus() {
-    	return individualMemberStatus;
+    public String getMemberStatus() {
+    	return memberStatus;
     }
 
     @Override
