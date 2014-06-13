@@ -48,9 +48,9 @@ INSERT INTO user_roles (user_uuid, role_uuid) VALUES ('User 3', 'ROLE2');
 INSERT INTO locationhierarchy(uuid,name,extId,level_uuid,parent_uuid) VALUES('hierarchy_root','', 'HIERARCHY_ROOT', NULL,NULL);
 
 -- Field Worker
-INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES ('UnknownFieldWorker','UNK', 'Unknown', 'FieldWorker', false);
+INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES ('UnknownFieldWorker','UNK', 'Unknown', 'FieldWorker', false); 
 
 -- Unknown Individual: This should always be pre-populated
-INSERT INTO individual(uuid,extId,firstName,middleName,lastName,gender,dob,mother_uuid,father_uuid,insertBy_uuid,insertDate,status,dobAspect,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid) VALUES('Unknown Individual','UNK','Unknown',NULL,'UNKNOWN','1', '1900-12-19', NULL, NULL,'User 1','2009-12-19','P','1',NULL,NULL,NULL,false,'UnknownFieldWorker');
+INSERT INTO individual(uuid,extId,firstName,middleName,lastName,gender,dob,mother_uuid,father_uuid,insertBy_uuid,insertDate,status,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,age,ageUnits,phoneNumber,otherPhoneNumber,languagePreference,pointOfContactName,pointOfContactPhoneNumber,dip,memberStatus) VALUES('Unknown Individual','UNK','Unknown',NULL,'UNKNOWN','MALE', '1900-12-19 15:07:43', NULL, NULL,'User 1','2009-12-19 15:07:43','PENDING',NULL,NULL,NULL,false,'UnknownFieldWorker',null,null,null,null,null,null,null,null,null);
 
 INSERT INTO whitelist(uuid, address) VALUES ('address0001', '127.0.0.1');
