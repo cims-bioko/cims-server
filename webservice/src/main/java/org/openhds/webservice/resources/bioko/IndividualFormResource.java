@@ -223,17 +223,16 @@ public class IndividualFormResource {
             dob = getDateInPast();
         }
         individual.setDob(dob);
+        individual.setIndividualAge(individualForm.getIndividualAge());
+        individual.setIndividualAgeUnits(individualForm.getIndividualAgeUnits());
+        individual.setIndividualPhoneNumber(individualForm.getIndividualPhoneNumber());
+        individual.setIndividualOtherPhoneNumber(individualForm.getIndividualOtherPhoneNumber());
+        individual.setIndividualLanguagePreference(individualForm.getIndividualLanguagePreference());
+        individual.setIndividualPointOfContactName(individualForm.getIndividualPointOfContactName());
+        individual.setIndividualPointOfContactPhoneNumber(individualForm.getIndividualPointOfContactPhoneNumber());
+        individual.setIndividualDip(individualForm.getIndividualDip());
+        individual.setIndividualMemberStatus(individualForm.getIndividualMemberStatus());
 
-        // TODO: add these to the individual data model
-        // private int individualAge;
-        // private String individualAgeUnits;
-        // private String individualPhoneNumber;
-        // private String individualOtherPhoneNumber;
-        // private String individualLanguagePreference;
-        // private String individualPointOfContactName;
-        // private String individualPointOfContactPhoneNumber;
-        // private int individualDip;
-        // private String individualMemberStatus;
     }
 
     private Individual makeUnknownParent(String gender) {

@@ -92,6 +92,17 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @OneToMany(mappedBy = "individual", cascade = { CascadeType.ALL })
     @Description(description = "The set of all memberships the individual is participating in.")
     private Set<Membership> allMemberships = new HashSet<Membership>();
+    
+    //Project-specific fields
+    private int individualAge;
+    private String individualAgeUnits;
+    private String individualPhoneNumber;
+    private String individualOtherPhoneNumber;
+    private String individualLanguagePreference;
+    private String individualPointOfContactName;
+    private String individualPointOfContactPhoneNumber;
+    private int individualDip;
+    private String individualMemberStatus;
 
     public String getExtId() {
         return extId;
@@ -212,6 +223,78 @@ public class Individual extends AuditableCollectedEntity implements Serializable
             residency = itr.next();
         }
         return residency;
+    }
+    
+    public void setIndividualAge(int individualAge) {
+    	this.individualAge = individualAge;
+    }
+    
+    public int getIndividualAge() {
+    	return individualAge;
+    }
+    
+    public void setIndividualAgeUnits(String individualAgeUnits) {
+    	this.individualAgeUnits = individualAgeUnits;
+    }
+    
+    public String getIndividualAgeUnits() {
+    	return individualAgeUnits;
+    }
+    
+    public void setIndividualPhoneNumber(String individualPhoneNumber) {
+    	this.individualPhoneNumber = individualPhoneNumber;
+    }
+    
+    public String getIndividualPhoneNumber() {
+    	return individualPhoneNumber;
+    }
+    
+    public void setIndividualOtherPhoneNumber(String individualOtherPhoneNumber) {
+    	this.individualOtherPhoneNumber = individualOtherPhoneNumber;
+    }
+    
+    public String getIndividualOtherPhoneNumber() {
+    	return individualOtherPhoneNumber;
+    }
+    
+    public void setIndividualLanguagePreference(String individualLanguagePreference) {
+    	this.individualLanguagePreference = individualLanguagePreference;
+    }
+    
+    public String getIndividualLanguagePreference() {
+    	return individualLanguagePreference;
+    }
+    
+    public void setIndividualPointOfContactName(String individualPointOfContactName) {
+    	this.individualPointOfContactName = individualPointOfContactName;
+    }
+    
+    public String getIndividualPointOfContactName() {
+    	return individualPointOfContactName;
+    }
+    
+    public void setIndividualPointOfContactPhoneNumber(String individualPointOfContactPhoneNumber) {
+    	this.individualPointOfContactPhoneNumber = individualPointOfContactPhoneNumber;
+    }
+    
+    public String getIndividualPointOfContactPhoneNumber() {
+    	return individualPointOfContactPhoneNumber;
+    }
+    
+    public void setIndividualDip(int individualDip) {
+    	this.individualDip = individualDip;
+    }
+    
+    public int getIndividualDip() {
+    	return individualDip;
+    }
+    
+    public void setIndividualMemberStatus(String individualMemberStatus) {
+    	this.individualMemberStatus = individualMemberStatus;
+    }
+    
+    public String getIndividualMemberStatus() {
+    	return individualMemberStatus;
     }
 
     @Override
