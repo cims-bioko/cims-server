@@ -57,6 +57,20 @@ public class FieldBuilder {
         return null;
     }
 
+    public Individual referenceField(Individual individual, ConstraintViolations violations) {
+        if (individual.getExtId() == null) {
+            violations.addViolations("No Individual id provided.");
+        } else {
+            try {
+                return individualService.findIndivById(individual.getExtId(), "Invalid Individual id.");
+            } catch (Exception e) {
+                violations.addViolations("Error referencing Individual: " + e.getMessage());
+            }
+        }
+
+        return null;
+    }
+
     public FieldWorker referenceField(FieldWorker collectedBy, ConstraintViolations violations) {
         if (collectedBy == null || collectedBy.getExtId() == null) {
             violations.addViolations("No field worker id provided");
