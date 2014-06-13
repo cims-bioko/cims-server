@@ -1,64 +1,98 @@
 package org.openhds.webservice.resources;
 
-import java.io.Serializable;
-
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.MembershipService;
+import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Membership;
+import org.openhds.domain.model.wrappers.Memberships;
+import org.openhds.domain.util.ShallowCopier;
 import org.openhds.webservice.FieldBuilder;
+import org.openhds.webservice.WebServiceCallException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/memberships")
-public class MembershipResource extends AbstractResource<Membership> {
+public class MembershipResource {
 
     private MembershipService membershipService;
+
+    private IndividualService individualService;
+
     private FieldBuilder fieldBuilder;
 
     @Autowired
-    public MembershipResource(MembershipService membershipService, FieldBuilder fieldBuilder) {
+    public MembershipResource(MembershipService membershipService, IndividualService individualService,
+                              FieldBuilder fieldBuilder) {
         this.membershipService = membershipService;
+        this.individualService = individualService;
         this.fieldBuilder = fieldBuilder;
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = "application/xml")
-    public ResponseEntity<? extends Serializable> insert(@RequestBody Membership membership) {
-        ResponseEntity<? extends Serializable> response = createResource(membership);
+    @RequestMapping(value = "/{extId}", method = RequestMethod.GET, produces = "application/xml")
+    @ResponseBody
+    public ResponseEntity<? extends Serializable> getAllMembershipsByIndividualId(@PathVariable String extId) {
 
-        return response;
+        Individual individual = individualService.findIndivById(extId);
+        if (individual == null) {
+            return new ResponseEntity<String>("No such individual.", HttpStatus.NOT_FOUND);
+        }
+
+
+        List<Membership> memberships = membershipService.getAllMemberships();
+        List<Membership> copies = new ArrayList<Membership>(memberships.size());
+
+        for (Membership m : memberships) {
+            Membership copy = ShallowCopier.copyMembership(m);
+            copies.add(copy);
+        }
+
+        Memberships allMemberships = new Memberships();
+        allMemberships.setMemberships(copies);
+        return new ResponseEntity<Memberships>(allMemberships, HttpStatus.OK);
     }
 
-    @Override
-    protected Membership copy(Membership item) {
-        Membership copy = new Membership();
+    @RequestMapping(method = RequestMethod.GET, produces = "application/xml")
+    @ResponseBody
+    public ResponseEntity<? extends Serializable> getAllMemberships() {
+        List<Membership> memberships = membershipService.getAllMemberships();
+        List<Membership> copies = new ArrayList<Membership>(memberships.size());
 
-        copy.setbIsToA(item.getbIsToA());
-        copy.setCollectedBy(copyFieldWorker(item.getCollectedBy()));
-        copy.setEndDate(item.getEndDate());
-        copy.setEndType(item.getEndType());
-        copy.setIndividual(copyIndividual(item.getIndividual()));
-        copy.setSocialGroup(copySocialGroup(item.getSocialGroup()));
-        copy.setStartDate(item.getStartDate());
-        copy.setStartType(item.getStartType());
+        for (Membership m : memberships) {
+            Membership copy = ShallowCopier.copyMembership(m);
+            copies.add(copy);
+        }
 
-        return copy;
+        Memberships allMemberships = new Memberships();
+        allMemberships.setMemberships(copies);
+        return new ResponseEntity<Memberships>(allMemberships, HttpStatus.OK);
     }
 
-    @Override
-    protected void saveResource(Membership item) throws ConstraintViolations {
-        membershipService.createMembership(item);
-    }
+    @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
+    public ResponseEntity<? extends Serializable> insertXml(@RequestBody Membership membership) {
+        ConstraintViolations cv = new ConstraintViolations();
+        membership.setSocialGroup(fieldBuilder.referenceField(membership.getSocialGroup(), cv));
+        membership.setIndividual(fieldBuilder.referenceField(membership.getIndividual(), cv));
 
-    @Override
-    protected void setReferencedFields(Membership item, ConstraintViolations cv) {
-        item.setCollectedBy(fieldBuilder.referenceField(item.getCollectedBy(), cv));
-        item.setIndividual(fieldBuilder.referenceField(item.getIndividual(), cv, "Membership Individual id not valid"));
-        item.setSocialGroup(fieldBuilder.referenceField(item.getSocialGroup(), cv));
-    }
+        if (cv.hasViolations()) {
+            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+        }
 
+        try {
+            membershipService.createMembership(membership);
+        } catch (ConstraintViolations e) {
+            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<Membership>(ShallowCopier.copyMembership(membership), HttpStatus.CREATED);
+    }
 }

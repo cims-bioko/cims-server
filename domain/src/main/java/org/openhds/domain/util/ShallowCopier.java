@@ -115,6 +115,23 @@ public class ShallowCopier {
         return copy;
     }
 
+    public static Membership copyMembership(Membership original) {
+        Membership copy = new Membership();
+        copy.setbIsToA(original.getbIsToA());
+        copy.setStartDate(original.getStartDate());
+        copy.setStartType(original.getStartType());
+
+        Individual individual = new Individual();
+        individual.setExtId(original.getIndividual().getExtId());
+        copy.setIndividual(individual);
+
+        SocialGroup socialGroup = new SocialGroup();
+        socialGroup.setExtId(original.getSocialGroup().getExtId());
+        copy.setSocialGroup(socialGroup);
+
+        return copy;
+    }
+
     public static SocialGroup copySocialGroup(SocialGroup original) {
         SocialGroup copy = new SocialGroup();
         copy.setExtId(original.getExtId());
