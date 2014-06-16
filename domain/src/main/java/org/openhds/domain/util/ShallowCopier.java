@@ -32,24 +32,30 @@ public class ShallowCopier {
             copy.setMother(copyExtId(individual.getMother()));
 
             for (Membership membership : individual.getAllMemberships()) {
-                Membership memCopy = new Membership();
+                Membership membershipStub = new Membership();
 
-                SocialGroup sgCopy = new SocialGroup();
-                sgCopy.setExtId(membership.getSocialGroup().getExtId());
+                SocialGroup socialGroupStub = new SocialGroup();
+                socialGroupStub.setExtId(membership.getSocialGroup().getExtId());
 
-                memCopy.setSocialGroup(sgCopy);
-                memCopy.setbIsToA(membership.getbIsToA());
-                copy.getAllMemberships().add(memCopy);
+                Individual individualStub = new Individual();
+                individualStub.setExtId(individual.getExtId());
+
+                membershipStub.setSocialGroup(socialGroupStub);
+                membershipStub.setIndividual(individualStub);
+                membershipStub.setbIsToA(membership.getbIsToA());
+                copy.getAllMemberships().add(membershipStub);
             }
 
-            if (individual.getCurrentResidency() != null) {
-                Residency resCopy = new Residency();
-                resCopy.setEndType(individual.getCurrentResidency().getEndType());
-                Location locCopy = new Location();
-                locCopy.setLocationLevel(null);
-                locCopy.setExtId(individual.getCurrentResidency().getLocation().getExtId());
-                resCopy.setLocation(locCopy);
-                copy.getAllResidencies().add(resCopy);
+            Residency currentResidency = individual.getCurrentResidency();
+            if (null != currentResidency) {
+                Location locationStub = new Location();
+                locationStub.setLocationLevel(null);
+                locationStub.setExtId(currentResidency.getLocation().getExtId());
+
+                Residency residencyStub = new Residency();
+                residencyStub.setLocation(locationStub);
+                residencyStub.setEndType(currentResidency.getEndType());
+                copy.getAllResidencies().add(residencyStub);
             }
         } catch (Exception e) {
             System.out.println(copy.getExtId());
@@ -143,4 +149,5 @@ public class ShallowCopier {
 
         return copy;
     }
+
 }
