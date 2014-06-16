@@ -14,140 +14,155 @@ import org.slf4j.LoggerFactory;
 
 public class ShallowCopier {
 
-    private static final Logger logger = LoggerFactory.getLogger(ShallowCopier.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(ShallowCopier.class);
 
-    public static Individual shallowCopyIndividual(Individual individual) {
+	public static Individual shallowCopyIndividual(Individual individual) {
 
-        Individual copy = new Individual();
-        try {
-            copy.setDob(individual.getDob());
-            copy.setExtId(individual.getExtId());
+		Individual copy = new Individual();
+		try {
+			copy.setDob(individual.getDob());
+			copy.setExtId(individual.getExtId());
 
-            copy.setFather(copyExtId(individual.getFather()));
-            copy.setFirstName(individual.getFirstName());
-            copy.setGender(individual.getGender());
-            copy.setLastName(individual.getLastName());
-            String middleName = individual.getMiddleName() == null ? "" : individual.getMiddleName();
-            copy.setMiddleName(middleName);
-            copy.setMother(copyExtId(individual.getMother()));
+			copy.setFather(copyExtId(individual.getFather()));
+			copy.setFirstName(individual.getFirstName());
+			copy.setGender(individual.getGender());
+			copy.setLastName(individual.getLastName());
+			String middleName = individual.getMiddleName() == null ? ""
+					: individual.getMiddleName();
+			copy.setMiddleName(middleName);
+			copy.setMother(copyExtId(individual.getMother()));
 
-            for (Membership membership : individual.getAllMemberships()) {
-                Membership membershipStub = new Membership();
+			copy.setAge(individual.getAge());
+			copy.setAgeUnits(individual.getAgeUnits());
+			copy.setPhoneNumber(individual.getPhoneNumber());
+			copy.setOtherPhoneNumber(individual.getOtherPhoneNumber());
+			copy.setLanguagePreference(individual.getLanguagePreference());
+			copy.setPointOfContactName(individual.getPointOfContactName());
+			copy.setPointOfContactPhoneNumber(individual
+					.getPointOfContactPhoneNumber());
+			copy.setDip(individual.getDip());
+			copy.setMemberStatus(individual.getMemberStatus());
 
-                SocialGroup socialGroupStub = new SocialGroup();
-                socialGroupStub.setExtId(membership.getSocialGroup().getExtId());
+			for (Membership membership : individual.getAllMemberships()) {
+				Membership membershipStub = new Membership();
 
-                Individual individualStub = new Individual();
-                individualStub.setExtId(individual.getExtId());
+				SocialGroup socialGroupStub = new SocialGroup();
+				socialGroupStub
+						.setExtId(membership.getSocialGroup().getExtId());
 
-                membershipStub.setSocialGroup(socialGroupStub);
-                membershipStub.setIndividual(individualStub);
-                membershipStub.setbIsToA(membership.getbIsToA());
-                copy.getAllMemberships().add(membershipStub);
-            }
+				Individual individualStub = new Individual();
+				individualStub.setExtId(individual.getExtId());
 
-            Residency currentResidency = individual.getCurrentResidency();
-            if (null != currentResidency) {
-                Location locationStub = new Location();
-                locationStub.setLocationLevel(null);
-                locationStub.setExtId(currentResidency.getLocation().getExtId());
+				membershipStub.setSocialGroup(socialGroupStub);
+				membershipStub.setIndividual(individualStub);
+				membershipStub.setbIsToA(membership.getbIsToA());
+				copy.getAllMemberships().add(membershipStub);
+			}
 
-                Residency residencyStub = new Residency();
-                residencyStub.setLocation(locationStub);
-                residencyStub.setEndType(currentResidency.getEndType());
-                copy.getAllResidencies().add(residencyStub);
-            }
-        } catch (Exception e) {
-            System.out.println(copy.getExtId());
-        }
-        return copy;
-    }
+			Residency currentResidency = individual.getCurrentResidency();
+			if (null != currentResidency) {
+				Location locationStub = new Location();
+				locationStub.setLocationLevel(null);
+				locationStub
+						.setExtId(currentResidency.getLocation().getExtId());
 
-    private static Individual copyExtId(Individual individual) {
-        Individual copy = new Individual();
-        if (individual == null) {
-            logger.warn("Individual had a null father or mother - using UNK as default value");
-            copy.setExtId("UNK");
-        } else {
-            copy.setExtId(individual.getExtId());
-        }
+				Residency residencyStub = new Residency();
+				residencyStub.setLocation(locationStub);
+				residencyStub.setEndType(currentResidency.getEndType());
+				copy.getAllResidencies().add(residencyStub);
+			}
+		} catch (Exception e) {
+			System.out.println(copy.getExtId());
+		}
+		return copy;
+	}
 
-        return copy;
-    }
+	private static Individual copyExtId(Individual individual) {
+		Individual copy = new Individual();
+		if (individual == null) {
+			logger.warn("Individual had a null father or mother - using UNK as default value");
+			copy.setExtId("UNK");
+		} else {
+			copy.setExtId(individual.getExtId());
+		}
 
-    public static Location copyLocation(Location loc) {
-        Location copy = new Location();
+		return copy;
+	}
 
-        copy.setAccuracy(getEmptyStringIfBlank(loc.getAccuracy()));
-        copy.setAltitude(getEmptyStringIfBlank(loc.getAltitude()));
-        copy.setLatitude(getEmptyStringIfBlank(loc.getLatitude()));
-        copy.setLongitude(getEmptyStringIfBlank(loc.getLongitude()));
+	public static Location copyLocation(Location loc) {
+		Location copy = new Location();
 
-        LocationHierarchy level = new LocationHierarchy();
-        level.setExtId(loc.getLocationLevel().getExtId());
-        copy.setLocationLevel(level);
+		copy.setAccuracy(getEmptyStringIfBlank(loc.getAccuracy()));
+		copy.setAltitude(getEmptyStringIfBlank(loc.getAltitude()));
+		copy.setLatitude(getEmptyStringIfBlank(loc.getLatitude()));
+		copy.setLongitude(getEmptyStringIfBlank(loc.getLongitude()));
 
-        copy.setExtId(loc.getExtId());
-        copy.setLocationName(loc.getLocationName());
-        copy.setLocationType(loc.getLocationType());
+		LocationHierarchy level = new LocationHierarchy();
+		level.setExtId(loc.getLocationLevel().getExtId());
+		copy.setLocationLevel(level);
 
-        FieldWorker fw = new FieldWorker();
-        fw.setExtId(loc.getCollectedBy().getExtId());
-        copy.setCollectedBy(fw);
-        return copy;
-    }
+		copy.setExtId(loc.getExtId());
+		copy.setLocationName(loc.getLocationName());
+		copy.setLocationType(loc.getLocationType());
 
-    private static String getEmptyStringIfBlank(String accuracy) {
-        if (accuracy == null || accuracy.trim().isEmpty()) {
-            return "";
-        }
+		FieldWorker fw = new FieldWorker();
+		fw.setExtId(loc.getCollectedBy().getExtId());
+		copy.setCollectedBy(fw);
+		return copy;
+	}
 
-        return accuracy;
-    }
+	private static String getEmptyStringIfBlank(String accuracy) {
+		if (accuracy == null || accuracy.trim().isEmpty()) {
+			return "";
+		}
 
-    public static Relationship copyRelationship(Relationship original) {
-        Relationship copy = new Relationship();
-        copy.setaIsToB(original.getaIsToB());
+		return accuracy;
+	}
 
-        Individual individual = new Individual();
-        individual.setExtId(original.getIndividualA().getExtId());
-        copy.setIndividualA(individual);
+	public static Relationship copyRelationship(Relationship original) {
+		Relationship copy = new Relationship();
+		copy.setaIsToB(original.getaIsToB());
 
-        individual = new Individual();
-        individual.setExtId(original.getIndividualB().getExtId());
-        copy.setIndividualB(individual);
+		Individual individual = new Individual();
+		individual.setExtId(original.getIndividualA().getExtId());
+		copy.setIndividualA(individual);
 
-        copy.setStartDate(original.getStartDate());
-        return copy;
-    }
+		individual = new Individual();
+		individual.setExtId(original.getIndividualB().getExtId());
+		copy.setIndividualB(individual);
 
-    public static SocialGroup copySocialGroup(SocialGroup original) {
-        SocialGroup copy = new SocialGroup();
-        copy.setExtId(original.getExtId());
+		copy.setStartDate(original.getStartDate());
+		return copy;
+	}
 
-        Individual groupHead = new Individual();
-        groupHead.setExtId(original.getGroupHead().getExtId());
-        copy.setGroupHead(groupHead);
-        copy.setGroupName(original.getGroupName());
-        return copy;
-    }
+	public static SocialGroup copySocialGroup(SocialGroup original) {
+		SocialGroup copy = new SocialGroup();
+		copy.setExtId(original.getExtId());
 
-    public static Visit copyVisit(Visit original) {
-        FieldWorker fw = new FieldWorker();
-        fw.setExtId(original.getCollectedBy().getExtId());
+		Individual groupHead = new Individual();
+		groupHead.setExtId(original.getGroupHead().getExtId());
+		copy.setGroupHead(groupHead);
+		copy.setGroupName(original.getGroupName());
+		return copy;
+	}
 
-        Location location = new Location();
-        location.setLocationLevel(null);
-        location.setExtId(original.getVisitLocation().getExtId());
+	public static Visit copyVisit(Visit original) {
+		FieldWorker fw = new FieldWorker();
+		fw.setExtId(original.getCollectedBy().getExtId());
 
-        Visit copy = new Visit();
-        copy.setCollectedBy(fw);
-        copy.setVisitLocation(location);
-        copy.setExtId(original.getExtId());
-        copy.setRoundNumber(original.getRoundNumber());
-        copy.setVisitDate(original.getVisitDate());
+		Location location = new Location();
+		location.setLocationLevel(null);
+		location.setExtId(original.getVisitLocation().getExtId());
 
-        return copy;
-    }
+		Visit copy = new Visit();
+		copy.setCollectedBy(fw);
+		copy.setVisitLocation(location);
+		copy.setExtId(original.getExtId());
+		copy.setRoundNumber(original.getRoundNumber());
+		copy.setVisitDate(original.getVisitDate());
+
+		return copy;
+	}
 
 }

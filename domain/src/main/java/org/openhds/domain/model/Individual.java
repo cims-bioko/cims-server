@@ -248,7 +248,7 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     	this.ageUnits = ageUnits;
     }
     
-    public String geAgeUnits() {
+    public String getAgeUnits() {
     	return ageUnits;
     }
     
