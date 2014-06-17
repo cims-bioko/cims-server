@@ -106,6 +106,15 @@ public class Residency extends AuditableCollectedEntity implements GenericStartE
     public void setEndType(String endType) {
         this.endType = endType;
     }
+    
+    public static Residency makeStub(Location location, Individual individual) {
+    	
+    	Residency stub = new Residency();
+    	stub.setLocation(location);
+    	stub.setIndividual(individual);
+    	return stub;
+    	
+    }
 
     @Override
     public boolean equals(Object other) {

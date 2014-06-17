@@ -98,6 +98,12 @@ public class SocialGroup
     public void setMemberships(Set<Membership> list) {
         memberships = list;
     }
+    
+    public static SocialGroup makeStub(String extId) {
+    	SocialGroup stub = new SocialGroup();
+    	stub.setExtId(extId);
+    	return stub;
+    }
 
     @Override
     public boolean equals(Object other) {

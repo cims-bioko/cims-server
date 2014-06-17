@@ -307,6 +307,12 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     public String getMemberStatus() {
     	return memberStatus;
     }
+    
+    public static Individual makeStub(String extId) {
+    	Individual stub = new Individual();
+    	stub.setExtId(extId);
+    	return stub;
+    }
 
     @Override
     public boolean equals(Object other) {

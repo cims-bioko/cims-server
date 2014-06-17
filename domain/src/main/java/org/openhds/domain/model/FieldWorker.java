@@ -61,6 +61,14 @@ public class FieldWorker extends AuditableEntity implements Serializable {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+    
+    public static FieldWorker makeStub(String extId) {
+    	
+    	FieldWorker stub = new FieldWorker();
+    	stub.setExtId(extId);
+    	return stub;
+    	
+    }
 
     @Override
     public boolean equals(Object other) {
