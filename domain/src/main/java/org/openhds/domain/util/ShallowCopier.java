@@ -44,15 +44,15 @@ public class ShallowCopier {
 			copy.setDip(individual.getDip());
 			copy.setMemberStatus(individual.getMemberStatus());
 
+            Individual individualStub = new Individual();
+            individualStub.setExtId(individual.getExtId());
+
 			for (Membership membership : individual.getAllMemberships()) {
 				Membership membershipStub = new Membership();
 
 				SocialGroup socialGroupStub = new SocialGroup();
 				socialGroupStub
 						.setExtId(membership.getSocialGroup().getExtId());
-
-				Individual individualStub = new Individual();
-				individualStub.setExtId(individual.getExtId());
 
 				membershipStub.setSocialGroup(socialGroupStub);
 				membershipStub.setIndividual(individualStub);
@@ -69,7 +69,7 @@ public class ShallowCopier {
 
 				Residency residencyStub = new Residency();
 				residencyStub.setLocation(locationStub);
-				residencyStub.setEndType(currentResidency.getEndType());
+				residencyStub.setIndividual(individualStub);
 				copy.getAllResidencies().add(residencyStub);
 			}
 		} catch (Exception e) {

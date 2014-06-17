@@ -127,20 +127,11 @@ public class Residency extends AuditableCollectedEntity implements GenericStartE
             return false;
         }
 
-        if (!startDate.equals(otherResidency.getStartDate())) {
-            return false;
-        }
-
-        if (!startType.equals(otherResidency.getStartType())) {
-            return false;
-        }
-
         return true;
     }
 
     @Override
     public int hashCode() {
-        return 37*individual.getExtId().hashCode() + 31*location.getExtId().hashCode()
-                + 29*startDate.hashCode() + startType.hashCode();
+        return 29*individual.getExtId().hashCode() + location.getExtId().hashCode();
     }
 }
