@@ -44,32 +44,22 @@ public class ShallowCopier {
 			copy.setDip(individual.getDip());
 			copy.setMemberStatus(individual.getMemberStatus());
 
-            Individual individualStub = new Individual();
-            individualStub.setExtId(individual.getExtId());
+			Individual individualStub = Individual.makeStub(individual.getExtId());
 
 			for (Membership membership : individual.getAllMemberships()) {
-				Membership membershipStub = new Membership();
-
-				SocialGroup socialGroupStub = new SocialGroup();
-				socialGroupStub
-						.setExtId(membership.getSocialGroup().getExtId());
-
-				membershipStub.setSocialGroup(socialGroupStub);
-				membershipStub.setIndividual(individualStub);
-				membershipStub.setbIsToA(membership.getbIsToA());
+				SocialGroup socialGroupStub = SocialGroup.makeStub(membership
+						.getSocialGroup().getExtId());
+				Membership membershipStub = Membership
+						.makeStub(socialGroupStub, individualStub,
+								membership.getbIsToA());
 				copy.getAllMemberships().add(membershipStub);
 			}
 
 			Residency currentResidency = individual.getCurrentResidency();
 			if (null != currentResidency) {
-				Location locationStub = new Location();
+				Location locationStub = Location.makeStub(currentResidency.getLocation().getExtId());
 				locationStub.setLocationLevel(null);
-				locationStub
-						.setExtId(currentResidency.getLocation().getExtId());
-
-				Residency residencyStub = new Residency();
-				residencyStub.setLocation(locationStub);
-				residencyStub.setIndividual(individualStub);
+				Residency residencyStub = Residency.makeStub(locationStub,individualStub);
 				copy.getAllResidencies().add(residencyStub);
 			}
 		} catch (Exception e) {
@@ -106,9 +96,8 @@ public class ShallowCopier {
 		copy.setLocationName(loc.getLocationName());
 		copy.setLocationType(loc.getLocationType());
 
-		FieldWorker fw = new FieldWorker();
-		fw.setExtId(loc.getCollectedBy().getExtId());
-		copy.setCollectedBy(fw);
+		FieldWorker fieldworkerStub = FieldWorker.makeStub(loc.getCollectedBy().getExtId());
+		copy.setCollectedBy(fieldworkerStub);
 		return copy;
 	}
 
@@ -124,40 +113,33 @@ public class ShallowCopier {
 		Relationship copy = new Relationship();
 		copy.setaIsToB(original.getaIsToB());
 
-		Individual individual = new Individual();
-		individual.setExtId(original.getIndividualA().getExtId());
-		copy.setIndividualA(individual);
+		Individual individualStub = Individual.makeStub(original.getIndividualA().getExtId());
+		copy.setIndividualA(individualStub);
 
-		individual = new Individual();
-		individual.setExtId(original.getIndividualB().getExtId());
-		copy.setIndividualB(individual);
+		individualStub = Individual.makeStub(original.getIndividualB().getExtId());
+		copy.setIndividualB(individualStub);
 
 		copy.setStartDate(original.getStartDate());
 		return copy;
 	}
 
 	public static SocialGroup copySocialGroup(SocialGroup original) {
+		Individual groupHeadStub = Individual.makeStub(original.getGroupHead().getExtId());
 		SocialGroup copy = new SocialGroup();
 		copy.setExtId(original.getExtId());
-
-		Individual groupHead = new Individual();
-		groupHead.setExtId(original.getGroupHead().getExtId());
-		copy.setGroupHead(groupHead);
+		copy.setGroupHead(groupHeadStub);
 		copy.setGroupName(original.getGroupName());
 		return copy;
 	}
 
 	public static Visit copyVisit(Visit original) {
-		FieldWorker fw = new FieldWorker();
-		fw.setExtId(original.getCollectedBy().getExtId());
-
-		Location location = new Location();
-		location.setLocationLevel(null);
-		location.setExtId(original.getVisitLocation().getExtId());
+		FieldWorker fieldworkerStub = FieldWorker.makeStub(original.getCollectedBy().getExtId());
+		Location locationStub = Location.makeStub(original.getVisitLocation().getExtId());
+		locationStub.setLocationLevel(null);
 
 		Visit copy = new Visit();
-		copy.setCollectedBy(fw);
-		copy.setVisitLocation(location);
+		copy.setCollectedBy(fieldworkerStub);
+		copy.setVisitLocation(locationStub);
 		copy.setExtId(original.getExtId());
 		copy.setRoundNumber(original.getRoundNumber());
 		copy.setVisitDate(original.getVisitDate());
