@@ -38,5 +38,13 @@ public interface MembershipService {
 	void validateGeneralMembership(Membership membership) throws ConstraintViolations;
 
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-    void createMembership(Membership item) throws ConstraintViolations; 
+    void createMembership(Membership item) throws ConstraintViolations;
+	
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+    public List<Membership> getAllMembershipsInRange(int start, int size);
+	
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+    public long getTotalMembershipCount();
+
+
 }
