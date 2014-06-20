@@ -16,6 +16,27 @@ public class ShallowCopier {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(ShallowCopier.class);
+	
+	public static Residency shallowCopyResidency(Residency residency) {
+		Residency copy = new Residency();
+		copy.setCollectedBy(residency.getCollectedBy());
+		Individual individualStub = Individual.makeStub(residency.getIndividual().getExtId());
+		copy.setIndividual(individualStub);
+		Location locationStub = Location.makeStub(residency.getLocation().getExtId());
+		copy.setLocation(locationStub);
+		return copy;
+	}
+	
+	public static Membership shallowCopyMembership(Membership membership) {
+		Membership copy = new Membership();
+		copy.setbIsToA(membership.getbIsToA());
+		copy.setCollectedBy(membership.getCollectedBy());
+		Individual individualStub = Individual.makeStub(membership.getIndividual().getExtId());
+		copy.setIndividual(individualStub);
+		SocialGroup sgStub = SocialGroup.makeStub(membership.getSocialGroup().getExtId());
+		copy.setSocialGroup(sgStub);
+		return copy;
+	}
 
 	public static Individual shallowCopyIndividual(Individual individual) {
 
