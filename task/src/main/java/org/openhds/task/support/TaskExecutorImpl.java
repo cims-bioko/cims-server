@@ -23,11 +23,29 @@ public class TaskExecutorImpl implements TaskExecutor {
     private XmlWriterTask relationshipTaskWriter;
     private XmlWriterTask socialGroupTaskWriter;
     private XmlWriterTask visitTaskWriter;
+    private XmlWriterTask membershipTaskWriter;
+    private XmlWriterTask residencyTaskWriter;
 
     @Autowired
     public TaskExecutorImpl(AsyncTaskService asyncTaskService, FileResolver fileResolver) {
         this.asyncTaskService = asyncTaskService;
         this.fileResolver = fileResolver;
+    }
+    
+    @Override
+    public void executeResidencyXmlWriterTask() {
+        if (asyncTaskService.taskShouldRun(AsyncTaskService.RESIDENCY_TASK_NAME)) {
+            File residencyXmlFile = fileResolver.resolveResidencyXmlFile();
+            residencyTaskWriter.writeXml(new TaskContext(residencyXmlFile, SecurityContextHolder.getContext()));
+        }
+    }
+    
+    @Override
+    public void executeMembershipXmlWriterTask() {
+        if (asyncTaskService.taskShouldRun(AsyncTaskService.MEMBERSHIP_TASK_NAME)) {
+            File membershipXmlFile = fileResolver.resolveResidencyXmlFile();
+            membershipTaskWriter.writeXml(new TaskContext(membershipXmlFile, SecurityContextHolder.getContext()));
+        }
     }
 
     @Override
@@ -95,6 +113,16 @@ public class TaskExecutorImpl implements TaskExecutor {
     @Resource(name="visitXmlWriter")
     public void setVisitTaskWriter(XmlWriterTask visitTaskWriter) {
         this.visitTaskWriter = visitTaskWriter;
+    }
+    
+    @Resource(name="residencyXmlWriter")
+    public void setResidencyTaskWriter(XmlWriterTask residencyTaskWriter) {
+    	this.residencyTaskWriter = residencyTaskWriter;
+    }
+    
+    @Resource(name="membershipXmlWriter")
+    public void setMembershipTaskWriter(XmlWriterTask membershipTaskWriter) {
+    	this.membershipTaskWriter = membershipTaskWriter;
     }
 
 }
