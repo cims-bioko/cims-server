@@ -10,9 +10,11 @@ import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.MembershipService;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Membership;
+import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.service.SitePropertiesService;
 import org.springframework.transaction.annotation.Transactional;
@@ -180,5 +182,17 @@ public class MembershipServiceImpl implements MembershipService {
                     + e);
             throw cv;
         }
+    }
+    
+    @Override
+    @Authorized("VIEW_ENTITY")
+    public List<Membership> getAllMembershipsInRange(int start, int size) {
+        return genericDao.findPaged(Membership.class, "extId", start, size);
+    }
+    
+    @Override
+    @Authorized("VIEW_ENTITY")
+    public long getTotalMembershipCount() {
+        return genericDao.getTotalCount(Membership.class);
     }
 }

@@ -39,6 +39,16 @@ public class TaskBean {
         return TASK_VIEW;
     }
     
+    public String startMembershipTask() {
+    	taskExecutor.executeMembershipXmlWriterTask();
+    	return TASK_VIEW;
+    }
+    
+    public String startResidencyTask() {
+    	taskExecutor.executeResidencyXmlWriterTask();
+    	return TASK_VIEW;
+    }
+    
     public String startVisitTask() {
         taskExecutor.executeVisitWriterTask(roundNumber);
         return TASK_VIEW;

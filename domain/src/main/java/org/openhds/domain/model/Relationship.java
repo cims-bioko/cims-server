@@ -108,7 +108,7 @@ public class Relationship extends AuditableCollectedEntity implements
     public void setaIsToB(String aIsToB) {
         this.aIsToB = aIsToB;
     }
-
+    
     @Override
     public boolean equals(Object other) {
         if (this == other) {

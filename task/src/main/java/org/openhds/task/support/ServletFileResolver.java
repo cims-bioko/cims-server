@@ -16,7 +16,23 @@ public class ServletFileResolver implements FileResolver, ServletContextAware {
     public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
+    
+    @Override
+    public File resolveResidencyXmlFile() {
+        File generatedXmlFileDir = getGeneratedXmlFolder();
+        File residencylXmlFile = new File(generatedXmlFileDir, "residency.xml");
 
+        return residencylXmlFile;
+    }
+
+    @Override
+    public File resolveMembershipXmlFile() {
+        File generatedXmlFileDir = getGeneratedXmlFolder();
+        File membershiplXmlFile = new File(generatedXmlFileDir, "membership.xml");
+
+        return membershiplXmlFile;
+    }
+    
     @Override
     public File resolveIndividualXmlFile() {
         File generatedXmlFileDir = getGeneratedXmlFolder();

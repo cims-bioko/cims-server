@@ -12,6 +12,7 @@ import java.util.TreeSet;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.ResidencyService;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Location;
@@ -210,6 +211,18 @@ public class ResidencyServiceImpl implements ResidencyService {
     public List<Residency> getAllResidencies(Individual individual) {
     	List<Residency> list = genericDao.findListByProperty(Residency.class, "individual", individual, true);
     	return list;
+    }
+    
+    @Override
+    @Authorized("VIEW_ENTITY")
+    public long getTotalResidencyCount() {
+        return genericDao.getTotalCount(Residency.class);
+    }
+    
+    @Override
+    @Authorized("VIEW_ENTITY")
+    public List<Residency> getAllResidenciesInRange(int start, int size) {
+        return genericDao.findPaged(Residency.class, "extId", start, size);
     }
 
     /**

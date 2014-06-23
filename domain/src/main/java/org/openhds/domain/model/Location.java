@@ -133,6 +133,13 @@ public class Location
     public void setResidencies(List<Residency> list) {
         residencies = list;
     }
+    
+    public static Location makeStub(String extId) {
+    	
+    	Location stub = new Location();
+    	stub.setExtId(extId);
+    	return stub;
+    }
 
     @Override
     public boolean equals(Object other) {
