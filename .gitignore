@@ -8,3 +8,6 @@ target
 generated-xml
 .directory
 not-in-version-control/
+
+*.iml
+.idea

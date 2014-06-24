@@ -30,7 +30,10 @@ public interface MembershipService {
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	List<Membership> getAllMemberships(Individual indiv);
-		
+
+    @Authorized({PrivilegeConstants.VIEW_ENTITY})
+    List<Membership> getAllMemberships();
+
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
 	Membership createMembershipForPregnancyOutcome(Calendar startDate, Individual individual, SocialGroup sg, FieldWorker fw, String relationToGroupHead);
 

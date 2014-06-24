@@ -172,5 +172,4 @@ public class ShallowCopier {
 
 		return copy;
 	}
-
 }

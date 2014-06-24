@@ -35,9 +35,9 @@ public interface GenericDao {
     <T> T merge(T entityItem);
 
     <T> List<T> findAll(Class<T> entityType, boolean filterDeleted);
-    
-	<T> List<T> findAllDistinct(Class<T> entityType);
-    
+
+    <T> List<T> findAllDistinct(Class<T> entityType);
+
     <T> List<T> findAllWithOrder(Class<T> entityType, OrderProperty... orderProps);
 
     /**
@@ -60,17 +60,17 @@ public interface GenericDao {
      * @return an object of the class type passed
      */
     <T> T findByProperty(Class<T> entityType, String propertyName, Object value, boolean filterDeleted);
-    
+
     <T> T findByMultiProperty(Class<T> entityType, ValueProperty... properties);
 
     <T> List<T> findListByProperty(Class<T> entityType, String propertyName, Object value);
 
     <T> List<T> findListByProperty(Class<T> entityType, String propertyName, Object value, boolean filterDeleted);
-    
+
     <T> List<T> findListByPropertyWithOrder(Class<T> entityType, String propertyName, Object value, OrderProperty... orderProps);
 
     <T> T findUniqueByPropertyWithOrder(Class<T> entityType, String propertyName, Object value,
-            String orderByCol, boolean ascending);
+                                        String orderByCol, boolean ascending);
 
     void clear();
 
@@ -81,15 +81,15 @@ public interface GenericDao {
     <T> List<T> findByExample(Class<T> entityType, T exampleInstance, String... excludeProperty);
 
     <T> Map<T,T> getClassMetaData();
-    
+
     Session getSession();
 
     <T> List<T> findListByPropertyPrefix(Class<T> entityType, String property, String value, int limit, boolean filteredDeleted);
 
-	<T> List<T> findAllWithoutProperty(Class<T> entityType, String property, String value);
+    <T> List<T> findAllWithoutProperty(Class<T> entityType, String property, String value);
 
     <T> List<T> findPaged(Class<?> entityType, String orderProperty, int start, int size);
-    
+
     <T> List<T> findPagedFiltered(Class<?> entityType, String orderProperty, String filterProperty, Object filterValue, int start, int size);
 
     <T> long getTotalCountWithFilter(Class<T> entityType, String filterProperty, Object filterValue);

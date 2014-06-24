@@ -147,15 +147,11 @@ public class Membership extends AuditableCollectedEntity implements GenericEndDa
             return false;
         }
 
-        if (!bIsToA.equals(otherMembership.getbIsToA())) {
-            return false;
-        }
-
         return true;
     }
 
     @Override
     public int hashCode() {
-        return 31*individual.getExtId().hashCode() + 29*socialGroup.getExtId().hashCode() + bIsToA.hashCode();
+        return 31*individual.getExtId().hashCode() + 29*socialGroup.getExtId().hashCode();
     }
 }
