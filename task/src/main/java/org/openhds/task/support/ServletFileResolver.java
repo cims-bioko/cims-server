@@ -17,6 +17,13 @@ public class ServletFileResolver implements FileResolver, ServletContextAware {
         this.servletContext = servletContext;
     }
     
+    protected File getGeneratedXmlFolder() {
+        String fullPath = servletContext.getRealPath("/");
+        File generatedXmlFileDir = new File(fullPath + File.separator + "generated-xml");
+        generatedXmlFileDir.mkdirs();
+        return generatedXmlFileDir;
+    }
+    
     @Override
     public File resolveResidencyXmlFile() {
         File generatedXmlFileDir = getGeneratedXmlFolder();
@@ -39,13 +46,6 @@ public class ServletFileResolver implements FileResolver, ServletContextAware {
         File individualXmlFile = new File(generatedXmlFileDir, "individual.xml");
 
         return individualXmlFile;
-    }
-
-    protected File getGeneratedXmlFolder() {
-        String fullPath = servletContext.getRealPath("/");
-        File generatedXmlFileDir = new File(fullPath + File.separator + "generated-xml");
-        generatedXmlFileDir.mkdirs();
-        return generatedXmlFileDir;
     }
 
     @Override

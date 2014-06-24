@@ -31,7 +31,29 @@ public class TaskExecutorImplTest {
         initMocks(this);
         executor = new TaskExecutorImpl(asyncTaskService, fileResolver);
     }
-
+    
+//    @Test
+//    public void shouldRunMembershipXmlTask() {
+//        when(asyncTaskService.taskShouldRun(AsyncTaskService.MEMBERSHIP_TASK_NAME)).thenReturn(true);
+//
+//        executor.setMembershipTaskWriter(writeTask);
+//        executor.executeMembershipXmlWriterTask();
+//
+//        verify(fileResolver).resolveMembershipXmlFile();
+//        verify(writeTask).writeXml(any(TaskContext.class));
+//    }
+//
+//    @Test
+//    public void shouldRunResidencyXmlTask() {
+//        when(asyncTaskService.taskShouldRun(AsyncTaskService.RESIDENCY_TASK_NAME)).thenReturn(true);
+//
+//        executor.setResidencyTaskWriter(writeTask);
+//        executor.executeResidencyXmlWriterTask();
+//
+//        verify(fileResolver).resolveResidencyXmlFile();
+//        verify(writeTask).writeXml(any(TaskContext.class));
+//    }
+    
     @Test
     public void shouldRunIndividualXmlTask() {
         when(asyncTaskService.taskShouldRun(AsyncTaskService.INDIVIDUAL_TASK_NAME)).thenReturn(true);
@@ -40,7 +62,7 @@ public class TaskExecutorImplTest {
         executor.executeIndividualXmlWriterTask();
 
         verify(fileResolver).resolveIndividualXmlFile();
-        verify(writeTask).writeXml(any(TaskContext.class));
+        verify(writeTask).writeXmlAsync(any(TaskContext.class));
     }
 
     @Test
@@ -50,7 +72,7 @@ public class TaskExecutorImplTest {
         executor.setIndividualTaskWriter(writeTask);
         executor.executeIndividualXmlWriterTask();
 
-        verify(writeTask, times(0)).writeXml(any(TaskContext.class));
+        verify(writeTask, times(0)).writeXmlAsync(any(TaskContext.class));
     }
 
     @Test
@@ -61,7 +83,7 @@ public class TaskExecutorImplTest {
         executor.executeLocationXmlWriterTask();
 
         verify(fileResolver).resolveLocationXmlFile();
-        verify(writeTask).writeXml(any(TaskContext.class));
+        verify(writeTask).writeXmlAsync(any(TaskContext.class));
     }
 
     @Test
@@ -71,7 +93,7 @@ public class TaskExecutorImplTest {
         executor.setLocationTaskWriter(writeTask);
         executor.executeLocationXmlWriterTask();
 
-        verify(writeTask, times(0)).writeXml(any(TaskContext.class));
+        verify(writeTask, times(0)).writeXmlAsync(any(TaskContext.class));
     }
 
     @Test
@@ -82,7 +104,7 @@ public class TaskExecutorImplTest {
         executor.executeSocialGroupXmlWriterTask();
 
         verify(fileResolver).resolvesocialGroupXmlFile();
-        verify(writeTask).writeXml(any(TaskContext.class));
+        verify(writeTask).writeXmlAsync(any(TaskContext.class));
     }
 
     @Test
@@ -92,7 +114,7 @@ public class TaskExecutorImplTest {
         executor.setSocialGroupTaskWriter(writeTask);
         executor.executeSocialGroupXmlWriterTask();
 
-        verify(writeTask, times(0)).writeXml(any(TaskContext.class));
+        verify(writeTask, times(0)).writeXmlAsync(any(TaskContext.class));
     }
 
     @Test
@@ -103,7 +125,7 @@ public class TaskExecutorImplTest {
         executor.executeRelationshipXmlWriterTask();
 
         verify(fileResolver).resolveRelationshipXmlFile();
-        verify(writeTask).writeXml(any(TaskContext.class));
+        verify(writeTask).writeXmlAsync(any(TaskContext.class));
     }
 
     @Test
@@ -113,6 +135,6 @@ public class TaskExecutorImplTest {
         executor.setRelationshipTaskWriter(writeTask);
         executor.executeRelationshipXmlWriterTask();
 
-        verify(writeTask, times(0)).writeXml(any(TaskContext.class));
+        verify(writeTask, times(0)).writeXmlAsync(any(TaskContext.class));
     }
 }

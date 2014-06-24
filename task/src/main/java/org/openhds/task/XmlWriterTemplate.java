@@ -28,7 +28,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
     private static final int PAGE_SIZE = 100;
 
-    @Autowired
     private CalendarAdapter calendarAdapter;
     private AsyncTaskService asyncTaskService;
     private String taskName;
@@ -36,9 +35,14 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
     public XmlWriterTemplate(AsyncTaskService asyncTaskService, String taskName) {
         this.asyncTaskService = asyncTaskService;
         this.taskName = taskName;
+        calendarAdapter = new CalendarAdapter();
+    }
+    
+    @Async
+    public void writeXmlAsync(TaskContext taskContext) {
+    	writeXml(taskContext);
     }
 
-    @Async
     public void writeXml(TaskContext taskContext) {
         // service methods require authorization, which in turn depend on a user
         // this will use the security context of the user who starts the task

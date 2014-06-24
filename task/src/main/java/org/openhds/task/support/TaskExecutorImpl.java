@@ -36,7 +36,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     public void executeResidencyXmlWriterTask() {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.RESIDENCY_TASK_NAME)) {
             File residencyXmlFile = fileResolver.resolveResidencyXmlFile();
-            residencyTaskWriter.writeXml(new TaskContext(residencyXmlFile, SecurityContextHolder.getContext()));
+            residencyTaskWriter.writeXmlAsync(new TaskContext(residencyXmlFile, SecurityContextHolder.getContext()));
         }
     }
     
@@ -44,7 +44,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     public void executeMembershipXmlWriterTask() {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.MEMBERSHIP_TASK_NAME)) {
             File membershipXmlFile = fileResolver.resolveResidencyXmlFile();
-            membershipTaskWriter.writeXml(new TaskContext(membershipXmlFile, SecurityContextHolder.getContext()));
+            membershipTaskWriter.writeXmlAsync(new TaskContext(membershipXmlFile, SecurityContextHolder.getContext()));
         }
     }
 
@@ -52,7 +52,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     public void executeIndividualXmlWriterTask() {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.INDIVIDUAL_TASK_NAME)) {
             File individualXmlFile = fileResolver.resolveIndividualXmlFile();
-            individualTaskWriter.writeXml(new TaskContext(individualXmlFile, SecurityContextHolder.getContext()));
+            individualTaskWriter.writeXmlAsync(new TaskContext(individualXmlFile, SecurityContextHolder.getContext()));
         }
     }
 
@@ -60,7 +60,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     public void executeLocationXmlWriterTask() {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.LOCATION_TASK_NAME)) {
             File locationXmlFile = fileResolver.resolveLocationXmlFile();
-            locationTaskWriter.writeXml(new TaskContext(locationXmlFile, SecurityContextHolder.getContext()));
+            locationTaskWriter.writeXmlAsync(new TaskContext(locationXmlFile, SecurityContextHolder.getContext()));
         }
     }
 
@@ -68,7 +68,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     public void executeRelationshipXmlWriterTask() {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.RELATIONSHIP_TASK_NAME)) {
             File relationshipXmlFile = fileResolver.resolveRelationshipXmlFile();
-            relationshipTaskWriter.writeXml(new TaskContext(relationshipXmlFile, SecurityContextHolder.getContext()));
+            relationshipTaskWriter.writeXmlAsync(new TaskContext(relationshipXmlFile, SecurityContextHolder.getContext()));
         }
     }
 
@@ -76,7 +76,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     public void executeSocialGroupXmlWriterTask() {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.SOCIALGROUP_TASK_NAME)) {
             File socialGroupXmlFile = fileResolver.resolvesocialGroupXmlFile();
-            socialGroupTaskWriter.writeXml(new TaskContext(socialGroupXmlFile, SecurityContextHolder.getContext()));
+            socialGroupTaskWriter.writeXmlAsync(new TaskContext(socialGroupXmlFile, SecurityContextHolder.getContext()));
         }
     }
 
@@ -86,7 +86,7 @@ public class TaskExecutorImpl implements TaskExecutor {
             File visitXmlFile = fileResolver.resolveVisitXmlFile();
             TaskContext taskContext = new TaskContext(visitXmlFile, SecurityContextHolder.getContext());
             taskContext.addExtraData("roundNumber", roundNumber + "");
-            visitTaskWriter.writeXml(taskContext);
+            visitTaskWriter.writeXmlAsync(taskContext);
         }
     }
 

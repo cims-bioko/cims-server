@@ -3,6 +3,6 @@ package org.openhds.task;
 
 public interface XmlWriterTask {
 
-    void writeXml(TaskContext context);
+    void writeXmlAsync(TaskContext context);
 
 }
