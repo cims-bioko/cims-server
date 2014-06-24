@@ -25,7 +25,8 @@
 
     <individual uuid="Unknown Individual" extId="UNK" firstName="Unknown" middleName="NULL" lastName="Unknown"
                 gender="1" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
-                dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker" />
+                dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker"
+                age="60" dip="0"/>
 
     <location uuid="LOCATION1" extId="testLocation" locationName="Test Location" locationLevel_uuid="hierarchy3"
               locationType="RUR" insertDate="2000-12-19" deleted="false" collectedBy_uuid="UnknownFieldWorker"
@@ -33,11 +34,13 @@
 
     <individual uuid="Individual1" extId="individual1" firstName="Individual" middleName="" lastName="1"
                 gender="1" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
-                dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker" />
+                dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker"
+                age="60" dip="1"/>
 
     <individual uuid="Individual2" extId="individual2" firstName="Individual" middleName="" lastName="2"
                 gender="2" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
-                dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker" />
+                dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker"
+                age="60" dip="2"/>
 
     <socialgroup uuid="SocialGroup1" extId="sg123456789" groupName="Social Group 1"
                  groupHead_uuid="Individual2" groupType="COH" insertDate="2000-12-19" deleted="false"

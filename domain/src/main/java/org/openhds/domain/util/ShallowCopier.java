@@ -30,7 +30,8 @@ public class ShallowCopier {
 	public static Membership shallowCopyMembership(Membership membership) {
 		Membership copy = new Membership();
 		copy.setbIsToA(membership.getbIsToA());
-		copy.setCollectedBy(membership.getCollectedBy());
+        FieldWorker fieldworkerStub = FieldWorker.makeStub(membership.getCollectedBy().getExtId());
+        copy.setCollectedBy(fieldworkerStub);
 		Individual individualStub = Individual.makeStub(membership.getIndividual().getExtId());
 		copy.setIndividual(individualStub);
 		SocialGroup sgStub = SocialGroup.makeStub(membership.getSocialGroup().getExtId());
@@ -172,4 +173,18 @@ public class ShallowCopier {
 
 		return copy;
 	}
+
+    public static Membership copyMembership(Membership membership) {
+        Membership copy = new Membership();
+        copy.setbIsToA(membership.getbIsToA());
+        copy.setStartDate(membership.getStartDate());
+        copy.setEndDate(membership.getEndDate());
+        FieldWorker fieldworkerStub = FieldWorker.makeStub(membership.getCollectedBy().getExtId());
+        copy.setCollectedBy(fieldworkerStub);
+        Individual individualStub = Individual.makeStub(membership.getIndividual().getExtId());
+        copy.setIndividual(individualStub);
+        SocialGroup sgStub = SocialGroup.makeStub(membership.getSocialGroup().getExtId());
+        copy.setSocialGroup(sgStub);
+        return copy;
+    }
 }
