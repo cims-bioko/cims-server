@@ -35,32 +35,51 @@ public class Location
 {
 
     public final static long serialVersionUID = 169551578162260199L;
+
     @NotNull
     @CheckFieldNotBlank
     @Searchable
     @Description(description = "External Id of the location. This id is used internally.")
     private String extId;
+
     @CheckFieldNotBlank
     @Searchable
     @Description(description = "Name of the location.")
     private String locationName;
+
     @ManyToOne
     @Cascade(CascadeType.SAVE_UPDATE)
     private LocationHierarchy locationLevel = new LocationHierarchy();
+
     @ExtensionStringConstraint(constraint = "locationTypeConstraint", message = "Invalid Value for location type", allowNull = true)
     @Description(description = "The type of Location.")
     private String locationType;
+
     @Description(description = "The longitude for the Location")
     private String longitude;
+
     @Description(description = "The latitude for the Location")
     private String latitude;
+
     @Description(description = "How accurate are the longitude/latitude readings for the Location")
     private String accuracy;
+
     @Description(description = "The altitude for the Location")
     private String altitude;
+
     @OneToMany(targetEntity = org.openhds.domain.model.Residency.class)
     @JoinColumn(name = "location_uuid")
     private List<Residency> residencies;
+
+    // Extensions for bioko island project
+    @Description(description = "The name of the map sector that contains this location")
+    private String sectorName;
+
+    @Description(description = "The name of the locality (aka AREA) that contains this location")
+    private String localityName;
+
+    @Description(description = "The name of the community that contains this location")
+    private String communityName;
 
     public String getExtId() {
         return extId;
@@ -133,12 +152,36 @@ public class Location
     public void setResidencies(List<Residency> list) {
         residencies = list;
     }
-    
+
+    public String getSectorName() {
+        return sectorName;
+    }
+
+    public void setSectorName(String sectorName) {
+        this.sectorName = sectorName;
+    }
+
+    public String getLocalityName() {
+        return localityName;
+    }
+
+    public void setLocalityName(String localityName) {
+        this.localityName = localityName;
+    }
+
+    public String getCommunityName() {
+        return communityName;
+    }
+
+    public void setCommunityName(String communityName) {
+        this.communityName = communityName;
+    }
+
     public static Location makeStub(String extId) {
-    	
-    	Location stub = new Location();
-    	stub.setExtId(extId);
-    	return stub;
+
+        Location stub = new Location();
+        stub.setExtId(extId);
+        return stub;
     }
 
     @Override
