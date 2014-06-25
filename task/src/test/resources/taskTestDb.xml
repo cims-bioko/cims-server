@@ -53,14 +53,14 @@
     <membership uuid="Membership1" deleted="false" insertDate="2000-12-19"
                 collectedBy_uuid="UnknownFieldWorker" insertBy_uuid="User 1" status="P"
                 bIsToA="1" individual_uuid="Individual1" socialGroup_uuid="SocialGroup1" />
-    
-    <residency uuid="Residency1" deleted="false" insertDate="2000-12-19" startDate="1999-12-19"
-        		individual_uuid="Individual1" collectedBy_uuid="UnknownFieldWorker" location_uuid="LOCATION1" />
-    
+
+    <residency uuid="Residency1" deleted="false" insertDate="2000-12-19" startDate="1999-12-19" startType="test"
+               individual_uuid="Individual1" collectedBy_uuid="UnknownFieldWorker" location_uuid="LOCATION1" />
+
     <relationship uuid="Relationship1" deleted="false" insertDate="2000-12-19" aIsToB="1"
-        		startDate="1999-12-19" collectedBy_uuid="UnknownFieldWorker" individualA_uuid="Individual1"
-        		individualB_uuid="Individual2" />
-        		
+                  startDate="1999-12-19" collectedBy_uuid="UnknownFieldWorker" individualA_uuid="Individual1"
+                  individualB_uuid="Individual2" />
+
 
     <whitelist uuid="LOCALHOST1" address="127.0.0.1" />
     <whitelist uuid="LOCALHOST2" address="10.0.2.10" />
