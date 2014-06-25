@@ -222,7 +222,8 @@ public class ResidencyServiceImpl implements ResidencyService {
     @Override
     @Authorized("VIEW_ENTITY")
     public List<Residency> getAllResidenciesInRange(int start, int size) {
-        return genericDao.findPaged(Residency.class, "extId", start, size);
+        List<Residency> list = genericDao.findPaged(Residency.class, "location", start, size);
+        return list;
     }
 
     /**

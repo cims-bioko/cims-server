@@ -7,18 +7,19 @@ import java.io.File;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
+import org.openhds.controller.service.CurrentUser;
 import org.openhds.controller.service.ResidencyService;
+import org.openhds.domain.model.PrivilegeConstants;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
@@ -40,12 +41,14 @@ public class ResidencyXmlWriterTaskTest {
 	@Autowired
 	private ResidencyService residencyService;
 	
-	@Mock
-	SecurityContext securityContext;
+	@Autowired
+	private CurrentUser currentUser;
 	
 	@Before
 	public void setUp() {
 		initMocks(this);
+        currentUser.setProxyUser("admin", "test",
+                new String[] {PrivilegeConstants.CREATE_ENTITY, PrivilegeConstants.VIEW_ENTITY});
 	}
 	
 	@Test
@@ -53,10 +56,8 @@ public class ResidencyXmlWriterTaskTest {
 		
 		ResidencyXmlWriterTask task = new ResidencyXmlWriterTask(asyncTaskService, residencyService);
 		File fileToWrite = new File("residencies.xml");
-		TaskContext context = new TaskContext(fileToWrite, securityContext);
+		TaskContext context = new TaskContext(fileToWrite);
 		task.writeXml(context);
-		
-		
 
 	}
 	
