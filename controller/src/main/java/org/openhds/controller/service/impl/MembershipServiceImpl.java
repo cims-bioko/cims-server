@@ -192,7 +192,7 @@ public class MembershipServiceImpl implements MembershipService {
     @Override
     @Authorized("VIEW_ENTITY")
     public List<Membership> getAllMembershipsInRange(int start, int size) {
-        return genericDao.findPaged(Membership.class, "extId", start, size);
+        return genericDao.findPaged(Membership.class, "individual", start, size);
     }
     
     @Override

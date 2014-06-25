@@ -80,6 +80,12 @@ public class MembershipServiceTest {
         assertNotNull(membershipList);
         assertEquals(1, membershipList.size());
     }
+    
+    @Test
+    public void testGetTotalMembershipCount() throws Exception {
+    	int count = (int) membershipService.getTotalMembershipCount();
+    	assertEquals(1, count);
+    }
 
     @Test
     public void testGetAllForIndividual() throws Exception {
