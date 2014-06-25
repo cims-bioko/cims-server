@@ -44,9 +44,6 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
     }
 
     public void writeXml(TaskContext taskContext) {
-        // service methods require authorization, which in turn depend on a user
-        // this will use the security context of the user who starts the task
-        SecurityContextHolder.setContext(taskContext.getSecurityContext());
         asyncTaskService.beginNewTaskSession();
 
         try {

@@ -31,9 +31,6 @@ public class IndividualXmlWriterTaskTest extends AbstractXmlWriterTest {
     @Mock
     private CalendarUtil calendarUtil;
 
-    @Mock
-    SecurityContext securityContext;
-
     @Before
     public void setUp() {
         initMocks(this);
@@ -48,7 +45,7 @@ public class IndividualXmlWriterTaskTest extends AbstractXmlWriterTest {
            // when(individualService.getAllIndividualsInRange(0, 100)).thenReturn(Arrays.asList(createIndividual()));
             when(calendarUtil.formatDate(any(Calendar.class))).thenReturn("02-09-1987");
 
-            task.writeXml(new TaskContext(individualFile, securityContext));
+            task.writeXml(new TaskContext(individualFile));
 
             @SuppressWarnings("unused")
 			ClassPathResource expected = new ClassPathResource("xml/individuals.xml");

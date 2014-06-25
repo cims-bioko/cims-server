@@ -30,9 +30,6 @@ public class LocationXmlWriterTaskTest extends AbstractXmlWriterTest {
     @Mock
     private CalendarUtil calendarUtil;
 
-    @Mock
-    SecurityContext securityContext;
-
     @Before
     public void setUp() {
         initMocks(this);
@@ -48,7 +45,7 @@ public class LocationXmlWriterTaskTest extends AbstractXmlWriterTest {
             when(locationService.getAllLocationsInRange(0, 100)).thenReturn(Arrays.asList(createLocation()));
             when(calendarUtil.formatDate(any(Calendar.class))).thenReturn("02-09-1987");
 
-            task.writeXml(new TaskContext(locationFile, securityContext));
+            task.writeXml(new TaskContext(locationFile));
 
             ClassPathResource expected = new ClassPathResource("xml/locations.xml");
 
