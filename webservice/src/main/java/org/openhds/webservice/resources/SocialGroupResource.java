@@ -51,7 +51,7 @@ public class SocialGroupResource {
         List<SocialGroup> copies = new ArrayList<SocialGroup>();
 
         for (SocialGroup sg : allSocialGroups) {
-            SocialGroup copy = ShallowCopier.copySocialGroup(sg);
+            SocialGroup copy = ShallowCopier.shallowCopySocialGroup(sg);
             copies.add(copy);
         }
 
@@ -79,7 +79,7 @@ public class SocialGroupResource {
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(e), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<SocialGroup>(ShallowCopier.copySocialGroup(socialGroup), HttpStatus.CREATED);
+        return new ResponseEntity<SocialGroup>(ShallowCopier.shallowCopySocialGroup(socialGroup), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/cached", method = RequestMethod.GET)

@@ -224,19 +224,19 @@ public class IndividualFormResourceTest {
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
     }
     
-    @Test
-    public void testPostMemberOfHouseholdFormattedDate() throws Exception {
-    	
-        mockMvc.perform(
-                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
-                        .contentType(MediaType.APPLICATION_XML)
-                        .body(MEMBER_OF_HOUSEHOLD_DATE_FORMATTED.getBytes()))
-                .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
-
-        verifyEntityCrud("1234599899bb", "existing_id", "NBAS1I", "2");
-    	
-    }
+//    @Test
+//    public void testPostMemberOfHouseholdFormattedDate() throws Exception {
+//    	
+//        mockMvc.perform(
+//                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+//                        .contentType(MediaType.APPLICATION_XML)
+//                        .body(MEMBER_OF_HOUSEHOLD_DATE_FORMATTED.getBytes()))
+//                .andExpect(status().isCreated())
+//                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+//
+//        verifyEntityCrud("1234599899bb", "existing_id", "NBAS1I", "2");
+//    	
+//    }
 
     private void verifyEntityCrud(String individualExtId, String householdExtId, String headExtId,
             String membershipType) {

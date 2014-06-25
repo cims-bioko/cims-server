@@ -24,7 +24,7 @@ public class SocialGroupXmlWriterTask extends XmlWriterTemplate<SocialGroup> {
 
     @Override
     protected SocialGroup makeCopyOf(SocialGroup original) {
-        return ShallowCopier.copySocialGroup(original);
+        return ShallowCopier.shallowCopySocialGroup(original);
     }
 
     @Override

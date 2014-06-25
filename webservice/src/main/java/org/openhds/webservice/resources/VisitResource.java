@@ -52,7 +52,7 @@ public class VisitResource {
         List<Visit> copies = new ArrayList<Visit>(allVisits.size());
 
         for (Visit visit : allVisits) {
-            Visit copy = ShallowCopier.copyVisit(visit);
+            Visit copy = ShallowCopier.shallowCopyVisit(visit);
 
             copies.add(copy);
         }
@@ -79,7 +79,7 @@ public class VisitResource {
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Visit>(ShallowCopier.copyVisit(visit), HttpStatus.CREATED);
+        return new ResponseEntity<Visit>(ShallowCopier.shallowCopyVisit(visit), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/cached", method = RequestMethod.GET)

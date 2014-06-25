@@ -52,7 +52,7 @@ public class MembershipResource {
         List<Membership> copies = new ArrayList<Membership>(memberships.size());
 
         for (Membership m : memberships) {
-            Membership copy = ShallowCopier.copyMembership(m);
+            Membership copy = ShallowCopier.shallowCopyMembership(m);
             copies.add(copy);
         }
 
@@ -68,7 +68,7 @@ public class MembershipResource {
         List<Membership> copies = new ArrayList<Membership>(memberships.size());
 
         for (Membership m : memberships) {
-            Membership copy = ShallowCopier.copyMembership(m);
+            Membership copy = ShallowCopier.shallowCopyMembership(m);
             copies.add(copy);
         }
 
@@ -93,6 +93,6 @@ public class MembershipResource {
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Membership>(ShallowCopier.copyMembership(membership), HttpStatus.CREATED);
+        return new ResponseEntity<Membership>(ShallowCopier.shallowCopyMembership(membership), HttpStatus.CREATED);
     }
 }

@@ -24,7 +24,7 @@ public class LocationXmlWriterTask extends XmlWriterTemplate<Location> {
 
     @Override
     protected Location makeCopyOf(Location original) {
-        return ShallowCopier.copyLocation(original);
+        return ShallowCopier.shallowCopyLocation(original);
     }
 
     @Override

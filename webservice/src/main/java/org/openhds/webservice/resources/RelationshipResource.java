@@ -51,7 +51,7 @@ public class RelationshipResource {
         List<Relationship> copies = new ArrayList<Relationship>();
 
         for (Relationship relationship : allRelationships) {
-            Relationship copy = ShallowCopier.copyRelationship(relationship);
+            Relationship copy = ShallowCopier.shallowCopyRelationship(relationship);
             copies.add(copy);
         }
 
@@ -80,7 +80,7 @@ public class RelationshipResource {
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Relationship>(ShallowCopier.copyRelationship(relationship), HttpStatus.CREATED);
+        return new ResponseEntity<Relationship>(ShallowCopier.shallowCopyRelationship(relationship), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/cached", method = RequestMethod.GET)

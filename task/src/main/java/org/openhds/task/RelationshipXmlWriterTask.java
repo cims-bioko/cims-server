@@ -24,7 +24,7 @@ public class RelationshipXmlWriterTask extends XmlWriterTemplate<Relationship> {
 
     @Override
     protected Relationship makeCopyOf(Relationship original) {
-        return ShallowCopier.copyRelationship(original);
+        return ShallowCopier.shallowCopyRelationship(original);
     }
 
     @Override
