@@ -1,89 +1,100 @@
 package org.openhds.task;
 
+import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
-
+import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
+import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
 import java.io.File;
-//import java.util.Arrays;
-import java.util.Calendar;
-
-
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
+import org.junit.runner.RunWith;
+import org.openhds.controller.service.CurrentUser;
 import org.openhds.controller.service.IndividualService;
-import org.openhds.domain.model.Individual;
-import org.openhds.domain.util.CalendarUtil;
+import org.openhds.domain.model.PrivilegeConstants;
 import org.openhds.task.service.AsyncTaskService;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-public class IndividualXmlWriterTaskTest extends AbstractXmlWriterTest {
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseOperation;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
 
-    @Mock
-    private AsyncTaskService asyncTaskService;
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "/task-test-context.xml" })
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+		DirtiesContextTestExecutionListener.class,
+		TransactionalTestExecutionListener.class,
+		DbUnitTestExecutionListener.class })
+@DatabaseSetup(value = "/taskTestDb.xml", type = DatabaseOperation.REFRESH)
+public class IndividualXmlWriterTaskTest {
 
-    @Mock
-    private IndividualService individualService;
+	@Autowired
+	private AsyncTaskService asyncTaskService;
 
-    @Mock
-    private CalendarUtil calendarUtil;
+	@Autowired
+	private IndividualService individualService;
 
-    @Before
-    public void setUp() {
-        initMocks(this);
-    }
+	@Autowired
+	private CurrentUser currentUser;
 
-    @Test
-    public void shouldWriteXml() {
-        File individualFile = new File("individual.xml");
-        try {
-            IndividualXmlWriterTask task = new IndividualXmlWriterTask(asyncTaskService, individualService);
-            when(individualService.getTotalIndividualCount()).thenReturn(1L);
-           // when(individualService.getAllIndividualsInRange(0, 100)).thenReturn(Arrays.asList(createIndividual()));
-            when(calendarUtil.formatDate(any(Calendar.class))).thenReturn("02-09-1987");
+	@Before
+	public void setUp() {
+		initMocks(this);
+		currentUser.setProxyUser("admin", "test", new String[] {
+				PrivilegeConstants.CREATE_ENTITY,
+				PrivilegeConstants.VIEW_ENTITY });
+	}
 
-            task.writeXml(new TaskContext(individualFile));
+	// Current implementation of the IndividualXmlWriterTask will only generate
+	// XML for individuals that
+	// have a residency. This test presumes that only the individual1 of the
+	// test database will be written to xml
+	@Test
+	public void shouldWriteXml() {
 
-            @SuppressWarnings("unused")
-			ClassPathResource expected = new ClassPathResource("xml/individuals.xml");
+		File fileToWrite = new File("individuals-test.xml");
 
-          //  compareXmlDocuments(expected.getFile(), individualFile);
-        } catch (Exception e) {
-            fail();
-        } finally {
-            if (individualFile.exists()) {
-                individualFile.delete();
-            }
-        }
-    }
+		try {
 
+			IndividualXmlWriterTask task = new IndividualXmlWriterTask(
+					asyncTaskService, individualService);
+			TaskContext context = new TaskContext(fileToWrite);
+			task.writeXml(context);
 
+			assertTrue(fileToWrite.exists());
+			String xmlWritten = new String(Files.readAllBytes(Paths
+					.get(fileToWrite.getPath())));
+			assertXpathExists("/individuals", xmlWritten);
+			assertXpathExists("/individuals/individual", xmlWritten);
+			assertXpathExists("/individuals/individual/memberships", xmlWritten);
+			assertXpathExists("/individuals/individual/residencies", xmlWritten);
 
-	@SuppressWarnings("unused")
-	private Individual createIndividual() {
-        Individual individual = new Individual();
-        Calendar dob = Calendar.getInstance();
-        dob.set(Calendar.MONTH, Calendar.SEPTEMBER);
-        dob.set(Calendar.DATE, 2);
-        dob.set(Calendar.YEAR, 1987);
-        individual.setDob(dob);
+			assertXpathEvaluatesTo("individual1",
+					"/individuals/individual/extId", xmlWritten);
+			assertXpathEvaluatesTo("60", "/individuals/individual/age",
+					xmlWritten);
+			assertXpathEvaluatesTo("Individual",
+					"/individuals/individual/firstName", xmlWritten);
+			assertXpathEvaluatesTo("1",
+					"/individuals/individual/lastName", xmlWritten);
 
-        individual.setExtId("MBI01001");
-        individual.setFather(individualWithExtId("UNK"));
-        individual.setFirstName("Brian");
-        individual.setGender("M");
-        individual.setLastName("Harold");
-        individual.setMother(individualWithExtId("UNK"));
+		} catch (Exception e) {
+			fail("Problem testing Individual XML: " + e.getMessage());
 
-        return individual;
-    }
+		} finally {
+			if (fileToWrite.exists()) {
+				fileToWrite.delete();
+			}
+		}
+	}
 
-    private Individual individualWithExtId(String string) {
-        Individual indiv = new Individual();
-        indiv.setExtId(string);
-        return indiv;
-    }
 }
