@@ -8,34 +8,47 @@ import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.wrappers.Memberships;
 import org.openhds.domain.util.ShallowCopier;
+import org.openhds.task.support.FileResolver;
+import org.openhds.webservice.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/memberships")
 public class MembershipResource {
 
+    private static final Logger logger = LoggerFactory.getLogger(MembershipResource.class);
+	
     private MembershipService membershipService;
 
     private IndividualService individualService;
 
     private FieldBuilder fieldBuilder;
+    
+    private FileResolver fileResolver;
+
 
     @Autowired
     public MembershipResource(MembershipService membershipService, IndividualService individualService,
-                              FieldBuilder fieldBuilder) {
+                              FieldBuilder fieldBuilder, FileResolver fileResolver) {
         this.membershipService = membershipService;
         this.individualService = individualService;
         this.fieldBuilder = fieldBuilder;
+        this.fileResolver = fileResolver;
     }
 
     @RequestMapping(value = "/{extId}", method = RequestMethod.GET, produces = "application/xml")
@@ -94,5 +107,14 @@ public class MembershipResource {
         }
 
         return new ResponseEntity<Membership>(ShallowCopier.shallowCopyMembership(membership), HttpStatus.CREATED);
+    }
+    
+    @RequestMapping(value = "/cached", method = RequestMethod.GET)
+    public void getCachedMemberships(HttpServletResponse response) {
+        try {
+            CacheResponseWriter.writeResponse(fileResolver.resolveMembershipXmlFile(), response);
+        } catch (IOException e) {
+            logger.error("Problem writing membership xml file: " + e.getMessage());
+        }
     }
 }
