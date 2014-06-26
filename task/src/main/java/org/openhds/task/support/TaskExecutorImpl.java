@@ -40,7 +40,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     @Override
     public void executeMembershipXmlWriterTask() {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.MEMBERSHIP_TASK_NAME)) {
-            File membershipXmlFile = fileResolver.resolveResidencyXmlFile();
+            File membershipXmlFile = fileResolver.resolveMembershipXmlFile();
             membershipTaskWriter.writeXmlAsync(new TaskContext(membershipXmlFile));
         }
     }
