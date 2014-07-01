@@ -75,6 +75,13 @@ public class IndividualFormResource {
     public ResponseEntity<? extends Serializable> processForm(
             @RequestBody IndividualForm individualForm) {
 
+        // TODO: this is a temporary fix until we update the tablet to work around
+        // TODO: ODK Collect form field "relevancy" limitations
+        if (null == individualForm.getIndividualRelationshipToHeadOfHousehold()
+                || "null".equals(individualForm.getIndividualRelationshipToHeadOfHousehold())) {
+            individualForm.setIndividualRelationshipToHeadOfHousehold(HEAD_OF_HOUSEHOLD_SELF);
+        }
+
         ConstraintViolations cv = new ConstraintViolations();
 
         // collected when?
