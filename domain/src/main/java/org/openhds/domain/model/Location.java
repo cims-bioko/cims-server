@@ -80,6 +80,9 @@ public class Location
 
     @Description(description = "The name of the community that contains this location")
     private String communityName;
+    
+    @Description(description = "The name of the map area - disregarding Locality - that contains this location")
+    private String mapAreaName;
 
     public String getExtId() {
         return extId;
@@ -175,6 +178,14 @@ public class Location
 
     public void setCommunityName(String communityName) {
         this.communityName = communityName;
+    }
+    
+    public String getMapAreaName() {
+    	return mapAreaName;
+    }
+    
+    public void setMapAreaName(String mapAreaName) {
+    	this.mapAreaName = mapAreaName;
     }
 
     public static Location makeStub(String extId) {
