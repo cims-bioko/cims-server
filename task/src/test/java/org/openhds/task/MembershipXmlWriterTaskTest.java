@@ -29,6 +29,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/task-test-context.xml" })
@@ -37,6 +38,7 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 		TransactionalTestExecutionListener.class,
 		DbUnitTestExecutionListener.class })
 @DatabaseSetup(value = "/taskTestDb.xml", type = DatabaseOperation.REFRESH)
+@Transactional
 public class MembershipXmlWriterTaskTest {
 
 	@Autowired

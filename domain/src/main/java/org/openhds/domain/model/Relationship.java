@@ -1,10 +1,22 @@
 package org.openhds.domain.model;
 
 import org.openhds.domain.annotations.Description;
-import org.openhds.domain.constraint.*;
+import org.openhds.domain.constraint.CheckEndDateAndEndEventType;
+import org.openhds.domain.constraint.CheckEndDateNotBeforeStartDate;
+import org.openhds.domain.constraint.CheckEntityNotVoided;
+import org.openhds.domain.constraint.CheckFieldNotBlank;
+import org.openhds.domain.constraint.CheckIndividualNotUnknown;
+import org.openhds.domain.constraint.ExtensionStringConstraint;
+import org.openhds.domain.constraint.GenericEndDateEndEventConstraint;
+import org.openhds.domain.constraint.GenericStartEndDateConstraint;
+import org.openhds.domain.constraint.Searchable;
 import org.openhds.domain.util.CalendarAdapter;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;

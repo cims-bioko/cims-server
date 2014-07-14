@@ -1,8 +1,10 @@
 package org.openhds.domain.model;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import org.hibernate.annotations.GenericGenerator;
+import org.openhds.domain.annotations.Description;
+import org.openhds.domain.constraint.CheckFieldNotBlank;
+import org.openhds.domain.constraint.CheckInteger;
+import org.openhds.domain.constraint.Searchable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,11 +14,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import org.hibernate.annotations.GenericGenerator;
-import org.openhds.domain.annotations.Description;
-import org.openhds.domain.constraint.CheckFieldNotBlank;
-import org.openhds.domain.constraint.CheckInteger;
-import org.openhds.domain.constraint.Searchable;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Description(description="A Class Extension represents modeling a custom attribute for a " +
 		"particular entity. If an attribute (class extension) is not supported in the core " +

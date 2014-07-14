@@ -1,7 +1,8 @@
 package org.openhds.domain.model;
 
-import java.io.Serializable;
-import java.util.Calendar;
+import org.hibernate.annotations.GenericGenerator;
+import org.openhds.domain.annotations.Description;
+
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,9 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlTransient;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.openhds.domain.annotations.Description;
+import java.io.Serializable;
+import java.util.Calendar;
 
 /**
  * An AuditableEntity can be any entity stored in the database that needs to be audited

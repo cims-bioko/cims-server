@@ -1,6 +1,11 @@
 package org.openhds.domain.model;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import org.hibernate.annotations.GenericGenerator;
+import org.openhds.domain.annotations.Description;
+import org.openhds.domain.constraint.CheckFieldNotBlank;
+import org.openhds.domain.constraint.Searchable;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,14 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.openhds.domain.annotations.Description;
-import org.openhds.domain.constraint.CheckFieldNotBlank;
-import org.openhds.domain.constraint.Searchable;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import java.io.Serializable;
 
 @Description(description="The Location Hierarchy represents the overall structure " +
 		"of all Locations within the study area. The levels of the hierarchy are " +

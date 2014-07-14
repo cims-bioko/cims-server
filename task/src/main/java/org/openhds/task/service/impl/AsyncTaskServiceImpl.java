@@ -43,10 +43,10 @@ public class AsyncTaskServiceImpl implements AsyncTaskService {
      */
     @Override
     public void beginNewTaskSession() {
-        Session session = sessionFactory.getCurrentSession();
+        //Session session = sessionFactory.getCurrentSession();
         //Session session = SessionFactoryUtils.getSession(sessionFactory, true);
-        session.setFlushMode(FlushMode.MANUAL);
-        TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
+        //session.setFlushMode(FlushMode.MANUAL);
+        //TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
     }
 
     @Override
@@ -84,8 +84,8 @@ public class AsyncTaskServiceImpl implements AsyncTaskService {
      */
     @Override
     public void closeTaskSession() {
-        SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager.unbindResource(sessionFactory);
-        SessionFactoryUtils.closeSession(sessionHolder.getSession());
+        //SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager.unbindResource(sessionFactory);
+        //SessionFactoryUtils.closeSession(sessionHolder.getSession());
     }
 
     @Override

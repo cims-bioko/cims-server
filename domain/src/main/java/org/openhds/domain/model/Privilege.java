@@ -1,13 +1,15 @@
 package org.openhds.domain.model;
 
-import java.io.Serializable;
+import org.hibernate.annotations.GenericGenerator;
+import org.openhds.domain.annotations.Description;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
-import org.openhds.domain.annotations.Description;
+import java.io.Serializable;
+
 
 /**
  * @author Dave Roberge

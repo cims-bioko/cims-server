@@ -1,16 +1,17 @@
 package org.openhds.domain.model;
 
-import java.io.Serializable;
-import java.util.Calendar;
+import org.hibernate.annotations.GenericGenerator;
+import org.openhds.domain.annotations.Description;
+import org.openhds.domain.util.CalendarAdapter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.hibernate.annotations.GenericGenerator;
-import org.openhds.domain.annotations.Description;
-import org.openhds.domain.util.CalendarAdapter;
+import java.io.Serializable;
+import java.util.Calendar;
 
 @Entity
 @Table(name="demrates")

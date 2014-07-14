@@ -1,7 +1,11 @@
 package org.openhds.domain.model;
 
-import java.io.Serializable;
-import java.util.Calendar;
+import org.hibernate.annotations.GenericGenerator;
+import org.openhds.domain.annotations.Description;
+import org.openhds.domain.constraint.CheckEndDateNotBeforeStartDate;
+import org.openhds.domain.constraint.CheckInteger;
+import org.openhds.domain.constraint.GenericStartEndDateConstraint;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,12 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.openhds.domain.annotations.Description;
-import org.openhds.domain.constraint.CheckEndDateNotBeforeStartDate;
-import org.openhds.domain.constraint.CheckInteger;
-import org.openhds.domain.constraint.GenericStartEndDateConstraint;
+import java.io.Serializable;
+import java.util.Calendar;
 
 @Description(description="A Round represents a range of dates in which Visits " +
 		"can take place.")

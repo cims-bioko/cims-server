@@ -1,8 +1,10 @@
 package org.openhds.domain.model;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import org.hibernate.annotations.GenericGenerator;
+import org.openhds.domain.annotations.Description;
+import org.openhds.domain.constraint.CheckFieldNotBlank;
+import org.openhds.domain.constraint.Searchable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,12 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.NamedQuery;
-import org.openhds.domain.annotations.Description;
-import org.openhds.domain.constraint.CheckFieldNotBlank;
-import org.openhds.domain.constraint.Searchable;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Description(description="A User in the system. Users contain a group of Roles which " +
 		"define the actions they can take within OpenHDS. It contains descriptive " +

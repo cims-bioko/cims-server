@@ -1,6 +1,8 @@
 package org.openhds.domain.model;
 
-import java.io.Serializable;
+import org.hibernate.annotations.GenericGenerator;
+import org.openhds.domain.annotations.Description;
+import org.openhds.domain.constraint.CheckFieldNotBlank;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,9 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import org.hibernate.annotations.GenericGenerator;
-import org.openhds.domain.annotations.Description;
-import org.openhds.domain.constraint.CheckFieldNotBlank;
+import java.io.Serializable;
 
 @Entity
 @Table(name="extension")

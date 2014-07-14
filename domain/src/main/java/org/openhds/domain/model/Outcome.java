@@ -1,6 +1,11 @@
 package org.openhds.domain.model;
 
-import java.io.Serializable;
+import org.hibernate.annotations.GenericGenerator;
+import org.openhds.domain.annotations.Description;
+import org.openhds.domain.constraint.CheckEntityNotVoided;
+import org.openhds.domain.constraint.CheckFieldNotBlank;
+import org.openhds.domain.constraint.CheckIndividualNotUnknown;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,11 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
-import org.openhds.domain.annotations.Description;
-import org.openhds.domain.constraint.CheckEntityNotVoided;
-import org.openhds.domain.constraint.CheckFieldNotBlank;
-import org.openhds.domain.constraint.CheckIndividualNotUnknown;
+import java.io.Serializable;
 
 @Description(description="An Outcome represents a result from a Pregnancy. " +
 		"The Outcome contains information about the child and Memberships " +
