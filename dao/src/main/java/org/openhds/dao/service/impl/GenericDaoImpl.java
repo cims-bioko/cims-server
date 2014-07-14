@@ -1,22 +1,19 @@
 package org.openhds.dao.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Example;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
+import org.hibernate.metadata.ClassMetadata;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.AuditableEntity;
 import org.openhds.domain.model.Individual;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * A generic implementation of a Dao that simplifies Dao/BaseDaoImpl
@@ -201,7 +198,7 @@ public class GenericDaoImpl implements GenericDao {
     }
     
     @SuppressWarnings("unchecked")
-    public <T> Map<T,T> getClassMetaData() {
+    public <T> Map<String,ClassMetadata> getClassMetaData() {
     	return getSession().getSessionFactory().getAllClassMetadata();
     }
 
