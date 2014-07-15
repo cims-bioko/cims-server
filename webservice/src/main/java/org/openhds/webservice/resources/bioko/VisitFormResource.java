@@ -14,6 +14,8 @@ import org.openhds.domain.model.Visit;
 import org.openhds.domain.model.bioko.VisitForm;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +24,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 @RequestMapping("/visitForm")
 public class VisitFormResource {
+
+    private static final Logger logger = LoggerFactory.getLogger(VisitFormResource.class);
 
 	@Autowired
 	private EntityService entityService;
@@ -76,6 +82,7 @@ public class VisitFormResource {
 		}
 		visit.setVisitLocation(location);
 
+        visit.setExtId(visitForm.getVisitExtId());
 		// persist the visit
 		try {
 			visitService.createVisit(visit);
