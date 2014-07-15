@@ -96,4 +96,10 @@ public class Visit
         extensions = list;
     }
 
+    public static Visit makeStub(String extId) {
+        Visit stub = new Visit();
+        stub.setExtId(extId);
+        return stub;
+    }
+
 }
