@@ -93,6 +93,7 @@ public class MembershipResource {
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     public ResponseEntity<? extends Serializable> insertXml(@RequestBody Membership membership) {
         ConstraintViolations cv = new ConstraintViolations();
+        membership.setCollectedBy(fieldBuilder.referenceField(membership.getCollectedBy(), cv));
         membership.setSocialGroup(fieldBuilder.referenceField(membership.getSocialGroup(), cv));
         membership.setIndividual(fieldBuilder.referenceField(membership.getIndividual(), cv));
 
