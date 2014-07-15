@@ -47,7 +47,6 @@
 		<org.springframework.security.version>3.2.1.RELEASE</org.springframework.security.version>
 		<org.hibernate.core.version>4.2.14.Final</org.hibernate.core.version>
 		<org.hibernate.validator.version>4.3.1.Final</org.hibernate.validator.version>
-        <org.hibernate.annotations.version>3.5.6-Final</org.hibernate.annotations.version>
         <hibernate.validationMode>javax.persistence.validation.mode=NONE</hibernate.validationMode>
 		<slf4j.version>1.5.6</slf4j.version>
 	</properties>
@@ -194,11 +193,6 @@
                 <artifactId>javassist</artifactId>
                 <version>3.18.0-GA</version>
             </dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-annotations</artifactId>
-				<version>${org.hibernate.annotations.version}</version>
-			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-validator</artifactId>
