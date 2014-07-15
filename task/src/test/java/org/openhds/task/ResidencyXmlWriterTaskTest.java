@@ -3,6 +3,7 @@ package org.openhds.task;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import org.custommonkey.xmlunit.exceptions.XpathException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,8 +19,10 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
+import org.xml.sax.SAXException;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -59,6 +62,9 @@ public class ResidencyXmlWriterTaskTest {
     public void shouldWriteXml() {
 
         File fileToWrite = new File("residencies-test.xml");
+        if (fileToWrite.exists()) {
+            fileToWrite.delete();
+        }
 
         try {
             ResidencyXmlWriterTask task = new ResidencyXmlWriterTask(asyncTaskService, residencyService);
@@ -73,14 +79,16 @@ public class ResidencyXmlWriterTaskTest {
             assertXpathExists("/residencies/residency/startType", xmlWritten);
             assertXpathEvaluatesTo("individual1", "/residencies/residency/individual/extId", xmlWritten);
             assertXpathEvaluatesTo("testLocation", "/residencies/residency/location/extId", xmlWritten);
+        } catch (IOException e) {
+            fail("IOException testing Residency XML: " + e.getMessage());
+        } catch (SAXException e) {
+            fail("SAXException testing Residency XML: " + e.getMessage());
+        } catch (XpathException e) {
+            fail("XpathException testing Residency XML: " + e.getMessage());
+        }
 
-        } catch (Exception e) {
-            fail("Problem testing Residency XML: " + e.getMessage());
-
-        } finally {
-            if (fileToWrite.exists()) {
-                fileToWrite.delete();
-            }
+        if (fileToWrite.exists()) {
+            fileToWrite.delete();
         }
     }
 }

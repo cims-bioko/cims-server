@@ -21,7 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * Template for writing entities to an XML file
- * 
+ *
  * @param <T>
  *            The type of entities to write to the file
  */
@@ -37,14 +37,13 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
         this.taskName = taskName;
         calendarAdapter = new CalendarAdapter();
     }
-    
+
     @Async
     public void writeXmlAsync(TaskContext taskContext) {
-    	writeXml(taskContext);
+        writeXml(taskContext);
     }
 
     public void writeXml(TaskContext taskContext) {
-        asyncTaskService.beginNewTaskSession();
 
         try {
             OutputStream outputStream = new FileOutputStream(taskContext.getDestinationFile());
@@ -70,12 +69,9 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
                     marshaller.marshal(copy, xmlStreamWriter);
                     itemsWritten += 1;
                 }
-                // clear the session so hibernate empties the cache
-                // this is necessary so that it doesn't consume lots and lots of
-                // memory
-                // as the size of the database grows
-                // TODO: Is there a better way of handling this? Stateless
-                // Sessions?
+                // Empty the Hibernate cache
+                // Prevents excessive memory use for large data sets like locations or individuals
+                // See: http://docs.jboss.org/hibernate/core/3.3/reference/en/html/batch.html
                 asyncTaskService.clearSession();
                 asyncTaskService.updateTaskProgress(taskName, itemsWritten);
             }
@@ -89,10 +85,9 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
             inputStream.close();
 
             asyncTaskService.finishTask(taskName, itemsWritten, md5);
+
         } catch (Exception e) {
             asyncTaskService.finishTask(taskName, 0, e.getMessage());
-        } finally {
-            asyncTaskService.closeTaskSession();
         }
     }
 

@@ -8,9 +8,11 @@ import static org.junit.Assert.fail;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.custommonkey.xmlunit.exceptions.XpathException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,65 +32,71 @@ import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.springframework.transaction.annotation.Transactional;
+import org.xml.sax.SAXException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/task-test-context.xml" })
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
-		DirtiesContextTestExecutionListener.class,
-		TransactionalTestExecutionListener.class,
-		DbUnitTestExecutionListener.class })
+        DirtiesContextTestExecutionListener.class,
+        TransactionalTestExecutionListener.class,
+        DbUnitTestExecutionListener.class })
 @DatabaseSetup(value = "/taskTestDb.xml", type = DatabaseOperation.REFRESH)
 @Transactional
 public class MembershipXmlWriterTaskTest {
 
-	@Autowired
-	private AsyncTaskService asyncTaskService;
+    @Autowired
+    private AsyncTaskService asyncTaskService;
 
-	@Autowired
-	private MembershipService membershipService;
+    @Autowired
+    private MembershipService membershipService;
 
-	@Autowired
-	private CurrentUser currentUser;
+    @Autowired
+    private CurrentUser currentUser;
 
-	@Before
-	public void setUp() {
-		initMocks(this);
-		currentUser.setProxyUser("admin", "test", new String[] {
-				PrivilegeConstants.CREATE_ENTITY,
-				PrivilegeConstants.VIEW_ENTITY });
-	}
+    @Before
+    public void setUp() {
+        initMocks(this);
+        currentUser.setProxyUser("admin", "test", new String[] {
+                PrivilegeConstants.CREATE_ENTITY,
+                PrivilegeConstants.VIEW_ENTITY });
+    }
 
-	@Test
-	public void shouldWriteXml() {
+    @Test
+    public void shouldWriteXml() {
 
-		File fileToWrite = new File("memberships-test.xml");
+        File fileToWrite = new File("memberships-test.xml");
+        if (fileToWrite.exists()) {
+            fileToWrite.delete();
+        }
 
-		try {
-			MembershipXmlWriterTask task = new MembershipXmlWriterTask(
-					asyncTaskService, membershipService);
-			TaskContext context = new TaskContext(fileToWrite);
-			task.writeXml(context);
+        try {
+            MembershipXmlWriterTask task = new MembershipXmlWriterTask(
+                    asyncTaskService, membershipService);
+            TaskContext context = new TaskContext(fileToWrite);
+            task.writeXml(context);
 
-			assertTrue(fileToWrite.exists());
-			String xmlWritten = new String(Files.readAllBytes(Paths
-					.get(fileToWrite.getPath())));
-			assertXpathExists("/memberships", xmlWritten);
-			assertXpathExists("/memberships/membership", xmlWritten);
+            assertTrue(fileToWrite.exists());
+            String xmlWritten = new String(Files.readAllBytes(Paths
+                    .get(fileToWrite.getPath())));
+            assertXpathExists("/memberships", xmlWritten);
+            assertXpathExists("/memberships/membership", xmlWritten);
 
-			assertXpathEvaluatesTo("individual1",
-					"/memberships/membership/individual/extId", xmlWritten);
-			assertXpathEvaluatesTo("sg123456789",
-					"/memberships/membership/socialGroup/extId", xmlWritten);
-			assertXpathEvaluatesTo("1",
-					"/memberships/membership/bIsToA", xmlWritten);
+            assertXpathEvaluatesTo("individual1",
+                    "/memberships/membership/individual/extId", xmlWritten);
+            assertXpathEvaluatesTo("sg123456789",
+                    "/memberships/membership/socialGroup/extId", xmlWritten);
+            assertXpathEvaluatesTo("1",
+                    "/memberships/membership/bIsToA", xmlWritten);
+        } catch (IOException e) {
+            fail("IOException testing Membership XML: " + e.getMessage());
+        } catch (SAXException e) {
+            fail("SAXException testing Membership XML: " + e.getMessage());
+        } catch (XpathException e) {
+            fail("XpathException testing Membership XML: " + e.getMessage());
+        }
 
-		} catch (Exception e) {
-			fail("Problem testing Membership XML: " + e.getMessage());
-
-		} finally {
-			if (fileToWrite.exists()) {
-				fileToWrite.delete();
-			}
-		}
-	}
+        if (fileToWrite.exists()) {
+            fileToWrite.delete();
+        }
+    }
 }

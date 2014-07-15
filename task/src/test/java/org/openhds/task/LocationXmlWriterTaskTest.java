@@ -6,9 +6,11 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import org.dom4j.DocumentException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -39,6 +41,10 @@ public class LocationXmlWriterTaskTest extends AbstractXmlWriterTest {
     @Ignore
     public void shouldWriteXml() {
         File locationFile = new File("location.xml");
+        if (locationFile.exists()) {
+            locationFile.delete();
+        }
+
         try {
             LocationXmlWriterTask task = new LocationXmlWriterTask(asyncTaskService, calendarUtil, locationService);
             when(locationService.getTotalLocationCount()).thenReturn(1L);
@@ -50,12 +56,14 @@ public class LocationXmlWriterTaskTest extends AbstractXmlWriterTest {
             ClassPathResource expected = new ClassPathResource("xml/locations.xml");
 
             compareXmlDocuments(expected.getFile(), locationFile);
-        } catch (Exception e) {
-            fail();
-        } finally {
-            if (locationFile.exists()) {
-                locationFile.delete();
-            }
+        } catch (DocumentException e) {
+            fail("DocumentException testing Location XML: " + e.getMessage());
+        } catch (IOException e) {
+            fail("IOException testing Location XML: " + e.getMessage());
+        }
+
+        if (locationFile.exists()) {
+            locationFile.delete();
         }
     }
 

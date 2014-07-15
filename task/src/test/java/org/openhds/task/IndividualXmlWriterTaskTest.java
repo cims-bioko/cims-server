@@ -66,8 +66,6 @@ public class IndividualXmlWriterTaskTest {
     @Test
     public void shouldWriteXml() {
 
-
-
         File fileToWrite = new File("individuals-test.xml");
         if (fileToWrite.exists()) {
             fileToWrite.delete();
