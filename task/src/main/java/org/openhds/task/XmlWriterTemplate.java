@@ -72,7 +72,7 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
 
                 // Empty the Hibernate cache
                 // Prevents excessive memory use for large data sets like locations or individuals
-                // See: http://docs.jboss.org/hibernate/core/3.3/reference/en/html/batch.html
+                // See: http://docs.jboss.org/hibernate/orm/4.0/devguide/en-US/html/ch04.html
                 asyncTaskService.clearSession();
             }
 
