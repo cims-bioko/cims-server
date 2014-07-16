@@ -1,23 +1,20 @@
 package org.openhds.task;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.openhds.domain.util.CalendarAdapter;
+import org.openhds.task.service.AsyncTaskService;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
-
-import org.apache.commons.codec.digest.DigestUtils;
-import org.openhds.domain.util.CalendarAdapter;
-import org.openhds.domain.util.CalendarUtil;
-import org.openhds.task.service.AsyncTaskService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.core.context.SecurityContextHolder;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
 
 /**
  * Template for writing entities to an XML file
@@ -39,6 +36,7 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
     }
 
     @Async
+    @Transactional
     public void writeXmlAsync(TaskContext taskContext) {
         writeXml(taskContext);
     }
