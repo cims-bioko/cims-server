@@ -67,11 +67,13 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
                     marshaller.marshal(copy, xmlStreamWriter);
                     itemsWritten += 1;
                 }
+
+                asyncTaskService.updateTaskProgress(taskName, itemsWritten);
+
                 // Empty the Hibernate cache
                 // Prevents excessive memory use for large data sets like locations or individuals
                 // See: http://docs.jboss.org/hibernate/core/3.3/reference/en/html/batch.html
                 asyncTaskService.clearSession();
-                asyncTaskService.updateTaskProgress(taskName, itemsWritten);
             }
 
             xmlStreamWriter.writeEndElement();
