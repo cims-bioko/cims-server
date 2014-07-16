@@ -87,7 +87,7 @@ public abstract class Generator<T> extends LuhnValidator {
 	 * This should be used especially if the id is being entered manually.
 	 */
 	public final boolean validateIdLength(String id, IdScheme scheme) throws ConstraintViolations {	
-		if (id.length() != scheme.length)
+		if (scheme.length > 0 && id.length() != scheme.length)
 			throw new ConstraintViolations(id + " is not of the required length as specified in the IdScheme. " +
 					"It must be " + scheme.length + " characters long.");  
 		return true;
