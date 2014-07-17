@@ -37,14 +37,8 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class })
-@DatabaseSetup(value = "/visitFormResourceDb.xml", type = DatabaseOperation.REFRESH)
-public class VisitFormResourceTest {
-	
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
-    @Autowired
-    private FilterChainProxy springSecurityFilterChain;
+@DatabaseSetup(value = "/formResourceTestDb.xml", type = DatabaseOperation.REFRESH)
+public class VisitFormResourceTest extends AbstractFormResourceTest {
 
     @Autowired
     private GenericDao genericDao;
@@ -68,10 +62,9 @@ public class VisitFormResourceTest {
 	
     @Before
     public void setUp() throws Exception {
-        mockMvc = MockMvcBuilders.webApplicationContextSetup(webApplicationContext)
-                .addFilter(springSecurityFilterChain).build();
+        mockMvc = buildMockMvc();
 
-        session = getMockHttpSession("admin", "test");
+        session = getMockHttpSession("admin", "test", mockMvc);
     }
 	
     @Test
@@ -85,14 +78,7 @@ public class VisitFormResourceTest {
 
         verifyVisitCrud("1234567890aa");
     }
-    
-    private MockHttpSession getMockHttpSession(String username, String password) throws Exception {
-        return (MockHttpSession) mockMvc
-                .perform(
-                        post("/loginProcess").param("j_username", username).param("j_password",
-                                password)).andReturn().getRequest().getSession();
-    }
-    
+
     private void verifyVisitCrud(String visitExtId) {
     	Visit visit = genericDao.findByProperty(Visit.class, "extId", visitExtId);
     	assertNotNull(visit);
