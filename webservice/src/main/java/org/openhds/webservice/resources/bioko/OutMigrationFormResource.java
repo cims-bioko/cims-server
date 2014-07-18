@@ -25,7 +25,7 @@ import java.io.Serializable;
 
 @Controller
 @RequestMapping("/outMigrationForm")
-public class OutMigrationFormResource {
+public class OutMigrationFormResource extends AbstractFormResource {
 
     @Autowired
     OutMigrationService outMigrationService;
@@ -79,23 +79,5 @@ public class OutMigrationFormResource {
         return new ResponseEntity<OutMigrationForm>(outMigrationForm, HttpStatus.CREATED);
 
     }
-
-    private ResponseEntity<WebServiceCallException> requestError(String message) {
-        WebServiceCallException error = new WebServiceCallException();
-        error.getErrors().add(message);
-        return new ResponseEntity<WebServiceCallException>(error, HttpStatus.BAD_REQUEST);
-    }
-
-    private ResponseEntity<WebServiceCallException> serverError(String message) {
-        WebServiceCallException error = new WebServiceCallException();
-        error.getErrors().add(message);
-        return new ResponseEntity<WebServiceCallException>(error, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    private ResponseEntity<WebServiceCallException> requestError(ConstraintViolations cv) {
-        return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv),
-                HttpStatus.BAD_REQUEST);
-    }
-
 
 }

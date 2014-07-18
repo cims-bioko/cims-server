@@ -1,7 +1,11 @@
 package org.openhds.integration.bioko;
 
 
+import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.webservice.WebServiceCallException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpSession;
 
 import org.springframework.security.web.FilterChainProxy;
@@ -26,6 +30,7 @@ public abstract class AbstractFormResourceTest {
                         post("/loginProcess").param("j_username", username).param("j_password",
                                 password)).andReturn().getRequest().getSession();
     }
+
     protected MockMvc buildMockMvc() {
         return MockMvcBuilders.webApplicationContextSetup(webApplicationContext)
                 .addFilter(springSecurityFilterChain).build();

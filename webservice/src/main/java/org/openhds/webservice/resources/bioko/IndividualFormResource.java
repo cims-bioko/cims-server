@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/individualForm")
-public class IndividualFormResource {
+public class IndividualFormResource extends AbstractFormResource {
     private static final Logger logger = LoggerFactory.getLogger(IndividualFormResource.class);
 
     // TODO: value codes can be configured by projects
@@ -412,20 +412,4 @@ public class IndividualFormResource {
         }
     }
 
-    private ResponseEntity<WebServiceCallException> requestError(String message) {
-        WebServiceCallException error = new WebServiceCallException();
-        error.getErrors().add(message);
-        return new ResponseEntity<WebServiceCallException>(error, HttpStatus.BAD_REQUEST);
-    }
-
-    private ResponseEntity<WebServiceCallException> serverError(String message) {
-        WebServiceCallException error = new WebServiceCallException();
-        error.getErrors().add(message);
-        return new ResponseEntity<WebServiceCallException>(error, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    private ResponseEntity<WebServiceCallException> requestError(ConstraintViolations cv) {
-        return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv),
-                HttpStatus.BAD_REQUEST);
-    }
 }

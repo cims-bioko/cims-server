@@ -45,12 +45,6 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.s
 public class OutMigrationFormResourceTest extends AbstractFormResourceTest {
 
     @Autowired
-    private WebApplicationContext webApplicationContext;
-
-    @Autowired
-    private FilterChainProxy springSecurityFilterChain;
-
-    @Autowired
     private GenericDao genericDao;
 
     private MockHttpSession session;
@@ -75,7 +69,6 @@ public class OutMigrationFormResourceTest extends AbstractFormResourceTest {
     @Before
     public void setUp() throws Exception {
         mockMvc = buildMockMvc();
-
         session = getMockHttpSession("admin", "test", mockMvc);
     }
 

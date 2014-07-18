@@ -43,7 +43,7 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
         DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class })
 @DatabaseSetup(value = "/individualFormResourceDb.xml", type = DatabaseOperation.REFRESH)
-public class IndividualFormResourceTest {
+public class IndividualFormResourceTest extends AbstractFormResourceTest {
 
     private static final String A_DATE = "2000-01-01T00:00:00-05:00";
     private static final String FORMATTED_DATE = "2013-06-13";
@@ -130,12 +130,6 @@ public class IndividualFormResourceTest {
             + "<individual_dip>12345</individual_dip>"
             + "<individual_member_status>permanent</individual_member_status>"
             + "</individualForm>";
-    
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
-    @Autowired
-    private FilterChainProxy springSecurityFilterChain;
 
     @Autowired
     private GenericDao genericDao;
@@ -146,10 +140,8 @@ public class IndividualFormResourceTest {
 
     @Before
     public void setUp() throws Exception {
-        mockMvc = MockMvcBuilders.webApplicationContextSetup(webApplicationContext)
-                .addFilter(springSecurityFilterChain).build();
-
-        session = getMockHttpSession("admin", "test");
+        mockMvc = buildMockMvc();
+        session = getMockHttpSession("admin", "test", mockMvc);
     }
 
     @Test
@@ -293,10 +285,4 @@ public class IndividualFormResourceTest {
         assertEquals(membershipType, relationship.getaIsToB());
     }
 
-    private MockHttpSession getMockHttpSession(String username, String password) throws Exception {
-        return (MockHttpSession) mockMvc
-                .perform(
-                        post("/loginProcess").param("j_username", username).param("j_password",
-                                password)).andReturn().getRequest().getSession();
-    }
 }

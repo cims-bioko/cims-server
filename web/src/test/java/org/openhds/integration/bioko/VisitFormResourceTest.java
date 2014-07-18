@@ -63,7 +63,6 @@ public class VisitFormResourceTest extends AbstractFormResourceTest {
     @Before
     public void setUp() throws Exception {
         mockMvc = buildMockMvc();
-
         session = getMockHttpSession("admin", "test", mockMvc);
     }
 	
