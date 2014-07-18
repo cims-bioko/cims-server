@@ -1,7 +1,6 @@
 package org.openhds.webservice.resources.bioko;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
@@ -12,7 +11,6 @@ import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Visit;
 import org.openhds.domain.model.bioko.VisitForm;
-import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +27,7 @@ import org.slf4j.LoggerFactory;
 
 @Controller
 @RequestMapping("/visitForm")
-public class VisitFormResource {
+public class VisitFormResource extends AbstractFormResource {
 
     private static final Logger logger = LoggerFactory.getLogger(VisitFormResource.class);
 
@@ -45,21 +43,16 @@ public class VisitFormResource {
 	@Autowired
 	private LocationHierarchyService locationHierarchyService;
 
-	@Autowired
-	private FieldBuilder fieldBuilder;
 
 	@RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
 	@Transactional
 	public ResponseEntity<? extends Serializable> processForm(
 			@RequestBody VisitForm visitForm) {
 
-		ConstraintViolations cv = new ConstraintViolations();
-		Visit visit = new Visit();
+        Visit visit = new Visit();
 
 		// Bioko project does not support Rounds, all visits will be considered
-		// as Round 1 for conveniency
-		// TODO: Should the visit model and underlying schema be stripped of
-		// "round"?
+		// as Round 1
 		visit.setRoundNumber(1);
 		visit.setVisitDate(visitForm.getVisitDate());
 
@@ -83,38 +76,28 @@ public class VisitFormResource {
 		visit.setVisitLocation(location);
 
         visit.setExtId(visitForm.getVisitExtId());
-		// persist the visit
-		try {
-			visitService.createVisit(visit);
-		} catch (ConstraintViolations e) {
-			return requestError(e);
-		} catch (Exception e) {
-			return serverError("General Error updating or saving visit"
-					+ e.getMessage());
-		}
+
+        //check to see if Visit with the same extId already exists: visits with the same extId
+        //by definition will not contain different data, so there's no need to call an update()
+        Visit exisitingVisit = null;
+        try {
+            exisitingVisit = visitService.findVisitById(visitForm.getVisitExtId(), "Non-existent visit will throw an exception");
+        } catch (Exception e) {
+
+        }
+        if (null == exisitingVisit) {
+            // persist the visit
+            try {
+                visitService.createVisit(visit);
+            } catch (ConstraintViolations e) {
+                return requestError(e);
+            } catch (Exception e) {
+                return serverError("General Error updating or saving visit"
+                        + e.getMessage());
+            }
+        }
 
 		return new ResponseEntity<VisitForm>(visitForm, HttpStatus.CREATED);
-
-	}
-
-	private ResponseEntity<WebServiceCallException> requestError(String message) {
-		WebServiceCallException error = new WebServiceCallException();
-		error.getErrors().add(message);
-		return new ResponseEntity<WebServiceCallException>(error,
-				HttpStatus.BAD_REQUEST);
-	}
-
-	private ResponseEntity<WebServiceCallException> serverError(String message) {
-		WebServiceCallException error = new WebServiceCallException();
-		error.getErrors().add(message);
-		return new ResponseEntity<WebServiceCallException>(error,
-				HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
-	private ResponseEntity<WebServiceCallException> requestError(
-			ConstraintViolations cv) {
-		return new ResponseEntity<WebServiceCallException>(
-				new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
 	}
 
 }
