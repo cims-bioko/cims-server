@@ -21,9 +21,8 @@ public class OutMigrationForm implements Serializable {
     @XmlElement(name = "processed_by_mirth")
     private boolean processedByMirth;
 
-    @XmlElement(name = "individual_ext_id")
+    @XmlElement(name = "out_migration_individual_ext_id")
     private String individualExtId;
-
 
     @XmlElement(name = "field_worker_ext_id")
     private String fieldWorkerExtId;
@@ -31,16 +30,15 @@ public class OutMigrationForm implements Serializable {
     @XmlElement(name = "visit_ext_id")
     private String visitExtId;
 
-    @XmlElement(name = "date_of_migration")
+    @XmlElement(name = "out_migration_date")
     @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
     private Calendar dateOfMigration;
 
-    @XmlElement(name = "name_of_destination")
+    @XmlElement(name = "out_migration_name_of_destination")
     private String nameOfDestination;
 
-    @XmlElement(name = "reason_for_out_migration")
+    @XmlElement(name = "out_migration_reason")
     private String reasonForOutMigration;
-
 
     public boolean isProcessedByMirth() {
         return processedByMirth;
