@@ -68,6 +68,7 @@ public class ShallowCopier {
                 Location locationStub = Location.makeStub(currentResidency.getLocation().getExtId());
                 locationStub.setLocationLevel(null);
                 Residency residencyStub = Residency.makeStub(locationStub,individualStub);
+                residencyStub.setEndType(currentResidency.getEndType());
                 copy.getAllResidencies().add(residencyStub);
             }
         } catch (Exception e) {
@@ -178,5 +179,18 @@ public class ShallowCopier {
         SocialGroup sgStub = SocialGroup.makeStub(membership.getSocialGroup().getExtId());
         copy.setSocialGroup(sgStub);
         return copy;
+    }
+
+    public static PregnancyOutcome shallowCopyPregnancyOutcome(PregnancyOutcome outcome) {
+        PregnancyOutcome copy = new PregnancyOutcome();
+        copy.setOutcomeDate(outcome.getOutcomeDate());
+        copy.setChildEverBorn(outcome.getChildEverBorn());
+        copy.setNumberOfLiveBirths(outcome.getNumberOfLiveBirths());
+        copy.setFather(Individual.makeStub(outcome.getFather().getExtId()));
+        copy.setMother(Individual.makeStub(outcome.getMother().getExtId()));
+        copy.setVisit(Visit.makeStub(outcome.getVisit().getExtId()));
+        return copy;
+
+
     }
 }
