@@ -43,6 +43,10 @@ public class IndividualFormResource extends AbstractFormResource {
     private static final String HEAD_OF_HOUSEHOLD_SELF = "1";
     private static final String HOUSEHOLD_GROUP_TYPE = "COH";
     private static final String START_TYPE = "IndividualForm";
+
+    //data model assumes that all newly created Memberships have an endType of "NA"
+    private static final String NOT_APPLICABLE_END_TYPE = "NA";
+
     private static final String MALE = "M";
     private static final String FEMALE = "F";
     private static final String UNKNOWN_EXTID = "UNK";
@@ -340,6 +344,7 @@ public class IndividualFormResource extends AbstractFormResource {
         membership.setCollectedBy(collectedBy);
         membership.setStartDate(collectionTime);
         membership.setStartType(START_TYPE);
+        membership.setEndType(NOT_APPLICABLE_END_TYPE);
         membership.setbIsToA(membershipType);
 
         // attach to individual
