@@ -104,8 +104,7 @@ public class FieldBuilder {
             violations.addViolations("No location hierarchy level provided");
         } else {
             try {
-                return locationHierarchyService.findLocationHierarchyById(locationLevel.getExtId(),
-                        "Invalid Location Hierarchy Id");
+                return locationHierarchyService.findLocationHierarchyById(locationLevel.getExtId());
             } catch (Exception e) {
                 violations.addViolations("Invalid Location Hierarchy Id");
             }

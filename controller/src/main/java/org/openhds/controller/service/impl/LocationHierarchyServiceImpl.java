@@ -358,7 +358,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     /**
      * Find the locationHierarchy item by id, as long as it's a leaf
      */
-    public LocationHierarchy findLocationHierarchyById(String locationHierarchyId, String msg) throws Exception {
+    public LocationHierarchy findLocationHierarchyById(String locationHierarchyId) throws Exception {
     	List<LocationHierarchy> hierarchyList = genericDao.findAll(LocationHierarchy.class, false);
     	
     	for (LocationHierarchy item : hierarchyList) {
