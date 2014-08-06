@@ -98,10 +98,16 @@ public class ShallowCopier {
         copy.setLongitude(getEmptyStringIfBlank(loc.getLongitude()));
 
         // extensions for bioko island project
+        copy.setRegionName(getEmptyStringIfBlank(loc.getRegionName()));
+        copy.setProvinceName(getEmptyStringIfBlank(loc.getProvinceName()));
+        copy.setDistrictName(getEmptyStringIfBlank(loc.getDistrictName()));
+        copy.setSubDistrictName(getEmptyStringIfBlank(loc.getSubDistrictName()));
         copy.setSectorName(getEmptyStringIfBlank(loc.getSectorName()));
         copy.setLocalityName(getEmptyStringIfBlank(loc.getLocalityName()));
         copy.setCommunityName(getEmptyStringIfBlank(loc.getCommunityName()));
         copy.setMapAreaName(getEmptyStringIfBlank(loc.getMapAreaName()));
+        copy.setBuildingNumber(getEmptyStringIfBlank(loc.getBuildingNumber()));
+        copy.setFloorNumber(getEmptyStringIfBlank(loc.getFloorNumber()));
 
         LocationHierarchy level = new LocationHierarchy();
         level.setExtId(loc.getLocationLevel().getExtId());

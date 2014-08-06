@@ -72,7 +72,27 @@ public class Location
     @JoinColumn(name = "location_uuid")
     private List<Residency> residencies;
 
+
+
     // Extensions for bioko island project
+    @Description(description = "The number of this building within a sector")
+    private String buildingNumber;
+
+    @Description(description = "The floor number within the building this location is associated with")
+    private String floorNumber;
+
+    @Description(description = "The name of the Region that contains this location")
+    private String regionName;
+
+    @Description(description = "The name of the Province that contains this location")
+    private String provinceName;
+
+    @Description(description = "The name of the Sub District that contains this location")
+    private String subDistrictName;
+
+    @Description(description = "The name of the District that contains this location")
+    private String districtName;
+
     @Description(description = "The name of the map sector that contains this location")
     private String sectorName;
 
@@ -189,11 +209,36 @@ public class Location
     	this.mapAreaName = mapAreaName;
     }
 
+    public String getBuildingNumber() { return buildingNumber; }
+
+    public void setBuildingNumber(String buildingNumber) { this.buildingNumber = buildingNumber; }
+
+    public String getFloorNumber() { return floorNumber; }
+
+    public void setFloorNumber(String floorNumber) { this.floorNumber = floorNumber; }
+
+    public String getRegionName() { return regionName; }
+
+    public void setRegionName(String regionName) { this.regionName = regionName; }
+
+    public String getProvinceName() { return provinceName; }
+
+    public void setProvinceName(String provinceName) { this.provinceName = provinceName; }
+
+    public String getSubDistrictName() { return subDistrictName; }
+
+    public void setSubDistrictName(String subDistrictName) { this.subDistrictName = subDistrictName; }
+
+    public String getDistrictName() { return districtName; }
+
+    public void setDistrictName(String districtName) { this.districtName = districtName; }
+
     public static Location makeStub(String extId) {
 
         Location stub = new Location();
         stub.setExtId(extId);
         return stub;
+
     }
 
     @Override
