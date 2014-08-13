@@ -116,8 +116,12 @@ public class LocationFormResource extends AbstractFormResource{
         location.setLocationName(locationForm.getLocationName());
         location.setLocationType(locationForm.getLocationType());
 
-
-
+        location.setBuildingNumber(locationForm.getBuildingNumber());
+        location.setFloorNumber(locationForm.getFloorNumber());
+        location.setProvinceName(locationForm.getProvinceName());
+        location.setRegionName(locationForm.getRegionName());
+        location.setSubDistrictName(locationForm.getSubDistrictName());
+        location.setDistrictName(locationForm.getSubDistrictName());
 
     }
     private static Calendar getDateInPast() {
