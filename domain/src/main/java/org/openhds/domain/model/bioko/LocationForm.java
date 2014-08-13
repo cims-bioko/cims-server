@@ -40,61 +40,17 @@ public class LocationForm implements Serializable{
     @XmlElement(name = "map_area_name")
     private String mapAreaName;
 
-    @XmlElement(name= "province_name")
-    private String provinceName;
-
-    @XmlElement(name= "region_name")
-    private String regionName;
-
-    @XmlElement(name= "sub_district_name")
-    private String subDistrictName;
-
-    @XmlElement(name= "district_name")
-    private String districtName;
-
     @XmlElement(name = "locality_name")
     private String localityName;
 
     @XmlElement(name = "sector_name")
     private String sectorName;
 
-    @XmlElement(name = "building_number")
+    @XmlElement(name = "location_building_number")
     private String buildingNumber;
 
-    @XmlElement(name = "floor_number")
+    @XmlElement(name = "location_floor_number")
     private String floorNumber;
-
-    public String getProvinceName() {
-        return provinceName;
-    }
-
-    public void setProvinceName(String provinceName) {
-        this.provinceName = provinceName;
-    }
-
-    public String getRegionName() {
-        return regionName;
-    }
-
-    public void setRegionName(String regionName) {
-        this.regionName = regionName;
-    }
-
-    public String getSubDistrictName() {
-        return subDistrictName;
-    }
-
-    public void setSubDistrictName(String subDistrictName) {
-        this.subDistrictName = subDistrictName;
-    }
-
-    public String getDistrictName() {
-        return districtName;
-    }
-
-    public void setDistrictName(String districtName) {
-        this.districtName = districtName;
-    }
 
     public String getBuildingNumber() {
         return buildingNumber;
