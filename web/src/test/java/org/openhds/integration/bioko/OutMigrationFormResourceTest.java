@@ -14,7 +14,6 @@ import org.openhds.integration.util.WebContextLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -22,11 +21,9 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.web.server.MockMvc;
-import org.springframework.test.web.server.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.openhds.domain.model.Residency;
-import org.springframework.web.context.WebApplicationContext;
 
 
 import static org.junit.Assert.assertEquals;
@@ -53,7 +50,9 @@ public class OutMigrationFormResourceTest extends AbstractFormResourceTest {
 
     private static final String A_DATE = "2000-01-01T00:00:00-05:00";
 
-    private static final String OUTMIGRATION_FORM_XML =
+    private static final String DATE_PRIOR_TO_RESIDENCY = "1950-01-01T00:00:00-05:00";
+
+    private static final String OUTMIGRATION_FORM_XML_VALID =
             "<outMigrationForm>"
                     + "<processed_by_mirth>false</processed_by_mirth>"
                     + "<out_migration_individual_ext_id>individual1</out_migration_individual_ext_id>"
@@ -61,6 +60,19 @@ public class OutMigrationFormResourceTest extends AbstractFormResourceTest {
                     + "<visit_ext_id>migrateVisit</visit_ext_id>"
                     + "<out_migration_date>"
                     + A_DATE
+                    + "</out_migration_date>"
+                    + "<out_migration_name_of_destination>DestinationName</out_migration_name_of_destination>"
+                    + "<out_migration_reason>ReasonForMigration</out_migration_reason>"
+                    + "</outMigrationForm>";
+
+    private static final String OUTMIGRATION_FORM_XML_INVALID_DATE =
+            "<outMigrationForm>"
+                    + "<processed_by_mirth>false</processed_by_mirth>"
+                    + "<out_migration_individual_ext_id>individual2</out_migration_individual_ext_id>"
+                    + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>"
+                    + "<visit_ext_id>migrateVisit</visit_ext_id>"
+                    + "<out_migration_date>"
+                    + DATE_PRIOR_TO_RESIDENCY
                     + "</out_migration_date>"
                     + "<out_migration_name_of_destination>DestinationName</out_migration_name_of_destination>"
                     + "<out_migration_reason>ReasonForMigration</out_migration_reason>"
@@ -77,7 +89,7 @@ public class OutMigrationFormResourceTest extends AbstractFormResourceTest {
         mockMvc.perform(
                 post("/outMigrationForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(OUTMIGRATION_FORM_XML.getBytes()))
+                        .body(OUTMIGRATION_FORM_XML_VALID.getBytes()))
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
@@ -96,7 +108,27 @@ public class OutMigrationFormResourceTest extends AbstractFormResourceTest {
         assertEquals("DestinationName", outMigration.getDestination());
         Membership membership = genericDao.findByProperty(Membership.class, "individual", individual);
         assertEquals("OMG", membership.getEndType());
+    }
 
+    @Test
+    public void testPostOutMigrationFormXmlInvalidDate() throws Exception {
+        mockMvc.perform(
+                post("/outMigrationForm").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(OUTMIGRATION_FORM_XML_INVALID_DATE.getBytes()))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+        verifyOutMigrationNotPersisted("individual2");
+
+    }
+
+    private void verifyOutMigrationNotPersisted(String individualExtId) {
+
+        Individual individual = genericDao.findByProperty(Individual.class, "extId", individualExtId);
+        Residency residency = genericDao.findByProperty(Residency.class, "individual", individual);
+        assertNotNull(residency);
+        assertEquals("NA", residency.getEndType());
 
     }
 

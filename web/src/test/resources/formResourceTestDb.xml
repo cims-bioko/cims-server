@@ -71,7 +71,10 @@
                 bIsToA="1" individual_uuid="Individual1" socialGroup_uuid="SocialGroup1" startType="NA" endType="NA"/>
 
     <residency uuid="FormerResidency" location_uuid="LOCATION1" individual_uuid="Individual1" startDate="1999-12-19"
-                startType="StartType" collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
+                startType="StartType" endType="NA" collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
+
+    <residency uuid="CurrentResidency" location_uuid="LOCATION1" individual_uuid="Individual2" startDate="1999-12-19"
+               startType="StartType" endType="NA" collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
 
     <visit uuid="MigrateVisit" extid="migrateVisit" visitDate="2012-02-27" status="P" insertDate="2012-03-01" collectedBy_uuid="UnknownFieldWorker"
             visitLocation_uuid="LOCATION1" deleted="false" roundNumber="1" insertBy_uuid="User 1"/>
