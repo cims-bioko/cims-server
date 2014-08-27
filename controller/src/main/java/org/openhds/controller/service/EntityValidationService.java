@@ -10,5 +10,9 @@ public interface EntityValidationService<T> {
 		
 	<S> List<String> validateType(S entity);
 	
-	void validateEntity(T entityItem) throws ConstraintViolations; 
+	void validateEntity(T entityItem) throws ConstraintViolations;
+
+    void setStatusPending(T entityItem);
+
+    void setStatusVoided(T entityItem);
 }

@@ -51,7 +51,7 @@
 	</bean>
 	
 	<context:component-scan base-package="org.openhds"></context:component-scan>
-    
+
     <!-- security configuration -->
     <bean id="userDetailsService" parent="baseTransactionBean">
     	<property name="target">
@@ -88,7 +88,7 @@
 		    </bean>
 	    </property>
     </bean>
-	
+
 	<bean id="deathService" parent="baseServiceTransactionBean">
     	<property name="target">
 		    <bean class="org.openhds.controller.service.impl.DeathServiceImpl">
@@ -176,10 +176,12 @@
     	<property name="target">
     		<bean class="org.openhds.controller.service.impl.MembershipServiceImpl">
 				<constructor-arg ref="genericDao" />
-                <constructor-arg ref="entityService" />
     			<constructor-arg ref="individualService" />
     			<constructor-arg ref="siteProperties" />
-    		</bean>
+                <constructor-arg ref="entityValidator" />
+                <constructor-arg ref="calendarUtil" />
+                <constructor-arg ref="currentUser" />
+            </bean>
    		</property>
 	</bean>
     
@@ -188,10 +190,13 @@
 		    <bean class="org.openhds.controller.service.impl.OutMigrationServiceImpl">
 		    	<constructor-arg ref="residencyService" />
 		    	<constructor-arg ref="individualService" />
-		        <constructor-arg ref="genericDao" />
+                <constructor-arg ref="membershipService" />
+                <constructor-arg ref="genericDao" />
 				<constructor-arg ref="siteProperties" />
-				<constructor-arg ref="entityService" />
-		    </bean>
+				<constructor-arg ref="entityValidator" />
+                <constructor-arg ref="calendarUtil" />
+                <constructor-arg ref="currentUser" />
+            </bean>
 	    </property>
     </bean>  
     
@@ -222,7 +227,10 @@
 		    <bean class="org.openhds.controller.service.impl.ResidencyServiceImpl">
 		        <constructor-arg ref="genericDao" />
 		        <constructor-arg ref="siteProperties" />
-		    </bean>
+                <constructor-arg ref="currentUser" />
+                <constructor-arg ref="entityValidator" />
+                <constructor-arg ref="calendarUtil" />
+            </bean>
 	    </property>
     </bean>
     

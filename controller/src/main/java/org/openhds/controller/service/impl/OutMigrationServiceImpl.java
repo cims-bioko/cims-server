@@ -1,40 +1,42 @@
 package org.openhds.controller.service.impl;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.service.EntityService;
-import org.openhds.controller.service.IndividualService;
-import org.openhds.controller.service.OutMigrationService;
-import org.openhds.controller.service.ResidencyService;
+import org.openhds.controller.service.*;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.OutMigration;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.service.SitePropertiesService;
+import org.openhds.domain.util.CalendarUtil;
 import org.springframework.transaction.annotation.Transactional;
 
-public class OutMigrationServiceImpl implements OutMigrationService {
+public class OutMigrationServiceImpl extends EntityServiceRefactoredImpl implements OutMigrationService {
 
 	private ResidencyService residencyService;
 	private IndividualService individualService;
-	private GenericDao genericDao;
-	private SitePropertiesService siteProperties;
-	private EntityService entityService;
-	
-	public OutMigrationServiceImpl(ResidencyService residencyService, IndividualService individualService, GenericDao genericDao, SitePropertiesService siteProperties, EntityService entityService) {
-		this.residencyService = residencyService;
+    private MembershipService membershipService;
+    private GenericDao genericDao;
+    private SitePropertiesService siteProperties;
+
+	public OutMigrationServiceImpl(ResidencyService residencyService, IndividualService individualService, MembershipService membershipService,
+                                   GenericDao genericDao,
+                                   SitePropertiesService siteProperties, EntityValidationService entityValidationService,
+                                   CalendarUtil calendarUtil, CurrentUser currentUser) {
+		super(genericDao, currentUser, calendarUtil, siteProperties, entityValidationService);
+        this.residencyService = residencyService;
 		this.individualService = individualService;
+        this.membershipService = membershipService;
 		this.genericDao = genericDao;
 		this.siteProperties = siteProperties;
-		this.entityService = entityService;
+
 	}
 
 	@Transactional(readOnly=true)
-	public void evaluateOutMigration(OutMigration outMigration) throws ConstraintViolations {
+	public void evaluateOutMigrationBeforeCreate(OutMigration outMigration) throws ConstraintViolations {
 		if (individualService.getLatestEvent(outMigration.getIndividual()).equals("Death")) {
     		throw new ConstraintViolations("An Out Migration cannot be created for an Individual who has a Death event.");		
 		}
@@ -46,7 +48,6 @@ public class OutMigrationServiceImpl implements OutMigrationService {
 		}
 		
         Residency currentResidence = outMigration.getIndividual().getCurrentResidency();
-        outMigration.setResidency(currentResidence);
 
         // verify the date of the out migration is after the residency start date
 		if (currentResidence.getStartDate().compareTo(outMigration.getRecordedDate()) > 0) {
@@ -60,47 +61,34 @@ public class OutMigrationServiceImpl implements OutMigrationService {
 
 	@Transactional(rollbackFor=Exception.class)
 	public void createOutMigration(OutMigration outMigration) throws ConstraintViolations {
-		Residency currentResidence = outMigration.getIndividual().getCurrentResidency();
-		
-		// configure out migration
-		outMigration.setResidency(currentResidence);
-		currentResidence.setEndType(siteProperties.getOutmigrationCode());
-		currentResidence.setEndDate(outMigration.getRecordedDate());
-	
-		// run the residency through the residency service which provides additional integrity constraints
-		residencyService.evaluateResidency(currentResidence);
-		
-        try {
-            entityService.save(currentResidence);
-        } catch (SQLException e) {
-            throw new ConstraintViolations(
-                    "There as a problem updating the database with the residency associated with the out migration");
+
+        if (null == outMigration) {
+            throw new IllegalArgumentException("Cannot create a null out migration");
         }
 
-        //Gets the individual's memberships if any
-        // Iterates through memberships and sets endType(DEATH) and endDate
-        if (!outMigration.getIndividual().getAllMemberships().isEmpty()) {
-            Set<Membership> memberships = (Set<Membership>) outMigration.getIndividual().getAllMemberships();
-            for (Membership mem : memberships) {
-            	if (mem.getEndType().equals(siteProperties.getNotApplicableCode())) {
-	                mem.setEndDate(outMigration.getRecordedDate());
-	                mem.setEndType(siteProperties.getOutmigrationCode());
-	                try {
-						entityService.save(mem);
-					} catch (SQLException e) {
-						 throw new ConstraintViolations(
-				                    "There as a problem updating the database with the membership associated with the out migration");
-					}
-            	}
+        //evaluateOutMigrationBeforeCreate()
+        evaluateOutMigrationBeforeCreate(outMigration);
+
+        // configure out migration
+        Residency currentResidence = outMigration.getIndividual().getCurrentResidency();
+        outMigration.setResidency(currentResidence);
+        currentResidence.setEndType(siteProperties.getOutmigrationCode());
+        currentResidence.setEndDate(outMigration.getRecordedDate());
+
+        residencyService.updateResidency(currentResidence);
+
+        Set<Membership> memberships = (Set<Membership>) outMigration.getIndividual().getAllMemberships();
+        if (!memberships.isEmpty()) {
+            for (Membership membership : memberships) {
+                if (membership.getEndType().equals(siteProperties.getNotApplicableCode())) {
+                    membership.setEndDate(outMigration.getRecordedDate());
+                    membership.setEndType(siteProperties.getOutmigrationCode());
+                    membershipService.updateMembership(membership);
+                }
             }
         }
-        
-        
-        try {
-            entityService.create(outMigration);
-        } catch (IllegalArgumentException e) {
-        } catch (SQLException e) {
-            throw new ConstraintViolations("There was a problem creating a new out migration in the database");
-        }
+
+        create(outMigration);
+
 	}
 }

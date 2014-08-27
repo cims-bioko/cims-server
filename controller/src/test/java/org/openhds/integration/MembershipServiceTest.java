@@ -104,7 +104,7 @@ public class MembershipServiceTest {
         membership.setSocialGroup(socialGroup1);
         membership.setCollectedBy(fieldWorker);
 
-        membershipService.evaluateMembership(membership);
+        membershipService.evaluateMembershipBeforeCreate(membership);
         membershipService.createMembership(membership);
 
         List<Membership> membershipList = membershipService.getAllMemberships(individual2);

@@ -1,5 +1,6 @@
 package org.openhds.controller.service;
 
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -44,6 +45,9 @@ public interface ResidencyService {
 	 */
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
 	Residency createResidency(Individual individual, Location location, Calendar startDate, String startType, FieldWorker collectedBy);
+
+    @Authorized({PrivilegeConstants.CREATE_ENTITY})
+    Residency updateResidency(Residency residency) throws ConstraintViolations;
 	
 	/**
 	 * Retrieve a list of individual who have their last known residency (current residency) for a given location

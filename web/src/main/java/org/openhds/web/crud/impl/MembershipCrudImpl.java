@@ -33,7 +33,7 @@ public class MembershipCrudImpl extends EntityCrudImpl<Membership, String> {
     	try {
     		entityItem.setEndType(properties.getNotApplicableCode());
     		if (entityValidator.checkConstraints(entityItem) == false) {	
-	    		service.evaluateMembership(entityItem);		
+	    		service.evaluateMembershipBeforeCreate(entityItem);
 		        entityItem.setInsertDate(Calendar.getInstance());
 		        return super.create();
     		}
@@ -48,7 +48,7 @@ public class MembershipCrudImpl extends EntityCrudImpl<Membership, String> {
     public boolean commit(MessageContext messageContext) {
     	try {
     		entityItem.setEndType(properties.getNotApplicableCode());
-    		service.evaluateMembership(entityItem);
+    		service.evaluateMembershipBeforeCreate(entityItem);
     		return super.commit(messageContext);
     	} catch(ConstraintViolations e) {
     		webFlowService.createMessage(messageContext, e.getMessage());
@@ -75,7 +75,7 @@ public class MembershipCrudImpl extends EntityCrudImpl<Membership, String> {
     
     public boolean validateMembership(MessageContext messageContext) {
     	try {
-			service.evaluateMembership(entityItem);
+			service.evaluateMembershipBeforeCreate(entityItem);
 		} catch (ConstraintViolations e) {
 			webFlowService.createMessage(messageContext, e.getMessage());
 			return false;

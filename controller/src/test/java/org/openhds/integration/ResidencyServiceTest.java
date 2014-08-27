@@ -64,5 +64,10 @@ public class ResidencyServiceTest {
     	int count = (int)residencyService.getTotalResidencyCount();
     	assertEquals(1, count);
     }
+
+    @Test
+    public void testUpdateResidency() {
+
+    }
 	
 }

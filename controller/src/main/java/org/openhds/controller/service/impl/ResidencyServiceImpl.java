@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.controller.service.CurrentUser;
+import org.openhds.controller.service.EntityValidationService;
 import org.openhds.controller.service.ResidencyService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.annotations.Authorized;
@@ -18,6 +20,7 @@ import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.service.SitePropertiesService;
+import org.openhds.domain.util.CalendarUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,15 +30,23 @@ import org.slf4j.LoggerFactory;
  * @author Dave
  *
  */
-public class ResidencyServiceImpl implements ResidencyService {
+public class ResidencyServiceImpl extends EntityServiceRefactoredImpl implements ResidencyService {
 
     private GenericDao genericDao;
     private SitePropertiesService siteProperties;
     static Logger log = LoggerFactory.getLogger(ResidencyServiceImpl.class);
 
-    public ResidencyServiceImpl(GenericDao genericDao, SitePropertiesService siteProperties) {
+    public ResidencyServiceImpl(GenericDao genericDao, SitePropertiesService siteProperties, EntityValidationService entityValidationService,
+                                CalendarUtil calendarUtil, CurrentUser currentUser) {
+        super(genericDao, currentUser, calendarUtil, siteProperties, entityValidationService);
         this.genericDao = genericDao;
         this.siteProperties = siteProperties;
+    }
+
+    public Residency updateResidency(Residency residency) throws ConstraintViolations {
+        evaluateResidency(residency);
+        save(residency);
+        return residency;
     }
 
     /*

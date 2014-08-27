@@ -14,7 +14,10 @@ import org.openhds.domain.model.SocialGroup;
 public interface MembershipService {
 	
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	Membership evaluateMembership(Membership entityItem) throws ConstraintViolations;
+	Membership evaluateMembershipBeforeCreate(Membership entityItem) throws ConstraintViolations;
+
+    @Authorized({PrivilegeConstants.CREATE_ENTITY})
+    Membership updateMembership(Membership entityItem) throws ConstraintViolations;
 	
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
 	Membership checkMembership(Membership persistedItem, Membership entityItem) throws ConstraintViolations;

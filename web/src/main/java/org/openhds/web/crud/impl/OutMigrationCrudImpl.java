@@ -1,6 +1,5 @@
 package org.openhds.web.crud.impl;
 
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,7 +27,7 @@ public class OutMigrationCrudImpl extends EntityCrudImpl<OutMigration, String> {
     	entityItem.setIndividual(dao.merge(entityItem.getIndividual()));
     	
     	try {
-			service.evaluateOutMigration(entityItem);		
+			service.evaluateOutMigrationBeforeCreate(entityItem);
 	        service.createOutMigration(entityItem);
 	        return listSetup();
     	}		

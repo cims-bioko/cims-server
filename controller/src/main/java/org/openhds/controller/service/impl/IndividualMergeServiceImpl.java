@@ -65,7 +65,7 @@ public class IndividualMergeServiceImpl implements IndividualMergeService {
 			eventsMerged += memberships.size();
 			
 			for(Membership mem : memberships) {
-				membershipService.evaluateMembership(mem);
+				membershipService.evaluateMembershipBeforeCreate(mem);
 				entityService.create(mem);
 			}
 		}
