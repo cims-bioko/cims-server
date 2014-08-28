@@ -54,6 +54,11 @@
 			<artifactId>task</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>org.openhds</groupId>
+            <artifactId>errorhandling</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>

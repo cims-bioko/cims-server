@@ -23,6 +23,15 @@ public interface GenericDao {
         Object getValue();
     }
 
+    interface RangeProperty {
+
+        String getPropertyName();
+
+        Object getMinRange();
+
+        Object getMaxRange();
+    }
+
     <T> String create(T newInstance);
 
     <T> T read(Class<T> entityType, String id);
@@ -69,6 +78,8 @@ public interface GenericDao {
     <T> List<T> findListByProperty(Class<T> entityType, String propertyName, Object value, boolean filterDeleted);
 
     <T> List<T> findListByPropertyWithOrder(Class<T> entityType, String propertyName, Object value, OrderProperty... orderProps);
+
+    <T> List<T> findListByMultiPropertyAndRange(Class<T> entityType, RangeProperty range, ValueProperty... properties);
 
     <T> T findUniqueByPropertyWithOrder(Class<T> entityType, String propertyName, Object value,
                                         String orderByCol, boolean ascending);

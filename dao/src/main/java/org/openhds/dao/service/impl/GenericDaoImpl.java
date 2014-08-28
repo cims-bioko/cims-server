@@ -112,6 +112,25 @@ public class GenericDaoImpl implements GenericDao {
 		 return criteria.list();
 	}
 
+    @Override
+    public <T> List<T> findListByMultiPropertyAndRange(Class<T> entityType, RangeProperty range, ValueProperty... properties) {
+        Criteria criteria = getSession().createCriteria(entityType);
+
+        criteria = addPropertiesToCriteria(criteria, properties);
+
+        if (range != null) {
+            criteria = addRangeToCriteria(criteria, range);
+        }
+
+        return (List<T>) criteria.list();
+    }
+
+    private Criteria addRangeToCriteria(Criteria criteria, RangeProperty range) {
+        criteria = criteria.add(Restrictions.between(range.getPropertyName(), range.getMinRange(), range.getMaxRange()));
+
+        return criteria;
+    }
+
 	public SessionFactory getSessionFactory() {
 		return sessFact;
 	}

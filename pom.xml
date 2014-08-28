@@ -59,7 +59,8 @@
 		<module>report</module>
 		<module>webservice</module>
 		<module>task</module>
-	</modules>
+        <module>errorhandling</module>
+    </modules>
 
 	<dependencyManagement>
 		<dependencies>
