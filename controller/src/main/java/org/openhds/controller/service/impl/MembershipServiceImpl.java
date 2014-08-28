@@ -42,7 +42,10 @@ public class MembershipServiceImpl extends EntityServiceRefactoredImpl implement
 
     public Membership evaluateMembershipBeforeUpdate(Membership membership) throws ConstraintViolations {
 
-        //TODO: placeholder for constraints we need to check against on any membership updates
+        //TODO: check constraints before persisting the Membership update
+        if (null == membership) {
+            throw new ConstraintViolations("Cannot update a null Membership");
+        }
         return membership;
 
     }

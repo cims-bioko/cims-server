@@ -83,11 +83,8 @@ public class VisitServiceImpl implements VisitService {
         return ids;
     }
 
-    public Visit findVisitById(String visitId, String msg) throws Exception {
+    public Visit findVisitById(String visitId) {
         Visit visit = genericDao.findByProperty(Visit.class, "extId", visitId);
-        if (visit == null) {
-            throw new Exception(msg);
-        }
         return visit;
     }
 

@@ -20,8 +20,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class FieldBuilder {
-    private static final String INVALID_VISIT_ID = "Invalid Visit Id";
-    private static final String INVALID_FIELD_WORKER_ID = "Invalid Field Worker Id";
 
     private VisitService visitService;
     private IndividualService individualService;
@@ -31,16 +29,15 @@ public class FieldBuilder {
 
     public Visit referenceField(Visit visit, ConstraintViolations violations) {
         if (visit == null || visit.getExtId() == null) {
-            violations.addViolations("No visit id provided");
-        } else {
-            try {
-                return visitService.findVisitById(visit.getExtId(), INVALID_VISIT_ID);
-            } catch (Exception e) {
-                violations.addViolations("Error referencing Visit: " + e.getMessage());
-            }
+            violations.addViolations(ConstraintViolations.INVALID_VISIT_EXT_ID);
         }
 
-        return null;
+        Visit persistedVisit = visitService.findVisitById(visit.getExtId());
+        if (null == persistedVisit) {
+            violations.addViolations(ConstraintViolations.INVALID_VISIT_EXT_ID);
+        }
+
+        return persistedVisit;
     }
 
     public Individual referenceField(Individual individual, ConstraintViolations violations, String msg) {
@@ -74,15 +71,14 @@ public class FieldBuilder {
     public FieldWorker referenceField(FieldWorker collectedBy, ConstraintViolations violations) {
         if (collectedBy == null || collectedBy.getExtId() == null) {
             violations.addViolations("No field worker id provided");
-        } else {
-            try {
-                return fieldWorkerService.findFieldWorkerById(collectedBy.getExtId(), INVALID_FIELD_WORKER_ID);
-            } catch (Exception e) {
-                violations.addViolations("Error referencing FieldWorker: " + e.getMessage());
-            }
         }
 
-        return null;
+        FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerById(collectedBy.getExtId());
+        if (fieldWorker == null) {
+            violations.addViolations("Referenced Field Worker does not exist:"+collectedBy.getExtId());
+        }
+
+        return fieldWorker;
     }
 
     public Location referenceField(Location location, ConstraintViolations violations) {

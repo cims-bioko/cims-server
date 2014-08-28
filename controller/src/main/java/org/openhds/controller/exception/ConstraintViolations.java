@@ -5,7 +5,13 @@ import java.util.List;
 
 public class ConstraintViolations extends Exception {
 
-	private static final long serialVersionUID = 4392790814928552607L;
+    public static final String INVALID_FIELD_WORKER_EXT_ID = "Invalid Field Worker Ext Id";
+    public static final String INVALID_INDIVIDUAL_EXT_ID = "Invalid Individual Ext Id";
+    public static final String INVALID_VISIT_EXT_ID = "Invalid Visit Ext Id";
+    public static final String INVALID_LOCATION_EXT_ID = "Invalid Location Ext Id";
+
+
+    private static final long serialVersionUID = 4392790814928552607L;
 	private List<String> violations = new ArrayList<String>();
 	
 	public ConstraintViolations() {}

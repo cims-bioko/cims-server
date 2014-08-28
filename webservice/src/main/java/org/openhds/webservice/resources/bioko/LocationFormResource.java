@@ -1,23 +1,14 @@
 package org.openhds.webservice.resources.bioko;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.FieldWorkerService;
-import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.LocationHierarchyService;
-import org.openhds.controller.service.ResidencyService;
-import org.openhds.controller.service.SocialGroupService;
 import org.openhds.domain.model.*;
-import org.openhds.domain.model.bioko.IndividualForm;
 import org.openhds.domain.model.bioko.LocationForm;
-import org.openhds.webservice.FieldBuilder;
-import org.openhds.webservice.WebServiceCallException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,16 +52,12 @@ public class LocationFormResource extends AbstractFormResource{
         location = new Location();
 
         // collected by whom?
-        FieldWorker collectedBy;
-        try {
-            collectedBy = fieldWorkerService.findFieldWorkerById(
-                    locationForm.getFieldWorkerExtId(),
-                    "Individual form has nonexistent field worker id.");
-            location.setCollectedBy(collectedBy);
-        } catch (Exception e) {
-            return requestError("Error getting field worker: " + e.getMessage());
-        }
+        FieldWorker collectedBy = fieldWorkerService.findFieldWorkerById(locationForm.getFieldWorkerExtId());
+        if (null == collectedBy) {
+            return requestError("Error getting field worker: Location form has nonexistent field worker id");
 
+        }
+        location.setCollectedBy(collectedBy);
 
         // collected where?
         LocationHierarchy locationHierarchy;
@@ -85,11 +72,8 @@ public class LocationFormResource extends AbstractFormResource{
             return requestError("Error getting reference LocationHierarchy: " + e.getMessage());
         }
 
-
         // do it
         copyFormDataToIndividual(locationForm, location);
-
-
 
         // persist the location
         try {

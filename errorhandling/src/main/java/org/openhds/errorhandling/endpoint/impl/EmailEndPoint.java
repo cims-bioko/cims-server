@@ -13,7 +13,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component -- putting this issue on the back-burner for now: consisted javax.mail.MessagingException: can't determine local email address
 public class EmailEndPoint implements ErrorServiceEndPoint {
 
     private static final String CREATE = "ERROR_CREATED";

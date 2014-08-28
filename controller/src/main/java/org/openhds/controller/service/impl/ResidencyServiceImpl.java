@@ -24,6 +24,8 @@ import org.openhds.domain.util.CalendarUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.Constraint;
+
 /**
  * Implementation of the ResidencySerivce
  * 
@@ -44,9 +46,16 @@ public class ResidencyServiceImpl extends EntityServiceRefactoredImpl implements
     }
 
     public Residency updateResidency(Residency residency) throws ConstraintViolations {
-        evaluateResidency(residency);
+        evaluateResidencyBeforeUpdate(residency);
         save(residency);
         return residency;
+    }
+
+    public void evaluateResidencyBeforeUpdate(Residency residency) throws ConstraintViolations {
+        //TODO: constraint checking before persisting a Residency update
+        if (null == residency) {
+            throw new ConstraintViolations("Cannot update a null Residency");
+        }
     }
 
     /*

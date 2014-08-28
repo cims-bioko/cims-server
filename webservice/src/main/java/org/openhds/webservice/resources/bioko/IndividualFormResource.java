@@ -3,7 +3,6 @@ package org.openhds.webservice.resources.bioko;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.openhds.controller.exception.ConstraintViolations;
@@ -22,7 +21,6 @@ import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.bioko.IndividualForm;
 import org.openhds.webservice.FieldBuilder;
-import org.openhds.webservice.WebServiceCallException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,13 +93,9 @@ public class IndividualFormResource extends AbstractFormResource {
         }
 
         // collected by whom?
-        FieldWorker collectedBy;
-        try {
-            collectedBy = fieldWorkerService.findFieldWorkerById(
-                    individualForm.getFieldWorkerExtId(),
-                    "Individual form has nonexistent field worker id.");
-        } catch (Exception e) {
-            return requestError("Error getting field worker: " + e.getMessage());
+        FieldWorker collectedBy = fieldWorkerService.findFieldWorkerById(individualForm.getFieldWorkerExtId());
+        if (null == collectedBy) {
+            return requestError("Error getting field worker: Individual form has nonexistent field worker id");
         }
 
         // where are we?

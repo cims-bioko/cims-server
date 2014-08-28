@@ -55,17 +55,8 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
 
         return ids;
     }
-    
-    public FieldWorker findFieldWorkerById(String fieldWorkerId, String msg) throws Exception {
-        FieldWorker fw = genericDao.findByProperty(FieldWorker.class, "extId", fieldWorkerId);
-        if (fw == null) {
-            throw new Exception(msg);
-        }
 
-        return fw;
-    }
-    
-	public FieldWorker findFieldWorkerById(String fieldWorkerId) throws ConstraintViolations {
+	public FieldWorker findFieldWorkerById(String fieldWorkerId) {
 		 FieldWorker fw = genericDao.findByProperty(FieldWorker.class, "extId", fieldWorkerId);
 		 return fw;
 	}

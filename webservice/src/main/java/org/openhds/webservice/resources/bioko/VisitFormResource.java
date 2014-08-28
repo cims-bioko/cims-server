@@ -1,17 +1,19 @@
 package org.openhds.webservice.resources.bioko;
 
 import java.io.Serializable;
+import java.io.StringWriter;
 
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.service.EntityService;
-import org.openhds.controller.service.FieldWorkerService;
-import org.openhds.controller.service.LocationHierarchyService;
-import org.openhds.controller.service.VisitService;
+import org.openhds.controller.service.*;
+import org.openhds.domain.model.ErrorLog;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Visit;
+import org.openhds.domain.model.bioko.OutMigrationForm;
 import org.openhds.domain.model.bioko.VisitForm;
-import org.openhds.webservice.WebServiceCallException;
+import org.openhds.errorhandling.constants.ErrorConstants;
+import org.openhds.errorhandling.service.ErrorHandlingService;
+import org.openhds.errorhandling.util.ErrorLogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 @Controller
 @RequestMapping("/visitForm")
@@ -31,23 +35,31 @@ public class VisitFormResource extends AbstractFormResource {
 
     private static final Logger logger = LoggerFactory.getLogger(VisitFormResource.class);
 
-	@Autowired
-	private EntityService entityService;
-
-	@Autowired
-	private VisitService visitService;
-
-	@Autowired
-	private FieldWorkerService fieldWorkerService;
-
-	@Autowired
+    @Autowired
 	private LocationHierarchyService locationHierarchyService;
 
+    @Autowired
+    private FieldWorkerService fieldWorkerService;
+
+    @Autowired
+    private VisitService visitService;
+
+    @Autowired
+    private ErrorHandlingService errorService;
+
+    private JAXBContext context = null;
+    private Marshaller marshaller = null;
 
 	@RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
 	@Transactional
-	public ResponseEntity<? extends Serializable> processForm(
-			@RequestBody VisitForm visitForm) {
+	public ResponseEntity<? extends Serializable> processForm(@RequestBody VisitForm visitForm) throws JAXBException {
+
+        try {
+            this.context = JAXBContext.newInstance(VisitForm.class);
+            marshaller = context.createMarshaller();
+        } catch (JAXBException e) {
+            throw new RuntimeException("Could not create JAXB context and marshaller for visit form resource");
+        }
 
         Visit visit = new Visit();
 
@@ -56,37 +68,39 @@ public class VisitFormResource extends AbstractFormResource {
 		visit.setRoundNumber(1);
 		visit.setVisitDate(visitForm.getVisitDate());
 
-		FieldWorker fieldWorker;
-		try {
-			fieldWorker = fieldWorkerService.findFieldWorkerById(
-					visitForm.getFieldworkerExtId(),
-					"Visit form has non-existent field worker extId");
-		} catch (Exception e) {
-			return requestError("Error getting field worker" + e.getMessage());
-		}
+		FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerById(visitForm.getFieldworkerExtId());
+        if (null == fieldWorker) {
+            ConstraintViolations cv = new ConstraintViolations();
+            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID);
+            StringWriter writer = new StringWriter();
+            marshaller.marshal(visitForm, writer);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, OutMigrationForm.class.getSimpleName(),
+                    null, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+            errorService.logError(error);
+            return requestError(cv);
+        }
 		visit.setCollectedBy(fieldWorker);
 
-		Location location;
-		try {
-			location = locationHierarchyService.findLocationById(visitForm
-					.getLocationExtId());
-		} catch (Exception e) {
-			return requestError("Error getting location" + e.getMessage());
-		}
+		Location location = locationHierarchyService.findLocationById(visitForm.getLocationExtId());
+        if (null == location) {
+            ConstraintViolations cv = new ConstraintViolations();
+            cv.addViolations(ConstraintViolations.INVALID_LOCATION_EXT_ID);
+            StringWriter writer = new StringWriter();
+            marshaller.marshal(visitForm, writer);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, OutMigrationForm.class.getSimpleName(),
+                    fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+            errorService.logError(error);
+            return requestError(cv);
+        }
+
 		visit.setVisitLocation(location);
 
         visit.setExtId(visitForm.getVisitExtId());
 
         //check to see if Visit with the same extId already exists: visits with the same extId
         //by definition will not contain different data, so there's no need to call an update()
-        Visit exisitingVisit = null;
-        try {
-            exisitingVisit = visitService.findVisitById(visitForm.getVisitExtId(), "Non-existent visit will throw an exception");
-        } catch (Exception e) {
-
-        }
+        Visit exisitingVisit = visitService.findVisitById(visitForm.getVisitExtId());
         if (null == exisitingVisit) {
-            // persist the visit
             try {
                 visitService.createVisit(visit);
             } catch (ConstraintViolations e) {

@@ -5,13 +5,11 @@ import org.openhds.controller.service.FieldWorkerService;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.OutMigrationService;
 import org.openhds.controller.service.VisitService;
-import org.openhds.domain.model.FieldWorker;
-import org.openhds.domain.model.Individual;
-import org.openhds.domain.model.OutMigration;
-import org.openhds.domain.model.Visit;
+import org.openhds.domain.model.*;
 import org.openhds.domain.model.bioko.OutMigrationForm;
-import org.openhds.domain.util.ShallowCopier;
-import org.openhds.webservice.WebServiceCallException;
+import org.openhds.errorhandling.constants.ErrorConstants;
+import org.openhds.errorhandling.service.ErrorHandlingService;
+import org.openhds.errorhandling.util.ErrorLogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,59 +19,100 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import java.io.Serializable;
+import java.io.StringWriter;
 
 @Controller
 @RequestMapping("/outMigrationForm")
 public class OutMigrationFormResource extends AbstractFormResource {
 
     @Autowired
-    OutMigrationService outMigrationService;
+    private OutMigrationService outMigrationService;
 
     @Autowired
-    IndividualService individualService;
+    private IndividualService individualService;
 
     @Autowired
-    FieldWorkerService fieldWorkerService;
+    private FieldWorkerService fieldWorkerService;
 
     @Autowired
-    VisitService visitService;
+    private VisitService visitService;
+
+    @Autowired
+    private ErrorHandlingService errorService;
+
+    private JAXBContext context = null;
+    private Marshaller marshaller = null;
+
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
-    public ResponseEntity<? extends Serializable> processForm(@RequestBody OutMigrationForm outMigrationForm) {
+    public ResponseEntity<? extends Serializable> processForm(@RequestBody OutMigrationForm outMigrationForm) throws JAXBException {
+
+        try {
+            context = JAXBContext.newInstance(OutMigrationForm.class);
+            marshaller = context.createMarshaller();
+        } catch (JAXBException e) {
+            throw new RuntimeException("Could not create JAXB context and marshaller for out migration form resource");
+        }
 
         OutMigration outMigration = new OutMigration();
+
         outMigration.setRecordedDate(outMigrationForm.getDateOfMigration());
         outMigration.setDestination(outMigrationForm.getNameOfDestination());
         outMigration.setReason(outMigrationForm.getReasonForOutMigration());
 
-        Individual individual = individualService.findIndivById(outMigrationForm.getIndividualExtId());
-        if (null == individual) {
-            return requestError("The Individual referenced by the OutMigration does not exist");
-        }
-        outMigration.setIndividual(individual);
-
-        FieldWorker fieldWorker;
-        try {
-            fieldWorker = fieldWorkerService.findFieldWorkerById(outMigrationForm.getFieldWorkerExtId());
-        } catch (ConstraintViolations e) {
-            return requestError(e);
+        FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerById(outMigrationForm.getFieldWorkerExtId());
+        if (null == fieldWorker) {
+            ConstraintViolations cv = new ConstraintViolations();
+            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID);
+            StringWriter writer = new StringWriter();
+            marshaller.marshal(outMigrationForm, writer);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, OutMigrationForm.class.getSimpleName(),
+                    null, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+            errorService.logError(error);
+            return requestError(cv);
         }
         outMigration.setCollectedBy(fieldWorker);
 
-        Visit visit;
-        try {
-            visit = visitService.findVisitById(outMigrationForm.getVisitExtId(), "Null visit will throw this exception");
-        } catch (Exception e) {
-            return requestError("The Visit referenced by the OutMigration does not exist");
+        Individual individual = individualService.findIndivById(outMigrationForm.getIndividualExtId());
+        if (null == individual) {
+            ConstraintViolations cv = new ConstraintViolations();
+            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_EXT_ID);
+            StringWriter writer = new StringWriter();
+            marshaller.marshal(outMigrationForm, writer);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, OutMigrationForm.class.getSimpleName(),
+                    fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+            errorService.logError(error);
+            return requestError(cv);
+        }
+        outMigration.setIndividual(individual);
+
+        Visit visit = visitService.findVisitById(outMigrationForm.getVisitExtId());
+        if (null == visit) {
+            ConstraintViolations cv = new ConstraintViolations();
+            cv.addViolations(ConstraintViolations.INVALID_VISIT_EXT_ID);
+            StringWriter writer = new StringWriter();
+            marshaller.marshal(outMigrationForm, writer);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, OutMigrationForm.class.getSimpleName(),
+                    fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+            errorService.logError(error);
+            return requestError(cv);
         }
         outMigration.setVisit(visit);
 
         try {
             outMigrationService.createOutMigration(outMigration);
-        } catch (ConstraintViolations e) {
-            return requestError(e);
+        } catch (ConstraintViolations cv) {
+            StringWriter writer = new StringWriter();
+            marshaller.marshal(outMigrationForm, writer);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, OutMigrationForm.class.getSimpleName(),
+                    fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+            errorService.logError(error);
+            return requestError(cv);
         }
 
         return new ResponseEntity<OutMigrationForm>(outMigrationForm, HttpStatus.CREATED);
