@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Description(description = "An individual error")
 @Entity
-@Table(name = "errors")
+@Table(name = "error")
 @XmlRootElement(name = "error")
 public class Error implements Serializable {
 
