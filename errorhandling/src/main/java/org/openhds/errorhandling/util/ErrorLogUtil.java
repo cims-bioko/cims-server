@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.openhds.controller.service.FieldWorkerService;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Error;
 import org.openhds.domain.model.ErrorLog;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ErrorLogUtil {
 
-    public static final ErrorLog generateErrorLog(String assignedTo, String dataPayload, Calendar dateOfResolution,
+    public static ErrorLog generateErrorLog(String assignedTo, String dataPayload, Calendar dateOfResolution,
             String entityType, FieldWorker fieldWorker, String resolutionStatus, List<String> errors) {
         ErrorLog errorLog = new ErrorLog();
 

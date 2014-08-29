@@ -72,7 +72,7 @@ public class OutMigrationFormResource extends AbstractFormResource {
             StringWriter writer = new StringWriter();
             marshaller.marshal(outMigrationForm, writer);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, OutMigrationForm.class.getSimpleName(),
-                    null, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+                    fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);
         }

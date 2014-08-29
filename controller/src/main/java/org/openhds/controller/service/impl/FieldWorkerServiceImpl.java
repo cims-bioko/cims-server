@@ -25,6 +25,10 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
 		this.generator = generator;
 	}
 
+    public FieldWorker getUnknownFieldWorker() {
+        return genericDao.findByProperty(FieldWorker.class, "extId", "UNK");
+    }
+
 	public FieldWorker evaluateFieldWorker(FieldWorker entityItem) throws ConstraintViolations { 	
 		
 		if (findFieldWorkerById(entityItem.getExtId()) != null)

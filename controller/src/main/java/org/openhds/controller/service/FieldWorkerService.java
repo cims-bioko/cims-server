@@ -9,6 +9,9 @@ import org.openhds.domain.model.PrivilegeConstants;
 
 public interface FieldWorkerService {
 
+    @Authorized({PrivilegeConstants.VIEW_ENTITY})
+    FieldWorker getUnknownFieldWorker();
+
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	FieldWorker evaluateFieldWorker(FieldWorker entityItem) throws ConstraintViolations;
 

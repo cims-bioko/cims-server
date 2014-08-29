@@ -1,6 +1,8 @@
 package org.openhds.errorhandling.service.impl;
 
 import java.util.List;
+
+import org.openhds.controller.service.FieldWorkerService;
 import org.openhds.dao.service.GenericDao.RangeProperty;
 import org.openhds.dao.service.GenericDao.ValueProperty;
 import org.openhds.domain.model.FieldWorker;
@@ -16,12 +18,19 @@ public class ErrorHandlingServiceImpl implements ErrorHandlingService {
 
     @Autowired
     private List<ErrorServiceEndPoint> errorEndPoints;
+
+    @Autowired
+    private FieldWorkerService fieldWorkerService;
     
     @Autowired
     private ErrorLogDAO errorLogDao;
 
     @Override
     public ErrorLog logError(ErrorLog error) {
+        if (null == error.getFieldWorker()) {
+            error.setFieldWorker(fieldWorkerService.getUnknownFieldWorker());
+        }
+
         for (ErrorServiceEndPoint errorEndPoint : errorEndPoints) {
             errorEndPoint.logError(error);
         }
