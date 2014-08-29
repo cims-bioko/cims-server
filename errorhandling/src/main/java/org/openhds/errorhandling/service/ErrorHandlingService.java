@@ -8,6 +8,8 @@ import org.openhds.domain.model.ErrorLog;
 
 public interface ErrorHandlingService {
 
+    List<ErrorLog> findAllErrorsByEntityType(String entityType);
+
     ErrorLog logError(ErrorLog error);
     
     ErrorLog updateErrorLog(ErrorLog error);

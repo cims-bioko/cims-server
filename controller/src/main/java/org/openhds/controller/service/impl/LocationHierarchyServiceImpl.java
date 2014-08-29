@@ -152,6 +152,9 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 	}
 		
 	public Location evaluateLocation(Location entityItem) throws ConstraintViolations {
+        if (null == entityItem.getLocationLevel()) {
+            throw new ConstraintViolations("Location references a null location hierarchy");
+        }
 		if (!checkValidLocationEntry(entityItem.getLocationLevel().getExtId())) {
 			entityItem.setExtId(null);
     		throw new ConstraintViolations("The " + getLowestLevel().getName() + 
@@ -358,15 +361,19 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     /**
      * Find the locationHierarchy item by id, as long as it's a leaf
      */
-    public LocationHierarchy findLocationHierarchyById(String locationHierarchyId) throws Exception {
-    	List<LocationHierarchy> hierarchyList = genericDao.findAll(LocationHierarchy.class, false);
-    	
-    	for (LocationHierarchy item : hierarchyList) {
-    		if (locationHierarchyId.equals(item.getExtId()) && 
-    			item.getLevel().equals(getLowestLevel()))
-    			return item;
-    	}
-    	return null;
+    public LocationHierarchy findLocationHierarchyById(String locationHierarchyId){
+
+        LocationHierarchy locationHierarchy = genericDao.findByProperty(LocationHierarchy.class, "extId", locationHierarchyId);
+        return locationHierarchy;
+
+//    	List<LocationHierarchy> hierarchyList = genericDao.findAll(LocationHierarchy.class, false);
+//
+//    	for (LocationHierarchy item : hierarchyList) {
+//    		if (locationHierarchyId.equals(item.getExtId()) &&
+//    			item.getLevel().equals(getLowestLevel()))
+//    			return item;
+//    	}
+//    	return null;
     }
     
     public LocationHierarchy getHierarchyItemHighestLevel() {

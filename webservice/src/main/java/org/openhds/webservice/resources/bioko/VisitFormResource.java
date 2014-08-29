@@ -74,7 +74,7 @@ public class VisitFormResource extends AbstractFormResource {
             cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID);
             StringWriter writer = new StringWriter();
             marshaller.marshal(visitForm, writer);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, OutMigrationForm.class.getSimpleName(),
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, VisitForm.class.getSimpleName(),
                     null, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);
@@ -87,7 +87,7 @@ public class VisitFormResource extends AbstractFormResource {
             cv.addViolations(ConstraintViolations.INVALID_LOCATION_EXT_ID);
             StringWriter writer = new StringWriter();
             marshaller.marshal(visitForm, writer);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, OutMigrationForm.class.getSimpleName(),
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, VisitForm.class.getSimpleName(),
                     fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);

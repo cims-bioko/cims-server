@@ -61,7 +61,7 @@ public class FieldBuilder {
             try {
                 return individualService.findIndivById(individual.getExtId(), "Invalid Individual id.");
             } catch (Exception e) {
-                violations.addViolations("Error referencing Individual: " + e.getMessage());
+                violations.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_EXT_ID);
             }
         }
 
@@ -75,7 +75,7 @@ public class FieldBuilder {
 
         FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerById(collectedBy.getExtId());
         if (fieldWorker == null) {
-            violations.addViolations("Referenced Field Worker does not exist:"+collectedBy.getExtId());
+            violations.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID);
         }
 
         return fieldWorker;
@@ -88,7 +88,7 @@ public class FieldBuilder {
         } else {
             Location persisted = locationHierarchyService.findLocationById(location.getExtId());
             if (persisted == null) {
-                violations.addViolations("Invalid Location Id");
+                violations.addViolations(ConstraintViolations.INVALID_LOCATION_EXT_ID);
             }
 
             return persisted;
@@ -98,15 +98,25 @@ public class FieldBuilder {
     public LocationHierarchy referenceField(LocationHierarchy locationLevel, ConstraintViolations violations) {
         if (locationLevel == null || locationLevel.getExtId() == null) {
             violations.addViolations("No location hierarchy level provided");
-        } else {
-            try {
-                return locationHierarchyService.findLocationHierarchyById(locationLevel.getExtId());
-            } catch (Exception e) {
-                violations.addViolations("Invalid Location Hierarchy Id");
-            }
         }
 
-        return null;
+        LocationHierarchy locationHierarchy = locationHierarchyService.findLocationHierarchyById(locationLevel.getExtId());
+        if (null == locationHierarchy) {
+            violations.addViolations(ConstraintViolations.INVALID_LOCATION_HIERARCHY_EXT_ID);
+        }
+
+        return locationHierarchy;
+
+
+//        else {
+//            try {
+//                return locationHierarchyService.findLocationHierarchyById(locationLevel.getExtId());
+//            } catch (Exception e) {
+//                violations.addViolations(ConstraintViolations.INVALID_LOCATION_HIERARCHY_EXT_ID);
+//            }
+//        }
+//
+//        return null;
     }
 
     public SocialGroup referenceField(SocialGroup socialGroup, ConstraintViolations cv) {
@@ -116,7 +126,7 @@ public class FieldBuilder {
             try {
                 return socialGroupService.findSocialGroupById(socialGroup.getExtId(), "Invalid Social Group ext id");
             } catch (Exception e) {
-                cv.addViolations("Invalid Social Group ext id");
+                cv.addViolations(ConstraintViolations.INVALID_SOCIAL_GROUP_EXT_ID);
             }
         }
 

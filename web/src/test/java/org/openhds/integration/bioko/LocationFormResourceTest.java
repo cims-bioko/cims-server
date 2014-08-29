@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Location;
+import org.openhds.integration.AbstractResourceTest;
 import org.openhds.integration.util.WebContextLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -34,7 +35,7 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.s
         DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class })
 @DatabaseSetup(value = "/formResourceTestDb.xml", type = DatabaseOperation.REFRESH)
-public class LocationFormResourceTest extends AbstractFormResourceTest {
+public class LocationFormResourceTest extends AbstractResourceTest {
 
 
     @Autowired

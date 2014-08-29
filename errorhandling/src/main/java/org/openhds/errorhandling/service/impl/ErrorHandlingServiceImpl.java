@@ -35,6 +35,11 @@ public class ErrorHandlingServiceImpl implements ErrorHandlingService {
     }
 
     @Override
+    public List<ErrorLog> findAllErrorsByEntityType(String entityType) {
+        return errorLogDao.findByEntityType(entityType);
+    }
+
+    @Override
     public ErrorLog updateErrorLog(ErrorLog error) {
         for (ErrorServiceEndPoint errorEndPoint : errorEndPoints) {
             errorEndPoint.updateError(error);

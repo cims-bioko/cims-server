@@ -10,6 +10,7 @@ import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.OutMigration;
+import org.openhds.integration.AbstractResourceTest;
 import org.openhds.integration.util.WebContextLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -39,7 +40,7 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.s
         DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class })
 @DatabaseSetup(value = "/formResourceTestDb.xml", type = DatabaseOperation.REFRESH)
-public class OutMigrationFormResourceTest extends AbstractFormResourceTest {
+public class OutMigrationFormResourceTest extends AbstractResourceTest {
 
     @Autowired
     private GenericDao genericDao;

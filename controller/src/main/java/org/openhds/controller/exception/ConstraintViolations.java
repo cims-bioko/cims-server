@@ -9,6 +9,10 @@ public class ConstraintViolations extends Exception {
     public static final String INVALID_INDIVIDUAL_EXT_ID = "Invalid Individual Ext Id";
     public static final String INVALID_VISIT_EXT_ID = "Invalid Visit Ext Id";
     public static final String INVALID_LOCATION_EXT_ID = "Invalid Location Ext Id";
+    public static final String INVALID_LOCATION_HIERARCHY_EXT_ID = "Invalid Location Hierarchy Ext Id";
+    public static final String INVALID_SOCIAL_GROUP_EXT_ID = "Invalid Social Group Ext Id";
+
+    public static final String OUT_MIGRATION_BEFORE_INDIVIDUAL_RESIDENCY_START = "The Out Migration recorded date is before the start of the individual current residency.";
 
 
     private static final long serialVersionUID = 4392790814928552607L;

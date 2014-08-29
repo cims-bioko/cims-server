@@ -42,6 +42,7 @@ public class ErrorLog implements Serializable {
 
     private String assignedTo;
 
+    @Column
     private String entityType;
 
     private String resolutionStatus;

@@ -45,6 +45,14 @@ public class ErrorLogDAOImpl implements ErrorLogDAO {
     }
 
     @Override
+    public List<ErrorLog> findByEntityType(String entityType) {
+        List<ErrorLog> logs = genericDao.findListByProperty(ErrorLog.class, "entityType", entityType);
+        String test = "debug";
+        return logs;
+
+    }
+
+    @Override
     public List<ErrorLog> findByResolutionStatus(String resolutionStatus) {
         return genericDao.findListByProperty(ErrorLog.class, "resolutionStatus", resolutionStatus);
     }

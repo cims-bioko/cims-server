@@ -16,11 +16,11 @@ import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.Relationship;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.SocialGroup;
+import org.openhds.integration.AbstractResourceTest;
 import org.openhds.integration.util.WebContextLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -28,9 +28,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.web.server.MockMvc;
-import org.springframework.test.web.server.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
@@ -43,7 +41,7 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
         DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class })
 @DatabaseSetup(value = "/individualFormResourceDb.xml", type = DatabaseOperation.REFRESH)
-public class IndividualFormResourceTest extends AbstractFormResourceTest {
+public class IndividualFormResourceTest extends AbstractResourceTest {
 
     private static final String A_DATE = "2000-01-01T00:00:00-05:00";
     private static final String FORMATTED_DATE = "2013-06-13";

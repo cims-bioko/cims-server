@@ -1,13 +1,9 @@
-package org.openhds.integration.bioko;
+package org.openhds.integration;
 
 
-import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.webservice.WebServiceCallException;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpSession;
-
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.web.server.MockMvc;
 import org.springframework.test.web.server.setup.MockMvcBuilders;
@@ -16,7 +12,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
 
-public abstract class AbstractFormResourceTest {
+public abstract class AbstractResourceTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;

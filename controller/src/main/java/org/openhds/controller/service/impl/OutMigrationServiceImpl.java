@@ -51,7 +51,7 @@ public class OutMigrationServiceImpl extends EntityServiceRefactoredImpl impleme
 
         // verify the date of the out migration is after the residency start date
 		if (currentResidence.getStartDate().compareTo(outMigration.getRecordedDate()) > 0) {
-			throw new ConstraintViolations("The Out Migration recorded date is before the start of the individual current residency.");
+			throw new ConstraintViolations(ConstraintViolations.OUT_MIGRATION_BEFORE_INDIVIDUAL_RESIDENCY_START);
 		}
 	}
 
