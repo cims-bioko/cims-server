@@ -1,0 +1,12 @@
+<div>
+    <h2>All Unresolved Errors</h2>
+    <ul>
+        <li ng-repeat="errorlog in allUnresolvedErrors.data.errors">
+            <p>Date: {{errorlog.insertDate}}</p>
+            <p>Field Worker: {{errorlog.fieldWorker}}</p>
+            <p>Type: {{errorlog.entityType}}</p>
+            <p>Status: {{errorlog.resolutionStatus}}</p>
+            <p>Date of Resolution: {{errorlog.dateOfResolution}}</p>
+        </li>
+    </ul>
+</div>

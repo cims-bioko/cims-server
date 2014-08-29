@@ -358,22 +358,10 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
         return genericDao.findByProperty(Location.class, "extId", locationId);
     }
     
-    /**
-     * Find the locationHierarchy item by id, as long as it's a leaf
-     */
     public LocationHierarchy findLocationHierarchyById(String locationHierarchyId){
 
-        LocationHierarchy locationHierarchy = genericDao.findByProperty(LocationHierarchy.class, "extId", locationHierarchyId);
-        return locationHierarchy;
+        return genericDao.findByProperty(LocationHierarchy.class, "extId", locationHierarchyId);
 
-//    	List<LocationHierarchy> hierarchyList = genericDao.findAll(LocationHierarchy.class, false);
-//
-//    	for (LocationHierarchy item : hierarchyList) {
-//    		if (locationHierarchyId.equals(item.getExtId()) &&
-//    			item.getLevel().equals(getLowestLevel()))
-//    			return item;
-//    	}
-//    	return null;
     }
     
     public LocationHierarchy getHierarchyItemHighestLevel() {
