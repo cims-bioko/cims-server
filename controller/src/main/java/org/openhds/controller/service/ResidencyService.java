@@ -44,7 +44,7 @@ public interface ResidencyService {
 	 * @return A newly created residency
 	 */
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	Residency createResidency(Individual individual, Location location, Calendar startDate, String startType, FieldWorker collectedBy);
+	Residency makeResidencyInstance(Individual individual, Location location, Calendar startDate, String startType, FieldWorker collectedBy);
 
     @Authorized({PrivilegeConstants.CREATE_ENTITY})
     Residency updateResidency(Residency residency) throws ConstraintViolations;
