@@ -56,7 +56,7 @@ public class OutMigrationFormResource extends AbstractFormResource {
             context = JAXBContext.newInstance(OutMigrationForm.class);
             marshaller = context.createMarshaller();
         } catch (JAXBException e) {
-            throw new RuntimeException("Could not create JAXB context and marshaller for out migration form resource");
+            throw new RuntimeException("Could not create JAXB context and marshaller for OutMigrationFormResource");
         }
 
         OutMigration outMigration = new OutMigration();
@@ -69,9 +69,8 @@ public class OutMigrationFormResource extends AbstractFormResource {
         if (null == fieldWorker) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID);
-            StringWriter writer = new StringWriter();
-            marshaller.marshal(outMigrationForm, writer);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, OutMigrationForm.class.getSimpleName(),
+            String errorDataPayload = createDTOPayload(outMigrationForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, OutMigrationForm.class.getSimpleName(),
                     fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);
@@ -82,9 +81,8 @@ public class OutMigrationFormResource extends AbstractFormResource {
         if (null == individual) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_EXT_ID);
-            StringWriter writer = new StringWriter();
-            marshaller.marshal(outMigrationForm, writer);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, OutMigrationForm.class.getSimpleName(),
+            String errorDataPayload = createDTOPayload(outMigrationForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, OutMigrationForm.class.getSimpleName(),
                     fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);
@@ -95,9 +93,8 @@ public class OutMigrationFormResource extends AbstractFormResource {
         if (null == visit) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_VISIT_EXT_ID);
-            StringWriter writer = new StringWriter();
-            marshaller.marshal(outMigrationForm, writer);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, OutMigrationForm.class.getSimpleName(),
+            String errorDataPayload = createDTOPayload(outMigrationForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, OutMigrationForm.class.getSimpleName(),
                     fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);
@@ -107,9 +104,8 @@ public class OutMigrationFormResource extends AbstractFormResource {
         try {
             outMigrationService.createOutMigration(outMigration);
         } catch (ConstraintViolations cv) {
-            StringWriter writer = new StringWriter();
-            marshaller.marshal(outMigrationForm, writer);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, OutMigrationForm.class.getSimpleName(),
+            String errorDataPayload = createDTOPayload(outMigrationForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, OutMigrationForm.class.getSimpleName(),
                     fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);
@@ -118,5 +114,12 @@ public class OutMigrationFormResource extends AbstractFormResource {
         return new ResponseEntity<OutMigrationForm>(outMigrationForm, HttpStatus.CREATED);
 
     }
+
+    private String createDTOPayload(OutMigrationForm outMigrationForm) throws JAXBException {
+        StringWriter writer = new StringWriter();
+        marshaller.marshal(outMigrationForm, writer);
+        return writer.toString();
+    }
+
 
 }

@@ -38,13 +38,12 @@ public class OutMigrationServiceImpl extends EntityServiceRefactoredImpl impleme
 	@Transactional(readOnly=true)
 	public void evaluateOutMigrationBeforeCreate(OutMigration outMigration) throws ConstraintViolations {
 		if (individualService.getLatestEvent(outMigration.getIndividual()).equals("Death")) {
-    		throw new ConstraintViolations("An Out Migration cannot be created for an Individual who has a Death event.");		
+    		throw new ConstraintViolations(ConstraintViolations.ENTITY_REFERENCES_INDIVIDUAL_WITH_DEATH_EVENT);
 		}
 		
 		// verify the individual has an open residency
 		if (!residencyService.hasOpenResidency(outMigration.getIndividual())) {
-			throw new ConstraintViolations("The Individual you entered does not have an open residency. In order to complete an out" +
-					" migration, the Individual must have an open residency.");
+			throw new ConstraintViolations(ConstraintViolations.ENTITY_REFERENCES_INDIVIDUAL_WITHOUT_OPEN_RESIDENCY);
 		}
 		
         Residency currentResidence = outMigration.getIndividual().getCurrentResidency();

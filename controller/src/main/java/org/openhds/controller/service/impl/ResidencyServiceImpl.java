@@ -56,6 +56,7 @@ public class ResidencyServiceImpl extends EntityServiceRefactoredImpl implements
         if (null == residency) {
             throw new ConstraintViolations("Cannot update a null Residency");
         }
+
     }
 
     /*
@@ -214,10 +215,11 @@ public class ResidencyServiceImpl extends EntityServiceRefactoredImpl implements
 
     /*
      * (non-Javadoc)
-     * @see org.openhds.service.ResidencyService#createResidency(org.openhds.model.Individual, org.openhds.model.Location, java.util.Calendar, org.openhds.model.EventType)
+     * @see org.openhds.service.ResidencyService#makeResidencyInstance(org.openhds.model.Individual, org.openhds.model.Location, java.util.Calendar, org.openhds.model.EventType)
      */
-    public Residency createResidency(Individual individual, Location location, Calendar startDate, String startType, FieldWorker collectedBy) {
+    public Residency makeResidencyInstance(Individual individual, Location location, Calendar startDate, String startType, FieldWorker collectedBy) {
         Residency residency = new Residency();
+
         residency.setIndividual(individual);
         residency.setLocation(location);
         residency.setStartDate(startDate);
