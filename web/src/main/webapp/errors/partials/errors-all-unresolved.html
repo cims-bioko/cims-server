@@ -7,8 +7,8 @@
             <p>Date: {{errorlog.insertDate}}</p>
             <p>Field Worker: {{errorlog.fieldWorker.extId}}</p>
             <p>Type: {{errorlog.entityType}}</p>
-            <li ng-repeat="errorMessage in errorlog.errors.errorMessage" >
-                <p>Message: {{errorMessage}}</p>
+            <li ng-repeat="error in errorlog.errors" >
+                <p>Message: {{error.errorMessage}}</p>
             </li>
             <p>Status: {{errorlog.resolutionStatus}}</p>
             <p>Date of Resolution: {{errorlog.dateOfResolution}}</p>
