@@ -5,6 +5,7 @@ import org.openhds.domain.annotations.Description;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 
 @Description(description = "An individual error")
@@ -23,7 +24,19 @@ public class Error implements Serializable {
 
     private String errorMessage;
 
+    @Description(description="Indicator for signaling some data to be deleted.")
+    protected boolean deleted = false;
+
     public Error() { }
+
+    @XmlTransient
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 
     public Error(String errorMessage) {
         this.errorMessage = errorMessage;

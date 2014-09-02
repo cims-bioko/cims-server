@@ -6,6 +6,7 @@ import org.openhds.domain.annotations.Description;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
@@ -40,6 +41,9 @@ public class ErrorLog implements Serializable {
     @Description(description="The field worker who collected the data, identified by external id.")
     private FieldWorker fieldWorker;
 
+    @Description(description="Indicator for signaling some data to be deleted.")
+    protected boolean deleted = false;
+
     private String assignedTo;
 
     @Column
@@ -48,6 +52,15 @@ public class ErrorLog implements Serializable {
     private String resolutionStatus;
 
     private Calendar dateOfResolution;
+
+    @XmlTransient
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 
     public Calendar getInsertDate() {
         return insertDate;
