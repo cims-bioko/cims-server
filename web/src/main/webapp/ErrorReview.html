@@ -12,20 +12,10 @@
 <body>
 <ul class="menu">
     <li><a href="/openhds/ErrorReview.html">Review Home</a></li>
+    <li><a href="/errors/all/unresolved">All Unresolved Errors</a></li>
 </ul>
 
-<div ng-controller="AllUnresolvedErrorsController">
-    <h2>All Unresolved Errors</h2>
-    <ul>
-        <li ng-repeat="errorlog in allUnresolvedErrors.data.errors">
-            <p>Date: {{errorlog.insertDate}}</p>
-            <p>Field Worker: {{errorlog.fieldWorker}}</p>
-            <p>Type: {{errorlog.entityType}}</p>
-            <p>Status: {{errorlog.resolutionStatus}}</p>
-            <p>Date of Resolution: {{errorlog.dateOfResolution}}</p>
-        </li>
-    </ul>
-</div>
+<div ng-view></div>
 
 <div>OpenHDS Error Review</div>
 

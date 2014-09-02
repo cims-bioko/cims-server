@@ -178,6 +178,7 @@ public class ErrorLogResource {
         shallowErrorLog.setInsertDate(errorLog.getInsertDate());
         shallowErrorLog.setResolutionStatus(errorLog.getResolutionStatus());
         shallowErrorLog.setUuid(errorLog.getUuid());
+        shallowErrorLog.setEntityType(errorLog.getEntityType());
 
         FieldWorker fieldWorker = new FieldWorker();
         fieldWorker.setExtId(errorLog.getFieldWorker().getExtId());
