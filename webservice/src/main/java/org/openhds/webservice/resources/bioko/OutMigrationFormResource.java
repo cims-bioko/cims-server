@@ -7,6 +7,7 @@ import org.openhds.controller.service.OutMigrationService;
 import org.openhds.controller.service.VisitService;
 import org.openhds.domain.model.*;
 import org.openhds.domain.model.bioko.OutMigrationForm;
+import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.errorhandling.constants.ErrorConstants;
 import org.openhds.errorhandling.service.ErrorHandlingService;
 import org.openhds.errorhandling.util.ErrorLogUtil;
@@ -44,6 +45,9 @@ public class OutMigrationFormResource extends AbstractFormResource {
     @Autowired
     private ErrorHandlingService errorService;
 
+    @Autowired
+    private CalendarAdapter adapter;
+
     private JAXBContext context = null;
     private Marshaller marshaller = null;
 
@@ -55,6 +59,7 @@ public class OutMigrationFormResource extends AbstractFormResource {
         try {
             context = JAXBContext.newInstance(OutMigrationForm.class);
             marshaller = context.createMarshaller();
+            marshaller.setAdapter(adapter);
         } catch (JAXBException e) {
             throw new RuntimeException("Could not create JAXB context and marshaller for OutMigrationFormResource");
         }
