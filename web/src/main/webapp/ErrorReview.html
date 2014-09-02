@@ -2,9 +2,6 @@
 <head>
     <title>OpenHDS Error Review</title>
     <meta name="description" content="">
-    <link rel="stylesheet" href="angular-resources/bower_components/html5-boilerplate/css/normalize.css">
-    <link rel="stylesheet" href="angular-resources/bower_components/html5-boilerplate/css/main.css">
-    <link rel="stylesheet" href="resources/css/app.css"/>
     <script src="angular-resources/bower_components/angular/angular.js"></script>
     <script src="angular-resources/bower_components/angular-route/angular-route.js"></script>
     <script src="resources/lib/ng/angular-resource.js"></script>
@@ -17,7 +14,18 @@
     <li><a href="/openhds/ErrorReview.html">Review Home</a></li>
 </ul>
 
-<div ng-view></div>
+<div ng-controller="AllUnresolvedErrorsController">
+    <h2>All Unresolved Errors</h2>
+    <ul>
+        <li ng-repeat="errorlog in allUnresolvedErrors.data.errors">
+            <p>Date: {{errorlog.insertDate}}</p>
+            <p>Field Worker: {{errorlog.fieldWorker}}</p>
+            <p>Type: {{errorlog.entityType}}</p>
+            <p>Status: {{errorlog.resolutionStatus}}</p>
+            <p>Date of Resolution: {{errorlog.dateOfResolution}}</p>
+        </li>
+    </ul>
+</div>
 
 <div>OpenHDS Error Review</div>
 
