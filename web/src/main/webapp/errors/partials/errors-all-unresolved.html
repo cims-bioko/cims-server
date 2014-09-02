@@ -7,7 +7,7 @@
     <ul>
         <li ng-repeat="errorlog in allUnresolvedErrors.data.errors | filter:search">
             <p>UUID: {{errorlog.uuid}}</p>
-            <p>Date: {{errorlog.insertDate}}</p>
+            <!--<p>Date: {{errorlog.insertDate}}</p>-->
             <p>Field Worker: {{errorlog.fieldWorker.extId}}</p>
             <p>Type: {{errorlog.entityType}}</p>
             <p ng-repeat="error in errorlog.errors">Message: {{error.errorMessage}}</p>
