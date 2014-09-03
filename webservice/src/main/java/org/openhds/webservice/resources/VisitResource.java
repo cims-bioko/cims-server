@@ -11,7 +11,7 @@ import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.VisitService;
 import org.openhds.domain.model.Visit;
-import org.openhds.domain.model.wrappers.Visits;
+import org.openhds.domain.model.Visit.Visits;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
 import org.openhds.webservice.CacheResponseWriter;
@@ -57,7 +57,7 @@ public class VisitResource {
             copies.add(copy);
         }
 
-        Visits visits = new Visits();
+        Visits visits = new Visit.Visits();
         visits.setVisits(copies);
 
         return visits;

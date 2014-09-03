@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.List;
@@ -263,6 +264,22 @@ public class Location
     @Override
     public int hashCode() {
         return extId.hashCode();
+    }
+
+    @XmlRootElement
+    public static class Locations {
+
+        private List<Location> locations;
+
+        @XmlElement(name = "location")
+        public List<Location> getLocations() {
+            return locations;
+        }
+
+        public void setLocations(List<Location> locations) {
+            this.locations = locations;
+        }
+
     }
 
 }

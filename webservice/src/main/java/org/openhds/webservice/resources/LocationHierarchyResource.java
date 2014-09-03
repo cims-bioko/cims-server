@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.domain.model.LocationHierarchy;
+import org.openhds.domain.model.LocationHierarchy.LocationHierarchies;
 import org.openhds.domain.model.LocationHierarchyLevel;
-import org.openhds.domain.model.wrappers.LocationHierarchies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,10 +46,10 @@ public class LocationHierarchyResource {
 			copies.add(copy);
 		}
 
-		LocationHierarchies locationHierarcies = new LocationHierarchies();
-		locationHierarcies.setLocationHierarchies(copies);
+		LocationHierarchies locationHierarchies = new LocationHierarchy.LocationHierarchies();
+        locationHierarchies.setLocationHierarchies(copies);
 		
-		return locationHierarcies;
+		return locationHierarchies;
 	}
 
 }

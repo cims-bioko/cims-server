@@ -6,7 +6,7 @@ import org.openhds.controller.service.MembershipService;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Membership;
-import org.openhds.domain.model.wrappers.Memberships;
+import org.openhds.domain.model.Membership.Memberships;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
 import org.openhds.webservice.CacheResponseWriter;
@@ -85,7 +85,7 @@ public class MembershipResource {
             copies.add(copy);
         }
 
-        Memberships allMemberships = new Memberships();
+        Memberships allMemberships = new Membership.Memberships();
         allMemberships.setMemberships(copies);
         return new ResponseEntity<Memberships>(allMemberships, HttpStatus.OK);
     }

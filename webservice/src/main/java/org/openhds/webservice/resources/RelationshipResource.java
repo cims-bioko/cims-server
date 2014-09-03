@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.RelationshipService;
 import org.openhds.domain.model.Relationship;
-import org.openhds.domain.model.wrappers.Relationships;
+import org.openhds.domain.model.Relationship.Relationships;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
 import org.openhds.webservice.CacheResponseWriter;
@@ -55,7 +55,7 @@ public class RelationshipResource {
             copies.add(copy);
         }
 
-        Relationships relationships = new Relationships();
+        Relationships relationships = new Relationship.Relationships();
         relationships.setRelationships(copies);
 
         return relationships;

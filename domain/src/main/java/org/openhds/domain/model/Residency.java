@@ -2,6 +2,7 @@ package org.openhds.domain.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -9,6 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.openhds.domain.annotations.Description;
@@ -142,5 +144,22 @@ public class Residency extends AuditableCollectedEntity implements GenericStartE
     @Override
     public int hashCode() {
         return 29*individual.getExtId().hashCode() + location.getExtId().hashCode();
+    }
+
+    @XmlRootElement
+    public static class Residencies implements Serializable {
+
+        private static final long serialVersionUID = 1L;
+
+        private List<Residency> residencies;
+
+        @XmlElement(name = "residency")
+        public List<Residency> getResidencies() {
+            return residencies;
+        }
+
+        public void setResidencies(List<Residency> copies) {
+            this.residencies = copies;
+        }
     }
 }

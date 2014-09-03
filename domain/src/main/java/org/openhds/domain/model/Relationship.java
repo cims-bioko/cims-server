@@ -19,10 +19,12 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.List;
 
 @Description(description = "A Relationship is used to associate an Individual "
         + "with another Indivual in some way. It can be identified by a uniquely "
@@ -151,5 +153,20 @@ public class Relationship extends AuditableCollectedEntity implements
     @Override
     public int hashCode() {
         return 31*individualA.getExtId().hashCode() + 29*individualB.getExtId().hashCode() + aIsToB.hashCode();
+    }
+
+    @XmlRootElement
+    public static class Relationships {
+
+        private List<Relationship> relationships;
+
+        @XmlElement(name = "relationship")
+        public List<Relationship> getRelationships() {
+            return relationships;
+        }
+
+        public void setRelationships(List<Relationship> copies) {
+            this.relationships = copies;
+        }
     }
 }

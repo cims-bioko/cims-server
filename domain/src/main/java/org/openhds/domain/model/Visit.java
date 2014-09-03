@@ -15,6 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.openhds.domain.annotations.Description;
@@ -100,6 +101,20 @@ public class Visit
         Visit stub = new Visit();
         stub.setExtId(extId);
         return stub;
+    }
+
+    @XmlRootElement
+    public static class Visits {
+        private List<Visit> visits;
+
+        @XmlElement(name = "visit")
+        public List<Visit> getVisits() {
+            return visits;
+        }
+
+        public void setVisits(List<Visit> visits) {
+            this.visits = visits;
+        }
     }
 
 }

@@ -9,8 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.openhds.controller.service.ResidencyService;
 import org.openhds.domain.model.Residency;
-import org.openhds.domain.model.wrappers.Memberships;
-import org.openhds.domain.model.wrappers.Residencies;
+import org.openhds.domain.model.Residency.Residencies;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
 import org.openhds.webservice.CacheResponseWriter;
@@ -52,7 +51,7 @@ public class ResidencyResource {
             copies.add(copy);
         }
 
-        Residencies allResidencies = new Residencies();
+        Residencies allResidencies = new Residency.Residencies();
         allResidencies.setResidencies(copies);
         return new ResponseEntity<Residencies>(allResidencies, HttpStatus.OK);
     }

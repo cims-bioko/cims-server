@@ -15,8 +15,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.List;
 
 @Description(description="The Location Hierarchy represents the overall structure " +
 		"of all Locations within the study area. The levels of the hierarchy are " +
@@ -131,4 +133,21 @@ public class LocationHierarchy implements Serializable {
 			return false;
 		return true;
 	}
+
+    @XmlRootElement
+    public static class LocationHierarchies {
+
+        private List<LocationHierarchy> locationHierarchies;
+
+        @XmlElement(name = "hierarchy")
+        public List<LocationHierarchy> getLocationHierarchies() {
+            return locationHierarchies;
+        }
+
+        public void setLocationHierarchies(List<LocationHierarchy> locationHierarchies) {
+            this.locationHierarchies = locationHierarchies;
+        }
+
+    }
+
 }

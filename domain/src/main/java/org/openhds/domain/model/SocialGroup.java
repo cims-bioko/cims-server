@@ -2,6 +2,7 @@
 package org.openhds.domain.model;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -9,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.openhds.domain.annotations.Description;
@@ -128,5 +130,22 @@ public class SocialGroup
     public int hashCode() {
         return extId.hashCode();
     }
+
+    @XmlRootElement
+    public static class SocialGroups {
+
+        private List<SocialGroup> socialGroups;
+
+        @XmlElement(name = "socialgroup")
+        public List<SocialGroup> getSocialGroups() {
+            return socialGroups;
+        }
+
+        public void setSocialGroups(List<SocialGroup> socialGroups) {
+            this.socialGroups = socialGroups;
+        }
+
+    }
+
 
 }

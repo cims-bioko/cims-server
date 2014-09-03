@@ -22,7 +22,7 @@ import javax.xml.bind.Marshaller;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.domain.model.Location;
-import org.openhds.domain.model.wrappers.Locations;
+import org.openhds.domain.model.Location.Locations;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
 import org.openhds.webservice.CacheResponseWriter;
@@ -111,7 +111,7 @@ public class LocationResource {
             copies.add(copy);
         }
 
-        Locations allLocations = new Locations();
+        Locations allLocations = new Location.Locations();
         allLocations.setLocations(copies);
         return allLocations;
     }

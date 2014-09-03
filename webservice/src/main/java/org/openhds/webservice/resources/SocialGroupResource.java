@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.SocialGroupService;
 import org.openhds.domain.model.SocialGroup;
-import org.openhds.domain.model.wrappers.SocialGroups;
+import org.openhds.domain.model.SocialGroup.SocialGroups;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
 import org.openhds.webservice.CacheResponseWriter;
@@ -55,7 +55,7 @@ public class SocialGroupResource {
             copies.add(copy);
         }
 
-        SocialGroups sgs = new SocialGroups();
+        SocialGroups sgs = new SocialGroup.SocialGroups();
         sgs.setSocialGroups(copies);
 
         return sgs;

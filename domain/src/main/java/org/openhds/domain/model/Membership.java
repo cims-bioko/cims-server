@@ -2,11 +2,13 @@ package org.openhds.domain.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -153,5 +155,22 @@ public class Membership extends AuditableCollectedEntity implements GenericEndDa
     @Override
     public int hashCode() {
         return 31*individual.getExtId().hashCode() + 29*socialGroup.getExtId().hashCode();
+    }
+
+    @XmlRootElement
+    public static class Memberships implements Serializable {
+
+        private static final long serialVersionUID = 1L;
+
+        private List<Membership> memberships;
+
+        @XmlElement(name = "membership")
+        public List<Membership> getMemberships() {
+            return memberships;
+        }
+
+        public void setMemberships(List<Membership> copies) {
+            this.memberships = copies;
+        }
     }
 }

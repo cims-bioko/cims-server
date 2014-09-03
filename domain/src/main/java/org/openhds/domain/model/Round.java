@@ -12,9 +12,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.List;
 
 @Description(description="A Round represents a range of dates in which Visits " +
 		"can take place.")
@@ -87,4 +90,18 @@ public class Round implements Serializable, GenericStartEndDateConstraint {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
+
+    @XmlRootElement
+    public static class Rounds {
+        private List<Round> rounds;
+
+        @XmlElement(name = "round")
+        public List<Round> getRounds() {
+            return rounds;
+        }
+
+        public void setRounds(List<Round> rounds) {
+            this.rounds = rounds;
+        }
+    }
 }
