@@ -1,10 +1,7 @@
 package org.openhds.domain.model;
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -336,6 +333,20 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @Override
     public int hashCode() {
         return extId.hashCode();
+    }
+
+    @XmlRootElement
+    public static class Individuals {
+        private List<Individual> individuals;
+
+        @XmlElement(name = "individual")
+        public List<Individual> getIndividuals() {
+            return individuals;
+        }
+
+        public void setIndividuals(List<Individual> individuals) {
+            this.individuals = individuals;
+        }
     }
 
 }

@@ -9,7 +9,10 @@ import org.openhds.domain.constraint.Searchable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.List;
 
 @Description(description="A Field Worker represents one who collects the data within " +
 		"the study area. They can be identified by a uniquely generated " +
@@ -92,5 +95,21 @@ public class FieldWorker extends AuditableEntity implements Serializable {
     @Override
     public int hashCode() {
         return extId.hashCode();
+    }
+
+    @XmlRootElement(name = "fieldworkers")
+    public static class FieldWorkers {
+
+        private List<FieldWorker> fieldWorkers;
+
+        @XmlElement(name = "fieldworker")
+        public List<FieldWorker> getFieldWorkers() {
+            return fieldWorkers;
+        }
+
+        public void setFieldWorkers(List<FieldWorker> fieldWorkers) {
+            this.fieldWorkers = fieldWorkers;
+        }
+
     }
 }

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.openhds.controller.service.IndividualService;
 import org.openhds.domain.model.Individual;
-import org.openhds.domain.model.wrappers.Individuals;
+import org.openhds.domain.model.Individual.Individuals;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
 import org.openhds.webservice.CacheResponseWriter;
@@ -57,7 +57,7 @@ public class IndividualResource {
             copies.add(copy);
         }
 
-        Individuals individuals = new Individuals();
+        Individuals individuals = new Individual.Individuals();
         individuals.setIndividuals(copies);
 
         return individuals;

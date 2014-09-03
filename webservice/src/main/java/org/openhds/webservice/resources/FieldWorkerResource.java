@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.openhds.controller.service.FieldWorkerService;
 import org.openhds.domain.model.FieldWorker;
-import org.openhds.domain.model.wrappers.FieldWorkers;
+import org.openhds.domain.model.FieldWorker.FieldWorkers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +38,7 @@ public class FieldWorkerResource {
 			copies.add(copy);
 		}
 
-		FieldWorkers fws = new FieldWorkers();
+		FieldWorkers fws = new FieldWorker.FieldWorkers();
 		fws.setFieldWorkers(copies);
 
 		return fws;
