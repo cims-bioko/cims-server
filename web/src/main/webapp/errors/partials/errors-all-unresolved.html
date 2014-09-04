@@ -5,7 +5,7 @@
         Search: <input ng-model="search">
     </form>
     <ul>
-        <li ng-repeat="errorlog in allUnresolvedErrors | filter:search">
+        <li ng-repeat="errorlog in allUnresolvedErrors.data.errors | filter:search">
             <p>UUID: {{errorlog.uuid}}</p>
             <p>Date: {{errorlog.insertDate}}</p>
             <p>Field Worker: {{errorlog.fieldWorker.extId}}</p>
