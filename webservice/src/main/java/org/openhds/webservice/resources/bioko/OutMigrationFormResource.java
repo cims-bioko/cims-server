@@ -43,9 +43,6 @@ public class OutMigrationFormResource extends AbstractFormResource {
     private VisitService visitService;
 
     @Autowired
-    private ErrorHandlingService errorService;
-
-    @Autowired
     private CalendarAdapter adapter;
 
     private JAXBContext context = null;
@@ -74,10 +71,7 @@ public class OutMigrationFormResource extends AbstractFormResource {
         if (null == fieldWorker) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID);
-            String errorDataPayload = createDTOPayload(outMigrationForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, OutMigrationForm.class.getSimpleName(),
-                    fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
-            errorService.logError(error);
+            logError(cv, fieldWorker, createDTOPayload(outMigrationForm), OutMigrationForm.class.getSimpleName());
             return requestError(cv);
         }
         outMigration.setCollectedBy(fieldWorker);
@@ -86,10 +80,7 @@ public class OutMigrationFormResource extends AbstractFormResource {
         if (null == individual) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_EXT_ID);
-            String errorDataPayload = createDTOPayload(outMigrationForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, OutMigrationForm.class.getSimpleName(),
-                    fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
-            errorService.logError(error);
+            logError(cv, fieldWorker, createDTOPayload(outMigrationForm), OutMigrationForm.class.getSimpleName());
             return requestError(cv);
         }
         outMigration.setIndividual(individual);
@@ -98,10 +89,7 @@ public class OutMigrationFormResource extends AbstractFormResource {
         if (null == visit) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_VISIT_EXT_ID);
-            String errorDataPayload = createDTOPayload(outMigrationForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, OutMigrationForm.class.getSimpleName(),
-                    fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
-            errorService.logError(error);
+            logError(cv, fieldWorker, createDTOPayload(outMigrationForm), OutMigrationForm.class.getSimpleName());
             return requestError(cv);
         }
         outMigration.setVisit(visit);
@@ -109,10 +97,7 @@ public class OutMigrationFormResource extends AbstractFormResource {
         try {
             outMigrationService.createOutMigration(outMigration);
         } catch (ConstraintViolations cv) {
-            String errorDataPayload = createDTOPayload(outMigrationForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, OutMigrationForm.class.getSimpleName(),
-                    fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
-            errorService.logError(error);
+            logError(cv, fieldWorker, createDTOPayload(outMigrationForm), OutMigrationForm.class.getSimpleName());
             return requestError(cv);
         }
 
