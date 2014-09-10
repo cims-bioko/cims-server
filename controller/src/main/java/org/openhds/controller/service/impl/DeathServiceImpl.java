@@ -65,7 +65,7 @@ public class DeathServiceImpl implements DeathService {
         if (!entityItem.getIndividual().getAllMemberships().isEmpty()) {
             Set<Membership> memberships = (Set<Membership>) entityItem.getIndividual().getAllMemberships();
             for (Membership mem : memberships) {
-            	if (mem.getEndType().equals(siteProperties.getNotApplicableCode())) {
+            	if (null == mem.getEndType() || mem.getEndType().equals(siteProperties.getNotApplicableCode())) {
 	                mem.setEndDate(endDate);
 	                mem.setEndType(siteProperties.getDeathCode());
 	                entityService.save(mem);
