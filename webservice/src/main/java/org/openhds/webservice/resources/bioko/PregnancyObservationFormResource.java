@@ -1,0 +1,116 @@
+package org.openhds.webservice.resources.bioko;
+
+import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.controller.service.FieldWorkerService;
+import org.openhds.controller.service.IndividualService;
+import org.openhds.controller.service.PregnancyService;
+import org.openhds.controller.service.VisitService;
+import org.openhds.domain.model.*;
+import org.openhds.domain.model.bioko.OutMigrationForm;
+import org.openhds.domain.model.bioko.PregnancyObservationForm;
+import org.openhds.domain.util.CalendarAdapter;
+import org.openhds.errorhandling.constants.ErrorConstants;
+import org.openhds.errorhandling.service.ErrorHandlingService;
+import org.openhds.errorhandling.util.ErrorLogUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.Serializable;
+import java.io.StringWriter;
+
+@Controller
+@RequestMapping("/pregnancyObservationForm")
+public class PregnancyObservationFormResource extends AbstractFormResource {
+
+    @Autowired
+    private IndividualService individualService;
+
+    @Autowired
+    private FieldWorkerService fieldWorkerService;
+
+    @Autowired
+    private VisitService visitService;
+
+    @Autowired
+    private PregnancyService pregnancyService;
+
+    @Autowired
+    private CalendarAdapter adapter;
+
+    private JAXBContext context = null;
+    private Marshaller marshaller = null;
+
+    @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
+    @Transactional
+    public ResponseEntity<? extends Serializable> processForm(@RequestBody PregnancyObservationForm pregnancyObservationForm)
+                                                                            throws JAXBException {
+
+        try {
+            context = JAXBContext.newInstance(PregnancyObservationForm.class);
+            marshaller = context.createMarshaller();
+            marshaller.setAdapter(adapter);
+        } catch (JAXBException e) {
+            throw new RuntimeException("Could not create JAXB context and marshaller for PregnancyObservationFormResource");
+        }
+
+        PregnancyObservation pregnancyObservation = new PregnancyObservation();
+        pregnancyObservation.setRecordedDate(pregnancyObservationForm.getRecordedDate());
+        pregnancyObservation.setExpectedDeliveryDate(pregnancyObservationForm.getExpectedDeliveryDate());
+
+        FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerById(pregnancyObservationForm.getFieldWorkerExtId());
+        if (null == fieldWorker) {
+            ConstraintViolations cv = new ConstraintViolations();
+            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID);
+            logError(cv, fieldWorker, createDTOPayload(pregnancyObservationForm), PregnancyObservationForm.class.getSimpleName());
+            return requestError(cv);
+        }
+        pregnancyObservation.setCollectedBy(fieldWorker);
+
+        Individual individual = individualService.findIndivById(pregnancyObservationForm.getIndividualExtId());
+        if (null == individual) {
+            ConstraintViolations cv = new ConstraintViolations();
+            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_EXT_ID);
+            logError(cv, fieldWorker, createDTOPayload(pregnancyObservationForm), PregnancyObservationForm.class.getSimpleName());
+            return requestError(cv);
+        }
+        pregnancyObservation.setMother(individual);
+
+        Visit visit = visitService.findVisitById(pregnancyObservationForm.getVisitExtId());
+        if (null == visit) {
+            ConstraintViolations cv = new ConstraintViolations();
+            cv.addViolations(ConstraintViolations.INVALID_VISIT_EXT_ID);
+            logError(cv, fieldWorker, createDTOPayload(pregnancyObservationForm), PregnancyObservationForm.class.getSimpleName());
+            return requestError(cv);
+        }
+        pregnancyObservation.setVisit(visit);
+
+        try {
+            pregnancyService.createPregnancyObservation(pregnancyObservation);
+        } catch (ConstraintViolations cv) {
+            logError(cv, fieldWorker, createDTOPayload(pregnancyObservationForm), PregnancyObservationForm.class.getSimpleName());
+            return requestError(cv);
+        }
+
+        return new ResponseEntity<PregnancyObservationForm>(pregnancyObservationForm, HttpStatus.CREATED);
+
+    }
+
+    private String createDTOPayload(PregnancyObservationForm pregnancyObservationForm) throws JAXBException {
+
+        StringWriter writer = new StringWriter();
+        marshaller.marshal(pregnancyObservationForm, writer);
+        return writer.toString();
+
+    }
+
+
+}
