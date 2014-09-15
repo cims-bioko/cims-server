@@ -6,7 +6,7 @@
     </form>
     <p>{{resultMessage}}</p>
     <ul>
-        <li ng-repeat="errorlog in allUnresolvedErrors.errors | filter:search">
+        <li ng-repeat="errorlog in allUnresolvedErrors | filter:search">
             <p>UUID: {{errorlog.uuid}}</p>
             <p>Date: {{errorlog.insertDate}}</p>
             <p>Field Worker: {{errorlog.fieldWorker.extId}}</p>
