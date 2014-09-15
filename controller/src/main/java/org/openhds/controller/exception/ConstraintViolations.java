@@ -37,12 +37,18 @@ public class ConstraintViolations extends Exception {
 		return violations;
 	}
 
-	public void addViolations(String invalidFieldWorkerId) {
-		violations.add(invalidFieldWorkerId);
+	public void addViolations(String violation) {
+		violations.add(violation);
 	}
 
 	public boolean hasViolations() {
 		return violations != null && violations.size() > 0;
 	}
+
+    public static void addViolationIfNotNull(ConstraintViolations cv, String violation){
+        if(null!= cv){
+            cv.addViolations(violation);
+        }
+    }
 }
 

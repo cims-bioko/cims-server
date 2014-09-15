@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--This data set taken from web openhds-required-data.sql-->
+<dataset>
+    <privilege uuid="PRIVILEGE1" privilege="CREATE_ENTITY" />
+    <role uuid="ROLE1" name="ADMINISTRATOR" description="Administrator of OpenHDS" deleted="false" />
+    <role_privileges role_uuid="ROLE1" privilege_uuid="PRIVILEGE1" />
+
+    <user uuid="User 1" firstName="OpenHDS" lastName="Administrator" fullName="Administrator"
+          description="Administrator User" username="admin" password="test" lastLoginTime="0" deleted="false" />
+    <user_roles user_uuid="User 1" role_uuid="ROLE1" />)
+
+    <locationhierarchylevel uuid="HierarchyLevel1" keyIdentifier="1" name="Level 1" />
+    <locationhierarchylevel uuid="HierarchyLevel2" keyIdentifier="2" name="Level 2" />
+    <locationhierarchylevel uuid="HierarchyLevel3" keyIdentifier="3" name="Level 3" />
+
+    <locationhierarchy uuid="hierarchy1" name="TAN"
+                       extId="TAN" level_uuid="HierarchyLevel1" parent_uuid="hierarchy_root" />
+    <locationhierarchy uuid="hierarchy2" name="IFA"
+                       extId="IFA" level_uuid="HierarchyLevel2" parent_uuid="hierarchy1" />
+    <locationhierarchy uuid="hierarchy3" name="IFB"
+                       extId="IFB" level_uuid="HierarchyLevel3" parent_uuid="hierarchy2" />
+
+    <fieldworker uuid="TestFieldWorker1uuid" extid="TestFieldWorkerExtId" firstname="TFWFirstName" lastname="TFWLastName" deleted="false"/>
+
+    <individual uuid="TestIndividual1uuid" extId="TestIndividual1ExtId" firstName="TI1FirstName" middleName="TI1MiddleName" lastName="TI1LastName"
+                gender="1" dob="1984-01-01" insertBy_uuid="User 1" insertDate="2014-01-02" status="P"
+                dobAspect="1" deleted="false" collectedBy_uuid="TestFieldWorker1uuid"
+                age="30" dip="1"/>
+
+    <individual uuid="TestIndividual2uuid" extId="TestIndividual2ExtId" firstName="TI2FirstName" middleName="TI2MiddleName" lastName="TI2LastName"
+                gender="1" dob="2004-01-01" insertBy_uuid="User 1" insertDate="2014-01-02" status="P"
+                dobAspect="1" deleted="false" collectedBy_uuid="TestFieldWorker1uuid"
+                age="10" dip="2"/>
+
+    <location uuid="TestLocation1uuid" extId="TestLocation1ExtId" locationName="Test Location 1" locationLevel_uuid="hierarchy3"
+              locationType="RUR" insertDate="2014-01-01" deleted="false" collectedBy_uuid="TestFieldWorker1uuid"
+              insertBy_uuid="User 1" status="P" />
+
+    <socialgroup uuid="TestSocialGroup1uuid" extId="TestSGExtId" groupName="Test Social Group 1"
+                 groupHead_uuid="TestIndividual1uuid" groupType="COH" insertDate="2014-01-02" deleted="false"
+                 collectedBy_uuid="TestFieldWorker1uuid" insertBy_uuid="User 1" status="P" />
+
+    <membership uuid="TestMembership1uuid" deleted="false" insertDate="2014-01-02"
+                collectedBy_uuid="TestFieldWorker1uuid" insertBy_uuid="User 1" status="P"
+                bIsToA="1" individual_uuid="TestIndividual1uuid" socialGroup_uuid="TestSocialGroup1uuid" />
+
+    <membership uuid="TestMembership2uuid" deleted="false" insertDate="2014-01-02"
+                collectedBy_uuid="TestFieldWorker1uuid" insertBy_uuid="User 1" status="P"
+                bIsToA="5" individual_uuid="TestIndividual2uuid" socialGroup_uuid="TestSocialGroup1uuid" />
+
+    <residency uuid="TestResidency1uuid" deleted="false" insertDate="2014-01-02" startDate="2013-01-01" startType="type"
+        		individual_uuid="TestIndividual1uuid" collectedBy_uuid="TestFieldWorker1uuid" location_uuid="TestLocation1uuid" />
+
+    <residency uuid="TestResidency2uuid" deleted="false" insertDate="2014-01-02" startDate="2013-01-01" startType="type"
+               individual_uuid="TestIndividual2uuid" collectedBy_uuid="TestFieldWorker1uuid" location_uuid="TestLocation1uuid" />
+
+
+    <relationship uuid="TestRelationship1uuid" deleted="false" insertDate="2014-01-02" aIsToB="5"
+        		startDate="2004-01-01" collectedBy_uuid="TestFieldWorker1uuid" individualA_uuid="TestIndividual2uuid"
+        		individualB_uuid="TestIndividual1uuid" />
+        		
+
+    <whitelist uuid="LOCALHOST1" address="127.0.0.1" />
+    <whitelist uuid="LOCALHOST2" address="10.0.2.10" />
+    <whitelist uuid="LOCALHOST3" address="10.0.2.14" />
+    <whitelist uuid="LOCALHOST4" address="141.114.156.167" />
+</dataset>

@@ -7,11 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhds.controller.service.CurrentUser;
-import org.openhds.controller.service.ResidencyService;
+
 import org.openhds.dao.service.GenericDao;
-import org.openhds.domain.model.Individual;
-import org.openhds.domain.model.PrivilegeConstants;
-import org.openhds.domain.model.Residency;
+import org.openhds.domain.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -25,6 +23,9 @@ import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 
+import java.lang.reflect.Member;
+
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @ContextConfiguration(locations={"/controller-test-context.xml"})
@@ -32,42 +33,47 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class })
-@DatabaseSetup(value = "/residencyServiceDb.xml", type = DatabaseOperation.REFRESH)
-public class ResidencyServiceTest {
+@DatabaseSetup(value = "/serviceTestDb.xml", type = DatabaseOperation.REFRESH)
+public class OutMigrationServiceTest {
 
     @Autowired
     private GenericDao genericDao;
 
     @Autowired
-    private ResidencyService residencyService;
-
-    @Autowired
     private CurrentUser currentUser;
-    
-    Residency residency;
-    
+
+    private Individual individual1;
+
+    private Individual individual2;
+
+    private SocialGroup socialGroup1;
+
+    private Membership membership1;
+
     @Before
     public void setUp() throws Exception {
-    	
-    	Individual individual = genericDao.findByProperty(Individual.class, "extId", "individual1");
 
-    	
-        residency = genericDao.findByProperty(Residency.class, "individual", individual);
-        assertNotNull(residency);
+        individual1 = genericDao.findByProperty(Individual.class, "extId", "TestIndividual1ExtId");
+        assertNotNull(individual1);
+
+        individual2 = genericDao.findByProperty(Individual.class, "extId", "TestIndividual2ExtId");
+        assertNotNull(individual2);
+
+        socialGroup1 = genericDao.findByProperty(SocialGroup.class, "extId", "TestSGExtId");
+        assertNotNull(socialGroup1);
+
+        membership1 = genericDao.findByProperty(Membership.class, "individual", individual1);
+        assertNotNull(membership1);
+        assertEquals(individual1.getExtId(),membership1.getIndividual().getExtId());
 
         currentUser.setProxyUser("admin", "test",
                 new String[] {PrivilegeConstants.CREATE_ENTITY, PrivilegeConstants.VIEW_ENTITY});
     }
-    
-    @Test
-    public void testGetAllResidencies() {
-    	int count = (int)residencyService.getTotalResidencyCount();
-    	assertEquals(1, count);
-    }
 
     @Test
-    public void testUpdateResidency() {
+    public void testGetAll() {
 
     }
+
 	
 }

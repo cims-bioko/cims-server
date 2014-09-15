@@ -63,6 +63,8 @@
         </property>
     </bean>
 
+
+
     <!-- Required, usually defined in web application-context.xml -->
     <bean id="entityValidator" class="org.openhds.controller.service.impl.EntityValidationServiceImpl">
         <constructor-arg ref="siteProperties" />
