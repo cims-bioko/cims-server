@@ -6,7 +6,6 @@ import org.openhds.domain.model.Residency;
 
 public interface ResidencyService extends EntityService<Residency> {
 
-    boolean hasOpenResidency(Individual individual);
-
+    public boolean hasOpenResidency(Individual individual);
 
 }

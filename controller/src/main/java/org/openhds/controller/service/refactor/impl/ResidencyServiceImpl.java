@@ -55,6 +55,11 @@ public class ResidencyServiceImpl implements ResidencyService {
         residencyCrudHelper.save(residency);
     }
 
+    @Override
+    public boolean isEligibleForCreation(Residency residency, ConstraintViolations cv) {
+        return false;
+    }
+
 
     /*
             Extra methods
@@ -63,12 +68,15 @@ public class ResidencyServiceImpl implements ResidencyService {
 
     @Override
     public boolean hasOpenResidency(Individual individual) {
-        if (individual.getCurrentResidency() == null ||
-                individual.getCurrentResidency().getEndDate() != null
-                || individual.getCurrentResidency().isDeleted()) {
+
+        Residency residency = individual.getCurrentResidency();
+
+        if (null == residency || null != residency.getEndDate() || residency.isDeleted()) {
             return false;
         }
 
         return true;
     }
+
+
 }

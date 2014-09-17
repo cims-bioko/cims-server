@@ -47,4 +47,9 @@ public class MembershipServiceImpl implements MembershipService {
         membershipCrudHelper.save(membership);
     }
 
+    @Override
+    public boolean isEligibleForCreation(Membership membership, ConstraintViolations cv) {
+        return false;
+    }
+
 }

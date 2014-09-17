@@ -17,6 +17,9 @@ public interface EntityService<T extends AuditableEntity> {
     @Authorized({VIEW_ENTITY})
     public T read(String id);
 
+    @Authorized({VIEW_ENTITY})
+    public boolean isEligibleForCreation(T entity, ConstraintViolations cv);
+
     @Authorized({DELETE_ENTITY})
     public void delete(T entity) throws IllegalArgumentException;
 
