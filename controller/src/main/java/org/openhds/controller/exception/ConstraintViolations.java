@@ -15,7 +15,7 @@ public class ConstraintViolations extends Exception {
     public static final String ENTITY_REFERENCES_INDIVIDUAL_WITH_DEATH_EVENT = "The entity references an Individual that has a Death event";
     public static final String ENTITY_REFERENCES_INDIVIDUAL_WITHOUT_OPEN_RESIDENCY = "The entity references an Individual that does not have an open Residency";
 
-    public static final String OUT_MIGRATION_BEFORE_INDIVIDUAL_RESIDENCY_START = "The OutMigration recorded date is before the start of the Individual current residency.";
+    public static final String OUT_MIGRATION_BEFORE_INDIVIDUAL_RESIDENCY_START = "The OutMigration's date takes place before the Residency's startDate.";
 
 
     private static final long serialVersionUID = 4392790814928552607L;

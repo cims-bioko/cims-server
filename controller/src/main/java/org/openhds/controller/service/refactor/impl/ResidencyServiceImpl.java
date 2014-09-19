@@ -57,7 +57,7 @@ public class ResidencyServiceImpl implements ResidencyService {
 
     @Override
     public boolean isEligibleForCreation(Residency residency, ConstraintViolations cv) {
-        return false;
+        return true;
     }
 
 

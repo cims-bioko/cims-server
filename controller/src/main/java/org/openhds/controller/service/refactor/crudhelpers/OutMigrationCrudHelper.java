@@ -35,6 +35,8 @@ public class OutMigrationCrudHelper extends AbstractEntityCrudHelperImpl<OutMigr
     protected void cascadeReferences(OutMigration outMigration) throws ConstraintViolations {
 
         //change residency endtype and enddate
+        //TODO: should the residency already by set by this point?
+        outMigration.setResidency(outMigration.getIndividual().getCurrentResidency());
         outMigration.getResidency().setEndType(sitePropertiesService.getOutmigrationCode());
         outMigration.getResidency().setEndDate(outMigration.getRecordedDate());
 

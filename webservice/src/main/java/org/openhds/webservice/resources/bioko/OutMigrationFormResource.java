@@ -3,14 +3,11 @@ package org.openhds.webservice.resources.bioko;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.FieldWorkerService;
 import org.openhds.controller.service.IndividualService;
-import org.openhds.controller.service.OutMigrationService;
+import org.openhds.controller.service.refactor.OutMigrationService;
 import org.openhds.controller.service.VisitService;
 import org.openhds.domain.model.*;
 import org.openhds.domain.model.bioko.OutMigrationForm;
 import org.openhds.domain.util.CalendarAdapter;
-import org.openhds.errorhandling.constants.ErrorConstants;
-import org.openhds.errorhandling.service.ErrorHandlingService;
-import org.openhds.errorhandling.util.ErrorLogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -95,7 +92,7 @@ public class OutMigrationFormResource extends AbstractFormResource {
         outMigration.setVisit(visit);
 
         try {
-            outMigrationService.createOutMigration(outMigration);
+            outMigrationService.create(outMigration);
         } catch (ConstraintViolations cv) {
             logError(cv, fieldWorker, createDTOPayload(outMigrationForm), OutMigrationForm.class.getSimpleName());
             return requestError(cv);
