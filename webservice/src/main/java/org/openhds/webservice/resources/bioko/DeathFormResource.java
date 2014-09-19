@@ -1,7 +1,7 @@
 package org.openhds.webservice.resources.bioko;
 
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.service.DeathService;
+import org.openhds.controller.service.refactor.DeathService;
 import org.openhds.controller.service.FieldWorkerService;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.VisitService;
@@ -108,17 +108,14 @@ public class DeathFormResource extends AbstractFormResource {
         death.setIndividual(individual);
 
         try {
-            deathService.createDeath(death);
+            deathService.create(death);
         } catch (ConstraintViolations cv) {
             String errorDataPayload = createDTOPayload(deathForm);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, OutMigrationForm.class.getSimpleName(),
                     fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);
-        } catch (SQLException e) {
-            return serverError(e.getMessage());
         }
-
         return new ResponseEntity<DeathForm>(deathForm, HttpStatus.CREATED);
 
     }

@@ -77,6 +77,7 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @ExtensionStringConstraint(constraint = "dobAspectConstraint", message = "Invalid Value for partial date", allowNull = true)
     @Description(description = "Identifer for determining if the birth date is partially known.")
     private String dobAspect;
+
     @OneToMany(mappedBy = "individual", cascade = { CascadeType.ALL })
     @OrderBy("startDate")
     @Description(description = "The set of all residencies that the individual may have.")
