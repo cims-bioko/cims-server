@@ -2,7 +2,6 @@ package org.openhds.controller.service.refactor.crudhelpers;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Individual;
-import org.openhds.domain.model.Residency;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -26,7 +25,7 @@ public class IndividualCrudHelper extends AbstractEntityCrudHelperImpl<Individua
     }
 
     @Override
-    protected void validateReferences(Individual individual) {
+    protected void validateReferences(Individual individual) throws ConstraintViolations {
 
     }
 

@@ -58,7 +58,7 @@ public class OutMigrationCrudHelper extends AbstractEntityCrudHelperImpl<OutMigr
     }
 
     @Override
-    protected void validateReferences(OutMigration outMigration) {
+    protected void validateReferences(OutMigration outMigration) throws ConstraintViolations {
     }
 
     @Override

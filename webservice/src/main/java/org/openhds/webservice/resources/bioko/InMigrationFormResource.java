@@ -2,10 +2,13 @@ package org.openhds.webservice.resources.bioko;
 
 
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.service.*;
+import org.openhds.controller.service.FieldWorkerService;
+import org.openhds.controller.service.LocationHierarchyService;
+import org.openhds.controller.service.VisitService;
+import org.openhds.controller.service.refactor.InMigrationService;
+import org.openhds.controller.service.refactor.IndividualService;
 import org.openhds.domain.model.*;
 import org.openhds.domain.model.bioko.InMigrationForm;
-import org.openhds.domain.model.bioko.OutMigrationForm;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.domain.util.CalendarAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.Serializable;
 import java.io.StringWriter;
+
 
 @Controller
 @RequestMapping("/inMigrationForm")
@@ -95,7 +99,7 @@ public class InMigrationFormResource extends AbstractFormResource {
         }
         inMigration.setVisit(visit);
 
-        Individual individual = individualService.findIndivById(inMigrationForm.getIndividualExtId());
+        Individual individual = individualService.read(inMigrationForm.getIndividualExtId());
         if (null == individual) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_EXT_ID+":"+inMigrationForm.getIndividualExtId());
@@ -125,7 +129,7 @@ public class InMigrationFormResource extends AbstractFormResource {
         inMigration.setResidency(newResidency);
 
         try {
-            inMigrationService.createInMigration(inMigration);
+            inMigrationService.create(inMigration);
         } catch (ConstraintViolations cv) {
             logError(cv, fieldWorker, createDTOPayload(inMigrationForm), InMigrationForm.class.getSimpleName());
             return requestError(cv);

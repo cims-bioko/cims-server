@@ -25,7 +25,7 @@ public class MembershipCrudHelper extends AbstractEntityCrudHelperImpl<Membershi
     }
 
     @Override
-    protected void validateReferences(Membership membership) {
+    protected void validateReferences(Membership membership) throws ConstraintViolations {
 
     }
 

@@ -82,6 +82,6 @@ public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> im
 
     protected abstract void cascadeReferences(T entity) throws ConstraintViolations;
 
-    protected abstract void validateReferences(T entity);
+    protected abstract void validateReferences(T entity) throws ConstraintViolations;
 }
 

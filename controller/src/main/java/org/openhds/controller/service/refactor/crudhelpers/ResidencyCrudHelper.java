@@ -1,7 +1,6 @@
 package org.openhds.controller.service.refactor.crudhelpers;
 
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.domain.model.OutMigration;
 import org.openhds.domain.model.Residency;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +25,7 @@ public class ResidencyCrudHelper extends AbstractEntityCrudHelperImpl<Residency>
     }
 
     @Override
-    protected void validateReferences(Residency residency) {
+    protected void validateReferences(Residency residency) throws ConstraintViolations {
 
     }
 
