@@ -46,7 +46,7 @@ public class InMigrationForm implements Serializable {
     @XmlElement(name = "migration_origin")
     private String migrationOrigin;
 
-    @XmlElement(name = "migrationReason")
+    @XmlElement(name = "migration_reason")
     private String migrationReason;
 
     public boolean isProcessedByMirth() {

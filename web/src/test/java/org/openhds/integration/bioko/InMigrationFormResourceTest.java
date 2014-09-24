@@ -6,7 +6,12 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openhds.controller.service.refactor.IndividualService;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.Membership;
+import org.openhds.domain.model.OutMigration;
+import org.openhds.domain.model.Residency;
 import org.openhds.integration.AbstractResourceTest;
 import org.openhds.integration.util.WebContextLoader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +26,11 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.test.web.server.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
@@ -35,30 +45,37 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.s
 public class InMigrationFormResourceTest extends AbstractResourceTest {
 
     @Autowired
+    private IndividualService individualService;
+
+    @Autowired
     private GenericDao genericDao;
 
     private MockHttpSession session;
 
     private MockMvc mockMvc;
 
-    private static final String A_DATE = "2000-01-01T00:00:00-05:00";
+    private static final String A_DATE = "2001-01-01T00:00:00-05:00";
 
     private static final String DATE_PRIOR_TO_RESIDENCY = "1950-01-01T00:00:00-05:00";
 
     private static final String INMIGRATION_FORM_XML_VALID =
-            "<outMigrationForm>"
+            "<inMigrationForm>"
                     + "<processed_by_mirth>false</processed_by_mirth>"
-                    + "<in_migration_individual_ext_id>individual1</in_migration_individual_ext_id>"
-                    + "<in_migration_location_ext_id>individual1</in_migration_location_ext_id>"
+                    +"<collection_date_time>"
+                    + A_DATE
+                    + "</collection_date_time>"
+                    + "<individual_ext_id>individual1</individual_ext_id>"
+                    + "<location_ext_id>testLocation2</location_ext_id>"
                     + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>"
                     + "<visit_ext_id>migrateVisit</visit_ext_id>"
-                    + "<in_migration_date>"
+                    + "<migration_date>"
                     + A_DATE
-                    + "</in_migration_date>"
-                    + "<in_migration_name_of_destination>DestinationName</in_migration_name_of_destination>"
-                    + "<in_migration_reason>ReasonForMigration</in_migration_reason>"
-                    + "<in_migration_type>1</in_migration_type>"
-                    + "</outMigrationForm>";
+                    + "</migration_date>"
+                    + "<migration_name_of_destination>DestinationName</migration_name_of_destination>"
+                    + "<migration_reason>ReasonForMigration</migration_reason>"
+                    + "<migration_type>1</migration_type>"
+                    + "<migration_origin>testLocation1</migration_origin>"
+                    + "</inMigrationForm>";
 
     private static final String INMIGRATION_FORM_XML_INVALID_DATE = "";
 
@@ -83,15 +100,16 @@ public class InMigrationFormResourceTest extends AbstractResourceTest {
 
     private void verifyInMigrationCrud(String individualExtId) {
 
-//        Individual individual = genericDao.findByProperty(Individual.class, "extId", individualExtId);
-//        Residency formerResidence = genericDao.findByProperty(Residency.class, "individual", individual);
-//        assertNotNull(formerResidence);
-//        assertEquals("OMG", formerResidence.getEndType());
-//        OutMigration outMigration = genericDao.findByProperty(OutMigration.class, "individual", individual);
-//        assertEquals("ReasonForMigration", outMigration.getReason());
-//        assertEquals("DestinationName", outMigration.getDestination());
-//        Membership membership = genericDao.findByProperty(Membership.class, "individual", individual);
-//        assertEquals("OMG", membership.getEndType());
+        Individual individual = individualService.read(individualExtId);
+
+        Set<Residency> residencySet = individual.getAllResidencies();
+        assertEquals(2,residencySet.size());
+
+        Residency currentResidency = individual.getCurrentResidency();
+
+        assertEquals("testLocation2",currentResidency.getLocation().getExtId());
+        assertEquals("NA",currentResidency.getEndType());
+
     }
 
 
