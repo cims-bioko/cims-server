@@ -78,15 +78,15 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
-        verifyPregnancyObservationCrud("individual2");
+        verifyPregnancyObservationCrud("pregnantIndividual");
 
     }
 
     private void verifyPregnancyObservationCrud(String individualExtId) {
 
-        PregnancyObservation obs = genericDao.findByProperty(PregnancyObservation.class, "mother_uuid", individualExtId);
-        assertNotNull(obs);
         Individual mother = genericDao.findByProperty(Individual.class, "extId", individualExtId);
+        PregnancyObservation obs = genericDao.findByProperty(PregnancyObservation.class, "mother", mother);
+        assertNotNull(obs);
         assertEquals(mother, obs.getMother());
 
     }
@@ -113,6 +113,26 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
 
     }
 
+    private static final String INVALID_PREG_OBS_MALE_XML =
+            "<pregnancyObservationForm>" +
+                    "<recorded_date>"+ A_CURRENT_DATE +"</recorded_date>" +
+                    "<visit_ext_id>pregObsVisit</visit_ext_id>" +
+                    "<individual_ext_id>pregnantMale</individual_ext_id>" +
+                    "<processed_by_mirth>null</processed_by_mirth>" +
+                    "<field_worker_ext_id>UNK</field_worker_ext_id>" +
+                    "<expected_delivery_date>"+A_FUTURE_DATE+"</expected_delivery_date>" +
+                    "</pregnancyObservationForm>";
 
+    @Test
+    public void testPostMalePregnancy() throws Exception {
+
+        mockMvc.perform(
+                post("/pregnancyObservationForm").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(INVALID_PREG_OBS_MALE_XML.getBytes()))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+    }
 
 }
