@@ -82,6 +82,14 @@
     <visit uuid="DeathVisit" extid="deathVisit" visitDate="2012-02-27" status="P" insertDate="2012-03-01" collectedBy_uuid="UnknownFieldWorker"
            visitLocation_uuid="LOCATION1" deleted="false" roundNumber="1" insertBy_uuid="User 1"/>
 
+    <visit uuid="PregObsVisit" extid="pregObsVisit" visitDate="2012-02-27" status="P" insertDate="2012-03-01" collectedBy_uuid="UnknownFieldWorker"
+           visitLocation_uuid="LOCATION1" deleted="false" roundNumber="1" insertBy_uuid="User 1"/>
+
+    <individual uuid="PregnantIndividual" extId="pregnantIndividual" firstName="Pregnant" middleName="" lastName="Individual"
+                gender="F" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
+                dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker"
+                age="60" dip="1"/>
+
     <whitelist uuid="LOCALHOST1" address="127.0.0.1" />
     <whitelist uuid="LOCALHOST2" address="10.0.2.10" />
     <whitelist uuid="LOCALHOST3" address="10.0.2.14" />
