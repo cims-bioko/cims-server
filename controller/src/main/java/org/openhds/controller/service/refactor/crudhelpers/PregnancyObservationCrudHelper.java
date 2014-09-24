@@ -1,31 +1,41 @@
 package org.openhds.controller.service.refactor.crudhelpers;
 
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.controller.service.refactor.PregnancyObservationService;
 import org.openhds.domain.model.PregnancyObservation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
- * Created by wolfe on 9/15/14.
+ * Created by wolfe on 9/15/1913.
  */
 
 @Component("PregnancyObservationCrudHelper")
 public class PregnancyObservationCrudHelper extends AbstractEntityCrudHelperImpl<PregnancyObservation> {
 
+    @Autowired
+    private PregnancyObservationService pregnancyObservationService;
+
 
     @Override
-    protected void preCreateSanityChecks(PregnancyObservation individual) throws ConstraintViolations {
+    protected void preCreateSanityChecks(PregnancyObservation pregnancyObservation) throws ConstraintViolations {
+
+        ConstraintViolations constraintViolations = new ConstraintViolations();
+        if (!pregnancyObservationService.isEligibleForCreation(pregnancyObservation, constraintViolations)) {
+            throw (constraintViolations);
+        }
 
     }
 
     @Override
-    protected void cascadeReferences(PregnancyObservation individual) throws ConstraintViolations {
+    protected void cascadeReferences(PregnancyObservation pregnancyObservation) throws ConstraintViolations {
 
     }
 
     @Override
-    protected void validateReferences(PregnancyObservation individual) {
+    protected void validateReferences(PregnancyObservation pregnancyObservation) {
 
     }
 
