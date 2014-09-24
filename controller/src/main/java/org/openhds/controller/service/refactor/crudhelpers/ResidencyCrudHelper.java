@@ -36,6 +36,6 @@ public class ResidencyCrudHelper extends AbstractEntityCrudHelperImpl<Residency>
 
     @Override
     public Residency read(String id) {
-        return genericDao.read(Residency.class, id);
+        return genericDao.findByProperty(Residency.class,"extId",id);
     }
 }

@@ -68,7 +68,7 @@ public class OutMigrationCrudHelper extends AbstractEntityCrudHelperImpl<OutMigr
 
     @Override
     public OutMigration read(String id) {
-        return genericDao.read(OutMigration.class, id);
+        return genericDao.findByProperty(OutMigration.class,"extId",id);
     }
 
 }

@@ -46,7 +46,7 @@ public class InMigration
     @CheckIndividualNotUnknown
     @Description(description = "Individual who is inmigrating, identified by external id.")
     private Individual individual;
-    @OneToOne
+    @OneToOne(cascade = { CascadeType.ALL })
     @NotNull
     @Description(description = "The residency the individual is inmigrating to.")
     private Residency residency = new Residency();

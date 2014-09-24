@@ -97,6 +97,6 @@ public class DeathCrudHelper extends AbstractEntityCrudHelperImpl<Death> {
 
     @Override
     public Death read(String id) {
-        return genericDao.read(Death.class, id);
+        return genericDao.findByProperty(Death.class,"extId",id);
     }
 }

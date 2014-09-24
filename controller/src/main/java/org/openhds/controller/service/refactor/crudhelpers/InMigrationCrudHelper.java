@@ -3,6 +3,7 @@ package org.openhds.controller.service.refactor.crudhelpers;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.refactor.InMigrationService;
 import org.openhds.domain.model.InMigration;
+import org.openhds.domain.service.SitePropertiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,9 +29,11 @@ public class InMigrationCrudHelper extends AbstractEntityCrudHelperImpl<InMigrat
     protected void cascadeReferences(InMigration inMigration) throws ConstraintViolations {
 
         String currentResidencyEndType = inMigration.getIndividual().getCurrentResidency().getEndType();
-        if(null == currentResidencyEndType){
-            currentResidencyEndType = "IMG";
+        if(null == currentResidencyEndType ||  sitePropertiesService.getNotApplicableCode().equals(currentResidencyEndType)){
+            currentResidencyEndType = sitePropertiesService.getInmigrationCode();
         }
+
+        inMigration.getIndividual().getAllResidencies().add(inMigration.getResidency());
 
     }
 
@@ -51,6 +54,6 @@ public class InMigrationCrudHelper extends AbstractEntityCrudHelperImpl<InMigrat
 
     @Override
     public InMigration read(String id) {
-        return genericDao.read(InMigration.class, id);
+        return genericDao.findByProperty(InMigration.class, "extId", id);
     }
 }

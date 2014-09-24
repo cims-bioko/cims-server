@@ -36,6 +36,6 @@ public class PregnancyObservationCrudHelper extends AbstractEntityCrudHelperImpl
 
     @Override
     public PregnancyObservation read(String id) {
-        return genericDao.read(PregnancyObservation.class,id);
+        return genericDao.findByProperty(PregnancyObservation.class,"extId",id);
     }
 }

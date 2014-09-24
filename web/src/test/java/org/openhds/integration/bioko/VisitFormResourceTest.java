@@ -52,7 +52,7 @@ public class VisitFormResourceTest extends AbstractResourceTest {
 			+ "<processed_by_mirth>false</processed_by_mirth>"
 			+ "<visit_ext_id>1234567890aa</visit_ext_id>"
 			+ "<field_worker_ext_id>FWEK1D</field_worker_ext_id>"
-			+ "<location_ext_id>testLocation</location_ext_id>"
+			+ "<location_ext_id>testLocation1</location_ext_id>"
 			+ "<visit_date>"
 			+ A_DATE
 			+ "</visit_date>"
@@ -80,7 +80,7 @@ public class VisitFormResourceTest extends AbstractResourceTest {
     	Visit visit = genericDao.findByProperty(Visit.class, "extId", visitExtId);
     	assertNotNull(visit);
     	assertEquals(visit.getExtId(), visitExtId);
-    	assertEquals(visit.getVisitLocation().getExtId(), "testLocation");
+    	assertEquals(visit.getVisitLocation().getExtId(), "testLocation1");
     	assertEquals(visit.getCollectedBy().getExtId(), "FWEK1D");
     }
     
