@@ -37,6 +37,6 @@ public class SocialGroupCrudHelper extends AbstractEntityCrudHelperImpl<SocialGr
 
     @Override
     public SocialGroup read(String id) {
-        return genericDao.read(SocialGroup.class, id);
+        return genericDao.findByProperty(SocialGroup.class,"extId",id);
     }
 }

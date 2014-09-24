@@ -36,6 +36,6 @@ public class IndividualCrudHelper extends AbstractEntityCrudHelperImpl<Individua
 
     @Override
     public Individual read(String id) {
-        return genericDao.read(Individual.class,id);
+        return genericDao.findByProperty(Individual.class,"extId",id);
     }
 }

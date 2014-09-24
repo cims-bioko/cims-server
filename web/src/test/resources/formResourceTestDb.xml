@@ -21,7 +21,7 @@
     <locationhierarchy uuid="hierarchy3" name="IFB" extId="IFB" level_uuid="HierarchyLevel3"
         parent_uuid="hierarchy2" />
 
-    <location uuid="LOCATION2" extId="testLocation2" locationName="Test Location"
+    <location uuid="TestLocation2" extId="testLocation2" locationName="Test Location"
         locationLevel_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
         collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
 
@@ -44,9 +44,10 @@
                 dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker"
                 age="60" dip="0"/>
 
-    <location uuid="LOCATION1" extId="testLocation" locationName="Test Location" locationLevel_uuid="hierarchy3"
+    <location uuid="TestLocation1" extId="testLocation1" locationName="Test Location" locationLevel_uuid="hierarchy3"
               locationType="RUR" insertDate="2000-12-19" deleted="false" collectedBy_uuid="UnknownFieldWorker"
               insertBy_uuid="User 1" status="P" />
+
 
     <individual uuid="Individual1" extId="individual1" firstName="Individual" middleName="" lastName="1"
                 gender="1" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
@@ -70,10 +71,10 @@
                 collectedBy_uuid="UnknownFieldWorker" insertBy_uuid="User 1" status="P" startDate="1990-01-01"
                 bIsToA="1" individual_uuid="Individual1" socialGroup_uuid="SocialGroup1" startType="NA" endType="NA"/>
 
-    <residency uuid="FormerResidency" location_uuid="LOCATION1" individual_uuid="Individual1" startDate="1999-12-19"
+    <residency uuid="FormerResidency" location_uuid="TestLocation1" individual_uuid="Individual1" startDate="1999-12-19"
                 startType="StartType" endType="NA" collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
 
-    <residency uuid="CurrentResidency" location_uuid="LOCATION1" individual_uuid="Individual2" startDate="1999-12-19"
+    <residency uuid="CurrentResidency" location_uuid="TestLocation1" individual_uuid="Individual2" startDate="1999-12-19"
                startType="StartType" endType="NA" collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
 
     <visit uuid="MigrateVisit" extid="migrateVisit" visitDate="2012-02-27" status="P" insertDate="2012-03-01" collectedBy_uuid="UnknownFieldWorker"
