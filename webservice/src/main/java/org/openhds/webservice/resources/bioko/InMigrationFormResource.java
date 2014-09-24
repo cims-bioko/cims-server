@@ -121,6 +121,8 @@ public class InMigrationFormResource extends AbstractFormResource {
 
         //TODO: since the InMigration domain model contains a reference to a Residency instead of a Location,
         //we must assemble the Residency at this level to provide a fully-graphed InMigration to the service
+        newResidency.setCollectedBy(fieldWorker);
+
         newResidency.setLocation(location);
         newResidency.setIndividual(individual);
         newResidency.setStartDate(inMigration.getRecordedDate());
