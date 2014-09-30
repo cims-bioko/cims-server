@@ -73,8 +73,6 @@ public class Location
     @JoinColumn(name = "location_uuid")
     private List<Residency> residencies;
 
-
-
     // Extensions for bioko island project
     @Description(description = "The number of this building within a sector")
     private String buildingNumber;
@@ -102,7 +100,10 @@ public class Location
 
     @Description(description = "The name of the community that contains this location")
     private String communityName;
-    
+
+    @Description(description = "Formatted code for the community that contains this location")
+    private String communityCode;
+
     @Description(description = "The name of the map area - disregarding Locality - that contains this location")
     private String mapAreaName;
 
@@ -201,13 +202,21 @@ public class Location
     public void setCommunityName(String communityName) {
         this.communityName = communityName;
     }
-    
-    public String getMapAreaName() {
-    	return mapAreaName;
+
+    public String getCommunityCode() {
+        return communityCode;
     }
-    
+
+    public void setCommunityCode(String communityCode) {
+        this.communityCode = communityCode;
+    }
+
+    public String getMapAreaName() {
+        return mapAreaName;
+    }
+
     public void setMapAreaName(String mapAreaName) {
-    	this.mapAreaName = mapAreaName;
+        this.mapAreaName = mapAreaName;
     }
 
     public String getBuildingNumber() { return buildingNumber; }
