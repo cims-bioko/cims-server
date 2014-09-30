@@ -33,7 +33,7 @@
                 dobAspect="1" deleted="false" collectedBy_uuid="TestFieldWorker1uuid"
                 age="10" dip="2"/>
 
-    <location uuid="TestLocation1uuid" extId="TestLocation1ExtId" locationName="Test Location 1" locationLevel_uuid="hierarchy3"
+    <location uuid="TestLocation1uuid" extId="TestLocation1ExtId" locationName="Test Location 1" locationHierarchy_uuid="hierarchy3"
               locationType="RUR" insertDate="2014-01-01" deleted="false" collectedBy_uuid="TestFieldWorker1uuid"
               insertBy_uuid="User 1" status="P" />
 

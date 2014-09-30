@@ -53,7 +53,7 @@ public class HouseholdRegistrationController implements HouseholdRegistrationSer
 		OrderProperty locLevel = new OrderProperty() {
 
 			public String getPropertyName() {
-				return "locationLevel";
+				return "locationHierarchy";
 			}
 
 			public boolean isAscending() {
@@ -82,7 +82,7 @@ public class HouseholdRegistrationController implements HouseholdRegistrationSer
 			for(Individual individual : individuals) {
 				HouseholdRegisterBean bean = new HouseholdRegisterBean();
 				bean.setLowestLevelName(lowestLevel.getName());
-				bean.setLowestLevelValue(loc.getLocationLevel().getName());
+				bean.setLowestLevelValue(loc.getLocationHierarchy().getName());
 				bean.setLocationId(loc.getExtId());
 				bean.setFamilyName(loc.getLocationName());
 				bean.setDob(calendarUtil.formatDate(individual.getDob()));

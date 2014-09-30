@@ -95,12 +95,12 @@ public class FieldBuilder {
         }
     }
 
-    public LocationHierarchy referenceField(LocationHierarchy locationLevel, ConstraintViolations violations) {
-        if (locationLevel == null || locationLevel.getExtId() == null) {
+    public LocationHierarchy referenceField(LocationHierarchy locationHierarchy, ConstraintViolations violations) {
+        if (locationHierarchy == null || locationHierarchy.getExtId() == null) {
             violations.addViolations("No location hierarchy level provided");
         }
 
-        LocationHierarchy locationHierarchy = locationHierarchyService.findLocationHierarchyById(locationLevel.getExtId());
+        LocationHierarchy locationHierarchy = locationHierarchyService.findLocationHierarchyById(locationHierarchy.getExtId());
         if (null == locationHierarchy) {
             violations.addViolations(ConstraintViolations.INVALID_LOCATION_HIERARCHY_EXT_ID);
         }
@@ -110,7 +110,7 @@ public class FieldBuilder {
 
 //        else {
 //            try {
-//                return locationHierarchyService.findLocationHierarchyById(locationLevel.getExtId());
+//                return locationHierarchyService.findLocationHierarchyById(locationHierarchy.getExtId());
 //            } catch (Exception e) {
 //                violations.addViolations(ConstraintViolations.INVALID_LOCATION_HIERARCHY_EXT_ID);
 //            }

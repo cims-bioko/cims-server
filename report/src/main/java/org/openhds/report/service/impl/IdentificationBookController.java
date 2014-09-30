@@ -55,7 +55,7 @@ public class IdentificationBookController implements IdentificationBookService {
 		OrderProperty locLevel = new OrderProperty() {
 
 			public String getPropertyName() {
-				return "locationLevel";
+				return "locationHierarchy";
 			}
 
 			public boolean isAscending() {
@@ -84,7 +84,7 @@ public class IdentificationBookController implements IdentificationBookService {
 			for(Individual individual : individuals) {
 				IdentificationBookBean bean = new IdentificationBookBean();
 				bean.setLowestLevelName(lowestLevel.getName());
-				bean.setLowestLevelValue(loc.getLocationLevel().getName());
+				bean.setLowestLevelValue(loc.getLocationHierarchy().getName());
 				bean.setLocExtId(loc.getExtId());
 				bean.setDob(calendarUtil.formatDate(individual.getDob()));
 				bean.setGender(individual.getGender().toString());

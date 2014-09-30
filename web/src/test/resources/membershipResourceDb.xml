@@ -28,7 +28,7 @@
                 dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker"
                 age="60" dip="0"/>
 
-    <location uuid="LOCATION1" extId="testLocation" locationName="Test Location" locationLevel_uuid="hierarchy3"
+    <location uuid="LOCATION1" extId="testLocation" locationName="Test Location" locationHierarchy_uuid="hierarchy3"
               locationType="RUR" insertDate="2000-12-19" deleted="false" collectedBy_uuid="UnknownFieldWorker"
               insertBy_uuid="User 1" status="P" />
 

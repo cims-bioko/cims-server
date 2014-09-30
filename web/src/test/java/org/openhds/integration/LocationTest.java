@@ -77,7 +77,7 @@ public class LocationTest extends AbstractTransactionalJUnit4SpringContextTests 
 		 Location location = new Location();
 		 location.setLocationName("locationName");
 		 location.setLocationType("RUR");
-		 location.setLocationLevel(item);
+		 location.setLocationHierarchy(item);
 		 location.setCollectedBy(fieldWorker);
 		 locationCrud.setItem(location);
 	     locationCrud.create();
@@ -92,7 +92,7 @@ public class LocationTest extends AbstractTransactionalJUnit4SpringContextTests 
 		 Location location = new Location();
 		 location.setLocationName("locationName");
 		 location.setLocationType("RUR");
-		 location.setLocationLevel(locH2);
+		 location.setLocationHierarchy(locH2);
 		 location.setCollectedBy(fieldWorker);
 		 locationCrud.setItem(location);
 	     

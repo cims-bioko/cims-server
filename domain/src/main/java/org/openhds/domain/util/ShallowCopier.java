@@ -66,7 +66,7 @@ public class ShallowCopier {
             Residency currentResidency = individual.getCurrentResidency();
             if (null != currentResidency) {
                 Location locationStub = Location.makeStub(currentResidency.getLocation().getExtId());
-                locationStub.setLocationLevel(null);
+                locationStub.setLocationHierarchy(null);
                 Residency residencyStub = Residency.makeStub(locationStub,individualStub);
                 residencyStub.setEndType(currentResidency.getEndType());
                 copy.getAllResidencies().add(residencyStub);
@@ -115,8 +115,8 @@ public class ShallowCopier {
         copy.setDistrictName(getEmptyStringIfBlank(loc.getDistrictName()));
 
         LocationHierarchy level = new LocationHierarchy();
-        level.setExtId(loc.getLocationLevel().getExtId());
-        copy.setLocationLevel(level);
+        level.setExtId(loc.getLocationHierarchy().getExtId());
+        copy.setLocationHierarchy(level);
 
         copy.setExtId(loc.getExtId());
         copy.setLocationName(loc.getLocationName());
@@ -163,7 +163,7 @@ public class ShallowCopier {
     public static Visit shallowCopyVisit(Visit original) {
         FieldWorker fieldworkerStub = FieldWorker.makeStub(original.getCollectedBy().getExtId());
         Location locationStub = Location.makeStub(original.getVisitLocation().getExtId());
-        locationStub.setLocationLevel(null);
+        locationStub.setLocationHierarchy(null);
 
         Visit copy = new Visit();
         copy.setCollectedBy(fieldworkerStub);

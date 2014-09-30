@@ -51,7 +51,7 @@ public class Location
 
     @ManyToOne
     @Cascade(CascadeType.SAVE_UPDATE)
-    private LocationHierarchy locationLevel = new LocationHierarchy();
+    private LocationHierarchy locationHierarchy = new LocationHierarchy();
 
     @ExtensionStringConstraint(constraint = "locationTypeConstraint", message = "Invalid Value for location type", allowNull = true)
     @Description(description = "The type of Location.")
@@ -122,12 +122,12 @@ public class Location
         locationName = name;
     }
 
-    public LocationHierarchy getLocationLevel() {
-        return locationLevel;
+    public LocationHierarchy getLocationHierarchy() {
+        return locationHierarchy;
     }
 
-    public void setLocationLevel(LocationHierarchy level) {
-        locationLevel = level;
+    public void setLocationHierarchy(LocationHierarchy level) {
+        locationHierarchy = level;
     }
 
     public String getLocationType() {

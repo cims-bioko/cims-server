@@ -1,9 +1,9 @@
 	<form name="locationForm" novalidate>
 		<div>
 			<label class="control-label" for="subvillage">Subvillage*</label>
-			<input type="text" id="subvillage" name="subvillage" placeholder="Subvillage" ng-model="location.locationLevel.extId" ng-required="true"/>
-			<span class="alert alert-error" ng-show="locationForm.locationLevel.extId.$dirty && locationForm.locationLevel.extId.$invalid">
-				<small ng-if="locationForm.locationLevel.extId.$error.required">Required</small>
+			<input type="text" id="subvillage" name="subvillage" placeholder="Subvillage" ng-model="location.locationHierarchy.extId" ng-required="true"/>
+			<span class="alert alert-error" ng-show="locationForm.locationHierarchy.extId.$dirty && locationForm.locationHierarchy.extId.$invalid">
+				<small ng-if="locationForm.locationHierarchy.extId.$error.required">Required</small>
 			</span>
 		</div>
 		<div>

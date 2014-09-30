@@ -165,7 +165,7 @@ public class ResidencyTest extends AbstractTransactionalJUnit4SpringContextTests
 		 location = new Location();
 		 location.setLocationName("locationName");
 		 location.setLocationType("RUR");
-		 location.setLocationLevel(item);
+		 location.setLocationHierarchy(item);
 		 location.setCollectedBy(fieldWorker);
 		 locationCrud.setItem(location);
 	     locationCrud.create();

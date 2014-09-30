@@ -8,9 +8,9 @@
         <altitude>0</altitude>
         <extId>IFA0001</extId>
         <latitude>0</latitude>
-        <locationLevel>
+        <locationHierarchy>
             <extId>IFA</extId>
-        </locationLevel>
+        </locationHierarchy>
         <locationName>Test</locationName>
         <locationType>RUR</locationType>
         <longitude>0</longitude>

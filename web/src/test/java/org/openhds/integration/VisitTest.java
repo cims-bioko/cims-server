@@ -25,7 +25,6 @@ import org.openhds.web.crud.impl.RoundCrudImpl;
 import org.openhds.web.crud.impl.VisitCrudImpl;
 import org.openhds.web.service.JsfService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -157,7 +156,7 @@ public class VisitTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 location = new Location();
 		 location.setLocationName("locationName");
 		 location.setLocationType("RUR");
-		 location.setLocationLevel(item);
+		 location.setLocationHierarchy(item);
 		 location.setCollectedBy(fieldWorker);
 		 locationCrud.setItem(location);
 	     locationCrud.create();

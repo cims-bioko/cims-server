@@ -119,7 +119,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 		// item is at the lowest level so we need to check for any dependent locations
 		if (entityItem.getLevel().equals(getLowestLevel())) {
 			
-			List<Location> locs = genericDao.findListByProperty(Location.class, "locationLevel", entityItem, true);
+			List<Location> locs = genericDao.findListByProperty(Location.class, "locationHierarchy", entityItem, true);
 			if (locs.size() > 0)
 				throw new ConstraintViolations("Unable to delete this Location Hierarchy item " +
 						"because it is dependent on a Location. In order to delete a Location " +
@@ -152,16 +152,16 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 	}
 		
 	public Location evaluateLocation(Location entityItem) throws ConstraintViolations {
-        if (null == entityItem.getLocationLevel()) {
+        if (null == entityItem.getLocationHierarchy()) {
             throw new ConstraintViolations("Location references a null location hierarchy");
         }
-		if (!checkValidLocationEntry(entityItem.getLocationLevel().getExtId())) {
+		if (!checkValidLocationEntry(entityItem.getLocationHierarchy().getExtId())) {
 			entityItem.setExtId(null);
     		throw new ConstraintViolations("The " + getLowestLevel().getName() + 
     		" specified is not the lowest level in the Location Hierarchy.");
 		}
-		LocationHierarchy item = genericDao.findByProperty(LocationHierarchy.class, "extId", entityItem.getLocationLevel().getExtId());
-		entityItem.setLocationLevel(item);
+		LocationHierarchy item = genericDao.findByProperty(LocationHierarchy.class, "extId", entityItem.getLocationHierarchy().getExtId());
+		entityItem.setLocationHierarchy(item);
 		
 		
 		return entityItem;
@@ -249,7 +249,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 	 */
 	public boolean checkDuplicateLocationEntry(String locName, String locLvlName) {
 		
-		List<Location> list = genericDao.findListByProperty(Location.class, "locationLevel", locLvlName, true);
+		List<Location> list = genericDao.findListByProperty(Location.class, "locationHierarchy", locLvlName, true);
 		
 		Iterator<Location> itr = list.iterator();
 		
@@ -295,10 +295,10 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 	 */
 	public boolean checkInconsistentLevels(LocationHierarchy persistedItem, LocationHierarchy entityItem) {
 		
-		List<Location> locations = genericDao.findListByProperty(Location.class, "locationLevel", persistedItem, true);
+		List<Location> locations = genericDao.findListByProperty(Location.class, "locationHierarchy", persistedItem, true);
 		
 		for (Location loc : locations) {
-			if (!loc.getLocationLevel().getLevel().equals(entityItem.getLevel()))
+			if (!loc.getLocationHierarchy().getLevel().equals(entityItem.getLevel()))
 				return false;
 		}
 			

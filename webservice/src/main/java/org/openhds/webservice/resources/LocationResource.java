@@ -6,8 +6,6 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openhds.controller.service.FieldWorkerService;
-import org.openhds.domain.model.FieldWorker;
 import org.openhds.errorhandling.constants.ErrorConstants;
 import org.openhds.domain.model.ErrorLog;
 import org.openhds.errorhandling.service.ErrorHandlingService;
@@ -158,7 +156,7 @@ public class LocationResource {
     public ResponseEntity<? extends Serializable> insertXml(@RequestBody Location location) throws JAXBException {
         ConstraintViolations cv = new ConstraintViolations();
         location.setCollectedBy(fieldBuilder.referenceField(location.getCollectedBy(), cv));
-        location.setLocationLevel(fieldBuilder.referenceField(location.getLocationLevel(), cv));
+        location.setLocationHierarchy(fieldBuilder.referenceField(location.getLocationHierarchy(), cv));
 
         if (cv.hasViolations()) {
             StringWriter writer = new StringWriter();
@@ -187,7 +185,7 @@ public class LocationResource {
     public ResponseEntity<? extends Serializable> insertJson(@RequestBody Location location) throws JAXBException {
         ConstraintViolations cv = new ConstraintViolations();
         location.setCollectedBy(fieldBuilder.referenceField(location.getCollectedBy(), cv));
-        location.setLocationLevel(fieldBuilder.referenceField(location.getLocationLevel(), cv));
+        location.setLocationHierarchy(fieldBuilder.referenceField(location.getLocationHierarchy(), cv));
 
         if (cv.hasViolations()) {
             StringWriter writer = new StringWriter();
@@ -221,7 +219,7 @@ public class LocationResource {
     	
         ConstraintViolations cv = new ConstraintViolations();
         location.setCollectedBy(fieldBuilder.referenceField(location.getCollectedBy(), cv));
-        location.setLocationLevel(fieldBuilder.referenceField(location.getLocationLevel(), cv));
+        location.setLocationHierarchy(fieldBuilder.referenceField(location.getLocationHierarchy(), cv));
 
         if (cv.hasViolations()) {
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
@@ -256,7 +254,7 @@ public class LocationResource {
     	
         ConstraintViolations cv = new ConstraintViolations();
         location.setCollectedBy(fieldBuilder.referenceField(location.getCollectedBy(), cv));
-        location.setLocationLevel(fieldBuilder.referenceField(location.getLocationLevel(), cv));
+        location.setLocationHierarchy(fieldBuilder.referenceField(location.getLocationHierarchy(), cv));
 
         if (cv.hasViolations()) {
             return WebserviceResultHelper.genericConstraintResponse(cv);

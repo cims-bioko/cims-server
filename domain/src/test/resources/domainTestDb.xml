@@ -9,15 +9,15 @@
         parent_uuid="hierarchy2" />
 
     <location uuid="LOCATION2" extId="testLocation" locationName="Test Location"
-        locationLevel_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
+        locationHierarchy_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
         collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
 
     <location uuid="NONHOUSEHOLDLOCATION" extId="newHouse_id" locationName="Non-household Location"
-        locationLevel_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
+        locationHierarchy_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
         collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
 
     <location uuid="HOUSEHOLDLOCATION" extId="existing_id" locationName="Household Location"
-        locationLevel_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
+        locationHierarchy_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
         collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
 
     <socialgroup uuid="HOUSEHOLDSOCIALGROUP" extId="existing_id" groupName="Household Social Group"

@@ -39,7 +39,7 @@ public class LocationGenerator extends Generator<Location> {
 			if (filter != null) {
 			
 				if (key.equals(IdGeneratedFields.LOCATION_HIERARCHY_ID.toString())) {
-					String locId = location.getLocationLevel().getExtId();
+					String locId = location.getLocationHierarchy().getExtId();
 					if (filter > 0 && locId.length() >= filter) 
 						sb.append(formatProperString(locId, filter));
 					else if (filter == 0 || locId.length() < filter) 
@@ -154,7 +154,7 @@ public class LocationGenerator extends Generator<Location> {
 				if (filter != null) {
 					
 					if (key.equals(IdGeneratedFields.LOCATION_HIERARCHY_ID.toString())) {
-						String locId = loc.getLocationLevel().getExtId();
+						String locId = loc.getLocationHierarchy().getExtId();
 						String sub = "";
 						
 						if (locId.length() >= filter)

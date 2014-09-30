@@ -64,7 +64,7 @@ public class LocationFormResource extends AbstractFormResource{
         try {
             locationHierarchy = locationHierarchyService
                     .findLocationHierarchyById(locationForm.getHierarchyExtId());
-            location.setLocationLevel(locationHierarchy);
+            location.setLocationHierarchy(locationHierarchy);
             if (null == locationHierarchy) {
                 return requestError("LocationHierarchy doesn't exist!: " + locationForm.getHierarchyExtId());
             }

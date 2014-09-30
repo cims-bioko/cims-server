@@ -86,7 +86,7 @@ public class LocationTemplateBuilder implements ExtensionTemplate {
 		jmsLocationNameBlock.assign(jfLocationName, jvarLocationName);
 		
 		// location level
-		JFieldVar jfLocationLevel = jc.field(JMod.PRIVATE , org.openhds.domain.model.LocationHierarchy.class, "locationLevel");
+		JFieldVar jfLocationLevel = jc.field(JMod.PRIVATE , org.openhds.domain.model.LocationHierarchy.class, "locationHierarchy");
 		JClass jClassRef = jCodeModel.ref(org.openhds.domain.model.LocationHierarchy.class);
 		jfLocationLevel.init(JExpr._new(jClassRef));	
 		jfLocationLevel.annotate(javax.persistence.ManyToOne.class);
