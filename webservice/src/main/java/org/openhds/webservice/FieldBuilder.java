@@ -95,28 +95,18 @@ public class FieldBuilder {
         }
     }
 
-    public LocationHierarchy referenceField(LocationHierarchy locationHierarchy, ConstraintViolations violations) {
-        if (locationHierarchy == null || locationHierarchy.getExtId() == null) {
-            violations.addViolations("No location hierarchy level provided");
+    public LocationHierarchy referenceField(LocationHierarchy locationHierarchyStub, ConstraintViolations violations) {
+        if (locationHierarchyStub == null || locationHierarchyStub.getExtId() == null) {
+            violations.addViolations("No location hierarchy provided");
         }
 
-        LocationHierarchy locationHierarchy = locationHierarchyService.findLocationHierarchyById(locationHierarchy.getExtId());
+        LocationHierarchy locationHierarchy =
+                locationHierarchyService.findLocationHierarchyById(locationHierarchyStub.getExtId());
         if (null == locationHierarchy) {
             violations.addViolations(ConstraintViolations.INVALID_LOCATION_HIERARCHY_EXT_ID);
         }
 
         return locationHierarchy;
-
-
-//        else {
-//            try {
-//                return locationHierarchyService.findLocationHierarchyById(locationHierarchy.getExtId());
-//            } catch (Exception e) {
-//                violations.addViolations(ConstraintViolations.INVALID_LOCATION_HIERARCHY_EXT_ID);
-//            }
-//        }
-//
-//        return null;
     }
 
     public SocialGroup referenceField(SocialGroup socialGroup, ConstraintViolations cv) {
