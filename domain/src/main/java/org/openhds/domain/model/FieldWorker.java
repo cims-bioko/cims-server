@@ -8,6 +8,7 @@ import org.openhds.domain.constraint.Searchable;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,6 +42,17 @@ public class FieldWorker extends AuditableEntity implements Serializable {
     @Description(description="Last name of the field worker.")
     String lastName;
 
+    @Description(description="Password entered for a new field worker.")
+    @Transient
+    String password;
+
+    @Description(description="Password re-entered for a new field worker.")
+    @Transient
+    String confirmPassword;
+
+    @Description(description="Hashed version of a field worker's password.")
+    String passwordHash;
+
     public String getExtId() {
         return extId;
     }
@@ -63,6 +75,30 @@ public class FieldWorker extends AuditableEntity implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public static FieldWorker makeStub(String extId) {
