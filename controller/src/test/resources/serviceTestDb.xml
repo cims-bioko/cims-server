@@ -21,7 +21,7 @@
     <locationhierarchy uuid="hierarchy3" name="IFB"
                        extId="IFB" level_uuid="HierarchyLevel3" parent_uuid="hierarchy2" />
 
-    <fieldworker uuid="TestFieldWorker1uuid" extid="TestFieldWorkerExtId" firstname="TFWFirstName" lastname="TFWLastName" deleted="false"/>
+    <fieldworker uuid="TestFieldWorker1uuid" extid="TestFieldWorkerExtId" firstname="TFWFirstName" lastname="TFWLastName" deleted="false" passwordHash="invalid-password-hash"/>
 
     <individual uuid="TestIndividual1uuid" extId="TestIndividual1ExtId" firstName="TI1FirstName" middleName="TI1MiddleName" lastName="TI1LastName"
                 gender="1" dob="1984-01-01" insertBy_uuid="User 1" insertDate="2014-01-02" status="P"

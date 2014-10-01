@@ -1,14 +1,11 @@
 package org.openhds.controller.service.refactor.impl;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.idgeneration.FieldWorkerGenerator;
 import org.openhds.controller.service.refactor.FieldWorkerService;
 import org.openhds.controller.service.refactor.crudhelpers.EntityCrudHelper;
 import org.openhds.domain.model.FieldWorker;
-import org.mindrot.jbcrypt.BCrypt;
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

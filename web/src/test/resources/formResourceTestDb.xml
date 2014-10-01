@@ -37,7 +37,7 @@
         groupHead_uuid="Individual2" groupType="COH" insertDate="2000-12-19" deleted="false"
         collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
 
-    <fieldworker uuid="UnknownFieldWorker" extid="UNK" firstname="Unknown" lastname="FieldWorker" />
+    <fieldworker uuid="UnknownFieldWorker" extid="UNK" firstname="Unknown" lastname="FieldWorker" passwordHash="invalid-password-hash"/>
 
     <individual uuid="Unknown Individual" extId="UNK" firstName="Unknown" middleName="NULL" lastName="Unknown"
                 gender="1" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
 
     @Autowired
-	FieldWorkerService fieldWorkerService;
+	private FieldWorkerService fieldWorkerService;
 
 	public FieldWorkerCrudImpl(Class<FieldWorker> entityClass) {
         super(entityClass);
@@ -43,5 +43,12 @@ public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
     	return null;
     }
 
+    public FieldWorkerService getFieldWorkerService() {
+        return fieldWorkerService;
+    }
+
+    public void setFieldWorkerService(FieldWorkerService fieldWorkerService) {
+        this.fieldWorkerService = fieldWorkerService;
+    }
 }
 

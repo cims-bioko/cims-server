@@ -1,7 +1,5 @@
 package org.openhds.integration;
 
-import static org.junit.Assert.*;
-
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,38 +14,42 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.junit.Assert.assertNotNull;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @ContextConfiguration("/testContext.xml")
 public class FieldWorkerTest extends AbstractTransactionalJUnit4SpringContextTests {
-		 
-	 @Autowired
-	 @Qualifier("fieldWorkerCrud")
-	 FieldWorkerCrudImpl fieldWorkerCrud;
-	 	 
-	 @Autowired
-	 SessionFactory sessionFactory;
-	 
-	 @Autowired
-	 GenericDao genericDao;
-	 	 	 	 
-	 @Autowired
-	 @Qualifier("currentUser")
-	 CurrentUser currentUser;
-	 
-	 @Test
-	 public void testFieldWorkerCreate() {
-		 
-		 currentUser.setProxyUser("admin", "test", new String[] {"VIEW_ENTITY", "CREATE_ENTITY"});
-		 
-	     FieldWorker worker = new FieldWorker();
-	     worker.setExtId("FWBD1");
-	     worker.setFirstName("Bob");
-	     worker.setLastName("Dow");
-	     fieldWorkerCrud.setItem(worker);
-	     fieldWorkerCrud.create();
-	     
-	     FieldWorker savedFieldWorker = genericDao.findByProperty(FieldWorker.class, "extId", worker.getExtId());
-	     assertNotNull(savedFieldWorker);
-	 }
+
+    @Autowired
+    @Qualifier("fieldWorkerCrud")
+    FieldWorkerCrudImpl fieldWorkerCrud;
+
+    @Autowired
+    SessionFactory sessionFactory;
+
+    @Autowired
+    GenericDao genericDao;
+
+    @Autowired
+    @Qualifier("currentUser")
+    CurrentUser currentUser;
+
+    @Test
+    public void testFieldWorkerCreate() {
+
+        currentUser.setProxyUser("admin", "test", new String[] {"VIEW_ENTITY", "CREATE_ENTITY"});
+
+        FieldWorker worker = new FieldWorker();
+        worker.setExtId("FWBD1");
+        worker.setFirstName("Bob");
+        worker.setLastName("Dow");
+        worker.setPassword("test-password");
+        worker.setConfirmPassword("test-password");
+        fieldWorkerCrud.setItem(worker);
+        fieldWorkerCrud.create();
+
+        FieldWorker savedFieldWorker = genericDao.findByProperty(FieldWorker.class, "extId", worker.getExtId());
+        assertNotNull(savedFieldWorker);
+    }
 }
