@@ -1,6 +1,15 @@
 package org.openhds.domain.util;
 
-import org.openhds.domain.model.*;
+import org.openhds.domain.model.FieldWorker;
+import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.Location;
+import org.openhds.domain.model.LocationHierarchy;
+import org.openhds.domain.model.Membership;
+import org.openhds.domain.model.PregnancyOutcome;
+import org.openhds.domain.model.Relationship;
+import org.openhds.domain.model.Residency;
+import org.openhds.domain.model.SocialGroup;
+import org.openhds.domain.model.Visit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,6 +17,15 @@ public class ShallowCopier {
 
     private static final Logger logger = LoggerFactory
             .getLogger(ShallowCopier.class);
+
+    public static FieldWorker shallowCopyFieldWorker(FieldWorker fieldWorker) {
+        FieldWorker copy = new FieldWorker();
+        copy.setExtId(fieldWorker.getExtId());
+        copy.setFirstName(fieldWorker.getFirstName());
+        copy.setLastName(fieldWorker.getLastName());
+        copy.setPasswordHash(fieldWorker.getPasswordHash());
+        return copy;
+    }
 
     public static Residency shallowCopyResidency(Residency residency) {
         Residency copy = new Residency();
@@ -202,7 +220,5 @@ public class ShallowCopier {
         copy.setMother(Individual.makeStub(outcome.getMother().getExtId()));
         copy.setVisit(Visit.makeStub(outcome.getVisit().getExtId()));
         return copy;
-
-
     }
 }
