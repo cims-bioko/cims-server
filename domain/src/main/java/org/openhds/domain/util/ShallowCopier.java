@@ -105,6 +105,7 @@ public class ShallowCopier {
         copy.setSectorName(getEmptyStringIfBlank(loc.getSectorName()));
         copy.setLocalityName(getEmptyStringIfBlank(loc.getLocalityName()));
         copy.setCommunityName(getEmptyStringIfBlank(loc.getCommunityName()));
+        copy.setCommunityCode(getEmptyStringIfBlank(loc.getCommunityCode()));
         copy.setMapAreaName(getEmptyStringIfBlank(loc.getMapAreaName()));
 
         copy.setBuildingNumber(getEmptyStringIfBlank(loc.getBuildingNumber()));
@@ -114,9 +115,9 @@ public class ShallowCopier {
         copy.setSubDistrictName(getEmptyStringIfBlank(loc.getSubDistrictName()));
         copy.setDistrictName(getEmptyStringIfBlank(loc.getDistrictName()));
 
-        LocationHierarchy level = new LocationHierarchy();
-        level.setExtId(loc.getLocationHierarchy().getExtId());
-        copy.setLocationHierarchy(level);
+        LocationHierarchy hierarchy = new LocationHierarchy();
+        hierarchy.setExtId(loc.getLocationHierarchy().getExtId());
+        copy.setLocationHierarchy(hierarchy);
 
         copy.setExtId(loc.getExtId());
         copy.setLocationName(loc.getLocationName());
