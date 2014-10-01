@@ -37,6 +37,9 @@ public class LocationForm implements Serializable{
     @XmlElement(name = "community_name")
     private String communityName;
 
+    @XmlElement(name = "community_code")
+    private String communityCode;
+
     @XmlElement(name = "map_area_name")
     private String mapAreaName;
 
@@ -130,6 +133,14 @@ public class LocationForm implements Serializable{
 
     public void setCommunityName(String communityName) {
         this.communityName = communityName;
+    }
+
+    public String getCommunityCode() {
+        return communityCode;
+    }
+
+    public void setCommunityCode(String communityCode) {
+        this.communityCode = communityCode;
     }
 
     public String getMapAreaName() {

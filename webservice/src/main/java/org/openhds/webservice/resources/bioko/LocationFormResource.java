@@ -94,6 +94,7 @@ public class LocationFormResource extends AbstractFormResource{
 
         location.setExtId(locationForm.getLocationExtId());
         location.setCommunityName(locationForm.getCommunityName());
+        location.setCommunityCode(locationForm.getCommunityCode());
         location.setLocalityName(locationForm.getLocalityName());
         location.setMapAreaName(locationForm.getMapAreaName());
         location.setSectorName(locationForm.getSectorName());
