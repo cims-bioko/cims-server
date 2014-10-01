@@ -65,10 +65,13 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
     public void generatePasswordHash(FieldWorker fieldWorker) throws ConstraintViolations {
 
         if(null == fieldWorker.getPassword() || null == fieldWorker.getConfirmPassword()){
-            throw new ConstraintViolations("Password or Confirmation is null");
+            throw new ConstraintViolations("Password or Confirmation is null.");
+        }
+        if(fieldWorker.getPassword().isEmpty() || fieldWorker.getConfirmPassword().isEmpty()){
+            throw new ConstraintViolations("Password or Confirmation is empty.");
         }
         if(!fieldWorker.getPassword().equals(fieldWorker.getConfirmPassword())){
-            throw new ConstraintViolations("Passwords do not match");
+            throw new ConstraintViolations("Passwords do not match.");
         }
 
         // HASH THAT BABY
