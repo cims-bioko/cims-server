@@ -35,6 +35,7 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
 			throw new ConstraintViolations("The Id specified already exists");	
 		
 		return generateId(entityItem);
+
     }
 		
 	public FieldWorker generateId(FieldWorker entityItem) throws ConstraintViolations {
