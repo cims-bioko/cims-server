@@ -69,6 +69,7 @@ public class ShallowCopier {
                     .getPointOfContactPhoneNumber());
             copy.setDip(individual.getDip());
             copy.setMemberStatus(individual.getMemberStatus());
+            copy.setNationality(individual.getNationality());
 
             Individual individualStub = Individual.makeStub(individual.getExtId());
 
