@@ -1,6 +1,7 @@
 package org.openhds.webservice.resources.bioko;
 
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
@@ -12,14 +13,13 @@ import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.controller.service.ResidencyService;
 import org.openhds.controller.service.SocialGroupService;
-import org.openhds.domain.model.FieldWorker;
-import org.openhds.domain.model.Individual;
-import org.openhds.domain.model.Location;
-import org.openhds.domain.model.Membership;
-import org.openhds.domain.model.Relationship;
-import org.openhds.domain.model.Residency;
-import org.openhds.domain.model.SocialGroup;
+import org.openhds.domain.model.*;
+import org.openhds.domain.model.bioko.DeathForm;
 import org.openhds.domain.model.bioko.IndividualForm;
+import org.openhds.domain.util.CalendarAdapter;
+import org.openhds.errorhandling.constants.ErrorConstants;
+import org.openhds.errorhandling.service.ErrorHandlingService;
+import org.openhds.errorhandling.util.ErrorLogUtil;
 import org.openhds.webservice.FieldBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +31,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 @Controller
 @RequestMapping("/individualForm")
@@ -70,12 +74,30 @@ public class IndividualFormResource extends AbstractFormResource {
     @Autowired
     private FieldBuilder fieldBuilder;
 
+    @Autowired
+    private ErrorHandlingService errorService;
+
+    @Autowired
+    private CalendarAdapter adapter;
+
+    private JAXBContext context = null;
+    private Marshaller marshaller = null;
+
+
     // This individual form should cause several CRUDS:
     // location, individual, socialGroup, residency, membership, relationship
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
     public ResponseEntity<? extends Serializable> processForm(
-            @RequestBody IndividualForm individualForm) {
+            @RequestBody IndividualForm individualForm) throws JAXBException {
+
+        try {
+            context = JAXBContext.newInstance(IndividualForm.class);
+            marshaller = context.createMarshaller();
+            marshaller.setAdapter(adapter);
+        } catch (JAXBException e) {
+            throw new RuntimeException("Could not create JAXB context and marshaller for OutMigrationFormResource");
+        }
 
         // TODO: this is a temporary fix until we update the tablet to work around
         // TODO: ODK Collect form field "relevancy" limitations
@@ -95,7 +117,12 @@ public class IndividualFormResource extends AbstractFormResource {
         // collected by whom?
         FieldWorker collectedBy = fieldWorkerService.findFieldWorkerById(individualForm.getFieldWorkerExtId());
         if (null == collectedBy) {
-            return requestError("Error getting field worker: Individual form has nonexistent field worker id");
+            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID+": IndividualForm has a nonexistent field worker id - "+individualForm.getFieldWorkerExtId());
+            String errorDataPayload = createDTOPayload(individualForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, IndividualForm.class.getSimpleName(),
+                    collectedBy, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+            errorService.logError(error);
+            return requestError(cv);
         }
 
         // where are we?
@@ -104,7 +131,12 @@ public class IndividualFormResource extends AbstractFormResource {
             location = locationHierarchyService
                     .findLocationById(individualForm.getHouseholdExtId());
             if (null == location) {
-                return requestError("Location not found: " + individualForm.getHouseholdExtId());
+                cv.addViolations(ConstraintViolations.INVALID_LOCATION_EXT_ID+": IndividualForm has a nonexistent location id -"+individualForm.getHouseholdExtId());
+                String errorDataPayload = createDTOPayload(individualForm);
+                ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, IndividualForm.class.getSimpleName(),
+                        collectedBy, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+                errorService.logError(error);
+                return requestError(cv);
             }
         } catch (Exception e) {
             return requestError("Error getting location: " + e.getMessage());
@@ -115,6 +147,10 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             individual = findOrMakeIndividual(individualForm, collectedBy, cv);
             if (cv.hasViolations()) {
+                String errorDataPayload = createDTOPayload(individualForm);
+                ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, IndividualForm.class.getSimpleName(),
+                        collectedBy, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+                errorService.logError(error);
                 return requestError(cv);
             }
         } catch (Exception e) {
@@ -140,8 +176,12 @@ public class IndividualFormResource extends AbstractFormResource {
                         individualForm.getHouseholdExtId(), "Social group does not exist: "
                                 + individualForm.getHouseholdExtId());
             } catch (Exception e) {
-                return requestError("Error getting social group for household member: "
-                        + e.getMessage());
+                cv.addViolations(e.getMessage()+": "+individualForm.getHouseholdExtId());
+                String errorDataPayload = createDTOPayload(individualForm);
+                ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, IndividualForm.class.getSimpleName(),
+                        collectedBy, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+                errorService.logError(error);
+                return requestError(cv);
             }
         }
 
@@ -161,6 +201,10 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             createOrSaveLocation(location);
         } catch (ConstraintViolations e) {
+            String errorDataPayload = createDTOPayload(individualForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, IndividualForm.class.getSimpleName(),
+                    collectedBy, ErrorConstants.UNRESOLVED_ERROR_STATUS, e.getViolations());
+            errorService.logError(error);
             return requestError(e);
         } catch (SQLException e) {
             return serverError("SQL Error updating or saving location: " + e.getMessage());
@@ -172,6 +216,10 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             createOrSaveSocialGroup(socialGroup);
         } catch (ConstraintViolations e) {
+            String errorDataPayload = createDTOPayload(individualForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, IndividualForm.class.getSimpleName(),
+                    collectedBy, ErrorConstants.UNRESOLVED_ERROR_STATUS, e.getViolations());
+            errorService.logError(error);
             return requestError(e);
         } catch (SQLException e) {
             return serverError("SQL Error updating or saving socialGroup: " + e.getMessage());
@@ -184,6 +232,10 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             createOrSaveIndividual(individual);
         } catch (ConstraintViolations e) {
+            String errorDataPayload = createDTOPayload(individualForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, IndividualForm.class.getSimpleName(),
+                    collectedBy, ErrorConstants.UNRESOLVED_ERROR_STATUS, e.getViolations());
+            errorService.logError(error);
             return requestError(e);
         } catch (SQLException e) {
             return serverError("SQL Error updating or saving individual: " + e.getMessage());
@@ -411,6 +463,14 @@ public class IndividualFormResource extends AbstractFormResource {
         } else {
             entityService.save(individual);
         }
+    }
+
+    private String createDTOPayload(IndividualForm individualForm) throws JAXBException {
+
+        StringWriter writer = new StringWriter();
+        marshaller.marshal(individualForm, writer);
+        return writer.toString();
+
     }
 
 }
