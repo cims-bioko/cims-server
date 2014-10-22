@@ -6,19 +6,18 @@
 	<parent>
 		<groupId>org.openhds</groupId>
 		<artifactId>openhds</artifactId>
-		<version>1.0-M5-SNAPSHOT</version>
+        <version>1.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>org.openhds</groupId>
 	<artifactId>domain</artifactId>
 	<name>OpenHDS Domain</name>
 	<packaging>jar</packaging>
 	<url>http://maven.apache.org</url>
 
-	<properties>
-		<openhdsVersion>${project.version}</openhdsVersion>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+    <properties>
+        <openhds.version>${project.parent.version}</openhds.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
 	<dependencies>
 		<dependency>
