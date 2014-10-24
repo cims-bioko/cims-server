@@ -55,8 +55,6 @@ public class FieldWorker extends AuditableEntity implements Serializable {
     @Description(description="Hashed version of a field worker's password.")
     String passwordHash;
 
-    @NotNull
-    @CheckFieldNotBlank
     @Description(description ="The ID prefix used in individual extId generation.")
     int idPrefix;
 
