@@ -237,6 +237,7 @@ public class IndividualFormResource extends AbstractFormResource {
         individual.setPointOfContactPhoneNumber(individualForm.getIndividualPointOfContactPhoneNumber());
         individual.setDip(individualForm.getIndividualDip());
         individual.setMemberStatus(individualForm.getIndividualMemberStatus());
+        individual.setNationality(individualForm.getIndividualNationality());
 
     }
 

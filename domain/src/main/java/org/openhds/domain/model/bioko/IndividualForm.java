@@ -83,6 +83,9 @@ public class IndividualForm implements Serializable {
     @XmlElement(name = "individual_member_status")
     private String individualMemberStatus;
 
+    @XmlElement(name = "individual_nationality")
+    private String individualNationality;
+
     public boolean isProcessedByMirth() {
         return processedByMirth;
     }
@@ -242,5 +245,13 @@ public class IndividualForm implements Serializable {
 
     public void setIndividualMemberStatus(String individualMemberStatus) {
         this.individualMemberStatus = individualMemberStatus;
+    }
+
+    public String getIndividualNationality() {
+        return individualNationality;
+    }
+
+    public void setIndividualNationality(String individualNationality) {
+        this.individualNationality = individualNationality;
     }
 }

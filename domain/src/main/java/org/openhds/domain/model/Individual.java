@@ -111,6 +111,8 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     private int dip;
     @Column
     private String memberStatus;
+    @Column
+    private String nationality;
 
     public String getExtId() {
         return extId;
@@ -305,7 +307,15 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     public String getMemberStatus() {
     	return memberStatus;
     }
-    
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
     public static Individual makeStub(String extId) {
     	Individual stub = new Individual();
     	stub.setExtId(extId);
