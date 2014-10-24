@@ -3,6 +3,7 @@ package org.openhds.controller.service.refactor.crudhelpers;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.refactor.FieldWorkerService;
 import org.openhds.controller.service.refactor.LocationService;
+import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Location;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ public class FieldWorkerCrudHelper extends AbstractEntityCrudHelperImpl<FieldWor
 
         fieldWorkerService.generateId(fieldWorker);
         fieldWorkerService.generatePasswordHash(fieldWorker);
+        generateIdPrefix(fieldWorker);
+
 
     }
 
@@ -47,7 +50,35 @@ public class FieldWorkerCrudHelper extends AbstractEntityCrudHelperImpl<FieldWor
 
     @Override
     public List<FieldWorker> getAll() {
-        return genericDao.findAll(FieldWorker.class,true);
+        return genericDao.findAll(FieldWorker.class, true);
+    }
+
+
+    private void generateIdPrefix(FieldWorker fieldWorker){
+
+        List<FieldWorker> fieldWorkers = getAllOrderedByIdPrefix();
+
+        FieldWorker lastFieldWorker = fieldWorkers.get(fieldWorkers.size()-1);
+
+        int newIdPrefix = lastFieldWorker.getIdPrefix() + 1;
+
+        fieldWorker.setIdPrefix(newIdPrefix);
+
+    }
+
+    private List<FieldWorker> getAllOrderedByIdPrefix(){
+        GenericDao.OrderProperty fieldWorkerIdPrefix = new GenericDao.OrderProperty() {
+
+            public String getPropertyName() {
+                return "idPrefix";
+            }
+
+            public boolean isAscending() {
+                return true;
+            }
+        };
+
+        return genericDao.findAllWithOrder(FieldWorker.class, fieldWorkerIdPrefix);
     }
 
     @Override
