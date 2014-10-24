@@ -32,6 +32,7 @@ public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
     	try {
             fieldWorkerService.generateId(entityItem);
             fieldWorkerService.generatePasswordHash(entityItem);
+            fieldWorkerService.generateIdPrefix(entityItem);
             fieldWorkerService.isEligibleForCreation(entityItem, new ConstraintViolations());
 	        return super.create();
     	}

@@ -33,7 +33,7 @@ public class FieldWorkerCrudHelper extends AbstractEntityCrudHelperImpl<FieldWor
 
         fieldWorkerService.generateId(fieldWorker);
         fieldWorkerService.generatePasswordHash(fieldWorker);
-        generateIdPrefix(fieldWorker);
+        fieldWorkerService.generateIdPrefix(fieldWorker);
 
 
     }
@@ -54,32 +54,7 @@ public class FieldWorkerCrudHelper extends AbstractEntityCrudHelperImpl<FieldWor
     }
 
 
-    private void generateIdPrefix(FieldWorker fieldWorker){
 
-        List<FieldWorker> fieldWorkers = getAllOrderedByIdPrefix();
-
-        FieldWorker lastFieldWorker = fieldWorkers.get(fieldWorkers.size()-1);
-
-        int newIdPrefix = lastFieldWorker.getIdPrefix() + 1;
-
-        fieldWorker.setIdPrefix(newIdPrefix);
-
-    }
-
-    private List<FieldWorker> getAllOrderedByIdPrefix(){
-        GenericDao.OrderProperty fieldWorkerIdPrefix = new GenericDao.OrderProperty() {
-
-            public String getPropertyName() {
-                return "idPrefix";
-            }
-
-            public boolean isAscending() {
-                return true;
-            }
-        };
-
-        return genericDao.findAllWithOrder(FieldWorker.class, fieldWorkerIdPrefix);
-    }
 
     @Override
     public FieldWorker read(String id) {

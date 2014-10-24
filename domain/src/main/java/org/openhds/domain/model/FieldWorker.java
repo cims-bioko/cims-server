@@ -24,7 +24,8 @@ import java.util.List;
 @JsonInclude(Include.NON_NULL)
 public class FieldWorker extends AuditableEntity implements Serializable {
 
-    private static final long serialVersionUID = 1898036206514199266L;
+
+    private static final long serialVersionUID = -7550088299362704483L;
 
     @NotNull
     @CheckFieldNotBlank
