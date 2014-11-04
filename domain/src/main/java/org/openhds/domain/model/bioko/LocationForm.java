@@ -55,6 +55,18 @@ public class LocationForm implements Serializable{
     @XmlElement(name = "location_floor_number")
     private String floorNumber;
 
+    @XmlElement(name = "description")
+    private String description;
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getBuildingNumber() {
         return buildingNumber;
     }

@@ -107,6 +107,17 @@ public class Location
     @Description(description = "The name of the map area - disregarding Locality - that contains this location")
     private String mapAreaName;
 
+    @Description(description = "A description of the observable features of a location")
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getExtId() {
         return extId;
     }

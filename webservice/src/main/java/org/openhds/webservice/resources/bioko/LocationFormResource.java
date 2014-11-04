@@ -73,7 +73,7 @@ public class LocationFormResource extends AbstractFormResource{
         }
 
         // do it
-        copyFormDataToIndividual(locationForm, location);
+        copyFormDataToLocation(locationForm, location);
 
         // persist the location
         try {
@@ -87,7 +87,7 @@ public class LocationFormResource extends AbstractFormResource{
         return new ResponseEntity<LocationForm>(locationForm, HttpStatus.CREATED);
     }
 
-    private void copyFormDataToIndividual(LocationForm locationForm, Location location){
+    private void copyFormDataToLocation(LocationForm locationForm, Location location){
 
 
         // fieldWorker, CollectedDateTime, and HierarchyLevel are set outside of this method
@@ -100,9 +100,9 @@ public class LocationFormResource extends AbstractFormResource{
         location.setSectorName(locationForm.getSectorName());
         location.setLocationName(locationForm.getLocationName());
         location.setLocationType(locationForm.getLocationType());
-
         location.setBuildingNumber(locationForm.getBuildingNumber());
         location.setFloorNumber(locationForm.getFloorNumber());
+        location.setDescription(locationForm.getDescription());
 
     }
     private static Calendar getDateInPast() {
