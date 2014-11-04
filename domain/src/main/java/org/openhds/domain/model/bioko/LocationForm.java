@@ -58,6 +58,27 @@ public class LocationForm implements Serializable{
     @XmlElement(name = "description")
     private String description;
 
+    @XmlElement(name = "longitude")
+    private String longitude;
+
+    @XmlElement(name = "latitude")
+    private String latitude;
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
 
     public String getDescription() {
         return description;
