@@ -36,7 +36,6 @@
     </scm>
 
     <properties>
-        <openhds.build.info>flannagan</openhds.build.info>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <org.springframework.version>3.2.8.RELEASE</org.springframework.version>
         <org.springframework.security.version>3.2.1.RELEASE</org.springframework.security.version>
