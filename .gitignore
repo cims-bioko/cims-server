@@ -1,15 +1,17 @@
-/webservice/pom.xml~
-/web/pom.xml~
-target
+# Eclipse
 .classpath
 .project
-.settings
-.idea
-*.iml
-*.log
-generated-xml
-.directory
-not-in-version-control/
+.settings/
 
+# Intellij
+.idea/
 *.iml
-.idea
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
+
