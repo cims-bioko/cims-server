@@ -107,12 +107,14 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
 
         List<FieldWorker> fieldWorkers = getAllOrderedByIdPrefix();
 
+        if (fieldWorkers.isEmpty()) {
+            fieldWorker.setIdPrefix(0);
+            return;
+        }
+
         FieldWorker lastFieldWorker = fieldWorkers.get(fieldWorkers.size()-1);
-
         int newIdPrefix = lastFieldWorker.getIdPrefix() + 1;
-
         fieldWorker.setIdPrefix(newIdPrefix);
-
     }
 
     @Override

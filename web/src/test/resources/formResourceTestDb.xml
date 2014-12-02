@@ -15,39 +15,45 @@
     <locationhierarchylevel uuid="HierarchyLevel3" keyIdentifier="3" name="Level 3" />
 
     <locationhierarchy uuid="hierarchy1" name="TAN" extId="TAN" level_uuid="HierarchyLevel1"
-        parent_uuid="hierarchy_root" />
+                       parent_uuid="hierarchy_root" />
     <locationhierarchy uuid="hierarchy2" name="IFA" extId="IFA" level_uuid="HierarchyLevel2"
-        parent_uuid="hierarchy1" />
+                       parent_uuid="hierarchy1" />
     <locationhierarchy uuid="hierarchy3" name="IFB" extId="IFB" level_uuid="HierarchyLevel3"
-        parent_uuid="hierarchy2" />
+                       parent_uuid="hierarchy2" />
+
+    <fieldworker uuid="FWEK1D" extid="FWEK1D" firstname="Test" lastname="FieldWorker"
+                 passwordHash="invalid-password-hash" deleted="false" idPrefix="98"/>
+
+    <fieldworker uuid="FieldWorker1" extid="FieldWorker1" firstname="Test" lastname="FieldWorker"
+                 passwordHash="invalid-password-hash" deleted="false" idPrefix="98"/>
+
+    <fieldworker uuid="UnknownFieldWorker" extid="UNK" firstname="Unknown" lastname="FieldWorker"
+                 passwordHash="invalid-password-hash" deleted="false" idPrefix="99"/>
 
     <location uuid="TestLocation2" extId="testLocation2" locationName="Test Location"
-        locationHierarchy_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
-        collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
+              locationHierarchy_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
+              collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
 
     <location uuid="NONHOUSEHOLDLOCATION" extId="newHouse_id" locationName="Non-household Location"
-        locationHierarchy_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
-        collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
+              locationHierarchy_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
+              collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
 
     <location uuid="HOUSEHOLDLOCATION" extId="existing_id" locationName="Household Location"
-        locationHierarchy_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
-        collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
-
-    <socialgroup uuid="HOUSEHOLDSOCIALGROUP" extId="existing_id" groupName="Household Social Group"
-        groupHead_uuid="Individual2" groupType="COH" insertDate="2000-12-19" deleted="false"
-        collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
-
-    <fieldworker uuid="UnknownFieldWorker" extid="UNK" firstname="Unknown" lastname="FieldWorker" passwordHash="invalid-password-hash"/>
-
-    <individual uuid="Unknown Individual" extId="UNK" firstName="Unknown" middleName="NULL" lastName="Unknown"
-                gender="1" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
-                dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker"
-                age="60" dip="0"/>
+              locationHierarchy_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
+              collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
 
     <location uuid="TestLocation1" extId="testLocation1" locationName="Test Location" locationHierarchy_uuid="hierarchy3"
               locationType="RUR" insertDate="2000-12-19" deleted="false" collectedBy_uuid="UnknownFieldWorker"
               insertBy_uuid="User 1" status="P" />
 
+    <location uuid="LOCATION1" extId="LOCATION1" locationName="Location 1" locationHierarchy_uuid="hierarchy3"
+              locationType="RUR" insertDate="2000-12-19" deleted="false" collectedBy_uuid="UnknownFieldWorker"
+              insertBy_uuid="User 1" status="P" />
+
+    <individual uuid="Unknown Individual" extId="UNK" firstName="Unknown" middleName="NULL" lastName="Unknown"
+                gender="1" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
+                dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker"
+                age="60" dip="0"/>
 
     <individual uuid="Individual1" extId="individual1" firstName="Individual" middleName="" lastName="1"
                 gender="1" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
@@ -58,6 +64,10 @@
                 gender="2" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
                 dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker"
                 age="60" dip="2"/>
+
+    <socialgroup uuid="HOUSEHOLDSOCIALGROUP" extId="existing_id" groupName="Household Social Group"
+                 groupHead_uuid="Individual2" groupType="COH" insertDate="2000-12-19" deleted="false"
+                 collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
 
     <socialgroup uuid="SocialGroup1" extId="sg123456789" groupName="Social Group 1"
                  groupHead_uuid="Individual2" groupType="COH" insertDate="2000-12-19" deleted="false"
@@ -72,13 +82,16 @@
                 bIsToA="1" individual_uuid="Individual1" socialGroup_uuid="SocialGroup1" startType="NA" endType="NA"/>
 
     <residency uuid="FormerResidency" location_uuid="TestLocation1" individual_uuid="Individual1" startDate="1999-12-19"
-                startType="StartType" endType="NA" collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
+               startType="StartType" endType="NA" collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
 
     <residency uuid="CurrentResidency" location_uuid="TestLocation1" individual_uuid="Individual2" startDate="1999-12-19"
                startType="StartType" endType="NA" collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
 
     <visit uuid="MigrateVisit" extid="migrateVisit" visitDate="2012-02-27" status="P" insertDate="2012-03-01" collectedBy_uuid="UnknownFieldWorker"
-            visitLocation_uuid="LOCATION1" deleted="false" roundNumber="1" insertBy_uuid="User 1"/>
+           visitLocation_uuid="LOCATION1" deleted="false" roundNumber="1" insertBy_uuid="User 1"/>
+
+    <visit uuid="TestVisit" extid="TestVisit" visitDate="2012-02-27" status="P" insertDate="2012-03-01" collectedBy_uuid="UnknownFieldWorker"
+           visitLocation_uuid="LOCATION1" deleted="false" roundNumber="1" insertBy_uuid="User 1"/>
 
     <visit uuid="DeathVisit" extid="deathVisit" visitDate="2012-02-27" status="P" insertDate="2012-03-01" collectedBy_uuid="UnknownFieldWorker"
            visitLocation_uuid="LOCATION1" deleted="false" roundNumber="1" insertBy_uuid="User 1"/>

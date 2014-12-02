@@ -145,7 +145,7 @@ public class IndividualFormResource extends AbstractFormResource {
         // make a new individual, to be persisted below
         Individual individual;
         try {
-            individual = findOrMakeIndividual(individualForm, collectedBy, cv);
+            individual = findOrMakeIndividual(individualForm, collectedBy, collectionTime, cv);
             if (cv.hasViolations()) {
                 String errorDataPayload = createDTOPayload(individualForm);
                 ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, IndividualForm.class.getSimpleName(),
@@ -247,7 +247,7 @@ public class IndividualFormResource extends AbstractFormResource {
     }
 
     private Individual findOrMakeIndividual(IndividualForm individualForm, FieldWorker collectedBy,
-                                            ConstraintViolations cv) throws Exception {
+                                            Calendar collectionTime, ConstraintViolations cv) throws Exception {
         Individual individual = individualService
                 .findIndivById(individualForm.getIndividualExtId());
         if (null == individual) {
@@ -255,6 +255,7 @@ public class IndividualFormResource extends AbstractFormResource {
         }
 
         individual.setCollectedBy(collectedBy);
+        individual.setInsertDate(collectionTime);
 
         copyFormDataToIndividual(individualForm, individual);
 
@@ -359,6 +360,7 @@ public class IndividualFormResource extends AbstractFormResource {
         residency.setIndividual(individual);
         residency.setLocation(location);
         residency.setCollectedBy(collectedBy);
+        residency.setInsertDate(collectionTime);
         residency.setStartDate(collectionTime);
         residency.setStartType(START_TYPE);
         residency.setEndType(NOT_APPLICABLE_END_TYPE);
@@ -390,6 +392,7 @@ public class IndividualFormResource extends AbstractFormResource {
         membership.setIndividual(individual);
         membership.setSocialGroup(socialGroup);
         membership.setCollectedBy(collectedBy);
+        membership.setInsertDate(collectionTime);
         membership.setStartDate(collectionTime);
         membership.setStartType(START_TYPE);
         membership.setEndType(NOT_APPLICABLE_END_TYPE);
@@ -424,6 +427,7 @@ public class IndividualFormResource extends AbstractFormResource {
         relationship.setIndividualA(individualA);
         relationship.setIndividualB(individualB);
         relationship.setCollectedBy(collectedBy);
+        relationship.setInsertDate(collectionTime);
         relationship.setStartDate(collectionTime);
         relationship.setaIsToB(aIsToB);
 

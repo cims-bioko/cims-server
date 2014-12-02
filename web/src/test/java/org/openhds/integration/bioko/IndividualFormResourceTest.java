@@ -155,7 +155,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
     }
 
     @Test
-    public void testPosMemberOfHouseholdFormXml() throws Exception {
+    public void testPostMemberOfHouseholdFormXml() throws Exception {
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
@@ -163,7 +163,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
-        verifyEntityCrud("1234567890bb", "existing_id", "NBAS1I", "2");
+        verifyEntityCrud("1234567890bb", "existing_id", "individual2", "2");
     }
 
     @Test
@@ -201,7 +201,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
-        verifyEntityCrud("1234567890bb", "existing_id", "NBAS1I", "2");
+        verifyEntityCrud("1234567890bb", "existing_id", "individual2", "2");
     }
 
     @Test

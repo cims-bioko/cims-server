@@ -2,6 +2,9 @@ package org.openhds.integration;
 
 import static org.junit.Assert.*;
 
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseOperation;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,13 +23,21 @@ import org.openhds.web.service.JsfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @ContextConfiguration("/testContext.xml")
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+		DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
+		DbUnitTestExecutionListener.class })
+@DatabaseSetup(value = "/formResourceTestDb.xml", type = DatabaseOperation.REFRESH)
 public class LocationTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 	 
 	 @Autowired
@@ -69,12 +80,17 @@ public class LocationTest extends AbstractTransactionalJUnit4SpringContextTests 
 		 createLocationHierarchy();
 		 
 		 fieldWorker = genericDao.findByProperty(FieldWorker.class, "extId", "FWEK1D");
+		 assertNotNull(fieldWorker);
+
+		 item = genericDao.findByProperty(LocationHierarchy.class, "extId", "IFB");
+		 assertNotNull(item);
 	 }
 	 
 	 @Test
 	 public void testLocationCreate() {		
 		 
 		 Location location = new Location();
+		 location.setExtId("Test");
 		 location.setLocationName("locationName");
 		 location.setLocationType("RUR");
 		 location.setLocationHierarchy(item);
