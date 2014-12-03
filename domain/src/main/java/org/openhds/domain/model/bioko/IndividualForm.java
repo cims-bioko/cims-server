@@ -21,7 +21,7 @@ public class IndividualForm implements Serializable {
 
     private static final long serialVersionUID = 1143017330340385847L;
 
-    @XmlElement(name = "uuid")
+    @XmlElement(name = "entity_uuid")
     private String uuid;
 
     @XmlElement(name = "processed_by_mirth")
