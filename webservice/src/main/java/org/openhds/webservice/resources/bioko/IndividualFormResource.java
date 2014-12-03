@@ -114,6 +114,9 @@ public class IndividualFormResource extends AbstractFormResource {
             collectionTime = getDateInPast();
         }
 
+        // inserted when?
+        Calendar insertionTime = Calendar.getInstance();
+
         // collected by whom?
         FieldWorker collectedBy = fieldWorkerService.findFieldWorkerById(individualForm.getFieldWorkerExtId());
         if (null == collectedBy) {
@@ -270,7 +273,9 @@ public class IndividualFormResource extends AbstractFormResource {
 
     private void copyFormDataToIndividual(IndividualForm individualForm, Individual individual)
             throws Exception {
-        individual.setUuid(individualForm.getUuid());
+        if (null == individual.getUuid()) {
+            individual.setUuid(individualForm.getUuid());
+        }
         individual.setExtId(individualForm.getIndividualExtId());
         individual.setFirstName(individualForm.getIndividualFirstName());
         individual.setMiddleName(individualForm.getIndividualOtherNames());
