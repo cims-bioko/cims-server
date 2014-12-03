@@ -21,6 +21,9 @@ public class IndividualForm implements Serializable {
 
     private static final long serialVersionUID = 1143017330340385847L;
 
+    @XmlElement(name = "uuid")
+    private String uuid;
+
     @XmlElement(name = "processed_by_mirth")
     private boolean processedByMirth;
 
@@ -85,6 +88,15 @@ public class IndividualForm implements Serializable {
 
     @XmlElement(name = "individual_nationality")
     private String individualNationality;
+
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
     public boolean isProcessedByMirth() {
         return processedByMirth;

@@ -270,6 +270,7 @@ public class IndividualFormResource extends AbstractFormResource {
 
     private void copyFormDataToIndividual(IndividualForm individualForm, Individual individual)
             throws Exception {
+        individual.setUuid(individualForm.getUuid());
         individual.setExtId(individualForm.getIndividualExtId());
         individual.setFirstName(individualForm.getIndividualFirstName());
         individual.setMiddleName(individualForm.getIndividualOtherNames());
