@@ -45,7 +45,6 @@ public abstract class AuditableEntity implements Serializable {
     @Description(description="User who inserted the data.")
     protected User insertBy;
     
-    @Temporal(javax.persistence.TemporalType.DATE)
     @Description(description="Date of insertion.")
     protected Calendar insertDate;
     
