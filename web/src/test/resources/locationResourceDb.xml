@@ -8,12 +8,8 @@
 	<locationhierarchy uuid="hierarchy3" name="IFB"
 					   extId="IFB" level_uuid="HierarchyLevel3" parent_uuid="hierarchy2" />
 
-	<fieldworker uuid="FWEK1D" extid="FWEK1D" firstname="Test" lastname="FieldWorker"
-				 passwordHash="invalid-password-hash" deleted="false" idPrefix="98"/>
-
-	<location uuid="NJA001" extId="NJA001" locationName="House 3"
-			  locationHierarchy_uuid="hierarchy3" locationType="RUR"
-			  insertDate="2000-12-19" deleted="false" collectedBy_uuid="FWEK1D" insertBy_uuid="User 1" status="P" />
+	<location uuid="LOCATION2" extId="testLocation" locationName="Test Location" locationHierarchy_uuid="hierarchy3" locationType="RUR"
+			  insertDate="2000-12-19" deleted="false" collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
 
 	<whitelist uuid="LOCALHOST1" address="127.0.0.1" />
 	<whitelist uuid="LOCALHOST2" address="10.0.2.10" />

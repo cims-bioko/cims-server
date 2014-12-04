@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.io.StringWriter;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
@@ -145,6 +147,21 @@ public class IndividualFormResource extends AbstractFormResource {
             return requestError("Error getting location: " + e.getMessage());
         }
 
+        // persist the location
+        try {
+            createOrSaveLocation(location);
+        } catch (ConstraintViolations e) {
+            String errorDataPayload = createDTOPayload(individualForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, IndividualForm.class.getSimpleName(),
+                    collectedBy, ErrorConstants.UNRESOLVED_ERROR_STATUS, e.getViolations());
+            errorService.logError(error);
+            return requestError(e);
+        } catch (SQLException e) {
+            return serverError("SQL Error updating or saving location: " + e.getMessage());
+        } catch (Exception e) {
+            return serverError("General Error updating or saving location: " + e.getMessage());
+        }
+
         // make a new individual, to be persisted below
         Individual individual;
         try {
@@ -158,6 +175,25 @@ public class IndividualFormResource extends AbstractFormResource {
             }
         } catch (Exception e) {
             return requestError("Error finding or creating individual: " + e.getMessage());
+        }
+
+        // individual's residency at location
+        Residency residency = findOrMakeResidency(individual, location, collectionTime, collectedBy);
+
+        // persist the individual
+        // which cascades to residency
+        try {
+            createOrSaveIndividual(individual);
+        } catch (ConstraintViolations e) {
+            String errorDataPayload = createDTOPayload(individualForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, IndividualForm.class.getSimpleName(),
+                    collectedBy, ErrorConstants.UNRESOLVED_ERROR_STATUS, e.getViolations());
+            errorService.logError(error);
+            return requestError(e);
+        } catch (SQLException e) {
+            return serverError("SQL Error updating or saving individual: " + e.getMessage());
+        } catch (Exception e) {
+            return serverError("General Error updating or saving individual: " + e.getMessage());
         }
 
         SocialGroup socialGroup;
@@ -188,35 +224,14 @@ public class IndividualFormResource extends AbstractFormResource {
             }
         }
 
-        // individual's residency at location
-        Residency residency = findOrMakeResidency(individual, location, collectionTime, collectedBy);
-
-        // individual's membership in the social group
-        Membership membership = findOrMakeMembership(individual, socialGroup, collectedBy,
-                collectionTime, individualForm.getIndividualRelationshipToHeadOfHousehold());
-
         // create relationship to head of household (may be "self")
         Relationship relationship = findOrMakeRelationship(individual, socialGroup.getGroupHead(),
                 collectedBy, collectionTime,
                 individualForm.getIndividualRelationshipToHeadOfHousehold());
 
-        // persist the location
-        try {
-            createOrSaveLocation(location);
-        } catch (ConstraintViolations e) {
-            String errorDataPayload = createDTOPayload(individualForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, IndividualForm.class.getSimpleName(),
-                    collectedBy, ErrorConstants.UNRESOLVED_ERROR_STATUS, e.getViolations());
-            errorService.logError(error);
-            return requestError(e);
-        } catch (SQLException e) {
-            return serverError("SQL Error updating or saving location: " + e.getMessage());
-        } catch (Exception e) {
-            return serverError("General Error updating or saving location: " + e.getMessage());
-        }
-
         // persist the socialGroup
         try {
+            // which cascades through group head to relationship
             createOrSaveSocialGroup(socialGroup);
         } catch (ConstraintViolations e) {
             String errorDataPayload = createDTOPayload(individualForm);
@@ -230,20 +245,15 @@ public class IndividualFormResource extends AbstractFormResource {
             return serverError("General Error updating or saving socialGroup: " + e.getMessage());
         }
 
-        // persist the individual
-        // which cascades to residency, membership, and relationship
+        // individual's membership in the social group
+        Membership membership = findOrMakeMembership(individual, socialGroup, collectedBy,
+                collectionTime, individualForm.getIndividualRelationshipToHeadOfHousehold());
         try {
-            createOrSaveIndividual(individual);
-        } catch (ConstraintViolations e) {
-            String errorDataPayload = createDTOPayload(individualForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, IndividualForm.class.getSimpleName(),
-                    collectedBy, ErrorConstants.UNRESOLVED_ERROR_STATUS, e.getViolations());
-            errorService.logError(error);
-            return requestError(e);
+            entityService.save(membership);
+        } catch (ConstraintViolations constraintViolations) {
+            return serverError("ConstraintViolations saving membership: " + constraintViolations.getMessage());
         } catch (SQLException e) {
-            return serverError("SQL Error updating or saving individual: " + e.getMessage());
-        } catch (Exception e) {
-            return serverError("General Error updating or saving individual: " + e.getMessage());
+            return serverError("SQL Error updating or saving membership: " + e.getMessage());
         }
 
         return new ResponseEntity<IndividualForm>(individualForm, HttpStatus.CREATED);
@@ -389,7 +399,7 @@ public class IndividualFormResource extends AbstractFormResource {
             }
         }
 
-        // might need a brand new memebership
+        // might need a brand new membership
         if (null == membership) {
             membership = new Membership();
         }
@@ -453,8 +463,7 @@ public class IndividualFormResource extends AbstractFormResource {
 
     private void createOrSaveSocialGroup(SocialGroup socialGroup) throws ConstraintViolations,
             SQLException {
-        // TODO: SocialGroupService should not force us to use try/catch for
-        // flow control
+        // TODO: SocialGroupService should not force us to use try/catch for flow control
         try {
             String socialGroupExtId = socialGroup.getExtId();
             socialGroupService.findSocialGroupById(socialGroupExtId,

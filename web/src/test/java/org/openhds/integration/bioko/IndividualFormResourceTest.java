@@ -52,6 +52,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
             + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>" + "<collection_date_time>"
             + A_DATE
             + "</collection_date_time>"
+            + "<entity_uuid>32145678901234935890123456789012</entity_uuid>"
             + "<household_ext_id>newHouse_id</household_ext_id>"
             + "<individual_ext_id>1234567890aa</individual_ext_id>"
             + "<individual_first_name>Test HoH First</individual_first_name>"
@@ -77,6 +78,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
             + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>" + "<collection_date_time>"
             + A_DATE
             + "</collection_date_time>"
+            + "<entity_uuid>12345678901234935890123456789012</entity_uuid>"
             + "<household_ext_id>existing_id</household_ext_id>"
             + "<individual_ext_id>1234567890bb</individual_ext_id>"
             + "<individual_first_name>Test Member First</individual_first_name>"

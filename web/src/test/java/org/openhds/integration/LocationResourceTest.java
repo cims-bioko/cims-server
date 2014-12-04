@@ -82,7 +82,7 @@ public class LocationResourceTest {
                 .andExpect(xpath("/locations/location/altitude").string(""))
                 .andExpect(xpath("/locations/location/extId").string("NJA001"))
                 .andExpect(xpath("/locations/location/latitude").string(""))
-                .andExpect(xpath("/locations/location/locationHierarchy/extId").string("IFB"))
+                .andExpect(xpath("/locations/location/locationHierarchy/extId").string("HIERARCHY_ROOT"))
                 .andExpect(xpath("/locations/location/locationName").string("House 3"))
                 .andExpect(xpath("/locations/location/locationType").string("RUR"))
                 .andExpect(xpath("/locations/location/longitude").string(""));
@@ -100,7 +100,7 @@ public class LocationResourceTest {
                 .andExpect(jsonPath("$.data.locations[0].altitude").value(""))
                 .andExpect(jsonPath("$.data.locations[0].extId").value("NJA001"))
                 .andExpect(jsonPath("$.data.locations[0].latitude").value(""))
-                .andExpect(jsonPath("$.data.locations[0].locationHierarchy.extId").value("IFB"))
+                .andExpect(jsonPath("$.data.locations[0].locationHierarchy.extId").value("HIERARCHY_ROOT"))
                 .andExpect(jsonPath("$.data.locations[0].locationName").value("House 3"))
                 .andExpect(jsonPath("$.data.locations[0].locationType").value("RUR"))
                 .andExpect(jsonPath("$.data.locations[0].longitude").value(""));
@@ -119,7 +119,7 @@ public class LocationResourceTest {
                 .andExpect(xpath("/location/altitude").string(""))
                 .andExpect(xpath("/location/extId").string("NJA001"))
                 .andExpect(xpath("/location/latitude").string(""))
-                .andExpect(xpath("/location/locationHierarchy/extId").string("IFB"))
+                .andExpect(xpath("/location/locationHierarchy/extId").string("HIERARCHY_ROOT"))
                 .andExpect(xpath("/location/locationName").string("House 3"))
                 .andExpect(xpath("/location/locationType").string("RUR"))
                 .andExpect(xpath("/location/longitude").string(""));
@@ -140,7 +140,7 @@ public class LocationResourceTest {
                 .andExpect(jsonPath("$.data.location.collectedBy.extId").value("FWEK1D"))
                 .andExpect(jsonPath("$.data.location.extId").value("NJA001"))
                 .andExpect(jsonPath("$.data.location.latitude").value(""))
-                .andExpect(jsonPath("$.data.location.locationHierarchy.extId").value("IFB"))
+                .andExpect(jsonPath("$.data.location.locationHierarchy.extId").value("HIERARCHY_ROOT"))
                 .andExpect(jsonPath("$.data.location.locationName").value("House 3"))
                 .andExpect(jsonPath("$.data.location.locationType").value("RUR"))
                 .andExpect(jsonPath("$.data.location.longitude").value(""));
@@ -166,7 +166,7 @@ public class LocationResourceTest {
                 .andExpect(jsonPath("$.data.location.locationHierarchy.extId").value("IFB"))
                 .andExpect(jsonPath("$.data.location.locationName").value("Test House"))
                 .andExpect(jsonPath("$.data.location.locationType").value("RUR"))
-                .andExpect(jsonPath("$.data.location.longitude").value(""));;
+                .andExpect(jsonPath("$.data.location.longitude").value(""));
     }
 
     @Test
@@ -175,6 +175,7 @@ public class LocationResourceTest {
                 + "<collectedBy>"
                 + "<extId>FWEK1D</extId>"
                 + "</collectedBy>"
+                + "<insertDate>2000-12-19</insertDate>"
                 + "<accuracy></accuracy>"
                 + "<altitude></altitude>"
                 + "<extId>MBA00000001</extId>"
@@ -214,7 +215,7 @@ public class LocationResourceTest {
 
     @Test
     public void testAddDeleteRetrieveLocationXml() throws Exception {
-        String locationExtId = "NJA001";
+        String locationExtId = "testLocation";
 
         testPostLocationXml();
         Location savedLocation = genericDao.findByProperty(Location.class, "extId", locationExtId);
