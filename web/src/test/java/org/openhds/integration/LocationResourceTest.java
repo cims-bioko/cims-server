@@ -68,20 +68,6 @@ public class LocationResourceTest {
     }
 
     @Test
-    public void testGetCachedLocations() throws Exception {
-        mockMvc.perform(get("/locations/cached").session(session)
-                .accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk());
-    }
-
-    @Test(expected = AssertionError.class)
-    public void testGetCachedLocationsWithoutSession() throws Exception {
-        mockMvc.perform(get("/locations/cached")
-                .accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     public void testGetAllLocationsXml() throws Exception {
         mockMvc.perform(get("/locations").session(session)
                 .accept(MediaType.APPLICATION_XML))

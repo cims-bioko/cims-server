@@ -60,20 +60,6 @@ public class MembershipResourceTest {
     }
 
     @Test
-    public void testGetCachedMemberships() throws Exception {
-        mockMvc.perform(get("/memberships/cached").session(session)
-                .accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk());
-    }
-
-    @Test(expected = AssertionError.class)
-    public void testGetCachedMembershipsWithoutSession() throws Exception {
-        mockMvc.perform(get("/memberships/cached")
-                .accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     public void testGetAllMembershipsXml() throws Exception {
         mockMvc.perform(get("/memberships").session(session)
                 .accept(MediaType.APPLICATION_XML))
