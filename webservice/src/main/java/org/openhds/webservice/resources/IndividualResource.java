@@ -32,6 +32,9 @@ public class IndividualResource {
     private FileResolver fileResolver;
 
     @Autowired
+    CacheResponseWriter cacheResponseWriter;
+
+    @Autowired
     public IndividualResource(IndividualService individualService, FileResolver fileResolver) {
         this.individualService = individualService;
         this.fileResolver = fileResolver;
@@ -66,7 +69,8 @@ public class IndividualResource {
     @RequestMapping(value = "/cached", method = RequestMethod.GET)
     public void getCachedIndividuals(HttpServletResponse response) {
         try {
-            CacheResponseWriter.writeResponse(fileResolver.resolveIndividualXmlFile(), response);
+            cacheResponseWriter.instanceWriteResponse(fileResolver.resolveIndividualXmlFile(), response);
+            //CacheResponseWriter.writeResponse(fileResolver.resolveIndividualXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing individual xml file: " + e.getMessage());
         }
