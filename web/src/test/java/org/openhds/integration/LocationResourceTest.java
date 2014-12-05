@@ -9,9 +9,6 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.c
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.xpath;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.jsonPath;
-
-import javax.xml.xpath.XPathExpressionException;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,6 +65,20 @@ public class LocationResourceTest {
                 .build();
 
         session = getMockHttpSession("admin", "test");
+    }
+
+    @Test
+    public void testGetCachedLocations() throws Exception {
+        mockMvc.perform(get("/locations/cached").session(session)
+                .accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk());
+    }
+
+    @Test(expected = AssertionError.class)
+    public void testGetCachedLocationsWithoutSession() throws Exception {
+        mockMvc.perform(get("/locations/cached")
+                .accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk());
     }
 
     @Test
