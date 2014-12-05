@@ -12,7 +12,7 @@ import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Individual.Individuals;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
-import org.openhds.webservice.CacheResponseWriter;
+import org.openhds.controller.util.CacheResponseWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

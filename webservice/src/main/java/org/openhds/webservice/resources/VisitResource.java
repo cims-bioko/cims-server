@@ -14,7 +14,7 @@ import org.openhds.domain.model.Visit;
 import org.openhds.domain.model.Visit.Visits;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
-import org.openhds.webservice.CacheResponseWriter;
+import org.openhds.controller.util.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
 import org.slf4j.Logger;

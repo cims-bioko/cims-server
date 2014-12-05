@@ -78,6 +78,13 @@
             </list>
     	</property>
 	</bean>
+
+    <bean id="cacheResponseWriter" parent="baseServiceBean">
+        <property name="target">
+            <bean class="org.openhds.controller.util.CacheResponseWriter">
+            </bean>
+        </property>
+    </bean>
 	
 	<bean id="baselineService" parent="baseServiceTransactionBean">
     	<property name="target">

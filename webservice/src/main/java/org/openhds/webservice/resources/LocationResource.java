@@ -23,7 +23,7 @@ import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Location.Locations;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
-import org.openhds.webservice.CacheResponseWriter;
+import org.openhds.controller.util.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
 import org.openhds.webservice.response.WebserviceResult;
