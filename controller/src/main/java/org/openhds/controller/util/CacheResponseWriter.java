@@ -15,11 +15,7 @@ import org.openhds.domain.model.PrivilegeConstants;
 public class CacheResponseWriter {
 
     @Authorized({PrivilegeConstants.VIEW_ENTITY})
-    public void instanceWriteResponse(File fileToWrite, HttpServletResponse response) throws IOException {
-        CacheResponseWriter.writeResponse(fileToWrite, response);
-    }
-
-    public static void writeResponse(File fileToWrite, HttpServletResponse response) throws IOException {
+    public void writeResponse(File fileToWrite, HttpServletResponse response) throws IOException {
         if (!fileToWrite.exists()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
@@ -36,4 +32,5 @@ public class CacheResponseWriter {
             }
         }
     }
+
 }

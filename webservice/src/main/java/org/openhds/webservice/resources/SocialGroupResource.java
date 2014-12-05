@@ -37,6 +37,9 @@ public class SocialGroupResource {
     private FileResolver fileResolver;
 
     @Autowired
+    private CacheResponseWriter cacheResponseWriter;
+
+    @Autowired
     public SocialGroupResource(SocialGroupService socialGroupService, FieldBuilder fieldBuilder,
             FileResolver fileResolver) {
         this.socialGroupService = socialGroupService;
@@ -85,7 +88,7 @@ public class SocialGroupResource {
     @RequestMapping(value = "/cached", method = RequestMethod.GET)
     public void getCachedSocialGroups(HttpServletResponse response) {
         try {
-            CacheResponseWriter.writeResponse(fileResolver.resolvesocialGroupXmlFile(), response);
+            cacheResponseWriter.writeResponse(fileResolver.resolvesocialGroupXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing social group xml file: " + e.getMessage());
         }

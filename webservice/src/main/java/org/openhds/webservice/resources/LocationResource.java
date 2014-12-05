@@ -53,6 +53,9 @@ public class LocationResource {
     private final JAXBContext context;
     private final Marshaller marshaller;
 
+    @Autowired
+    private CacheResponseWriter cacheResponseWriter;
+
 
     @Autowired
     public LocationResource(LocationHierarchyService locationHierarchyService, FieldBuilder fieldBuilder,
@@ -137,7 +140,7 @@ public class LocationResource {
     @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = "application/xml")
     public void getAllCachedLocationsXml(HttpServletResponse response) {
         try {
-            CacheResponseWriter.writeResponse(fileResolver.resolveLocationXmlFile(), response);
+            cacheResponseWriter.writeResponse(fileResolver.resolveLocationXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing location xml file: " + e.getMessage());
         }
@@ -146,7 +149,7 @@ public class LocationResource {
     @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = "application/json")
     public void getAllCachedLocationsJson(HttpServletResponse response) {
         try {
-            CacheResponseWriter.writeResponse(fileResolver.resolveLocationXmlFile(), response);
+            cacheResponseWriter.writeResponse(fileResolver.resolveLocationXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing location xml file: " + e.getMessage());
         }

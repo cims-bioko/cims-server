@@ -34,6 +34,9 @@ public class ResidencyResource {
     private static final Logger logger = LoggerFactory.getLogger(ResidencyResource.class);
 
     @Autowired
+    private CacheResponseWriter cacheResponseWriter;
+
+    @Autowired
     public ResidencyResource(FileResolver fileResolver, ResidencyService residencyService) {
     	this.fileResolver = fileResolver;
     	this.residencyService = residencyService;
@@ -60,7 +63,7 @@ public class ResidencyResource {
     @RequestMapping(value = "/cached", method = RequestMethod.GET)
     public void getCachedResidencies(HttpServletResponse response) {
         try {
-            CacheResponseWriter.writeResponse(fileResolver.resolveResidencyXmlFile(), response);
+            cacheResponseWriter.writeResponse(fileResolver.resolveResidencyXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing residency xml file: " + e.getMessage());
         }

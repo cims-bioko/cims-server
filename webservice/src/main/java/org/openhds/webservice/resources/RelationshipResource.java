@@ -37,6 +37,9 @@ public class RelationshipResource {
     private FileResolver fileResolver;
 
     @Autowired
+    private CacheResponseWriter cacheResponseWriter;
+
+    @Autowired
     public RelationshipResource(RelationshipService relationshipService, FieldBuilder fieldBuilder,
             FileResolver fileResolver) {
         this.relationshipService = relationshipService;
@@ -86,7 +89,7 @@ public class RelationshipResource {
     @RequestMapping(value = "/cached", method = RequestMethod.GET)
     public void getCachedRelationships(HttpServletResponse response) {
         try {
-            CacheResponseWriter.writeResponse(fileResolver.resolveRelationshipXmlFile(), response);
+            cacheResponseWriter.writeResponse(fileResolver.resolveRelationshipXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing relationship xml file: " + e.getMessage());
         }

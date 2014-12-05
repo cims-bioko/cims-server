@@ -40,6 +40,9 @@ public class MembershipResource {
     
     private FileResolver fileResolver;
 
+    @Autowired
+    private CacheResponseWriter cacheResponseWriter;
+
 
     @Autowired
     public MembershipResource(MembershipService membershipService, IndividualService individualService,
@@ -112,7 +115,7 @@ public class MembershipResource {
     @RequestMapping(value = "/cached", method = RequestMethod.GET)
     public void getCachedMemberships(HttpServletResponse response) {
         try {
-            CacheResponseWriter.writeResponse(fileResolver.resolveMembershipXmlFile(), response);
+            cacheResponseWriter.writeResponse(fileResolver.resolveMembershipXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing membership xml file: " + e.getMessage());
         }

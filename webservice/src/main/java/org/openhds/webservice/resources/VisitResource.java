@@ -38,6 +38,9 @@ public class VisitResource {
     private final FileResolver fileResolver;
 
     @Autowired
+    private CacheResponseWriter cacheResponseWriter;
+
+    @Autowired
     public VisitResource(VisitService visitService, FieldBuilder fieldBuilder, EntityService entityService,
             FileResolver fileResolver) {
         this.visitService = visitService;
@@ -85,7 +88,7 @@ public class VisitResource {
     @RequestMapping(value = "/cached", method = RequestMethod.GET)
     public void getCachedVisits(HttpServletResponse response) {
         try {
-            CacheResponseWriter.writeResponse(fileResolver.resolveVisitXmlFile(), response);
+            cacheResponseWriter.writeResponse(fileResolver.resolveVisitXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing visit xml file: " + e.getMessage());
         }
