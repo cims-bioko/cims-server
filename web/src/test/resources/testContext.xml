@@ -20,7 +20,7 @@
 
     <!-- This bean is here to override the session scoped baseCrud from the application-context -->
     <bean id="baseCrud" class="org.openhds.web.crud.impl.EntityCrudImpl"
-          abstract="true">
+          abstract="true" >
         <property name="jsfService" ref="jsfService" />
         <property name="webFlowService" ref="webFlowService" />
         <property name="entityService" ref="entityService" />

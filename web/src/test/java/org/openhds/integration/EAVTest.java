@@ -91,34 +91,7 @@ public class EAVTest {
 		 ClassExtension savedAttribute = genericDao.findByProperty(ClassExtension.class, "name", extension.getName());
 		 assertNotNull(savedAttribute);
 	 }
-	 
-	 @Test
-	 public void testAttributeValue() {
-		 
-		 Visit visit = new Visit();
-		 visit.setRoundNumber(1);
-		 visit.setVisitLocation(location);
-		 visit.setVisitDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
-		 visit.setCollectedBy(fieldWorker);
-		 
-		 List<Extension> extensions = new ArrayList<Extension>();
-		 ClassExtension classExtension = createAttribute();
-		 
-		 Extension extension = new Extension();
-		 extension.setClassExtension(classExtension);
-		 extension.setEntity(visit);
-		 extension.setExtensionValue("Taps");
-		 extension.setEntityExtId("NJA001");
-		 extensions.add(extension);
-		 
-		 visit.setExtensions(extensions);
-		 
-		 visitCrud.setItem(visit);
-		 visitCrud.create();
-		 
-		 Visit savedVisit = genericDao.findByProperty(Visit.class, "extId", visit.getExtId());
-		 //assertNotNull(savedVisit);
-	 }
+
 	 
 	 private ClassExtension createAttribute() {
 		 

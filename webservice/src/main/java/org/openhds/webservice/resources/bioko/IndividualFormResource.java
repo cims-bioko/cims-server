@@ -7,6 +7,7 @@ import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.controller.service.ResidencyService;
 import org.openhds.controller.service.SocialGroupService;
+import org.openhds.controller.service.refactor.crudhelpers.AbstractEntityCrudHelperImpl;
 import org.openhds.domain.model.ErrorLog;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Individual;
@@ -257,7 +258,7 @@ public class IndividualFormResource extends AbstractFormResource {
         Membership membership = findOrMakeMembership(individual, socialGroup, collectedBy,
                 collectionTime, insertTime, individualForm.getIndividualRelationshipToHeadOfHousehold());
         try {
-            entityService.save(membership);
+            entityService.create(membership);
         } catch (ConstraintViolations constraintViolations) {
             return serverError("ConstraintViolations saving membership: " + constraintViolations.getMessage());
         } catch (SQLException e) {
@@ -350,6 +351,7 @@ public class IndividualFormResource extends AbstractFormResource {
             socialGroup.setExtId(socialGroupExtId);
             socialGroup.setCollectedBy(collectedBy);
             socialGroup.setInsertDate(insertTime);
+            AbstractEntityCrudHelperImpl.setEntityUuidIfNull(socialGroup);
         }
 
         socialGroup.setGroupHead(head);
@@ -378,6 +380,7 @@ public class IndividualFormResource extends AbstractFormResource {
         // might need to make a new residency
         if (null == residency) {
             residency = new Residency();
+            AbstractEntityCrudHelperImpl.setEntityUuidIfNull(residency);
         }
 
         // fill in or update
@@ -388,6 +391,7 @@ public class IndividualFormResource extends AbstractFormResource {
         residency.setStartDate(collectionTime);
         residency.setStartType(START_TYPE);
         residency.setEndType(NOT_APPLICABLE_END_TYPE);
+
 
         // attach to individial
         individual.getAllResidencies().add(residency);
@@ -410,6 +414,7 @@ public class IndividualFormResource extends AbstractFormResource {
         // might need a brand new membership
         if (null == membership) {
             membership = new Membership();
+            AbstractEntityCrudHelperImpl.setEntityUuidIfNull(membership);
         }
 
         // fill in or update
@@ -421,6 +426,7 @@ public class IndividualFormResource extends AbstractFormResource {
         membership.setStartType(START_TYPE);
         membership.setEndType(NOT_APPLICABLE_END_TYPE);
         membership.setbIsToA(membershipType);
+
 
         // attach to individual
         individual.getAllMemberships().add(membership);
@@ -444,6 +450,7 @@ public class IndividualFormResource extends AbstractFormResource {
         // might need a brand new memebership
         if (null == relationship) {
             relationship = new Relationship();
+            AbstractEntityCrudHelperImpl.setEntityUuidIfNull(relationship);
         }
 
         // fill in or update
@@ -453,6 +460,7 @@ public class IndividualFormResource extends AbstractFormResource {
         relationship.setInsertDate(insertTime);
         relationship.setStartDate(collectionTime);
         relationship.setaIsToB(aIsToB);
+
 
         // attach to individual
         individualA.getAllRelationships1().add(relationship);

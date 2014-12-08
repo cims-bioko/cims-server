@@ -26,6 +26,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.util.UUID;
 
 
 @Controller
@@ -125,6 +126,7 @@ public class InMigrationFormResource extends AbstractFormResource {
 
         newResidency.setLocation(location);
         newResidency.setIndividual(individual);
+        newResidency.setUuid(UUID.randomUUID().toString().replace("-",""));
         newResidency.setStartDate(inMigration.getRecordedDate());
         newResidency.setStartType(sitePropertiesService.getInmigrationCode());
         newResidency.setEndType(sitePropertiesService.getNotApplicableCode());

@@ -5,6 +5,7 @@ import org.openhds.controller.service.CurrentUser;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.EntityServiceRefactored;
 import org.openhds.controller.service.EntityValidationService;
+import org.openhds.controller.service.refactor.crudhelpers.AbstractEntityCrudHelperImpl;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.AuditableEntity;
 import org.openhds.domain.service.SitePropertiesService;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 public abstract class EntityServiceRefactoredImpl implements EntityServiceRefactored {
 
@@ -41,6 +43,8 @@ public abstract class EntityServiceRefactoredImpl implements EntityServiceRefact
 
         Calendar insertDate = calendarUtil.convertDateToCalendar(new Date());
         entityItem.setInsertDate(insertDate);
+
+        AbstractEntityCrudHelperImpl.setEntityUuidIfNull(entityItem);
 
         entityValidationService.setStatusPending(entityItem);
 

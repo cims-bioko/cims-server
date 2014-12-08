@@ -10,6 +10,7 @@ import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.CurrentUser;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.EntityValidationService;
+import org.openhds.controller.service.refactor.crudhelpers.AbstractEntityCrudHelperImpl;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.AuditableCollectedEntity;
 import org.openhds.domain.model.AuditableEntity;
@@ -27,8 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  * @author Dave
  *
- * @param <T>
- * @param <PK>
+ *
  */
 @SuppressWarnings("unchecked")
 public class EntityServiceImpl implements EntityService {
@@ -49,33 +49,29 @@ public class EntityServiceImpl implements EntityService {
 	@Transactional
 	public <T> void create(T entityItem) throws IllegalArgumentException, ConstraintViolations, SQLException {
 		if (entityItem instanceof AuditableEntity) {
-			try {
-		        Method insertByMethod;
-		        Method insertDateMethod;
-                Method getUuidMethod;
-                Method setUuidMethod;
-		
-		        insertByMethod = entityItem.getClass().getMethod("setInsertBy", User.class);
-		        if (currentUser != null) {
-		            insertByMethod.invoke(entityItem, currentUser.getCurrentUser());
-		        }
-		        
-		        Calendar insertDate = calendarUtil.convertDateToCalendar(new Date());
-		        
-		        insertDateMethod = entityItem.getClass().getMethod("setInsertDate", Calendar.class);
-		        insertDateMethod.invoke(entityItem, insertDate);
 
-                getUuidMethod = entityItem.getClass().getMethod("getUuid");
-                String uuid = (String) getUuidMethod.invoke(entityItem);
-
-                setUuidMethod = entityItem.getClass().getMethod("setUuid", String.class);
-                if(null == uuid || uuid.isEmpty()){
-                    setUuidMethod.invoke(entityItem, UUID.randomUUID().toString().replace("-",""));
-                }
-
+            try {
+                AbstractEntityCrudHelperImpl.setEntityUuidIfNull((AuditableEntity) entityItem);
 			} catch (Exception e) {
 				System.out.println(e.toString());
 			}
+
+
+            try {
+                Calendar insertDate = calendarUtil.convertDateToCalendar(new Date());
+                ((AuditableEntity) entityItem).setInsertDate(insertDate);
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+
+
+            try {
+                if (currentUser != null) {
+                    ((AuditableEntity) entityItem).setInsertBy(currentUser.getCurrentUser());
+                }
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
 		}
 		setStatusPending(entityItem);	
 		classValidator.validateEntity(entityItem);

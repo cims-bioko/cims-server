@@ -65,9 +65,7 @@ public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> im
         Calendar insertDate = calendarUtil.convertDateToCalendar(new Date());
         entity.setInsertDate(insertDate);
 
-        if(null == entity.getUuid() || entity.getUuid().isEmpty()){
-            entity.setUuid(UUID.randomUUID().toString().replace("-",""));
-        }
+        setEntityUuidIfNull(entity);
 
         entityValidationService.setStatusPending(entity);
         entityValidationService.validateEntity(entity);
@@ -84,6 +82,12 @@ public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> im
         entityValidationService.setStatusPending(entity);
         entityValidationService.validateEntity(entity);
         genericDao.update(genericDao.merge(entity));
+    }
+
+    public static void setEntityUuidIfNull(AuditableEntity entity){
+        if(null == entity.getUuid() || entity.getUuid().isEmpty()){
+            entity.setUuid(UUID.randomUUID().toString().replace("-",""));
+        }
     }
 
     protected abstract void preCreateSanityChecks(T entity) throws ConstraintViolations;

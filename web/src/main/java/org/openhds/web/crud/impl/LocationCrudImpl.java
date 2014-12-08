@@ -8,6 +8,8 @@ import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.domain.service.SitePropertiesService;
 import org.springframework.binding.message.MessageContext;
 
+import java.util.UUID;
+
 public class LocationCrudImpl extends EntityCrudImpl<Location, String> {
 
     SitePropertiesService siteProperties;
@@ -31,6 +33,9 @@ public class LocationCrudImpl extends EntityCrudImpl<Location, String> {
     public String create() {
 
         try {
+            if(null == entityItem.getUuid() || entityItem.getUuid().isEmpty()){
+                entityItem.setUuid(UUID.randomUUID().toString().replace("-",""));
+            }
             service.createLocation(entityItem);
             return onCreateComplete();
         } catch (ConstraintViolations e) {
