@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.CurrentUser;
@@ -49,8 +50,10 @@ public class EntityServiceImpl implements EntityService {
 	public <T> void create(T entityItem) throws IllegalArgumentException, ConstraintViolations, SQLException {
 		if (entityItem instanceof AuditableEntity) {
 			try {
-		        Method insertByMethod = null;
-		        Method insertDateMethod = null;
+		        Method insertByMethod;
+		        Method insertDateMethod;
+                Method getUuidMethod;
+                Method setUuidMethod;
 		
 		        insertByMethod = entityItem.getClass().getMethod("setInsertBy", User.class);
 		        if (currentUser != null) {
@@ -61,6 +64,15 @@ public class EntityServiceImpl implements EntityService {
 		        
 		        insertDateMethod = entityItem.getClass().getMethod("setInsertDate", Calendar.class);
 		        insertDateMethod.invoke(entityItem, insertDate);
+
+                getUuidMethod = entityItem.getClass().getMethod("getUuid");
+                String uuid = (String) getUuidMethod.invoke(entityItem);
+
+                setUuidMethod = entityItem.getClass().getMethod("setUuid", String.class);
+                if(null == uuid || uuid.isEmpty()){
+                    setUuidMethod.invoke(entityItem, UUID.randomUUID().toString().replace("-",""));
+                }
+
 			} catch (Exception e) {
 				System.out.println(e.toString());
 			}

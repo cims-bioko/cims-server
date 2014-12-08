@@ -23,8 +23,6 @@ public abstract class AuditableEntity implements Serializable {
 	private static final long serialVersionUID = -4703049354466276068L;
 	
     @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(length=32)
     String uuid;
 
