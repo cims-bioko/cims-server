@@ -4,12 +4,11 @@ import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.MembershipService;
 import org.openhds.domain.model.Individual;
-import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.Membership.Memberships;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
-import org.openhds.webservice.CacheResponseWriter;
+import org.openhds.controller.util.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
 import org.slf4j.Logger;
@@ -40,6 +39,9 @@ public class MembershipResource {
     private FieldBuilder fieldBuilder;
     
     private FileResolver fileResolver;
+
+    @Autowired
+    private CacheResponseWriter cacheResponseWriter;
 
 
     @Autowired
@@ -113,7 +115,7 @@ public class MembershipResource {
     @RequestMapping(value = "/cached", method = RequestMethod.GET)
     public void getCachedMemberships(HttpServletResponse response) {
         try {
-            CacheResponseWriter.writeResponse(fileResolver.resolveMembershipXmlFile(), response);
+            cacheResponseWriter.writeResponse(fileResolver.resolveMembershipXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing membership xml file: " + e.getMessage());
         }

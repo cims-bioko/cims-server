@@ -12,7 +12,7 @@ import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Individual.Individuals;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
-import org.openhds.webservice.CacheResponseWriter;
+import org.openhds.controller.util.CacheResponseWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,9 @@ public class IndividualResource {
     private static final Logger logger = LoggerFactory.getLogger(IndividualResource.class);
     private IndividualService individualService;
     private FileResolver fileResolver;
+
+    @Autowired
+    private CacheResponseWriter cacheResponseWriter;
 
     @Autowired
     public IndividualResource(IndividualService individualService, FileResolver fileResolver) {
@@ -66,7 +69,7 @@ public class IndividualResource {
     @RequestMapping(value = "/cached", method = RequestMethod.GET)
     public void getCachedIndividuals(HttpServletResponse response) {
         try {
-            CacheResponseWriter.writeResponse(fileResolver.resolveIndividualXmlFile(), response);
+            cacheResponseWriter.writeResponse(fileResolver.resolveIndividualXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing individual xml file: " + e.getMessage());
         }

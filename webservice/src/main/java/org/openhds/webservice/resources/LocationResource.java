@@ -23,7 +23,7 @@ import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Location.Locations;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
-import org.openhds.webservice.CacheResponseWriter;
+import org.openhds.controller.util.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
 import org.openhds.webservice.response.WebserviceResult;
@@ -52,6 +52,9 @@ public class LocationResource {
     private final ErrorHandlingService errorService;
     private final JAXBContext context;
     private final Marshaller marshaller;
+
+    @Autowired
+    private CacheResponseWriter cacheResponseWriter;
 
 
     @Autowired
@@ -137,7 +140,7 @@ public class LocationResource {
     @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = "application/xml")
     public void getAllCachedLocationsXml(HttpServletResponse response) {
         try {
-            CacheResponseWriter.writeResponse(fileResolver.resolveLocationXmlFile(), response);
+            cacheResponseWriter.writeResponse(fileResolver.resolveLocationXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing location xml file: " + e.getMessage());
         }
@@ -146,7 +149,7 @@ public class LocationResource {
     @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = "application/json")
     public void getAllCachedLocationsJson(HttpServletResponse response) {
         try {
-            CacheResponseWriter.writeResponse(fileResolver.resolveLocationXmlFile(), response);
+            cacheResponseWriter.writeResponse(fileResolver.resolveLocationXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing location xml file: " + e.getMessage());
         }

@@ -9,9 +9,6 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.c
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.xpath;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.jsonPath;
-
-import javax.xml.xpath.XPathExpressionException;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
