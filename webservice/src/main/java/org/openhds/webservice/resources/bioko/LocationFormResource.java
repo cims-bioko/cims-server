@@ -91,7 +91,7 @@ public class LocationFormResource extends AbstractFormResource{
 
 
         // fieldWorker, CollectedDateTime, and HierarchyLevel are set outside of this method
-
+        location.setExtId(locationForm.getUuid());
         location.setExtId(locationForm.getLocationExtId());
         location.setCommunityName(locationForm.getCommunityName());
         location.setCommunityCode(locationForm.getCommunityCode());
