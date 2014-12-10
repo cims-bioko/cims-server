@@ -7,6 +7,7 @@ import org.openhds.controller.service.refactor.IndividualService;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.controller.service.ResidencyService;
 import org.openhds.controller.service.SocialGroupService;
+import org.openhds.controller.service.refactor.LocationService;
 import org.openhds.controller.service.refactor.crudhelpers.AbstractEntityCrudHelperImpl;
 import org.openhds.domain.model.ErrorLog;
 import org.openhds.domain.model.FieldWorker;
@@ -69,7 +70,7 @@ public class IndividualFormResource extends AbstractFormResource {
     private IndividualService individualService;
 
     @Autowired
-    private LocationHierarchyService locationHierarchyService;
+    private LocationService locationService;
 
     @Autowired
     private ResidencyService residencyService;
@@ -469,10 +470,10 @@ public class IndividualFormResource extends AbstractFormResource {
     }
 
     private void createOrSaveLocation(Location location) throws ConstraintViolations, SQLException {
-        if (null == locationHierarchyService.findLocationById(location.getExtId())) {
-            locationHierarchyService.createLocation(location);
+        if (null == locationService.getByUuid(location.getUuid())) {
+            locationService.create(location);
         } else {
-            entityService.save(location);
+            locationService.save(location);
         }
     }
 
