@@ -35,20 +35,31 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
     }
 
     @Override
-    public FieldWorker read(String id) {
-        return fieldWorkerCrudHelper.read(id);
+    public FieldWorker getByExtId(String id) {
+        return fieldWorkerCrudHelper.getByExtId(id);
+    }
+
+    @Override
+    public FieldWorker getByUuid(String id) {
+        return fieldWorkerCrudHelper.getByUuid(id);
+
     }
 
     @Override
     public boolean isEligibleForCreation(FieldWorker fieldWorker, ConstraintViolations cv) {
 
-        boolean alreadyExists = read(fieldWorker.getExtId()) != null;
-
-        if(alreadyExists){
-            ConstraintViolations.addViolationIfNotNull(cv,"FieldWorker with given ExtId Already Exists.");
+        if (null == fieldWorker) {
+            ConstraintViolations.addViolationIfNotNull(cv, "Null fieldworker.");
+            return false;
         }
 
-        return alreadyExists;
+        boolean nullExtId = (null == fieldWorker.getExtId());
+
+        if (nullExtId) {
+            ConstraintViolations.addViolationIfNotNull(cv, "The fieldworker has a null ExtId.");
+        }
+
+        return !nullExtId;
     }
 
     @Override

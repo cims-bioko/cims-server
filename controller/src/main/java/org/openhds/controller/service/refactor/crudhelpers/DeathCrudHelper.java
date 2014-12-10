@@ -29,6 +29,9 @@ public class DeathCrudHelper extends AbstractEntityCrudHelperImpl<Death> {
     @Override
     protected void preCreateSanityChecks(Death death) throws ConstraintViolations {
 
+        //TODO: are we doing this up here because the changes made in cascadeReferences are making this fail?
+        //TODO: if that is the case, then the piece that is making it fail should be checked on its own up here and
+        //TODO: the rest should be done in validateReferences() like all the other services.
         ConstraintViolations constraintViolations = new ConstraintViolations();
         if (!deathService.isEligibleForCreation(death, constraintViolations)) {
             throw (constraintViolations);
@@ -96,7 +99,12 @@ public class DeathCrudHelper extends AbstractEntityCrudHelperImpl<Death> {
     }
 
     @Override
-    public Death read(String id) {
+    public Death getByExtId(String id) {
         return genericDao.findByProperty(Death.class,"extId",id);
+    }
+
+    @Override
+    public Death getByUuid(String id) {
+        return genericDao.findByProperty(Death.class,"uuid",id);
     }
 }

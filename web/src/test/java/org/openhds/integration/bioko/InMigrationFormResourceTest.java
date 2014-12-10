@@ -9,8 +9,6 @@ import org.junit.runner.RunWith;
 import org.openhds.controller.service.refactor.IndividualService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Individual;
-import org.openhds.domain.model.Membership;
-import org.openhds.domain.model.OutMigration;
 import org.openhds.domain.model.Residency;
 import org.openhds.integration.AbstractResourceTest;
 import org.openhds.integration.util.WebContextLoader;
@@ -100,7 +98,7 @@ public class InMigrationFormResourceTest extends AbstractResourceTest {
 
     private void verifyInMigrationCrud(String individualExtId) {
 
-        Individual individual = individualService.read(individualExtId);
+        Individual individual = individualService.getByExtId(individualExtId);
 
         Set<Residency> residencySet = individual.getAllResidencies();
         assertEquals(2,residencySet.size());

@@ -22,10 +22,7 @@ public class PregnancyObservationCrudHelper extends AbstractEntityCrudHelperImpl
     @Override
     protected void preCreateSanityChecks(PregnancyObservation pregnancyObservation) throws ConstraintViolations {
 
-        ConstraintViolations constraintViolations = new ConstraintViolations();
-        if (!pregnancyObservationService.isEligibleForCreation(pregnancyObservation, constraintViolations)) {
-            throw (constraintViolations);
-        }
+
 
     }
 
@@ -35,7 +32,12 @@ public class PregnancyObservationCrudHelper extends AbstractEntityCrudHelperImpl
     }
 
     @Override
-    protected void validateReferences(PregnancyObservation pregnancyObservation) {
+    protected void validateReferences(PregnancyObservation pregnancyObservation) throws ConstraintViolations {
+
+        ConstraintViolations constraintViolations = new ConstraintViolations();
+        if (!pregnancyObservationService.isEligibleForCreation(pregnancyObservation, constraintViolations)) {
+            throw (constraintViolations);
+        }
 
     }
 
@@ -45,7 +47,12 @@ public class PregnancyObservationCrudHelper extends AbstractEntityCrudHelperImpl
     }
 
     @Override
-    public PregnancyObservation read(String id) {
+    public PregnancyObservation getByExtId(String id) {
         return genericDao.findByProperty(PregnancyObservation.class,"extId",id);
+    }
+
+    @Override
+    public PregnancyObservation getByUuid(String id) {
+        return genericDao.findByProperty(PregnancyObservation.class,"uuid",id);
     }
 }

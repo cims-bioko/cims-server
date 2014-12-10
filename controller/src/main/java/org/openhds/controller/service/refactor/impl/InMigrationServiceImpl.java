@@ -4,12 +4,10 @@ import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.refactor.ResidencyService;
 import org.openhds.controller.service.refactor.InMigrationService;
 import org.openhds.controller.service.refactor.IndividualService;
-import org.openhds.controller.service.refactor.MembershipService;
 import org.openhds.controller.service.refactor.crudhelpers.EntityCrudHelper;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
-import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.Residency;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -40,8 +38,14 @@ public class InMigrationServiceImpl implements InMigrationService {
     }
 
     @Override
-    public InMigration read(String id) {
-        return inMigrationCrudHelper.read(id);
+    public InMigration getByExtId(String id) {
+        return inMigrationCrudHelper.getByExtId(id);
+    }
+
+    @Override
+    public InMigration getByUuid(String id) {
+        return inMigrationCrudHelper.getByUuid(id);
+
     }
 
     @Override

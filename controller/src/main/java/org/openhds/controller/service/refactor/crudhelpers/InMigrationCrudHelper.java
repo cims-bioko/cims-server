@@ -3,7 +3,6 @@ package org.openhds.controller.service.refactor.crudhelpers;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.refactor.InMigrationService;
 import org.openhds.domain.model.InMigration;
-import org.openhds.domain.service.SitePropertiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -53,7 +52,12 @@ public class InMigrationCrudHelper extends AbstractEntityCrudHelperImpl<InMigrat
     }
 
     @Override
-    public InMigration read(String id) {
+    public InMigration getByExtId(String id) {
         return genericDao.findByProperty(InMigration.class, "extId", id);
+    }
+
+    @Override
+    public InMigration getByUuid(String id) {
+        return genericDao.findByProperty(InMigration.class, "uuid", id);
     }
 }

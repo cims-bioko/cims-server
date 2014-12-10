@@ -10,11 +10,9 @@ import org.openhds.controller.service.refactor.crudhelpers.EntityCrudHelper;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.OutMigration;
-import org.openhds.domain.model.Residency;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -42,9 +40,14 @@ public class OutMigrationServiceImpl implements OutMigrationService {
     }
 
     @Override
-    public OutMigration read(String id) {
+    public OutMigration getByExtId(String id) {
 
-        return outMigrationCrudHelper.read(id);
+        return outMigrationCrudHelper.getByExtId(id);
+    }
+
+    @Override
+    public OutMigration getByUuid(String id) {
+        return outMigrationCrudHelper.getByUuid(id);
     }
 
 

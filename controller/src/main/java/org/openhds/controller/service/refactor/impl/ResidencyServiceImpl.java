@@ -1,12 +1,10 @@
 package org.openhds.controller.service.refactor.impl;
 
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.service.refactor.MembershipService;
 import org.openhds.controller.service.refactor.ResidencyService;
 import org.openhds.controller.service.refactor.crudhelpers.EntityCrudHelper;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Individual;
-import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.Residency;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,9 +30,14 @@ public class ResidencyServiceImpl implements ResidencyService {
     }
 
     @Override
-    public Residency read(String id) {
+    public Residency getByExtId(String id) {
 
-        return residencyCrudHelper.read(id);
+        return residencyCrudHelper.getByExtId(id);
+    }
+
+    @Override
+    public Residency getByUuid(String id) {
+        return residencyCrudHelper.getByUuid(id);
     }
 
     @Override

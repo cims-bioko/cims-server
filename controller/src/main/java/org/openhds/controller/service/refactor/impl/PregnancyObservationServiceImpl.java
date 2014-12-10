@@ -6,7 +6,6 @@ import org.openhds.controller.service.refactor.PregnancyObservationService;
 import org.openhds.controller.service.refactor.crudhelpers.EntityCrudHelper;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Individual;
-import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.PregnancyObservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,8 +33,14 @@ public class PregnancyObservationServiceImpl implements PregnancyObservationServ
     }
 
     @Override
-    public PregnancyObservation read(String id) {
-        return pregnancyObservationCrudHelper.read(id);
+    public PregnancyObservation getByExtId(String id) {
+        return pregnancyObservationCrudHelper.getByExtId(id);
+    }
+
+    @Override
+    public PregnancyObservation getByUuid(String id) {
+        return pregnancyObservationCrudHelper.getByUuid(id);
+
     }
 
     @Override

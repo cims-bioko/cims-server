@@ -24,6 +24,10 @@ public class OutMigrationCrudHelper extends AbstractEntityCrudHelperImpl<OutMigr
     @Override
     protected void preCreateSanityChecks(OutMigration outMigration) throws ConstraintViolations {
 
+
+        //TODO: are we doing this up here because the changes made in cascadeReferences are making this fail?
+        //TODO: if that is the case, then the piece that is making it fail should be checked on its own up here and
+        //TODO: the rest should be done in validateReferences() like all the other services.
         ConstraintViolations constraintViolations = new ConstraintViolations();
         if (!outMigrationService.isEligibleForCreation(outMigration, constraintViolations)) {
             throw (constraintViolations);
@@ -67,8 +71,13 @@ public class OutMigrationCrudHelper extends AbstractEntityCrudHelperImpl<OutMigr
     }
 
     @Override
-    public OutMigration read(String id) {
+    public OutMigration getByExtId(String id) {
         return genericDao.findByProperty(OutMigration.class,"extId",id);
+    }
+
+    @Override
+    public OutMigration getByUuid(String id) {
+        return genericDao.findByProperty(OutMigration.class,"uuid",id);
     }
 
 }

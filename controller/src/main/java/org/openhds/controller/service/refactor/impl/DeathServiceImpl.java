@@ -4,7 +4,6 @@ import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.refactor.DeathService;
 import org.openhds.controller.service.refactor.IndividualService;
 import org.openhds.controller.service.refactor.crudhelpers.EntityCrudHelper;
-import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Death;
 import org.openhds.domain.model.Individual;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +28,13 @@ public class DeathServiceImpl implements DeathService {
     }
 
     @Override
-    public Death read(String id) {
-        return deathCrudHelper.read(id);
+    public Death getByExtId(String id) {
+        return deathCrudHelper.getByExtId(id);
+    }
+
+    @Override
+    public Death getByUuid(String id) {
+        return deathCrudHelper.getByUuid(id);
     }
 
     @Override

@@ -15,7 +15,10 @@ public interface EntityService<T extends AuditableEntity> {
     public List<T> getAll();
 
     @Authorized({VIEW_ENTITY})
-    public T read(String id);
+    public T getByExtId(String id);
+
+    @Authorized({VIEW_ENTITY})
+    public T getByUuid(String id);
 
     @Authorized({VIEW_ENTITY})
     public boolean isEligibleForCreation(T entity, ConstraintViolations cv);

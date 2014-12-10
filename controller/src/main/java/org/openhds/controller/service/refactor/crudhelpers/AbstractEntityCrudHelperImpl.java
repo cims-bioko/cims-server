@@ -52,6 +52,9 @@ public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> im
             entity.setInsertBy(currentUser.getCurrentUser());
         }
 
+        //TODO: there are too many places that validations are happening - or they are atleast organized poorly.
+        //TODO: clean up the validations into well defined blobs of logic.
+
         // is the entity eligble?
         preCreateSanityChecks(entity);
 
