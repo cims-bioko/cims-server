@@ -101,7 +101,7 @@ public class InMigrationFormResource extends AbstractFormResource {
         }
         inMigration.setVisit(visit);
 
-        Individual individual = individualService.read(inMigrationForm.getIndividualExtId());
+        Individual individual = individualService.getByExtId(inMigrationForm.getIndividualExtId());
         if (null == individual) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_EXT_ID+":"+inMigrationForm.getIndividualExtId());
@@ -110,7 +110,7 @@ public class InMigrationFormResource extends AbstractFormResource {
         }
         inMigration.setIndividual(individual);
 
-        Location location = locationService.read(inMigrationForm.getLocationExtId());
+        Location location = locationService.getByExtId(inMigrationForm.getLocationExtId());
         if (null == location) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_LOCATION_EXT_ID+":"+inMigrationForm.getLocationExtId());

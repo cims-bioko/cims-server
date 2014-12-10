@@ -3,7 +3,7 @@ package org.openhds.webservice.resources.bioko;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.FieldWorkerService;
-import org.openhds.controller.service.IndividualService;
+import org.openhds.controller.service.refactor.IndividualService;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.controller.service.ResidencyService;
 import org.openhds.controller.service.SocialGroupService;
@@ -271,7 +271,7 @@ public class IndividualFormResource extends AbstractFormResource {
     private Individual findOrMakeIndividual(IndividualForm individualForm, FieldWorker collectedBy,
                                             Calendar insertTime, ConstraintViolations cv) throws Exception {
 
-        Individual individual = individualService.findIndivById(individualForm.getIndividualExtId());
+        Individual individual = individualService.getByUuid(individualForm.getUuid());
         if (null == individual) {
             individual = new Individual();
         }
@@ -492,10 +492,10 @@ public class IndividualFormResource extends AbstractFormResource {
 
     private void createOrSaveIndividual(Individual individual) throws ConstraintViolations,
             SQLException {
-        if (null == individualService.findIndivById(individual.getExtId())) {
-            individualService.createIndividual(individual);
+        if (null == individualService.getByUuid(individual.getUuid())) {
+            individualService.create(individual);
         } else {
-            entityService.save(individual);
+            individualService.save(individual);
         }
     }
 
