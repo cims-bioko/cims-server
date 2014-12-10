@@ -139,8 +139,8 @@ public class IndividualFormResource extends AbstractFormResource {
         // where are we?
         Location location;
         try {
-            location = locationHierarchyService
-                    .findLocationById(individualForm.getHouseholdExtId());
+            location = locationService
+                    .getByUuid(individualForm.getHouseholdUuid());
             if (null == location) {
                 cv.addViolations(ConstraintViolations.INVALID_LOCATION_EXT_ID
                         + ": IndividualForm has a nonexistent location id -"

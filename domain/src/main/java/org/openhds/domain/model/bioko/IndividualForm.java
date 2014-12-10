@@ -37,6 +37,9 @@ public class IndividualForm implements Serializable {
     @XmlElement(name = "household_ext_id")
     private String householdExtId;
 
+    @XmlElement(name = "household_uuid")
+    private String householdUuid;
+
     @XmlElement(name = "individual_ext_id")
     private String individualExtId;
 
@@ -88,6 +91,15 @@ public class IndividualForm implements Serializable {
 
     @XmlElement(name = "individual_nationality")
     private String individualNationality;
+
+
+    public String getHouseholdUuid() {
+        return householdUuid;
+    }
+
+    public void setHouseholdUuid(String householdUuid) {
+        this.householdUuid = householdUuid;
+    }
 
 
     public String getUuid() {
