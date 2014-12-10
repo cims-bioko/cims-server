@@ -13,7 +13,9 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,10 +43,12 @@ import org.openhds.domain.constraint.Searchable;
 public class Individual extends AuditableCollectedEntity implements Serializable {
 
     public final static long serialVersionUID = 9058114832143454609L;
+    @NotNull
+    @Size(min = 1)
     @Searchable
     @Description(description = "External Id of the individual. This id is used internally.")
     private String extId;
-    @CheckFieldNotBlank
+    @NotNull
     @Searchable
     @Description(description = "First name of the individual.")
     private String firstName;

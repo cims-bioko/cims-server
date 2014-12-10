@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
@@ -39,7 +40,7 @@ public class Location
     public final static long serialVersionUID = 169551578162260199L;
 
     @NotNull
-    @CheckFieldNotBlank
+    @Size(min = 1)
     @Searchable
     @Description(description = "External Id of the location. This id is used internally.")
     private String extId;
