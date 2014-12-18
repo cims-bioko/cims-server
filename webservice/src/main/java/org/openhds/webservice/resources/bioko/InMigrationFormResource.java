@@ -26,6 +26,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.util.UUID;
 
 
 @Controller
@@ -100,7 +101,7 @@ public class InMigrationFormResource extends AbstractFormResource {
         }
         inMigration.setVisit(visit);
 
-        Individual individual = individualService.read(inMigrationForm.getIndividualExtId());
+        Individual individual = individualService.getByExtId(inMigrationForm.getIndividualExtId());
         if (null == individual) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_EXT_ID+":"+inMigrationForm.getIndividualExtId());
@@ -109,7 +110,7 @@ public class InMigrationFormResource extends AbstractFormResource {
         }
         inMigration.setIndividual(individual);
 
-        Location location = locationService.read(inMigrationForm.getLocationExtId());
+        Location location = locationService.getByExtId(inMigrationForm.getLocationExtId());
         if (null == location) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_LOCATION_EXT_ID+":"+inMigrationForm.getLocationExtId());
@@ -125,6 +126,7 @@ public class InMigrationFormResource extends AbstractFormResource {
 
         newResidency.setLocation(location);
         newResidency.setIndividual(individual);
+        newResidency.setUuid(UUID.randomUUID().toString().replace("-",""));
         newResidency.setStartDate(inMigration.getRecordedDate());
         newResidency.setStartType(sitePropertiesService.getInmigrationCode());
         newResidency.setEndType(sitePropertiesService.getNotApplicableCode());

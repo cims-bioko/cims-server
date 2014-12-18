@@ -48,6 +48,7 @@ public class ShallowCopier {
 
         Individual copy = new Individual();
         try {
+            copy.setUuid(individual.getUuid());
             copy.setDob(individual.getDob());
             copy.setExtId(individual.getExtId());
 
@@ -141,6 +142,8 @@ public class ShallowCopier {
         hierarchy.setExtId(loc.getLocationHierarchy().getExtId());
         copy.setLocationHierarchy(hierarchy);
 
+
+        copy.setUuid(loc.getUuid());
         copy.setExtId(loc.getExtId());
         copy.setLocationName(loc.getLocationName());
         copy.setLocationType(loc.getLocationType());

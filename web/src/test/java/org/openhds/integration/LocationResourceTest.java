@@ -9,9 +9,6 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.c
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.xpath;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.jsonPath;
-
-import javax.xml.xpath.XPathExpressionException;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -166,7 +163,7 @@ public class LocationResourceTest {
                 .andExpect(jsonPath("$.data.location.locationHierarchy.extId").value("IFB"))
                 .andExpect(jsonPath("$.data.location.locationName").value("Test House"))
                 .andExpect(jsonPath("$.data.location.locationType").value("RUR"))
-                .andExpect(jsonPath("$.data.location.longitude").value(""));;
+                .andExpect(jsonPath("$.data.location.longitude").value(""));
     }
 
     @Test
@@ -175,6 +172,7 @@ public class LocationResourceTest {
                 + "<collectedBy>"
                 + "<extId>FWEK1D</extId>"
                 + "</collectedBy>"
+                + "<insertDate>2000-12-19</insertDate>"
                 + "<accuracy></accuracy>"
                 + "<altitude></altitude>"
                 + "<extId>MBA00000001</extId>"
@@ -237,7 +235,7 @@ public class LocationResourceTest {
                 + "</collectedBy>"
                 + "<accuracy></accuracy>"
                 + "<altitude></altitude>"
-                + "<extId>testLocation</extId>"
+                + "<extId>NJA001</extId>"
                 + "<latitude></latitude>"
                 + "<locationHierarchy>"
                 + "<extId>IFB</extId>"
@@ -256,21 +254,21 @@ public class LocationResourceTest {
                 .andExpect(xpath("/location/collectedBy/extId").string("FWEK1D"))
                 .andExpect(xpath("/location/accuracy").string(""))
                 .andExpect(xpath("/location/altitude").string(""))
-                .andExpect(xpath("/location/extId").string("testLocation"))
+                .andExpect(xpath("/location/extId").string("NJA001"))
                 .andExpect(xpath("/location/latitude").string(""))
                 .andExpect(xpath("/location/locationHierarchy/extId").string("IFB"))
                 .andExpect(xpath("/location/locationName").string("Test House"))
                 .andExpect(xpath("/location/locationType").string("RUR"))
                 .andExpect(xpath("/location/longitude").string(""));
 
-        Location location = genericDao.findByProperty(Location.class, "extId", "testLocation");
+        Location location = genericDao.findByProperty(Location.class, "extId", "NJA001");
 
         assertTrue(location.getLocationName().equals("Test House"));
     }
 
     @Test
     public void testUpdateLocationJson() throws Exception {
-        final String LOCATION_PUT_JSON = "{\"collectedBy\":{\"extId\":\"FWEK1D\"},\"extId\":\"testLocation\",\"locationName\":\"Test House\",\"locationHierarchy\":{\"extId\":\"IFB\"},\"locationType\":\"RUR\",\"longitude\":\"\",\"latitude\":\"\",\"accuracy\":\"\",\"altitude\":\"\"}";
+        final String LOCATION_PUT_JSON = "{\"collectedBy\":{\"extId\":\"FWEK1D\"},\"extId\":\"NJA001\",\"locationName\":\"Test House\",\"locationHierarchy\":{\"extId\":\"IFB\"},\"locationType\":\"RUR\",\"longitude\":\"\",\"latitude\":\"\",\"accuracy\":\"\",\"altitude\":\"\"}";
 
         mockMvc.perform(put("/locations").session(session)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -283,14 +281,14 @@ public class LocationResourceTest {
                 .andExpect(jsonPath("$.resultCode").value(1))
                 .andExpect(jsonPath("$.data.location.deleted").value(false))
                 .andExpect(jsonPath("$.data.location.collectedBy.extId").value("FWEK1D"))
-                .andExpect(jsonPath("$.data.location.extId").value("testLocation"))
+                .andExpect(jsonPath("$.data.location.extId").value("NJA001"))
                 .andExpect(jsonPath("$.data.location.latitude").value(""))
                 .andExpect(jsonPath("$.data.location.locationHierarchy.extId").value("IFB"))
                 .andExpect(jsonPath("$.data.location.locationName").value("Test House"))
                 .andExpect(jsonPath("$.data.location.locationType").value("RUR"))
                 .andExpect(jsonPath("$.data.location.longitude").value(""));;
 
-        Location location = genericDao.findByProperty(Location.class, "extId", "testLocation");
+        Location location = genericDao.findByProperty(Location.class, "extId", "NJA001");
 
         assertTrue(location.getLocationName().equals("Test House"));
     }

@@ -2,12 +2,11 @@ package org.openhds.controller.service.refactor.impl;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.refactor.IndividualService;
-import org.openhds.controller.service.refactor.MembershipService;
 import org.openhds.controller.service.refactor.crudhelpers.EntityCrudHelper;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Death;
 import org.openhds.domain.model.Individual;
-import org.openhds.domain.model.Membership;
+import org.openhds.domain.model.Residency;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -30,13 +29,30 @@ public class IndividualServiceImpl implements IndividualService {
     }
 
     @Override
-    public Individual read(String id) {
-        return individualCrudHelper.read(id);
+    public Individual getByExtId(String id) {
+        return individualCrudHelper.getByExtId(id);
+    }
+
+    @Override
+    public Individual getByUuid(String id) {
+        return individualCrudHelper.getByUuid(id);
     }
 
     @Override
     public boolean isEligibleForCreation(Individual individual, ConstraintViolations cv) {
-        return false;
+
+        if (null == individual) {
+            ConstraintViolations.addViolationIfNotNull(cv, "Null individual.");
+            return false;
+        }
+
+        boolean nullExtId = (null == individual.getExtId());
+
+        if (nullExtId) {
+            ConstraintViolations.addViolationIfNotNull(cv, "The individual has a null ExtId.");
+        }
+
+        return !nullExtId;
     }
 
     @Override

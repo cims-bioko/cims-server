@@ -5,13 +5,16 @@ import org.openhds.controller.service.CurrentUser;
 import org.openhds.controller.service.EntityValidationService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.AuditableEntity;
+import org.openhds.domain.model.User;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.domain.util.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 
 public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> implements EntityCrudHelper<T> {
@@ -49,6 +52,9 @@ public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> im
             entity.setInsertBy(currentUser.getCurrentUser());
         }
 
+        //TODO: there are too many places that validations are happening - or they are atleast organized poorly.
+        //TODO: clean up the validations into well defined blobs of logic.
+
         // is the entity eligble?
         preCreateSanityChecks(entity);
 
@@ -62,8 +68,11 @@ public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> im
         Calendar insertDate = calendarUtil.convertDateToCalendar(new Date());
         entity.setInsertDate(insertDate);
 
+        setEntityUuidIfNull(entity);
+
         entityValidationService.setStatusPending(entity);
         entityValidationService.validateEntity(entity);
+
 
         genericDao.create(entity);
 
@@ -76,6 +85,12 @@ public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> im
         entityValidationService.setStatusPending(entity);
         entityValidationService.validateEntity(entity);
         genericDao.update(genericDao.merge(entity));
+    }
+
+    public static void setEntityUuidIfNull(AuditableEntity entity){
+        if(null == entity.getUuid() || entity.getUuid().isEmpty()){
+            entity.setUuid(UUID.randomUUID().toString().replace("-",""));
+        }
     }
 
     protected abstract void preCreateSanityChecks(T entity) throws ConstraintViolations;

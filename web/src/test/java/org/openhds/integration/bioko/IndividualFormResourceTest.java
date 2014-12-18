@@ -52,6 +52,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
             + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>" + "<collection_date_time>"
             + A_DATE
             + "</collection_date_time>"
+            + "<entity_uuid>32145678901234935890123456789012</entity_uuid>"
             + "<household_ext_id>newHouse_id</household_ext_id>"
             + "<individual_ext_id>1234567890aa</individual_ext_id>"
             + "<individual_first_name>Test HoH First</individual_first_name>"
@@ -77,6 +78,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
             + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>" + "<collection_date_time>"
             + A_DATE
             + "</collection_date_time>"
+            + "<entity_uuid>12345678901234935890123456789012</entity_uuid>"
             + "<household_ext_id>existing_id</household_ext_id>"
             + "<individual_ext_id>1234567890bb</individual_ext_id>"
             + "<individual_first_name>Test Member First</individual_first_name>"
@@ -155,7 +157,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
     }
 
     @Test
-    public void testPosMemberOfHouseholdFormXml() throws Exception {
+    public void testPostMemberOfHouseholdFormXml() throws Exception {
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
@@ -163,7 +165,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
-        verifyEntityCrud("1234567890bb", "existing_id", "NBAS1I", "2");
+        verifyEntityCrud("1234567890bb", "existing_id", "individual2", "2");
     }
 
     @Test
@@ -201,7 +203,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
-        verifyEntityCrud("1234567890bb", "existing_id", "NBAS1I", "2");
+        verifyEntityCrud("1234567890bb", "existing_id", "individual2", "2");
     }
 
     @Test

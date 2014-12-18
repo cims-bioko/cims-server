@@ -4,6 +4,10 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseOperation;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,12 +29,20 @@ import org.openhds.web.service.JsfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @ContextConfiguration("/testContext.xml")
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+		DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
+		DbUnitTestExecutionListener.class })
+@DatabaseSetup(value = "/formResourceTestDb.xml", type = DatabaseOperation.REFRESH)
 public class EAVTest {
 	
 	 @Autowired
@@ -68,7 +80,7 @@ public class EAVTest {
 		 currentUser.setProxyUser("admin", "test", new String[] {"VIEW_ENTITY", "CREATE_ENTITY"});
 		 
 		 fieldWorker = genericDao.findByProperty(FieldWorker.class, "extId", "FWEK1D");
-		 location = genericDao.findByProperty(Location.class, "extId", "NJA001");
+		 location = genericDao.findByProperty(Location.class, "extId", "testLocation1");
 	 }
 	 
 	 @Test
@@ -79,34 +91,7 @@ public class EAVTest {
 		 ClassExtension savedAttribute = genericDao.findByProperty(ClassExtension.class, "name", extension.getName());
 		 assertNotNull(savedAttribute);
 	 }
-	 
-	 @Test
-	 public void testAttributeValue() {
-		 
-		 Visit visit = new Visit();
-		 visit.setRoundNumber(1);
-		 visit.setVisitLocation(location);
-		 visit.setVisitDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
-		 visit.setCollectedBy(fieldWorker);
-		 
-		 List<Extension> extensions = new ArrayList<Extension>();
-		 ClassExtension classExtension = createAttribute();
-		 
-		 Extension extension = new Extension();
-		 extension.setClassExtension(classExtension);
-		 extension.setEntity(visit);
-		 extension.setExtensionValue("Taps");
-		 extension.setEntityExtId("NJA001");
-		 extensions.add(extension);
-		 
-		 visit.setExtensions(extensions);
-		 
-		 visitCrud.setItem(visit);
-		 visitCrud.create();
-		 
-		 Visit savedVisit = genericDao.findByProperty(Visit.class, "extId", visit.getExtId());
-		 //assertNotNull(savedVisit);
-	 }
+
 	 
 	 private ClassExtension createAttribute() {
 		 

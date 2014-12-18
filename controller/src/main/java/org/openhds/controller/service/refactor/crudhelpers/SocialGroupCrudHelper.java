@@ -1,7 +1,6 @@
 package org.openhds.controller.service.refactor.crudhelpers;
 
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.SocialGroup;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +35,12 @@ public class SocialGroupCrudHelper extends AbstractEntityCrudHelperImpl<SocialGr
     }
 
     @Override
-    public SocialGroup read(String id) {
+    public SocialGroup getByExtId(String id) {
         return genericDao.findByProperty(SocialGroup.class,"extId",id);
+    }
+
+    @Override
+    public SocialGroup getByUuid(String id) {
+        return genericDao.findByProperty(SocialGroup.class,"uuid",id);
     }
 }

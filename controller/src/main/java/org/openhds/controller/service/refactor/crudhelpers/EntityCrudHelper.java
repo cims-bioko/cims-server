@@ -14,7 +14,9 @@ public interface EntityCrudHelper<T extends AuditableEntity> {
 
     public List<T> getAll();
 
-    public T read(String id);
+    public T getByExtId(String id);
+
+    public T getByUuid(String id);
 
     @Transactional
     public void delete(T entity) throws IllegalArgumentException;

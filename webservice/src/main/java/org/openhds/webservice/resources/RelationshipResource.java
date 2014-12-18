@@ -13,7 +13,7 @@ import org.openhds.domain.model.Relationship;
 import org.openhds.domain.model.Relationship.Relationships;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
-import org.openhds.webservice.CacheResponseWriter;
+import org.openhds.controller.util.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
 import org.slf4j.Logger;
@@ -35,6 +35,9 @@ public class RelationshipResource {
     private RelationshipService relationshipService;
     private FieldBuilder fieldBuilder;
     private FileResolver fileResolver;
+
+    @Autowired
+    private CacheResponseWriter cacheResponseWriter;
 
     @Autowired
     public RelationshipResource(RelationshipService relationshipService, FieldBuilder fieldBuilder,
@@ -86,7 +89,7 @@ public class RelationshipResource {
     @RequestMapping(value = "/cached", method = RequestMethod.GET)
     public void getCachedRelationships(HttpServletResponse response) {
         try {
-            CacheResponseWriter.writeResponse(fileResolver.resolveRelationshipXmlFile(), response);
+            cacheResponseWriter.writeResponse(fileResolver.resolveRelationshipXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing relationship xml file: " + e.getMessage());
         }

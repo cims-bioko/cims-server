@@ -12,7 +12,7 @@ import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.Residency.Residencies;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
-import org.openhds.webservice.CacheResponseWriter;
+import org.openhds.controller.util.CacheResponseWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +32,9 @@ public class ResidencyResource {
     private ResidencyService residencyService;
     
     private static final Logger logger = LoggerFactory.getLogger(ResidencyResource.class);
+
+    @Autowired
+    private CacheResponseWriter cacheResponseWriter;
 
     @Autowired
     public ResidencyResource(FileResolver fileResolver, ResidencyService residencyService) {
@@ -60,7 +63,7 @@ public class ResidencyResource {
     @RequestMapping(value = "/cached", method = RequestMethod.GET)
     public void getCachedResidencies(HttpServletResponse response) {
         try {
-            CacheResponseWriter.writeResponse(fileResolver.resolveResidencyXmlFile(), response);
+            cacheResponseWriter.writeResponse(fileResolver.resolveResidencyXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing residency xml file: " + e.getMessage());
         }

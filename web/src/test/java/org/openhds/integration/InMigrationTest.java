@@ -2,6 +2,10 @@ package org.openhds.integration;
 
 import static org.junit.Assert.assertNotNull;
 import java.util.Calendar;
+
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseOperation;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,12 +24,20 @@ import org.openhds.web.service.JsfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @ContextConfiguration("/testContext.xml")
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+		DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
+		DbUnitTestExecutionListener.class })
+@DatabaseSetup(value = "/formResourceTestDb.xml", type = DatabaseOperation.REFRESH)
 public class InMigrationTest {
 	
 	 @Autowired
@@ -63,8 +75,8 @@ public class InMigrationTest {
 		 currentUser.setProxyUser("admin", "test", new String[] {"VIEW_ENTITY", "CREATE_ENTITY"});
 		 
 		 fieldWorker = genericDao.findByProperty(FieldWorker.class, "extId", "FWEK1D");
-		 individual = genericDao.findByProperty(Individual.class, "extId", "BJOH1J", false);
-		 visit = genericDao.findByProperty(Visit.class, "extId", "VLOCMBI11J");
+		 individual = genericDao.findByProperty(Individual.class, "extId", "individual1", false);
+		 visit = genericDao.findByProperty(Visit.class, "extId", "TestVisit");
 	 }
 	 
 	 @Test

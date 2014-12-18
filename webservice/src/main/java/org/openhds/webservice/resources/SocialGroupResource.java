@@ -13,7 +13,7 @@ import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.SocialGroup.SocialGroups;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
-import org.openhds.webservice.CacheResponseWriter;
+import org.openhds.controller.util.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
 import org.slf4j.Logger;
@@ -35,6 +35,9 @@ public class SocialGroupResource {
     private SocialGroupService socialGroupService;
     private FieldBuilder fieldBuilder;
     private FileResolver fileResolver;
+
+    @Autowired
+    private CacheResponseWriter cacheResponseWriter;
 
     @Autowired
     public SocialGroupResource(SocialGroupService socialGroupService, FieldBuilder fieldBuilder,
@@ -85,7 +88,7 @@ public class SocialGroupResource {
     @RequestMapping(value = "/cached", method = RequestMethod.GET)
     public void getCachedSocialGroups(HttpServletResponse response) {
         try {
-            CacheResponseWriter.writeResponse(fileResolver.resolvesocialGroupXmlFile(), response);
+            cacheResponseWriter.writeResponse(fileResolver.resolvesocialGroupXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing social group xml file: " + e.getMessage());
         }

@@ -28,8 +28,13 @@ public class MembershipServiceImpl implements MembershipService {
     }
 
     @Override
-    public Membership read(String id) {
-        return membershipCrudHelper.read(id);
+    public Membership getByExtId(String id) {
+        return membershipCrudHelper.getByExtId(id);
+    }
+
+    @Override
+    public Membership getByUuid(String id) {
+        return membershipCrudHelper.getByUuid(id);
     }
 
     @Override

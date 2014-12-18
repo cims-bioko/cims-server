@@ -14,7 +14,7 @@ import org.openhds.domain.model.Visit;
 import org.openhds.domain.model.Visit.Visits;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
-import org.openhds.webservice.CacheResponseWriter;
+import org.openhds.controller.util.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
 import org.slf4j.Logger;
@@ -36,6 +36,9 @@ public class VisitResource {
     private final VisitService visitService;
     private final FieldBuilder fieldBuilder;
     private final FileResolver fileResolver;
+
+    @Autowired
+    private CacheResponseWriter cacheResponseWriter;
 
     @Autowired
     public VisitResource(VisitService visitService, FieldBuilder fieldBuilder, EntityService entityService,
@@ -85,7 +88,7 @@ public class VisitResource {
     @RequestMapping(value = "/cached", method = RequestMethod.GET)
     public void getCachedVisits(HttpServletResponse response) {
         try {
-            CacheResponseWriter.writeResponse(fileResolver.resolveVisitXmlFile(), response);
+            cacheResponseWriter.writeResponse(fileResolver.resolveVisitXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing visit xml file: " + e.getMessage());
         }

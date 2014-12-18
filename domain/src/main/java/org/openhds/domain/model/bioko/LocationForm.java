@@ -12,6 +12,11 @@ import java.util.Calendar;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class LocationForm implements Serializable{
 
+
+
+    @XmlElement(name = "entity_uuid")
+    private String uuid;
+
     @XmlElement(name = "processed_by_mirth")
     private boolean processedByMirth;
 
@@ -70,6 +75,14 @@ public class LocationForm implements Serializable{
 
     public void setLongitude(String longitude) {
         this.longitude = longitude;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getLatitude() {

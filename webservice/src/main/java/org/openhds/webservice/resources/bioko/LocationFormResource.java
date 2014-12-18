@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.FieldWorkerService;
 import org.openhds.controller.service.LocationHierarchyService;
+import org.openhds.controller.service.refactor.LocationService;
 import org.openhds.domain.model.*;
 import org.openhds.domain.model.bioko.LocationForm;
 import org.slf4j.Logger;
@@ -30,20 +30,21 @@ public class LocationFormResource extends AbstractFormResource{
     private FieldWorkerService fieldWorkerService;
 
     @Autowired
-    private LocationHierarchyService locationHierarchyService;
+    private LocationService locationService;
 
     @Autowired
-    private EntityService entityService;
+    private LocationHierarchyService locationHierarchyService;
+
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
     public ResponseEntity<? extends Serializable> processForm(
             @RequestBody LocationForm locationForm) {
 
-        Location location = null;
+        Location location;
         try {
-            location = locationHierarchyService
-                    .findLocationById(locationForm.getLocationExtId());
+            location = locationService
+                    .getByUuid(locationForm.getUuid());
             if (null != location) {
                 return requestError("Location already exists!: " + locationForm.getLocationExtId());
             }
@@ -77,7 +78,7 @@ public class LocationFormResource extends AbstractFormResource{
 
         // persist the location
         try {
-            locationHierarchyService.createLocation(location);
+            locationService.create(location);
         } catch (ConstraintViolations e) {
             return requestError(e);
         } catch (Exception e) {
@@ -91,7 +92,7 @@ public class LocationFormResource extends AbstractFormResource{
 
 
         // fieldWorker, CollectedDateTime, and HierarchyLevel are set outside of this method
-
+        location.setUuid(locationForm.getUuid());
         location.setExtId(locationForm.getLocationExtId());
         location.setCommunityName(locationForm.getCommunityName());
         location.setCommunityCode(locationForm.getCommunityCode());
