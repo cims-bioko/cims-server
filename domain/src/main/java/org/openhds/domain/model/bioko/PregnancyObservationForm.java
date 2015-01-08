@@ -20,8 +20,14 @@ public class PregnancyObservationForm implements Serializable{
     @XmlElement(name = "processed_by_mirth")
     private boolean processedByMirth;
 
+    @XmlElement(name = "entity_uuid")
+    private boolean entityUuid;
+
     @XmlElement(name = "field_worker_ext_id")
     private String fieldWorkerExtId;
+
+    @XmlElement(name = "field_worker_uuid")
+    private String fieldWorkerUuid;
 
     @XmlElement(name = "individual_ext_id")
     private String individualExtId;
@@ -36,6 +42,22 @@ public class PregnancyObservationForm implements Serializable{
     @XmlElement(name = "recorded_date")
     @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
     private Calendar recordedDate;
+
+    public boolean isEntityUuid() {
+        return entityUuid;
+    }
+
+    public void setEntityUuid(boolean entityUuid) {
+        this.entityUuid = entityUuid;
+    }
+
+    public String getFieldWorkerUuid() {
+        return fieldWorkerUuid;
+    }
+
+    public void setFieldWorkerUuid(String fieldWorkerUuid) {
+        this.fieldWorkerUuid = fieldWorkerUuid;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

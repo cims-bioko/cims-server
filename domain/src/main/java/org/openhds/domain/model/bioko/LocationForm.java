@@ -12,8 +12,6 @@ import java.util.Calendar;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class LocationForm implements Serializable{
 
-
-
     @XmlElement(name = "entity_uuid")
     private String uuid;
 
@@ -23,12 +21,18 @@ public class LocationForm implements Serializable{
     @XmlElement(name = "field_worker_ext_id")
     private String fieldWorkerExtId;
 
+    @XmlElement(name = "field_worker_uuid")
+    private String fieldWorkerUuid;
+
     @XmlElement(name = "collection_date_time")
     @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
     private Calendar collectionDateTime;
 
     @XmlElement(name = "hierarchy_ext_id")
     private String hierarchyExtId;
+
+    @XmlElement(name = "hierarchy_uuid")
+    private String hierarchyUuid;
 
     @XmlElement(name = "location_ext_id")
     private String locationExtId;
@@ -68,6 +72,22 @@ public class LocationForm implements Serializable{
 
     @XmlElement(name = "latitude")
     private String latitude;
+
+    public String getFieldWorkerUuid() {
+        return fieldWorkerUuid;
+    }
+
+    public void setFieldWorkerUuid(String fieldWorkerUuid) {
+        this.fieldWorkerUuid = fieldWorkerUuid;
+    }
+
+    public String getHierarchyUuid() {
+        return hierarchyUuid;
+    }
+
+    public void setHierarchyUuid(String hierarchyUuid) {
+        this.hierarchyUuid = hierarchyUuid;
+    }
 
     public String getLongitude() {
         return longitude;

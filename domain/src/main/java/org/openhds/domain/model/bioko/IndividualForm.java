@@ -30,6 +30,9 @@ public class IndividualForm implements Serializable {
     @XmlElement(name = "field_worker_ext_id")
     private String fieldWorkerExtId;
 
+    @XmlElement(name = "field_worker_uuid")
+    private String fieldWorkerUuid;
+
     @XmlElement(name = "collection_date_time")
     @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
     private Calendar collectionDateTime;
@@ -39,6 +42,15 @@ public class IndividualForm implements Serializable {
 
     @XmlElement(name = "household_uuid")
     private String householdUuid;
+
+    @XmlElement(name = "membership_uuid")
+    private String membershipUuid;
+
+    @XmlElement(name = "relationship_uuid")
+    private String relationshipUuid;
+
+    @XmlElement(name = "socialgroup_uuid")
+    private String socialgroupUuid;
 
     @XmlElement(name = "individual_ext_id")
     private String individualExtId;
@@ -92,6 +104,37 @@ public class IndividualForm implements Serializable {
     @XmlElement(name = "individual_nationality")
     private String individualNationality;
 
+    public String getMembershipUuid() {
+        return membershipUuid;
+    }
+
+    public void setMembershipUuid(String membershipUuid) {
+        this.membershipUuid = membershipUuid;
+    }
+
+    public String getRelationshipUuid() {
+        return relationshipUuid;
+    }
+
+    public void setRelationshipUuid(String relationshipUuid) {
+        this.relationshipUuid = relationshipUuid;
+    }
+
+    public String getSocialgroupUuid() {
+        return socialgroupUuid;
+    }
+
+    public void setSocialgroupUuid(String socialgroupUuid) {
+        this.socialgroupUuid = socialgroupUuid;
+    }
+
+    public String getFieldWorkerUuid() {
+        return fieldWorkerUuid;
+    }
+
+    public void setFieldWorkerUuid(String fieldWorkerUuid) {
+        this.fieldWorkerUuid = fieldWorkerUuid;
+    }
 
     public String getHouseholdUuid() {
         return householdUuid;
