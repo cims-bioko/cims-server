@@ -30,6 +30,10 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 		this.locationHierarchyGenerator = locationHierarchyGenerator;
 	}
 
+    public LocationHierarchy findByUuid(String uuid) {
+        return genericDao.findByProperty(LocationHierarchy.class, "uuid", uuid);
+    }
+
 	public LocationHierarchy evaluateLocationHierarchy(LocationHierarchy entityItem) throws ConstraintViolations {
 		
 		LocationHierarchy item = null;
