@@ -255,9 +255,10 @@ public class Location
 
     public void setDistrictName(String districtName) { this.districtName = districtName; }
 
-    public static Location makeStub(String extId) {
+    public static Location makeStub(String uuid, String extId) {
 
         Location stub = new Location();
+        stub.setUuid(uuid);
         stub.setExtId(extId);
         return stub;
 

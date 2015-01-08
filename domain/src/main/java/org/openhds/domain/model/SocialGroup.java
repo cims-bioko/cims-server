@@ -61,6 +61,18 @@ public class SocialGroup
     @Description(description = "The set of all memberships of the social group.")
     private Set<Membership> memberships;
 
+    @ManyToOne
+    @Description(description="The location associated with this social group")
+    private Location location;
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     public String getExtId() {
         return extId;
     }
@@ -101,9 +113,10 @@ public class SocialGroup
         memberships = list;
     }
     
-    public static SocialGroup makeStub(String extId) {
+    public static SocialGroup makeStub(String uuid, String extId) {
     	SocialGroup stub = new SocialGroup();
-    	stub.setExtId(extId);
+    	stub.setUuid(uuid);
+        stub.setExtId(extId);
     	return stub;
     }
 
