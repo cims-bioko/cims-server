@@ -12,11 +12,14 @@ import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.Visit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ShallowCopier {
 
     private static final Logger logger = LoggerFactory
             .getLogger(ShallowCopier.class);
+
+
 
     public static FieldWorker shallowCopyFieldWorker(FieldWorker fieldWorker) {
         FieldWorker copy = new FieldWorker();
@@ -181,11 +184,14 @@ public class ShallowCopier {
 
     public static SocialGroup shallowCopySocialGroup(SocialGroup original) {
         Individual groupHeadStub = Individual.makeStub(original.getGroupHead().getUuid(), original.getGroupHead().getExtId());
+        Location locationStub = Location.makeStub(original.getLocation().getUuid(), original.getLocation().getExtId());
+
         SocialGroup copy = new SocialGroup();
         copy.setUuid(original.getUuid());
         copy.setExtId(original.getExtId());
         copy.setGroupHead(groupHeadStub);
         copy.setGroupName(original.getGroupName());
+        copy.setLocation(locationStub);
         return copy;
     }
 
