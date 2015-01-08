@@ -218,7 +218,7 @@ public class IndividualFormResource extends AbstractFormResource {
 
         } else {
             // household must already exist for household member
-            socialGroup = socialGroupService.getByUuid(individualForm.getHouseholdUuid());
+            socialGroup = socialGroupService.getByUuid(individualForm.getSocialgroupUuid());
         }
 
         // individual's relationship with group
