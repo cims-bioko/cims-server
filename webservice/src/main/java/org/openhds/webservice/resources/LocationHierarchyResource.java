@@ -36,11 +36,13 @@ public class LocationHierarchyResource {
 
 			LocationHierarchyLevel level = new LocationHierarchyLevel();
 			level.setName(lh.getLevel().getName());
+            copy.setUuid(lh.getUuid());
 			copy.setLevel(level);
 			copy.setName(lh.getName());
 
 			LocationHierarchy parent = new LocationHierarchy();
 			parent.setExtId(lh.getParent().getExtId());
+            parent.setUuid(lh.getParent().getUuid());
 			copy.setParent(parent);
 
 			copies.add(copy);
