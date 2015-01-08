@@ -51,15 +51,16 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
 
     private static final String A_FUTURE_DATE = "2015-01-01T00:00:00-05:00";
 
-
     private static final String VALID_OBSERVATION_XML =
             "<pregnancyObservationForm>" +
             "<recorded_date>"+ A_CURRENT_DATE +"</recorded_date>" +
             "<visit_ext_id>pregObsVisit</visit_ext_id>" +
             "<individual_ext_id>pregnantIndividual</individual_ext_id>" +
             "<processed_by_mirth>null</processed_by_mirth>" +
-            "<field_worker_ext_id>UNK</field_worker_ext_id>" +
-            "<expected_delivery_date>"+A_FUTURE_DATE+"</expected_delivery_date>" +
+                    "<entity_uuid>PREG-OBS-UUID</entity_uuid>" +
+                    "<field_worker_ext_id>UNK</field_worker_ext_id>" +
+                    "<field_worker_uuid>UnknownFieldWorker</field_worker_uuid>" +
+                    "<expected_delivery_date>"+A_FUTURE_DATE+"</expected_delivery_date>" +
             "</pregnancyObservationForm>";
 
     @Before
@@ -97,7 +98,9 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
                     "<visit_ext_id>pregObsVisit</visit_ext_id>" +
                     "<individual_ext_id>pregnantIndividual</individual_ext_id>" +
                     "<processed_by_mirth>null</processed_by_mirth>" +
+                    "<entity_uuid>PREG-OBS-IN-PAST</entity_uuid>" +
                     "<field_worker_ext_id>UNK</field_worker_ext_id>" +
+                    "<field_worker_uuid>UnknownFieldWorker</field_worker_uuid>" +
                     "<expected_delivery_date>"+A_PREVIOUS_DATE+"</expected_delivery_date>" +
                     "</pregnancyObservationForm>";
 
@@ -119,7 +122,9 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
                     "<visit_ext_id>pregObsVisit</visit_ext_id>" +
                     "<individual_ext_id>pregnantMale</individual_ext_id>" +
                     "<processed_by_mirth>null</processed_by_mirth>" +
+                    "<entity_uuid>PREG-OBS-MALE</entity_uuid>" +
                     "<field_worker_ext_id>UNK</field_worker_ext_id>" +
+                    "<field_worker_uuid>UnknownFieldWorker</field_worker_uuid>" +
                     "<expected_delivery_date>"+A_FUTURE_DATE+"</expected_delivery_date>" +
                     "</pregnancyObservationForm>";
 
