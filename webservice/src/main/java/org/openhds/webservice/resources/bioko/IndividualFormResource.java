@@ -2,11 +2,10 @@ package org.openhds.webservice.resources.bioko;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
-import org.openhds.controller.service.FieldWorkerService;
+import org.openhds.controller.service.refactor.FieldWorkerService;
 import org.openhds.controller.service.refactor.IndividualService;
-import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.controller.service.ResidencyService;
-import org.openhds.controller.service.SocialGroupService;
+import org.openhds.controller.service.refactor.SocialGroupService;
 import org.openhds.controller.service.refactor.LocationService;
 import org.openhds.controller.service.refactor.crudhelpers.AbstractEntityCrudHelperImpl;
 import org.openhds.domain.model.ErrorLog;
@@ -123,7 +122,7 @@ public class IndividualFormResource extends AbstractFormResource {
         Calendar insertTime = Calendar.getInstance();
 
         // collected by whom?
-        FieldWorker collectedBy = fieldWorkerService.findFieldWorkerById(individualForm.getFieldWorkerExtId());
+        FieldWorker collectedBy = fieldWorkerService.getByUuid(individualForm.getFieldWorkerUuid());
         if (null == collectedBy) {
             cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID
                     + ": IndividualForm has a nonexistent field worker id - "
@@ -212,32 +211,19 @@ public class IndividualFormResource extends AbstractFormResource {
                 HEAD_OF_HOUSEHOLD_SELF)) {
 
             // may create social group for head of household
-            socialGroup = findOrMakeSocialGroup(individualForm.getHouseholdExtId(), individual, insertTime, collectedBy);
+            socialGroup = findOrMakeSocialGroup(individualForm.getSocialgroupUuid(), location, individual, insertTime, collectedBy);
 
             // name the location after the head of household
             location.setLocationName(individual.getLastName());
 
         } else {
-
             // household must already exist for household member
-            try {
-                socialGroup = socialGroupService.findSocialGroupById(
-                        individualForm.getHouseholdExtId(), "Social group does not exist: "
-                                + individualForm.getHouseholdExtId());
-            } catch (Exception e) {
-                cv.addViolations(e.getMessage()+": "+individualForm.getHouseholdExtId());
-                String errorDataPayload = createDTOPayload(individualForm);
-                ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
-                        IndividualForm.class.getSimpleName(), collectedBy,
-                        ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
-                errorService.logError(error);
-                return requestError(cv);
-            }
+            socialGroup = socialGroupService.getByUuid(individualForm.getHouseholdUuid());
         }
 
-        // individual's relationship with group head
+        // individual's relationship with group
         findOrMakeRelationship(individual, socialGroup.getGroupHead(), collectedBy, collectionTime, insertTime,
-                individualForm.getIndividualRelationshipToHeadOfHousehold());
+                individualForm);
 
         // persist the socialGroup, cascade to through individual to relationship
         try {
@@ -257,7 +243,7 @@ public class IndividualFormResource extends AbstractFormResource {
 
         // individual's membership in the social group
         Membership membership = findOrMakeMembership(individual, socialGroup, collectedBy,
-                collectionTime, insertTime, individualForm.getIndividualRelationshipToHeadOfHousehold());
+                collectionTime, insertTime, individualForm);
         try {
             entityService.create(membership);
         } catch (ConstraintViolations constraintViolations) {
@@ -335,21 +321,17 @@ public class IndividualFormResource extends AbstractFormResource {
         return inPast;
     }
 
-    private SocialGroup findOrMakeSocialGroup(String socialGroupExtId, Individual head, Calendar insertTime,
+    private SocialGroup findOrMakeSocialGroup(String socialGroupUuid, Location location, Individual head, Calendar insertTime,
                                               FieldWorker collectedBy) {
 
-        // TODO: SocialGroupService should not force us to use try/catch for
-        // flow control
-        SocialGroup socialGroup;
-        try {
-            // update existing social group with head and head's name
-            socialGroup = socialGroupService.findSocialGroupById(socialGroupExtId,
-                    "Social group does not exist: " + socialGroupExtId);
+        SocialGroup socialGroup = socialGroupService.getByUuid(socialGroupUuid);
 
-        } catch (Exception e) {
+        if (null == socialGroup) {
             // make a new social group
             socialGroup = new SocialGroup();
-            socialGroup.setExtId(socialGroupExtId);
+            socialGroup.setUuid(socialGroupUuid);
+            socialGroup.setExtId(location.getExtId());
+            socialGroup.setLocation(location);
             socialGroup.setCollectedBy(collectedBy);
             socialGroup.setInsertDate(insertTime);
             AbstractEntityCrudHelperImpl.setEntityUuidIfNull(socialGroup);
@@ -393,7 +375,6 @@ public class IndividualFormResource extends AbstractFormResource {
         residency.setStartType(START_TYPE);
         residency.setEndType(NOT_APPLICABLE_END_TYPE);
 
-
         // attach to individial
         individual.getAllResidencies().add(residency);
 
@@ -401,9 +382,10 @@ public class IndividualFormResource extends AbstractFormResource {
     }
 
     private Membership findOrMakeMembership(Individual individual, SocialGroup socialGroup,  FieldWorker collectedBy,
-                                            Calendar collectionTime, Calendar insertTime, String membershipType) {
+                                            Calendar collectionTime, Calendar insertTime, IndividualForm individualForm) {
 
         Membership membership = null;
+
 
         // try to find existing membership
         for (Membership m : individual.getAllMemberships()) {
@@ -415,7 +397,7 @@ public class IndividualFormResource extends AbstractFormResource {
         // might need a brand new membership
         if (null == membership) {
             membership = new Membership();
-            AbstractEntityCrudHelperImpl.setEntityUuidIfNull(membership);
+            membership.setUuid(individualForm.getMembershipUuid());
         }
 
         // fill in or update
@@ -426,7 +408,7 @@ public class IndividualFormResource extends AbstractFormResource {
         membership.setStartDate(collectionTime);
         membership.setStartType(START_TYPE);
         membership.setEndType(NOT_APPLICABLE_END_TYPE);
-        membership.setbIsToA(membershipType);
+        membership.setbIsToA(individualForm.getIndividualRelationshipToHeadOfHousehold());
 
 
         // attach to individual
@@ -436,9 +418,10 @@ public class IndividualFormResource extends AbstractFormResource {
     }
 
     private Relationship findOrMakeRelationship(Individual individualA, Individual individualB, FieldWorker collectedBy,
-                                                Calendar collectionTime, Calendar insertTime, String aIsToB) {
+                                                Calendar collectionTime, Calendar insertTime, IndividualForm individualForm) {
 
         Relationship relationship = null;
+
 
         // get relationships where this individualA acts as relationship individualA
         for (Relationship r : individualA.getAllRelationships1()) {
@@ -448,10 +431,10 @@ public class IndividualFormResource extends AbstractFormResource {
             }
         }
 
-        // might need a brand new memebership
+        // might need a brand new membership
         if (null == relationship) {
             relationship = new Relationship();
-            AbstractEntityCrudHelperImpl.setEntityUuidIfNull(relationship);
+            relationship.setUuid(individualForm.getRelationshipUuid());
         }
 
         // fill in or update
@@ -460,8 +443,7 @@ public class IndividualFormResource extends AbstractFormResource {
         relationship.setCollectedBy(collectedBy);
         relationship.setInsertDate(insertTime);
         relationship.setStartDate(collectionTime);
-        relationship.setaIsToB(aIsToB);
-
+        relationship.setaIsToB(individualForm.getIndividualRelationshipToHeadOfHousehold());
 
         // attach to individual
         individualA.getAllRelationships1().add(relationship);
@@ -479,16 +461,15 @@ public class IndividualFormResource extends AbstractFormResource {
 
     private void createOrSaveSocialGroup(SocialGroup socialGroup) throws ConstraintViolations,
             SQLException {
-        // TODO: SocialGroupService should not force us to use try/catch for flow control
-        try {
-            String socialGroupExtId = socialGroup.getExtId();
-            socialGroupService.findSocialGroupById(socialGroupExtId,
-                    "Social group does not exist: " + socialGroupExtId);
-            entityService.save(socialGroup);
 
-        } catch (Exception e) {
-            socialGroupService.createSocialGroup(socialGroup);
+        SocialGroup sg = socialGroupService.getByUuid(socialGroup.getUuid());
+
+        if (null == sg) {
+            socialGroupService.create(socialGroup);
+        } else {
+            socialGroupService.save(socialGroup);
         }
+
     }
 
     private void createOrSaveIndividual(Individual individual) throws ConstraintViolations,

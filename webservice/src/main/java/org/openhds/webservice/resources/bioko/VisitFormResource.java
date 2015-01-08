@@ -9,7 +9,6 @@ import org.openhds.domain.model.ErrorLog;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Visit;
-import org.openhds.domain.model.bioko.OutMigrationForm;
 import org.openhds.domain.model.bioko.VisitForm;
 import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.errorhandling.constants.ErrorConstants;
@@ -73,7 +72,7 @@ public class VisitFormResource extends AbstractFormResource {
 		visit.setRoundNumber(1);
 		visit.setVisitDate(visitForm.getVisitDate());
 
-		FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerById(visitForm.getFieldworkerExtId());
+		FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerByExtId(visitForm.getFieldworkerExtId());
         if (null == fieldWorker) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID);

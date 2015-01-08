@@ -83,7 +83,7 @@ public class InMigrationFormResource extends AbstractFormResource {
             inMigration.setMigType(MigrationType.EXTERNAL_INMIGRATION);
         }
 
-        FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerById(inMigrationForm.getFieldWorkerExtId());
+        FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerByExtId(inMigrationForm.getFieldWorkerExtId());
         if (null == fieldWorker) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID + ":"+inMigrationForm.getFieldWorkerExtId());

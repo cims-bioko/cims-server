@@ -26,7 +26,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.Serializable;
 import java.io.StringWriter;
-import java.sql.SQLException;
 
 @Controller
 @RequestMapping("/deathForm")
@@ -71,7 +70,7 @@ public class DeathFormResource extends AbstractFormResource {
         death.setDeathDate(deathForm.getDateOfDeath());
         death.setDeathPlace(deathForm.getPlaceOfDeath());
 
-        FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerById(deathForm.getFieldWorkerExtId());
+        FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerByExtId(deathForm.getFieldWorkerExtId());
         if (null == fieldWorker) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID);

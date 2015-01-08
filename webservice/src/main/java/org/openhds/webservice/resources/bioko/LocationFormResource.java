@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.service.FieldWorkerService;
+import org.openhds.controller.service.refactor.FieldWorkerService;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.controller.service.refactor.LocationService;
 import org.openhds.domain.model.*;
@@ -53,10 +53,9 @@ public class LocationFormResource extends AbstractFormResource{
         location = new Location();
 
         // collected by whom?
-        FieldWorker collectedBy = fieldWorkerService.findFieldWorkerById(locationForm.getFieldWorkerExtId());
+        FieldWorker collectedBy = fieldWorkerService.getByUuid(locationForm.getFieldWorkerUuid());
         if (null == collectedBy) {
-            return requestError("Error getting field worker: Location form has nonexistent field worker id");
-
+            return requestError("Error getting field worker: Location form has nonexistent field worker uuid");
         }
         location.setCollectedBy(collectedBy);
 
@@ -64,10 +63,10 @@ public class LocationFormResource extends AbstractFormResource{
         LocationHierarchy locationHierarchy;
         try {
             locationHierarchy = locationHierarchyService
-                    .findLocationHierarchyById(locationForm.getHierarchyExtId());
+                    .findByUuid(locationForm.getHierarchyUuid());
             location.setLocationHierarchy(locationHierarchy);
             if (null == locationHierarchy) {
-                return requestError("LocationHierarchy doesn't exist!: " + locationForm.getHierarchyExtId());
+                return requestError("LocationHierarchy doesn't exist!: " + locationForm.getHierarchyUuid());
             }
         } catch (Exception e) {
             return requestError("Error getting reference LocationHierarchy: " + e.getMessage());
