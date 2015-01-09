@@ -17,16 +17,27 @@ public class DeathForm implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
+    //core form fields
     @XmlElement(name = "processed_by_mirth")
     private boolean processedByMirth;
 
+    @XmlElement(name = "entity_uuid")
+    private String entityUuid;
+
+    @XmlElement(name = "entity_ext_id")
+    private String entityExtId;
+
     @XmlElement(name = "field_worker_ext_id")
     private String fieldWorkerExtId;
+
+    @XmlElement(name = "field_worker_uuid")
+    private String fieldWorkerUuid;
 
     @XmlElement(name = "collection_date_time")
     @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
     private Calendar collectionDateTime;
 
+    //death form fields
     @XmlElement(name = "individual_ext_id")
     private String individualExtId;
 
@@ -42,6 +53,30 @@ public class DeathForm implements Serializable{
 
     @XmlElement(name = "cause_of_death")
     private String causeOfDeath;
+
+    public String getEntityUuid() {
+        return entityUuid;
+    }
+
+    public void setEntityUuid(String entityUuid) {
+        this.entityUuid = entityUuid;
+    }
+
+    public String getEntityExtId() {
+        return entityExtId;
+    }
+
+    public void setEntityExtId(String entityExtId) {
+        this.entityExtId = entityExtId;
+    }
+
+    public String getFieldWorkerUuid() {
+        return fieldWorkerUuid;
+    }
+
+    public void setFieldWorkerUuid(String fieldWorkerUuid) {
+        this.fieldWorkerUuid = fieldWorkerUuid;
+    }
 
     public boolean isProcessedByMirth() {
         return processedByMirth;

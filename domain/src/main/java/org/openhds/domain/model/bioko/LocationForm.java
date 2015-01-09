@@ -12,8 +12,12 @@ import java.util.Calendar;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class LocationForm implements Serializable{
 
+    //core form fields
     @XmlElement(name = "entity_uuid")
     private String uuid;
+
+    @XmlElement(name = "entity_ext_id")
+    private String entityExtId;
 
     @XmlElement(name = "processed_by_mirth")
     private boolean processedByMirth;
@@ -28,6 +32,7 @@ public class LocationForm implements Serializable{
     @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
     private Calendar collectionDateTime;
 
+    //location form fields
     @XmlElement(name = "hierarchy_ext_id")
     private String hierarchyExtId;
 
@@ -72,6 +77,14 @@ public class LocationForm implements Serializable{
 
     @XmlElement(name = "latitude")
     private String latitude;
+
+    public String getEntityExtId() {
+        return entityExtId;
+    }
+
+    public void setEntityExtId(String entityExtId) {
+        this.entityExtId = entityExtId;
+    }
 
     public String getFieldWorkerUuid() {
         return fieldWorkerUuid;

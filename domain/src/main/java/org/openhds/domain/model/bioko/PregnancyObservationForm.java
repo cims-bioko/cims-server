@@ -17,11 +17,15 @@ public class PregnancyObservationForm implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
+    //core form fields
     @XmlElement(name = "processed_by_mirth")
     private boolean processedByMirth;
 
     @XmlElement(name = "entity_uuid")
     private String entityUuid;
+
+    @XmlElement(name = "entity_ext_id")
+    private String entityExtId;
 
     @XmlElement(name = "field_worker_ext_id")
     private String fieldWorkerExtId;
@@ -29,6 +33,11 @@ public class PregnancyObservationForm implements Serializable{
     @XmlElement(name = "field_worker_uuid")
     private String fieldWorkerUuid;
 
+    @XmlElement(name = "collection_date_time")
+    @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
+    private Calendar collectionDateTime;
+
+    //PregObs form fields
     @XmlElement(name = "individual_ext_id")
     private String individualExtId;
 
@@ -42,6 +51,22 @@ public class PregnancyObservationForm implements Serializable{
     @XmlElement(name = "recorded_date")
     @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
     private Calendar recordedDate;
+
+    public String getEntityExtId() {
+        return entityExtId;
+    }
+
+    public void setEntityExtId(String entityExtId) {
+        this.entityExtId = entityExtId;
+    }
+
+    public Calendar getCollectionDateTime() {
+        return collectionDateTime;
+    }
+
+    public void setCollectionDateTime(Calendar collectionDateTime) {
+        this.collectionDateTime = collectionDateTime;
+    }
 
     public String getEntityUuid() {
         return entityUuid;

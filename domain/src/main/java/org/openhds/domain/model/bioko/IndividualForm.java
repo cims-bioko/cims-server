@@ -21,8 +21,12 @@ public class IndividualForm implements Serializable {
 
     private static final long serialVersionUID = 1143017330340385847L;
 
+    //core form fields
     @XmlElement(name = "entity_uuid")
     private String uuid;
+
+    @XmlElement(name = "entity_ext_id")
+    private String entityExtId;
 
     @XmlElement(name = "processed_by_mirth")
     private boolean processedByMirth;
@@ -37,6 +41,7 @@ public class IndividualForm implements Serializable {
     @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
     private Calendar collectionDateTime;
 
+    //individual form fields
     @XmlElement(name = "household_ext_id")
     private String householdExtId;
 
@@ -103,6 +108,14 @@ public class IndividualForm implements Serializable {
 
     @XmlElement(name = "individual_nationality")
     private String individualNationality;
+
+    public String getEntityExtId() {
+        return entityExtId;
+    }
+
+    public void setEntityExtId(String entityExtId) {
+        this.entityExtId = entityExtId;
+    }
 
     public String getMembershipUuid() {
         return membershipUuid;
