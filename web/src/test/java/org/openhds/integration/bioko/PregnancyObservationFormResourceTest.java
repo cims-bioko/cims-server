@@ -49,7 +49,7 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
 
     private static final String A_PREVIOUS_DATE = "1999-01-01T00:00:00-05:00";
 
-    private static final String A_FUTURE_DATE = "2015-01-01T00:00:00-05:00";
+    private static final String A_FUTURE_DATE = "2020-01-01T00:00:00-05:00";
 
     private static final String VALID_OBSERVATION_XML =
             "<pregnancyObservationForm>" +
