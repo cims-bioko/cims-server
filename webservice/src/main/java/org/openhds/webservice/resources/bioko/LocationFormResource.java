@@ -1,13 +1,12 @@
 package org.openhds.webservice.resources.bioko;
 
-import java.io.Serializable;
-import java.util.Calendar;
-
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.service.refactor.FieldWorkerService;
 import org.openhds.controller.service.LocationHierarchyService;
+import org.openhds.controller.service.refactor.FieldWorkerService;
 import org.openhds.controller.service.refactor.LocationService;
-import org.openhds.domain.model.*;
+import org.openhds.domain.model.FieldWorker;
+import org.openhds.domain.model.Location;
+import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.bioko.LocationForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.io.Serializable;
+import java.util.Calendar;
 
 
 @Controller
@@ -43,12 +45,13 @@ public class LocationFormResource extends AbstractFormResource{
 
         Location location;
         try {
-            location = locationService
-                    .getByUuid(locationForm.getUuid());
+            location = locationService.getByUuid(locationForm.getUuid());
             if (null != location) {
-                return requestError("Location already exists!: " + locationForm.getLocationExtId());
+                return requestError("Location already exists: " + locationForm.getLocationExtId());
             }
-        } catch (Exception e) { }
+        } catch (Exception e) {
+            return requestError("Error checking for existing location: " + e.getMessage());
+        }
 
         location = new Location();
 
@@ -62,8 +65,7 @@ public class LocationFormResource extends AbstractFormResource{
         // collected where?
         LocationHierarchy locationHierarchy;
         try {
-            locationHierarchy = locationHierarchyService
-                    .findByUuid(locationForm.getHierarchyUuid());
+            locationHierarchy = locationHierarchyService.findByUuid(locationForm.getHierarchyUuid());
             location.setLocationHierarchy(locationHierarchy);
             if (null == locationHierarchy) {
                 return requestError("LocationHierarchy doesn't exist!: " + locationForm.getHierarchyUuid());
@@ -89,7 +91,6 @@ public class LocationFormResource extends AbstractFormResource{
 
     private void copyFormDataToLocation(LocationForm locationForm, Location location){
 
-
         // fieldWorker, CollectedDateTime, and HierarchyLevel are set outside of this method
         location.setUuid(locationForm.getUuid());
         location.setExtId(locationForm.getLocationExtId());
@@ -105,8 +106,8 @@ public class LocationFormResource extends AbstractFormResource{
         location.setDescription(locationForm.getDescription());
         location.setLongitude(locationForm.getLongitude());
         location.setLatitude(locationForm.getLatitude());
-
     }
+
     private static Calendar getDateInPast() {
         Calendar inPast = Calendar.getInstance();
         inPast.set(1900, 0, 1);

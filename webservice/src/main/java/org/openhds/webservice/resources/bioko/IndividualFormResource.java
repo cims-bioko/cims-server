@@ -2,11 +2,11 @@ package org.openhds.webservice.resources.bioko;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
+import org.openhds.controller.service.ResidencyService;
 import org.openhds.controller.service.refactor.FieldWorkerService;
 import org.openhds.controller.service.refactor.IndividualService;
-import org.openhds.controller.service.ResidencyService;
-import org.openhds.controller.service.refactor.SocialGroupService;
 import org.openhds.controller.service.refactor.LocationService;
+import org.openhds.controller.service.refactor.SocialGroupService;
 import org.openhds.controller.service.refactor.crudhelpers.AbstractEntityCrudHelperImpl;
 import org.openhds.domain.model.ErrorLog;
 import org.openhds.domain.model.FieldWorker;
@@ -138,19 +138,30 @@ public class IndividualFormResource extends AbstractFormResource {
         // where are we?
         Location location;
         try {
-            location = locationService
-                    .getByUuid(individualForm.getHouseholdUuid());
+
+            // Get location by uuid.
+            // Fall back on extId if uuid is missing, which allows us to re-process older forms.
+            String uuid = individualForm.getHouseholdUuid();
+            if (null == uuid) {
+                location = locationService.getByExtId(individualForm.getHouseholdExtId());
+            } else {
+                location = locationService.getByUuid(uuid);
+            }
+
             if (null == location) {
                 cv.addViolations(ConstraintViolations.INVALID_LOCATION_EXT_ID
-                        + ": IndividualForm has a nonexistent location id -"
+                        + ": IndividualForm has a nonexistent location id - "
                         + individualForm.getHouseholdExtId());
+
                 String errorDataPayload = createDTOPayload(individualForm);
                 ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
                         IndividualForm.class.getSimpleName(), collectedBy,
                         ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+
                 errorService.logError(error);
                 return requestError(cv);
             }
+
         } catch (Exception e) {
             return requestError("Error getting location: " + e.getMessage());
         }
@@ -211,14 +222,22 @@ public class IndividualFormResource extends AbstractFormResource {
                 HEAD_OF_HOUSEHOLD_SELF)) {
 
             // may create social group for head of household
-            socialGroup = findOrMakeSocialGroup(individualForm.getSocialgroupUuid(), location, individual, insertTime, collectedBy);
+            socialGroup = findOrMakeSocialGroup(individualForm, location, individual, insertTime, collectedBy);
 
             // name the location after the head of household
             location.setLocationName(individual.getLastName());
 
         } else {
             // household must already exist for household member
-            socialGroup = socialGroupService.getByUuid(individualForm.getSocialgroupUuid());
+
+            // Get social group by uuid.
+            // Fall back on extId if uuid is missing, which allows us to re-process older forms.
+            String uuid = individualForm.getSocialGroupUuid();
+            if (null == uuid) {
+                socialGroup = socialGroupService.getByExtId(individualForm.getHouseholdExtId());
+            } else {
+                socialGroup = socialGroupService.getByUuid(uuid);
+            }
         }
 
         // individual's relationship with group
@@ -321,15 +340,23 @@ public class IndividualFormResource extends AbstractFormResource {
         return inPast;
     }
 
-    private SocialGroup findOrMakeSocialGroup(String socialGroupUuid, Location location, Individual head, Calendar insertTime,
-                                              FieldWorker collectedBy) {
+    private SocialGroup findOrMakeSocialGroup(IndividualForm individualForm, Location location, Individual head,
+                                              Calendar insertTime, FieldWorker collectedBy) {
 
-        SocialGroup socialGroup = socialGroupService.getByUuid(socialGroupUuid);
+        // Get social group by uuid.
+        // Fall back on extId if uuid is missing, which allows us to re-process older forms.
+        SocialGroup socialGroup;
+        String uuid = individualForm.getSocialGroupUuid();
+        if (null == uuid) {
+            socialGroup = socialGroupService.getByExtId(individualForm.getHouseholdExtId());
+        } else {
+            socialGroup = socialGroupService.getByUuid(uuid);
+        }
 
         if (null == socialGroup) {
             // make a new social group
             socialGroup = new SocialGroup();
-            socialGroup.setUuid(socialGroupUuid);
+            socialGroup.setUuid(uuid);
             socialGroup.setExtId(location.getExtId());
             socialGroup.setLocation(location);
             socialGroup.setCollectedBy(collectedBy);

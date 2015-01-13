@@ -133,7 +133,7 @@ public class IndividualForm implements Serializable {
         this.relationshipUuid = relationshipUuid;
     }
 
-    public String getSocialgroupUuid() {
+    public String getSocialGroupUuid() {
         return socialgroupUuid;
     }
 
