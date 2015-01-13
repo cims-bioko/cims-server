@@ -235,7 +235,7 @@ public class IndividualFormResource extends AbstractFormResource {
             // Get social group by uuid.
             // Fall back on extId if uuid is missing, which allows us to re-process older forms.
             String uuid = individualForm.getSocialGroupUuid();
-            if (null == uuid) {
+            if (null == uuid || "null".equals(uuid)) {
                 socialGroup = socialGroupService.getByExtId(individualForm.getHouseholdExtId());
             } else {
                 socialGroup = socialGroupService.getByUuid(uuid);
@@ -349,7 +349,7 @@ public class IndividualFormResource extends AbstractFormResource {
         // Fall back on extId if uuid is missing, which allows us to re-process older forms.
         SocialGroup socialGroup;
         String uuid = individualForm.getSocialGroupUuid();
-        if (null == uuid) {
+        if (null == uuid || "null".equals(uuid)) {
             socialGroup = socialGroupService.getByExtId(individualForm.getHouseholdExtId());
         } else {
             socialGroup = socialGroupService.getByUuid(uuid);

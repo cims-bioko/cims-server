@@ -69,7 +69,7 @@ public class LocationFormResource extends AbstractFormResource{
             // Get hierarchy by uuid.
             // Fall back on extId if uuid is missing, which allows us to re-process older forms.
             String uuid = locationForm.getHierarchyUuid();
-            if (null == uuid) {
+            if (null == uuid || "null".equals(uuid)) {
                 locationHierarchy = locationHierarchyService.findByExtId(locationForm.getHierarchyExtId());
             } else {
                 locationHierarchy = locationHierarchyService.findByUuid(uuid);
