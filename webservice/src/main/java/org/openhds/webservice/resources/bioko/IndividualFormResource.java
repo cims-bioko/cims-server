@@ -116,6 +116,14 @@ public class IndividualFormResource extends AbstractFormResource {
             individualForm.setSocialGroupUuid(null);
         }
 
+        if ("null".equals(individualForm.getRelationshipUuid())) {
+            individualForm.setRelationshipUuid(null);
+        }
+
+        if ("null".equals(individualForm.getMembershipUuid())) {
+            individualForm.setMembershipUuid(null);
+        }
+
         // Default relationship to head of household is "self"
         if (null == individualForm.getIndividualRelationshipToHeadOfHousehold()) {
             individualForm.setIndividualRelationshipToHeadOfHousehold(HEAD_OF_HOUSEHOLD_SELF);
