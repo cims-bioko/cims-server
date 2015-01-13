@@ -14,6 +14,9 @@ public interface LocationHierarchyService {
     @Authorized({PrivilegeConstants.CREATE_ENTITY})
     LocationHierarchy findByUuid(String uuid);
 
+	@Authorized({PrivilegeConstants.CREATE_ENTITY})
+	LocationHierarchy findByExtId(String extId);
+
     @Authorized({PrivilegeConstants.CREATE_ENTITY})
 	Location evaluateLocation(Location entityItem) throws ConstraintViolations;
 	

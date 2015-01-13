@@ -65,16 +65,29 @@ public class LocationFormResource extends AbstractFormResource{
         // collected where?
         LocationHierarchy locationHierarchy;
         try {
-            locationHierarchy = locationHierarchyService.findByUuid(locationForm.getHierarchyUuid());
-            location.setLocationHierarchy(locationHierarchy);
-            if (null == locationHierarchy) {
-                return requestError("LocationHierarchy doesn't exist!: " + locationForm.getHierarchyUuid());
+
+            // Get hierarchy by uuid.
+            // Fall back on extId if uuid is missing, which allows us to re-process older forms.
+            String uuid = locationForm.getHierarchyUuid();
+            if (null == uuid) {
+                locationHierarchy = locationHierarchyService.findByExtId(locationForm.getHierarchyExtId());
+            } else {
+                locationHierarchy = locationHierarchyService.findByUuid(uuid);
             }
+
+            if (null == locationHierarchy) {
+                return requestError("LocationHierarchy doesn't exist!: "
+                        + locationForm.getHierarchyUuid()
+                        + " / "
+                        + locationForm.getHierarchyExtId());
+            }
+
         } catch (Exception e) {
             return requestError("Error getting reference LocationHierarchy: " + e.getMessage());
         }
 
-        // do it
+        // fill in data for the new location
+        location.setLocationHierarchy(locationHierarchy);
         copyFormDataToLocation(locationForm, location);
 
         // persist the location

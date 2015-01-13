@@ -34,6 +34,10 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
         return genericDao.findByProperty(LocationHierarchy.class, "uuid", uuid);
     }
 
+	public LocationHierarchy findByExtId(String extId) {
+		return genericDao.findByProperty(LocationHierarchy.class, "extId", extId);
+	}
+
 	public LocationHierarchy evaluateLocationHierarchy(LocationHierarchy entityItem) throws ConstraintViolations {
 		
 		LocationHierarchy item = null;
