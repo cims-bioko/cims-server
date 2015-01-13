@@ -142,7 +142,7 @@ public class IndividualFormResource extends AbstractFormResource {
             // Get location by uuid.
             // Fall back on extId if uuid is missing, which allows us to re-process older forms.
             String uuid = individualForm.getHouseholdUuid();
-            if (null == uuid) {
+            if (null == uuid || "null".equals(uuid)) {
                 location = locationService.getByExtId(individualForm.getHouseholdExtId());
             } else {
                 location = locationService.getByUuid(uuid);
