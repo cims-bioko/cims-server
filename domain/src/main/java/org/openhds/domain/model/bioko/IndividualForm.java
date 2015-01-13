@@ -137,7 +137,7 @@ public class IndividualForm implements Serializable {
         return socialgroupUuid;
     }
 
-    public void setSocialgroupUuid(String socialgroupUuid) {
+    public void setSocialGroupUuid(String socialgroupUuid) {
         this.socialgroupUuid = socialgroupUuid;
     }
 

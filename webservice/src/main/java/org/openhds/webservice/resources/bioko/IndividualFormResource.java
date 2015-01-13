@@ -103,14 +103,23 @@ public class IndividualFormResource extends AbstractFormResource {
             throw new RuntimeException("Could not create JAXB context and marshaller for OutMigrationFormResource");
         }
 
-        // TODO: this is a temporary fix until we update the tablet to work around
-        // TODO: ODK Collect form field "relevancy" limitations
-        if (null == individualForm.getIndividualRelationshipToHeadOfHousehold()
-                || "null".equals(individualForm.getIndividualRelationshipToHeadOfHousehold())) {
-            individualForm.setIndividualRelationshipToHeadOfHousehold(HEAD_OF_HOUSEHOLD_SELF);
+        // Clean up "null" strings created by Mirth
+        if ("null".equals(individualForm.getIndividualRelationshipToHeadOfHousehold())) {
+            individualForm.setIndividualRelationshipToHeadOfHousehold(null);
         }
 
-        ConstraintViolations cv = new ConstraintViolations();
+        if ("null".equals(individualForm.getHouseholdUuid())) {
+            individualForm.setHouseholdUuid(null);
+        }
+
+        if ("null".equals(individualForm.getSocialGroupUuid())) {
+            individualForm.setSocialGroupUuid(null);
+        }
+
+        // Default relationship to head of household is "self"
+        if (null == individualForm.getIndividualRelationshipToHeadOfHousehold()) {
+            individualForm.setIndividualRelationshipToHeadOfHousehold(HEAD_OF_HOUSEHOLD_SELF);
+        }
 
         // collected when?
         Calendar collectionTime = individualForm.getCollectionDateTime();
@@ -122,6 +131,7 @@ public class IndividualFormResource extends AbstractFormResource {
         Calendar insertTime = Calendar.getInstance();
 
         // collected by whom?
+        ConstraintViolations cv = new ConstraintViolations();
         FieldWorker collectedBy = fieldWorkerService.getByUuid(individualForm.getFieldWorkerUuid());
         if (null == collectedBy) {
             cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID
@@ -142,7 +152,7 @@ public class IndividualFormResource extends AbstractFormResource {
             // Get location by uuid.
             // Fall back on extId if uuid is missing, which allows us to re-process older forms.
             String uuid = individualForm.getHouseholdUuid();
-            if (null == uuid || "null".equals(uuid)) {
+            if (null == uuid) {
                 location = locationService.getByExtId(individualForm.getHouseholdExtId());
             } else {
                 location = locationService.getByUuid(uuid);
@@ -235,7 +245,7 @@ public class IndividualFormResource extends AbstractFormResource {
             // Get social group by uuid.
             // Fall back on extId if uuid is missing, which allows us to re-process older forms.
             String uuid = individualForm.getSocialGroupUuid();
-            if (null == uuid || "null".equals(uuid)) {
+            if (null == uuid) {
                 socialGroup = socialGroupService.getByExtId(individualForm.getHouseholdExtId());
             } else {
                 socialGroup = socialGroupService.getByUuid(uuid);
@@ -349,7 +359,7 @@ public class IndividualFormResource extends AbstractFormResource {
         // Fall back on extId if uuid is missing, which allows us to re-process older forms.
         SocialGroup socialGroup;
         String uuid = individualForm.getSocialGroupUuid();
-        if (null == uuid || "null".equals(uuid)) {
+        if (null == uuid) {
             socialGroup = socialGroupService.getByExtId(individualForm.getHouseholdExtId());
         } else {
             socialGroup = socialGroupService.getByUuid(uuid);

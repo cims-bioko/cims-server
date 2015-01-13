@@ -43,6 +43,11 @@ public class LocationFormResource extends AbstractFormResource{
     public ResponseEntity<? extends Serializable> processForm(
             @RequestBody LocationForm locationForm) {
 
+        // clean up "null" strings created by Mirth
+        if ("null".equals(locationForm.getHierarchyUuid())) {
+            locationForm.setHierarchyUuid(null);
+        }
+
         Location location;
         try {
             location = locationService.getByUuid(locationForm.getUuid());
@@ -69,7 +74,7 @@ public class LocationFormResource extends AbstractFormResource{
             // Get hierarchy by uuid.
             // Fall back on extId if uuid is missing, which allows us to re-process older forms.
             String uuid = locationForm.getHierarchyUuid();
-            if (null == uuid || "null".equals(uuid)) {
+            if (null == uuid) {
                 locationHierarchy = locationHierarchyService.findByExtId(locationForm.getHierarchyExtId());
             } else {
                 locationHierarchy = locationHierarchyService.findByUuid(uuid);
