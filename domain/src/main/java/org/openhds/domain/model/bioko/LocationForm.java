@@ -39,6 +39,9 @@ public class LocationForm implements Serializable{
     @XmlElement(name = "hierarchy_uuid")
     private String hierarchyUuid;
 
+    @XmlElement(name = "hierarchy_parent_uuid")
+    private String hierarchyParentUuid;
+
     @XmlElement(name = "location_ext_id")
     private String locationExtId;
 
@@ -77,6 +80,14 @@ public class LocationForm implements Serializable{
 
     @XmlElement(name = "latitude")
     private String latitude;
+
+    public String getHierarchyParentUuid() {
+        return hierarchyParentUuid;
+    }
+
+    public void setHierarchyParentUuid(String hierarchyParentUuid) {
+        this.hierarchyParentUuid = hierarchyParentUuid;
+    }
 
     public String getEntityExtId() {
         return entityExtId;

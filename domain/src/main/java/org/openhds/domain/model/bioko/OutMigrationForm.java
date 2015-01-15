@@ -36,11 +36,17 @@ public class OutMigrationForm implements Serializable {
     private Calendar collectionDateTime;
 
     //OutMigr form fields
-    @XmlElement(name = "out_migration_individual_ext_id")
+    @XmlElement(name = "individual_ext_id")
     private String individualExtId;
+
+    @XmlElement(name = "individual_uuid")
+    private String individualUuid;
 
     @XmlElement(name = "visit_ext_id")
     private String visitExtId;
+
+    @XmlElement(name = "visit_uuid")
+    private String visitUuid;
 
     @XmlElement(name = "out_migration_date")
     @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
@@ -51,6 +57,22 @@ public class OutMigrationForm implements Serializable {
 
     @XmlElement(name = "out_migration_reason")
     private String reasonForOutMigration;
+
+    public String getVisitUuid() {
+        return visitUuid;
+    }
+
+    public void setVisitUuid(String visitUuid) {
+        this.visitUuid = visitUuid;
+    }
+
+    public String getIndividualUuid() {
+        return individualUuid;
+    }
+
+    public void setIndividualUuid(String individualUuid) {
+        this.individualUuid = individualUuid;
+    }
 
     public String getEntityUuid() {
         return entityUuid;

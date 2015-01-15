@@ -42,12 +42,34 @@ public class VisitForm implements Serializable {
     @XmlElement(name = "visit_ext_id")
     private String visitExtId;
 
+    @XmlElement(name = "visit_uuid")
+    private String visitUuid;
+
     @XmlElement(name = "location_ext_id")
     private String locationExtId;
+
+    @XmlElement(name = "location_uuid")
+    private String locationUuid;
 
     @XmlElement(name = "visit_date")
     @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
     private Calendar visitDate;
+
+    public String getVisitUuid() {
+        return visitUuid;
+    }
+
+    public void setVisitUuid(String visitUuid) {
+        this.visitUuid = visitUuid;
+    }
+
+    public String getLocationUuid() {
+        return locationUuid;
+    }
+
+    public void setLocationUuid(String locationUuid) {
+        this.locationUuid = locationUuid;
+    }
 
     public String getUuid() {
         return uuid;

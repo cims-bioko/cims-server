@@ -62,7 +62,6 @@ public class PregnancyObservationFormResource extends AbstractFormResource {
         }
 
         PregnancyObservation pregnancyObservation = new PregnancyObservation();
-        pregnancyObservation.setUuid(pregnancyObservationForm.getEntityUuid());
         pregnancyObservation.setRecordedDate(pregnancyObservationForm.getRecordedDate());
         pregnancyObservation.setExpectedDeliveryDate(pregnancyObservationForm.getExpectedDeliveryDate());
 
