@@ -21,8 +21,12 @@ public class IndividualForm implements Serializable {
 
     private static final long serialVersionUID = 1143017330340385847L;
 
+    //core form fields
     @XmlElement(name = "entity_uuid")
     private String uuid;
+
+    @XmlElement(name = "entity_ext_id")
+    private String entityExtId;
 
     @XmlElement(name = "processed_by_mirth")
     private boolean processedByMirth;
@@ -30,15 +34,28 @@ public class IndividualForm implements Serializable {
     @XmlElement(name = "field_worker_ext_id")
     private String fieldWorkerExtId;
 
+    @XmlElement(name = "field_worker_uuid")
+    private String fieldWorkerUuid;
+
     @XmlElement(name = "collection_date_time")
     @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
     private Calendar collectionDateTime;
 
+    //individual form fields
     @XmlElement(name = "household_ext_id")
     private String householdExtId;
 
     @XmlElement(name = "household_uuid")
     private String householdUuid;
+
+    @XmlElement(name = "membership_uuid")
+    private String membershipUuid;
+
+    @XmlElement(name = "relationship_uuid")
+    private String relationshipUuid;
+
+    @XmlElement(name = "socialgroup_uuid")
+    private String socialgroupUuid;
 
     @XmlElement(name = "individual_ext_id")
     private String individualExtId;
@@ -92,6 +109,46 @@ public class IndividualForm implements Serializable {
     @XmlElement(name = "individual_nationality")
     private String individualNationality;
 
+
+    public String getEntityExtId() {
+        return entityExtId;
+    }
+
+    public void setEntityExtId(String entityExtId) {
+        this.entityExtId = entityExtId;
+    }
+
+    public String getMembershipUuid() {
+        return membershipUuid;
+    }
+
+    public void setMembershipUuid(String membershipUuid) {
+        this.membershipUuid = membershipUuid;
+    }
+
+    public String getRelationshipUuid() {
+        return relationshipUuid;
+    }
+
+    public void setRelationshipUuid(String relationshipUuid) {
+        this.relationshipUuid = relationshipUuid;
+    }
+
+    public String getSocialgroupUuid() {
+        return socialgroupUuid;
+    }
+
+    public void setSocialgroupUuid(String socialgroupUuid) {
+        this.socialgroupUuid = socialgroupUuid;
+    }
+
+    public String getFieldWorkerUuid() {
+        return fieldWorkerUuid;
+    }
+
+    public void setFieldWorkerUuid(String fieldWorkerUuid) {
+        this.fieldWorkerUuid = fieldWorkerUuid;
+    }
 
     public String getHouseholdUuid() {
         return householdUuid;

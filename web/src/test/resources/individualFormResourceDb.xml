@@ -8,7 +8,7 @@
     <locationhierarchy uuid="hierarchy3" name="IFB" extId="IFB" level_uuid="HierarchyLevel3"
         parent_uuid="hierarchy2" />
 
-    <fieldworker uuid="FWEK1D" extid="FWEK1D" firstname="Test" lastname="FieldWorker"
+    <fieldworker uuid="FWEK1D-UUID" extid="FWEK1D" firstname="Test" lastname="FieldWorker"
                  passwordHash="invalid-password-hash" deleted="false" idPrefix="98"/>
 
     <fieldworker uuid="FieldWorker1" extid="FieldWorker1" firstname="Test" lastname="FieldWorker"

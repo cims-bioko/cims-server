@@ -1,8 +1,8 @@
 package org.openhds.webservice.resources.bioko;
 
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.service.FieldWorkerService;
-import org.openhds.controller.service.IndividualService;
+import org.openhds.controller.service.refactor.FieldWorkerService;
+import org.openhds.controller.service.refactor.IndividualService;
 import org.openhds.controller.service.refactor.PregnancyObservationService;
 import org.openhds.controller.service.VisitService;
 import org.openhds.domain.model.FieldWorker;
@@ -65,7 +65,7 @@ public class PregnancyObservationFormResource extends AbstractFormResource {
         pregnancyObservation.setRecordedDate(pregnancyObservationForm.getRecordedDate());
         pregnancyObservation.setExpectedDeliveryDate(pregnancyObservationForm.getExpectedDeliveryDate());
 
-        FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerById(pregnancyObservationForm.getFieldWorkerExtId());
+        FieldWorker fieldWorker = fieldWorkerService.getByUuid(pregnancyObservationForm.getFieldWorkerUuid());
         if (null == fieldWorker) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID);
@@ -74,7 +74,7 @@ public class PregnancyObservationFormResource extends AbstractFormResource {
         }
         pregnancyObservation.setCollectedBy(fieldWorker);
 
-        Individual individual = individualService.findIndivById(pregnancyObservationForm.getIndividualExtId());
+        Individual individual = individualService.getByExtId(pregnancyObservationForm.getIndividualExtId());
         if (null == individual) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_EXT_ID);

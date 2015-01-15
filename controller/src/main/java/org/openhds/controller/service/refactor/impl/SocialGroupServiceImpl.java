@@ -1,9 +1,12 @@
 package org.openhds.controller.service.refactor.impl;
 
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.controller.service.refactor.IndividualService;
 import org.openhds.controller.service.refactor.SocialGroupService;
 import org.openhds.controller.service.refactor.crudhelpers.EntityCrudHelper;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.annotations.Authorized;
+import org.openhds.domain.model.Death;
 import org.openhds.domain.model.SocialGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,6 +20,9 @@ public class SocialGroupServiceImpl implements SocialGroupService {
     @Autowired
     @Qualifier("SocialGroupCrudHelper")
     private EntityCrudHelper<SocialGroup> socialGroupCrudHelper;
+
+    @Autowired
+    private IndividualService individualService;
 
     @Autowired
     private GenericDao genericDao;
@@ -53,7 +59,31 @@ public class SocialGroupServiceImpl implements SocialGroupService {
 
     @Override
     public boolean isEligibleForCreation(SocialGroup socialGroup, ConstraintViolations cv) {
-        return false;
+
+        boolean isDead = individualService.isDeceased(socialGroup.getGroupHead());
+        if (isDead) {
+            ConstraintViolations.addViolationIfNotNull(cv, "Head is dead.");
+        }
+
+        boolean hasExtId = socialGroup.getExtId() != null && !socialGroup.getExtId().isEmpty();
+        if (!hasExtId) {
+            ConstraintViolations.addViolationIfNotNull(cv, "Null or empty extId.");
+        }
+
+        return !isDead && hasExtId;
+
+    }
+
+    @Override
+    @Authorized("VIEW_ENTITY")
+    public List<SocialGroup> getAllSocialGroupsInRange(int i, int pageSize) {
+        return genericDao.findPaged(SocialGroup.class, "extId", i, pageSize);
+    }
+
+    @Override
+    @Authorized("VIEW_ENTITY")
+    public long getTotalSocialGroupCount() {
+        return genericDao.getTotalCount(SocialGroup.class);
     }
 
 }

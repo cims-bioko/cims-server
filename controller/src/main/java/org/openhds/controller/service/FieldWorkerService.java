@@ -19,7 +19,7 @@ public interface FieldWorkerService {
 	List<String> getFieldWorkerExtIds(String term);
 
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	FieldWorker findFieldWorkerById(String fieldWorkerId);
+	FieldWorker findFieldWorkerByExtId(String fieldWorkerId);
 
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	List<FieldWorker> getAllFieldWorkers();

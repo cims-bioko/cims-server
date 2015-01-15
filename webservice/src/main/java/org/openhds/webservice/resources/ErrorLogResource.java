@@ -68,7 +68,7 @@ public class ErrorLogResource {
         }
 
         if (fieldWorkerId != null) {
-            FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerById(fieldWorkerId);
+            FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerByExtId(fieldWorkerId);
             if (fieldWorker != null) {
                 properties.add(ValuePropertyHelper.getValueProperty("fieldWorker", fieldWorker));
             }

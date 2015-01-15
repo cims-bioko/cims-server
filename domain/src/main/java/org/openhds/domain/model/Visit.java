@@ -97,9 +97,9 @@ public class Visit
         extensions = list;
     }
 
-    public static Visit makeStub(String extId) {
+    public static Visit makeStub(String uuid) {
         Visit stub = new Visit();
-        stub.setExtId(extId);
+        stub.setUuid(uuid);
         return stub;
     }
 

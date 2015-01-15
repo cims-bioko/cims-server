@@ -12,14 +12,18 @@ import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.Visit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ShallowCopier {
 
     private static final Logger logger = LoggerFactory
             .getLogger(ShallowCopier.class);
 
+
+
     public static FieldWorker shallowCopyFieldWorker(FieldWorker fieldWorker) {
         FieldWorker copy = new FieldWorker();
+        copy.setUuid(fieldWorker.getUuid());
         copy.setIdPrefix(fieldWorker.getIdPrefix());
         copy.setExtId(fieldWorker.getExtId());
         copy.setFirstName(fieldWorker.getFirstName());
@@ -30,12 +34,13 @@ public class ShallowCopier {
 
     public static Residency shallowCopyResidency(Residency residency) {
         Residency copy = new Residency();
+        copy.setUuid(residency.getUuid());
         copy.setCollectedBy(residency.getCollectedBy());
-        FieldWorker fieldWorkerStub = FieldWorker.makeStub(residency.getCollectedBy().getExtId());
+        FieldWorker fieldWorkerStub = FieldWorker.makeStub(residency.getCollectedBy().getUuid(), residency.getCollectedBy().getExtId());
         copy.setCollectedBy(fieldWorkerStub);
-        Individual individualStub = Individual.makeStub(residency.getIndividual().getExtId());
+        Individual individualStub = Individual.makeStub(residency.getIndividual().getUuid(), residency.getIndividual().getExtId());
         copy.setIndividual(individualStub);
-        Location locationStub = Location.makeStub(residency.getLocation().getExtId());
+        Location locationStub = Location.makeStub(residency.getLocation().getUuid(), residency.getLocation().getExtId());
         copy.setLocation(locationStub);
         copy.setStartDate(residency.getStartDate());
         copy.setStartType(residency.getStartType());
@@ -51,15 +56,14 @@ public class ShallowCopier {
             copy.setUuid(individual.getUuid());
             copy.setDob(individual.getDob());
             copy.setExtId(individual.getExtId());
-
-            copy.setFather(copyExtId(individual.getFather()));
+            copy.setFather(copyIds(individual.getFather()));
             copy.setFirstName(individual.getFirstName());
             copy.setGender(individual.getGender());
             copy.setLastName(individual.getLastName());
             String middleName = individual.getMiddleName() == null ? ""
                     : individual.getMiddleName();
             copy.setMiddleName(middleName);
-            copy.setMother(copyExtId(individual.getMother()));
+            copy.setMother(copyIds(individual.getMother()));
 
             copy.setAge(individual.getAge());
             copy.setAgeUnits(individual.getAgeUnits());
@@ -73,22 +77,20 @@ public class ShallowCopier {
             copy.setMemberStatus(individual.getMemberStatus());
             copy.setNationality(individual.getNationality());
 
-            Individual individualStub = Individual.makeStub(individual.getExtId());
+            Individual individualStub = Individual.makeStub(individual.getUuid(), individual.getExtId());
 
             for (Membership membership : individual.getAllMemberships()) {
                 SocialGroup socialGroupStub = SocialGroup.makeStub(membership
-                        .getSocialGroup().getExtId());
-                Membership membershipStub = Membership
-                        .makeStub(socialGroupStub, individualStub,
-                                membership.getbIsToA());
+                        .getSocialGroup().getUuid(), membership.getSocialGroup().getExtId());
+                Membership membershipStub = Membership.makeStub(membership.getUuid(), socialGroupStub, individualStub, membership.getbIsToA());
                 copy.getAllMemberships().add(membershipStub);
             }
 
             Residency currentResidency = individual.getCurrentResidency();
             if (null != currentResidency) {
-                Location locationStub = Location.makeStub(currentResidency.getLocation().getExtId());
+                Location locationStub = Location.makeStub(currentResidency.getLocation().getUuid(), currentResidency.getLocation().getExtId());
                 locationStub.setLocationHierarchy(null);
-                Residency residencyStub = Residency.makeStub(locationStub,individualStub);
+                Residency residencyStub = Residency.makeStub(currentResidency.getUuid(), locationStub,individualStub);
                 residencyStub.setEndType(currentResidency.getEndType());
                 copy.getAllResidencies().add(residencyStub);
             }
@@ -98,13 +100,15 @@ public class ShallowCopier {
         return copy;
     }
 
-    private static Individual copyExtId(Individual individual) {
+    private static Individual copyIds(Individual individual) {
         Individual copy = new Individual();
         if (individual == null) {
             logger.warn("Individual had a null father or mother - using UNK as default value");
             copy.setExtId("UNK");
+            copy.setUuid("UNK-UUID");
         } else {
             copy.setExtId(individual.getExtId());
+            copy.setUuid(individual.getUuid());
         }
 
         return copy;
@@ -113,6 +117,8 @@ public class ShallowCopier {
     public static Location shallowCopyLocation(Location loc) {
         Location copy = new Location();
 
+        copy.setUuid(loc.getUuid());
+        copy.setExtId(loc.getExtId());
         copy.setAccuracy(getEmptyStringIfBlank(loc.getAccuracy()));
         copy.setAltitude(getEmptyStringIfBlank(loc.getAltitude()));
         copy.setLatitude(getEmptyStringIfBlank(loc.getLatitude()));
@@ -139,16 +145,14 @@ public class ShallowCopier {
         copy.setDescription(getEmptyStringIfBlank(loc.getDescription()));
 
         LocationHierarchy hierarchy = new LocationHierarchy();
+        hierarchy.setUuid(loc.getLocationHierarchy().getUuid());
         hierarchy.setExtId(loc.getLocationHierarchy().getExtId());
         copy.setLocationHierarchy(hierarchy);
 
-
-        copy.setUuid(loc.getUuid());
-        copy.setExtId(loc.getExtId());
         copy.setLocationName(loc.getLocationName());
         copy.setLocationType(loc.getLocationType());
 
-        FieldWorker fieldworkerStub = FieldWorker.makeStub(loc.getCollectedBy().getExtId());
+        FieldWorker fieldworkerStub = FieldWorker.makeStub(loc.getCollectedBy().getUuid(), loc.getCollectedBy().getExtId());
         copy.setCollectedBy(fieldworkerStub);
         return copy;
     }
@@ -163,12 +167,13 @@ public class ShallowCopier {
 
     public static Relationship shallowCopyRelationship(Relationship original) {
         Relationship copy = new Relationship();
+        copy.setUuid(original.getUuid());
         copy.setaIsToB(original.getaIsToB());
 
-        Individual individualStub = Individual.makeStub(original.getIndividualA().getExtId());
+        Individual individualStub = Individual.makeStub(original.getIndividualA().getUuid(), original.getIndividualA().getExtId());
         copy.setIndividualA(individualStub);
 
-        individualStub = Individual.makeStub(original.getIndividualB().getExtId());
+        individualStub = Individual.makeStub(original.getIndividualB().getUuid(), original.getIndividualB().getExtId());
         copy.setIndividualB(individualStub);
 
         copy.setStartDate(original.getStartDate());
@@ -178,20 +183,25 @@ public class ShallowCopier {
     }
 
     public static SocialGroup shallowCopySocialGroup(SocialGroup original) {
-        Individual groupHeadStub = Individual.makeStub(original.getGroupHead().getExtId());
+        Individual groupHeadStub = Individual.makeStub(original.getGroupHead().getUuid(), original.getGroupHead().getExtId());
+        Location locationStub = Location.makeStub(original.getLocation().getUuid(), original.getLocation().getExtId());
+
         SocialGroup copy = new SocialGroup();
+        copy.setUuid(original.getUuid());
         copy.setExtId(original.getExtId());
         copy.setGroupHead(groupHeadStub);
         copy.setGroupName(original.getGroupName());
+        copy.setLocation(locationStub);
         return copy;
     }
 
     public static Visit shallowCopyVisit(Visit original) {
-        FieldWorker fieldworkerStub = FieldWorker.makeStub(original.getCollectedBy().getExtId());
-        Location locationStub = Location.makeStub(original.getVisitLocation().getExtId());
+        FieldWorker fieldworkerStub = FieldWorker.makeStub(original.getCollectedBy().getUuid(), original.getCollectedBy().getExtId());
+        Location locationStub = Location.makeStub(original.getVisitLocation().getUuid(), original.getVisitLocation().getExtId());
         locationStub.setLocationHierarchy(null);
 
         Visit copy = new Visit();
+        copy.setUuid(original.getUuid());
         copy.setCollectedBy(fieldworkerStub);
         copy.setVisitLocation(locationStub);
         copy.setExtId(original.getExtId());
@@ -204,28 +214,30 @@ public class ShallowCopier {
     public static Membership shallowCopyMembership(Membership membership) {
     	
         Membership copy = new Membership();
+        copy.setUuid(membership.getUuid());
         copy.setbIsToA(membership.getbIsToA());
         copy.setStartDate(membership.getStartDate());
         copy.setStartType(membership.getStartType());
         copy.setEndDate(membership.getEndDate());
         copy.setEndType(membership.getEndType());
-        FieldWorker fieldworkerStub = FieldWorker.makeStub(membership.getCollectedBy().getExtId());
+        FieldWorker fieldworkerStub = FieldWorker.makeStub(membership.getCollectedBy().getUuid(), membership.getCollectedBy().getExtId());
         copy.setCollectedBy(fieldworkerStub);
-        Individual individualStub = Individual.makeStub(membership.getIndividual().getExtId());
+        Individual individualStub = Individual.makeStub(membership.getIndividual().getUuid(), membership.getIndividual().getExtId());
         copy.setIndividual(individualStub);
-        SocialGroup sgStub = SocialGroup.makeStub(membership.getSocialGroup().getExtId());
+        SocialGroup sgStub = SocialGroup.makeStub(membership.getSocialGroup().getUuid(), membership.getSocialGroup().getExtId());
         copy.setSocialGroup(sgStub);
         return copy;
     }
 
     public static PregnancyOutcome shallowCopyPregnancyOutcome(PregnancyOutcome outcome) {
         PregnancyOutcome copy = new PregnancyOutcome();
+        copy.setUuid(outcome.getUuid());
         copy.setOutcomeDate(outcome.getOutcomeDate());
         copy.setChildEverBorn(outcome.getChildEverBorn());
         copy.setNumberOfLiveBirths(outcome.getNumberOfLiveBirths());
-        copy.setFather(Individual.makeStub(outcome.getFather().getExtId()));
-        copy.setMother(Individual.makeStub(outcome.getMother().getExtId()));
-        copy.setVisit(Visit.makeStub(outcome.getVisit().getExtId()));
+        copy.setFather(Individual.makeStub(outcome.getFather().getUuid(), outcome.getFather().getExtId()));
+        copy.setMother(Individual.makeStub(outcome.getMother().getUuid(), outcome.getMother().getExtId()));
+        copy.setVisit(Visit.makeStub(outcome.getVisit().getUuid()));
         return copy;
     }
 }

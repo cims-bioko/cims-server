@@ -11,6 +11,15 @@ import org.openhds.domain.model.PrivilegeConstants;
 
 public interface LocationHierarchyService {
 
+    @Authorized({PrivilegeConstants.CREATE_ENTITY})
+    LocationHierarchy findByUuid(String uuid);
+
+	@Authorized({PrivilegeConstants.CREATE_ENTITY})
+	LocationHierarchy findByExtId(String extId);
+
+	@Authorized({PrivilegeConstants.CREATE_ENTITY})
+	void createLocationHierarchy(LocationHierarchy locationHierarchy) throws ConstraintViolations;
+
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
 	Location evaluateLocation(Location entityItem) throws ConstraintViolations;
 	

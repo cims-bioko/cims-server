@@ -73,7 +73,7 @@ public class FieldBuilder {
             violations.addViolations("No field worker id provided");
         }
 
-        FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerById(collectedBy.getExtId());
+        FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerByExtId(collectedBy.getExtId());
         if (fieldWorker == null) {
             violations.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID);
         }

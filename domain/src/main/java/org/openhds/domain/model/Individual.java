@@ -320,9 +320,10 @@ public class Individual extends AuditableCollectedEntity implements Serializable
         this.nationality = nationality;
     }
 
-    public static Individual makeStub(String extId) {
+    public static Individual makeStub(String uuid, String extId) {
     	Individual stub = new Individual();
-    	stub.setExtId(extId);
+    	stub.setUuid(uuid);
+        stub.setExtId(extId);
     	return stub;
     }
 

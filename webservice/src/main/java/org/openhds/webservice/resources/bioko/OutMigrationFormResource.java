@@ -64,7 +64,7 @@ public class OutMigrationFormResource extends AbstractFormResource {
         outMigration.setDestination(outMigrationForm.getNameOfDestination());
         outMigration.setReason(outMigrationForm.getReasonForOutMigration());
 
-        FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerById(outMigrationForm.getFieldWorkerExtId());
+        FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerByExtId(outMigrationForm.getFieldWorkerExtId());
         if (null == fieldWorker) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID);

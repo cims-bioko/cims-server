@@ -109,7 +109,7 @@ public class ErrorLogResourceTest extends AbstractResourceTest {
         final String OUTMIGRATION_FORM_XML_INVALID_DATE =
                 "<outMigrationForm>"
                         + "<processed_by_mirth>false</processed_by_mirth>"
-                        + "<out_migration_individual_ext_id>individual2</out_migration_individual_ext_id>"
+                        + "<individual_ext_id>individual2</individual_ext_id>"
                         + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>"
                         + "<visit_ext_id>migrateVisit</visit_ext_id>"
                         + "<out_migration_date>"

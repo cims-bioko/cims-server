@@ -47,23 +47,24 @@ public class VisitFormResourceTest extends AbstractResourceTest {
 
     private static final String A_DATE = "2000-01-01T00:00:00-05:00";
 
-	private static final String VISIT_FORM_XML =
-			"<visitForm>"
-			+ "<processed_by_mirth>false</processed_by_mirth>"
-			+ "<visit_ext_id>1234567890aa</visit_ext_id>"
-			+ "<field_worker_ext_id>FWEK1D</field_worker_ext_id>"
-			+ "<location_ext_id>testLocation1</location_ext_id>"
-			+ "<visit_date>"
-			+ A_DATE
-			+ "</visit_date>"
-			+ "</visitForm>";
-	
+    private static final String VISIT_FORM_XML =
+            "<visitForm>"
+                    + "<processed_by_mirth>false</processed_by_mirth>"
+                    + "<visit_ext_id>1234567890aa</visit_ext_id>"
+                    + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>"
+                    + "<location_ext_id>testLocation1</location_ext_id>"
+                    + "<location_uuid>TestLocation1</location_uuid>"
+                    + "<visit_date>"
+                    + A_DATE
+                    + "</visit_date>"
+                    + "</visitForm>";
+
     @Before
     public void setUp() throws Exception {
         mockMvc = buildMockMvc();
         session = getMockHttpSession("admin", "test", mockMvc);
     }
-	
+
     @Test
     public void testPostVisitFormXml() throws Exception {
         mockMvc.perform(
@@ -77,11 +78,11 @@ public class VisitFormResourceTest extends AbstractResourceTest {
     }
 
     private void verifyVisitCrud(String visitExtId) {
-    	Visit visit = genericDao.findByProperty(Visit.class, "extId", visitExtId);
-    	assertNotNull(visit);
-    	assertEquals(visit.getExtId(), visitExtId);
-    	assertEquals(visit.getVisitLocation().getExtId(), "testLocation1");
-    	assertEquals(visit.getCollectedBy().getExtId(), "FWEK1D");
+        Visit visit = genericDao.findByProperty(Visit.class, "extId", visitExtId);
+        assertNotNull(visit);
+        assertEquals(visit.getExtId(), visitExtId);
+        assertEquals(visit.getVisitLocation().getExtId(), "testLocation1");
+        assertEquals(visit.getCollectedBy().getExtId(), "FWEK1D");
     }
-    
+
 }

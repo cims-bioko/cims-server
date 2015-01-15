@@ -1,7 +1,9 @@
 package org.openhds.controller.service.refactor.crudhelpers;
 
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.controller.service.refactor.SocialGroupService;
 import org.openhds.domain.model.SocialGroup;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.List;
 @Component("SocialGroupCrudHelper")
 public class SocialGroupCrudHelper extends AbstractEntityCrudHelperImpl<SocialGroup> {
 
+    @Autowired
+    SocialGroupService socialGroupService;
 
     @Override
     protected void preCreateSanityChecks(SocialGroup socialGroup) throws ConstraintViolations {
@@ -25,7 +29,12 @@ public class SocialGroupCrudHelper extends AbstractEntityCrudHelperImpl<SocialGr
     }
 
     @Override
-    protected void validateReferences(SocialGroup socialGroup) {
+    protected void validateReferences(SocialGroup socialGroup) throws ConstraintViolations {
+
+        ConstraintViolations constraintViolations = new ConstraintViolations();
+        if (!socialGroupService.isEligibleForCreation(socialGroup, constraintViolations)) {
+            throw constraintViolations;
+        }
 
     }
 

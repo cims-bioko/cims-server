@@ -1,7 +1,6 @@
 package org.openhds.controller.service.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.openhds.controller.exception.ConstraintViolations;
@@ -9,7 +8,6 @@ import org.openhds.controller.idgeneration.FieldWorkerGenerator;
 import org.openhds.controller.idgeneration.Generator;
 import org.openhds.controller.service.FieldWorkerService;
 import org.openhds.dao.service.GenericDao;
-import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.FieldWorker;
 
 @SuppressWarnings("unchecked")
@@ -31,7 +29,7 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
 
 	public FieldWorker evaluateFieldWorker(FieldWorker entityItem) throws ConstraintViolations { 	
 		
-		if (findFieldWorkerById(entityItem.getExtId()) != null)
+		if (findFieldWorkerByExtId(entityItem.getExtId()) != null)
 			throw new ConstraintViolations("The Id specified already exists");	
 		
 		return generateId(entityItem);
@@ -61,7 +59,12 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
         return ids;
     }
 
-	public FieldWorker findFieldWorkerById(String fieldWorkerId) {
+    public FieldWorker findFieldWorkerById(String fieldWorkerId) {
+        FieldWorker fw = genericDao.findByProperty(FieldWorker.class, "extId", fieldWorkerId);
+        return fw;
+    }
+
+	public FieldWorker findFieldWorkerByExtId(String fieldWorkerId) {
 		 FieldWorker fw = genericDao.findByProperty(FieldWorker.class, "extId", fieldWorkerId);
 		 return fw;
 	}

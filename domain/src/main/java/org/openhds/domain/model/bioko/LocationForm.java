@@ -12,10 +12,12 @@ import java.util.Calendar;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class LocationForm implements Serializable{
 
-
-
+    //core form fields
     @XmlElement(name = "entity_uuid")
     private String uuid;
+
+    @XmlElement(name = "entity_ext_id")
+    private String entityExtId;
 
     @XmlElement(name = "processed_by_mirth")
     private boolean processedByMirth;
@@ -23,12 +25,22 @@ public class LocationForm implements Serializable{
     @XmlElement(name = "field_worker_ext_id")
     private String fieldWorkerExtId;
 
+    @XmlElement(name = "field_worker_uuid")
+    private String fieldWorkerUuid;
+
     @XmlElement(name = "collection_date_time")
     @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
     private Calendar collectionDateTime;
 
+    //location form fields
     @XmlElement(name = "hierarchy_ext_id")
     private String hierarchyExtId;
+
+    @XmlElement(name = "hierarchy_uuid")
+    private String hierarchyUuid;
+
+    @XmlElement(name = "hierarchy_parent_uuid")
+    private String hierarchyParentUuid;
 
     @XmlElement(name = "location_ext_id")
     private String locationExtId;
@@ -68,6 +80,38 @@ public class LocationForm implements Serializable{
 
     @XmlElement(name = "latitude")
     private String latitude;
+
+    public String getHierarchyParentUuid() {
+        return hierarchyParentUuid;
+    }
+
+    public void setHierarchyParentUuid(String hierarchyParentUuid) {
+        this.hierarchyParentUuid = hierarchyParentUuid;
+    }
+
+    public String getEntityExtId() {
+        return entityExtId;
+    }
+
+    public void setEntityExtId(String entityExtId) {
+        this.entityExtId = entityExtId;
+    }
+
+    public String getFieldWorkerUuid() {
+        return fieldWorkerUuid;
+    }
+
+    public void setFieldWorkerUuid(String fieldWorkerUuid) {
+        this.fieldWorkerUuid = fieldWorkerUuid;
+    }
+
+    public String getHierarchyUuid() {
+        return hierarchyUuid;
+    }
+
+    public void setHierarchyUuid(String hierarchyUuid) {
+        this.hierarchyUuid = hierarchyUuid;
+    }
 
     public String getLongitude() {
         return longitude;
