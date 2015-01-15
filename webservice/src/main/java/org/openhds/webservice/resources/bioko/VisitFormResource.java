@@ -5,6 +5,7 @@ import java.io.StringWriter;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.*;
+import org.openhds.controller.service.refactor.LocationService;
 import org.openhds.domain.model.ErrorLog;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Location;
@@ -36,7 +37,7 @@ public class VisitFormResource extends AbstractFormResource {
     private static final Logger logger = LoggerFactory.getLogger(VisitFormResource.class);
 
     @Autowired
-	private LocationHierarchyService locationHierarchyService;
+	private LocationService locationService;
 
     @Autowired
     private FieldWorkerService fieldWorkerService;
@@ -85,7 +86,7 @@ public class VisitFormResource extends AbstractFormResource {
         }
 		visit.setCollectedBy(fieldWorker);
 
-		Location location = locationHierarchyService.findLocationById(visitForm.getLocationExtId());
+		Location location = locationService.getByExtId(visitForm.getLocationUuid());
         if (null == location) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_LOCATION_EXT_ID);
@@ -100,6 +101,7 @@ public class VisitFormResource extends AbstractFormResource {
 		visit.setVisitLocation(location);
 
         visit.setExtId(visitForm.getVisitExtId());
+        visit.setUuid(visitForm.getUuid());
 
         //check to see if Visit with the same extId already exists: visits with the same extId
         //by definition will not contain different data, so there's no need to call an update()

@@ -112,8 +112,8 @@ public class IndividualFormResource extends AbstractFormResource {
             individualForm.setHouseholdUuid(null);
         }
 
-        if ("null".equals(individualForm.getSocialGroupUuid())) {
-            individualForm.setSocialGroupUuid(null);
+        if ("null".equals(individualForm.getSocialgroupUuid())) {
+            individualForm.setSocialgroupUuid(null);
         }
 
         if ("null".equals(individualForm.getRelationshipUuid())) {
@@ -252,7 +252,7 @@ public class IndividualFormResource extends AbstractFormResource {
 
             // Get social group by uuid.
             // Fall back on extId if uuid is missing, which allows us to re-process older forms.
-            String uuid = individualForm.getSocialGroupUuid();
+            String uuid = individualForm.getSocialgroupUuid();
             if (null == uuid) {
                 socialGroup = socialGroupService.getByExtId(individualForm.getHouseholdExtId());
             } else {
@@ -366,7 +366,7 @@ public class IndividualFormResource extends AbstractFormResource {
         // Get social group by uuid.
         // Fall back on extId if uuid is missing, which allows us to re-process older forms.
         SocialGroup socialGroup;
-        String uuid = individualForm.getSocialGroupUuid();
+        String uuid = individualForm.getSocialgroupUuid();
         if (null == uuid) {
             socialGroup = socialGroupService.getByExtId(individualForm.getHouseholdExtId());
         } else {

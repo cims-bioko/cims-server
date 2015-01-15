@@ -109,6 +109,7 @@ public class IndividualForm implements Serializable {
     @XmlElement(name = "individual_nationality")
     private String individualNationality;
 
+
     public String getEntityExtId() {
         return entityExtId;
     }
@@ -133,11 +134,11 @@ public class IndividualForm implements Serializable {
         this.relationshipUuid = relationshipUuid;
     }
 
-    public String getSocialGroupUuid() {
+    public String getSocialgroupUuid() {
         return socialgroupUuid;
     }
 
-    public void setSocialGroupUuid(String socialgroupUuid) {
+    public void setSocialgroupUuid(String socialgroupUuid) {
         this.socialgroupUuid = socialgroupUuid;
     }
 
