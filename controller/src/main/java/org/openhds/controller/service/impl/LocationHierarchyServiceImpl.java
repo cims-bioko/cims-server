@@ -23,7 +23,8 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 	private Generator locationHierarchyGenerator;
     private EntityService entityService;
 	
-	public LocationHierarchyServiceImpl(GenericDao genericDao, EntityService entityService, Generator locationGenerator, Generator locationHierarchyGenerator) {
+	public LocationHierarchyServiceImpl(GenericDao genericDao, EntityService entityService, Generator locationGenerator,
+										Generator locationHierarchyGenerator) {
 		this.genericDao = genericDao;
 		this.entityService = entityService;
 		this.locationGenerator = locationGenerator;
@@ -82,7 +83,8 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 		return item;
 	}
 	
-	public LocationHierarchy checkLocationHierarchy(LocationHierarchy persistedItem, LocationHierarchy entityItem) throws ConstraintViolations {
+	public LocationHierarchy checkLocationHierarchy(LocationHierarchy persistedItem, LocationHierarchy entityItem)
+			throws ConstraintViolations {
 		
 		// when editing the Hierarchy, particular constraints must be enforced
 		if (getHierarchyItemHighestLevel().equals(persistedItem))

@@ -469,7 +469,6 @@ public class IndividualFormResource extends AbstractFormResource {
 
         Relationship relationship = null;
 
-
         // get relationships where this individualA acts as relationship individualA
         for (Relationship r : individualA.getAllRelationships1()) {
             if (r.getIndividualB().equals(individualB)) {
