@@ -7,6 +7,7 @@ import org.openhds.controller.service.refactor.LocationService;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.LocationHierarchy;
+import org.openhds.domain.model.LocationHierarchyLevel;
 import org.openhds.domain.model.bioko.LocationForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +77,12 @@ public class LocationFormResource extends AbstractFormResource{
             String uuid = locationForm.getHierarchyUuid();
             if (null == uuid) {
                 locationHierarchy = locationHierarchyService.findByExtId(locationForm.getHierarchyExtId());
+
+                // try to create a new hierarchy entry with the given uuid
+                if (null == locationHierarchy) {
+                    locationHierarchy = createSector(locationForm);
+                }
+
             } else {
                 locationHierarchy = locationHierarchyService.findByUuid(uuid);
             }
@@ -88,7 +95,7 @@ public class LocationFormResource extends AbstractFormResource{
             }
 
         } catch (Exception e) {
-            return requestError("Error getting reference LocationHierarchy: " + e.getMessage());
+            return requestError("Error getting reference to LocationHierarchy: " + e.getMessage());
         }
 
         // fill in data for the new location
@@ -132,4 +139,29 @@ public class LocationFormResource extends AbstractFormResource{
         return inPast;
     }
 
+    private LocationHierarchy createSector(LocationForm locationForm) throws ConstraintViolations {
+        LocationHierarchy locationHierarchy = new LocationHierarchy();
+
+        locationHierarchy.setExtId(locationForm.getHierarchyExtId());
+        locationHierarchy.setUuid(locationForm.getHierarchyUuid());
+        locationHierarchy.setName(locationForm.getSectorName());
+
+        String parentUuid = locationForm.getHierarchyParentUuid();
+        LocationHierarchy parent = locationHierarchyService.findByUuid(parentUuid);
+        if (null == parent) {
+            throw new ConstraintViolations("Could not find location hierarchy parent with UUID " + parentUuid);
+        }
+        locationHierarchy.setParent(parent);
+
+        int levelKeyId = parent.getLevel().getKeyIdentifier() + 1;
+        LocationHierarchyLevel level = locationHierarchyService.getLevel(levelKeyId);
+        if (null == level) {
+            throw new ConstraintViolations("Could not find location hierarchy level with key " + levelKeyId);
+        }
+        locationHierarchy.setLevel(level);
+
+        locationHierarchyService.createLocationHierarchy(locationHierarchy);
+
+        return locationHierarchy;
+    }
 }

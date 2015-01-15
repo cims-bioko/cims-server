@@ -86,7 +86,7 @@ public class VisitFormResource extends AbstractFormResource {
         }
 		visit.setCollectedBy(fieldWorker);
 
-		Location location = locationService.getByExtId(visitForm.getLocationUuid());
+		Location location = locationService.getByUuid(visitForm.getLocationUuid());
         if (null == location) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_LOCATION_EXT_ID);
