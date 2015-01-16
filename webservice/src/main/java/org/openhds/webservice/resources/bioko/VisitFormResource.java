@@ -102,7 +102,7 @@ public class VisitFormResource extends AbstractFormResource {
 
 		visit.setVisitLocation(location);
         visit.setExtId(visitForm.getVisitExtId());
-        visit.setUuid(visitForm.getUuid());
+        visit.setUuid(visitForm.getVisitUuid());
 
         //check to see if Visit with the same extId already exists: visits with the same extId
         //by definition will not contain different data, so there's no need to call an update()
