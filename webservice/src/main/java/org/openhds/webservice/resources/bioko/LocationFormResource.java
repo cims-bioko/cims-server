@@ -77,14 +77,12 @@ public class LocationFormResource extends AbstractFormResource{
             String uuid = locationForm.getHierarchyUuid();
             if (null == uuid) {
                 locationHierarchy = locationHierarchyService.findByExtId(locationForm.getHierarchyExtId());
-
-                // try to create a new hierarchy entry with the given uuid
+            } else {
+                locationHierarchy = locationHierarchyService.findByUuid(uuid);
                 if (null == locationHierarchy) {
                     locationHierarchy = createSector(locationForm);
                 }
 
-            } else {
-                locationHierarchy = locationHierarchyService.findByUuid(uuid);
             }
 
             if (null == locationHierarchy) {
