@@ -82,7 +82,7 @@ public class DeathFormResource extends AbstractFormResource {
         }
         death.setCollectedBy(fieldWorker);
 
-        Visit visit = visitService.findVisitById(deathForm.getVisitExtId());
+        Visit visit = visitService.findVisitByExtId(deathForm.getVisitExtId());
         if (null == visit) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_VISIT_EXT_ID);

@@ -87,13 +87,8 @@ public class VisitFormResource extends AbstractFormResource {
         }
 		visit.setCollectedBy(fieldWorker);
 
-        // This is stupid looking, but if finding by UUID fails (probably because it's an old form where UUID wasn't
-        // yet implemented, then check by ExtId. If that fails then carry on with the error message.
-		Location location = locationService.getByUuid(visitForm.getLocationUuid());
-        if (null == location) {
-            location = locationService.getByExtId(visitForm.getLocationExtId());
-        }
 
+		Location location = locationService.getByUuid(visitForm.getLocationUuid());
         if (null == location) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.NULL_LOCATION);
@@ -111,7 +106,7 @@ public class VisitFormResource extends AbstractFormResource {
 
         //check to see if Visit with the same extId already exists: visits with the same extId
         //by definition will not contain different data, so there's no need to call an update()
-        Visit exisitingVisit = visitService.findVisitById(visitForm.getVisitExtId());
+        Visit exisitingVisit = visitService.findVisitByExtId(visitForm.getVisitExtId());
         if (null == exisitingVisit) {
             try {
                 visitService.createVisit(visit);

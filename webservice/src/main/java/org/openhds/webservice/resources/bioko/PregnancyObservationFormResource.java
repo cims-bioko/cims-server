@@ -74,7 +74,7 @@ public class PregnancyObservationFormResource extends AbstractFormResource {
         }
         pregnancyObservation.setCollectedBy(fieldWorker);
 
-        Individual individual = individualService.getByExtId(pregnancyObservationForm.getIndividualExtId());
+        Individual individual = individualService.getByUuid(pregnancyObservationForm.getIndividualUuid());
         if (null == individual) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_EXT_ID);
@@ -83,15 +83,15 @@ public class PregnancyObservationFormResource extends AbstractFormResource {
         }
         pregnancyObservation.setMother(individual);
 
-        Visit visit = visitService.findVisitById(pregnancyObservationForm.getVisitExtId());
+        Visit visit = visitService.findVisitByUuid(pregnancyObservationForm.getVisitUuid());
         if (null == visit) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_VISIT_EXT_ID);
             logError(cv, fieldWorker, createDTOPayload(pregnancyObservationForm), PregnancyObservationForm.class.getSimpleName());
             return requestError(cv);
         }
-        pregnancyObservation.setVisit(visit);
 
+        pregnancyObservation.setVisit(visit);
         try {
             pregnancyObservationService.create(pregnancyObservation);
         } catch (ConstraintViolations cv) {

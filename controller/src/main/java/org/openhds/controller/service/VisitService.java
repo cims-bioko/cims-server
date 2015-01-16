@@ -24,7 +24,10 @@ public interface VisitService {
     List<String> getVisitExtIds(String term);
 
     @Authorized({ PrivilegeConstants.VIEW_ENTITY })
-    Visit findVisitById(String visitId);
+    Visit findVisitByExtId(String extId);
+
+    @Authorized({ PrivilegeConstants.VIEW_ENTITY })
+    Visit findVisitByUuid(String uuid);
 
     @Authorized({ PrivilegeConstants.CREATE_ENTITY })
     Visit initializeExtensions(Visit entityItem);
