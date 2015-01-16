@@ -38,8 +38,6 @@ public class LocationHierarchy implements Serializable {
 	private static final long serialVersionUID = -5334850119671675888L;
 	
 	@Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(length=32)
 	String uuid;
 	
