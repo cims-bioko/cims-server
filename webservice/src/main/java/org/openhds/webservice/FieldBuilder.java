@@ -32,7 +32,7 @@ public class FieldBuilder {
             violations.addViolations(ConstraintViolations.INVALID_VISIT_EXT_ID);
         }
 
-        Visit persistedVisit = visitService.findVisitById(visit.getExtId());
+        Visit persistedVisit = visitService.findVisitByExtId(visit.getExtId());
         if (null == persistedVisit) {
             violations.addViolations(ConstraintViolations.INVALID_VISIT_EXT_ID);
         }

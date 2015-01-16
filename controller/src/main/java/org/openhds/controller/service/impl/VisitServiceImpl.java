@@ -83,10 +83,16 @@ public class VisitServiceImpl implements VisitService {
         return ids;
     }
 
-    public Visit findVisitById(String visitId) {
-        Visit visit = genericDao.findByProperty(Visit.class, "extId", visitId);
+    public Visit findVisitByExtId(String extId) {
+        Visit visit = genericDao.findByProperty(Visit.class, "extId", extId);
         return visit;
     }
+
+    public Visit findVisitByUuid(String uuid) {
+        Visit visit = genericDao.findByProperty(Visit.class, "uuid", uuid);
+        return visit;
+    }
+
 
     /**
      * The following extension methods are called from the Crud in retrieving the associated extensions, grouped by
