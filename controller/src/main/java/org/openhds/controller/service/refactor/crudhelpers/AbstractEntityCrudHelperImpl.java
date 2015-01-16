@@ -88,7 +88,7 @@ public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> im
     }
 
     public static void setEntityUuidIfNull(AuditableEntity entity){
-        if(null == entity.getUuid() || entity.getUuid().isEmpty()){
+        if(null == entity.getUuid() || entity.getUuid().isEmpty() || entity.getUuid().equals("null")){
             entity.setUuid(UUID.randomUUID().toString().replace("-",""));
         }
     }

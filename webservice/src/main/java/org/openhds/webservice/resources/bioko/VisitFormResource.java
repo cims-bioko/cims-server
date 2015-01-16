@@ -4,8 +4,9 @@ import java.io.Serializable;
 import java.io.StringWriter;
 
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.service.*;
+import org.openhds.controller.service.VisitService;
 import org.openhds.controller.service.refactor.LocationService;
+import org.openhds.controller.service.refactor.FieldWorkerService;
 import org.openhds.domain.model.ErrorLog;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Location;
@@ -73,7 +74,7 @@ public class VisitFormResource extends AbstractFormResource {
 		visit.setRoundNumber(1);
 		visit.setVisitDate(visitForm.getVisitDate());
 
-		FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerByExtId(visitForm.getFieldworkerExtId());
+		FieldWorker fieldWorker = fieldWorkerService.getByUuid(visitForm.getFieldWorkerUuid());
         if (null == fieldWorker) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID);
@@ -86,10 +87,16 @@ public class VisitFormResource extends AbstractFormResource {
         }
 		visit.setCollectedBy(fieldWorker);
 
+        // This is stupid looking, but if finding by UUID fails (probably because it's an old form where UUID wasn't
+        // yet implemented, then check by ExtId. If that fails then carry on with the error message.
 		Location location = locationService.getByUuid(visitForm.getLocationUuid());
         if (null == location) {
+            location = locationService.getByExtId(visitForm.getLocationExtId());
+        }
+
+        if (null == location) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_LOCATION_EXT_ID);
+            cv.addViolations(ConstraintViolations.NULL_LOCATION);
             StringWriter writer = new StringWriter();
             marshaller.marshal(visitForm, writer);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, VisitForm.class.getSimpleName(),
@@ -99,7 +106,6 @@ public class VisitFormResource extends AbstractFormResource {
         }
 
 		visit.setVisitLocation(location);
-
         visit.setExtId(visitForm.getVisitExtId());
         visit.setUuid(visitForm.getUuid());
 
