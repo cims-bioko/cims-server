@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
@@ -18,19 +19,21 @@ public class CacheResponseWriter {
     public void writeResponse(File fileToWrite, HttpServletResponse response) throws IOException {
         if (!fileToWrite.exists()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
         }
 
-        response.setStatus(HttpServletResponse.SC_OK);
+        InputStream inputStream = new FileInputStream(fileToWrite);
+        ServletOutputStream outputStream = response.getOutputStream();
 
-        InputStream is = null;
-        try {
-            is = new BufferedInputStream(new FileInputStream(fileToWrite));
-            IOUtils.copy(is, response.getOutputStream());
-        } finally {
-            if (is != null) {
-                IOUtils.closeQuietly(is);
-            }
+        byte[] buffer = new byte[8192];
+        int bytesRead;
+
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
         }
+
+        IOUtils.closeQuietly(inputStream);
+
     }
 
 }
