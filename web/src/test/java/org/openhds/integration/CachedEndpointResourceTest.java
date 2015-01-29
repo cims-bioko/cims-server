@@ -3,6 +3,8 @@ package org.openhds.integration;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import org.apache.commons.io.FileUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +25,7 @@ import org.springframework.test.web.server.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.io.File;
 import java.io.IOException;
 
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
@@ -68,9 +71,8 @@ public class CachedEndpointResourceTest {
         session = getMockHttpSession("admin", "test");
     }
 
-    private void createTestCachedXml() {
+    private void createTestCachedXml() throws Exception {
 
-        try {
             fileResolver.resolveIndividualXmlFile().createNewFile();
             fileResolver.resolveLocationXmlFile().createNewFile();
             fileResolver.resolveMembershipXmlFile().createNewFile();
@@ -78,9 +80,13 @@ public class CachedEndpointResourceTest {
             fileResolver.resolveResidencyXmlFile().createNewFile();
             fileResolver.resolvesocialGroupXmlFile().createNewFile();
             fileResolver.resolveVisitXmlFile().createNewFile();
-        } catch (IOException e) {
 
-        }
+    }
+
+    @After
+    public void tearDown() throws Exception {
+
+        FileUtils.cleanDirectory(new File(fileResolver.resolveIndividualXmlFile().getParent()));
 
     }
 
