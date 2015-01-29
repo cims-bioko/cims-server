@@ -22,7 +22,26 @@ public class CacheResponseWriter {
             return;
         }
 
+        response.setStatus(HttpServletResponse.SC_OK);
+
         InputStream inputStream = new FileInputStream(fileToWrite);
+        ServletOutputStream outputStream = response.getOutputStream();
+
+        byte[] buffer = new byte[8192];
+        int bytesRead;
+
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
+        }
+
+        IOUtils.closeQuietly(inputStream);
+
+    }
+
+    @Authorized({PrivilegeConstants.VIEW_ENTITY})
+    public void refactoredWriteResponse(String filename, HttpServletResponse response) throws IOException {
+
+        InputStream inputStream = new FileInputStream(filename);
         ServletOutputStream outputStream = response.getOutputStream();
 
         byte[] buffer = new byte[8192];
