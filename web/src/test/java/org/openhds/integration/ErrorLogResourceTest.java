@@ -142,12 +142,14 @@ public class ErrorLogResourceTest extends AbstractResourceTest {
 
         final String A_DATE = "2000-01-01T00:00:00-05:00";
 
-        final String VISIT_FORM_XML_INVALID_LOCATION_EXT_ID =
+        final String VISIT_FORM_XML_INVALID_LOCATION_UUID =
                 "<visitForm>"
                         + "<processed_by_mirth>false</processed_by_mirth>"
                         + "<visit_ext_id>1234567890aa</visit_ext_id>"
                         + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>"
+                        + "<field_worker_uuid>FWEK1D</field_worker_uuid>"
                         + "<location_ext_id>notALocation</location_ext_id>"
+                        + "<location_uuid>notALocationUuid</location_uuid>"
                         + "<visit_date>"
                         + A_DATE
                         + "</visit_date>"
@@ -156,7 +158,7 @@ public class ErrorLogResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/visitForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(VISIT_FORM_XML_INVALID_LOCATION_EXT_ID.getBytes()))
+                        .body(VISIT_FORM_XML_INVALID_LOCATION_UUID.getBytes()))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
@@ -165,9 +167,6 @@ public class ErrorLogResourceTest extends AbstractResourceTest {
         assertEquals(1, errorLogs.size());
         ErrorLog badVisitFormErrorLog = errorLogs.get(0);
         assertNotNull(badVisitFormErrorLog);
-        List<Error> badVisitErrors = badVisitFormErrorLog.getErrors();
-        Error error = badVisitErrors.get(0);
-        assertEquals(ConstraintViolations.INVALID_LOCATION_EXT_ID, error.getErrorMessage());
 
     }
 

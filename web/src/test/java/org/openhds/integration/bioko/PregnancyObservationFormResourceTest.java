@@ -55,8 +55,10 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
             "<pregnancyObservationForm>" +
             "<recorded_date>"+ A_CURRENT_DATE +"</recorded_date>" +
             "<visit_ext_id>pregObsVisit</visit_ext_id>" +
-            "<individual_ext_id>pregnantIndividual</individual_ext_id>" +
-            "<processed_by_mirth>null</processed_by_mirth>" +
+                    "<visit_uuid>PregObsVisit</visit_uuid>" +
+                    "<individual_ext_id>pregnantIndividual</individual_ext_id>" +
+                    "<individual_uuid>PregnantIndividual</individual_uuid>" +
+                    "<processed_by_mirth>null</processed_by_mirth>" +
                     "<entity_uuid>PREG-OBS-UUID</entity_uuid>" +
                     "<field_worker_ext_id>UNK</field_worker_ext_id>" +
                     "<field_worker_uuid>UnknownFieldWorker</field_worker_uuid>" +
@@ -96,7 +98,11 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
             "<pregnancyObservationForm>" +
                     "<recorded_date>"+ A_CURRENT_DATE +"</recorded_date>" +
                     "<visit_ext_id>pregObsVisit</visit_ext_id>" +
+                    "<visit_uuid>PregObsVisit</visit_uuid>" +
+
                     "<individual_ext_id>pregnantIndividual</individual_ext_id>" +
+                    "<individual_uuid>PregnantIndividual</individual_uuid>" +
+
                     "<processed_by_mirth>null</processed_by_mirth>" +
                     "<entity_uuid>PREG-OBS-IN-PAST</entity_uuid>" +
                     "<field_worker_ext_id>UNK</field_worker_ext_id>" +
@@ -121,6 +127,7 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
                     "<recorded_date>"+ A_CURRENT_DATE +"</recorded_date>" +
                     "<visit_ext_id>pregObsVisit</visit_ext_id>" +
                     "<individual_ext_id>pregnantMale</individual_ext_id>" +
+                    "<individual_uuid>PregnantMale</individual_uuid>" +
                     "<processed_by_mirth>null</processed_by_mirth>" +
                     "<entity_uuid>PREG-OBS-MALE</entity_uuid>" +
                     "<field_worker_ext_id>UNK</field_worker_ext_id>" +
