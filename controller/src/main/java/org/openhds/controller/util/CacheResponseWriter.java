@@ -1,9 +1,6 @@
 package org.openhds.controller.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -23,18 +20,15 @@ public class CacheResponseWriter {
 
         response.setStatus(HttpServletResponse.SC_OK);
 
-        InputStream inputStream = new FileInputStream(fileToWrite);
-        ServletOutputStream outputStream = response.getOutputStream();
-
-        byte[] buffer = new byte[8192];
-        int bytesRead;
-
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, bytesRead);
+        InputStream is = null;
+        try {
+            is = new BufferedInputStream(new FileInputStream(fileToWrite));
+            IOUtils.copy(is, response.getOutputStream());
+        } finally {
+            if (is != null) {
+                IOUtils.closeQuietly(is);
+            }
         }
-
-        IOUtils.closeQuietly(inputStream);
-
     }
 
     @Authorized({PrivilegeConstants.VIEW_ENTITY})
