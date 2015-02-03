@@ -23,6 +23,9 @@
 
 	<bean
 		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="asyncRequestTimeout">
+            <value>36000000</value>
+        </property>
 		<property name="messageConverters">
 			<array>
 				<ref bean="marshallingXmlHttpMessageConverter" />
