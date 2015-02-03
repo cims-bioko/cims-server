@@ -18,6 +18,7 @@ public class CacheResponseWriter {
             return;
         }
 
+        response.setHeader("Content-Length", String.valueOf(fileToWrite.length()));
         response.setStatus(HttpServletResponse.SC_OK);
 
         InputStream is = null;
