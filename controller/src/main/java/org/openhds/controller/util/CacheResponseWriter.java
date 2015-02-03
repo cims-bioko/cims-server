@@ -1,6 +1,5 @@
 package org.openhds.controller.util;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -47,10 +46,18 @@ public class CacheResponseWriter {
 
         byte[] buffer = new byte[8192];
         int bytesRead;
+        int bytesBuffered = 0;
 
         while ((bytesRead = inputStream.read(buffer)) != -1) {
             outputStream.write(buffer, 0, bytesRead);
+            bytesBuffered += bytesRead;
+            if (bytesBuffered > 1024 * 1024) { //flush after 1MB
+                bytesBuffered = 0;
+                outputStream.flush();
+            }
         }
+
+        outputStream.flush();
 
         IOUtils.closeQuietly(inputStream);
 
