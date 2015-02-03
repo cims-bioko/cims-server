@@ -37,6 +37,7 @@ public class CacheResponseWriter {
         InputStream inputStream = new FileInputStream(filename);
         ServletOutputStream outputStream = response.getOutputStream();
         response.setStatus(HttpServletResponse.SC_OK);
+        response.setHeader("Content-Length", String.valueOf(new File(filename).length()));
 
         byte[] buffer = new byte[8192];
         int bytesRead;
