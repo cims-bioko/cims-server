@@ -34,17 +34,21 @@
         </property>
     </bean>
 
+    <bean id="marshallingXmlHttpMessageConverter"
+          class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+        <property name="marshaller" ref="jaxbMarshaller" />
+        <property name="unmarshaller" ref="jaxbMarshaller" />
+    </bean>
+
+    <bean id="marshallingJsonHttpMessageConverter"
+          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+
     <mvc:annotation-driven
             content-negotiation-manager="contentNegotiationManager" >
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
-            <bean id="marshallingXmlHttpMessageConverter"
-                  class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
-                <property name="marshaller" ref="jaxbMarshaller" />
-                <property name="unmarshaller" ref="jaxbMarshaller" />
-            </bean>
-            <bean id="marshallingJsonHttpMessageConverter"
-                  class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+            <ref bean="marshallingXmlHttpMessageConverter" />
+            <ref bean="marshallingJsonHttpMessageConverter" />
         </mvc:message-converters>
     </mvc:annotation-driven>
 
