@@ -47,8 +47,6 @@
             content-negotiation-manager="contentNegotiationManager" >
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
-            <ref bean="marshallingXmlHttpMessageConverter" />
-            <ref bean="marshallingJsonHttpMessageConverter" />
         </mvc:message-converters>
     </mvc:annotation-driven>
 
