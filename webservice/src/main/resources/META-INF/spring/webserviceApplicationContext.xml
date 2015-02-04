@@ -46,7 +46,9 @@
 	<mvc:annotation-driven
 		content-negotiation-manager="contentNegotiationManager" />
 
-	<bean id="contentNegotiationManager"
+    <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
+
+    <bean id="contentNegotiationManager"
 		class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
 		<property name="favorPathExtension" value="false" />
 		<property name="favorParameter" value="true" />

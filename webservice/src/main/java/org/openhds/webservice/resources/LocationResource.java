@@ -32,6 +32,7 @@ import org.openhds.webservice.response.constants.ResultCodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -137,47 +138,10 @@ public class LocationResource {
         return new ResponseEntity<WebserviceResult>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/streamtest/{contentBytes}", method = RequestMethod.GET, produces = "application/xml")
-    public void streamOutCachedXml(HttpServletResponse response, @PathVariable int contentBytes) {
-
-        File bigXml = fileResolver.resolveLocationXmlFile();
-        if (!bigXml.exists()) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
-
-        InputStream is = null;
-        try {
-            is = new FileInputStream(bigXml);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("FileNotFoundException getting input stream: " + e.getMessage());
-        }
-
-        OutputStream os = null;
-        try {
-            os = response.getOutputStream();
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.setHeader("Content-Disposition", "attachment; filename=" + bigXml.getName());
-            //response.setContentLength((int)bigXml.length());
-            response.setContentLength(contentBytes);
-
-            byte[] buffer = new byte[8192];
-            int bytesRead;
-            int bytesBuffered = 0;
-
-            while ((bytesRead = is.read(buffer)) != -1 && bytesBuffered < contentBytes) {
-                os.write(buffer, 0, bytesRead);
-                bytesBuffered += bytesRead;
-                os.flush();
-            }
-
-            response.flushBuffer();
-            is.close();
-            os.close();
-
-        } catch (IOException e) {
-            throw new RuntimeException("IOError writing file to output stream: " + e.getMessage());
-        }
+    @RequestMapping(value = "/streamtest", method = RequestMethod.GET, produces = "application/xml")
+    @ResponseBody
+    public FileSystemResource streamOutCachedXml() {
+        return new FileSystemResource(fileResolver.resolveLocationXmlFile());
     }
 
     @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = "application/xml")
