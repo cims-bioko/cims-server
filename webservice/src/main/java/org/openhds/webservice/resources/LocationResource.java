@@ -137,8 +137,8 @@ public class LocationResource {
         return new ResponseEntity<WebserviceResult>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/streamtest", method = RequestMethod.GET, produces = "application/xml")
-    public void streamOutCachedXml(HttpServletResponse response) {
+    @RequestMapping(value = "/streamtest/{contentBytes}", method = RequestMethod.GET, produces = "application/xml")
+    public void streamOutCachedXml(HttpServletResponse response, @PathVariable int contentBytes) {
 
         File bigXml = fileResolver.resolveLocationXmlFile();
         if (!bigXml.exists()) {
@@ -159,13 +159,13 @@ public class LocationResource {
             response.setStatus(HttpServletResponse.SC_OK);
             response.setHeader("Content-Disposition", "attachment; filename=" + bigXml.getName());
             //response.setContentLength((int)bigXml.length());
-            response.setContentLength(1024*1024);
+            response.setContentLength(contentBytes);
 
             byte[] buffer = new byte[8192];
             int bytesRead;
             int bytesBuffered = 0;
 
-            while ((bytesRead = is.read(buffer)) != -1 && bytesBuffered < 1024*1024) {
+            while ((bytesRead = is.read(buffer)) != -1 && bytesBuffered < contentBytes) {
                 os.write(buffer, 0, bytesRead);
                 bytesBuffered += bytesRead;
                 os.flush();
