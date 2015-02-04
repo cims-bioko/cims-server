@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -138,7 +139,7 @@ public class LocationResource {
         return new ResponseEntity<WebserviceResult>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/streamtest", method = RequestMethod.GET)
+    @RequestMapping(value = "/streamtest", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ResponseBody
     public FileSystemResource streamOutCachedXml() {
         return new FileSystemResource(fileResolver.resolveLocationXmlFile());
