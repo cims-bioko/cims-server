@@ -153,20 +153,26 @@ public class LocationResource {
             throw new RuntimeException("FileNotFoundException getting input stream: " + e.getMessage());
         }
 
+        OutputStream os = null;
         try {
+            os = response.getOutputStream();
             response.setStatus(HttpServletResponse.SC_OK);
             response.setHeader("Content-Disposition", "attachment; filename=" + bigXml.getName());
+            response.setContentLength((int)bigXml.length());
 
-            final String message = "brogom";
-            response.setContentLength(message.length());
-            IOUtils.copy(new ByteArrayInputStream(message.getBytes(StandardCharsets.UTF_8)), response.getOutputStream());
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            int bytesBuffered = 0;
 
-            //response.setContentLength((int) bigXml.length());
-            //IOUtils.copy(is, response.getOutputStream());
+            while ((bytesRead = is.read(buffer)) != -1) {
+                os.write(buffer, 0, bytesRead);
+                bytesBuffered += bytesRead;
+                os.flush();
+            }
+
             response.flushBuffer();
-
             is.close();
-            response.getOutputStream().close();
+            os.close();
 
         } catch (IOException e) {
             throw new RuntimeException("IOError writing file to output stream: " + e.getMessage());
