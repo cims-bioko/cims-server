@@ -158,13 +158,14 @@ public class LocationResource {
             os = response.getOutputStream();
             response.setStatus(HttpServletResponse.SC_OK);
             response.setHeader("Content-Disposition", "attachment; filename=" + bigXml.getName());
-            response.setContentLength((int)bigXml.length());
+            //response.setContentLength((int)bigXml.length());
+            response.setContentLength(1024*1024);
 
             byte[] buffer = new byte[8192];
             int bytesRead;
             int bytesBuffered = 0;
 
-            while ((bytesRead = is.read(buffer)) != -1) {
+            while ((bytesRead = is.read(buffer)) != -1 && bytesBuffered < 1024*1024) {
                 os.write(buffer, 0, bytesRead);
                 bytesBuffered += bytesRead;
                 os.flush();
