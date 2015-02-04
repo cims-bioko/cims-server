@@ -138,7 +138,7 @@ public class LocationResource {
         return new ResponseEntity<WebserviceResult>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/streamtest", method = RequestMethod.GET, produces = "application/xml")
+    @RequestMapping(value = "/streamtest", method = RequestMethod.GET)
     @ResponseBody
     public FileSystemResource streamOutCachedXml() {
         return new FileSystemResource(fileResolver.resolveLocationXmlFile());
