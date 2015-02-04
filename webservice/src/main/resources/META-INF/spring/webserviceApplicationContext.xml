@@ -28,6 +28,7 @@
         </property>
         <property name="messageConverters">
             <array>
+                <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
                 <ref bean="marshallingXmlHttpMessageConverter" />
                 <ref bean="marshallingJsonHttpMessageConverter" />
             </array>
