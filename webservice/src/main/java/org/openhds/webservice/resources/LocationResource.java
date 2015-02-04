@@ -1,6 +1,7 @@
 package org.openhds.webservice.resources;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -155,9 +156,13 @@ public class LocationResource {
         try {
             response.setStatus(HttpServletResponse.SC_OK);
             response.setHeader("Content-Disposition", "attachment; filename=" + bigXml.getName());
-            response.setContentLength((int) bigXml.length());
 
-            IOUtils.copy(is, response.getOutputStream());
+            final String message = "brogom";
+            response.setContentLength(message.length());
+            IOUtils.copy(new ByteArrayInputStream(message.getBytes(StandardCharsets.UTF_8)), response.getOutputStream());
+
+            //response.setContentLength((int) bigXml.length());
+            //IOUtils.copy(is, response.getOutputStream());
             response.flushBuffer();
 
             is.close();
