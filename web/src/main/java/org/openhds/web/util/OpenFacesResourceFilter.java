@@ -11,12 +11,12 @@ import java.io.IOException;
  */
 public class OpenFacesResourceFilter extends ResourceFilter {
 
-    private String exludeSuffixPattern;
+    private String excludeSuffixPattern;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
-        this.exludeSuffixPattern = filterConfig.getInitParameter("excludeSuffix");
+        this.excludeSuffixPattern = filterConfig.getInitParameter("excludeSuffix");
     }
 
     @Override
@@ -24,7 +24,7 @@ public class OpenFacesResourceFilter extends ResourceFilter {
 
         if (servletRequest instanceof HttpServletRequest) {
             String url = ((HttpServletRequest)servletRequest).getRequestURL().toString();
-            if (shouldExlude(url)) {
+            if (shouldExclude(url)) {
                 filterChain.doFilter(servletRequest, servletResponse);
                 return;
             }
@@ -34,7 +34,10 @@ public class OpenFacesResourceFilter extends ResourceFilter {
 
     }
 
-    private boolean shouldExlude(String urlPattern) {
-        return urlPattern.endsWith(exludeSuffixPattern);
+    private boolean shouldExclude(String urlPattern) {
+        if (null == excludeSuffixPattern) {
+            return false;
+        }
+        return urlPattern.endsWith(excludeSuffixPattern);
     }
 }

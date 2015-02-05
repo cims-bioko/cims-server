@@ -156,7 +156,7 @@
 		<filter-name>ResourceFilter</filter-name>
 		<filter-class>org.openhds.web.util.OpenFacesResourceFilter</filter-class>
         <init-param>
-            <param-name>exludeSuffix</param-name>
+            <param-name>excludeSuffix</param-name>
             <param-value>/cached</param-value>
         </init-param>
 	</filter>
