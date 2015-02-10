@@ -8,6 +8,8 @@ public interface FileResolver {
 
     File resolveLocationXmlFile();
 
+    String resolveLocationXmlFilename();
+
     File resolveRelationshipXmlFile();
 
     File resolvesocialGroupXmlFile();

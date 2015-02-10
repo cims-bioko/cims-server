@@ -3,10 +3,13 @@ package org.openhds.integration;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import org.apache.commons.io.FileUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhds.integration.util.WebContextLoader;
+import org.openhds.task.support.FileResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
@@ -21,6 +24,9 @@ import org.springframework.test.web.server.MockMvc;
 import org.springframework.test.web.server.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.io.File;
+import java.io.IOException;
 
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
@@ -47,6 +53,9 @@ public class CachedEndpointResourceTest {
     @Autowired
     private FilterChainProxy springSecurityFilterChain;
 
+    @Autowired
+    private FileResolver fileResolver;
+
     private MockHttpSession session;
 
     private MockMvc mockMvc;
@@ -57,7 +66,28 @@ public class CachedEndpointResourceTest {
                 .addFilter(springSecurityFilterChain)
                 .build();
 
+        createTestCachedXml();
+
         session = getMockHttpSession("admin", "test");
+    }
+
+    private void createTestCachedXml() throws Exception {
+
+            fileResolver.resolveIndividualXmlFile().createNewFile();
+            fileResolver.resolveLocationXmlFile().createNewFile();
+            fileResolver.resolveMembershipXmlFile().createNewFile();
+            fileResolver.resolveRelationshipXmlFile().createNewFile();
+            fileResolver.resolveResidencyXmlFile().createNewFile();
+            fileResolver.resolvesocialGroupXmlFile().createNewFile();
+            fileResolver.resolveVisitXmlFile().createNewFile();
+
+    }
+
+    @After
+    public void tearDown() throws Exception {
+
+        FileUtils.cleanDirectory(new File(fileResolver.resolveIndividualXmlFile().getParent()));
+
     }
 
     @Test

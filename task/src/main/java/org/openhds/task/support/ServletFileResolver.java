@@ -57,6 +57,11 @@ public class ServletFileResolver implements FileResolver, ServletContextAware {
     }
 
     @Override
+    public String resolveLocationXmlFilename() {
+        return servletContext.getRealPath("/") + File.separator + "generated-xml/location.xml";
+    }
+
+    @Override
     public File resolveRelationshipXmlFile() {
         File generatedXmlFileDir = getGeneratedXmlFolder();
         File relationshipXmlFile = new File(generatedXmlFileDir, "relationship.xml");

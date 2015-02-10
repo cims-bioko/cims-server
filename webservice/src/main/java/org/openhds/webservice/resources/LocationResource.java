@@ -1,11 +1,11 @@
 package org.openhds.webservice.resources;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.StringWriter;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.openhds.errorhandling.constants.ErrorConstants;
 import org.openhds.domain.model.ErrorLog;
 import org.openhds.errorhandling.service.ErrorHandlingService;
@@ -32,7 +32,9 @@ import org.openhds.webservice.response.constants.ResultCodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,7 +61,7 @@ public class LocationResource {
 
     @Autowired
     public LocationResource(LocationHierarchyService locationHierarchyService, FieldBuilder fieldBuilder,
-            FileResolver fileResolver, ErrorHandlingService errorService) {
+                            FileResolver fileResolver, ErrorHandlingService errorService) {
         this.locationHierarchyService = locationHierarchyService;
         this.fieldBuilder = fieldBuilder;
         this.fileResolver = fileResolver;
@@ -86,10 +88,10 @@ public class LocationResource {
         result.setResultCode(ResultCodes.SUCCESS_CODE);
         result.setStatus(ResultCodes.SUCCESS);
         result.setResultMessage("Location was found");
-        
+
         return new ResponseEntity<WebserviceResult>(result, HttpStatus.OK);
     }
-    
+
     @RequestMapping(value = "/{extId}", method = RequestMethod.GET, produces = "application/xml")
     public ResponseEntity<? extends Serializable> getLocationByExtIdXml(@PathVariable String extId) {
         Location location = locationHierarchyService.findLocationById(extId);
@@ -133,8 +135,14 @@ public class LocationResource {
         result.setResultCode(ResultCodes.SUCCESS_CODE);
         result.setStatus(ResultCodes.SUCCESS);
         result.setResultMessage(locations.size() + " locations were found.");
-        
+
         return new ResponseEntity<WebserviceResult>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/streamtest", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @ResponseBody
+    public FileSystemResource streamOutCachedXml() {
+        return new FileSystemResource(fileResolver.resolveLocationXmlFile());
     }
 
     @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = "application/xml")
@@ -204,7 +212,7 @@ public class LocationResource {
             StringWriter writer = new StringWriter();
             marshaller.marshal(location, writer);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, Location.class.getSimpleName(),
-                        location.getCollectedBy(), ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+                    location.getCollectedBy(), ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
             errorService.logError(error);
             return WebserviceResultHelper.genericConstraintResponse(cv);
         }
@@ -217,9 +225,9 @@ public class LocationResource {
         return new ResponseEntity<WebserviceResult>(result, HttpStatus.CREATED);
     }
 
-	@RequestMapping(method = RequestMethod.PUT, produces = "application/xml", consumes = "application/xml")
+    @RequestMapping(method = RequestMethod.PUT, produces = "application/xml", consumes = "application/xml")
     public ResponseEntity<? extends Serializable> addOrUpdateXml(@RequestBody Location location) {
-    	
+
         ConstraintViolations cv = new ConstraintViolations();
         location.setCollectedBy(fieldBuilder.referenceField(location.getCollectedBy(), cv));
         location.setLocationHierarchy(fieldBuilder.referenceField(location.getLocationHierarchy(), cv));
@@ -228,33 +236,33 @@ public class LocationResource {
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
         }
 
-    	Location existingLocation  = locationHierarchyService.findLocationById(location.getExtId());
-    	if (existingLocation == null) {
-    		try {
-				locationHierarchyService.createLocation(location);
-			} catch (ConstraintViolations e) {
-	            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(new ConstraintViolations(e.getMessage(), e.getViolations())), HttpStatus.BAD_REQUEST);
+        Location existingLocation  = locationHierarchyService.findLocationById(location.getExtId());
+        if (existingLocation == null) {
+            try {
+                locationHierarchyService.createLocation(location);
+            } catch (ConstraintViolations e) {
+                return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(new ConstraintViolations(e.getMessage(), e.getViolations())), HttpStatus.BAD_REQUEST);
 
-			}
+            }
             return new ResponseEntity<Location>(ShallowCopier.shallowCopyLocation(location), HttpStatus.CREATED);
 
-    	}
-    	
-    	//updating fields on existing persistent object
-    	existingLocation.setLocationName(location.getLocationName());
+        }
 
-    	try {
-			locationHierarchyService.updateLocation(existingLocation);
-		} catch (ConstraintViolations e) {
+        //updating fields on existing persistent object
+        existingLocation.setLocationName(location.getLocationName());
+
+        try {
+            locationHierarchyService.updateLocation(existingLocation);
+        } catch (ConstraintViolations e) {
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(new ConstraintViolations(e.getMessage(), e.getViolations())), HttpStatus.BAD_REQUEST);
-		}
-    	
+        }
+
         return new ResponseEntity<Location>(ShallowCopier.shallowCopyLocation(location), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
     public ResponseEntity<? extends Serializable> addOrUpdateJson(@RequestBody Location location) {
-    	
+
         ConstraintViolations cv = new ConstraintViolations();
         location.setCollectedBy(fieldBuilder.referenceField(location.getCollectedBy(), cv));
         location.setLocationHierarchy(fieldBuilder.referenceField(location.getLocationHierarchy(), cv));
@@ -263,38 +271,38 @@ public class LocationResource {
             return WebserviceResultHelper.genericConstraintResponse(cv);
         }
 
-    	Location existingLocation  = locationHierarchyService.findLocationById(location.getExtId());
-    	if (existingLocation == null) {
-    		try {
-				locationHierarchyService.createLocation(location);
-			} catch (ConstraintViolations e) {
+        Location existingLocation  = locationHierarchyService.findLocationById(location.getExtId());
+        if (existingLocation == null) {
+            try {
+                locationHierarchyService.createLocation(location);
+            } catch (ConstraintViolations e) {
                 return WebserviceResultHelper.genericConstraintResponse(cv);
-			}
+            }
             WebserviceResult result = new WebserviceResult();
             result.addDataElement("location", ShallowCopier.shallowCopyLocation(location));
             result.setResultCode(ResultCodes.SUCCESS_CODE);
             result.setStatus(ResultCodes.SUCCESS);
             result.setResultMessage("Location was created");
-            
+
             return new ResponseEntity<WebserviceResult>(result, HttpStatus.CREATED);
 
-    	}
-    	
-    	//updating fields on existing persistent object
-    	existingLocation.setLocationName(location.getLocationName());
+        }
 
-    	try {
-			locationHierarchyService.updateLocation(existingLocation);
-		} catch (ConstraintViolations e) {
+        //updating fields on existing persistent object
+        existingLocation.setLocationName(location.getLocationName());
+
+        try {
+            locationHierarchyService.updateLocation(existingLocation);
+        } catch (ConstraintViolations e) {
             return WebserviceResultHelper.genericConstraintResponse(cv);
         }
-    	
+
         WebserviceResult result = new WebserviceResult();
         result.addDataElement("location", ShallowCopier.shallowCopyLocation(location));
         result.setResultCode(ResultCodes.SUCCESS_CODE);
         result.setStatus(ResultCodes.SUCCESS);
         result.setResultMessage("Location was updated");
-        
+
         return new ResponseEntity<WebserviceResult>(result, HttpStatus.OK);
     }
 
@@ -303,29 +311,29 @@ public class LocationResource {
         Location location = locationHierarchyService.findLocationById(extId);
 
         if (location == null) {
-        	return new ResponseEntity<String>(HttpStatus.GONE);
+            return new ResponseEntity<String>(HttpStatus.GONE);
         }
 
-    	try {
-			locationHierarchyService.deleteLocation(location);
-		} catch (ConstraintViolations e) {
+        try {
+            locationHierarchyService.deleteLocation(location);
+        } catch (ConstraintViolations e) {
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(new ConstraintViolations(e.getMessage(), e.getViolations())), HttpStatus.BAD_REQUEST);
-		}
-    	
+        }
+
         return new ResponseEntity<Location>(ShallowCopier.shallowCopyLocation(location), HttpStatus.OK);
     }
-    
+
     @RequestMapping(value = "/{extId}", method = RequestMethod.DELETE, produces = "application/json")
     public ResponseEntity<? extends Serializable> deleteLocationByExtIdJson(@PathVariable String extId) {
         Location location = locationHierarchyService.findLocationById(extId);
 
         if (location == null) {
-        	return new ResponseEntity<String>(HttpStatus.GONE);
+            return new ResponseEntity<String>(HttpStatus.GONE);
         }
 
-    	try {
-			locationHierarchyService.deleteLocation(location);
-		} catch (ConstraintViolations cv) {
+        try {
+            locationHierarchyService.deleteLocation(location);
+        } catch (ConstraintViolations cv) {
             return WebserviceResultHelper.genericConstraintResponse(cv);
         }
 
