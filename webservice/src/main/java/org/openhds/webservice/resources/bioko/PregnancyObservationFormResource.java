@@ -91,6 +91,8 @@ public class PregnancyObservationFormResource extends AbstractFormResource {
             return requestError(cv);
         }
 
+        
+
         pregnancyObservation.setVisit(visit);
         try {
             pregnancyObservationService.create(pregnancyObservation);
