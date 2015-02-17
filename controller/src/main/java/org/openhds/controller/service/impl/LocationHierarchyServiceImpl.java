@@ -39,6 +39,31 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 		return genericDao.findByProperty(LocationHierarchy.class, "extId", extId);
 	}
 
+    public int getMaxBuildingNumber(LocationHierarchy locationHierarchy) {
+
+        List<Location> locations = genericDao.findListByProperty(Location.class, "locationHierarchy", locationHierarchy, true);
+        int max = 0;
+        if (null == locations || locations.size() == 0) {
+            return max;
+        }
+
+        for (Location location: locations) {
+            int temp = 0;
+            try {
+                temp = Integer.parseInt(location.getBuildingNumber());
+            } catch (NumberFormatException e) {
+
+            }
+
+            if (temp > max) {
+                max = temp;
+            }
+        }
+
+        return max;
+
+    }
+
 	public void createLocationHierarchy(LocationHierarchy locationHierarchy) throws ConstraintViolations {
 		try {
 			entityService.create(locationHierarchy);

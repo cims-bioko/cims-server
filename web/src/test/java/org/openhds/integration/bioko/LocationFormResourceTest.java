@@ -52,7 +52,7 @@ public class LocationFormResourceTest extends AbstractResourceTest {
                     + "<processed_by_mirth>false</processed_by_mirth>"
                     + "<field_worker_ext_id>UNK</field_worker_ext_id>"
                     + "<field_worker_uuid>UnknownFieldWorker</field_worker_uuid>"
-                    + "<location_ext_id>newLocation</location_ext_id>"
+                    + "<location_ext_id>M1000S57E09P1</location_ext_id>"
                     + "<collected_date_time>"
                     + A_DATE
                     + "</collected_date_time>"
@@ -63,15 +63,38 @@ public class LocationFormResourceTest extends AbstractResourceTest {
                     + "<location_type>RUR</location_type>"
                     + "<community_name>newCommunityName</community_name>"
                     + "<map_area_name>newMapAreaName</map_area_name>"
+                    + "<location_building_number>9</location_building_number>"
                     + "<locality_name>newLocalityName</locality_name>"
                     + "<sector_name>newSectorName</sector_name>"
             + "</locationForm>";
+
+    private static final String DUPLICATE_LOCATION_FORM_XML =
+            "<locationForm>"
+                    + "<processed_by_mirth>false</processed_by_mirth>"
+                    + "<field_worker_ext_id>UNK</field_worker_ext_id>"
+                    + "<field_worker_uuid>UnknownFieldWorker</field_worker_uuid>"
+                    + "<location_ext_id>M1000S57E09P1</location_ext_id>"
+                    + "<collected_date_time>"
+                    + A_DATE
+                    + "</collected_date_time>"
+                    + "<hierarchy_ext_id>IFB</hierarchy_ext_id>"
+                    + "<hierarchy_uuid>hierarchy3</hierarchy_uuid>"
+                    + "<entity_uuid>duplicateLocation-UUID</entity_uuid>"
+                    + "<location_name>newLocationName</location_name>"
+                    + "<location_type>RUR</location_type>"
+                    + "<community_name>newCommunityName</community_name>"
+                    + "<map_area_name>newMapAreaName</map_area_name>"
+                    + "<location_building_number>9</location_building_number>"
+                    + "<locality_name>newLocalityName</locality_name>"
+                    + "<sector_name>newSectorName</sector_name>"
+                    + "</locationForm>";
 
     @Before
     public void setUp() throws Exception {
         mockMvc = buildMockMvc();
         session = getMockHttpSession("admin", "test", mockMvc);
     }
+
 
     @Test
     public void testPostLocationFormXml() throws Exception {
@@ -82,7 +105,30 @@ public class LocationFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
-        verifyLocationCrud("newLocation");
+        verifyLocationCrud("M1000S57E09P1");
+
+    }
+
+    @Test
+    public void testPostLocationFormDuplicateExtId() throws Exception {
+
+        mockMvc.perform(
+                post("/locationForm").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(LOCATION_FORM_XML.getBytes()))
+                .andExpect(status().isCreated())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+        mockMvc.perform(
+                post("/locationForm").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(DUPLICATE_LOCATION_FORM_XML.getBytes()))
+                .andExpect(status().isCreated())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+        Location location = genericDao.findByProperty(Location.class, "extId", "M1000S57E10P1");
+        assertNotNull(location);
+        assertEquals("10", location.getBuildingNumber());
 
     }
 
@@ -94,7 +140,6 @@ public class LocationFormResourceTest extends AbstractResourceTest {
         assertEquals("RUR", persistedLocation.getLocationType());
         assertEquals("newCommunityName", persistedLocation.getCommunityName());
         assertEquals("newMapAreaName", persistedLocation.getMapAreaName());
-
 
     }
 

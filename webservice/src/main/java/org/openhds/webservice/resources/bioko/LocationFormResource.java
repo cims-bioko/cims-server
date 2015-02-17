@@ -4,11 +4,13 @@ import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.controller.service.refactor.FieldWorkerService;
 import org.openhds.controller.service.refactor.LocationService;
-import org.openhds.domain.model.FieldWorker;
-import org.openhds.domain.model.Location;
-import org.openhds.domain.model.LocationHierarchy;
-import org.openhds.domain.model.LocationHierarchyLevel;
+import org.openhds.domain.model.*;
+import org.openhds.domain.model.bioko.IndividualForm;
 import org.openhds.domain.model.bioko.LocationForm;
+import org.openhds.domain.util.CalendarAdapter;
+import org.openhds.errorhandling.constants.ErrorConstants;
+import org.openhds.errorhandling.service.ErrorHandlingService;
+import org.openhds.errorhandling.util.ErrorLogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +22,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import java.io.Serializable;
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 
 @Controller
@@ -38,11 +46,27 @@ public class LocationFormResource extends AbstractFormResource{
     @Autowired
     private LocationHierarchyService locationHierarchyService;
 
+    @Autowired
+    private ErrorHandlingService errorService;
+
+    @Autowired
+    private CalendarAdapter adapter;
+
+    private Marshaller marshaller = null;
+
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
     public ResponseEntity<? extends Serializable> processForm(
-            @RequestBody LocationForm locationForm) {
+            @RequestBody LocationForm locationForm) throws JAXBException {
+
+        try {
+            JAXBContext context = JAXBContext.newInstance(LocationForm.class);
+            marshaller = context.createMarshaller();
+            marshaller.setAdapter(adapter);
+        } catch (JAXBException e) {
+            throw new RuntimeException("Could not create JAXB context and marshaller for OutMigrationFormResource");
+        }
 
         // clean up "null" strings created by Mirth
         if ("null".equals(locationForm.getHierarchyUuid())) {
@@ -96,8 +120,26 @@ public class LocationFormResource extends AbstractFormResource{
             return requestError("Error getting reference to LocationHierarchy: " + e.getMessage());
         }
 
-        // fill in data for the new location
         location.setLocationHierarchy(locationHierarchy);
+
+        // modify the extId if it matches another location's extId, log the change
+        if (null != locationService.getByExtId(locationForm.getLocationExtId())) {
+            modifyExtId(locationForm, location, locationHierarchy);
+
+            List<String> logMessage = new ArrayList<String>();
+            logMessage.add("Duplicate Location ExtId: Old = "+locationForm.getLocationExtId()+" New = "+location.getExtId());
+
+            String errorDataPayload = createDTOPayload(locationForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
+                    LocationForm.class.getSimpleName(), collectedBy,
+                    ErrorConstants.UNRESOLVED_ERROR_STATUS, logMessage);
+            errorService.logError(error);
+        } else {
+            location.setExtId(locationForm.getLocationExtId());
+            location.setBuildingNumber(locationForm.getBuildingNumber());
+        }
+
+        // fill in data for the new location
         copyFormDataToLocation(locationForm, location);
 
         // persist the location
@@ -112,11 +154,31 @@ public class LocationFormResource extends AbstractFormResource{
         return new ResponseEntity<LocationForm>(locationForm, HttpStatus.CREATED);
     }
 
+    private void modifyExtId(LocationForm locationForm, Location location, LocationHierarchy locationHierarchy) {
+
+        int maxBuildingNumber = locationHierarchyService.getMaxBuildingNumber(locationHierarchy);
+        int newBuildingNumber = maxBuildingNumber + 1;
+        location.setBuildingNumber(String.valueOf(newBuildingNumber));
+
+        String oldExtId = locationForm.getLocationExtId();
+
+        // rebuild the location extId using the new building number
+        String newExtIdPrefix = oldExtId.substring(0, oldExtId.indexOf("E") + 1);
+        String newExtIdPostfix = oldExtId.substring(oldExtId.indexOf("P"), oldExtId.length());
+        String buildingNumberString = location.getBuildingNumber();
+
+        // pad the building number if < 10
+        if (newBuildingNumber < 10) {
+            buildingNumberString = "0"+buildingNumberString;
+        }
+        location.setExtId(newExtIdPrefix + buildingNumberString + newExtIdPostfix);
+
+    }
+
     private void copyFormDataToLocation(LocationForm locationForm, Location location){
 
         // fieldWorker, CollectedDateTime, and HierarchyLevel are set outside of this method
         location.setUuid(locationForm.getUuid());
-        location.setExtId(locationForm.getLocationExtId());
         location.setCommunityName(locationForm.getCommunityName());
         location.setCommunityCode(locationForm.getCommunityCode());
         location.setLocalityName(locationForm.getLocalityName());
@@ -124,7 +186,6 @@ public class LocationFormResource extends AbstractFormResource{
         location.setSectorName(locationForm.getSectorName());
         location.setLocationName(locationForm.getLocationName());
         location.setLocationType(locationForm.getLocationType());
-        location.setBuildingNumber(locationForm.getBuildingNumber());
         location.setFloorNumber(locationForm.getFloorNumber());
         location.setDescription(locationForm.getDescription());
         location.setLongitude(locationForm.getLongitude());
@@ -161,5 +222,11 @@ public class LocationFormResource extends AbstractFormResource{
         locationHierarchyService.createLocationHierarchy(locationHierarchy);
 
         return locationHierarchy;
+    }
+
+    private String createDTOPayload(LocationForm locationForm) throws JAXBException {
+        StringWriter writer = new StringWriter();
+        marshaller.marshal(locationForm, writer);
+        return writer.toString();
     }
 }

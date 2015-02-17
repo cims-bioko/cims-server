@@ -7,4 +7,5 @@ import org.openhds.domain.model.Location;
 
 public interface LocationService extends EntityService<Location> {
 
+
 }
