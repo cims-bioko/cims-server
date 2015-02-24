@@ -163,14 +163,16 @@ public class LocationFormResource extends AbstractFormResource{
         String oldExtId = locationForm.getLocationExtId();
 
         // rebuild the location extId using the new building number
-        String newExtIdPrefix = oldExtId.substring(0, oldExtId.indexOf("E") + 1);
-        String newExtIdPostfix = oldExtId.substring(oldExtId.indexOf("P"), oldExtId.length());
+        String newExtIdPrefix = oldExtId.substring(0, oldExtId.indexOf("E") + 1);   // M1000S57E
+        String newExtIdPostfix = oldExtId.substring(oldExtId.indexOf("P"), oldExtId.length()); // P1
         String buildingNumberString = location.getBuildingNumber();
 
         // pad the building number if < 10
         if (newBuildingNumber < 10) {
             buildingNumberString = "0"+buildingNumberString;
         }
+
+        // M1000S57E + buildingNumber + P1
         location.setExtId(newExtIdPrefix + buildingNumberString + newExtIdPostfix);
 
     }

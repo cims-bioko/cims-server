@@ -218,6 +218,12 @@ public class IndividualFormResource extends AbstractFormResource {
             return requestError("Error finding or creating individual: " + e.getMessage());
         }
 
+        // change the individual's extId if the server has previously changed the extId of their location/household
+        if (!individualForm.getHouseholdExtId().equalsIgnoreCase(location.getExtId())) {
+            updateIndividualExtId(individual, location);
+            individualForm.setHouseholdExtId(location.getExtId());
+        }
+
         // individual's residency at location
         findOrMakeResidency(individual, location, collectionTime, insertTime, collectedBy);
 
@@ -292,6 +298,16 @@ public class IndividualFormResource extends AbstractFormResource {
         }
 
         return new ResponseEntity<IndividualForm>(individualForm, HttpStatus.CREATED);
+    }
+
+    private void updateIndividualExtId(Individual individual, Location location) {
+
+        // -001
+        String individualSuffixSequence = individual.getExtId().substring(individual.getExtId().length() - 4);
+
+        // M1000S57E02P1-001
+        individual.setExtId(location.getExtId()+individualSuffixSequence);
+
     }
 
     private Individual findOrMakeIndividual(IndividualForm individualForm, FieldWorker collectedBy,
