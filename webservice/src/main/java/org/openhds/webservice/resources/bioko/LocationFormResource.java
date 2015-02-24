@@ -5,7 +5,6 @@ import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.controller.service.refactor.FieldWorkerService;
 import org.openhds.controller.service.refactor.LocationService;
 import org.openhds.domain.model.*;
-import org.openhds.domain.model.bioko.IndividualForm;
 import org.openhds.domain.model.bioko.LocationForm;
 import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.errorhandling.constants.ErrorConstants;
@@ -124,7 +123,7 @@ public class LocationFormResource extends AbstractFormResource{
 
         // modify the extId if it matches another location's extId, log the change
         if (null != locationService.getByExtId(locationForm.getLocationExtId())) {
-            modifyExtId(locationForm, location, locationHierarchy);
+            modifyExtId(location, locationForm);
 
             List<String> logMessage = new ArrayList<String>();
             logMessage.add("Duplicate Location ExtId: Old = "+locationForm.getLocationExtId()+" New = "+location.getExtId());
@@ -154,26 +153,26 @@ public class LocationFormResource extends AbstractFormResource{
         return new ResponseEntity<LocationForm>(locationForm, HttpStatus.CREATED);
     }
 
-    private void modifyExtId(LocationForm locationForm, Location location, LocationHierarchy locationHierarchy) {
+    private void modifyExtId(Location location, LocationForm locationForm) {
 
-        int maxBuildingNumber = locationHierarchyService.getMaxBuildingNumber(locationHierarchy);
-        int newBuildingNumber = maxBuildingNumber + 1;
-        location.setBuildingNumber(String.valueOf(newBuildingNumber));
+        String newExtId = generateUniqueExtId(locationForm.getLocationExtId(), 'A');
+        location.setExtId(newExtId);
 
-        String oldExtId = locationForm.getLocationExtId();
+    }
 
-        // rebuild the location extId using the new building number
-        String newExtIdPrefix = oldExtId.substring(0, oldExtId.indexOf("E") + 1);   // M1000S57E
-        String newExtIdPostfix = oldExtId.substring(oldExtId.indexOf("P"), oldExtId.length()); // P1
-        String buildingNumberString = location.getBuildingNumber();
+    private String generateUniqueExtId(String extId, char suffix) {
 
-        // pad the building number if < 10
-        if (newBuildingNumber < 10) {
-            buildingNumberString = "0"+buildingNumberString;
+        // Create a unique extId by appending an alphabetic character to the duplicate extId
+        while (null != locationService.getByExtId(extId+suffix) && suffix <= 'Z') {
+            suffix++;
         }
 
-        // M1000S57E + buildingNumber + P1
-        location.setExtId(newExtIdPrefix + buildingNumberString + newExtIdPostfix);
+        // Append more alphabet characters if necessary
+        if (suffix > 'Z') {
+            return generateUniqueExtId(extId + 'A', 'A');
+        }
+
+        return extId+suffix;
 
     }
 

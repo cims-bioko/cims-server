@@ -233,6 +233,7 @@ public class IndividualFormResource extends AbstractFormResource {
                     ErrorConstants.UNRESOLVED_ERROR_STATUS, logMessage);
             errorService.logError(error);
 
+            //household extId used later by social group, need to correct it here
             individualForm.setHouseholdExtId(location.getExtId());
         }
 

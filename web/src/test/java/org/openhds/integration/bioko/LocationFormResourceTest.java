@@ -93,6 +93,27 @@ public class LocationFormResourceTest extends AbstractResourceTest {
                     + "<sector_name>newSectorName</sector_name>"
                     + "</locationForm>";
 
+    private static final String DUPLICATE_LOCATION_FORM_XML_2 =
+            "<locationForm>"
+                    + "<processed_by_mirth>false</processed_by_mirth>"
+                    + "<field_worker_ext_id>UNK</field_worker_ext_id>"
+                    + "<field_worker_uuid>UnknownFieldWorker</field_worker_uuid>"
+                    + "<location_ext_id>M1000S57E09P1</location_ext_id>"
+                    + "<collected_date_time>"
+                    + A_DATE
+                    + "</collected_date_time>"
+                    + "<hierarchy_ext_id>IFB</hierarchy_ext_id>"
+                    + "<hierarchy_uuid>hierarchy3</hierarchy_uuid>"
+                    + "<entity_uuid>duplicateLocation2-UUID</entity_uuid>"
+                    + "<location_name>newLocationName</location_name>"
+                    + "<location_type>RUR</location_type>"
+                    + "<community_name>newCommunityName</community_name>"
+                    + "<map_area_name>newMapAreaName</map_area_name>"
+                    + "<location_building_number>9</location_building_number>"
+                    + "<locality_name>newLocalityName</locality_name>"
+                    + "<sector_name>newSectorName</sector_name>"
+                    + "</locationForm>";
+
     @Before
     public void setUp() throws Exception {
         mockMvc = buildMockMvc();
@@ -130,12 +151,20 @@ public class LocationFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
-        Location location = genericDao.findByProperty(Location.class, "extId", "M1000S57E10P1");
+        mockMvc.perform(
+                post("/locationForm").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(DUPLICATE_LOCATION_FORM_XML_2.getBytes()))
+                .andExpect(status().isCreated())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+        Location location = genericDao.findByProperty(Location.class, "extId", "M1000S57E09P1A");
         assertNotNull(location);
-        assertEquals("10", location.getBuildingNumber());
+        Location location2 = genericDao.findByProperty(Location.class, "extId", "M1000S57E09P1B");
+        assertNotNull(location2);
         List<ErrorLog> loggedErrors = genericDao.findAll(ErrorLog.class, true);
         assertNotNull(loggedErrors);
-        assertEquals(1, loggedErrors.size());
+        assertEquals(2, loggedErrors.size());
 
     }
 
