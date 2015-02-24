@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.model.ErrorLog;
 import org.openhds.domain.model.Location;
 import org.openhds.integration.AbstractResourceTest;
 import org.openhds.integration.util.WebContextLoader;
@@ -21,6 +22,9 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.web.server.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 import static org.junit.Assert.assertNotNull;
@@ -129,6 +133,9 @@ public class LocationFormResourceTest extends AbstractResourceTest {
         Location location = genericDao.findByProperty(Location.class, "extId", "M1000S57E10P1");
         assertNotNull(location);
         assertEquals("10", location.getBuildingNumber());
+        List<ErrorLog> loggedErrors = genericDao.findAll(ErrorLog.class, true);
+        assertNotNull(loggedErrors);
+        assertEquals(1, loggedErrors.size());
 
     }
 
