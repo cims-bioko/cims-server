@@ -220,6 +220,12 @@ public class IndividualFormResource extends AbstractFormResource {
             return requestError("Error finding or creating individual: " + e.getMessage());
         }
 
+        //TODO: This is a temporary fix to account for individual ext id's from the old scheme
+        // old ext id scheme does not contain a hyphen
+        if (-1 == individual.getExtId().indexOf('-')) {
+            generateIndividualExtId(location, individual);
+        }
+
         // change the individual's extId if the server has previously changed the extId of their location/household
         if (!individualForm.getHouseholdExtId().equalsIgnoreCase(location.getExtId())) {
             updateIndividualExtId(individual, location);
@@ -311,6 +317,15 @@ public class IndividualFormResource extends AbstractFormResource {
         }
 
         return new ResponseEntity<IndividualForm>(individualForm, HttpStatus.CREATED);
+    }
+
+    private void generateIndividualExtId(Location location, Individual individual) {
+
+        List<Individual> residents = residencyService.getIndividualsByLocation(location);
+        int sequenceNumber = residents.size() + 1;
+        String extId = location.getExtId() + "-" + String.format("%03d", sequenceNumber);
+        individual.setExtId(extId);
+
     }
 
     private void updateIndividualExtId(Individual individual, Location location) {
