@@ -129,8 +129,8 @@ public class LocationFormResource extends AbstractFormResource{
             List<String> logMessage = new ArrayList<String>();
             logMessage.add("Duplicate Location ExtId: Old = "+locationForm.getLocationExtId()+" New = "+location.getExtId());
 
-            String errorDataPayload = createDTOPayload(locationForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
+            String payload = createDTOPayload(locationForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
                     LocationForm.class.getSimpleName(), collectedBy,
                     ErrorConstants.UNRESOLVED_ERROR_STATUS, logMessage);
             errorService.logError(error);

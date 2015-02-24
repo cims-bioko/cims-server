@@ -17,6 +17,7 @@ import org.openhds.domain.model.Relationship;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.bioko.IndividualForm;
+import org.openhds.domain.model.bioko.LocationForm;
 import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.errorhandling.constants.ErrorConstants;
 import org.openhds.errorhandling.service.ErrorHandlingService;
@@ -39,6 +40,7 @@ import javax.xml.bind.Marshaller;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -221,6 +223,16 @@ public class IndividualFormResource extends AbstractFormResource {
         // change the individual's extId if the server has previously changed the extId of their location/household
         if (!individualForm.getHouseholdExtId().equalsIgnoreCase(location.getExtId())) {
             updateIndividualExtId(individual, location);
+
+            // log the modification
+            List<String> logMessage = new ArrayList<String>();
+            logMessage.add("Individual ExtId updated from "+individualForm.getIndividualExtId()+" to "+individual.getExtId());
+            String payload = createDTOPayload(individualForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
+                    IndividualForm.class.getSimpleName(), collectedBy,
+                    ErrorConstants.UNRESOLVED_ERROR_STATUS, logMessage);
+            errorService.logError(error);
+
             individualForm.setHouseholdExtId(location.getExtId());
         }
 
