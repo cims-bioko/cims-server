@@ -40,7 +40,7 @@ public class ShallowCopier {
     private static final Logger logger = LoggerFactory.getLogger(ShallowCopier.class);
 
     // Make a shallow copy of the given object.
-    public UuidIdentifiable makeShallowCopy(UuidIdentifiable original) {
+    public static UuidIdentifiable makeShallowCopy(UuidIdentifiable original) {
         UuidIdentifiable copy = getDefaultBlank(original);
         Set<Field> allFields = getAllFields(original);
         assignAllFields(original, copy, allFields);
@@ -48,7 +48,7 @@ public class ShallowCopier {
     }
 
     // Walk up the inheritance hierarchy for the given object.
-    private Set<Class<?>> getInheritanceHierarchy(UuidIdentifiable original) {
+    private static Set<Class<?>> getInheritanceHierarchy(UuidIdentifiable original) {
         Set<Class<?>> superclasses = new HashSet<Class<?>>();
         Class<?> currentClass = original.getClass();
         while (!currentClass.equals(Object.class)) {
@@ -58,8 +58,8 @@ public class ShallowCopier {
         return superclasses;
     }
 
-    // Get all declared fields of the given object and its supertypes.
-    private Set<Field> getAllFields(UuidIdentifiable original) {
+    // Get all declared fields of the given object and its superclasses.
+    private static Set<Field> getAllFields(UuidIdentifiable original) {
         Set<Field> allFields = new HashSet<Field>();
         Set<Class<?>> superclasses = getInheritanceHierarchy(original);
         for (Class<?> clazz : superclasses) {
@@ -69,14 +69,14 @@ public class ShallowCopier {
     }
 
     // Get all declared fields for the given class.
-    private Set<Field> getDeclaredFields(Class<?> clazz) {
+    private static Set<Field> getDeclaredFields(Class<?> clazz) {
         Set<Field> declaredFields = new HashSet<Field>();
         declaredFields.addAll(Arrays.asList(clazz.getDeclaredFields()));
         return declaredFields;
     }
 
     // Make a new blank object of the same concrete class as the given object using its no-argument constructor.
-    private UuidIdentifiable getDefaultBlank(UuidIdentifiable original) {
+    private static UuidIdentifiable getDefaultBlank(UuidIdentifiable original) {
         Class<UuidIdentifiable> currentClass = (Class<UuidIdentifiable>) original.getClass();
         Constructor<UuidIdentifiable> constructor;
         try {
@@ -101,14 +101,14 @@ public class ShallowCopier {
     }
 
     // Make a new stub object of the same concrete class as the given object with only its uuid set.
-    private UuidIdentifiable makeStub(UuidIdentifiable original) {
-        UuidIdentifiable stub = (UuidIdentifiable) getDefaultBlank(original);
+    private static UuidIdentifiable makeStub(UuidIdentifiable original) {
+        UuidIdentifiable stub = getDefaultBlank(original);
         stub.setUuid(original.getUuid());
         return stub;
     }
 
     // Copy multiple fields from an original object to a target of a compatible class.  Make stubs as necessary.
-    private void assignAllFields(UuidIdentifiable original, UuidIdentifiable target, Set<Field> fields) {
+    private static void assignAllFields(UuidIdentifiable original, UuidIdentifiable target, Set<Field> fields) {
         for (Field field : fields) {
             // direct reference to UuidIdentifiable
             if (UuidIdentifiable.class.isAssignableFrom(field.getType())) {
@@ -128,7 +128,7 @@ public class ShallowCopier {
     }
 
     // Copy the given field verbatim from an original object to a target of a compatible class.
-    private void assignField(UuidIdentifiable original, UuidIdentifiable target, Field field) {
+    private static void assignField(UuidIdentifiable original, UuidIdentifiable target, Field field) {
         if (null == field) {
             return;
         }
@@ -142,7 +142,7 @@ public class ShallowCopier {
     }
 
     // Make a stub based on original an object's UuidIdentifiable field and assign it to a target of a compatible class.
-    private void assignStub(UuidIdentifiable original, UuidIdentifiable target, Field field) {
+    private static void assignStub(UuidIdentifiable original, UuidIdentifiable target, Field field) {
         if (null == field) {
             return;
         }
@@ -170,7 +170,7 @@ public class ShallowCopier {
     }
 
     // Copy elements from an original object's Collection to a compatible target's Collection.  Make stubs as necessary.
-    private void addStubsToCollection(UuidIdentifiable original, UuidIdentifiable target, Field field) {
+    private static void addStubsToCollection(UuidIdentifiable original, UuidIdentifiable target, Field field) {
         if (null == field) {
             return;
         }
