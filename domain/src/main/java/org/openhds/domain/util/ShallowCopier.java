@@ -17,7 +17,7 @@ import java.util.Set;
  * Use reflection to make a shallow copy of a UuidIdentifiable object.
  *
  * This ShallowCopier uses reflection to build a field-by-field copy of a given
- * UuidIdentifiable.  When any field refers to another UuidIdentifiable object
+ * UuidIdentifiable.  Where any field refers to another UuidIdentifiable object
  * (directly or through a Collection), the copy will point to a "stub" object instead
  * of the original object.  The "stub" is a default instance of the same class with
  * only its uuid and no other fields set.
@@ -40,8 +40,8 @@ public class ShallowCopier {
     private static final Logger logger = LoggerFactory.getLogger(ShallowCopier.class);
 
     // Make a shallow copy of the given object.
-    public static UuidIdentifiable makeShallowCopy(UuidIdentifiable original) {
-        UuidIdentifiable copy = getDefaultBlank(original);
+    public static <T extends UuidIdentifiable> T makeShallowCopy(T original) {
+        T copy = (T) getDefaultBlank(original);
         Set<Field> allFields = getAllFields(original);
         assignAllFields(original, copy, allFields);
         return copy;

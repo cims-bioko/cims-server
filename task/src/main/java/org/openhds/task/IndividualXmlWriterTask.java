@@ -24,7 +24,7 @@ public class IndividualXmlWriterTask extends XmlWriterTemplate<Individual> {
 
     @Override
     protected Individual makeCopyOf(Individual original) {
-        return ShallowCopier.shallowCopyIndividual(original);
+        return ShallowCopier.makeShallowCopy(original);
     }
 
     @Override

@@ -47,7 +47,7 @@ public class IndividualResource {
             return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<Individual>(ShallowCopier.shallowCopyIndividual(individual), HttpStatus.OK);
+        return new ResponseEntity<Individual>(ShallowCopier.makeShallowCopy(individual), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -56,7 +56,7 @@ public class IndividualResource {
         List<Individual> allIndividual = individualService.getAllIndividuals();
         List<Individual> copies = new ArrayList<Individual>(allIndividual.size());
         for (Individual individual : allIndividual) {
-            Individual copy = ShallowCopier.shallowCopyIndividual(individual);
+            Individual copy = ShallowCopier.makeShallowCopy(individual);
             copies.add(copy);
         }
 

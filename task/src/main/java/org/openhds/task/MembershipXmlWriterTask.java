@@ -23,7 +23,7 @@ public class MembershipXmlWriterTask extends XmlWriterTemplate<Membership> {
 
 	@Override
 	protected Membership makeCopyOf(Membership original) {
-		return ShallowCopier.shallowCopyMembership(original);
+		return ShallowCopier.makeShallowCopy(original);
 	}
 
 	@Override

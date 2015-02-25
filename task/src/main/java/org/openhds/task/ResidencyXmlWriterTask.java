@@ -23,7 +23,7 @@ public class ResidencyXmlWriterTask extends XmlWriterTemplate<Residency> {
 
 	@Override
 	protected Residency makeCopyOf(Residency original) {
-		return ShallowCopier.shallowCopyResidency(original);
+		return ShallowCopier.makeShallowCopy(original);
 	}
 
 	@Override

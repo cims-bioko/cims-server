@@ -23,7 +23,7 @@ public class VisitXmlWriterTask extends XmlWriterTemplate<Visit> {
 
     @Override
     protected Visit makeCopyOf(Visit original) {
-        return ShallowCopier.shallowCopyVisit(original);
+        return ShallowCopier.makeShallowCopy(original);
     }
 
     @Override

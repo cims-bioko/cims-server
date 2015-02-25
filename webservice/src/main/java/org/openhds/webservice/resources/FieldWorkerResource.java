@@ -30,7 +30,7 @@ public class FieldWorkerResource {
         List<FieldWorker> allFieldWorkers = fieldWorkerService.getAllFieldWorkers();
         List<FieldWorker> copies = new ArrayList<FieldWorker>();
         for (FieldWorker fw : allFieldWorkers) {
-            copies.add(ShallowCopier.shallowCopyFieldWorker(fw));
+            copies.add(ShallowCopier.makeShallowCopy(fw));
         }
 
         FieldWorkers fws = new FieldWorker.FieldWorkers();

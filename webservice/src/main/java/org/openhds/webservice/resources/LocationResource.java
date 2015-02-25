@@ -84,7 +84,7 @@ public class LocationResource {
         }
 
         WebserviceResult result = new WebserviceResult();
-        result.addDataElement("location", ShallowCopier.shallowCopyLocation(location));
+        result.addDataElement("location", ShallowCopier.makeShallowCopy(location));
         result.setResultCode(ResultCodes.SUCCESS_CODE);
         result.setStatus(ResultCodes.SUCCESS);
         result.setResultMessage("Location was found");
@@ -99,7 +99,7 @@ public class LocationResource {
             return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<Location>(ShallowCopier.shallowCopyLocation(location), HttpStatus.OK);
+        return new ResponseEntity<Location>(ShallowCopier.makeShallowCopy(location), HttpStatus.OK);
     }
 
 
@@ -110,7 +110,7 @@ public class LocationResource {
         List<Location> copies = new ArrayList<Location>(locations.size());
 
         for (Location loc : locations) {
-            Location copy = ShallowCopier.shallowCopyLocation(loc);
+            Location copy = ShallowCopier.makeShallowCopy(loc);
             copies.add(copy);
         }
 
@@ -126,7 +126,7 @@ public class LocationResource {
         List<Location> copies = new ArrayList<Location>(locations.size());
 
         for (Location loc : locations) {
-            Location copy = ShallowCopier.shallowCopyLocation(loc);
+            Location copy = ShallowCopier.makeShallowCopy(loc);
             copies.add(copy);
         }
 
@@ -189,7 +189,7 @@ public class LocationResource {
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Location>(ShallowCopier.shallowCopyLocation(location), HttpStatus.CREATED);
+        return new ResponseEntity<Location>(ShallowCopier.makeShallowCopy(location), HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
@@ -218,7 +218,7 @@ public class LocationResource {
         }
 
         WebserviceResult result = new WebserviceResult();
-        result.addDataElement("location", ShallowCopier.shallowCopyLocation(location));
+        result.addDataElement("location", ShallowCopier.makeShallowCopy(location));
         result.setResultCode(ResultCodes.SUCCESS_CODE);
         result.setStatus(ResultCodes.SUCCESS);
         result.setResultMessage("Location created");
@@ -244,7 +244,7 @@ public class LocationResource {
                 return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(new ConstraintViolations(e.getMessage(), e.getViolations())), HttpStatus.BAD_REQUEST);
 
             }
-            return new ResponseEntity<Location>(ShallowCopier.shallowCopyLocation(location), HttpStatus.CREATED);
+            return new ResponseEntity<Location>(ShallowCopier.makeShallowCopy(location), HttpStatus.CREATED);
 
         }
 
@@ -257,7 +257,7 @@ public class LocationResource {
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(new ConstraintViolations(e.getMessage(), e.getViolations())), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Location>(ShallowCopier.shallowCopyLocation(location), HttpStatus.OK);
+        return new ResponseEntity<Location>(ShallowCopier.makeShallowCopy(location), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
@@ -279,7 +279,7 @@ public class LocationResource {
                 return WebserviceResultHelper.genericConstraintResponse(cv);
             }
             WebserviceResult result = new WebserviceResult();
-            result.addDataElement("location", ShallowCopier.shallowCopyLocation(location));
+            result.addDataElement("location", ShallowCopier.makeShallowCopy(location));
             result.setResultCode(ResultCodes.SUCCESS_CODE);
             result.setStatus(ResultCodes.SUCCESS);
             result.setResultMessage("Location was created");
@@ -298,7 +298,7 @@ public class LocationResource {
         }
 
         WebserviceResult result = new WebserviceResult();
-        result.addDataElement("location", ShallowCopier.shallowCopyLocation(location));
+        result.addDataElement("location", ShallowCopier.makeShallowCopy(location));
         result.setResultCode(ResultCodes.SUCCESS_CODE);
         result.setStatus(ResultCodes.SUCCESS);
         result.setResultMessage("Location was updated");
@@ -320,7 +320,7 @@ public class LocationResource {
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(new ConstraintViolations(e.getMessage(), e.getViolations())), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Location>(ShallowCopier.shallowCopyLocation(location), HttpStatus.OK);
+        return new ResponseEntity<Location>(ShallowCopier.makeShallowCopy(location), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{extId}", method = RequestMethod.DELETE, produces = "application/json")
@@ -338,7 +338,7 @@ public class LocationResource {
         }
 
         WebserviceResult result = new WebserviceResult();
-        result.addDataElement("location", ShallowCopier.shallowCopyLocation(location));
+        result.addDataElement("location", ShallowCopier.makeShallowCopy(location));
         result.setResultCode(ResultCodes.SUCCESS_CODE);
         result.setStatus(ResultCodes.SUCCESS);
         result.setResultMessage("Location was deleted");

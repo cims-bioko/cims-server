@@ -50,7 +50,7 @@ public class ResidencyResource {
         List<Residency> copies = new ArrayList<Residency>(residencies.size());
 
         for (Residency r : residencies) {
-        	Residency copy = ShallowCopier.shallowCopyResidency(r);
+        	Residency copy = ShallowCopier.makeShallowCopy(r);
             copies.add(copy);
         }
 
