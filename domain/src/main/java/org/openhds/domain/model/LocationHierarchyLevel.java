@@ -1,57 +1,60 @@
 package org.openhds.domain.model;
 
-import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.Searchable;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+
 @Description(description="The Location Hierarchy Level represents the specific " +
-		"part of the Location Hierarchy that a Location resides in. The levels are " +
-		"used in the configuration of the Location Hierarchy. Sample levels could be  " +
-		"Region, District, Village. ")
+        "part of the Location Hierarchy that a Location resides in. The levels are " +
+        "used in the configuration of the Location Hierarchy. Sample levels could be  " +
+        "Region, District, Village. ")
 @Entity
 @Table(name="locationhierarchylevel")
-public class LocationHierarchyLevel implements Serializable {
-	
-	private static final long serialVersionUID = -1070569257732332545L;
+public class LocationHierarchyLevel implements UuidIdentifiable, Serializable {
 
-	@Id
-	String uuid;
-	
-	@Description(description="A key to identify this level, assign 1, 2, 3, ... etc")
+    private static final long serialVersionUID = -1070569257732332545L;
+
+    @Id
+    String uuid;
+
+    @Description(description="A key to identify this level, assign 1, 2, 3, ... etc")
     int keyIdentifier;
-	
-	@NotNull
-	@CheckFieldNotBlank
-	@Searchable
-	@Description(description="The name of this location hierarchy level.")
+
+    @NotNull
+    @CheckFieldNotBlank
+    @Searchable
+    @Description(description="The name of this location hierarchy level.")
     String name;
 
-	public String getUuid() {
-		return uuid;
-	}
+    @Override
+    public String getUuid() {
+        return uuid;
+    }
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-	
-	public int getKeyIdentifier() {
-		return keyIdentifier;
-	}
+    @Override
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-	public void setKeyIdentifier(int keyIdentifier) {
-		this.keyIdentifier = keyIdentifier;
-	}
+    public int getKeyIdentifier() {
+        return keyIdentifier;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setKeyIdentifier(int keyIdentifier) {
+        this.keyIdentifier = keyIdentifier;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
