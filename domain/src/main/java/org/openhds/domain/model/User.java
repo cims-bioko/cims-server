@@ -26,7 +26,7 @@ import java.util.Set;
 @Entity
 @Table(name = "user")
 @NamedQuery(name = "User.findByUsername", query = "from User u where u.username = ?")
-public class User implements Serializable {
+public class User implements Serializable, UuidIdentifiable {
 
     static final long serialVersionUID = 23L;
     
@@ -81,10 +81,12 @@ public class User implements Serializable {
         setPassword(password);
     }
 
+    @Override
     public String getUuid() {
         return uuid;
     }
 
+    @Override
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }

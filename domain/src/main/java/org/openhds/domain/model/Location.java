@@ -274,18 +274,13 @@ public class Location
             return false;
         }
 
-        final Location otherLocation = (Location) other;
-
-        if (!extId.equals(otherLocation.getExtId())) {
-            return false;
-        }
-
-        return true;
+        final String otherUuid = ((Location) other).getUuid();
+        return null != uuid && null != otherUuid && uuid.equals(otherUuid);
     }
 
     @Override
     public int hashCode() {
-        return extId.hashCode();
+        return uuid.hashCode();
     }
 
     @XmlRootElement

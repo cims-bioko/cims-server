@@ -131,18 +131,13 @@ public class FieldWorker extends AuditableEntity implements Serializable {
             return false;
         }
 
-        final FieldWorker otherFieldWorker = (FieldWorker) other;
-
-        if (!extId.equals(otherFieldWorker.getExtId())) {
-            return false;
-        }
-
-        return true;
+        final String otherUuid = ((FieldWorker) other).getUuid();
+        return null != uuid && null != otherUuid && uuid.equals(otherUuid);
     }
 
     @Override
     public int hashCode() {
-        return extId.hashCode();
+        return uuid.hashCode();
     }
 
     @XmlRootElement(name = "fieldworkers")

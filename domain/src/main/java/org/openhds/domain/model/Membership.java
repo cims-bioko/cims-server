@@ -140,22 +140,13 @@ public class Membership extends AuditableCollectedEntity implements GenericEndDa
             return false;
         }
 
-        final Membership otherMembership = (Membership) other;
-
-        if (!individual.getExtId().equals(otherMembership.getIndividual().getExtId())) {
-            return false;
-        }
-
-        if (!socialGroup.getExtId().equals(otherMembership.getSocialGroup().getExtId())) {
-            return false;
-        }
-
-        return true;
+        final String otherUuid = ((Membership) other).getUuid();
+        return null != uuid && null != otherUuid && uuid.equals(otherUuid);
     }
 
     @Override
     public int hashCode() {
-        return 31*individual.getExtId().hashCode() + 29*socialGroup.getExtId().hashCode();
+        return uuid.hashCode();
     }
 
     @XmlRootElement

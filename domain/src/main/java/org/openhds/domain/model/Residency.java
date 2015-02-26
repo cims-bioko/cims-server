@@ -129,22 +129,13 @@ public class Residency extends AuditableCollectedEntity implements GenericStartE
             return false;
         }
 
-        final Residency otherResidency = (Residency) other;
-
-        if (!individual.getExtId().equals(otherResidency.getIndividual().getExtId())) {
-            return false;
-        }
-
-        if (!location.getExtId().equals(otherResidency.getLocation().getExtId())) {
-            return false;
-        }
-
-        return true;
+        final String otherUuid = ((Residency) other).getUuid();
+        return null != uuid && null != otherUuid && uuid.equals(otherUuid);
     }
 
     @Override
     public int hashCode() {
-        return 29*individual.getExtId().hashCode() + location.getExtId().hashCode();
+        return uuid.hashCode();
     }
 
     @XmlRootElement

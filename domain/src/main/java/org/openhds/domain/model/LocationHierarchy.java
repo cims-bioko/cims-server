@@ -103,33 +103,21 @@ public class LocationHierarchy implements UuidIdentifiable, Serializable {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((extId == null) ? 0 : extId.hashCode());
-        result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
-        return result;
+        return uuid.hashCode();
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(Object other) {
+        if (this == other) {
             return true;
-        if (obj == null)
+        }
+
+        if (!(other instanceof LocationHierarchy)) {
             return false;
-        if (!(obj instanceof LocationHierarchy))
-            return false;
-        LocationHierarchy other = (LocationHierarchy) obj;
-        if (extId == null) {
-            if (other.extId != null)
-                return false;
-        } else if (!extId.equals(other.extId))
-            return false;
-        if (uuid == null) {
-            if (other.uuid != null)
-                return false;
-        } else if (!uuid.equals(other.uuid))
-            return false;
-        return true;
+        }
+
+        final String otherUuid = ((LocationHierarchy) other).getUuid();
+        return null != uuid && null != otherUuid && uuid.equals(otherUuid);
     }
 
     @XmlRootElement

@@ -133,26 +133,14 @@ public class Relationship extends AuditableCollectedEntity implements
             return false;
         }
 
-        final Relationship otherRelationship = (Relationship) other;
+        final String otherUuid = ((Relationship) other).getUuid();
+        return null != uuid && null != otherUuid && uuid.equals(otherUuid);
 
-        if (!individualA.getExtId().equals(otherRelationship.getIndividualA().getExtId())) {
-            return false;
-        }
-
-        if (!individualB.getExtId().equals(otherRelationship.getIndividualB().getExtId())) {
-            return false;
-        }
-
-        if (!aIsToB.equals(otherRelationship.getaIsToB())) {
-            return false;
-        }
-
-        return true;
     }
 
     @Override
     public int hashCode() {
-        return 31*individualA.getExtId().hashCode() + 29*individualB.getExtId().hashCode() + aIsToB.hashCode();
+        return uuid.hashCode();
     }
 
     @XmlRootElement

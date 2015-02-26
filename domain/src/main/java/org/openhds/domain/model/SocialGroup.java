@@ -130,18 +130,13 @@ public class SocialGroup
             return false;
         }
 
-        final SocialGroup otherSocialGroup = (SocialGroup) other;
-
-        if (!extId.equals(otherSocialGroup.getExtId())) {
-            return false;
-        }
-
-        return true;
+        final String otherUuid = ((SocialGroup) other).getUuid();
+        return null != uuid && null != otherUuid && uuid.equals(otherUuid);
     }
 
     @Override
     public int hashCode() {
-        return extId.hashCode();
+        return uuid.hashCode();
     }
 
     @XmlRootElement

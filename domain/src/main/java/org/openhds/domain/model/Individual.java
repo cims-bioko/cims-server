@@ -337,18 +337,13 @@ public class Individual extends AuditableCollectedEntity implements Serializable
             return false;
         }
 
-        final Individual otherIndividual = (Individual) other;
-
-        if (!extId.equals(otherIndividual.getExtId())) {
-            return false;
-        }
-
-        return true;
+        final String otherUuid = ((Individual) other).getUuid();
+        return null != uuid && null != otherUuid && uuid.equals(otherUuid);
     }
 
     @Override
     public int hashCode() {
-        return extId.hashCode();
+        return uuid.hashCode();
     }
 
     @XmlRootElement
