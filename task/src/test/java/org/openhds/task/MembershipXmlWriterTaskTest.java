@@ -1,17 +1,8 @@
 package org.openhds.task;
 
-import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
-import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.MockitoAnnotations.initMocks;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseOperation;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.custommonkey.xmlunit.exceptions.XpathException;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,12 +18,19 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-
-import com.github.springtestdbunit.DbUnitTestExecutionListener;
-import com.github.springtestdbunit.annotation.DatabaseOperation;
-import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
+import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/task-test-context.xml" })
@@ -70,23 +68,19 @@ public class MembershipXmlWriterTaskTest {
         }
 
         try {
-            MembershipXmlWriterTask task = new MembershipXmlWriterTask(
-                    asyncTaskService, membershipService);
+            MembershipXmlWriterTask task = new MembershipXmlWriterTask(asyncTaskService, membershipService);
             TaskContext context = new TaskContext(fileToWrite);
             task.writeXml(context);
 
             assertTrue(fileToWrite.exists());
-            String xmlWritten = new String(Files.readAllBytes(Paths
-                    .get(fileToWrite.getPath())));
+
+            String xmlWritten = new String(Files.readAllBytes(Paths.get(fileToWrite.getPath())));
             assertXpathExists("/memberships", xmlWritten);
             assertXpathExists("/memberships/membership", xmlWritten);
+            assertXpathEvaluatesTo("Individual1", "/memberships/membership/individual/uuid", xmlWritten);
+            assertXpathEvaluatesTo("SocialGroup1", "/memberships/membership/socialGroup/uuid", xmlWritten);
+            assertXpathEvaluatesTo("1", "/memberships/membership/bIsToA", xmlWritten);
 
-            assertXpathEvaluatesTo("individual1",
-                    "/memberships/membership/individual/extId", xmlWritten);
-            assertXpathEvaluatesTo("sg123456789",
-                    "/memberships/membership/socialGroup/extId", xmlWritten);
-            assertXpathEvaluatesTo("1",
-                    "/memberships/membership/bIsToA", xmlWritten);
         } catch (IOException e) {
             fail("IOException testing Membership XML: " + e.getMessage());
         } catch (SAXException e) {

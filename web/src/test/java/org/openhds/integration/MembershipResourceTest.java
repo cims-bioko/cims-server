@@ -67,8 +67,8 @@ public class MembershipResourceTest {
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML))
                 .andExpect(xpath("/memberships").nodeCount(1))
                 .andExpect(xpath("/memberships/membership/bIsToA").string("1"))
-                .andExpect(xpath("/memberships/membership/individual/extId").string("individual1"))
-                .andExpect(xpath("/memberships/membership/socialGroup/extId").string("sg123456789"));
+                .andExpect(xpath("/memberships/membership/individual/uuid").string("Individual1"))
+                .andExpect(xpath("/memberships/membership/socialGroup/uuid").string("SocialGroup1"));
     }
 
     @Test
@@ -81,8 +81,8 @@ public class MembershipResourceTest {
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML))
                 .andExpect(xpath("/memberships").nodeCount(1))
                 .andExpect(xpath("/memberships/membership/bIsToA").string("1"))
-                .andExpect(xpath("/memberships/membership/individual/extId").string("individual1"))
-                .andExpect(xpath("/memberships/membership/socialGroup/extId").string("sg123456789"));
+                .andExpect(xpath("/memberships/membership/individual/uuid").string("Individual1"))
+                .andExpect(xpath("/memberships/membership/socialGroup/uuid").string("SocialGroup1"));
     }
 
     @Test
@@ -95,7 +95,7 @@ public class MembershipResourceTest {
     }
 
     @Test
-    public void testPostLocationXml() throws Exception {
+    public void testPostMemebrsipXml() throws Exception {
         final String LOCATION_POST_XML =  "<membership>"
                 + "<collectedBy>"
                 + "<extId>UNK</extId>"
@@ -116,12 +116,12 @@ public class MembershipResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML))
                 .andExpect(xpath("/membership/bIsToA").string("3"))
-                .andExpect(xpath("/membership/individual/extId").string("individual2"))
-                .andExpect(xpath("/membership/socialGroup/extId").string("sg234567890"));
+                .andExpect(xpath("/membership/individual/uuid").string("Individual2"))
+                .andExpect(xpath("/membership/socialGroup/uuid").string("SocialGroup2"));
     }
 
     @Test
-    public void testPostLocationInvalidXml() throws Exception {
+    public void testPostMembershipInvalidXml() throws Exception {
         final String LOCATION_POST_XML =  "<membership>"
                 + "<collectedBy>"
                 + "<extId>IAmInvalid</extId>"

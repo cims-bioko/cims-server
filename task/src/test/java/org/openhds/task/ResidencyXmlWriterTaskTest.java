@@ -77,8 +77,8 @@ public class ResidencyXmlWriterTaskTest {
             assertXpathExists("/residencies/residency", xmlWritten);
             assertXpathExists("/residencies/residency/startDate", xmlWritten);
             assertXpathExists("/residencies/residency/startType", xmlWritten);
-            assertXpathEvaluatesTo("individual1", "/residencies/residency/individual/extId", xmlWritten);
-            assertXpathEvaluatesTo("testLocation", "/residencies/residency/location/extId", xmlWritten);
+            assertXpathEvaluatesTo("Individual1", "/residencies/residency/individual/uuid", xmlWritten);
+            assertXpathEvaluatesTo("LOCATION1", "/residencies/residency/location/uuid", xmlWritten);
         } catch (IOException e) {
             fail("IOException testing Residency XML: " + e.getMessage());
         } catch (SAXException e) {

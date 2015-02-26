@@ -73,27 +73,21 @@ public class IndividualXmlWriterTaskTest {
 
         try {
 
-            IndividualXmlWriterTask task = new IndividualXmlWriterTask(
-                    asyncTaskService, individualService);
+            IndividualXmlWriterTask task = new IndividualXmlWriterTask(asyncTaskService, individualService);
             TaskContext context = new TaskContext(fileToWrite);
             task.writeXml(context);
 
             assertTrue(fileToWrite.exists());
-            String xmlWritten = new String(Files.readAllBytes(Paths
-                    .get(fileToWrite.getPath())));
+            String xmlWritten = new String(Files.readAllBytes(Paths.get(fileToWrite.getPath())));
             assertXpathExists("/individuals", xmlWritten);
             assertXpathExists("/individuals/individual", xmlWritten);
             assertXpathExists("/individuals/individual/memberships", xmlWritten);
             assertXpathExists("/individuals/individual/residencies", xmlWritten);
 
-            assertXpathEvaluatesTo("individual1",
-                    "/individuals/individual/extId", xmlWritten);
-            assertXpathEvaluatesTo("60", "/individuals/individual/age",
-                    xmlWritten);
-            assertXpathEvaluatesTo("Individual",
-                    "/individuals/individual/firstName", xmlWritten);
-            assertXpathEvaluatesTo("1",
-                    "/individuals/individual/lastName", xmlWritten);
+            assertXpathEvaluatesTo("Individual1", "/individuals/individual/uuid", xmlWritten);
+            assertXpathEvaluatesTo("60", "/individuals/individual/age", xmlWritten);
+            assertXpathEvaluatesTo("Individual", "/individuals/individual/firstName", xmlWritten);
+            assertXpathEvaluatesTo("1", "/individuals/individual/lastName", xmlWritten);
 
         } catch (IOException e) {
             fail("IOException testing Individual XML: " + e.getMessage());

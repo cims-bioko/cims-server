@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.openhds.domain.model.FieldWorker;
 import org.openhds.errorhandling.constants.ErrorConstants;
 import org.openhds.domain.model.ErrorLog;
 import org.openhds.errorhandling.service.ErrorHandlingService;
@@ -83,6 +84,10 @@ public class LocationResource {
             return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
         }
 
+        FieldWorker fieldWorker = new FieldWorker();
+        fieldWorker.setUuid(location.getCollectedBy().getUuid());
+        location.setCollectedBy(fieldWorker);
+
         WebserviceResult result = new WebserviceResult();
         result.addDataElement("location", ShallowCopier.makeShallowCopy(location));
         result.setResultCode(ResultCodes.SUCCESS_CODE);
@@ -127,6 +132,11 @@ public class LocationResource {
 
         for (Location loc : locations) {
             Location copy = ShallowCopier.makeShallowCopy(loc);
+            
+            FieldWorker fieldWorker = new FieldWorker();
+            fieldWorker.setUuid(copy.getCollectedBy().getUuid());
+            copy.setCollectedBy(fieldWorker);
+
             copies.add(copy);
         }
 
