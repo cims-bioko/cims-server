@@ -20,6 +20,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -72,7 +73,7 @@ public class Location
 
     @OneToMany(targetEntity = org.openhds.domain.model.Residency.class)
     @JoinColumn(name = "location_uuid")
-    private List<Residency> residencies;
+    private List<Residency> residencies = new ArrayList<Residency>();
 
     // Extensions for bioko island project
     @Description(description = "The number of this building within a sector")

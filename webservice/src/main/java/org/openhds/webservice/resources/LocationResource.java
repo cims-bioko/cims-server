@@ -1,30 +1,16 @@
 package org.openhds.webservice.resources;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.io.IOUtils;
-import org.openhds.domain.model.FieldWorker;
-import org.openhds.errorhandling.constants.ErrorConstants;
-import org.openhds.domain.model.ErrorLog;
-import org.openhds.errorhandling.service.ErrorHandlingService;
-import org.openhds.errorhandling.util.ErrorLogUtil;
-
-
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.LocationHierarchyService;
+import org.openhds.controller.util.CacheResponseWriter;
+import org.openhds.domain.model.ErrorLog;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Location.Locations;
 import org.openhds.domain.util.ShallowCopier;
+import org.openhds.errorhandling.constants.ErrorConstants;
+import org.openhds.errorhandling.service.ErrorHandlingService;
+import org.openhds.errorhandling.util.ErrorLogUtil;
 import org.openhds.task.support.FileResolver;
-import org.openhds.controller.util.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
 import org.openhds.webservice.response.WebserviceResult;
@@ -43,6 +29,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/locations")
@@ -83,10 +79,6 @@ public class LocationResource {
         if (location == null) {
             return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
         }
-
-        FieldWorker fieldWorker = new FieldWorker();
-        fieldWorker.setUuid(location.getCollectedBy().getUuid());
-        location.setCollectedBy(fieldWorker);
 
         WebserviceResult result = new WebserviceResult();
         result.addDataElement("location", ShallowCopier.makeShallowCopy(location));
@@ -132,11 +124,6 @@ public class LocationResource {
 
         for (Location loc : locations) {
             Location copy = ShallowCopier.makeShallowCopy(loc);
-            
-            FieldWorker fieldWorker = new FieldWorker();
-            fieldWorker.setUuid(copy.getCollectedBy().getUuid());
-            copy.setCollectedBy(fieldWorker);
-
             copies.add(copy);
         }
 

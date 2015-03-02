@@ -1,10 +1,8 @@
 package org.openhds.domain.util;
 
 
-import org.openhds.domain.model.FieldWorker;
-import org.openhds.domain.model.Location;
-import org.openhds.domain.model.LocationHierarchy;
-import org.openhds.domain.model.User;
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 import org.openhds.domain.model.UuidIdentifiable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +12,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,8 +28,14 @@ import java.util.Set;
  * the stubs don't refer to any other objects, they prevent runaway recursion by tools
  * like automatic XML Marshallers.
  *
- * This shallow copier assumes that all objects being copied or converted to stubs have
- * no-argument constructors that produce a "default" or "blank" object.
+ * This ShallowCopier assumes that all objects being copied or converted to stubs have
+ * no-argument constructors that produce "default" or "blank" objects.  It also assumes
+ * that Collection fields will be initialized statically or in the constructor.
+ *
+ * This ShallowCopier had an unfortunate dependency on Hibernate.  This is necessary
+ * in order to avoid instantiating Hibernate proxy objects.  Instead we always want to
+ * instantiate "real" objects using the classes as written.  This avoids issues with
+ * tools like automatic JSON Marshallers, which may not know how to Marshall proxies.
  *
  * "Shallow copy" has special meaning for OpenHDS because shallow copies are what we
  * send over the wire to external clients, like the OpenHDS tablet.  This is different
@@ -50,7 +53,7 @@ public class ShallowCopier {
             return null;
         }
 
-        T copy = (T) getDefaultBlank(original);
+        T copy = (T) newDefaultBlank(original);
         Set<Field> allFields = getAllFields(original);
         assignAllFields(original, copy, allFields);
         return copy;
@@ -100,15 +103,17 @@ public class ShallowCopier {
     }
 
     // Make a new blank object of the same concrete class as the given object using its no-argument constructor.
-    private static Object getDefaultBlank(Object original) {
+    private static Object newDefaultBlank(Object original) {
         if (null == original) {
             return null;
         }
 
-        Class<?> currentClass = (Class<?>) original.getClass();
+        // Unfortunate dependency on Hibernate to avoid instantiating new HibernateProxy objects.
+        Class<?> currentClass = original instanceof HibernateProxy ? Hibernate.getClass(original) : original.getClass();
+
         Constructor<?> constructor;
         try {
-            constructor = currentClass.getConstructor();
+            constructor = currentClass.getDeclaredConstructor();
         } catch (NoSuchMethodException e) {
             logger.error("Can't find constructor NoSuchMethodException: " + e.getMessage());
             return null;
@@ -134,7 +139,7 @@ public class ShallowCopier {
             return null;
         }
 
-        UuidIdentifiable stub = (UuidIdentifiable) getDefaultBlank(original);
+        UuidIdentifiable stub = (UuidIdentifiable) newDefaultBlank(original);
         stub.setUuid(original.getUuid());
         return stub;
     }
@@ -230,6 +235,13 @@ public class ShallowCopier {
 
             Collection<Object> stubCollection = (Collection<Object>) field.get(target);
             if (null == stubCollection) {
+                logger.warn("Skipping uninitialized Collection in field <"
+                        + field.getName()
+                        + "> of type <"
+                        + field.getType().getName()
+                        + "> in class <"
+                        + original.getClass().getName()
+                        + ">");
                 return;
             }
 
@@ -249,56 +261,4 @@ public class ShallowCopier {
                     + e.getMessage());
         }
     }
-
-    public static Location shallowCopyLocation(Location loc) {
-        Location copy = new Location();
-
-        copy.setUuid(loc.getUuid());
-        copy.setExtId(loc.getExtId());
-        copy.setAccuracy(getEmptyStringIfBlank(loc.getAccuracy()));
-        copy.setAltitude(getEmptyStringIfBlank(loc.getAltitude()));
-        copy.setLatitude(getEmptyStringIfBlank(loc.getLatitude()));
-        copy.setLongitude(getEmptyStringIfBlank(loc.getLongitude()));
-
-        // extensions for bioko island project
-        copy.setRegionName(getEmptyStringIfBlank(loc.getRegionName()));
-        copy.setProvinceName(getEmptyStringIfBlank(loc.getProvinceName()));
-        copy.setDistrictName(getEmptyStringIfBlank(loc.getDistrictName()));
-        copy.setSubDistrictName(getEmptyStringIfBlank(loc.getSubDistrictName()));
-        copy.setSectorName(getEmptyStringIfBlank(loc.getSectorName()));
-        copy.setLocalityName(getEmptyStringIfBlank(loc.getLocalityName()));
-        copy.setCommunityName(getEmptyStringIfBlank(loc.getCommunityName()));
-        copy.setCommunityCode(getEmptyStringIfBlank(loc.getCommunityCode()));
-        copy.setMapAreaName(getEmptyStringIfBlank(loc.getMapAreaName()));
-
-        copy.setBuildingNumber(getEmptyStringIfBlank(loc.getBuildingNumber()));
-        copy.setFloorNumber(getEmptyStringIfBlank(loc.getFloorNumber()));
-        copy.setProvinceName(getEmptyStringIfBlank(loc.getProvinceName()));
-        copy.setRegionName(getEmptyStringIfBlank(loc.getRegionName()));
-        copy.setSubDistrictName(getEmptyStringIfBlank(loc.getSubDistrictName()));
-        copy.setDistrictName(getEmptyStringIfBlank(loc.getDistrictName()));
-
-        copy.setDescription(getEmptyStringIfBlank(loc.getDescription()));
-
-        LocationHierarchy hierarchy = new LocationHierarchy();
-        hierarchy.setUuid(loc.getLocationHierarchy().getUuid());
-        hierarchy.setExtId(loc.getLocationHierarchy().getExtId());
-        copy.setLocationHierarchy(hierarchy);
-
-        copy.setLocationName(loc.getLocationName());
-        copy.setLocationType(loc.getLocationType());
-
-        FieldWorker fieldworkerStub = FieldWorker.makeStub(loc.getCollectedBy().getUuid(), loc.getCollectedBy().getExtId());
-        copy.setCollectedBy(fieldworkerStub);
-        return copy;
-    }
-
-    private static String getEmptyStringIfBlank(String accuracy) {
-        if (accuracy == null || accuracy.trim().isEmpty()) {
-            return "";
-        }
-
-        return accuracy;
-    }
-
 }
