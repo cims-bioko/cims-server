@@ -100,7 +100,19 @@ public class VisitFormResource extends AbstractFormResource {
         }
 
         visit.setVisitLocation(location);
-        visit.setExtId(visitForm.getVisitExtId());
+
+
+        // check if the visit's extId needs to be changed because of an underlying location extId change
+        if (!location.getExtId().equalsIgnoreCase(visitForm.getLocationExtId())) {
+            String newExtId = visitForm.getVisitExtId();
+
+            // 2015-02-19_  +  M395S01E62P1
+            newExtId = newExtId.substring(0, 11) + location.getExtId();
+            visit.setExtId(newExtId);
+        } else {
+            visit.setExtId(visitForm.getVisitExtId());
+        }
+
         visit.setUuid(visitForm.getVisitUuid());
 
         //check to see if Visit with the same uuid already exists: visits with the same uuid

@@ -220,14 +220,9 @@ public class IndividualFormResource extends AbstractFormResource {
             return requestError("Error finding or creating individual: " + e.getMessage());
         }
 
-        //TODO: This is a temporary fix to account for individual ext id's from the old scheme
-        // old ext id scheme does not contain a hyphen
-        if (-1 == individual.getExtId().indexOf('-')) {
-            generateIndividualExtId(location, individual);
-        }
-
         // change the individual's extId if the server has previously changed the extId of their location/household
         if (!individualForm.getHouseholdExtId().equalsIgnoreCase(location.getExtId())) {
+
             updateIndividualExtId(individual, location);
 
             // log the modification
@@ -236,11 +231,23 @@ public class IndividualFormResource extends AbstractFormResource {
             String payload = createDTOPayload(individualForm);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
                     IndividualForm.class.getSimpleName(), collectedBy,
-                    ErrorConstants.UNRESOLVED_ERROR_STATUS, logMessage);
+                    ErrorConstants.MODIFIED_EXTID, logMessage);
             errorService.logError(error);
 
             //household extId used later by social group, need to correct it here
             individualForm.setHouseholdExtId(location.getExtId());
+        }
+
+        // log a warning if the individual extId clashes with an existing individual's extId
+        if (null != individualService.getByExtId(individual.getExtId())) {
+            // log the modification
+            List<String> logMessage = new ArrayList<String>();
+            logMessage.add("Warning: Individual ExtId clashes with an existing Individual's extId : "+individual.getExtId());
+            String payload = createDTOPayload(individualForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
+                    IndividualForm.class.getSimpleName(), collectedBy,
+                    ErrorConstants.EXISTING_EXTID, logMessage);
+            errorService.logError(error);
         }
 
         // individual's residency at location
@@ -322,10 +329,17 @@ public class IndividualFormResource extends AbstractFormResource {
     private void generateIndividualExtId(Location location, Individual individual) {
 
         List<Individual> residents = residencyService.getIndividualsByLocation(location);
+        String extId;
         int sequenceNumber = residents.size() + 1;
-        String extId = location.getExtId() + "-" + String.format("%03d", sequenceNumber);
-        individual.setExtId(extId);
 
+        // M1000S57E02P1 + -001
+        extId = location.getExtId() + "-" + String.format("%03d", sequenceNumber);
+
+        while (null == individualService.getByExtId(extId)) {
+            extId = extId.substring(0, extId.length() - 3) + String.format("%03d", ++sequenceNumber);
+        }
+
+        individual.setExtId(extId);
     }
 
     private void updateIndividualExtId(Individual individual, Location location) {

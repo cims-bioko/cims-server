@@ -47,8 +47,6 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
 
     private static final String A_CURRENT_DATE = "2014-01-01T00:00:00-05:00";
 
-    private static final String A_PREVIOUS_DATE = "1999-01-01T00:00:00-05:00";
-
     private static final String A_FUTURE_DATE = "2020-01-01T00:00:00-05:00";
 
     private static final String VALID_OBSERVATION_XML =
@@ -91,34 +89,6 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
         PregnancyObservation obs = genericDao.findByProperty(PregnancyObservation.class, "mother", mother);
         assertNotNull(obs);
         assertEquals(mother, obs.getMother());
-
-    }
-
-    private static final String OBSERVATION_EXPECTED_DELIVERY_DATE_IN_PAST =
-            "<pregnancyObservationForm>" +
-                    "<recorded_date>"+ A_CURRENT_DATE +"</recorded_date>" +
-                    "<visit_ext_id>pregObsVisit</visit_ext_id>" +
-                    "<visit_uuid>PregObsVisit</visit_uuid>" +
-
-                    "<individual_ext_id>pregnantIndividual</individual_ext_id>" +
-                    "<individual_uuid>PregnantIndividual</individual_uuid>" +
-
-                    "<processed_by_mirth>null</processed_by_mirth>" +
-                    "<entity_uuid>PREG-OBS-IN-PAST</entity_uuid>" +
-                    "<field_worker_ext_id>UNK</field_worker_ext_id>" +
-                    "<field_worker_uuid>UnknownFieldWorker</field_worker_uuid>" +
-                    "<expected_delivery_date>"+A_PREVIOUS_DATE+"</expected_delivery_date>" +
-                    "</pregnancyObservationForm>";
-
-    @Test
-    public void testPostExpectedDateInPast() throws Exception {
-
-        mockMvc.perform(
-                post("/pregnancyObservationForm").session(session).accept(MediaType.APPLICATION_XML)
-                        .contentType(MediaType.APPLICATION_XML)
-                        .body(OBSERVATION_EXPECTED_DELIVERY_DATE_IN_PAST.getBytes()))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
     }
 
