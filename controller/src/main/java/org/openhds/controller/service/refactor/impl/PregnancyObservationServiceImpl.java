@@ -69,17 +69,13 @@ public class PregnancyObservationServiceImpl implements PregnancyObservationServ
         Individual mother = pregnancyObservation.getMother();
 
         boolean dead = individualService.isDeceased(mother);
-        boolean isExpectedDateInPast = Calendar.getInstance().getTime().after(pregnancyObservation.getExpectedDeliveryDate().getTime());
 
         if (dead) {
             ConstraintViolations.addViolationIfNotNull(cv, "The referenced mother is deceased.");
         }
 
-        if (isExpectedDateInPast) {
-            ConstraintViolations.addViolationIfNotNull(cv, "The expected delivery date of the pregnancy observation is in the past");
-        }
 
-        return !dead && !isExpectedDateInPast;
+        return !dead;
 
     }
 
