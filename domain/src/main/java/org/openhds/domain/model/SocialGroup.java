@@ -1,25 +1,16 @@
 
 package org.openhds.domain.model;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Set;
+import org.openhds.domain.annotations.Description;
+import org.openhds.domain.constraint.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.openhds.domain.annotations.Description;
-import org.openhds.domain.constraint.CheckEntityNotVoided;
-import org.openhds.domain.constraint.CheckFieldNotBlank;
-import org.openhds.domain.constraint.CheckHouseholdHeadAge;
-import org.openhds.domain.constraint.CheckIndividualNotUnknown;
-import org.openhds.domain.constraint.ExtensionStringConstraint;
-import org.openhds.domain.constraint.Searchable;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -59,7 +50,7 @@ public class SocialGroup
         CascadeType.ALL
     }, mappedBy = "socialGroup")
     @Description(description = "The set of all memberships of the social group.")
-    private Set<Membership> memberships;
+    private Set<Membership> memberships = new HashSet<Membership>();
 
     @ManyToOne
     @Description(description="The location associated with this social group")
