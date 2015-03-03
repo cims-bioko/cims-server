@@ -45,7 +45,6 @@ public class Visit
     @Description(description = "Location that this visit is for.")
     private Location visitLocation;
     @NotNull(message = "You must provide a visit date")
-    @Past(message = "Visit date should be in the past")
     @Temporal(TemporalType.DATE)
     @Description(description = "Date of the visit.")
     private Calendar visitDate;

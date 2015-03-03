@@ -45,7 +45,6 @@ public class PregnancyObservation
     @Temporal(TemporalType.DATE)
     @Description(description = "Expected delivery date.")
     private Calendar expectedDeliveryDate;
-    @Past
     @NotNull
     @Temporal(TemporalType.DATE)
     @Description(description = "Recorded date of the pregnancy observation.")
