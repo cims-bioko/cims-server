@@ -1,16 +1,14 @@
 package org.openhds.task;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.openhds.controller.service.IndividualService;
 import org.openhds.domain.model.Individual;
-import org.openhds.domain.util.CalendarUtil;
+import org.openhds.domain.model.Residency;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.*;
 
 @Component("individualXmlWriter")
 public class IndividualXmlWriterTask extends XmlWriterTemplate<Individual> {
@@ -24,7 +22,16 @@ public class IndividualXmlWriterTask extends XmlWriterTemplate<Individual> {
 
     @Override
     protected Individual makeCopyOf(Individual original) {
-        return ShallowCopier.makeShallowCopy(original);
+        // TODO: external systems should not expect Residencies nested within Individuals
+        Individual individualCopy = ShallowCopier.makeShallowCopy(original);
+
+        if (!original.getAllResidencies().isEmpty()) {
+            Residency residencyCopy = ShallowCopier.makeShallowCopy(original.getCurrentResidency());
+            Set<Residency> nestedResidencies = new HashSet<Residency>();
+            nestedResidencies.add(residencyCopy);
+            individualCopy.setAllResidencies(nestedResidencies);
+        }
+        return individualCopy;
     }
 
     @Override
@@ -33,21 +40,21 @@ public class IndividualXmlWriterTask extends XmlWriterTemplate<Individual> {
     }
 
     private List<Individual> getAllIndividualsWithResidencies(int start,
-			int pageSize) {
-		Individual indiv;
-		List<Individual> indivList= individualService.getAllIndividualsInRange(start,pageSize);
-		Iterator<Individual> it= indivList.iterator();
-		List<Individual> indivList2 = new ArrayList<Individual>();
-		while(it.hasNext()){
-			indiv=(Individual)it.next();
-			if(indiv.getCurrentResidency()!=null){
-				indivList2.add(indiv);
-			}
-		}
-		return indivList2;
-	}
+                                                              int pageSize) {
+        Individual indiv;
+        List<Individual> indivList= individualService.getAllIndividualsInRange(start,pageSize);
+        Iterator<Individual> it= indivList.iterator();
+        List<Individual> indivList2 = new ArrayList<Individual>();
+        while(it.hasNext()){
+            indiv=(Individual)it.next();
+            if(indiv.getCurrentResidency()!=null){
+                indivList2.add(indiv);
+            }
+        }
+        return indivList2;
+    }
 
-	@Override
+    @Override
     protected Class<?> getBoundClass() {
         return Individual.class;
     }
