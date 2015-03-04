@@ -123,12 +123,23 @@ public class LocationFormResource extends AbstractFormResource{
         location.setMapAreaName(locationForm.getMapAreaName());
         location.setSectorName(locationForm.getSectorName());
         location.setLocationName(locationForm.getLocationName());
-        location.setLocationType(locationForm.getLocationType());
-        location.setBuildingNumber(locationForm.getBuildingNumber());
-        location.setFloorNumber(locationForm.getFloorNumber());
+        location.setLocationType(nullTypeToUrb(locationForm.getLocationType()));
+        location.setBuildingNumber(digitsOnly(locationForm.getBuildingNumber()));
+        location.setFloorNumber(digitsOnly(locationForm.getFloorNumber()));
         location.setDescription(locationForm.getDescription());
         location.setLongitude(locationForm.getLongitude());
         location.setLatitude(locationForm.getLatitude());
+    }
+
+    private static String nullTypeToUrb(String locationType) {
+        return null == locationType || "null".equals(locationType) ? "URB" : locationType;
+    }
+
+    private static String digitsOnly(String dirtyNumber) {
+        if (null == dirtyNumber || "null".equals(dirtyNumber)) {
+            return null;
+        }
+        return dirtyNumber.replaceAll("\\D+","");
     }
 
     private static Calendar getDateInPast() {
