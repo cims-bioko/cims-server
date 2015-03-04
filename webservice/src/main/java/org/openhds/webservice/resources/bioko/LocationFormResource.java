@@ -67,7 +67,7 @@ public class LocationFormResource extends AbstractFormResource{
             throw new RuntimeException("Could not create JAXB context and marshaller for OutMigrationFormResource");
         }
 
-        // clean up "null" strings created by Mirth
+        // clean up "null" strings created by Mirth0
         if ("null".equals(locationForm.getHierarchyUuid())) {
             locationForm.setHierarchyUuid(null);
         }
@@ -123,15 +123,16 @@ public class LocationFormResource extends AbstractFormResource{
 
         // modify the extId if it matches another location's extId, log the change
         if (null != locationService.getByExtId(locationForm.getLocationExtId())) {
+
             modifyExtId(location, locationForm);
 
+            // log the modification
             List<String> logMessage = new ArrayList<String>();
             logMessage.add("Duplicate Location ExtId: Old = "+locationForm.getLocationExtId()+" New = "+location.getExtId());
-
             String payload = createDTOPayload(locationForm);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
                     LocationForm.class.getSimpleName(), collectedBy,
-                    ErrorConstants.UNRESOLVED_ERROR_STATUS, logMessage);
+                    ErrorConstants.MODIFIED_EXTID, logMessage);
             errorService.logError(error);
         } else {
             location.setExtId(locationForm.getLocationExtId());
