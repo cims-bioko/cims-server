@@ -115,23 +115,29 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
             + "<individual_other_names>Test Other</individual_other_names>"
             + "<individual_age>10</individual_age>"
             + "<individual_age_units>years</individual_age_units>" + "</individualForm>";
-    private static final String MEMBER_OF_HOUSEHOLD_DATE_FORMATTED = "<individualForm>"
+    private static final String MEMBER_OF_HOUSEHOLD_OUTDATED_EXTID_FORM_XML = "<individualForm>"
             + "<processed_by_mirth>false</processed_by_mirth>"
             + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>" + "<collection_date_time>"
-            + FORMATTED_DATETIME
+            + A_DATE
             + "</collection_date_time>"
-            + "<household_ext_id>existing_id</household_ext_id>"
-            + "<individual_ext_id>1234599899bb</individual_ext_id>"
-            + "<individual_first_name>DATE Test Member First</individual_first_name>"
-            + "<individual_last_name>DATE Test Member Last</individual_last_name>"
-            + "<individual_other_names>DATE Test Member Other</individual_other_names>"
-            + "<individual_age>100</individual_age>"
+            + "<field_worker_uuid>FWEK1D-UUID</field_worker_uuid>"
+            + "<entity_uuid>12345678901234935890123456789012</entity_uuid>"
+            + "<household_ext_id>existing_idOUTDATED</household_ext_id>"
+            + "<household_uuid>HOUSEHOLDLOCATION</household_uuid>"
+            + "<individual_ext_id>M1000S057E03P1-002</individual_ext_id>"
+            + "<individual_first_name>First</individual_first_name>"
+            + "<individual_last_name>Last</individual_last_name>"
+            + "<individual_other_names>Other</individual_other_names>"
+            + "<individual_age>66</individual_age>"
             + "<individual_age_units>years</individual_age_units>"
             + "<individual_date_of_birth>"
-            + FORMATTED_DATE
+            + A_DATE
             + "</individual_date_of_birth>"
             + "<individual_gender>F</individual_gender>"
             + "<individual_relationship_to_head_of_household>2</individual_relationship_to_head_of_household>"
+            + "<relationship_uuid>MEMBERRELATIONSHIP</relationship_uuid>"
+            + "<socialgroup_uuid>HOUSEHOLDSOCIALGROUP</socialgroup_uuid>"
+            + "<membership_uuid>ANOTHERMEMBERSHIP</membership_uuid>"
             + "<individual_phone_number>12345678890</individual_phone_number>"
             + "<individual_other_phone_number>0987654321</individual_other_phone_number>"
             + "<individual_language_preference>English</individual_language_preference>"
@@ -224,6 +230,18 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
                         .body(INDIVIDUAL_FORM_INCOMPLETE.getBytes()))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+    }
+
+    @Test
+    public void testPostOutdatedIndividualExtIdFormXml() throws Exception {
+        mockMvc.perform(
+                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(MEMBER_OF_HOUSEHOLD_OUTDATED_EXTID_FORM_XML.getBytes()))
+                .andExpect(status().isCreated())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+        verifyEntityCrud("existing_id-002", "existing_id", "individual2", "2");
     }
 
     private void verifyEntityCrud(String individualExtId, String householdExtId, String headExtId,

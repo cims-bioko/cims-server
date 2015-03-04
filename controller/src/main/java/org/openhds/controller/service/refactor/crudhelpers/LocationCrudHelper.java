@@ -64,5 +64,4 @@ public class LocationCrudHelper extends AbstractEntityCrudHelperImpl<Location> {
         return genericDao.findByProperty(Location.class,"uuid",id);
     }
 
-
 }

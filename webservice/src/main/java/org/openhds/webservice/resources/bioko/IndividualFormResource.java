@@ -17,6 +17,7 @@ import org.openhds.domain.model.Relationship;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.bioko.IndividualForm;
+import org.openhds.domain.model.bioko.LocationForm;
 import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.errorhandling.constants.ErrorConstants;
 import org.openhds.errorhandling.service.ErrorHandlingService;
@@ -39,6 +40,7 @@ import javax.xml.bind.Marshaller;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -218,6 +220,29 @@ public class IndividualFormResource extends AbstractFormResource {
             return requestError("Error finding or creating individual: " + e.getMessage());
         }
 
+        //TODO: This is a temporary fix to account for individual ext id's from the old scheme
+        // old ext id scheme does not contain a hyphen
+        if (-1 == individual.getExtId().indexOf('-')) {
+            generateIndividualExtId(location, individual);
+        }
+
+        // change the individual's extId if the server has previously changed the extId of their location/household
+        if (!individualForm.getHouseholdExtId().equalsIgnoreCase(location.getExtId())) {
+            updateIndividualExtId(individual, location);
+
+            // log the modification
+            List<String> logMessage = new ArrayList<String>();
+            logMessage.add("Individual ExtId updated from "+individualForm.getIndividualExtId()+" to "+individual.getExtId());
+            String payload = createDTOPayload(individualForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
+                    IndividualForm.class.getSimpleName(), collectedBy,
+                    ErrorConstants.UNRESOLVED_ERROR_STATUS, logMessage);
+            errorService.logError(error);
+
+            //household extId used later by social group, need to correct it here
+            individualForm.setHouseholdExtId(location.getExtId());
+        }
+
         // individual's residency at location
         findOrMakeResidency(individual, location, collectionTime, insertTime, collectedBy);
 
@@ -292,6 +317,25 @@ public class IndividualFormResource extends AbstractFormResource {
         }
 
         return new ResponseEntity<IndividualForm>(individualForm, HttpStatus.CREATED);
+    }
+
+    private void generateIndividualExtId(Location location, Individual individual) {
+
+        List<Individual> residents = residencyService.getIndividualsByLocation(location);
+        int sequenceNumber = residents.size() + 1;
+        String extId = location.getExtId() + "-" + String.format("%03d", sequenceNumber);
+        individual.setExtId(extId);
+
+    }
+
+    private void updateIndividualExtId(Individual individual, Location location) {
+
+        // -001
+        String individualSuffixSequence = individual.getExtId().substring(individual.getExtId().length() - 4);
+
+        // M1000S57E02P1-001
+        individual.setExtId(location.getExtId()+individualSuffixSequence);
+
     }
 
     private Individual findOrMakeIndividual(IndividualForm individualForm, FieldWorker collectedBy,

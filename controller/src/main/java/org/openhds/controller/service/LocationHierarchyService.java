@@ -11,6 +11,9 @@ import org.openhds.domain.model.PrivilegeConstants;
 
 public interface LocationHierarchyService {
 
+    @Authorized({PrivilegeConstants.VIEW_ENTITY})
+    int getMaxBuildingNumber(LocationHierarchy locationHierarchy);
+
     @Authorized({PrivilegeConstants.CREATE_ENTITY})
     LocationHierarchy findByUuid(String uuid);
 
