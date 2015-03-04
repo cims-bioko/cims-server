@@ -169,7 +169,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
-        verifyEntityCrud("1234567890aa", "newHouse_id", "1234567890aa", "1");
+        verifyEntityCrud("32145678901234935890123456789012", "newHouse_id", "32145678901234935890123456789012", "1");
     }
 
     @Test
@@ -181,7 +181,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
-        verifyEntityCrud("1234567890bb", "existing_id", "individual2", "2");
+        verifyEntityCrud("12345678901234935890123456789012", "existing_id", "Individual2", "2");
     }
 
     @Test
@@ -200,7 +200,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
-        verifyEntityCrud("1234567890aa", "newHouse_id", "1234567890aa", "1");
+        verifyEntityCrud("32145678901234935890123456789012", "newHouse_id", "32145678901234935890123456789012", "1");
     }
 
     @Test
@@ -219,7 +219,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
-        verifyEntityCrud("1234567890bb", "existing_id", "individual2", "2");
+        verifyEntityCrud("12345678901234935890123456789012", "existing_id", "Individual2", "2");
     }
 
     @Test
@@ -241,15 +241,15 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
-        verifyEntityCrud("existing_id-002", "existing_id", "individual2", "2");
+        verifyEntityCrud("12345678901234935890123456789012", "existing_id", "Individual2", "2");
     }
 
-    private void verifyEntityCrud(String individualExtId, String householdExtId, String headExtId,
+    private void verifyEntityCrud(String individualUuid, String householdExtId, String headUuid,
             String membershipType) {
 
         // individual exists
-        Individual individual = genericDao.findByProperty(Individual.class, "extId",
-                individualExtId);
+        Individual individual = genericDao.findByProperty(Individual.class, "uuid",
+                individualUuid);
         assertNotNull(individual);
 
         // location exists
@@ -283,7 +283,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         assertEquals(membershipType, membership.getbIsToA());
 
         // head of household exists
-        Individual head = genericDao.findByProperty(Individual.class, "extId", headExtId);
+        Individual head = genericDao.findByProperty(Individual.class, "uuid", headUuid);
         assertNotNull(head);
 
         // relationship to head
