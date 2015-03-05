@@ -158,9 +158,9 @@ public class LocationFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
-        Location location = genericDao.findByProperty(Location.class, "extId", "M1000S57E09P1A");
+        Location location = genericDao.findByProperty(Location.class, "extId", "M1000S57E09P1-d1");
         assertNotNull(location);
-        Location location2 = genericDao.findByProperty(Location.class, "extId", "M1000S57E09P1B");
+        Location location2 = genericDao.findByProperty(Location.class, "extId", "M1000S57E09P1-d2");
         assertNotNull(location2);
         List<ErrorLog> loggedErrors = genericDao.findAll(ErrorLog.class, true);
         assertNotNull(loggedErrors);

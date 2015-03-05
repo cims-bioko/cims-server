@@ -169,8 +169,8 @@ public class IndividualFormResource extends AbstractFormResource {
             }
 
             if (null == location) {
-                cv.addViolations(ConstraintViolations.INVALID_LOCATION_EXT_ID
-                        + ": IndividualForm has a nonexistent location id: "
+                cv.addViolations(
+                        ": IndividualForm has a nonexistent location id: "
                         + individualForm.getHouseholdUuid()
                         + " / "
                         + individualForm.getHouseholdExtId());
