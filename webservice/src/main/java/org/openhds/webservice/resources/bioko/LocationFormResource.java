@@ -72,6 +72,10 @@ public class LocationFormResource extends AbstractFormResource{
             locationForm.setHierarchyUuid(null);
         }
 
+        if ("null".equals(locationForm.getLocationExtId())) {
+            return requestError("Location ExtId is null");
+        }
+
         Location location;
         try {
             location = locationService.getByUuid(locationForm.getUuid());
@@ -156,24 +160,23 @@ public class LocationFormResource extends AbstractFormResource{
 
     private void modifyExtId(Location location, LocationForm locationForm) {
 
-        String newExtId = generateUniqueExtId(locationForm.getLocationExtId(), 'A');
+        String newExtId = generateUniqueExtId(locationForm.getLocationExtId());
         location.setExtId(newExtId);
 
     }
 
-    private String generateUniqueExtId(String extId, char suffix) {
+    private String generateUniqueExtId(String currentExtId) {
 
-        // Create a unique extId by appending an alphabetic character to the duplicate extId
-        while (null != locationService.getByExtId(extId+suffix) && suffix <= 'Z') {
-            suffix++;
+        String duplicateLocationSuffix = "-d";
+        int sequenceNumber = 1;
+        // -d                   // 1
+        while (null != locationService.getByExtId(currentExtId+duplicateLocationSuffix+sequenceNumber)) {
+            sequenceNumber++;
         }
 
-        // Append more alphabet characters if necessary
-        if (suffix > 'Z') {
-            return generateUniqueExtId(extId + 'A', 'A');
-        }
+        duplicateLocationSuffix = duplicateLocationSuffix+sequenceNumber;
 
-        return extId+suffix;
+        return currentExtId+duplicateLocationSuffix;
 
     }
 
