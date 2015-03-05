@@ -68,7 +68,7 @@ public class PregnancyObservationFormResource extends AbstractFormResource {
         FieldWorker fieldWorker = fieldWorkerService.getByUuid(pregnancyObservationForm.getFieldWorkerUuid());
         if (null == fieldWorker) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID);
+            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_UUID);
             logError(cv, fieldWorker, createDTOPayload(pregnancyObservationForm), PregnancyObservationForm.class.getSimpleName());
             return requestError(cv);
         }
@@ -77,7 +77,7 @@ public class PregnancyObservationFormResource extends AbstractFormResource {
         Individual individual = individualService.getByUuid(pregnancyObservationForm.getIndividualUuid());
         if (null == individual) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_EXT_ID);
+            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_UUID);
             logError(cv, fieldWorker, createDTOPayload(pregnancyObservationForm), PregnancyObservationForm.class.getSimpleName());
             return requestError(cv);
         }
@@ -86,7 +86,7 @@ public class PregnancyObservationFormResource extends AbstractFormResource {
         Visit visit = visitService.findVisitByUuid(pregnancyObservationForm.getVisitUuid());
         if (null == visit) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_VISIT_EXT_ID);
+            cv.addViolations(ConstraintViolations.INVALID_VISIT_UUID);
             logError(cv, fieldWorker, createDTOPayload(pregnancyObservationForm), PregnancyObservationForm.class.getSimpleName());
             return requestError(cv);
         }
