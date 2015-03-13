@@ -8,13 +8,20 @@
     <script src="errors/scripts/ng/app.js"></script>
     <script src="errors/scripts/ng/services.js"></script>
     <script src="errors/scripts/ng/controllers.js"></script>
+    <script src="angular-resources/jquery/jquery-2.1.3.min.js"></script>
+    <script src="angular-resources/bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
+    <script src="angular-resources/bootstrap-gh-pages/ui-bootstrap-tpls-0.12.1.min.js"></script>
+
+    <link rel="stylesheet" href="angular-resources/bootstrap-3.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="errors/css/errors.css">
 </head>
 <body>
 
 <h3>Error Review Utility</h3>
 <ul class="menu">
     <li><a href="#/home">Review Home</a></li>
-    <li><a href="#/all/unresolved">All Unresolved Errors</a></li>
+    <li><a href="#/all/unresolved">All Errors From Past 7 Days</a></li>
+    <li><a href="#/search">Search for Errors</a></li>
 </ul>
 
 <div ng-view></div>

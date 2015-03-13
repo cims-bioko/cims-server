@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.openhds.dao.service.GenericDao.RangeProperty;
@@ -85,7 +86,9 @@ public class ErrorLogResource {
             if (minDate != null) {
                 minRange.setTime(format.parse(minDate));
             } else {
-                minRange.setTime(format.parse("1-1-1970"));
+                //default to 7 days previous
+                long dayInMill = 1000 * 60 * 60 * 24;
+                minRange.setTime(new Date(System.currentTimeMillis() - (7 * dayInMill)));
             }
 
             if (maxDate != null) {

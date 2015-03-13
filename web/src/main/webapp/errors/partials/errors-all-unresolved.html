@@ -1,18 +1,27 @@
 <div>
-    <h2>All Unresolved Errors</h2>
+    <h2>Errors</h2>
 
     <form>
         Search: <input ng-model="search">
     </form>
-    <ul>
-        <li ng-repeat="errorlog in allUnresolvedErrors.data.errors | filter:search">
-            <p>UUID: {{errorlog.uuid}}</p>
-            <!--<p>Date: {{errorlog.insertDate}}</p>-->
-            <p>Field Worker: {{errorlog.fieldWorker.extId}}</p>
-            <p>Type: {{errorlog.entityType}}</p>
-            <p ng-repeat="error in errorlog.errors">Message: {{error.errorMessage}}</p>
-            <p>Status: {{errorlog.resolutionStatus}}</p>
-            <p>Date of Resolution: {{errorlog.dateOfResolution}}</p>
-        </li>
-    </ul>
+
+    <table>
+        <tr>
+            <th>Error ID</th>
+            <th>Entity Type</th>
+            <th>Date</th>
+            <th>Message</th>
+            <th>Field Worker</th>
+            <th>Resolution Status</th>
+        </tr>
+        <tr ng-repeat="errorlog in allUnresolvedErrors.data.errors | filter:search">
+            <td>{{errorlog.uuid}}</td>
+            <td>{{errorlog.entityType}}</td>
+            <td>{{errorlog.insertDate}}</td>
+            <td ng-repeat="error in errorlog.errors">{{error.errorMessage}} </br></td>
+            <td>{{errorlog.fieldWorker.extId}}</td>
+            <td>{{errorlog.resolutionStatus}}</td>
+        </tr>
+    </table>
+
 </div>

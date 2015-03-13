@@ -1,0 +1,30 @@
+<div>
+    <form>
+        <div class="form-group">
+            <label>Entity Type</label>
+            <input ng-model="entityType" type="text" placeholder="IndividualForm, LocationForm etc.">
+        </div>
+        <div class="form-group">
+            <label>Resolution Status</label>
+            <input ng-model="resolutionStatus" type="text" placeholder="Modified ExtId, Unresolved, etc.">
+        </div>
+    </form>
+
+
+
+    <div>
+        <div id="startDate">
+            <h4>Start Date</h4>
+            <datepicker ng-model="startDate" show-weeks="true" class="well well-sm"></datepicker>
+            <button type="button" class="btn btn-default" ng-Click="setSevenDayWindow()">Today - 7</button>
+        </div>
+`
+        <div id="endDate">
+            <h4>End Date</h4>
+            <datepicker ng-model="endDate" show-weeks="true"  class="well well-sm" ></datepicker>
+            <button type="button" class="btn btn-default" ng-Click="endToday()">Today</button>
+        </div>
+    </div>
+
+
+</div>
