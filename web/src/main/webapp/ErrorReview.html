@@ -5,24 +5,34 @@
     <script src="angular-resources/bower_components/angular/angular.js"></script>
     <script src="angular-resources/bower_components/angular-route/angular-route.js"></script>
     <script src="resources/lib/ng/angular-resource.js"></script>
-    <script src="errors/scripts/ng/app.js"></script>
     <script src="errors/scripts/ng/services.js"></script>
     <script src="errors/scripts/ng/controllers.js"></script>
+    <script src="errors/scripts/ng/app.js"></script>
     <script src="angular-resources/jquery/jquery-2.1.3.min.js"></script>
     <script src="angular-resources/bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
     <script src="angular-resources/bootstrap-gh-pages/ui-bootstrap-tpls-0.12.1.min.js"></script>
+    <script src="angular-resources/bower_components/angular-smart-table/dist/smart-table.js"></script>
 
     <link rel="stylesheet" href="angular-resources/bootstrap-3.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="errors/css/errors.css">
 </head>
 <body>
 
-<h3>Error Review Utility</h3>
-<ul class="menu">
-    <li><a href="#/home">Review Home</a></li>
-    <li><a href="#/all/unresolved">All Errors From Past 7 Days</a></li>
-    <li><a href="#/search">Search for Errors</a></li>
-</ul>
+<header>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">OpenHDS Error Review</a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="#search"><i class="fa fa-shield"></i> Error Search</a></li>
+                <li><a href="#recent"><i class="fa fa-shield"></i> All Unresolved Errors</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
 
 <div ng-view></div>
 

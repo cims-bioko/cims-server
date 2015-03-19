@@ -1,14 +1,17 @@
 var errorServices = angular.module('errorServices', ['ngResource']);
 
-errorServices.factory('AllUnresolvedErrorsService', ['$resource',
+errorServices.factory('RecentErrorsService', ['$resource',
     function($resource){
         return $resource('/openhds/api/rest/errors.json', {}, {
             query: {method:'GET', params:{resolution:'Unresolved'}}
         });
     }]);
 
-errorServices.factory('ErrorQueryService', function($resource) {
+errorServices.factory('ErrorQueryService', ['$resource', function($resource) {
 
-    return $resource("/openhds/api/rest/errors");
+    console.log("Error query service entered");
+    return $resource("/openhds/api/rest/errors.json", {}, {
+        query: {method: 'GET', isArray: false}
+    });
 
-})
+}]);

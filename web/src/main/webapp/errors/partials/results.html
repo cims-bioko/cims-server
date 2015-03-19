@@ -2,10 +2,10 @@
     <h2>Errors</h2>
 
     <form>
-        Search: <input ng-model="search">
+        Narrow the Search: <input ng-model="search">
     </form>
 
-    <table>
+    <table st-table="errors" class="table table-striped">
         <tr>
             <th>Error ID</th>
             <th>Entity Type</th>
@@ -14,7 +14,7 @@
             <th>Field Worker</th>
             <th>Resolution Status</th>
         </tr>
-        <tr ng-repeat="errorlog in allUnresolvedErrors.data.errors | filter:search">
+        <tr ng-repeat="errorlog in errors.data.errors | filter:search">
             <td>{{errorlog.uuid}}</td>
             <td>{{errorlog.entityType}}</td>
             <td>{{errorlog.insertDate}}</td>

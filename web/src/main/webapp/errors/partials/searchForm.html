@@ -1,9 +1,9 @@
 <div>
     <form>
-        <div class="form-group">
-            <label>Entity Type</label>
-            <input ng-model="entityType" type="text" placeholder="IndividualForm, LocationForm etc.">
-        </div>
+        <select class="form-control input-small" ng-model="entitySelection">
+            <option ng-repeat="entity in entityType" value="{{entity.name}}">{{entity.label}}</option>
+        </select>
+
         <div class="form-group">
             <label>Resolution Status</label>
             <input ng-model="resolutionStatus" type="text" placeholder="Modified ExtId, Unresolved, etc.">
@@ -26,5 +26,6 @@
         </div>
     </div>
 
+    <button class="btn btn-block btn-lg btn-primary" ng-click="submit()">Search</button>
 
 </div>
