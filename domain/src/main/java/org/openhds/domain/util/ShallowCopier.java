@@ -178,6 +178,15 @@ public class ShallowCopier {
             return;
         }
 
+        //TODO: this is a quick fix to get LocationEvaluations working on the client side.
+        //The location cache is now offering up a location "status" from its AuditableCollectedEntity superclass
+        //The client side should not interpret this field in terms of LocationEvaluation status
+        //Client side has a bad expectation that "status" will be null if a location is eligible for evaluation
+        if (field.getName().equalsIgnoreCase("status")) {
+            String test = field.getName();
+            return;
+        }
+
         try {
             field.setAccessible(true);
             field.set(target, field.get(original));
