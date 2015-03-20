@@ -14,7 +14,7 @@
             <th>Field Worker</th>
             <th>Resolution Status</th>
         </tr>
-        <tr ng-repeat="errorlog in errors.data.errors | filter:search">
+        <tr ng-repeat="errorlog in errors.data.errors | filter:search" ng-click="details(errorlog.uuid)">
             <td>{{errorlog.uuid}}</td>
             <td>{{errorlog.entityType}}</td>
             <td>{{errorlog.insertDate}}</td>

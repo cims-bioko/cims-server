@@ -49,27 +49,27 @@ public class ErrorLogResource {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> getErrors(@RequestParam(value="resolutionStatus", required=false) String resolutionStatus,
                                        @RequestParam(value="assignedTo", required=false) String assignedTo,
-                                       @RequestParam(value="fieldWorkerId", required=false) String fieldWorkerId,
+                                       @RequestParam(value="fieldWorkerExtId", required=false) String fieldWorkerExtId,
                                        @RequestParam(value="entityType", required=false) String entityType,
                                        @RequestParam(value="minDate", required = false) String minDate,
                                        @RequestParam(value = "maxDate", required = false) String maxDate) throws NoSuchMethodException, SecurityException, ConstraintViolations {
 
         List<ValueProperty> properties = new ArrayList<ValueProperty>();
 
-        if (resolutionStatus != null) {
+        if (resolutionStatus != null && !resolutionStatus.isEmpty()) {
             properties.add(ValuePropertyHelper.getValueProperty("resolutionStatus", resolutionStatus));
         }
 
-        if (assignedTo != null) {
+        if (assignedTo != null && !assignedTo.isEmpty()) {
             properties.add(ValuePropertyHelper.getValueProperty("assignedTo", assignedTo));
         }
 
-        if (entityType != null) {
+        if (entityType != null && !entityType.isEmpty()) {
             properties.add(ValuePropertyHelper.getValueProperty("entityType", entityType));
         }
 
-        if (fieldWorkerId != null) {
-            FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerByExtId(fieldWorkerId);
+        if (fieldWorkerExtId != null && !fieldWorkerExtId.isEmpty()) {
+            FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerByExtId(fieldWorkerExtId);
             if (fieldWorker != null) {
                 properties.add(ValuePropertyHelper.getValueProperty("fieldWorker", fieldWorker));
             }
@@ -83,7 +83,7 @@ public class ErrorLogResource {
         Calendar maxRange = Calendar.getInstance();
         try {
 
-            if (minDate != null) {
+            if (minDate != null && !minDate.isEmpty()) {
                 minRange.setTime(format.parse(minDate));
             } else {
                 //default to 7 days previous
@@ -91,7 +91,7 @@ public class ErrorLogResource {
                 minRange.setTime(new Date(System.currentTimeMillis() - (7 * dayInMill)));
             }
 
-            if (maxDate != null) {
+            if (maxDate != null && !maxDate.isEmpty()) {
                 maxRange.setTime(format.parse(maxDate));
             }
         } catch (ParseException e) {

@@ -1,21 +1,52 @@
 var errorControllers = angular.module('errorControllers',[]);
 
-errorControllers.controller('RecentErrorsController', ['$scope', '$rootScope', 'RecentErrorsService',
-    function($scope, $rootScope, RecentErrorsService) {
-        $rootScope.errors = RecentErrorsService.query();}]);
+errorControllers.controller('ErrorResultsController', ['$scope', '$rootScope', '$location', 'ErrorQueryService',
+    function($scope, $rootScope, $location, ErrorQueryService) {
+
+        if ($rootScope.errors.data === 'undefined') {
+            $rootScope.errors = ErrorQueryService.query({resolutionStatus : 'Unresolved'},
+                function(returnData) {
+                    if (returnData.data.length === 0 ) {
+                        $location.path('/noresults');
+                    }
+            });
+        }
+
+        if ($rootScope.errors.data.length === 0) {
+            $location.path('/noresults');
+        }
+
+        $scope.details = function(selected) {
+            ErrorQueryService.query({uuid: selected}, function(result) {
+                console.log(result);
+                $rootScope.errorDetail = result.data[0];
+                $location.path('/details');
+            })
+        };
+
+    }]);
 
 errorControllers.controller('SearchController', ['$scope', '$rootScope', '$location', 'ErrorQueryService', function($scope, $rootScope, $location, ErrorQueryService) {
-    $scope.maxDate= new Date();
-    $scope.resolutionStatus = "";
+    $scope.fieldWorkerExtId = "";
+    $scope.statusSelection = "";
+    $scope.entitySelection = "";
+
+    $scope.statusList = [
+        {name: "Modified ExtId", label: "Modified ExtId"},
+        {name: "", label: "All"}
+    ]
 
     $scope.entityType = [
-        {name:"IndividualForm.class", label:"Individual Form"},
-        {name:"LocationForm.class", label:"Location Form"},
-        {name:"VisitForm.class", label:"Visit Form"},
-        {name:"PregnancyObservationForm.class", label:"Pregnancy Observation Form"},
-        {name:"", label:""}
+        {name:"IndividualForm", label:"Individual Form"},
+        {name:"LocationForm", label:"Location Form"},
+        {name:"VisitForm", label:"Visit Form"},
+        {name:"PregnancyObservationForm", label:"Pregnancy Observation Form"},
+        {name:"", label:"All"},
+
     ];
 
+
+    $scope.maxDate= new Date();
     $scope.endToday = function() {
         $scope.endDate = new Date();
     };
@@ -31,6 +62,25 @@ errorControllers.controller('SearchController', ['$scope', '$rootScope', '$locat
     $scope.endToday();
     $scope.setSevenDayWindow();
 
+
+    $scope.submit = function() {
+
+        var cleanStartDate = cleanDate($scope.startDate);
+        var cleanEndDate = cleanDate($scope.endDate);
+
+        ErrorQueryService.query(
+            {resolutionStatus : $scope.statusSelection,
+                entityType : $scope.entitySelection,
+                fieldWorkerExtId : $scope.fieldWorkerExtId,
+                minDate : cleanStartDate,
+                maxDate : cleanEndDate}, function(response) {
+                    $rootScope.errors = response;
+                    console.log(response);
+                    $location.path('/results');
+            });
+
+    };
+
     //MM/dd/yyyy
     function cleanDate(date) {
         var year = date.getFullYear();
@@ -40,55 +90,5 @@ errorControllers.controller('SearchController', ['$scope', '$rootScope', '$locat
         day = day.length > 1 ? day : '0' + day;
         return month + "-"+day+"-"+year;
     }
-
-    $scope.submit = function() {
-
-        var cleanStartDate = cleanDate($scope.startDate);
-        var cleanEndDate = cleanDate($scope.endDate);
-
-        if ("" === $scope.resolutionStatus) {
-            if ("" === $scope.entitySelection) {
-                //base query without resolutionStatus or entityType
-                ErrorQueryService.query(
-                    {minDate : cleanStartDate,
-                        maxDate : cleanEndDate}, function(response) {
-                            $rootScope.errors = response;
-                            console.log(response);
-                            $location.path('/results');
-                    });
-            } else {
-                //base query without resolutionStatus
-                ErrorQueryService.query(
-                    {entityType : $scope.entitySelection,
-                        minDate : cleanStartDate,
-                        maxDate : cleanEndDate}, function(response) {
-                            $rootScope.errors = response;
-                            console.log(response);
-                            $location.path('/results');
-                    });
-            }
-        } else if ("" === $scope.entitySelection){
-            //base query without entityType
-            ErrorQueryService.query(
-                {resolutionStatus : $scope.resolutionStatus,
-                    minDate : cleanStartDate,
-                    maxDate : cleanEndDate}, function(response) {
-                        $rootScope.errors = response;
-                        console.log(response);
-                        $location.path('/results');
-                });
-        } else {
-            //base query
-            ErrorQueryService.query(
-                {resolutionStatus : $scope.resolutionStatus,
-                    entityType : $scope.entitySelection,
-                    minDate : cleanStartDate,
-                    maxDate : cleanEndDate}, function(response) {
-                        $rootScope.errors = response;
-                        console.log(response);
-                        $location.path('/results');
-                });
-        }
-    };
 
 }]);

@@ -9,8 +9,7 @@ errorServices.factory('RecentErrorsService', ['$resource',
 
 errorServices.factory('ErrorQueryService', ['$resource', function($resource) {
 
-    console.log("Error query service entered");
-    return $resource("/openhds/api/rest/errors.json", {}, {
+    return $resource("/openhds/api/rest/errors.json/:uuid", { uuid: '@uuid' }, {
         query: {method: 'GET', isArray: false}
     });
 

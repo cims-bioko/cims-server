@@ -1,5 +1,29 @@
 
 #startDate, #endDate {
-    width: 50%;
     float: left;
+    margin-top: 2.5em;
+    margin-left: 2.5em;
+    margin-bottom: 2.5em;
 }
+
+#searchSelect {
+    width: 25%;
+    margin-left: 2.5em;
+}
+
+#submitButton {
+    width: 25%;
+    margin-left: 2.5em;
+    margin-top:  1.5em;
+    clear: both;
+}
+
+#endToday, #setSevenDayWindow {
+    background-color: #31B0D5;
+}
+
+#navBar {
+    background-color: #DEEBE0;
+}
+
+
