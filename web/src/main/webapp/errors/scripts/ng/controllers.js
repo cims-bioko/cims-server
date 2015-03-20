@@ -3,27 +3,33 @@ var errorControllers = angular.module('errorControllers',[]);
 errorControllers.controller('ErrorResultsController', ['$scope', '$rootScope', '$location', 'ErrorQueryService',
     function($scope, $rootScope, $location, ErrorQueryService) {
 
-        if ($rootScope.errors.data === 'undefined') {
-            $rootScope.errors = ErrorQueryService.query({resolutionStatus : 'Unresolved'},
-                function(returnData) {
-                    if (returnData.data.length === 0 ) {
-                        $location.path('/noresults');
-                    }
-            });
-        }
-
-        if ($rootScope.errors.data.length === 0) {
-            $location.path('/noresults');
-        }
+        ErrorQueryService.query({resolutionStatus : 'Unresolvedd'}), function(returnData) {
+            $rootScope.errors = returnData;
+            if ($rootScope.errors.data.length == 0) {
+                $location.path('/noresults');
+            }
+        };
 
         $scope.details = function(selected) {
             ErrorQueryService.query({uuid: selected}, function(result) {
                 console.log(result);
                 $rootScope.errorDetail = result.data[0];
                 $location.path('/details');
-            })
+            });
         };
 
+    }]);
+
+errorControllers.controller('SearchResultsController', ['$scope', '$rootScope', '$location', 'ErrorQueryService',
+    function($scope, $rootScope, $location, ErrorQueryService) {
+
+        $scope.details = function(selected) {
+            ErrorQueryService.query({uuid: selected}, function(result) {
+                console.log(result);
+                $rootScope.errorDetail = result.data[0];
+                $location.path('/details');
+            });
+        };
     }]);
 
 errorControllers.controller('SearchController', ['$scope', '$rootScope', '$location', 'ErrorQueryService', function($scope, $rootScope, $location, ErrorQueryService) {
@@ -41,8 +47,7 @@ errorControllers.controller('SearchController', ['$scope', '$rootScope', '$locat
         {name:"LocationForm", label:"Location Form"},
         {name:"VisitForm", label:"Visit Form"},
         {name:"PregnancyObservationForm", label:"Pregnancy Observation Form"},
-        {name:"", label:"All"},
-
+        {name:"", label:"All"}
     ];
 
 
