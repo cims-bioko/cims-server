@@ -1,5 +1,7 @@
 <div>
-    <h2>Errors</h2>
+    <div class="page-header">
+        <h2>Errors</h2>
+    </div>
 
     <form>
         Narrow the Search: <input ng-model="search">
@@ -7,19 +9,17 @@
 
     <table st-table="errors" class="table table-striped">
         <tr>
-            <th>Error ID</th>
             <th>Entity Type</th>
             <th>Date</th>
-            <th>Message</th>
             <th>Field Worker</th>
+            <th>Message</th>
             <th>Resolution Status</th>
         </tr>
         <tr ng-repeat="errorlog in errors.data.errors | filter:search" ng-click="details(errorlog.uuid)">
-            <td>{{errorlog.uuid}}</td>
             <td>{{errorlog.entityType}}</td>
-            <td>{{errorlog.insertDate}}</td>
-            <td ng-repeat="error in errorlog.errors">{{error.errorMessage}} </br></td>
+            <td>{{cleanDateFromString(errorlog.insertDate)}}</td>
             <td>{{errorlog.fieldWorker.extId}}</td>
+            <td ng-repeat="error in errorlog.errors">{{error.errorMessage}} </br></td>
             <td>{{errorlog.resolutionStatus}}</td>
         </tr>
     </table>

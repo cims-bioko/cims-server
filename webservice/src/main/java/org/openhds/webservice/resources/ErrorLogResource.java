@@ -131,7 +131,7 @@ public class ErrorLogResource {
         }
 
         WebserviceResult result = new WebserviceResult();
-        result.addDataElement("error", error);
+        result.addDataElement("error", shallowCopyErrorLog(error));
         result.setResultCode(ResultCodes.SUCCESS_CODE);
         result.setStatus(ResultCodes.SUCCESS);
         result.setResultMessage("Error log was successfully retrieved");

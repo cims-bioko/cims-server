@@ -1,19 +1,20 @@
 var errorControllers = angular.module('errorControllers',[]);
 
-errorControllers.controller('ErrorResultsController', ['$scope', '$rootScope', '$location', 'ErrorQueryService',
+errorControllers.controller('RecentResultsController', ['$scope', '$rootScope', '$location', 'ErrorQueryService',
     function($scope, $rootScope, $location, ErrorQueryService) {
 
-        ErrorQueryService.query({resolutionStatus : 'Unresolvedd'}), function(returnData) {
+        ErrorQueryService.query(function(returnData) {
             $rootScope.errors = returnData;
-            if ($rootScope.errors.data.length == 0) {
+            if ($rootScope.errors.data.errors.length == 0) {
                 $location.path('/noresults');
-            }
-        };
+            };
+        });
 
+        //onClick function for viewing a specific error
         $scope.details = function(selected) {
             ErrorQueryService.query({uuid: selected}, function(result) {
                 console.log(result);
-                $rootScope.errorDetail = result.data[0];
+                $rootScope.errorDetail = result.data.error;
                 $location.path('/details');
             });
         };
@@ -26,28 +27,41 @@ errorControllers.controller('SearchResultsController', ['$scope', '$rootScope', 
         $scope.details = function(selected) {
             ErrorQueryService.query({uuid: selected}, function(result) {
                 console.log(result);
-                $rootScope.errorDetail = result.data[0];
+                $rootScope.errorDetail = result.data.error;
                 $location.path('/details');
             });
         };
     }]);
 
-errorControllers.controller('SearchController', ['$scope', '$rootScope', '$location', 'ErrorQueryService', function($scope, $rootScope, $location, ErrorQueryService) {
+errorControllers.controller('DetailsController', ['$scope', '$rootScope', '$location', 'ErrorQueryService',
+    function($scope, $rootScope, $location, ErrorQueryService) {
+
+        //use x2js to convert error data payload to json
+        var x2js = new X2JS();
+        $scope.payload = x2js.xml_str2json($rootScope.errorDetail.dataPayload);
+
+        //var cleanDate = new Date($rootScope.errorDetail.insertDate);
+        $rootScope.errorDetail.insertDate = $rootScope.cleanDateFromString($rootScope.errorDetail.insertDate);
+
+    }]);
+
+errorControllers.controller('SearchController', ['$scope', '$rootScope', '$location', 'ErrorQueryService',
+    function($scope, $rootScope, $location, ErrorQueryService) {
     $scope.fieldWorkerExtId = "";
     $scope.statusSelection = "";
     $scope.entitySelection = "";
 
     $scope.statusList = [
-        {name: "Modified ExtId", label: "Modified ExtId"},
-        {name: "", label: "All"}
-    ]
+        {name: "", label: "All"},
+        {name: "Modified ExtId", label: "Modified ExtId"}
+    ];
 
     $scope.entityType = [
+        {name:"", label:"All"},
         {name:"IndividualForm", label:"Individual Form"},
         {name:"LocationForm", label:"Location Form"},
         {name:"VisitForm", label:"Visit Form"},
-        {name:"PregnancyObservationForm", label:"Pregnancy Observation Form"},
-        {name:"", label:"All"}
+        {name:"PregnancyObservationForm", label:"Pregnancy Observation Form"}
     ];
 
 
@@ -70,8 +84,8 @@ errorControllers.controller('SearchController', ['$scope', '$rootScope', '$locat
 
     $scope.submit = function() {
 
-        var cleanStartDate = cleanDate($scope.startDate);
-        var cleanEndDate = cleanDate($scope.endDate);
+        var cleanStartDate = $rootScope.cleanDate($scope.startDate);
+        var cleanEndDate = $rootScope.cleanDate($scope.endDate);
 
         ErrorQueryService.query(
             {resolutionStatus : $scope.statusSelection,
@@ -85,15 +99,5 @@ errorControllers.controller('SearchController', ['$scope', '$rootScope', '$locat
             });
 
     };
-
-    //MM/dd/yyyy
-    function cleanDate(date) {
-        var year = date.getFullYear();
-        var month = (1 + date.getMonth()).toString();
-        month = month.length > 1 ? month : '0' + month;
-        var day = date.getDate().toString();
-        day = day.length > 1 ? day : '0' + day;
-        return month + "-"+day+"-"+year;
-    }
 
 }]);

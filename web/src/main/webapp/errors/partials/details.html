@@ -1,5 +1,19 @@
-<div>
-    <h4>Details</h4>
-    <p>{{errorDetail.uuid}}</p>
-    <p>{{errorDetail.resolutionStatus}}</p>
+<div id="details">
+
+    <div class="page-header">
+        <h4>Details</h4>
+    </div>
+
+    <ul id="detailList" class="list-group">
+        <li class="list-group-item"><p>Insert Date:</p> {{errorDetail.insertDate}}</li>
+        <li class="list-group-item"><p>Field Worker Ext Id:</p> {{errorDetail.fieldWorker.extId}}</li>
+        <li class="list-group-item"><p>Entity Type:</p> {{errorDetail.entityType}}</li>
+        <li class="list-group-item"><p>Status:</p> {{errorDetail.resolutionStatus}}</li>
+    </ul>
+
+    <div id="payload">
+        <h2>Original Data:</h2>
+        <pre>{{payload | json}}</pre>
+    </div>
+
 </div>
