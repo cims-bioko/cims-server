@@ -6,7 +6,7 @@
 
     <div id="searchSelect">
         <form class="form-inline">
-            <div form-group>
+            <div class="form-group">
                 <label>Entity Type:
                 <select class="form-control input-small" ng-model="entitySelection">
                     <option ng-repeat="entity in entityType" value="{{entity.name}}">{{entity.label}}</option>
@@ -14,14 +14,14 @@
                 </label>
             </div>
 
-            <div form-group>
-                <label>Resolution Status:
+            <div class="form-group">
+                <label>Error Type:
                 <select class="form-control input-small" ng-model="statusSelection">
                     <option ng-repeat="status in statusList" value="{{status.name}}">{{status.label}}</option>
                 </select>
                 </label>
             </div>
-            <div form-group>
+            <div class="form-group">
                 <label>Field Worker ExtId:
                     <input type="text" class="form-control input-small" ng-model="fieldWorkerExtId">
                 </label>
