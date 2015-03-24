@@ -32,13 +32,13 @@
     <div>
         <div id="startDate">
             <h4>From</h4>
-            <datepicker ng-model="startDate" show-weeks="true" class="well well-sm"></datepicker>
+            <datepicker ng-model="startDate" min-date="minDate" max-date="maxDate" show-weeks="true" class="well well-sm"></datepicker>
             <button type="button" id="setSevenDayWindow" class="btn btn-primary" ng-Click="setSevenDayWindow()">Set 7 Days Prior</button>
         </div>
 `
         <div id="endDate">
             <h4>To</h4>
-            <datepicker ng-model="endDate" show-weeks="true"  class="well well-sm" ></datepicker>
+            <datepicker ng-model="endDate" max-date="maxDate" show-weeks="true"  class="well well-sm" ></datepicker>
             <button type="button" id="endToday" class="btn btn-primary" ng-Click="endToday()">Set to Today</button>
         </div>
         <button id="submitButton"class="btn btn-lg btn-block btn-success" ng-click="submit()">Search</button>

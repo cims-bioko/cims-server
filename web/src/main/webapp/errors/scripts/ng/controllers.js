@@ -79,8 +79,12 @@ errorControllers.controller('SearchController', ['$scope', '$rootScope', '$locat
 
 
     $scope.maxDate= new Date();
+
     $scope.endToday = function() {
         $scope.endDate = new Date();
+        var newMinDate = new Date();
+        newMinDate.setDate($scope.endDate.getDate() - 7);
+        $scope.startDate = newMinDate;
     };
 
     $scope.setSevenDayWindow = function() {
@@ -88,11 +92,22 @@ errorControllers.controller('SearchController', ['$scope', '$rootScope', '$locat
         var newStartDate = new Date();
         newStartDate.setDate($scope.endDate.getDate() - 7);
         $scope.startDate = newStartDate;
+        return $scope.startDate;
 
     };
 
     $scope.endToday();
     $scope.setSevenDayWindow();
+
+    var newMinDate = new Date();
+    newMinDate.setDate($scope.endDate.getDate() - 7);
+    $scope.startDate = newMinDate;
+
+        $scope.$watch(function(scope) {
+            return scope.endDate
+        }, function(newVal, oldVal) {
+           $scope.minDate = $scope.setSevenDayWindow();
+        });
 
     $scope.submit = function() {
 
