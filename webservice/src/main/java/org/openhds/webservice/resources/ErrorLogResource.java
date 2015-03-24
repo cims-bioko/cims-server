@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.openhds.dao.service.GenericDao.RangeProperty;
@@ -48,29 +49,32 @@ public class ErrorLogResource {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> getErrors(@RequestParam(value="resolutionStatus", required=false) String resolutionStatus,
                                        @RequestParam(value="assignedTo", required=false) String assignedTo,
-                                       @RequestParam(value="fieldWorkerId", required=false) String fieldWorkerId,
+                                       @RequestParam(value="fieldWorkerExtId", required=false) String fieldWorkerExtId,
                                        @RequestParam(value="entityType", required=false) String entityType,
                                        @RequestParam(value="minDate", required = false) String minDate,
                                        @RequestParam(value = "maxDate", required = false) String maxDate) throws NoSuchMethodException, SecurityException, ConstraintViolations {
 
         List<ValueProperty> properties = new ArrayList<ValueProperty>();
+        WebserviceResult result = new WebserviceResult();
 
-        if (resolutionStatus != null) {
+        if (resolutionStatus != null && !resolutionStatus.isEmpty()) {
             properties.add(ValuePropertyHelper.getValueProperty("resolutionStatus", resolutionStatus));
         }
 
-        if (assignedTo != null) {
+        if (assignedTo != null && !assignedTo.isEmpty()) {
             properties.add(ValuePropertyHelper.getValueProperty("assignedTo", assignedTo));
         }
 
-        if (entityType != null) {
+        if (entityType != null && !entityType.isEmpty()) {
             properties.add(ValuePropertyHelper.getValueProperty("entityType", entityType));
         }
 
-        if (fieldWorkerId != null) {
-            FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerByExtId(fieldWorkerId);
+        if (fieldWorkerExtId != null && !fieldWorkerExtId.isEmpty()) {
+            FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerByExtId(fieldWorkerExtId);
             if (fieldWorker != null) {
                 properties.add(ValuePropertyHelper.getValueProperty("fieldWorker", fieldWorker));
+            } else {
+                result.setParameterResultsMessage("Non-existent fieldworker: "+ fieldWorkerExtId);
             }
         }
 
@@ -82,17 +86,18 @@ public class ErrorLogResource {
         Calendar maxRange = Calendar.getInstance();
         try {
 
-            if (minDate != null) {
+            if (minDate != null && !minDate.isEmpty()) {
                 minRange.setTime(format.parse(minDate));
             } else {
-                minRange.setTime(format.parse("1-1-1970"));
+                //default to 7 days previous
+                long dayInMill = 1000 * 60 * 60 * 24;
+                minRange.setTime(new Date(System.currentTimeMillis() - (7 * dayInMill)));
             }
 
-            if (maxDate != null) {
+            if (maxDate != null && !maxDate.isEmpty()) {
                 maxRange.setTime(format.parse(maxDate));
             }
         } catch (ParseException e) {
-            WebserviceResult result = new WebserviceResult();
             result.setResultMessage(e.getMessage());
             result.setResultCode(ResultCodes.BAD_PARAMETER_CODE);
             result.setStatus(ResultCodes.ERROR);
@@ -100,6 +105,7 @@ public class ErrorLogResource {
             return new ResponseEntity<WebserviceResult>(result, HttpStatus.BAD_REQUEST);
         }
 
+        result.setDateRangeMessage("Showing results from "+format.format(minRange.getTime())+ " to "+format.format(maxRange.getTime()));
         range = RangePropertyHelper.getRangeProperty("insertDate", minRange, maxRange);
 
         List<ErrorLog> errors = errorService.findAllErrorsByFilters(range, properties.toArray(new ValueProperty[properties.size()]));
@@ -110,7 +116,6 @@ public class ErrorLogResource {
             shallowCopies.add(shallowCopyErrorLog(error));
         }
 
-        WebserviceResult result = new WebserviceResult();
         result.addDataElement("errors", shallowCopies);
         result.setResultCode(ResultCodes.SUCCESS_CODE);
         result.setStatus(ResultCodes.SUCCESS);
@@ -128,7 +133,7 @@ public class ErrorLogResource {
         }
 
         WebserviceResult result = new WebserviceResult();
-        result.addDataElement("error", error);
+        result.addDataElement("error", shallowCopyErrorLog(error));
         result.setResultCode(ResultCodes.SUCCESS_CODE);
         result.setStatus(ResultCodes.SUCCESS);
         result.setResultMessage("Error log was successfully retrieved");

@@ -17,7 +17,6 @@ import org.openhds.domain.model.Relationship;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.bioko.IndividualForm;
-import org.openhds.domain.model.bioko.LocationForm;
 import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.errorhandling.constants.ErrorConstants;
 import org.openhds.errorhandling.service.ErrorHandlingService;
@@ -105,6 +104,8 @@ public class IndividualFormResource extends AbstractFormResource {
             throw new RuntimeException("Could not create JAXB context and marshaller for OutMigrationFormResource");
         }
 
+        List<String> logMessage = new ArrayList<String>();
+
         // Clean up "null" strings created by Mirth
         if ("null".equals(individualForm.getIndividualRelationshipToHeadOfHousehold())) {
             individualForm.setIndividualRelationshipToHeadOfHousehold(null);
@@ -144,21 +145,19 @@ public class IndividualFormResource extends AbstractFormResource {
         ConstraintViolations cv = new ConstraintViolations();
         FieldWorker collectedBy = fieldWorkerService.getByUuid(individualForm.getFieldWorkerUuid());
         if (null == collectedBy) {
-            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID
-                    + ": IndividualForm has a nonexistent field worker id - "
-                    + individualForm.getFieldWorkerExtId());
+            String errorMessage = "Field Worker does not exist";
+            logMessage.add(errorMessage);
             String errorDataPayload = createDTOPayload(individualForm);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
                     IndividualForm.class.getSimpleName(), null,
-                    ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+                    ConstraintViolations.INVALID_FIELD_WORKER_UUID, logMessage);
             errorService.logError(error);
-            return requestError(cv);
+            return requestError(errorMessage);
         }
 
         // where are we?
         Location location;
         try {
-
             // Get location by uuid.
             // Fall back on extId if uuid is missing, which allows us to re-process older forms.
             String uuid = individualForm.getHouseholdUuid();
@@ -169,19 +168,14 @@ public class IndividualFormResource extends AbstractFormResource {
             }
 
             if (null == location) {
-                cv.addViolations(
-                        ": IndividualForm has a nonexistent location id: "
-                        + individualForm.getHouseholdUuid()
-                        + " / "
-                        + individualForm.getHouseholdExtId());
-
+                String errorMessage = "Location does not exist "+individualForm.getHouseholdUuid()+" / "+individualForm.getHouseholdExtId();
+                logMessage.add(errorMessage);
                 String errorDataPayload = createDTOPayload(individualForm);
                 ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
                         IndividualForm.class.getSimpleName(), collectedBy,
-                        ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
-
+                        ConstraintViolations.INVALID_LOCATION_UUID, logMessage);
                 errorService.logError(error);
-                return requestError(cv);
+                return requestError(errorMessage);
             }
 
         } catch (Exception e) {
@@ -195,7 +189,7 @@ public class IndividualFormResource extends AbstractFormResource {
             String errorDataPayload = createDTOPayload(individualForm);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
                     IndividualForm.class.getSimpleName(), collectedBy,
-                    ErrorConstants.UNRESOLVED_ERROR_STATUS, e.getViolations());
+                    ErrorConstants.CONSTRAINT_VIOLATION, e.getViolations());
             errorService.logError(error);
             return requestError(e);
         } catch (SQLException e) {
@@ -212,7 +206,7 @@ public class IndividualFormResource extends AbstractFormResource {
                 String errorDataPayload = createDTOPayload(individualForm);
                 ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
                         IndividualForm.class.getSimpleName(), collectedBy,
-                        ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+                        ErrorConstants.CONSTRAINT_VIOLATION, cv.getViolations());
                 errorService.logError(error);
                 return requestError(cv);
             }
@@ -226,7 +220,6 @@ public class IndividualFormResource extends AbstractFormResource {
             updateIndividualExtId(individual, location);
 
             // log the modification
-            List<String> logMessage = new ArrayList<String>();
             logMessage.add("Individual ExtId updated from "+individualForm.getIndividualExtId()+" to "+individual.getExtId());
             String payload = createDTOPayload(individualForm);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
@@ -241,12 +234,11 @@ public class IndividualFormResource extends AbstractFormResource {
         // log a warning if the individual extId clashes with an existing individual's extId
         if (null != individualService.getByExtId(individual.getExtId())) {
             // log the modification
-            List<String> logMessage = new ArrayList<String>();
             logMessage.add("Warning: Individual ExtId clashes with an existing Individual's extId : "+individual.getExtId());
             String payload = createDTOPayload(individualForm);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
                     IndividualForm.class.getSimpleName(), collectedBy,
-                    ErrorConstants.EXISTING_EXTID, logMessage);
+                    ErrorConstants.DUPLICATE_EXTID, logMessage);
             errorService.logError(error);
         }
 
@@ -260,7 +252,7 @@ public class IndividualFormResource extends AbstractFormResource {
             String errorDataPayload = createDTOPayload(individualForm);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
                     IndividualForm.class.getSimpleName(), collectedBy,
-                    ErrorConstants.UNRESOLVED_ERROR_STATUS, e.getViolations());
+                    ErrorConstants.CONSTRAINT_VIOLATION, e.getViolations());
             errorService.logError(error);
             return requestError(e);
         } catch (SQLException e) {
@@ -303,7 +295,7 @@ public class IndividualFormResource extends AbstractFormResource {
             String errorDataPayload = createDTOPayload(individualForm);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
                     IndividualForm.class.getSimpleName(), collectedBy,
-                    ErrorConstants.UNRESOLVED_ERROR_STATUS, e.getViolations());
+                    ErrorConstants.CONSTRAINT_VIOLATION, e.getViolations());
             errorService.logError(error);
             return requestError(e);
         } catch (SQLException e) {
@@ -318,6 +310,11 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             entityService.create(membership);
         } catch (ConstraintViolations constraintViolations) {
+            String errorDataPayload = createDTOPayload(individualForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
+                    IndividualForm.class.getSimpleName(), collectedBy,
+                    ErrorConstants.CONSTRAINT_VIOLATION, constraintViolations.getViolations());
+            errorService.logError(error);
             return serverError("ConstraintViolations saving membership: " + constraintViolations.getMessage());
         } catch (SQLException e) {
             return serverError("SQL Error updating or saving membership: " + e.getMessage());
