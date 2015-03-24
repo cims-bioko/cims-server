@@ -5,9 +5,11 @@ errorControllers.controller('RecentResultsController', ['$scope', '$rootScope', 
 
         ErrorQueryService.query(function(returnData) {
             $rootScope.errors = returnData;
+            $rootScope.dateMessage = $rootScope.errors.dateRangeMessage;
+            $rootScope.parameterResultMessage = $rootScope.errors.parameterResultsMessage;
             if ($rootScope.errors.data.errors.length == 0) {
                 $location.path('/noresults');
-            };
+            }
         });
 
         //onClick function for viewing a specific error
@@ -24,6 +26,10 @@ errorControllers.controller('RecentResultsController', ['$scope', '$rootScope', 
 errorControllers.controller('SearchResultsController', ['$scope', '$rootScope', '$location', 'ErrorQueryService',
     function($scope, $rootScope, $location, ErrorQueryService) {
 
+        $scope.dateMessage = $rootScope.errors.dateRangeMessage;
+        $scope.parameterResultMessage = $rootScope.errors.parameterResultsMessage;
+
+        //onClick function for viewing a specific error
         $scope.details = function(selected) {
             ErrorQueryService.query({uuid: selected}, function(result) {
                 console.log(result);
@@ -53,7 +59,14 @@ errorControllers.controller('SearchController', ['$scope', '$rootScope', '$locat
 
     $scope.statusList = [
         {name: "", label: "All"},
-        {name: "Modified ExtId", label: "Modified ExtId"}
+        {name: "Modified ExtId", label: "Modified ExtId"},
+        {name: "Duplicate ExtId", label: "Duplicate ExtId"},
+        {name: "Invalid Field Worker Uuid", label: "Invalid Field Worker"},
+        {name: "Invalid Individual Uuid", label: "Invalid Individual"},
+        {name: "Invalid Location Uuid", label: "Invalid Location"},
+        {name: "Invalid Location Hierarchy Uuid", label: "Invalid Location Hierarchy"},
+        {name: "Invalid Visit Uuid", label: "Invalid Visit"},
+        {name: "Constraint Violation", label: "Constraint Violation"}
     ];
 
     $scope.entityType = [
@@ -81,7 +94,6 @@ errorControllers.controller('SearchController', ['$scope', '$rootScope', '$locat
     $scope.endToday();
     $scope.setSevenDayWindow();
 
-
     $scope.submit = function() {
 
         var cleanStartDate = $rootScope.cleanDate($scope.startDate);
@@ -93,11 +105,16 @@ errorControllers.controller('SearchController', ['$scope', '$rootScope', '$locat
                 fieldWorkerExtId : $scope.fieldWorkerExtId,
                 minDate : cleanStartDate,
                 maxDate : cleanEndDate}, function(response) {
-                    $rootScope.errors = response;
-                    console.log(response);
-                    $location.path('/results');
+                        $rootScope.errors = response;
+                        $rootScope.dateMessage = $rootScope.errors.dateRangeMessage;
+                        $rootScope.parameterResultMessage = $rootScope.errors.parameterResultsMessage;
+                        console.log(response);
+                    if ($rootScope.errors.data.errors.length == 0) {
+                        $location.path('/noresults');
+                    } else {
+                        $location.path('/results');
+                    }
             });
-
     };
 
 }]);

@@ -17,8 +17,6 @@ public class ConstraintViolations extends Exception {
     public static final String INVALID_LOCATION_EXT_ID = "Invalid Location Ext Id";
     public static final String INVALID_LOCATION_UUID = "Invalid Location Uuid";
 
-    public static final String NULL_LOCATION = "Referenced Location is Null";
-
     public static final String INVALID_LOCATION_HIERARCHY_EXT_ID = "Invalid Location Hierarchy Ext Id";
     public static final String INVALID_LOCATION_HIERARCHY_UUID = "Invalid Location Hierarchy Uuid";
 

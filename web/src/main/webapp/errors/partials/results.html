@@ -3,9 +3,15 @@
         <h2>Errors</h2>
     </div>
 
-    <form>
-        Narrow the Search: <input ng-model="search">
-    </form>
+    <div>
+        <form>
+            Narrow the Search: <input ng-model="search">
+        </form>
+        <p class="bg-success">{{resultMessage}}</p>
+        <p class="bg-success">Date Range: {{dateMessage}}</p>
+        <p class="bg-warning">{{parameterResultMessage}}</p>
+    </div>
+
 
     <table st-table="errors" class="table table-striped">
         <tr>
@@ -13,7 +19,7 @@
             <th>Date</th>
             <th>Field Worker</th>
             <th>Message</th>
-            <th>Resolution Status</th>
+            <th>Error Type</th>
         </tr>
         <tr ng-repeat="errorlog in errors.data.errors | filter:search" ng-click="details(errorlog.uuid)">
             <td>{{errorlog.entityType}}</td>

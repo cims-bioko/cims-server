@@ -12,10 +12,28 @@ public class WebserviceResult implements Serializable {
 	
 	private String status = "";
 	private String resultMessage = "";
+    private String parameterResultsMessage = "";
+    private String dateRangeMessage = "";
 	private int resultCode;
 	private Map<Object, Object> data = new HashMap<Object, Object>();
-	
-	public void addDataElement(Object key, Object value) {
+
+    public String getDateRangeMessage() {
+        return dateRangeMessage;
+    }
+
+    public void setDateRangeMessage(String dateRangeMessage) {
+        this.dateRangeMessage = dateRangeMessage;
+    }
+
+    public String getParameterResultsMessage() {
+        return parameterResultsMessage;
+    }
+
+    public void setParameterResultsMessage(String parameterResultsMessage) {
+        this.parameterResultsMessage = parameterResultsMessage;
+    }
+
+    public void addDataElement(Object key, Object value) {
 		data.put(key, value);
 	}
 

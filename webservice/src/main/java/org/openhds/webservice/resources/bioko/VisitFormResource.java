@@ -67,6 +67,7 @@ public class VisitFormResource extends AbstractFormResource {
         }
 
         Visit visit = new Visit();
+        ConstraintViolations cv = new ConstraintViolations();
 
         // Bioko project does not support Rounds, all visits will be considered
         // as Round 1
@@ -75,12 +76,11 @@ public class VisitFormResource extends AbstractFormResource {
 
         FieldWorker fieldWorker = fieldWorkerService.getByUuid(visitForm.getFieldWorkerUuid());
         if (null == fieldWorker) {
-            ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID);
+            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_UUID);
             StringWriter writer = new StringWriter();
             marshaller.marshal(visitForm, writer);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, VisitForm.class.getSimpleName(),
-                    null, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+                    null, ConstraintViolations.INVALID_FIELD_WORKER_UUID, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);
         }
@@ -89,12 +89,11 @@ public class VisitFormResource extends AbstractFormResource {
 
         Location location = locationService.getByUuid(visitForm.getLocationUuid());
         if (null == location) {
-            ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.NULL_LOCATION);
+            cv.addViolations(ConstraintViolations.INVALID_LOCATION_UUID);
             StringWriter writer = new StringWriter();
             marshaller.marshal(visitForm, writer);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, VisitForm.class.getSimpleName(),
-                    fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+                    fieldWorker, ConstraintViolations.INVALID_LOCATION_UUID, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);
         }
@@ -126,6 +125,11 @@ public class VisitFormResource extends AbstractFormResource {
             try {
                 visitService.createVisit(visit);
             } catch (ConstraintViolations e) {
+                StringWriter writer = new StringWriter();
+                marshaller.marshal(visitForm, writer);
+                ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, VisitForm.class.getSimpleName(),
+                        fieldWorker, ErrorConstants.CONSTRAINT_VIOLATION, e.getViolations());
+                errorService.logError(error);
                 return requestError(e);
             } catch (Exception e) {
                 return serverError("General Error updating or saving visit"

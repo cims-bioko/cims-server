@@ -55,6 +55,7 @@ public class ErrorLogResource {
                                        @RequestParam(value = "maxDate", required = false) String maxDate) throws NoSuchMethodException, SecurityException, ConstraintViolations {
 
         List<ValueProperty> properties = new ArrayList<ValueProperty>();
+        WebserviceResult result = new WebserviceResult();
 
         if (resolutionStatus != null && !resolutionStatus.isEmpty()) {
             properties.add(ValuePropertyHelper.getValueProperty("resolutionStatus", resolutionStatus));
@@ -72,6 +73,8 @@ public class ErrorLogResource {
             FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerByExtId(fieldWorkerExtId);
             if (fieldWorker != null) {
                 properties.add(ValuePropertyHelper.getValueProperty("fieldWorker", fieldWorker));
+            } else {
+                result.setParameterResultsMessage("Non-existent fieldworker: "+ fieldWorkerExtId);
             }
         }
 
@@ -95,7 +98,6 @@ public class ErrorLogResource {
                 maxRange.setTime(format.parse(maxDate));
             }
         } catch (ParseException e) {
-            WebserviceResult result = new WebserviceResult();
             result.setResultMessage(e.getMessage());
             result.setResultCode(ResultCodes.BAD_PARAMETER_CODE);
             result.setStatus(ResultCodes.ERROR);
@@ -103,6 +105,7 @@ public class ErrorLogResource {
             return new ResponseEntity<WebserviceResult>(result, HttpStatus.BAD_REQUEST);
         }
 
+        result.setDateRangeMessage("Showing results from "+format.format(minRange.getTime())+ " to "+format.format(maxRange.getTime()));
         range = RangePropertyHelper.getRangeProperty("insertDate", minRange, maxRange);
 
         List<ErrorLog> errors = errorService.findAllErrorsByFilters(range, properties.toArray(new ValueProperty[properties.size()]));
@@ -113,7 +116,6 @@ public class ErrorLogResource {
             shallowCopies.add(shallowCopyErrorLog(error));
         }
 
-        WebserviceResult result = new WebserviceResult();
         result.addDataElement("errors", shallowCopies);
         result.setResultCode(ResultCodes.SUCCESS_CODE);
         result.setStatus(ResultCodes.SUCCESS);

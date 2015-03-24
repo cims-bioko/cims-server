@@ -67,20 +67,36 @@ public class LocationFormResource extends AbstractFormResource{
             throw new RuntimeException("Could not create JAXB context and marshaller for OutMigrationFormResource");
         }
 
+        List<String> logMessage = new ArrayList<String>();
+
         // clean up "null" strings created by Mirth0
         if ("null".equals(locationForm.getHierarchyUuid())) {
             locationForm.setHierarchyUuid(null);
         }
 
         if ("null".equals(locationForm.getLocationExtId())) {
-            return requestError("Location ExtId is null");
+            String errorMessage = "No Location ExtId provided";
+            logMessage.add(errorMessage);
+            String payload = createDTOPayload(locationForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
+                    LocationForm.class.getSimpleName(), null,
+                    ConstraintViolations.INVALID_LOCATION_EXT_ID, logMessage);
+            errorService.logError(error);
+            return requestError(errorMessage);
         }
 
         Location location;
         try {
             location = locationService.getByUuid(locationForm.getUuid());
             if (null != location) {
-                return requestError("Location already exists: " + locationForm.getLocationExtId());
+                String errorMessage = "Location already exists";
+                logMessage.add(errorMessage);
+                String payload = createDTOPayload(locationForm);
+                ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
+                        LocationForm.class.getSimpleName(), null,
+                        ConstraintViolations.INVALID_LOCATION_UUID, logMessage);
+                errorService.logError(error);
+                return requestError(errorMessage +" : " + locationForm.getUuid());
             }
         } catch (Exception e) {
             return requestError("Error checking for existing location: " + e.getMessage());
@@ -91,7 +107,14 @@ public class LocationFormResource extends AbstractFormResource{
         // collected by whom?
         FieldWorker collectedBy = fieldWorkerService.getByUuid(locationForm.getFieldWorkerUuid());
         if (null == collectedBy) {
-            return requestError("Error getting field worker: Location form has nonexistent field worker uuid");
+            String errorMessage = "Field Worker does not exist";
+            logMessage.add(errorMessage);
+            String payload = createDTOPayload(locationForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
+                    LocationForm.class.getSimpleName(), null,
+                    ConstraintViolations.INVALID_FIELD_WORKER_UUID, logMessage);
+            errorService.logError(error);
+            return requestError(errorMessage + " : "+locationForm.getFieldWorkerUuid());
         }
         location.setCollectedBy(collectedBy);
 
@@ -109,16 +132,21 @@ public class LocationFormResource extends AbstractFormResource{
                 if (null == locationHierarchy) {
                     locationHierarchy = createSector(locationForm);
                 }
-
             }
 
             if (null == locationHierarchy) {
-                return requestError("LocationHierarchy doesn't exist!: "
+                String errorMessage = "Location Hierarchy does not exist";
+                logMessage.add(errorMessage);
+                String payload = createDTOPayload(locationForm);
+                ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
+                        LocationForm.class.getSimpleName(), collectedBy,
+                        ConstraintViolations.INVALID_LOCATION_HIERARCHY_UUID, logMessage);
+                errorService.logError(error);
+                return requestError(errorMessage+" : "
                         + locationForm.getHierarchyUuid()
                         + " / "
                         + locationForm.getHierarchyExtId());
             }
-
         } catch (Exception e) {
             return requestError("Error getting reference to LocationHierarchy: " + e.getMessage());
         }
@@ -131,8 +159,7 @@ public class LocationFormResource extends AbstractFormResource{
             modifyExtId(location, locationForm);
 
             // log the modification
-            List<String> logMessage = new ArrayList<String>();
-            logMessage.add("Duplicate Location ExtId: Old = "+locationForm.getLocationExtId()+" New = "+location.getExtId());
+            logMessage.add("Location persisted with Modified ExtId: Old = "+locationForm.getLocationExtId()+" New = "+location.getExtId());
             String payload = createDTOPayload(locationForm);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
                     LocationForm.class.getSimpleName(), collectedBy,
@@ -150,6 +177,11 @@ public class LocationFormResource extends AbstractFormResource{
         try {
             locationService.create(location);
         } catch (ConstraintViolations e) {
+            String payload = createDTOPayload(locationForm);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
+                    LocationForm.class.getSimpleName(), collectedBy,
+                    ErrorConstants.CONSTRAINT_VIOLATION, e.getViolations());
+            errorService.logError(error);
             return requestError(e);
         } catch (Exception e) {
             return serverError("General Error creating location: " + e.getMessage());

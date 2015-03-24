@@ -1,3 +1,7 @@
+#splash-jumbo {
+    background: transparent !important;
+    text-align: center;
+}
 
 #startDate, #endDate {
     float: left;
