@@ -1,44 +1,50 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><value-constraints>
-	<constraint id="socialGroupTypeConstraint">
-		<value description="Family">FAM</value>
-		<value description="Cohort">COH</value>
-	</constraint>
-	<constraint id="dobAspectConstraint">
-		<value description="Exact">1</value>
-		<value description="Approximate">2</value>
-	</constraint>
-	<constraint id="genderConstraint">
-		<value description="Male">M</value>
-		<value description="Female">F</value>
-	</constraint>
-	<constraint id="locationTypeConstraint">
-		<value description="Rural">RUR</value>
-		<value description="Urban">URB</value>
-	</constraint>
-	<constraint id="yesNoConstraint">
-		<value description="Yes">1</value>
-		<value description="No">2</value>
-	</constraint>
+    <constraint id="socialGroupTypeConstraint">
+        <value description="Family">FAM</value>
+        <value description="Cohort">COH</value>
+        <value description="Household">Household</value>
+    </constraint>
+    <constraint id="dobAspectConstraint">
+        <value description="Exact">1</value>
+        <value description="Approximate">2</value>
+    </constraint>
+    <constraint id="genderConstraint">
+        <value description="Male">MALE</value>
+        <value description="Female">FEMALE</value>
+    </constraint>
+    <constraint id="locationTypeConstraint">
+        <value description="Rural">RUR</value>
+        <value description="Urban">URB</value>
+        <value description="Household">Household</value>
+    </constraint>
+    <constraint id="yesNoConstraint">
+        <value description="Yes">1</value>
+        <value description="No">2</value>
+    </constraint>
     <constraint id="relationshipTypeConstraint">
-		<value description="Self">1</value>
-		<value description="Spouse">2</value>
-		<value description="Son/Daughter">3</value>
-		<value description="Brother/Sister">4</value>
-		<value description="Parent">5</value>
-		<value description="Grandchild">6</value>
-		<value description="Not Related">7</value>
-		<value description="Other Relative">8</value>
-		<value description="Don't Know">9</value>
-	</constraint>
+        <value description="Self">1</value>
+        <value description="Spouse">2</value>
+        <value description="Son/Daughter">3</value>
+        <value description="Brother/Sister">4</value>
+        <value description="Parent">5</value>
+        <value description="Grandchild">6</value>
+        <value description="Not Related">7</value>
+        <value description="Other Relative">8</value>
+        <value description="Don't Know">9</value>
+        <value description="Cousin">10</value>
+        <value description="Nephew/Niece">11</value>
+    </constraint>
     <constraint id="membershipConstraint">
-		<value description="Head">1</value>
-		<value description="Spouse">2</value>
-		<value description="Son/Daughter">3</value>
-		<value description="Brother/Sister">4</value>
-		<value description="Parent">5</value>
-		<value description="Grandchild">6</value>
-		<value description="Not Related">7</value>
-		<value description="Other Relative">8</value>
-		<value description="Don't Know">9</value>
-	</constraint>
+        <value description="Head">1</value>
+        <value description="Spouse">2</value>
+        <value description="Son/Daughter">3</value>
+        <value description="Brother/Sister">4</value>
+        <value description="Parent">5</value>
+        <value description="Grandchild">6</value>
+        <value description="Not Related">7</value>
+        <value description="Other Relative">8</value>
+        <value description="Don't Know">9</value>
+        <value description="Cousin">10</value>
+        <value description="Nephew/Niece">11</value>
+    </constraint>
 </value-constraints>
