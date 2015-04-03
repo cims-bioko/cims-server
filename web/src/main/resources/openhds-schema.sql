@@ -3,7 +3,7 @@ create table FormInstance_ValidationMessage (FormInstance_uuid varchar(32) not n
 create table ValidationMessage (uuid varchar(32) not null, message varchar(255), primary key (uuid)) ENGINE=InnoDB;
 create table classExtension (uuid varchar(32) not null, answers varchar(255), description varchar(255), entityClass varchar(255), name varchar(255) not null, primType varchar(255), roundNumber integer, primary key (uuid)) ENGINE=InnoDB;
 create table death (uuid varchar(32) not null, deleted bit not null, insertDate datetime, voidDate datetime, voidReason varchar(255), status varchar(255), statusMessage varchar(255), ageAtDeath bigint, deathCause varchar(255), deathDate date not null, deathPlace varchar(255), insertBy_uuid varchar(32), voidBy_uuid varchar(32), collectedBy_uuid varchar(32) not null, individual_uuid varchar(32), visitDeath_uuid varchar(32), primary key (uuid)) ENGINE=InnoDB;
-create table errorlog (uuid varchar(32) not null, deleted bit not null, insertDate datetime, dataPayload TEXT, fieldWorker_uuid varchar(32) not null, assignedTo varchar(255), entityType varchar(255), resolutionStatus varchar(255), dateOfResolution date, primary key (uuid)) ENGINE=InnoDB;
+create table errorlog (uuid varchar(32) not null, deleted bit not null, insertDate datetime, dataPayload TEXT, error_uuid varchar(32), fieldWorker_uuid varchar(32) not null, assignedTo varchar(255), entityType varchar(255), resolutionStatus varchar(255), dateOfResolution date, primary key (uuid)) ENGINE=InnoDB;
 create table error (uuid varchar(32) not null, deleted bit not null, errorMessage varchar(255), errorlog_uuid varchar(32), primary key (uuid)) ENGINE=InnoDB;
 create table extension (uuid varchar(32) not null, entityExtId varchar(255) not null, extensionValue varchar(255) not null, classExtension_uuid varchar(32), entity_uuid varchar(32), primary key (uuid)) ENGINE=InnoDB;
 create table fieldworker (uuid varchar(32) not null, deleted bit not null, insertDate datetime, voidDate datetime, voidReason varchar(255), extId varchar(255) not null, idPrefix integer, firstName varchar(255), lastName varchar(255), passwordHash char(60) not null, insertBy_uuid varchar(32), voidBy_uuid varchar(32), primary key (uuid)) ENGINE=InnoDB;
@@ -39,6 +39,7 @@ alter table death add index FK5B0927468E8A298 (visitDeath_uuid), add constraint 
 alter table death add index FK5B0927480470E9E (individual_uuid), add constraint FK5B0927480470E9E foreign key (individual_uuid) references individual (uuid);
 alter table extension add index FKDB7D1C3FEA9B72FE (entity_uuid), add constraint FKDB7D1C3FEA9B72FE foreign key (entity_uuid) references visit (uuid);
 alter table error add foreign key (errorlog_uuid) references errorlog (uuid);
+alter table errorlog add foreign key (error_uuid) references error (uuid);
 alter table extension add index FKDB7D1C3FE3D6A93E (classExtension_uuid), add constraint FKDB7D1C3FE3D6A93E foreign key (classExtension_uuid) references classExtension (uuid);
 alter table fieldworker add index FK528ED0F897735AF9 (insertBy_uuid), add constraint FK528ED0F897735AF9 foreign key (insertBy_uuid) references user (uuid);
 alter table fieldworker add index FK528ED0F8A726FBE (voidBy_uuid), add constraint FK528ED0F8A726FBE foreign key (voidBy_uuid) references user (uuid);
