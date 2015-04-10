@@ -232,7 +232,7 @@ public class IndividualFormResource extends AbstractFormResource {
         }
 
         // log a warning if the individual extId clashes with an existing individual's extId
-        if (null != individualService.getByExtId(individual.getExtId())) {
+        if (0 != individualService.getExistingExtIdCount(individual.getExtId())) {
             // log the modification
             logMessage.add("Warning: Individual ExtId clashes with an existing Individual's extId : "+individual.getExtId());
             String payload = createDTOPayload(individualForm);
@@ -321,22 +321,6 @@ public class IndividualFormResource extends AbstractFormResource {
         }
 
         return new ResponseEntity<IndividualForm>(individualForm, HttpStatus.CREATED);
-    }
-
-    private void generateIndividualExtId(Location location, Individual individual) {
-
-        List<Individual> residents = residencyService.getIndividualsByLocation(location);
-        String extId;
-        int sequenceNumber = residents.size() + 1;
-
-        // M1000S57E02P1 + -001
-        extId = location.getExtId() + "-" + String.format("%03d", sequenceNumber);
-
-        while (null == individualService.getByExtId(extId)) {
-            extId = extId.substring(0, extId.length() - 3) + String.format("%03d", ++sequenceNumber);
-        }
-
-        individual.setExtId(extId);
     }
 
     private void updateIndividualExtId(Individual individual, Location location) {

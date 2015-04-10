@@ -7,4 +7,6 @@ public interface IndividualService extends EntityService<Individual> {
 
     boolean isDeceased(Individual individual);
 
+    int getExistingExtIdCount(String extId);
+
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,6 +23,14 @@ public class IndividualServiceImpl implements IndividualService {
 
     @Autowired
     private GenericDao genericDao;
+
+    @Override
+    public int getExistingExtIdCount(String extId) {
+
+        List<Individual> existingIndividuals = genericDao.findListByProperty(Individual.class, "extId", extId);
+        return (null == existingIndividuals) ?  0 : existingIndividuals.size();
+
+    }
 
     @Override
     public List<Individual> getAll() {
