@@ -1,21 +1,15 @@
 package org.openhds.integration.bioko;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
-
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseOperation;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhds.dao.service.GenericDao;
-import org.openhds.domain.model.Individual;
-import org.openhds.domain.model.Location;
-import org.openhds.domain.model.Membership;
-import org.openhds.domain.model.Relationship;
-import org.openhds.domain.model.Residency;
-import org.openhds.domain.model.SocialGroup;
+import org.openhds.domain.model.*;
+import org.openhds.domain.model.bioko.IndividualForm;
+import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.integration.AbstractResourceTest;
 import org.openhds.integration.util.WebContextLoader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +24,16 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.test.web.server.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.github.springtestdbunit.DbUnitTestExecutionListener;
-import com.github.springtestdbunit.annotation.DatabaseOperation;
-import com.github.springtestdbunit.annotation.DatabaseSetup;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
@@ -46,7 +47,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
     private static final String A_DATE = "2000-01-01T00:00:00-05:00";
     private static final String FORMATTED_DATE = "2013-06-13";
     private static final String FORMATTED_DATETIME = "2013-06-13 12:12:12";
-    
+
     private static final String HEAD_OF_HOUSEHOLD_FORM_XML = "<individualForm>"
             + "<processed_by_mirth>false</processed_by_mirth>"
             + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>" + "<collection_date_time>"
@@ -65,7 +66,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
             + "<individual_date_of_birth>"
             + A_DATE
             + "</individual_date_of_birth>"
-            + "<individual_gender>M</individual_gender>"
+            + "<individual_gender>MALE</individual_gender>"
             + "<individual_relationship_to_head_of_household>1</individual_relationship_to_head_of_household>"
             + "<relationship_uuid>HEADSELFRELATIONSHIP</relationship_uuid>"
             + "<socialgroup_uuid>NEWSOCIALGROUP</socialgroup_uuid>"
@@ -96,7 +97,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
             + "<individual_date_of_birth>"
             + A_DATE
             + "</individual_date_of_birth>"
-            + "<individual_gender>F</individual_gender>"
+            + "<individual_gender>FEMALE</individual_gender>"
             + "<individual_relationship_to_head_of_household>2</individual_relationship_to_head_of_household>"
             + "<relationship_uuid>MEMBERRELATIONSHIP</relationship_uuid>"
             + "<socialgroup_uuid>HOUSEHOLDSOCIALGROUP</socialgroup_uuid>"
@@ -133,7 +134,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
             + "<individual_date_of_birth>"
             + A_DATE
             + "</individual_date_of_birth>"
-            + "<individual_gender>F</individual_gender>"
+            + "<individual_gender>FEMALE</individual_gender>"
             + "<individual_relationship_to_head_of_household>2</individual_relationship_to_head_of_household>"
             + "<relationship_uuid>MEMBERRELATIONSHIP</relationship_uuid>"
             + "<socialgroup_uuid>HOUSEHOLDSOCIALGROUP</socialgroup_uuid>"
@@ -150,6 +151,9 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
     @Autowired
     private GenericDao genericDao;
 
+    @Autowired
+    private CalendarAdapter adapter;
+
     private MockHttpSession session;
 
     private MockMvc mockMvc;
@@ -158,6 +162,15 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
     public void setUp() throws Exception {
         mockMvc = buildMockMvc();
         session = getMockHttpSession("admin", "test", mockMvc);
+    }
+
+    @Test
+    public void testUnmarshalXml() throws Exception {
+        JAXBContext context = JAXBContext.newInstance(IndividualForm.class);
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        unmarshaller.setAdapter(adapter);
+        Object object = unmarshaller.unmarshal(new ByteArrayInputStream(HEAD_OF_HOUSEHOLD_FORM_XML.getBytes(StandardCharsets.UTF_8)));
+        IndividualForm individualForm = (IndividualForm) object;
     }
 
     @Test
@@ -245,7 +258,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
     }
 
     private void verifyEntityCrud(String individualUuid, String householdExtId, String headUuid,
-            String membershipType) {
+                                  String membershipType) {
 
         // individual exists
         Individual individual = genericDao.findByProperty(Individual.class, "uuid",
