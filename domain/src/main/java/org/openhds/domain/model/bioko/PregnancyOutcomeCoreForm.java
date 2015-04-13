@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
@@ -16,14 +17,11 @@ import java.util.Calendar;
 @Description(description = "Model data from the PregnancyOutcome form for the Bioko project. Additional Outcome data is contained in PregnancyOutcomeOutcomesForm")
 @XmlRootElement(name = "pregnancyOutcomeCoreForm")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PregnancyOutcomeCoreForm {
+public class PregnancyOutcomeCoreForm implements Serializable {
 
     //core form fields
-    @XmlElement(name = "entity_uuid")
-    private String uuid;
-
-    @XmlElement(name = "entity_ext_id")
-    private String entityExtId;
+    @XmlElement(name = "pregnancy_outcome_uuid")
+    private String pregnancyOutcomeUuid;
 
     @XmlElement(name = "processed_by_mirth")
     private boolean processedByMirth;
@@ -57,21 +55,12 @@ public class PregnancyOutcomeCoreForm {
     @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
     private Calendar deliveryDate;
 
-
-    public String getUuid() {
-        return uuid;
+    public String getPregnancyOutcomeUuid() {
+        return pregnancyOutcomeUuid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getEntityExtId() {
-        return entityExtId;
-    }
-
-    public void setEntityExtId(String entityExtId) {
-        this.entityExtId = entityExtId;
+    public void setPregnancyOutcomeUuid(String pregnancyOutcomeUuid) {
+        this.pregnancyOutcomeUuid = pregnancyOutcomeUuid;
     }
 
     public boolean isProcessedByMirth() {

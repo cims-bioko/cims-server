@@ -29,6 +29,7 @@ public class ConstraintViolations extends Exception {
 
     public static final String OUT_MIGRATION_BEFORE_INDIVIDUAL_RESIDENCY_START = "The OutMigration's date takes place before the Residency's startDate.";
 
+    public static final String INVALID_PREGNANCY_OUTCOME_CORE = "Error Processing Pregnancy Outcome Core Form.";
 
     private static final long serialVersionUID = 4392790814928552607L;
 	private List<String> violations = new ArrayList<String>();
