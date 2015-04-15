@@ -103,6 +103,9 @@ public class LocationHierarchy implements UuidIdentifiable, Serializable {
 
     @Override
     public int hashCode() {
+        if (null == uuid) {
+            return 0;
+        }
         return uuid.hashCode();
     }
 

@@ -138,11 +138,6 @@ public class Relationship extends AuditableCollectedEntity implements
 
     }
 
-    @Override
-    public int hashCode() {
-        return uuid.hashCode();
-    }
-
     @XmlRootElement
     public static class Relationships {
 

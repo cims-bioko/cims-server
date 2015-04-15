@@ -144,11 +144,6 @@ public class Membership extends AuditableCollectedEntity implements GenericEndDa
         return null != uuid && null != otherUuid && uuid.equals(otherUuid);
     }
 
-    @Override
-    public int hashCode() {
-        return uuid.hashCode();
-    }
-
     @XmlRootElement
     public static class Memberships implements Serializable {
 

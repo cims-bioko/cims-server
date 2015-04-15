@@ -341,11 +341,6 @@ public class Individual extends AuditableCollectedEntity implements Serializable
         return null != uuid && null != otherUuid && uuid.equals(otherUuid);
     }
 
-    @Override
-    public int hashCode() {
-        return uuid.hashCode();
-    }
-
     @XmlRootElement
     public static class Individuals {
         private List<Individual> individuals;
