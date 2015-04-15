@@ -516,7 +516,7 @@ public class IndividualFormResource extends AbstractFormResource {
             }
         }
 
-        // might need a brand new membership
+        // might need a brand new relationship
         if (null == relationship) {
             relationship = new Relationship();
             relationship.setUuid(individualForm.getRelationshipUuid());
