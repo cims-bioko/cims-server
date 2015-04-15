@@ -10,6 +10,7 @@ import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.*;
 import org.openhds.domain.model.bioko.IndividualForm;
 import org.openhds.domain.util.CalendarAdapter;
+import org.openhds.errorhandling.constants.ErrorConstants;
 import org.openhds.integration.AbstractResourceTest;
 import org.openhds.integration.util.WebContextLoader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,6 +111,37 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
             + "<individual_dip>12345</individual_dip>"
             + "<individual_member_status>permanent</individual_member_status>"
             + "</individualForm>";
+    private static final String DUPLICATE_EXTID_MEMBER_OF_HOUSEHOLD_FORM_XML = "<individualForm>"
+            + "<processed_by_mirth>false</processed_by_mirth>"
+            + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>" + "<collection_date_time>"
+            + A_DATE
+            + "</collection_date_time>"
+            + "<field_worker_uuid>FWEK1D-UUID</field_worker_uuid>"
+            + "<entity_uuid>1234567890133335890123456789012</entity_uuid>"
+            + "<household_ext_id>existing_id</household_ext_id>"
+            + "<household_uuid>HOUSEHOLDLOCATION</household_uuid>"
+            + "<individual_ext_id>existing_id-002</individual_ext_id>"
+            + "<individual_first_name>Test Member First</individual_first_name>"
+            + "<individual_last_name>Test Member Last</individual_last_name>"
+            + "<individual_other_names>Test Member Other</individual_other_names>"
+            + "<individual_age>100</individual_age>"
+            + "<individual_age_units>years</individual_age_units>"
+            + "<individual_date_of_birth>"
+            + A_DATE
+            + "</individual_date_of_birth>"
+            + "<individual_gender>FEMALE</individual_gender>"
+            + "<individual_relationship_to_head_of_household>2</individual_relationship_to_head_of_household>"
+            + "<relationship_uuid>123MEMBERRELATIONSHIP</relationship_uuid>"
+            + "<socialgroup_uuid>HOUSEHOLDSOCIALGROUP</socialgroup_uuid>"
+            + "<membership_uuid>123ANOTHERMEMBERSHIP</membership_uuid>"
+            + "<individual_phone_number>12345678890</individual_phone_number>"
+            + "<individual_other_phone_number>0987654321</individual_other_phone_number>"
+            + "<individual_language_preference>English</individual_language_preference>"
+            + "<individual_point_of_contact_name></individual_point_of_contact_name>"
+            + "<individual_point_of_contact_phone_number></individual_point_of_contact_phone_number>"
+            + "<individual_dip>12345</individual_dip>"
+            + "<individual_member_status>permanent</individual_member_status>"
+            + "</individualForm>";
     private static final String INDIVIDUAL_FORM_INCOMPLETE = "<individualForm>"
             + "<individual_first_name>Test First</individual_first_name>"
             + "<individual_last_name>Test Last</individual_last_name>"
@@ -171,6 +203,30 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         unmarshaller.setAdapter(adapter);
         Object object = unmarshaller.unmarshal(new ByteArrayInputStream(HEAD_OF_HOUSEHOLD_FORM_XML.getBytes(StandardCharsets.UTF_8)));
         IndividualForm individualForm = (IndividualForm) object;
+    }
+
+    @Test
+    public void testPostDuplicateExtId() throws Exception {
+
+        mockMvc.perform(
+                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(MEMBER_OF_HOUSEHOLD_FORM_XML.getBytes()))
+                .andExpect(status().isCreated())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+        mockMvc.perform(
+                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(DUPLICATE_EXTID_MEMBER_OF_HOUSEHOLD_FORM_XML.getBytes()))
+                .andExpect(status().isCreated())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+        verifyEntityCrud("12345678901234935890123456789012", "existing_id", "Individual2", "2");
+
+        ErrorLog error = genericDao.findByProperty(ErrorLog.class, "entityType", "IndividualForm");
+        assertNotNull(error);
+        assertEquals(ErrorConstants.DUPLICATE_EXTID, error.getResolutionStatus());
     }
 
     @Test
