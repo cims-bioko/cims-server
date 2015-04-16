@@ -101,4 +101,12 @@ public abstract class AuditableEntity implements UuidIdentifiable, Serializable 
     public void setInsertDate(Calendar insertDate) {
         this.insertDate = insertDate;
     }
+
+    @Override
+    public int hashCode() {
+        if (null == uuid) {
+            return 0;
+        }
+        return uuid.hashCode();
+    }
 }

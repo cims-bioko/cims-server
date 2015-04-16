@@ -135,11 +135,6 @@ public class FieldWorker extends AuditableEntity implements Serializable {
         return null != uuid && null != otherUuid && uuid.equals(otherUuid);
     }
 
-    @Override
-    public int hashCode() {
-        return uuid.hashCode();
-    }
-
     @XmlRootElement(name = "fieldworkers")
     public static class FieldWorkers {
 

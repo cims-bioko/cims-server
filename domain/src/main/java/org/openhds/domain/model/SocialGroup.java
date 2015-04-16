@@ -125,11 +125,6 @@ public class SocialGroup
         return null != uuid && null != otherUuid && uuid.equals(otherUuid);
     }
 
-    @Override
-    public int hashCode() {
-        return uuid.hashCode();
-    }
-
     @XmlRootElement
     public static class SocialGroups {
 
