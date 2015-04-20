@@ -58,15 +58,19 @@ public interface PregnancyService {
 	 */
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
 	void createPregnancyOutcome(PregnancyOutcome outcome) throws ConstraintViolations;
-	
-	/**
-	 * Verify a pregnancy outcome is valid
-	 * This should be called before the entity is saved
-	 * 
-	 * @param entityItem the item to verify is valid
-	 * @return the pregnancy outcome passed in as an argument
-	 * @throws ConstraintViolations if the pregnancy outcome is not valid
-	 */
+
+    @Authorized({PrivilegeConstants.VIEW_ENTITY})
+    PregnancyOutcome getPregnancyOutcomeByUuid(String uuid);
+
+
+        /**
+         * Verify a pregnancy outcome is valid
+         * This should be called before the entity is saved
+         *
+         * @param entityItem the item to verify is valid
+         * @return the pregnancy outcome passed in as an argument
+         * @throws ConstraintViolations if the pregnancy outcome is not valid
+         */
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
 	PregnancyOutcome evaluatePregnancyOutcome(PregnancyOutcome entityItem) throws ConstraintViolations;
 

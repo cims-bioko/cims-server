@@ -113,7 +113,11 @@ public class PregnancyServiceImpl implements PregnancyService {
 		return genericDao.findListByProperty(PregnancyObservation.class, "mother", individual, true);
 	}
 
-	@Transactional(rollbackFor=Exception.class)
+    public PregnancyOutcome getPregnancyOutcomeByUuid(String uuid) {
+        return genericDao.findByProperty(PregnancyOutcome.class, "uuid", uuid);
+    }
+
+    @Transactional(rollbackFor=Exception.class)
 	public void createPregnancyOutcome(PregnancyOutcome pregOutcome) throws ConstraintViolations {	
 		Location motherLocation = pregOutcome.getMother().getCurrentResidency().getLocation();
 		
@@ -128,7 +132,10 @@ public class PregnancyServiceImpl implements PregnancyService {
 		int totalEverBorn = 0;
 		int liveBirths = 0;
 
-		for(Outcome outcome : pregOutcome.getOutcomes()) {
+        int numberOfOutcomes = pregOutcome.getOutcomes().size();
+		for(int i = 0; i < numberOfOutcomes; i++) {
+
+            Outcome outcome = pregOutcome.getOutcomes().get(i);
 			if (persistedPO != null)
 				persistedPO.addOutcome(outcome);
 			

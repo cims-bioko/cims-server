@@ -1,5 +1,6 @@
 package org.openhds.webservice.resources.bioko;
 
+import org.hibernate.id.UUIDGenerator;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.PregnancyService;
 import org.openhds.controller.service.ResidencyService;
@@ -10,6 +11,7 @@ import org.openhds.controller.service.refactor.SocialGroupService;
 import org.openhds.domain.model.*;
 import org.openhds.domain.model.bioko.PregnancyOutcomeCoreForm;
 import org.openhds.domain.model.bioko.PregnancyOutcomeOutcomesForm;
+import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.errorhandling.constants.ErrorConstants;
 import org.openhds.errorhandling.service.ErrorHandlingService;
@@ -30,20 +32,19 @@ import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-/**
- * Created by motech on 4/10/15.
- */
 
 @Controller
-@RequestMapping("/pregnancyOutcome")
+@RequestMapping("/pregnancyOutcomeForm")
 public class PregnancyOutcomeFormResource extends AbstractFormResource {
+
+    private static final String START_TYPE = "PregnancyOutcomeForm";
+
+    private static final String NOT_APPLICABLE_END_TYPE = "NA";
 
     @Autowired
     private PregnancyService pregnancyService;
-
-    @Autowired
-    private ResidencyService residencyService;
 
     @Autowired
     private SocialGroupService socialGroupService;
@@ -62,6 +63,9 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
 
     @Autowired
     private CalendarAdapter adapter;
+
+    @Autowired
+    private SitePropertiesService siteProperties;
 
 
     @RequestMapping(value = "/core", method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
@@ -109,8 +113,100 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
             throw new RuntimeException("Could not create JAXB context and marshaller for PregnancyOutcomeFormResource");
         }
 
+        List<String> logMessage = new ArrayList<String>();
 
-        return null;
+        try {
+            PregnancyOutcome updatedOutcome = fillInOutcomesFields(outcomesForm);
+            pregnancyService.createPregnancyOutcome(updatedOutcome);
+        } catch (ConstraintViolations cv) {
+            logMessage.add(cv.getMessage());
+            String errorDataPayload = createDTOPayload(outcomesForm, marshaller);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
+                    PregnancyOutcomeOutcomesForm.class.getSimpleName(), null,
+                    ConstraintViolations.INVALID_PREGNANCY_OUTCOME_CHILD, logMessage);
+            errorService.logError(error);
+            return requestError(cv.getMessage());
+        }
+
+
+
+        return new ResponseEntity<PregnancyOutcomeOutcomesForm>(outcomesForm, HttpStatus.CREATED);
+    }
+
+    private PregnancyOutcome fillInOutcomesFields(PregnancyOutcomeOutcomesForm outcomesForm) throws ConstraintViolations {
+
+        PregnancyOutcome parentOutcome = pregnancyService.getPregnancyOutcomeByUuid(outcomesForm.getPregnancyOutcomeUuid());
+        if (null == parentOutcome) {
+            throw new ConstraintViolations("Could not find parent PregnancyOutcome with UUID:" + outcomesForm.getPregnancyOutcomeUuid());
+        }
+
+        List<Outcome> existingOutcomes = parentOutcome.getOutcomes();
+        if (null == existingOutcomes) {
+            existingOutcomes = new ArrayList<Outcome>();
+        }
+
+        Outcome outcome = new Outcome();
+        outcome.setType(outcomesForm.getOutcomeType());
+
+        if (outcome.getType().equalsIgnoreCase(siteProperties.getLiveBirthCode())) {
+            Individual child = new Individual();
+            child.setUuid(outcomesForm.getChildUuid());
+            child.setExtId("Test");
+            child.setCollectedBy(parentOutcome.getCollectedBy());
+            child.setFirstName(outcomesForm.getChildFirstName());
+            child.setMiddleName(outcomesForm.getChildMiddleName());
+            child.setLastName(outcomesForm.getChildLastName());
+            child.setGender(outcomesForm.getChildGender());
+            child.setNationality(outcomesForm.getChildNationality());
+
+            SocialGroup socialGroup = socialGroupService.getByUuid(outcomesForm.getSocialGroupUuid());
+            if (null == socialGroup) {
+                throw new ConstraintViolations("Could not find Social Group with UUID: " + outcomesForm.getSocialGroupUuid());
+            }
+
+            child.setMother(parentOutcome.getMother());
+            child.setFather(parentOutcome.getFather());
+
+            //Instantiate Relationship
+            establishRelationship(child, outcomesForm, socialGroup);
+            //Instantiate Membership: Delegate to the service entirely?
+            establishMembership(child, outcomesForm, socialGroup);
+
+            outcome.setChild(child);
+        }
+
+        existingOutcomes.add(outcome);
+        parentOutcome.setOutcomes(existingOutcomes);
+
+        return parentOutcome;
+
+    }
+
+    private void establishMembership(Individual child, PregnancyOutcomeOutcomesForm form, SocialGroup socialGroup) {
+        Membership mem = new Membership();
+        mem.setUuid(UUID.randomUUID().)
+        mem.setIndividual(child);
+        mem.setInsertDate(form.getCollectionDateTime());
+        mem.setbIsToA(form.getChildRelationshipToGroupHead());
+        mem.setStartDate(form.getCollectionDateTime());
+        mem.setCollectedBy(child.getCollectedBy());
+        mem.setSocialGroup(socialGroup);
+        mem.setStartType(START_TYPE);
+        mem.setEndType(NOT_APPLICABLE_END_TYPE);
+        child.getAllMemberships().add(mem);
+    }
+
+    private void establishRelationship(Individual child, PregnancyOutcomeOutcomesForm form, SocialGroup socialGroup) {
+        Relationship rel = new Relationship();
+        rel.setUuid(UUID.randomUUID().toString());
+        rel.setInsertDate(form.getCollectionDateTime());
+        rel.setIndividualA(child);
+        rel.setIndividualB(socialGroup.getGroupHead());
+        rel.setaIsToB(form.getChildRelationshipToGroupHead());
+        rel.setCollectedBy(child.getCollectedBy());
+        rel.setInsertDate(form.getCollectionDateTime());
+        rel.setStartDate(form.getCollectionDateTime());
+        child.getAllRelationships1().add(rel);
     }
 
     private void fillInCoreFields(PregnancyOutcomeCoreForm pregnancyOutcomeCoreForm, PregnancyOutcome pregnancyOutcome) throws ConstraintViolations {
@@ -143,6 +239,12 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
             throw new ConstraintViolations("Could not find mommy with UUID: " + pregnancyOutcomeCoreForm.getMotherUuid());
         }
         pregnancyOutcome.setMother(mommy);
+    }
+
+    private String createDTOPayload(PregnancyOutcomeOutcomesForm form, Marshaller marshaller) throws JAXBException {
+        StringWriter writer = new StringWriter();
+        marshaller.marshal(form, writer);
+        return writer.toString();
     }
 
     private String createDTOPayload(PregnancyOutcomeCoreForm pregnancyOutcomeCoreForm, Marshaller marshaller) throws JAXBException {
