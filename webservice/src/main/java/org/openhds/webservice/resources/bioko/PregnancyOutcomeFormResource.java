@@ -184,7 +184,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
 
     private void establishMembership(Individual child, PregnancyOutcomeOutcomesForm form, SocialGroup socialGroup) {
         Membership mem = new Membership();
-        mem.setUuid(UUID.randomUUID().)
+        mem.setUuid(UUID.randomUUID().toString().replace("-",""));
         mem.setIndividual(child);
         mem.setInsertDate(form.getCollectionDateTime());
         mem.setbIsToA(form.getChildRelationshipToGroupHead());
@@ -198,7 +198,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
 
     private void establishRelationship(Individual child, PregnancyOutcomeOutcomesForm form, SocialGroup socialGroup) {
         Relationship rel = new Relationship();
-        rel.setUuid(UUID.randomUUID().toString());
+        rel.setUuid(UUID.randomUUID().toString().replace("-", ""));
         rel.setInsertDate(form.getCollectionDateTime());
         rel.setIndividualA(child);
         rel.setIndividualB(socialGroup.getGroupHead());
