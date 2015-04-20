@@ -2,8 +2,8 @@ package org.openhds.webservice.resources.bioko;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.refactor.DeathService;
-import org.openhds.controller.service.FieldWorkerService;
-import org.openhds.controller.service.IndividualService;
+import org.openhds.controller.service.refactor.FieldWorkerService;
+import org.openhds.controller.service.refactor.IndividualService;
 import org.openhds.controller.service.VisitService;
 import org.openhds.domain.model.*;
 import org.openhds.domain.model.bioko.DeathForm;
@@ -70,10 +70,10 @@ public class DeathFormResource extends AbstractFormResource {
         death.setDeathDate(deathForm.getDateOfDeath());
         death.setDeathPlace(deathForm.getPlaceOfDeath());
 
-        FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerByExtId(deathForm.getFieldWorkerExtId());
+        FieldWorker fieldWorker = fieldWorkerService.getByUuid(deathForm.getFieldWorkerUuid());
         if (null == fieldWorker) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID);
+            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_UUID);
             String errorDataPayload = createDTOPayload(deathForm);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, DeathForm.class.getSimpleName(),
                     fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
@@ -82,10 +82,10 @@ public class DeathFormResource extends AbstractFormResource {
         }
         death.setCollectedBy(fieldWorker);
 
-        Visit visit = visitService.findVisitByExtId(deathForm.getVisitExtId());
+        Visit visit = visitService.findVisitByUuid(deathForm.getVisitExtId());
         if (null == visit) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_VISIT_EXT_ID);
+            cv.addViolations(ConstraintViolations.INVALID_VISIT_UUID);
             String errorDataPayload = createDTOPayload(deathForm);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, DeathForm.class.getSimpleName(),
                     fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
@@ -94,10 +94,10 @@ public class DeathFormResource extends AbstractFormResource {
         }
         death.setVisitDeath(visit);
 
-        Individual individual = individualService.findIndivById(deathForm.getIndividualExtId());
+        Individual individual = individualService.getByUuid(deathForm.getIndividualExtId());
         if (null == individual) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_EXT_ID);
+            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_UUID);
             String errorDataPayload = createDTOPayload(deathForm);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, DeathForm.class.getSimpleName(),
                     fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());

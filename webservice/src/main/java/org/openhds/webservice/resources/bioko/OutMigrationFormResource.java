@@ -1,8 +1,8 @@
 package org.openhds.webservice.resources.bioko;
 
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.service.FieldWorkerService;
-import org.openhds.controller.service.IndividualService;
+import org.openhds.controller.service.refactor.FieldWorkerService;
+import org.openhds.controller.service.refactor.IndividualService;
 import org.openhds.controller.service.refactor.OutMigrationService;
 import org.openhds.controller.service.VisitService;
 import org.openhds.domain.model.*;
@@ -64,28 +64,28 @@ public class OutMigrationFormResource extends AbstractFormResource {
         outMigration.setDestination(outMigrationForm.getNameOfDestination());
         outMigration.setReason(outMigrationForm.getReasonForOutMigration());
 
-        FieldWorker fieldWorker = fieldWorkerService.findFieldWorkerByExtId(outMigrationForm.getFieldWorkerExtId());
+        FieldWorker fieldWorker = fieldWorkerService.getByUuid(outMigrationForm.getFieldWorkerUuid());
         if (null == fieldWorker) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_EXT_ID);
+            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_UUID);
             logError(cv, fieldWorker, createDTOPayload(outMigrationForm), OutMigrationForm.class.getSimpleName());
             return requestError(cv);
         }
         outMigration.setCollectedBy(fieldWorker);
 
-        Individual individual = individualService.findIndivById(outMigrationForm.getIndividualExtId());
+        Individual individual = individualService.getByUuid(outMigrationForm.getIndividualUuid());
         if (null == individual) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_EXT_ID);
+            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_UUID);
             logError(cv, fieldWorker, createDTOPayload(outMigrationForm), OutMigrationForm.class.getSimpleName());
             return requestError(cv);
         }
         outMigration.setIndividual(individual);
 
-        Visit visit = visitService.findVisitByExtId(outMigrationForm.getVisitExtId());
+        Visit visit = visitService.findVisitByUuid(outMigrationForm.getVisitExtId());
         if (null == visit) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_VISIT_EXT_ID);
+            cv.addViolations(ConstraintViolations.INVALID_VISIT_UUID);
             logError(cv, fieldWorker, createDTOPayload(outMigrationForm), OutMigrationForm.class.getSimpleName());
             return requestError(cv);
         }

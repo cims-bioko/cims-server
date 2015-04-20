@@ -46,7 +46,7 @@ public interface PregnancyService {
 	 * Create a pregnancy outcome entity
 	 * In addition to creating the pregnancy outcome entity, if the pregnancy outcome contains any children
 	 * born, then the following should occur within the same transaction:
-	 * The children are created
+	 * The children are createdcreatePregnancyOutcome
 	 * A residency for the child(ren) is created set to the same location as the mothers current residency
 	 * A Membership is created for the child(ren) which is set to the mothers family social group
 	 * Close any prior pregnancy observation for the mother
