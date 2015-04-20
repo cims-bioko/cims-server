@@ -109,6 +109,13 @@
                 dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker"
                 age="60" dip="1"/>
 
+    <socialgroup uuid="SocialGroup3" extId="sg234567891" groupName="Social Group 3"
+                 groupHead_uuid="PregnantMale" groupType="COH" insertDate="2000-12-19" deleted="false"
+                 collectedBy_uuid="UnknownFieldWorker" insertBy_uuid="User 1" status="P" />
+
+    <residency uuid="PregnantResidency" location_uuid="TestLocation1" individual_uuid="PregnantIndividual" startDate="1999-12-19"
+               startType="StartType" endType="NA" collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
+
     <whitelist uuid="LOCALHOST1" address="127.0.0.1" />
     <whitelist uuid="LOCALHOST2" address="10.0.2.10" />
     <whitelist uuid="LOCALHOST3" address="10.0.2.14" />
