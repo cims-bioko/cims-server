@@ -31,6 +31,7 @@ import javax.xml.bind.Marshaller;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,8 +41,6 @@ import java.util.UUID;
 public class PregnancyOutcomeFormResource extends AbstractFormResource {
 
     private static final String START_TYPE = "PregnancyOutcomeForm";
-
-    private static final String NOT_APPLICABLE_END_TYPE = "NA";
 
     @Autowired
     private PregnancyService pregnancyService;
@@ -229,7 +228,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
 
         Individual daddy = individualService.getByUuid(pregnancyOutcomeCoreForm.getFatherUuid());
         if(null == daddy) {
-            throw new ConstraintViolations("Could not find daddy with UUID: " + pregnancyOutcomeCoreForm.getFatherUuid());
+            daddy = makeUnknownParent(MALE);
         }
         pregnancyOutcome.setFather(daddy);
 

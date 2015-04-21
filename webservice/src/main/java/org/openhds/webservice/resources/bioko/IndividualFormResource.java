@@ -56,10 +56,6 @@ public class IndividualFormResource extends AbstractFormResource {
     //data model assumes that all newly created Memberships have an endType of "NA"
     private static final String NOT_APPLICABLE_END_TYPE = "NA";
 
-    private static final String MALE = "M";
-    private static final String FEMALE = "F";
-    private static final String UNKNOWN_EXTID = "UNK";
-
     @Autowired
     private FieldWorkerService fieldWorkerService;
 
@@ -384,20 +380,7 @@ public class IndividualFormResource extends AbstractFormResource {
 
     }
 
-    private Individual makeUnknownParent(String gender) {
-        Individual parent = new Individual();
-        parent.setGender(gender);
-        parent.setExtId(UNKNOWN_EXTID);
-        parent.setDob(getDateInPast());
 
-        return parent;
-    }
-
-    private static Calendar getDateInPast() {
-        Calendar inPast = Calendar.getInstance();
-        inPast.set(1900, Calendar.JANUARY, 1);
-        return inPast;
-    }
 
     private SocialGroup findOrMakeSocialGroup(IndividualForm individualForm, Location location, Individual head,
                                               Calendar insertTime, FieldWorker collectedBy) {
