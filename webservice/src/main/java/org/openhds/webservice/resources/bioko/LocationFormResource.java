@@ -240,13 +240,7 @@ public class LocationFormResource extends AbstractFormResource{
         }
         return dirtyNumber.replaceAll("\\D+","");
     }
-
-    private static Calendar getDateInPast() {
-        Calendar inPast = Calendar.getInstance();
-        inPast.set(1900, 0, 1);
-        return inPast;
-    }
-
+    
     private LocationHierarchy createSector(LocationForm locationForm) throws ConstraintViolations {
         LocationHierarchy locationHierarchy = new LocationHierarchy();
 
