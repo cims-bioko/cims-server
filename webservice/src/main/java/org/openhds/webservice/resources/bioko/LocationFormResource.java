@@ -5,6 +5,7 @@ import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.controller.service.refactor.FieldWorkerService;
 import org.openhds.controller.service.refactor.LocationService;
 import org.openhds.domain.model.*;
+import org.openhds.domain.model.bioko.IndividualForm;
 import org.openhds.domain.model.bioko.LocationForm;
 import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.errorhandling.constants.ErrorConstants;
@@ -68,6 +69,7 @@ public class LocationFormResource extends AbstractFormResource{
         }
 
         List<String> logMessage = new ArrayList<String>();
+        ConstraintViolations cv = new ConstraintViolations();
 
         // clean up "null" strings created by Mirth0
         if ("null".equals(locationForm.getHierarchyUuid())) {
@@ -75,31 +77,21 @@ public class LocationFormResource extends AbstractFormResource{
         }
 
         if ("null".equals(locationForm.getLocationExtId())) {
-            String errorMessage = "No Location ExtId provided";
-            logMessage.add(errorMessage);
-            String payload = createDTOPayload(locationForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
-                    LocationForm.class.getSimpleName(), null,
-                    ConstraintViolations.INVALID_LOCATION_EXT_ID, logMessage);
-            errorService.logError(error);
-            return requestError(errorMessage);
+            cv.addViolations("No Location ExtId provided");
+            logError(cv, null, createDTOPayload(locationForm), IndividualForm.class.getSimpleName(), ConstraintViolations.INVALID_LOCATION_EXT_ID);
+            return requestError(cv);
         }
 
         Location location;
         try {
             location = locationService.getByUuid(locationForm.getUuid());
             if (null != location) {
-                String errorMessage = "Location already exists";
-                logMessage.add(errorMessage);
-                String payload = createDTOPayload(locationForm);
-                ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
-                        LocationForm.class.getSimpleName(), null,
-                        ConstraintViolations.INVALID_LOCATION_UUID, logMessage);
-                errorService.logError(error);
-                return requestError(errorMessage +" : " + locationForm.getUuid());
+                cv.addViolations("Location already exists " +locationForm.getUuid());
+                logError(cv, null, createDTOPayload(locationForm), IndividualForm.class.getSimpleName(), ConstraintViolations.INVALID_LOCATION_UUID);
+                return requestError(cv);
             }
         } catch (Exception e) {
-            return requestError("Error checking for existing location: " + e.getMessage());
+            return requestError("Error checking for existing location : " + e.getMessage());
         }
 
         location = new Location();
@@ -107,14 +99,9 @@ public class LocationFormResource extends AbstractFormResource{
         // collected by whom?
         FieldWorker collectedBy = fieldWorkerService.getByUuid(locationForm.getFieldWorkerUuid());
         if (null == collectedBy) {
-            String errorMessage = "Field Worker does not exist";
-            logMessage.add(errorMessage);
-            String payload = createDTOPayload(locationForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
-                    LocationForm.class.getSimpleName(), null,
-                    ConstraintViolations.INVALID_FIELD_WORKER_UUID, logMessage);
-            errorService.logError(error);
-            return requestError(errorMessage + " : "+locationForm.getFieldWorkerUuid());
+            cv.addViolations("Field Worker does not exist : "+locationForm.getFieldWorkerUuid());
+            logError(cv, null, createDTOPayload(locationForm), IndividualForm.class.getSimpleName(), ConstraintViolations.INVALID_FIELD_WORKER_UUID);
+            return requestError(cv);
         }
         location.setCollectedBy(collectedBy);
 
@@ -135,17 +122,9 @@ public class LocationFormResource extends AbstractFormResource{
             }
 
             if (null == locationHierarchy) {
-                String errorMessage = "Location Hierarchy does not exist";
-                logMessage.add(errorMessage);
-                String payload = createDTOPayload(locationForm);
-                ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
-                        LocationForm.class.getSimpleName(), collectedBy,
-                        ConstraintViolations.INVALID_LOCATION_HIERARCHY_UUID, logMessage);
-                errorService.logError(error);
-                return requestError(errorMessage+" : "
-                        + locationForm.getHierarchyUuid()
-                        + " / "
-                        + locationForm.getHierarchyExtId());
+                cv.addViolations("Location Hierarchy does not exist : "+locationForm.getHierarchyUuid() + " / "+locationForm.getHierarchyExtId());
+                logError(cv, collectedBy, createDTOPayload(locationForm), IndividualForm.class.getSimpleName(), ConstraintViolations.INVALID_LOCATION_HIERARCHY_UUID);
+                return requestError(cv);
             }
         } catch (Exception e) {
             return requestError("Error getting reference to LocationHierarchy: " + e.getMessage());
@@ -157,7 +136,6 @@ public class LocationFormResource extends AbstractFormResource{
         if (null != locationService.getByExtId(locationForm.getLocationExtId())) {
 
             modifyExtId(location, locationForm);
-
             // log the modification
             logMessage.add("Location persisted with Modified ExtId: Old = "+locationForm.getLocationExtId()+" New = "+location.getExtId());
             String payload = createDTOPayload(locationForm);
@@ -177,11 +155,7 @@ public class LocationFormResource extends AbstractFormResource{
         try {
             locationService.create(location);
         } catch (ConstraintViolations e) {
-            String payload = createDTOPayload(locationForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
-                    LocationForm.class.getSimpleName(), collectedBy,
-                    ErrorConstants.CONSTRAINT_VIOLATION, e.getViolations());
-            errorService.logError(error);
+            logError(cv, collectedBy, createDTOPayload(locationForm), IndividualForm.class.getSimpleName(), ErrorConstants.CONSTRAINT_VIOLATION);
             return requestError(e);
         } catch (Exception e) {
             return serverError("General Error creating location: " + e.getMessage());
@@ -239,12 +213,6 @@ public class LocationFormResource extends AbstractFormResource{
             return null;
         }
         return dirtyNumber.replaceAll("\\D+","");
-    }
-
-    private static Calendar getDateInPast() {
-        Calendar inPast = Calendar.getInstance();
-        inPast.set(1900, 0, 1);
-        return inPast;
     }
 
     private LocationHierarchy createSector(LocationForm locationForm) throws ConstraintViolations {

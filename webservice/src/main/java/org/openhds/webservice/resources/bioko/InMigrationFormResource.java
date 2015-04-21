@@ -86,8 +86,8 @@ public class InMigrationFormResource extends AbstractFormResource {
         FieldWorker fieldWorker = fieldWorkerService.getByUuid(inMigrationForm.getFieldWorkerUuid());
         if (null == fieldWorker) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_UUID + ":"+inMigrationForm.getFieldWorkerExtId());
-            logError(cv, fieldWorker, createDTOPayload(inMigrationForm), InMigrationForm.class.getSimpleName());
+            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_UUID + " : "+inMigrationForm.getFieldWorkerUuid());
+            logError(cv, fieldWorker, createDTOPayload(inMigrationForm), InMigrationForm.class.getSimpleName(), ConstraintViolations.INVALID_FIELD_WORKER_UUID);
             return requestError(cv);
         }
         inMigration.setCollectedBy(fieldWorker);
@@ -95,8 +95,8 @@ public class InMigrationFormResource extends AbstractFormResource {
         Visit visit = visitService.findVisitByUuid(inMigrationForm.getVisitUuid());
         if (null == visit) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_VISIT_UUID + ":"+inMigrationForm.getVisitExtId());
-            logError(cv, fieldWorker, createDTOPayload(inMigrationForm), InMigrationForm.class.getSimpleName());
+            cv.addViolations(ConstraintViolations.INVALID_VISIT_UUID + " : "+inMigrationForm.getVisitUuid());
+            logError(cv, fieldWorker, createDTOPayload(inMigrationForm), InMigrationForm.class.getSimpleName(), ConstraintViolations.INVALID_VISIT_UUID);
             return requestError(cv);
         }
         inMigration.setVisit(visit);
@@ -104,8 +104,8 @@ public class InMigrationFormResource extends AbstractFormResource {
         Individual individual = individualService.getByUuid(inMigrationForm.getIndividualUuid());
         if (null == individual) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_UUID+":"+inMigrationForm.getIndividualExtId());
-            logError(cv, fieldWorker, createDTOPayload(inMigrationForm), InMigrationForm.class.getSimpleName());
+            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_UUID+" : "+inMigrationForm.getIndividualUuid());
+            logError(cv, fieldWorker, createDTOPayload(inMigrationForm), InMigrationForm.class.getSimpleName(), ConstraintViolations.INVALID_INDIVIDUAL_UUID);
             return requestError(cv);
         }
         inMigration.setIndividual(individual);
@@ -113,8 +113,8 @@ public class InMigrationFormResource extends AbstractFormResource {
         Location location = locationService.getByUuid(inMigrationForm.getLocationUuid());
         if (null == location) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_LOCATION_UUID+":"+inMigrationForm.getLocationExtId());
-            logError(cv, fieldWorker, createDTOPayload(inMigrationForm), InMigrationForm.class.getSimpleName());
+            cv.addViolations(ConstraintViolations.INVALID_LOCATION_UUID+" : "+inMigrationForm.getLocationUuid());
+            logError(cv, fieldWorker, createDTOPayload(inMigrationForm), InMigrationForm.class.getSimpleName(), ConstraintViolations.INVALID_LOCATION_UUID);
             return requestError(cv);
         }
 
@@ -144,7 +144,6 @@ public class InMigrationFormResource extends AbstractFormResource {
         return new ResponseEntity<InMigrationForm>(inMigrationForm, HttpStatus.CREATED);
 
     }
-
 
     private String createDTOPayload(InMigrationForm inMigrationForm) throws JAXBException {
         StringWriter writer = new StringWriter();

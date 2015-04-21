@@ -45,11 +45,16 @@ public class AbstractFormResource {
                 HttpStatus.BAD_REQUEST);
     }
 
-    protected void logError(ConstraintViolations cv, FieldWorker fw, String payload, String simpleClassName) {
+    protected void logError(ConstraintViolations cv, FieldWorker fw, String payload, String simpleClassName, String errorConstant) {
 
         ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null, simpleClassName,
-                fw, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+                fw, errorConstant, cv.getViolations());
         errorService.logError(error);
+
+    }
+
+    protected void logError(ConstraintViolations cv, FieldWorker fw, String payload, String simpleClassName) {
+        logError(cv, fw, payload, simpleClassName, ErrorConstants.UNRESOLVED_ERROR_STATUS);
 
     }
 
