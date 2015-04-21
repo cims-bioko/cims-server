@@ -235,7 +235,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
 
         Individual mommy = individualService.getByUuid(pregnancyOutcomeCoreForm.getMotherUuid());
         if(null == mommy) {
-            throw new ConstraintViolations("Could not find mommy with UUID: " + pregnancyOutcomeCoreForm.getMotherUuid());
+            throw new ConstraintViolations("Could not find mother with UUID: " + pregnancyOutcomeCoreForm.getMotherUuid());
         }
         pregnancyOutcome.setMother(mommy);
     }
