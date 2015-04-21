@@ -343,10 +343,8 @@ public class IndividualFormResource extends AbstractFormResource {
         copyFormDataToIndividual(individualForm, individual);
 
         // Bioko project forms don't include parents!
-        Individual mother = makeUnknownParent(FEMALE);
-        individual.setMother(fieldBuilder.referenceField(mother, cv, "Using Unknown Mother"));
-        Individual father = makeUnknownParent(MALE);
-        individual.setFather(fieldBuilder.referenceField(father, cv, "Using Unknown Father"));
+        individual.setMother(individualService.getUnknownIndividual());
+        individual.setFather(individualService.getUnknownIndividual());
 
         return individual;
     }

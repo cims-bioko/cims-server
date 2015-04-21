@@ -1,9 +1,7 @@
 package org.openhds.webservice.resources.bioko;
 
-import org.hibernate.id.UUIDGenerator;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.PregnancyService;
-import org.openhds.controller.service.ResidencyService;
 import org.openhds.controller.service.VisitService;
 import org.openhds.controller.service.refactor.FieldWorkerService;
 import org.openhds.controller.service.refactor.IndividualService;
@@ -31,7 +29,6 @@ import javax.xml.bind.Marshaller;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -226,18 +223,18 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
         }
         pregnancyOutcome.setVisit(visit);
 
-        Individual daddy = individualService.getByUuid(pregnancyOutcomeCoreForm.getFatherUuid());
-        if(null == daddy) {
-            daddy = makeUnknownParent(MALE);
+        Individual father = individualService.getByUuid(pregnancyOutcomeCoreForm.getFatherUuid());
+        if(null == father) {
+            father = individualService.getUnknownIndividual();
         }
-        pregnancyOutcome.setFather(daddy);
+        pregnancyOutcome.setFather(father);
 
 
-        Individual mommy = individualService.getByUuid(pregnancyOutcomeCoreForm.getMotherUuid());
-        if(null == mommy) {
+        Individual mother = individualService.getByUuid(pregnancyOutcomeCoreForm.getMotherUuid());
+        if(null == mother) {
             throw new ConstraintViolations("Could not find mother with UUID: " + pregnancyOutcomeCoreForm.getMotherUuid());
         }
-        pregnancyOutcome.setMother(mommy);
+        pregnancyOutcome.setMother(mother);
     }
 
     private String createDTOPayload(PregnancyOutcomeOutcomesForm form, Marshaller marshaller) throws JAXBException {

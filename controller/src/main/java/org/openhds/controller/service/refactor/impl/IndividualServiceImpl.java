@@ -6,16 +6,21 @@ import org.openhds.controller.service.refactor.crudhelpers.EntityCrudHelper;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Death;
 import org.openhds.domain.model.Individual;
-import org.openhds.domain.model.Residency;
+import org.openhds.domain.service.SitePropertiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Service
 public class IndividualServiceImpl implements IndividualService {
+
+    private static final String UNKNOWN_EXTID = "UNK";
+
+    @Autowired
+    private SitePropertiesService sitePropertiesService;
 
     @Autowired
     @Qualifier("IndividualCrudHelper")
@@ -79,18 +84,23 @@ public class IndividualServiceImpl implements IndividualService {
         individualCrudHelper.save(individual);
     }
 
-
-    /*
-            Extra methods
-
-     */
-
-
-
     @Override
     public boolean isDeceased(Individual individual) {
         //TODO: refactor the "getLatestEvent" logic in the old IndividualService
         return (null != genericDao.findByProperty(Death.class, "individual", individual, true));
 
     }
+
+    @Override
+    public Individual getUnknownIndividual() throws ConstraintViolations {
+        Individual individual = getByExtId(UNKNOWN_EXTID);
+        return individual;
+    }
+
+    protected static Calendar getDateInPast() {
+        Calendar inPast = Calendar.getInstance();
+        inPast.set(1900, Calendar.JANUARY, 1);
+        return inPast;
+    }
+
 }
