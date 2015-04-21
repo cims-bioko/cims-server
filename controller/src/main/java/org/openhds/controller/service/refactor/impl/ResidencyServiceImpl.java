@@ -5,6 +5,7 @@ import org.openhds.controller.service.refactor.ResidencyService;
 import org.openhds.controller.service.refactor.crudhelpers.EntityCrudHelper;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Residency;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +23,10 @@ public class ResidencyServiceImpl implements ResidencyService {
     @Autowired
     private GenericDao genericDao;
 
+    @Override
+    public List<Residency> getResidenciesByLocation(Location location) {
+        return genericDao.findListByProperty(Residency.class, "location", location);
+    }
 
     @Override
     public List<Residency> getAll() {

@@ -31,6 +31,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -132,17 +133,18 @@ public class PregnancyOutcomeFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
-        verifyEntityCrud("123123123123123123", "childUuid");
+        verifyEntityCrud("childUuid");
     }
 
-    private void verifyEntityCrud(String pregOutcomeUuid, String childUuid) {
+    private void verifyEntityCrud(String childUuid) {
 
-        PregnancyOutcome pregnancyOutcome = genericDao.findByProperty(PregnancyOutcome.class, "uuid", pregOutcomeUuid);
+        List<PregnancyOutcome> pregnancyOutcome = genericDao.findListByProperty(PregnancyOutcome.class, "uuid", "123123123123123123");
         assertNotNull(pregnancyOutcome);
-        assertEquals(1, pregnancyOutcome.getOutcomes().size());
+        assertEquals(1, pregnancyOutcome.get(0).getOutcomes().size());
         Individual child = genericDao.findByProperty(Individual.class, "uuid", childUuid);
         assertNotNull(child);
         assertEquals("First", child.getFirstName());
+        assertEquals("Mother-002", child.getExtId());
 
     }
 

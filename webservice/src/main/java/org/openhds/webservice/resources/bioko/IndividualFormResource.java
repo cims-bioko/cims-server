@@ -141,14 +141,9 @@ public class IndividualFormResource extends AbstractFormResource {
         ConstraintViolations cv = new ConstraintViolations();
         FieldWorker collectedBy = fieldWorkerService.getByUuid(individualForm.getFieldWorkerUuid());
         if (null == collectedBy) {
-            String errorMessage = "Field Worker does not exist";
-            logMessage.add(errorMessage);
-            String errorDataPayload = createDTOPayload(individualForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
-                    IndividualForm.class.getSimpleName(), null,
-                    ConstraintViolations.INVALID_FIELD_WORKER_UUID, logMessage);
-            errorService.logError(error);
-            return requestError(errorMessage);
+            cv.addViolations("Field Worker does not exist");
+            logError(cv, null, createDTOPayload(individualForm), IndividualForm.class.getSimpleName(), ConstraintViolations.INVALID_FIELD_WORKER_UUID);
+            return requestError(cv);
         }
 
         // where are we?
@@ -165,12 +160,8 @@ public class IndividualFormResource extends AbstractFormResource {
 
             if (null == location) {
                 String errorMessage = "Location does not exist "+individualForm.getHouseholdUuid()+" / "+individualForm.getHouseholdExtId();
-                logMessage.add(errorMessage);
-                String errorDataPayload = createDTOPayload(individualForm);
-                ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
-                        IndividualForm.class.getSimpleName(), collectedBy,
-                        ConstraintViolations.INVALID_LOCATION_UUID, logMessage);
-                errorService.logError(error);
+                cv.addViolations(errorMessage);
+                logError(cv, collectedBy, createDTOPayload(individualForm), IndividualForm.class.getSimpleName(), ConstraintViolations.INVALID_LOCATION_UUID);
                 return requestError(errorMessage);
             }
 
@@ -182,11 +173,6 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             createOrSaveLocation(location);
         } catch (ConstraintViolations e) {
-            String errorDataPayload = createDTOPayload(individualForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
-                    IndividualForm.class.getSimpleName(), collectedBy,
-                    ErrorConstants.CONSTRAINT_VIOLATION, e.getViolations());
-            errorService.logError(error);
             return requestError(e);
         } catch (SQLException e) {
             return serverError("SQL Error updating or saving location: " + e.getMessage());
@@ -199,11 +185,7 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             individual = findOrMakeIndividual(individualForm, collectedBy, insertTime, cv);
             if (cv.hasViolations()) {
-                String errorDataPayload = createDTOPayload(individualForm);
-                ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
-                        IndividualForm.class.getSimpleName(), collectedBy,
-                        ErrorConstants.CONSTRAINT_VIOLATION, cv.getViolations());
-                errorService.logError(error);
+                logError(cv, collectedBy, createDTOPayload(individualForm), IndividualForm.class.getSimpleName(), ErrorConstants.CONSTRAINT_VIOLATION);
                 return requestError(cv);
             }
         } catch (Exception e) {
@@ -216,12 +198,8 @@ public class IndividualFormResource extends AbstractFormResource {
             updateIndividualExtId(individual, location);
 
             // log the modification
-            logMessage.add("Individual ExtId updated from "+individualForm.getIndividualExtId()+" to "+individual.getExtId());
-            String payload = createDTOPayload(individualForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
-                    IndividualForm.class.getSimpleName(), collectedBy,
-                    ErrorConstants.MODIFIED_EXTID, logMessage);
-            errorService.logError(error);
+            cv.addViolations("Individual ExtId updated from "+individualForm.getIndividualExtId()+" to "+individual.getExtId());
+            logError(cv, collectedBy, createDTOPayload(individualForm), IndividualForm.class.getSimpleName(), ErrorConstants.MODIFIED_EXTID);
 
             //household extId used later by social group, need to correct it here
             individualForm.setHouseholdExtId(location.getExtId());
@@ -230,12 +208,8 @@ public class IndividualFormResource extends AbstractFormResource {
         // log a warning if the individual extId clashes with an existing individual's extId
         if (0 != individualService.getExistingExtIdCount(individual.getExtId())) {
             // log the modification
-            logMessage.add("Warning: Individual ExtId clashes with an existing Individual's extId : "+individual.getExtId());
-            String payload = createDTOPayload(individualForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
-                    IndividualForm.class.getSimpleName(), collectedBy,
-                    ErrorConstants.DUPLICATE_EXTID, logMessage);
-            errorService.logError(error);
+            cv.addViolations("Warning: Individual ExtId clashes with an existing Individual's extId : "+individual.getExtId());
+            logError(cv, collectedBy, createDTOPayload(individualForm), IndividualForm.class.getSimpleName(), ErrorConstants.DUPLICATE_EXTID);
         }
 
         // individual's residency at location
@@ -245,11 +219,7 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             createOrSaveIndividual(individual);
         } catch (ConstraintViolations e) {
-            String errorDataPayload = createDTOPayload(individualForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
-                    IndividualForm.class.getSimpleName(), collectedBy,
-                    ErrorConstants.CONSTRAINT_VIOLATION, e.getViolations());
-            errorService.logError(error);
+            logError(e, collectedBy, createDTOPayload(individualForm), IndividualForm.class.getSimpleName(), ErrorConstants.CONSTRAINT_VIOLATION);
             return requestError(e);
         } catch (SQLException e) {
             return serverError("SQL Error updating or saving individual: " + e.getMessage());
@@ -288,11 +258,7 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             createOrSaveSocialGroup(socialGroup);
         } catch (ConstraintViolations e) {
-            String errorDataPayload = createDTOPayload(individualForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
-                    IndividualForm.class.getSimpleName(), collectedBy,
-                    ErrorConstants.CONSTRAINT_VIOLATION, e.getViolations());
-            errorService.logError(error);
+            logError(e, collectedBy, createDTOPayload(individualForm), IndividualForm.class.getSimpleName(), ErrorConstants.CONSTRAINT_VIOLATION);
             return requestError(e);
         } catch (SQLException e) {
             return serverError("SQL Error updating or saving socialGroup: " + e.getMessage());
@@ -306,11 +272,7 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             entityService.create(membership);
         } catch (ConstraintViolations constraintViolations) {
-            String errorDataPayload = createDTOPayload(individualForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null,
-                    IndividualForm.class.getSimpleName(), collectedBy,
-                    ErrorConstants.CONSTRAINT_VIOLATION, constraintViolations.getViolations());
-            errorService.logError(error);
+            logError(constraintViolations, collectedBy, createDTOPayload(individualForm), IndividualForm.class.getSimpleName(), ErrorConstants.CONSTRAINT_VIOLATION);
             return serverError("ConstraintViolations saving membership: " + constraintViolations.getMessage());
         } catch (SQLException e) {
             return serverError("SQL Error updating or saving membership: " + e.getMessage());

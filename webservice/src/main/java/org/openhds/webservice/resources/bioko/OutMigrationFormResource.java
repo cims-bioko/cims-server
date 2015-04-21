@@ -67,8 +67,8 @@ public class OutMigrationFormResource extends AbstractFormResource {
         FieldWorker fieldWorker = fieldWorkerService.getByUuid(outMigrationForm.getFieldWorkerUuid());
         if (null == fieldWorker) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_UUID);
-            logError(cv, fieldWorker, createDTOPayload(outMigrationForm), OutMigrationForm.class.getSimpleName());
+            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_UUID + " : "+outMigrationForm.getFieldWorkerUuid());
+            logError(cv, fieldWorker, createDTOPayload(outMigrationForm), OutMigrationForm.class.getSimpleName(), ConstraintViolations.INVALID_FIELD_WORKER_UUID);
             return requestError(cv);
         }
         outMigration.setCollectedBy(fieldWorker);
@@ -76,8 +76,8 @@ public class OutMigrationFormResource extends AbstractFormResource {
         Individual individual = individualService.getByUuid(outMigrationForm.getIndividualUuid());
         if (null == individual) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_UUID);
-            logError(cv, fieldWorker, createDTOPayload(outMigrationForm), OutMigrationForm.class.getSimpleName());
+            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_UUID + " : "+outMigrationForm.getIndividualUuid());
+            logError(cv, fieldWorker, createDTOPayload(outMigrationForm), OutMigrationForm.class.getSimpleName(), ConstraintViolations.INVALID_INDIVIDUAL_UUID);
             return requestError(cv);
         }
         outMigration.setIndividual(individual);
@@ -85,8 +85,8 @@ public class OutMigrationFormResource extends AbstractFormResource {
         Visit visit = visitService.findVisitByUuid(outMigrationForm.getVisitExtId());
         if (null == visit) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_VISIT_UUID);
-            logError(cv, fieldWorker, createDTOPayload(outMigrationForm), OutMigrationForm.class.getSimpleName());
+            cv.addViolations(ConstraintViolations.INVALID_VISIT_UUID + " : "+outMigrationForm.getVisitUuid());
+            logError(cv, fieldWorker, createDTOPayload(outMigrationForm), OutMigrationForm.class.getSimpleName(), ConstraintViolations.INVALID_VISIT_UUID);
             return requestError(cv);
         }
         outMigration.setVisit(visit);
@@ -94,7 +94,7 @@ public class OutMigrationFormResource extends AbstractFormResource {
         try {
             outMigrationService.create(outMigration);
         } catch (ConstraintViolations cv) {
-            logError(cv, fieldWorker, createDTOPayload(outMigrationForm), OutMigrationForm.class.getSimpleName());
+            logError(cv, fieldWorker, createDTOPayload(outMigrationForm), OutMigrationForm.class.getSimpleName(), ConstraintViolations.INVALID_OUT_MIGRATION);
             return requestError(cv);
         }
 

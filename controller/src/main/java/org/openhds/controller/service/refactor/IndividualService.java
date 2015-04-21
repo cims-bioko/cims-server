@@ -12,4 +12,6 @@ public interface IndividualService extends EntityService<Individual> {
 
     Individual getUnknownIndividual() throws ConstraintViolations;
 
+    String generateChildExtId(Individual mother);
+
 }

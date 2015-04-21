@@ -1,6 +1,5 @@
 package org.openhds.domain.model;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckEntityNotVoided;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
@@ -9,7 +8,6 @@ import org.openhds.domain.constraint.CheckIndividualNotUnknown;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -25,8 +23,7 @@ public class Outcome implements Serializable {
 
 	private static final long serialVersionUID = -1667849707971051732L;
 
-	@Id @GeneratedValue(generator="system-uuid")
-	@GenericGenerator(name="system-uuid", strategy = "uuid")
+	@Id
 	@Column(length=32)
 	private String uuid;
 	

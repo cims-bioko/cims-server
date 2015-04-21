@@ -2,10 +2,12 @@ package org.openhds.controller.service.refactor.impl;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.refactor.IndividualService;
+import org.openhds.controller.service.refactor.ResidencyService;
 import org.openhds.controller.service.refactor.crudhelpers.EntityCrudHelper;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Death;
 import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.Location;
 import org.openhds.domain.service.SitePropertiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,7 +29,22 @@ public class IndividualServiceImpl implements IndividualService {
     private EntityCrudHelper<Individual> individualCrudHelper;
 
     @Autowired
+    private ResidencyService residencyService;
+
+    @Autowired
     private GenericDao genericDao;
+
+    @Override
+    public String generateChildExtId(Individual mother) {
+        Location residencyLocation = mother.getCurrentResidency().getLocation();
+        int existingResidents = residencyService.getResidenciesByLocation(residencyLocation).size();
+        return sequencedExtId(mother.getExtId(), existingResidents + 1);
+    }
+
+    private String sequencedExtId(String extId, int sequenceNumber) {
+        String newExtId = extId.substring(0, extId.length() - 3);
+        return newExtId + String.format("%03d", sequenceNumber);
+    }
 
     @Override
     public int getExistingExtIdCount(String extId) {

@@ -24,6 +24,10 @@ public class ConstraintViolations extends Exception {
     public static final String INVALID_SOCIAL_GROUP_EXT_ID = "Invalid Social Group Ext Id";
     public static final String INVALID_SOCIAL_GROUP_UUID = "Invalid Social Group UUID";
 
+    public static final String INVALID_IN_MIGRATION = "Invalid Inmigration";
+
+    public static final String INVALID_OUT_MIGRATION = "Invalid Outmigration";
+
     public static final String ENTITY_REFERENCES_INDIVIDUAL_WITH_DEATH_EVENT = "The entity references an Individual that has a Death event";
     public static final String ENTITY_REFERENCES_INDIVIDUAL_WITHOUT_OPEN_RESIDENCY = "The entity references an Individual that does not have an open Residency";
 
