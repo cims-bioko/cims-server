@@ -146,11 +146,15 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
 
         Outcome outcome = new Outcome();
         outcome.setType(outcomesForm.getOutcomeType());
+        outcome.setUuid(UUID.randomUUID().toString().replace("-", ""));
 
         if (outcome.getType().equalsIgnoreCase(siteProperties.getLiveBirthCode())) {
             Individual child = new Individual();
             child.setUuid(outcomesForm.getChildUuid());
-            child.setExtId("Test");
+
+            //generate an extId for this child
+            child.setExtId(individualService.generateChildExtId(parentOutcome.getMother()));
+
             child.setCollectedBy(parentOutcome.getCollectedBy());
             child.setFirstName(outcomesForm.getChildFirstName());
             child.setMiddleName(outcomesForm.getChildMiddleName());
@@ -169,8 +173,8 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
             //Instantiate Relationship
             establishRelationship(child, outcomesForm, socialGroup);
             //Instantiate Membership: Delegate to the service entirely?
-            establishMembership(child, outcomesForm, socialGroup);
-
+            Membership m = establishMembership(child, outcomesForm, socialGroup);
+            child.getAllMemberships().add(m);
             outcome.setChild(child);
         }
 
@@ -181,7 +185,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
 
     }
 
-    private void establishMembership(Individual child, PregnancyOutcomeOutcomesForm form, SocialGroup socialGroup) {
+    private Membership establishMembership(Individual child, PregnancyOutcomeOutcomesForm form, SocialGroup socialGroup) {
         Membership mem = new Membership();
         mem.setUuid(UUID.randomUUID().toString().replace("-",""));
         mem.setIndividual(child);
@@ -192,7 +196,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
         mem.setSocialGroup(socialGroup);
         mem.setStartType(START_TYPE);
         mem.setEndType(NOT_APPLICABLE_END_TYPE);
-        child.getAllMemberships().add(mem);
+        return mem;
     }
 
     private void establishRelationship(Individual child, PregnancyOutcomeOutcomesForm form, SocialGroup socialGroup) {
