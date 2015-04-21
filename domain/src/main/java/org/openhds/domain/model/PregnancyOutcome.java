@@ -5,12 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
+import javax.persistence.*;
 import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -55,20 +50,20 @@ public class PregnancyOutcome extends AuditableCollectedEntity implements Serial
     private Calendar outcomeDate;
    
     @Searchable
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = org.openhds.domain.model.Individual.class)
     @CheckIndividualGenderFemale(allowNull = false)
     @CheckIndividualNotUnknown
     @CheckEntityNotVoided
     @Description(description="Mother of the pregnancy outcome.")
     private Individual mother;
-    
+
     @Searchable
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = org.openhds.domain.model.Individual.class)
     @CheckIndividualGenderMale(allowNull = false)
     @CheckEntityNotVoided
     @Description(description="Father of the pregnancy outcome.")
     private Individual father;
-   
+
     @OneToMany(cascade = CascadeType.ALL)
     @Description(description="List of all outcomes for the pregnancy.")
     private List<Outcome> outcomes = new ArrayList<Outcome>();
