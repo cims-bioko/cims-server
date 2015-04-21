@@ -9,4 +9,6 @@ public interface IndividualService extends EntityService<Individual> {
 
     int getExistingExtIdCount(String extId);
 
+    String generateChildExtId(Individual mother);
+
 }
