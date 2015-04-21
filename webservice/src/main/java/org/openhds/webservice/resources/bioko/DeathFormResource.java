@@ -73,34 +73,34 @@ public class DeathFormResource extends AbstractFormResource {
         FieldWorker fieldWorker = fieldWorkerService.getByUuid(deathForm.getFieldWorkerUuid());
         if (null == fieldWorker) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_UUID);
+            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_UUID +" : " + deathForm.getFieldWorkerUuid());
             String errorDataPayload = createDTOPayload(deathForm);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, DeathForm.class.getSimpleName(),
-                    fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+                    fieldWorker, ConstraintViolations.INVALID_FIELD_WORKER_UUID, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);
         }
         death.setCollectedBy(fieldWorker);
 
-        Visit visit = visitService.findVisitByUuid(deathForm.getVisitExtId());
+        Visit visit = visitService.findVisitByUuid(deathForm.getVisitUuid());
         if (null == visit) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_VISIT_UUID);
+            cv.addViolations(ConstraintViolations.INVALID_VISIT_UUID +" : " + deathForm.getVisitUuid());
             String errorDataPayload = createDTOPayload(deathForm);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, DeathForm.class.getSimpleName(),
-                    fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+                    fieldWorker, ConstraintViolations.INVALID_VISIT_UUID, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);
         }
         death.setVisitDeath(visit);
 
-        Individual individual = individualService.getByUuid(deathForm.getIndividualExtId());
+        Individual individual = individualService.getByUuid(deathForm.getIndividualUuid());
         if (null == individual) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_UUID);
+            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_UUID +" : " + deathForm.getIndividualUuid());
             String errorDataPayload = createDTOPayload(deathForm);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, DeathForm.class.getSimpleName(),
-                    fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+                    fieldWorker, ConstraintViolations.INVALID_INDIVIDUAL_UUID, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);
         }
@@ -111,7 +111,7 @@ public class DeathFormResource extends AbstractFormResource {
         } catch (ConstraintViolations cv) {
             String errorDataPayload = createDTOPayload(deathForm);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, OutMigrationForm.class.getSimpleName(),
-                    fieldWorker, ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+                    fieldWorker, ErrorConstants.CONSTRAINT_VIOLATION, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);
         }

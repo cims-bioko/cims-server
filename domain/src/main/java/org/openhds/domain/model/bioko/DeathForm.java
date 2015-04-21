@@ -41,8 +41,14 @@ public class DeathForm implements Serializable{
     @XmlElement(name = "individual_ext_id")
     private String individualExtId;
 
+    @XmlElement(name = "individual_uuid")
+    private String individualUuid;
+
     @XmlElement(name = "visit_ext_id")
     private String visitExtId;
+
+    @XmlElement(name = "visit_uuid")
+    private String visitUuid;
 
     @XmlElement(name = "date_of_death")
     @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
@@ -53,6 +59,22 @@ public class DeathForm implements Serializable{
 
     @XmlElement(name = "cause_of_death")
     private String causeOfDeath;
+
+    public String getIndividualUuid() {
+        return individualUuid;
+    }
+
+    public void setIndividualUuid(String individualUuid) {
+        this.individualUuid = individualUuid;
+    }
+
+    public String getVisitUuid() {
+        return visitUuid;
+    }
+
+    public void setVisitUuid(String visitUuid) {
+        this.visitUuid = visitUuid;
+    }
 
     public String getEntityUuid() {
         return entityUuid;
