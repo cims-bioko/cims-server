@@ -149,7 +149,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
             Individual child = new Individual();
             child.setUuid(outcomesForm.getChildUuid());
 
-            //generate an extId for this child
+            // generate an extId for this child
             child.setExtId(individualService.generateChildExtId(parentOutcome.getMother()));
 
             child.setCollectedBy(parentOutcome.getCollectedBy());
@@ -169,10 +169,12 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
 
             //Instantiate Relationship
             establishRelationship(child, outcomesForm, socialGroup);
+
             //Instantiate Membership: Delegate to the service entirely?
             Membership m = establishMembership(child, outcomesForm, socialGroup);
             child.getAllMemberships().add(m);
             outcome.setChild(child);
+            outcome.setChildMembership(m);
         }
         existingOutcomes.add(outcome);
         return parentOutcome;
