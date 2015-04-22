@@ -63,9 +63,13 @@ public class InMigrationFormResourceTest extends AbstractResourceTest {
                     + A_DATE
                     + "</collection_date_time>"
                     + "<individual_ext_id>individual1</individual_ext_id>"
+                    + "<individual_uuid>Individual1</individual_uuid>"
                     + "<location_ext_id>testLocation2</location_ext_id>"
+                    + "<location_uuid>TestLocation2</location_uuid>"
                     + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>"
+                    + "<field_worker_uuid>FWEK1D</field_worker_uuid>"
                     + "<visit_ext_id>migrateVisit</visit_ext_id>"
+                    + "<visit_uuid>MigrateVisit</visit_uuid>"
                     + "<migration_date>"
                     + A_DATE
                     + "</migration_date>"

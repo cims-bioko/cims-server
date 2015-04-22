@@ -110,8 +110,11 @@ public class ErrorLogResourceTest extends AbstractResourceTest {
                 "<outMigrationForm>"
                         + "<processed_by_mirth>false</processed_by_mirth>"
                         + "<individual_ext_id>individual2</individual_ext_id>"
+                        + "<individual_uuid>Individual2</individual_uuid>"
                         + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>"
+                        + "<field_worker_uuid>FWEK1D</field_worker_uuid>"
                         + "<visit_ext_id>migrateVisit</visit_ext_id>"
+                        + "<visit_uuid>MigrateVisit</visit_uuid>"
                         + "<out_migration_date>"
                         + DATE_PRIOR_TO_RESIDENCY
                         + "</out_migration_date>"

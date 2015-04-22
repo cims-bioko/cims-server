@@ -52,6 +52,7 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
     private static final String VALID_OBSERVATION_XML =
             "<pregnancyObservationForm>" +
             "<recorded_date>"+ A_CURRENT_DATE +"</recorded_date>" +
+            "<collection_date_time>"+ A_CURRENT_DATE +"</collection_date_time>" +
             "<visit_ext_id>pregObsVisit</visit_ext_id>" +
                     "<visit_uuid>PregObsVisit</visit_uuid>" +
                     "<individual_ext_id>pregnantIndividual</individual_ext_id>" +
@@ -79,13 +80,13 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
-        verifyPregnancyObservationCrud("pregnantIndividual");
+        verifyPregnancyObservationCrud("PregnantIndividual");
 
     }
 
-    private void verifyPregnancyObservationCrud(String individualExtId) {
+    private void verifyPregnancyObservationCrud(String uuid) {
 
-        Individual mother = genericDao.findByProperty(Individual.class, "extId", individualExtId);
+        Individual mother = genericDao.findByProperty(Individual.class, "uuid", uuid);
         PregnancyObservation obs = genericDao.findByProperty(PregnancyObservation.class, "mother", mother);
         assertNotNull(obs);
         assertEquals(mother, obs.getMother());

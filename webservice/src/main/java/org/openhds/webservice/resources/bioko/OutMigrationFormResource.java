@@ -82,7 +82,7 @@ public class OutMigrationFormResource extends AbstractFormResource {
         }
         outMigration.setIndividual(individual);
 
-        Visit visit = visitService.findVisitByUuid(outMigrationForm.getVisitExtId());
+        Visit visit = visitService.findVisitByUuid(outMigrationForm.getVisitUuid());
         if (null == visit) {
             ConstraintViolations cv = new ConstraintViolations();
             cv.addViolations(ConstraintViolations.INVALID_VISIT_UUID + " : "+outMigrationForm.getVisitUuid());

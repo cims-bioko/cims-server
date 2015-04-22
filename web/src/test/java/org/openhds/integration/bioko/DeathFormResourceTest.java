@@ -51,8 +51,11 @@ public class DeathFormResourceTest extends AbstractResourceTest {
             "<deathForm>"
                     + "<processed_by_mirth>false</processed_by_mirth>"
                     + "<individual_ext_id>individual1</individual_ext_id>"
+                    + "<individual_uuid>Individual1</individual_uuid>"
                     + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>"
+                    + "<field_worker_uuid>FWEK1D</field_worker_uuid>"
                     + "<visit_ext_id>deathVisit</visit_ext_id>"
+                    + "<visit_uuid>DeathVisit</visit_uuid>"
                     + "<collection_date_time>"
                     + A_DATE
                     + "</collection_date_time>"
