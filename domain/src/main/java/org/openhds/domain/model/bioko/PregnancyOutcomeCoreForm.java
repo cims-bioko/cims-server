@@ -45,7 +45,7 @@ public class PregnancyOutcomeCoreForm implements Serializable {
     @XmlElement(name = "father_uuid")
     private String fatherUuid;
 
-    @XmlElement(name = "social_group_uuid")
+    @XmlElement(name = "socialgroup_uuid")
     private String socialGroupUuid;
 
     @XmlElement(name = "number_of_outcomes")

@@ -25,7 +25,7 @@ public class PregnancyOutcomeOutcomesForm implements Serializable{
     @XmlElement(name = "processed_by_mirth")
     private boolean processedByMirth;
 
-    @XmlElement(name = "social_group_uuid")
+    @XmlElement(name = "socialgroup_uuid")
     private String socialGroupUuid;
 
     @XmlElement(name = "outcome_type")

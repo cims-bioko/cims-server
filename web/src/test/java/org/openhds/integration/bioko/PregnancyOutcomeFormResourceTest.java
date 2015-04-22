@@ -74,7 +74,7 @@ public class PregnancyOutcomeFormResourceTest extends AbstractResourceTest {
             "    <outcome_type>LBR</outcome_type>" +
             "    <child_gender>MALE</child_gender>" +
             "    <collection_date_time>2015-04-09 14:49:46</collection_date_time>" +
-            "    <social_group_uuid>SocialGroup3</social_group_uuid>" +
+            "    <socialgroup_uuid>SocialGroup3</socialgroup_uuid>" +
             "    <child_nationality>Other African Country</child_nationality>" +
             "    <child_relationship_to_group_head>3</child_relationship_to_group_head>" +
             "    <child_uuid>childUuid</child_uuid>" +
