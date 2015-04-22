@@ -120,15 +120,7 @@ public class PregnancyServiceImpl implements PregnancyService {
     @Transactional(rollbackFor=Exception.class)
 	public void createPregnancyOutcome(PregnancyOutcome pregOutcome) throws ConstraintViolations {	
 		Location motherLocation = pregOutcome.getMother().getCurrentResidency().getLocation();
-		
-		List<PregnancyOutcome> persistedPOList = genericDao.findListByMultiProperty(PregnancyOutcome.class, 
-				getValueProperty("mother", pregOutcome.getMother()),
-				getValueProperty("outcomeDate", pregOutcome.getOutcomeDate()));
-		
-		PregnancyOutcome persistedPO = null;
-		if (!persistedPOList.isEmpty())
-			persistedPO = persistedPOList.get(0);
-		
+
 		int totalEverBorn = 0;
 		int liveBirths = 0;
 
@@ -136,9 +128,7 @@ public class PregnancyServiceImpl implements PregnancyService {
 		for(int i = 0; i < numberOfOutcomes; i++) {
 
             Outcome outcome = pregOutcome.getOutcomes().get(i);
-			if (persistedPO != null)
-				persistedPO.addOutcome(outcome);
-			
+
 			totalEverBorn++;
 			if (!outcome.getType().equals(siteProperties.getLiveBirthCode())) {
 				// not a live birth so individual, residency and membership not needed
@@ -185,22 +175,24 @@ public class PregnancyServiceImpl implements PregnancyService {
 		
 		// close any pregnancy observation
 		closePregnancyObservation(pregOutcome.getMother());
-		
-		if (persistedPO != null) {
-			try {
-                entityService.save(persistedPO);
-            } catch (SQLException e) {
-                throw new ConstraintViolations("Problem saving pregnancy outcome to database");
-            }
-		// finally create the pregnancy outcome
-		} else {
-			try {
+
+        PregnancyOutcome persistedPregnancyOutcome = getPregnancyOutcomeByUuid(pregOutcome.getUuid());
+
+        if (null == persistedPregnancyOutcome) {
+            try {
                 entityService.create(pregOutcome);
+            } catch (SQLException e) {
+                throw new ConstraintViolations("Problem creating pregnancy outcome to database");
+            }
+        } else {
+            try {
+                entityService.save(pregOutcome);
             } catch (IllegalArgumentException e) {
             } catch (SQLException e) {
-                throw new ConstraintViolations("Problem creating pregnancy outcome in the database");
+                throw new ConstraintViolations("Problem saving pregnancy outcome in the database");
             }
-		}
+        }
+
 	}
 		
 	public List<PregnancyOutcome> findAllLiveBirthsBetweenInterval(Calendar startDate, Calendar endDate) {

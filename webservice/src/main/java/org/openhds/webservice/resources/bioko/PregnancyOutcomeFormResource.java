@@ -174,10 +174,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
             child.getAllMemberships().add(m);
             outcome.setChild(child);
         }
-
         existingOutcomes.add(outcome);
-        parentOutcome.setOutcomes(existingOutcomes);
-
         return parentOutcome;
 
     }

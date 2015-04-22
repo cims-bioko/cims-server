@@ -5,12 +5,7 @@ import org.openhds.domain.constraint.CheckEntityNotVoided;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.CheckIndividualNotUnknown;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Description(description="An Outcome represents a result from a Pregnancy. " +
@@ -41,7 +36,18 @@ public class Outcome implements Serializable {
 	@Description(description="Membership of the child, which is obtained from the mother at birth.")
 	private Membership childMembership;
 
-	public String getUuid() {
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = PregnancyOutcome.class)
+    private PregnancyOutcome pregnancyOutcome;
+
+    public PregnancyOutcome getPregnancyOutcome() {
+        return pregnancyOutcome;
+    }
+
+    public void setPregnancyOutcome(PregnancyOutcome outcome) {
+        this.pregnancyOutcome = outcome;
+    }
+
+    public String getUuid() {
 		return uuid;
 	}
 

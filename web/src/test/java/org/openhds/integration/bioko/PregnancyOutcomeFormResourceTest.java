@@ -118,6 +118,25 @@ public class PregnancyOutcomeFormResourceTest extends AbstractResourceTest {
     }
 
     @Test
+    public void testPostPregnancyOutcomeParentForm() throws Exception {
+        mockMvc.perform(
+                post("/pregnancyOutcomeForm/core").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(OUTCOME_CORE_FORM_XML.getBytes()))
+                .andExpect(status().isCreated())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+        verifyParentCrud("123123123123123123");
+    }
+
+    private void verifyParentCrud(String pregnancyOutcomeUuid) {
+
+        PregnancyOutcome pregnancyOutcome = genericDao.findByProperty(PregnancyOutcome.class, "uuid", pregnancyOutcomeUuid);
+        assertEquals(0, pregnancyOutcome.getOutcomes().size());
+
+    }
+
+    @Test
     public void testPostPregnancyOutcomeForm() throws Exception {
         mockMvc.perform(
                 post("/pregnancyOutcomeForm/core").session(session).accept(MediaType.APPLICATION_XML)
@@ -136,6 +155,8 @@ public class PregnancyOutcomeFormResourceTest extends AbstractResourceTest {
         verifyEntityCrud("childUuid");
     }
 
+
+
     private void verifyEntityCrud(String childUuid) {
 
         List<PregnancyOutcome> pregnancyOutcome = genericDao.findListByProperty(PregnancyOutcome.class, "uuid", "123123123123123123");
@@ -144,7 +165,7 @@ public class PregnancyOutcomeFormResourceTest extends AbstractResourceTest {
         Individual child = genericDao.findByProperty(Individual.class, "uuid", childUuid);
         assertNotNull(child);
         assertEquals("First", child.getFirstName());
-        assertEquals("Mother-002", child.getExtId());
+        assertEquals("Mother-004", child.getExtId());
 
     }
 
