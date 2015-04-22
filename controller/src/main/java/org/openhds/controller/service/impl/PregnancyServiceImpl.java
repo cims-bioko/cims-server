@@ -141,8 +141,9 @@ public class PregnancyServiceImpl implements PregnancyService {
 			    outcome.getChild().setDob(pregOutcome.getOutcomeDate());
                 entityService.create(outcome.getChild());
             } catch (IllegalArgumentException e) {
-            } catch (SQLException e) {
-                throw new ConstraintViolations("Problem creating child individual in the database");
+				throw new ConstraintViolations("IllegalArgumentException creating child individual in the database");
+			} catch (SQLException e) {
+                throw new ConstraintViolations("SQLException creating child individual in the database");
             }
 			
 			// use mothers location for the residency
@@ -157,16 +158,18 @@ public class PregnancyServiceImpl implements PregnancyService {
 			try {
                 entityService.create(residency);
             } catch (IllegalArgumentException e) {
-            } catch (SQLException e) {
-                throw new ConstraintViolations("Problem creating residency for child in database");
+				throw new ConstraintViolations("IllegalArgumentException creating residency for child in database");
+			} catch (SQLException e) {
+                throw new ConstraintViolations("SQLException creating residency for child in database");
             }
-			
-			// create membership
+
+			// persist membership
 			try {
                 entityService.create(outcome.getChildMembership());
             } catch (IllegalArgumentException e) {
-            } catch (SQLException e) {
-                throw new ConstraintViolations("Problem creating membership for child in database");
+				throw new ConstraintViolations("IllegalArgumentException creating membership for child in database");
+			} catch (SQLException e) {
+                throw new ConstraintViolations("SQLException creating membership for child in database");
             }
 		}
 		
@@ -188,8 +191,9 @@ public class PregnancyServiceImpl implements PregnancyService {
             try {
                 entityService.save(pregOutcome);
             } catch (IllegalArgumentException e) {
-            } catch (SQLException e) {
-                throw new ConstraintViolations("Problem saving pregnancy outcome in the database");
+				throw new ConstraintViolations("IllegalArgumentException saving pregnancy outcome in the database");
+			} catch (SQLException e) {
+                throw new ConstraintViolations("SQLException saving pregnancy outcome in the database");
             }
         }
 
