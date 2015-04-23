@@ -126,11 +126,13 @@ public class InMigrationFormResource extends AbstractFormResource {
 
         newResidency.setLocation(location);
         newResidency.setIndividual(individual);
-        newResidency.setUuid(UUID.randomUUID().toString().replace("-",""));
+        newResidency.setUuid(UUID.randomUUID().toString().replace("-", ""));
         newResidency.setStartDate(inMigration.getRecordedDate());
         newResidency.setStartType(sitePropertiesService.getInmigrationCode());
         newResidency.setEndType(sitePropertiesService.getNotApplicableCode());
-
+        newResidency.setInsertBy(inMigration.getInsertBy());
+        newResidency.setInsertDate(inMigration.getInsertDate());
+        newResidency.setStatus(inMigration.getStatus());
 
         inMigration.setResidency(newResidency);
 
