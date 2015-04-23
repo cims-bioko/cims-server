@@ -111,8 +111,9 @@ public class InMigrationFormResourceTest extends AbstractResourceTest {
 
         assertEquals("testLocation2",currentResidency.getLocation().getExtId());
         assertEquals("NA",currentResidency.getEndType());
+        assertNotNull(currentResidency.getStartDate());
+        assertNotNull(currentResidency.getInsertDate());
 
     }
-
 
 }

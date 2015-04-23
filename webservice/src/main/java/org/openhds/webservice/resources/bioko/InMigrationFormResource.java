@@ -2,9 +2,9 @@ package org.openhds.webservice.resources.bioko;
 
 
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.service.refactor.FieldWorkerService;
-
+import org.openhds.controller.service.CurrentUser;
 import org.openhds.controller.service.VisitService;
+import org.openhds.controller.service.refactor.FieldWorkerService;
 import org.openhds.controller.service.refactor.InMigrationService;
 import org.openhds.controller.service.refactor.IndividualService;
 import org.openhds.controller.service.refactor.LocationService;
@@ -12,6 +12,7 @@ import org.openhds.domain.model.*;
 import org.openhds.domain.model.bioko.InMigrationForm;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.domain.util.CalendarAdapter;
+import org.openhds.domain.util.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +27,20 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 
 @Controller
 @RequestMapping("/inMigrationForm")
 public class InMigrationFormResource extends AbstractFormResource {
+
+    @Autowired
+    protected CurrentUser currentUser;
+
+    @Autowired
+    protected CalendarUtil calendarUtil;
 
     @Autowired
     private IndividualService individualService;
@@ -130,9 +139,15 @@ public class InMigrationFormResource extends AbstractFormResource {
         newResidency.setStartDate(inMigration.getRecordedDate());
         newResidency.setStartType(sitePropertiesService.getInmigrationCode());
         newResidency.setEndType(sitePropertiesService.getNotApplicableCode());
-        newResidency.setInsertBy(inMigration.getInsertBy());
-        newResidency.setInsertDate(inMigration.getInsertDate());
-        newResidency.setStatus(inMigration.getStatus());
+
+        if (null != currentUser) {
+            newResidency.setInsertBy(currentUser.getCurrentUser());
+        }
+
+        Calendar insertDate = calendarUtil.convertDateToCalendar(new Date());
+        newResidency.setInsertDate(insertDate);
+
+        newResidency.setStatus(sitePropertiesService.getDataStatusPendingCode());
 
         inMigration.setResidency(newResidency);
 
