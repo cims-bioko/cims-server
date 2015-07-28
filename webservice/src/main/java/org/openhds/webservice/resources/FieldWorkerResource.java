@@ -8,6 +8,7 @@ import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.FieldWorker.FieldWorkers;
 import org.openhds.domain.util.ShallowCopier;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +25,7 @@ public class FieldWorkerResource {
         this.fieldWorkerService = fieldWorkerService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
     @ResponseBody
     public FieldWorkers getAllFieldWorkers() {
         List<FieldWorker> allFieldWorkers = fieldWorkerService.getAllFieldWorkers();

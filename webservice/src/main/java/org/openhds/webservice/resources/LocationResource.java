@@ -142,19 +142,19 @@ public class LocationResource {
         return new FileSystemResource(fileResolver.resolveLocationXmlFile());
     }
 
-    @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = "application/xml")
+    @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
     public void getAllCachedLocationsXml(HttpServletResponse response) {
         try {
-            cacheResponseWriter.writeResponse(fileResolver.resolveLocationXmlFile(), response);
+            cacheResponseWriter.writeResponse(MediaType.APPLICATION_XML_VALUE, fileResolver.resolveLocationXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing location xml file: " + e.getMessage());
         }
     }
 
-    @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public void getAllCachedLocationsJson(HttpServletResponse response) {
         try {
-            cacheResponseWriter.writeResponse(fileResolver.resolveLocationXmlFile(), response);
+            cacheResponseWriter.writeResponse(MediaType.APPLICATION_JSON_VALUE, fileResolver.resolveLocationXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing location xml file: " + e.getMessage());
         }

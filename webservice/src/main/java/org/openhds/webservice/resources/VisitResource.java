@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -88,7 +89,7 @@ public class VisitResource {
     @RequestMapping(value = "/cached", method = RequestMethod.GET)
     public void getCachedVisits(HttpServletResponse response) {
         try {
-            cacheResponseWriter.writeResponse(fileResolver.resolveVisitXmlFile(), response);
+            cacheResponseWriter.writeResponse(MediaType.APPLICATION_XML_VALUE, fileResolver.resolveVisitXmlFile(), response);
         } catch (IOException e) {
             logger.error("Problem writing visit xml file: " + e.getMessage());
         }

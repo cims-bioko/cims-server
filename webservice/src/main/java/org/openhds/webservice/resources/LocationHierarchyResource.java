@@ -8,6 +8,7 @@ import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.LocationHierarchy.LocationHierarchies;
 import org.openhds.domain.model.LocationHierarchyLevel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +25,7 @@ public class LocationHierarchyResource {
 		this.locationHierarchyService = locationHierarchyService;
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE )
 	@ResponseBody
 	public LocationHierarchies getEntireLocationHierarchy() {
 		List<LocationHierarchy> allLocationHierarcies = locationHierarchyService.getAllLocationHierarchies();

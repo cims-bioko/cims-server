@@ -12,12 +12,13 @@ import org.openhds.domain.model.PrivilegeConstants;
 public class CacheResponseWriter {
 
     @Authorized({PrivilegeConstants.VIEW_ENTITY})
-    public void writeResponse(File fileToWrite, HttpServletResponse response) throws IOException {
+    public void writeResponse(String contentType, File fileToWrite, HttpServletResponse response) throws IOException {
         if (!fileToWrite.exists()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
+        response.setContentType(contentType);
         response.setHeader("Content-Length", String.valueOf(fileToWrite.length()));
         response.setStatus(HttpServletResponse.SC_OK);
 
