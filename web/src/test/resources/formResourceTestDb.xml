@@ -100,12 +100,12 @@
            visitLocation_uuid="TestLocation1" deleted="false" roundNumber="1" insertBy_uuid="User 1"/>
 
     <individual uuid="PregnantIndividual" extId="Mother-001" firstName="Pregnant" middleName="" lastName="Individual"
-                gender="FEMALE" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
+                gender="Female" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
                 dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker"
                 age="60" dip="1"/>
 
     <individual uuid="PregnantMale" extId="pregnantMale" firstName="Pregnant" middleName="" lastName="Male"
-                gender="MALE" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
+                gender="Male" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
                 dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker"
                 age="60" dip="1"/>
 
