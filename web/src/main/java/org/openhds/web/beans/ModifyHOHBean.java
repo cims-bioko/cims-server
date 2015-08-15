@@ -71,10 +71,8 @@ public class ModifyHOHBean implements Serializable {
         	return false;
         
         indivsAtSocialGroup = socialGroupService.getAllIndividualsOfSocialGroup(socialGroup);
-    	if (indivsAtSocialGroup.size() == 0)
-    		 return false;
-        
-		return true;
+		return indivsAtSocialGroup.size() != 0;
+
 	}
 		
 	/**

@@ -10,11 +10,9 @@ public class CheckMotherFatherNotIndividualImpl implements ConstraintValidator<C
 
 	public void initialize(CheckMotherFatherNotIndividual arg0) {	}
 
-	public boolean isValid(Individual individual, ConstraintValidatorContext arg1) {			
-	
-		if (individual.getMother().getExtId().equals(individual.getExtId()) || 
-				individual.getFather().getExtId().equals(individual.getExtId()))
-				return false;
-		return true;
+	public boolean isValid(Individual individual, ConstraintValidatorContext arg1) {
+
+		return !(individual.getMother().getExtId().equals(individual.getExtId()) ||
+				individual.getFather().getExtId().equals(individual.getExtId()));
 	}
 }

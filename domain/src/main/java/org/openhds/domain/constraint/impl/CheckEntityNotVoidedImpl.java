@@ -21,9 +21,6 @@ public class CheckEntityNotVoidedImpl implements ConstraintValidator<CheckEntity
             return true;
         }
 
-        if (auditableEntity.isDeleted()) {
-            return false;
-        }
-        return true;
+        return !auditableEntity.isDeleted();
     }
 }

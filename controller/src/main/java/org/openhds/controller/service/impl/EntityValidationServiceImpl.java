@@ -48,10 +48,7 @@ public class EntityValidationServiceImpl<T> implements EntityValidationService<T
         Validator validator = getValidator();
         Set<ConstraintViolation<T>> constraintViolations = validator.validate(entityItem);
 
-        if (constraintViolations.size() > 0) {
-            return true;
-        }
-        return false;
+        return constraintViolations.size() > 0;
     }
 
     @SuppressWarnings("rawtypes")

@@ -20,11 +20,8 @@ public class CheckIndividualNotUnknownImpl extends AppContextAware implements Co
 		if (value == null) {
 			return true;
 		}
-		
-		if (value.getExtId().equals(properties.getUnknownIdentifier())) {
-			return false;
-		}
-		
-		return true;
+
+		return !value.getExtId().equals(properties.getUnknownIdentifier());
+
 	}
 }

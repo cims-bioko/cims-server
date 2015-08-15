@@ -28,9 +28,7 @@ public class CheckIndividualGenderFemaleImpl extends AppContextAware implements
         if (individual.getExtId().equals(properties.getUnknownIdentifier()))
             return true;
 
-        if (individual.getGender().equals(properties.getFemaleCode()))
-            return true;
+        return individual.getGender().equals(properties.getFemaleCode());
 
-        return false;
     }
 }

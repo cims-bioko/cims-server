@@ -37,10 +37,8 @@ public class RoleServiceImpl implements RoleService {
 	 */
 	public boolean checkDuplicateRoleName(String name) {
 		
-		List<Role> list = genericDao.findListByProperty(Role.class, "name", name);		
-		if (list.size() > 0)
-			return false;		
-		return true;	
+		List<Role> list = genericDao.findListByProperty(Role.class, "name", name);
+		return list.size() <= 0;
 	}
 
 	/**

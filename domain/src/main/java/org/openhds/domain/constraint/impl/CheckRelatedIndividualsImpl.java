@@ -12,8 +12,6 @@ public class CheckRelatedIndividualsImpl implements ConstraintValidator<CheckRel
 
 	public boolean isValid(Relationship relationship, ConstraintValidatorContext arg1) {
 
-		if (relationship.getIndividualA().getExtId().equals(relationship.getIndividualB().getExtId()))
-			return false;
-		return true;
+		return !relationship.getIndividualA().getExtId().equals(relationship.getIndividualB().getExtId());
 	}
 }

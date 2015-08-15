@@ -69,10 +69,7 @@ public class Role extends AuditableEntity implements Serializable {
             return false;
         }
         final Role other = (Role) obj;
-        if ((this.uuid == null) ? (other.uuid != null) : !this.uuid.equals(other.uuid)) {
-            return false;
-        }
-        return true;
+        return !((this.uuid == null) ? (other.uuid != null) : !this.uuid.equals(other.uuid));
     }
 
     @Override

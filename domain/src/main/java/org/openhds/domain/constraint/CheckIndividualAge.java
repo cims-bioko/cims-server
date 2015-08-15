@@ -22,11 +22,8 @@ public abstract class CheckIndividualAge extends AppContextAware {
 	
 		Calendar minAge = Calendar.getInstance();
 		minAge.add(Calendar.YEAR, -(requiredAge));
-		
-		if (arg0.getDob().compareTo(minAge) >= 0) {
-			return false;
-		}		
-		
-		return true;
+
+		return arg0.getDob().compareTo(minAge) < 0;
+
 	}
 }

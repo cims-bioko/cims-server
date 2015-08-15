@@ -16,11 +16,8 @@ public class CheckInMigrationAfterDobImpl implements ConstraintValidator<CheckIn
 	 */
 	public boolean isValid(InMigration value, ConstraintValidatorContext context) {
 		Individual indiv = value.getIndividual();
-		
-		if (value.getRecordedDate().compareTo(indiv.getDob()) > 0) {
-			return true;
-		}
-		
-		return false;
+
+		return value.getRecordedDate().compareTo(indiv.getDob()) > 0;
+
 	}
 }

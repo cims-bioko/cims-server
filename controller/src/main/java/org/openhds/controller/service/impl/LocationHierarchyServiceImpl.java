@@ -229,10 +229,8 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 
 		LocationHierarchy item = genericDao.findByProperty(LocationHierarchy.class, "name", name);
 
-		if (item == null)
-			return true;
+		return item == null;
 
-		return false;
 	}
 
 	/**
@@ -266,10 +264,8 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 
 		LocationHierarchy item = genericDao.findByProperty(LocationHierarchy.class, "name", parent);
 
-		if (item != null && item.getLevel().equals(getLowestLevel()))
-			return false;
+		return !(item != null && item.getLevel().equals(getLowestLevel()));
 
-		return true;
 	}
 
 	/**
@@ -312,9 +308,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 	public boolean checkDuplicateLocationHierarchyExtId(String extId) {
 
 		List<LocationHierarchy> list = genericDao.findListByProperty(LocationHierarchy.class, "extId", extId, false);
-		if (list.size() > 0)
-			return false;
-		return true;
+		return list.size() <= 0;
 	}
 
 	/**

@@ -90,9 +90,7 @@ public class LocationHierarchyGenerator extends Generator<LocationHierarchy> {
 	
 	private boolean checkValidId(String extId) {
 		LocationHierarchy item = genericDao.findByProperty(LocationHierarchy.class, "extId", extId);
-		if (item != null)
-			return false;
-		return true;
+		return item == null;
 	}
 
 	// not applicable for location hierarchy

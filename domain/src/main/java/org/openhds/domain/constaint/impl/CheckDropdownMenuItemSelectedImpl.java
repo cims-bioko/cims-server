@@ -11,12 +11,9 @@ public class CheckDropdownMenuItemSelectedImpl implements ConstraintValidator<Ch
 	public void initialize(CheckDropdownMenuItemSelected arg0) {	}
 
 	public boolean isValid(InMigration arg0, ConstraintValidatorContext arg1) {
-				
-		if (arg0.getReason().equals("BLANK")) {
-			return false;
-		}
-		
-		return true;
+
+		return !arg0.getReason().equals("BLANK");
+
 	}
 
 	

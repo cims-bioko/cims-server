@@ -98,8 +98,6 @@ public class ExtensionServiceImpl implements ExtensionService {
 	public boolean checkValidRoundNumber(Integer roundNumber) {
 		
 		Round round = genericDao.findByProperty(Round.class, "roundNumber", roundNumber);
-		if (round != null)
-			return true;
-		return false;
+		return round != null;
 	}
 }

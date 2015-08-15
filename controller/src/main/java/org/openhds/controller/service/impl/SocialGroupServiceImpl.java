@@ -83,11 +83,9 @@ public class SocialGroupServiceImpl implements SocialGroupService {
      * and the persisted item has a end type of death, the edit cannot be saved.
      */
     public boolean compareDeathInSocialGroup(SocialGroup persistedItem, SocialGroup entityItem) {
-        if (individualService.getLatestEvent(persistedItem.getGroupHead()).equals("Death")
-                || individualService.getLatestEvent(entityItem.getGroupHead()).equals("Death"))
-            return false;
+        return !(individualService.getLatestEvent(persistedItem.getGroupHead()).equals("Death")
+                || individualService.getLatestEvent(entityItem.getGroupHead()).equals("Death"));
 
-        return true;
     }
 
     @Transactional(rollbackFor = Exception.class)

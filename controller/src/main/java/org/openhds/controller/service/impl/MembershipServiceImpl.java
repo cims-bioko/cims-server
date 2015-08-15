@@ -90,12 +90,10 @@ public class MembershipServiceImpl extends EntityServiceRefactoredImpl implement
     public boolean checkEndEventTypeForMembershipOnEdit(Membership persistedItem,
             Membership entityItem) {
 
-        if (entityItem.getEndType().equals(siteProperties.getDeathCode())
+        return !(entityItem.getEndType().equals(siteProperties.getDeathCode())
                 && !individualService.getLatestEvent(persistedItem.getIndividual()).equals("Death")
-                && !individualService.getLatestEvent(persistedItem.getIndividual()).equals("Death"))
-            return false;
+                && !individualService.getLatestEvent(persistedItem.getIndividual()).equals("Death"));
 
-        return true;
     }
 
     /**

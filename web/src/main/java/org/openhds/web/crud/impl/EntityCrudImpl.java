@@ -210,11 +210,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 
     public String createSetup() {
         reset(false, true);
-        if(isFlow){
-        	showListing=false;
-        }else{
-        	showListing=true;
-        }
+        showListing = !isFlow;
         //showListing=false;
         entityItem = newInstance();
         navMenuBean.setNextItem(entityClass.getSimpleName());

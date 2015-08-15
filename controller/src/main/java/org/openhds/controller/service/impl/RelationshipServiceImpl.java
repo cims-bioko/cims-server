@@ -102,13 +102,11 @@ public class RelationshipServiceImpl implements RelationshipService {
 	 * the edit can only continue if one of the Individuals has a Death Event.
 	 */
 	public boolean checkEndEventTypeForDeathOnEdit(Relationship persistedItem, Relationship entityItem) {
-		
-		if (entityItem.getEndType().equals(siteProperties.getDeathCode()) && 
-			!individualService.getLatestEvent(persistedItem.getIndividualA()).equals("Death") && 
-			!individualService.getLatestEvent(persistedItem.getIndividualB()).equals("Death")) 
-			return false;
-		
-		return true;
+
+		return !(entityItem.getEndType().equals(siteProperties.getDeathCode()) &&
+				!individualService.getLatestEvent(persistedItem.getIndividualA()).equals("Death") &&
+				!individualService.getLatestEvent(persistedItem.getIndividualB()).equals("Death"));
+
 	}
 	
 	/**
@@ -116,11 +114,9 @@ public class RelationshipServiceImpl implements RelationshipService {
 	 * don't have a Death Event, the Relationship cannot be created.
 	 */
 	public boolean checkEndEventTypeForDeathOnCreate(Relationship entityItem) {
-		
-		if (entityItem.getEndType().equals(siteProperties.getDeathCode()) && !individualService.getLatestEvent(entityItem.getIndividualA()).equals("Death") && !individualService.getLatestEvent(entityItem.getIndividualB()).equals("Death")) 
-			return false;
-		
-		return true;
+
+		return !(entityItem.getEndType().equals(siteProperties.getDeathCode()) && !individualService.getLatestEvent(entityItem.getIndividualA()).equals("Death") && !individualService.getLatestEvent(entityItem.getIndividualB()).equals("Death"));
+
 	}
 	
 	public List<Relationship> getAllRelationships(Individual individual) {

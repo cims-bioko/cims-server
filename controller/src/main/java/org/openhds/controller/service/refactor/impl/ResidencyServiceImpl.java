@@ -79,11 +79,8 @@ public class ResidencyServiceImpl implements ResidencyService {
 
         Residency residency = individual.getCurrentResidency();
 
-        if (null == residency || null != residency.getEndDate() || residency.isDeleted()) {
-            return false;
-        }
+        return !(null == residency || null != residency.getEndDate() || residency.isDeleted());
 
-        return true;
     }
 
 

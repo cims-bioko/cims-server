@@ -49,9 +49,7 @@ public class UserServiceImpl implements UserService {
 	 * Checks if the passwords match.
 	 */
 	public boolean checkValidPassword(User entityItem, String password) {
-		if (entityItem.getPassword().equals(password))
-			return true;
-		return false;
+		return entityItem.getPassword().equals(password);
 	}
 
 	/**
@@ -59,10 +57,8 @@ public class UserServiceImpl implements UserService {
 	 */
 	public boolean checkDuplicateUsername(String username) {
 		
-		List<User> list = genericDao.findListByProperty(User.class, "username", username);		
-		if (list.size() > 0)
-			return false;		
-		return true;	
+		List<User> list = genericDao.findListByProperty(User.class, "username", username);
+		return list.size() <= 0;
 	}
 		
 	public List<Role> getRoles() {

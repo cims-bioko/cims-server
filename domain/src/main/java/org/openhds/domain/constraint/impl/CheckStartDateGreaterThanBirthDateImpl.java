@@ -25,10 +25,7 @@ public class CheckStartDateGreaterThanBirthDateImpl
             return true;
         }
 
-        if (birthDate.before(startDate) || birthDate.equals(startDate)) {
-            return true;
-        }
+        return birthDate.before(startDate) || birthDate.equals(startDate);
 
-        return false;
     }
 }

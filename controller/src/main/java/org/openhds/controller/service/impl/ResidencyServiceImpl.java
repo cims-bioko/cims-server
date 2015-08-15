@@ -205,12 +205,9 @@ public class ResidencyServiceImpl extends EntityServiceRefactoredImpl implements
      * @see org.openhds.service.ResidencyService#hasOpenResidency(org.openhds.model.Individual)
      */
     public boolean hasOpenResidency(Individual individual) {
-        if (individual.getCurrentResidency() == null || individual.getCurrentResidency().getEndDate() != null
-        		|| individual.getCurrentResidency().isDeleted()) {
-            return false;
-        }
+        return !(individual.getCurrentResidency() == null || individual.getCurrentResidency().getEndDate() != null
+                || individual.getCurrentResidency().isDeleted());
 
-        return true;
     }
 
     /*

@@ -289,8 +289,7 @@ public class DatabaseConfigBean {
 
     public String getShowSql() { return showSql ? "true" : "false"; }
     public void setShowSql(String b) {
-        if( b.toLowerCase().startsWith("t") ) showSql = true;
-        else showSql = false;
+        showSql = b.toLowerCase().startsWith("t");
     }
 
     public String getMysqlDisplay(){

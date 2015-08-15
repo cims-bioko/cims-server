@@ -26,10 +26,8 @@ public class CheckIndividualGenderMaleImpl extends AppContextAware implements Co
 		
 		if (arg0.getExtId().equals(properties.getUnknownIdentifier()))
 			return true;
-		
-		if (arg0.getGender().equals(properties.getMaleCode()))
-			return true;
-		
-		return false;
+
+		return arg0.getGender().equals(properties.getMaleCode());
+
 	}
 }

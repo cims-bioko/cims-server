@@ -93,10 +93,7 @@ public class ExtensionCrudImpl extends EntityCrudImpl<ClassExtension, String> {
 		// this is to signal jsf to skip the validations phase and proceed to render response.
 		// if this is not here, then it's likely that an error message will be displayed.
 		FacesContext.getCurrentInstance().renderResponse();
-		if (event.getNewValue().toString().equals("MULTIPLECHOICE"))
-			multipleChoice = true;
-		else
-			multipleChoice = false;
+		multipleChoice = event.getNewValue().toString().equals("MULTIPLECHOICE");
 	}
 	
     @Override

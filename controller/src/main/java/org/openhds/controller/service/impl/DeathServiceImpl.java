@@ -202,11 +202,9 @@ public class DeathServiceImpl implements DeathService {
 	 */
 	public boolean checkHeadOfSocialGroup(Individual indiv) {
 		
-		List<SocialGroup> list = genericDao.findListByProperty(SocialGroup.class, "groupHead", indiv);		
-		
-		if (list.size() == 0)
-			return true;
-		return false;
+		List<SocialGroup> list = genericDao.findListByProperty(SocialGroup.class, "groupHead", indiv);
+
+		return list.size() == 0;
 	}
 	
 	public List<Death> getDeathsByIndividual(Individual individual) {
