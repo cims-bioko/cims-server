@@ -46,7 +46,7 @@ public class IndividualXmlWriterTask extends XmlWriterTemplate<Individual> {
         Iterator<Individual> it= indivList.iterator();
         List<Individual> indivList2 = new ArrayList<Individual>();
         while(it.hasNext()){
-            indiv=(Individual)it.next();
+            indiv= it.next();
             if(indiv.getCurrentResidency()!=null){
                 indivList2.add(indiv);
             }

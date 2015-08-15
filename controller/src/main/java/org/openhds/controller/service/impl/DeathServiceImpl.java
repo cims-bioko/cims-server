@@ -63,7 +63,7 @@ public class DeathServiceImpl implements DeathService {
         //Gets the individual's memberships if any
         // Iterates through memberships and sets endType(DEATH) and endDate
         if (!entityItem.getIndividual().getAllMemberships().isEmpty()) {
-            Set<Membership> memberships = (Set<Membership>) entityItem.getIndividual().getAllMemberships();
+            Set<Membership> memberships = entityItem.getIndividual().getAllMemberships();
             for (Membership mem : memberships) {
             	if (null == mem.getEndType() || mem.getEndType().equals(siteProperties.getNotApplicableCode())) {
 	                mem.setEndDate(endDate);
@@ -76,7 +76,7 @@ public class DeathServiceImpl implements DeathService {
         //Gets the individual's relationships if any
         // Iterates through the relationships and sets endType(DEATH) and endDate
          if (!entityItem.getIndividual().getAllRelationships1().isEmpty()) {
-            Set<Relationship> relationships = (Set<Relationship>) entityItem.getIndividual().getAllRelationships1();
+            Set<Relationship> relationships = entityItem.getIndividual().getAllRelationships1();
             Iterator<Relationship> it = relationships.iterator();
             while (it.hasNext()) {
                 Relationship rel = it.next();
@@ -89,7 +89,7 @@ public class DeathServiceImpl implements DeathService {
         }
          
 		 if (!entityItem.getIndividual().getAllRelationships2().isEmpty()) {
-		     Set<Relationship> relationships = (Set<Relationship>) entityItem.getIndividual().getAllRelationships2();
+		     Set<Relationship> relationships = entityItem.getIndividual().getAllRelationships2();
 		     Iterator<Relationship> it = relationships.iterator();
 		     while (it.hasNext()) {
 		         Relationship rel = it.next();
@@ -115,7 +115,7 @@ public class DeathServiceImpl implements DeathService {
 		}
 
         if (!entityItem.getIndividual().getAllMemberships().isEmpty()) {
-            Set<Membership> memberships = (Set<Membership>) entityItem.getIndividual().getAllMemberships();
+            Set<Membership> memberships = entityItem.getIndividual().getAllMemberships();
             for (Membership mem : memberships) {
             	if (mem.getEndType().equals(siteProperties.getDeathCode())) {
 	                mem.setEndDate(null);
@@ -125,7 +125,7 @@ public class DeathServiceImpl implements DeathService {
         }
 
          if (!entityItem.getIndividual().getAllRelationships1().isEmpty()) {
-            Set<Relationship> relationships = (Set<Relationship>) entityItem.getIndividual().getAllRelationships1();
+            Set<Relationship> relationships = entityItem.getIndividual().getAllRelationships1();
             Iterator<Relationship> it = relationships.iterator();
             while (it.hasNext()) {
                 Relationship rel = it.next();
@@ -137,7 +137,7 @@ public class DeathServiceImpl implements DeathService {
         }
          
          if (!entityItem.getIndividual().getAllRelationships2().isEmpty()) {
-             Set<Relationship> relationships = (Set<Relationship>) entityItem.getIndividual().getAllRelationships2();
+             Set<Relationship> relationships = entityItem.getIndividual().getAllRelationships2();
              Iterator<Relationship> it = relationships.iterator();
              while (it.hasNext()) {
                  Relationship rel = it.next();

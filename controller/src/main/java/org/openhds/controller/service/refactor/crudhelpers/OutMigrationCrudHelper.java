@@ -46,7 +46,7 @@ public class OutMigrationCrudHelper extends AbstractEntityCrudHelperImpl<OutMigr
 
         //change membership end dates and end types
         // TODO: is this valid? does moving away really make you an invalid member?
-        Set<Membership> memberships = (Set<Membership>) outMigration.getIndividual().getAllMemberships();
+        Set<Membership> memberships = outMigration.getIndividual().getAllMemberships();
         if (!memberships.isEmpty()) {
             for (Membership membership : memberships) {
 

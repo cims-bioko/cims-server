@@ -76,7 +76,7 @@ public class OutMigrationServiceImpl extends EntityServiceRefactoredImpl impleme
 
         residencyService.updateResidency(currentResidence);
 
-        Set<Membership> memberships = (Set<Membership>) outMigration.getIndividual().getAllMemberships();
+        Set<Membership> memberships = outMigration.getIndividual().getAllMemberships();
         if (!memberships.isEmpty()) {
             for (Membership membership : memberships) {
                 if (membership.getEndType().equals(siteProperties.getNotApplicableCode())) {
