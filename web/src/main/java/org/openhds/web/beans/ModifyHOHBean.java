@@ -177,7 +177,7 @@ public class ModifyHOHBean implements Serializable {
 	 * 2. Delete all of the old Memberships and create new ones to the newly appointed Group Head.
 	 * All of this is done in one transaction.
 	 */
-	public void modifySocialGroupHead() throws ConstraintViolations, SQLException, Exception {
+	public void modifySocialGroupHead() throws Exception {
 		socialGroupService.modifySocialGroupHead(group, selectedSuccessor, newMemberships);
     }
 	

@@ -138,7 +138,7 @@ public class SocialGroupServiceImpl implements SocialGroupService {
 
     @Transactional(rollbackFor = Exception.class)
     public void modifySocialGroupHead(SocialGroup group, Individual selectedSuccessor,
-            List<Membership> memberships) throws ConstraintViolations, SQLException, Exception {
+            List<Membership> memberships) throws Exception {
 
         group.setGroupHead(selectedSuccessor);
 

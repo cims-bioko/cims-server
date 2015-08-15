@@ -27,7 +27,7 @@ public interface DeathService {
 	void deleteDeath(Death entityItem); 
 	
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	void createDeathAndSetNewHead(Death death, List<SocialGroup> groups, List<Individual> successors, HashMap<Integer, List<Membership>> memberships) throws ConstraintViolations, SQLException, Exception;
+	void createDeathAndSetNewHead(Death death, List<SocialGroup> groups, List<Individual> successors, HashMap<Integer, List<Membership>> memberships) throws Exception;
 		
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	boolean checkDuplicateIndividual(Individual indiv);

@@ -37,7 +37,7 @@ public interface SocialGroupService {
 	List<String> getSocialGroupExtIds(String term);
 
 	@Authorized({PrivilegeConstants.EDIT_ENTITY})
-	void modifySocialGroupHead(SocialGroup group, Individual selectedSuccessor, List<Membership> memberships) throws ConstraintViolations, SQLException, Exception;
+	void modifySocialGroupHead(SocialGroup group, Individual selectedSuccessor, List<Membership> memberships) throws Exception;
 
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	SocialGroup findSocialGroupById(String socialGroupId, String msg) throws Exception; 

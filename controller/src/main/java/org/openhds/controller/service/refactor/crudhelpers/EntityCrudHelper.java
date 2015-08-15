@@ -12,19 +12,19 @@ import java.util.List;
 
 public interface EntityCrudHelper<T extends AuditableEntity> {
 
-    public List<T> getAll();
+    List<T> getAll();
 
-    public T getByExtId(String id);
+    T getByExtId(String id);
 
-    public T getByUuid(String id);
+    T getByUuid(String id);
 
     @Transactional
-    public void delete(T entity) throws IllegalArgumentException;
+    void delete(T entity) throws IllegalArgumentException;
 
     @Transactional(rollbackFor = Exception.class)
-    public void create(T entity) throws ConstraintViolations;
+    void create(T entity) throws ConstraintViolations;
 
     @Transactional
-    public void save(T entity) throws ConstraintViolations;
+    void save(T entity) throws ConstraintViolations;
 
 }

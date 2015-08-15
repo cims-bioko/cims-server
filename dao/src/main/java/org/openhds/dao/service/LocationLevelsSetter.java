@@ -4,5 +4,5 @@ import java.util.Properties;
 
 public interface LocationLevelsSetter {
 	
-	public void setLocationLevels(Properties p);
+	void setLocationLevels(Properties p);
 }

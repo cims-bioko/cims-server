@@ -58,7 +58,7 @@ public class InMigrationCrudImpl extends EntityCrudImpl<InMigration, String> {
 		return listSetup();
 	}
 
-	private void createInMigration() throws ConstraintViolations, SQLException, Exception {
+	private void createInMigration() throws Exception {
 		service.evaluateInMigration(entityItem);
 		service.createInMigration(entityItem);
 	}

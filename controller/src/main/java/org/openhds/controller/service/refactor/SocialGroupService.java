@@ -9,9 +9,9 @@ import java.util.List;
 public interface SocialGroupService extends EntityService<SocialGroup> {
 
     @Authorized("VIEW_ENTITY")
-    public List<SocialGroup> getAllSocialGroupsInRange(int i, int pageSize);
+    List<SocialGroup> getAllSocialGroupsInRange(int i, int pageSize);
 
     @Authorized("VIEW_ENTITY")
-    public long getTotalSocialGroupCount();
+    long getTotalSocialGroupCount();
 
 }

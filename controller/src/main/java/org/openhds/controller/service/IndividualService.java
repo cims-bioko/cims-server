@@ -20,10 +20,10 @@ public interface IndividualService {
 	String generateIdWithBound(Individual entityItem, int count) throws ConstraintViolations;
 	
 	@Authorized({PrivilegeConstants.ACCESS_BASELINE, PrivilegeConstants.ACCESS_UPDATE, PrivilegeConstants.CREATE_ENTITY, PrivilegeConstants.EDIT_ENTITY})
-	public String getLatestEvent(Individual individual);
+	String getLatestEvent(Individual individual);
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	public Individual validateIdLength(Individual entityItem) throws ConstraintViolations;
+	Individual validateIdLength(Individual entityItem) throws ConstraintViolations;
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	List<String> getIndividualExtIds(String term); 

@@ -6,7 +6,7 @@ public enum ReasonForMigration {
 	
 	private String reason;
 	
-	private ReasonForMigration(String reason){
+	ReasonForMigration(String reason){
 		this.setReason(reason);
 	}
 

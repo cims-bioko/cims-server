@@ -63,7 +63,7 @@ public class InMigrationServiceImpl implements InMigrationService {
 		}
 	}
 	
-	public InMigration evaluateInMigrationOnEdit(InMigration inMigration) throws ConstraintViolations, Exception {
+	public InMigration evaluateInMigrationOnEdit(InMigration inMigration) throws Exception {
 		checkIfResidencyIsClosed(inMigration.getResidency());
 		setResidencyFieldsFromInMigration(inMigration);
 		checkIfResidencyIsValid(inMigration.getResidency());

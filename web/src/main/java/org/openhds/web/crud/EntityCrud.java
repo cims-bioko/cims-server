@@ -89,7 +89,7 @@ public interface EntityCrud<T, PK extends Serializable> {
 
     void validateCreate(FacesContext facesContext, UIComponent component, Object value);
 
-    public void setItem(T entityItem);
+    void setItem(T entityItem);
 
     void performAudit(T entityItem);
     

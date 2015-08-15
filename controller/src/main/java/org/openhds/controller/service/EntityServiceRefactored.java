@@ -6,13 +6,13 @@ import org.openhds.domain.model.AuditableEntity;
 
 public interface EntityServiceRefactored {
 
-    public <T> T read(Class<T> entityType, String id);
+    <T> T read(Class<T> entityType, String id);
 
-    public void delete(AuditableEntity auditableEntity) throws IllegalArgumentException;
+    void delete(AuditableEntity auditableEntity) throws IllegalArgumentException;
 
-    public void create(AuditableEntity auditableEntity) throws ConstraintViolations;
+    void create(AuditableEntity auditableEntity) throws ConstraintViolations;
 
-    public void save(AuditableEntity auditableEntity) throws ConstraintViolations;
+    void save(AuditableEntity auditableEntity) throws ConstraintViolations;
 
 
 }

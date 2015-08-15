@@ -150,7 +150,7 @@ public class DeathServiceImpl implements DeathService {
 	}
 	
 	@Transactional(rollbackFor=Exception.class)
-	public void createDeathAndSetNewHead(Death death, List<SocialGroup> groups, List<Individual> successors, HashMap<Integer, List<Membership>> memberships) throws ConstraintViolations, SQLException, Exception {
+	public void createDeathAndSetNewHead(Death death, List<SocialGroup> groups, List<Individual> successors, HashMap<Integer, List<Membership>> memberships) throws Exception {
 		
 		// Create the death event for the Group Head
 		entityService.create(createDeath(death));

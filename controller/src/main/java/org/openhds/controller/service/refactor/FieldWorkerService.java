@@ -9,10 +9,10 @@ import org.openhds.domain.model.FieldWorker;
 public interface FieldWorkerService extends EntityService<FieldWorker> {
 
 
-    public void generatePasswordHash(FieldWorker fieldWorker) throws ConstraintViolations;
+    void generatePasswordHash(FieldWorker fieldWorker) throws ConstraintViolations;
 
-    public void generateIdPrefix(FieldWorker fieldWorker);
+    void generateIdPrefix(FieldWorker fieldWorker);
 
-    public FieldWorker generateId(FieldWorker fieldWorker) throws ConstraintViolations;
+    FieldWorker generateId(FieldWorker fieldWorker) throws ConstraintViolations;
 
 }

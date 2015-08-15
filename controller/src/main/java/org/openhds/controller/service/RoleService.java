@@ -9,7 +9,7 @@ import org.openhds.domain.model.User;
 
 public interface RoleService {
 	
-	public static final String NOROLE_VALUE = "norole";
+	String NOROLE_VALUE = "norole";
 	
 	Role evaluateRole(Role entityItem) throws ConstraintViolations; 
 	

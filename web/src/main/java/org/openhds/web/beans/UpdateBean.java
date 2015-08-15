@@ -144,10 +144,8 @@ public class UpdateBean implements Serializable {
 	 * @param entityItem
 	 * @return
 	 */
-	public boolean checkRelFieldsA(Relationship entityItem) {	
-		if (entityItem.getIndividualA().getExtId().equals(currentIndividual.getExtId()))
-			return true;
-		return false;
+	public boolean checkRelFieldsA(Relationship entityItem) {
+		return entityItem.getIndividualA().getExtId().equals(currentIndividual.getExtId());
 	}
 	
 	/**

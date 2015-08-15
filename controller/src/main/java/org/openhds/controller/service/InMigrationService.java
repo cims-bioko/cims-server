@@ -38,7 +38,7 @@ public interface InMigrationService {
 	 * @throws ConstraintViolations if this edited in migration violates any integrit constraints
 	 */
 	@Authorized({PrivilegeConstants.EDIT_ENTITY})
-	InMigration evaluateInMigrationOnEdit(InMigration inMigration) throws ConstraintViolations, Exception;
+	InMigration evaluateInMigrationOnEdit(InMigration inMigration) throws Exception;
 
 	/**
 	 * Return a listing of in migration for a specific individual

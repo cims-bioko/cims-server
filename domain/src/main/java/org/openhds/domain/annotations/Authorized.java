@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Authorized {
 
-	public String[] value() default {};
+	String[] value() default {};
 	
-	public boolean requireAll() default false;
+	boolean requireAll() default false;
 }

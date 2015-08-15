@@ -16,26 +16,26 @@ import org.openhds.domain.model.SocialGroup;
 public interface BaselineService {
 	
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	public void createResidencyAndMembershipForIndividual(Individual individual, Membership membership, Location currentLocation, FieldWorker collectedBy, Calendar startDate) throws SQLException, ConstraintViolations, IllegalArgumentException, ConstraintViolations;
+	void createResidencyAndMembershipForIndividual(Individual individual, Membership membership, Location currentLocation, FieldWorker collectedBy, Calendar startDate) throws SQLException, IllegalArgumentException, ConstraintViolations;
 
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	public void createSocialGroupAndResidencyForIndividual(Individual individual, SocialGroup socialGroup, Location currentLocation, FieldWorker collectedBy, Calendar startDate) throws SQLException, ConstraintViolations, IllegalArgumentException, ConstraintViolations;
+	void createSocialGroupAndResidencyForIndividual(Individual individual, SocialGroup socialGroup, Location currentLocation, FieldWorker collectedBy, Calendar startDate) throws SQLException, IllegalArgumentException, ConstraintViolations;
 
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	public void createResidencyForIndividual(Individual individual, Location currentLocation, FieldWorker collectedBy, Calendar startDate) throws SQLException, ConstraintViolations, IllegalArgumentException, ConstraintViolations;
+	void createResidencyForIndividual(Individual individual, Location currentLocation, FieldWorker collectedBy, Calendar startDate) throws SQLException, IllegalArgumentException, ConstraintViolations;
 
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	public void createResidencyMembershipAndRelationshipForIndividual(Individual individual, Membership membership, Relationship relationship, Location currentLocation, FieldWorker collectedBy, Calendar convertedEntryDate) throws SQLException, ConstraintViolations, IllegalArgumentException, ConstraintViolations;
+	void createResidencyMembershipAndRelationshipForIndividual(Individual individual, Membership membership, Relationship relationship, Location currentLocation, FieldWorker collectedBy, Calendar convertedEntryDate) throws SQLException, IllegalArgumentException, ConstraintViolations;
 
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	public void createMembershipForIndividual(Individual individual, Membership membership, SocialGroup socialgroup, FieldWorker collectedBy, Calendar startDate) throws SQLException, ConstraintViolations, IllegalArgumentException, ConstraintViolations;
+	void createMembershipForIndividual(Individual individual, Membership membership, SocialGroup socialgroup, FieldWorker collectedBy, Calendar startDate) throws SQLException, IllegalArgumentException, ConstraintViolations;
 	
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	public void createIndividual(Individual individual) throws IllegalArgumentException, ConstraintViolations, SQLException; 
+	void createIndividual(Individual individual) throws IllegalArgumentException, ConstraintViolations, SQLException;
 
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	public void createLocation(Location location) throws IllegalArgumentException, ConstraintViolations, SQLException;
+	void createLocation(Location location) throws IllegalArgumentException, ConstraintViolations, SQLException;
 
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	public void createSocialGroup(SocialGroup group) throws IllegalArgumentException, ConstraintViolations, SQLException;
+	void createSocialGroup(SocialGroup group) throws IllegalArgumentException, ConstraintViolations, SQLException;
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ResidencyService extends EntityService<Residency> {
 
-    public boolean hasOpenResidency(Individual individual);
-    public List<Residency> getResidenciesByLocation(Location location);
+    boolean hasOpenResidency(Individual individual);
+    List<Residency> getResidenciesByLocation(Location location);
 
 }

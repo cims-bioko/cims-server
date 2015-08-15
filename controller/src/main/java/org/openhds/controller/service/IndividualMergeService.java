@@ -11,7 +11,7 @@ import org.openhds.domain.model.PrivilegeConstants;
 
 public interface IndividualMergeService {
 	
-	public enum MergeEvents {
+	enum MergeEvents {
 		IN_MIGRATION, MEMBERSHIP
 	}
 
@@ -23,5 +23,5 @@ public interface IndividualMergeService {
 	 * @return the number of events merged
 	 */
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	public int mergeIndividuals(Individual primary, Individual toMergeFrom, List<MergeEvents> eventTypesToMerge) throws ConstraintViolations, ConstraintViolations, SQLException, AuthorizationException;
+	int mergeIndividuals(Individual primary, Individual toMergeFrom, List<MergeEvents> eventTypesToMerge) throws ConstraintViolations, SQLException, AuthorizationException;
 }

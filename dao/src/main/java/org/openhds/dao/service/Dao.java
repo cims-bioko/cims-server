@@ -46,9 +46,9 @@ public interface Dao<T, PK extends Serializable> {
     /** Retrieve a list of all objects of the DAO's entityType */
     List<T> findAll(boolean filterDeleted);
     
-    public <S> S merge(S newInstance);
+    <S> S merge(S newInstance);
    
-    public void saveOrUpdate(T newInstance);
+    void saveOrUpdate(T newInstance);
    
     /** Retrieve a list of all objects of the DAO's entityType and also
      * limit the number or results returned specified by the index of
