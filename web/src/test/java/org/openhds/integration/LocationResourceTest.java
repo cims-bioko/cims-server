@@ -284,7 +284,7 @@ public class LocationResourceTest {
                 .andExpect(jsonPath("$.data.location.locationHierarchy.uuid").value("hierarchy3"))
                 .andExpect(jsonPath("$.data.location.locationName").value("Test House"))
                 .andExpect(jsonPath("$.data.location.locationType").value("RUR"))
-                .andExpect(jsonPath("$.data.location.longitude").value(""));;
+                .andExpect(jsonPath("$.data.location.longitude").value(""));
 
         Location location = genericDao.findByProperty(Location.class, "extId", "NJA001");
 
@@ -351,7 +351,7 @@ public class LocationResourceTest {
                 .andExpect(jsonPath("$.data.location.locationHierarchy.uuid").value("hierarchy3"))
                 .andExpect(jsonPath("$.data.location.locationName").value("Test House"))
                 .andExpect(jsonPath("$.data.location.locationType").value("RUR"))
-                .andExpect(jsonPath("$.data.location.longitude").value(""));;
+                .andExpect(jsonPath("$.data.location.longitude").value(""));
 
         Location location = genericDao.findByProperty(Location.class, "extId", "testLocation3");
 
