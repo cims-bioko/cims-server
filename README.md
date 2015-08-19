@@ -3,8 +3,8 @@
 The server application providing demographic data and user management for the
 CIMS. It is responsible for handling XML form submissions as they are uploaded
 by tablet users to ODK Aggregate, creating and maintaining demographic
-information, and providing a data synchronization servics used by cims-tablet to
-assist with location-sensitive data entry. 
+information, and providing a data synchronization services used by cims-tablet
+so it can assist with location-sensitive data entry.
 
 For more information, please see the [CIMS background
 documentation](https://github.com/cims-bioko/cims-bioko.github.io/wiki/Background).
