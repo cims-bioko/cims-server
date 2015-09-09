@@ -2,6 +2,9 @@ package org.openhds.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckEndDateNotBeforeStartDate;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
@@ -9,6 +12,7 @@ import org.openhds.domain.constraint.GenericStartEndDateConstraint;
 import org.openhds.domain.constraint.Searchable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -35,13 +39,15 @@ public class Residency extends AuditableCollectedEntity implements GenericStartE
     private static final long serialVersionUID = -4666666231598767965L;
 
     @Searchable
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Description(description = "Individual who resides at this residency, identified by external id.")
+    @Fetch(FetchMode.SELECT)
     Individual individual;
 
     @Searchable
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Description(description = "Location of the residency, identified by external id.")
+    @Fetch(FetchMode.SELECT)
     Location location;
 
     @NotNull

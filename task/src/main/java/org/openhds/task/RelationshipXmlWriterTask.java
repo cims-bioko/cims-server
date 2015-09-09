@@ -1,7 +1,8 @@
 package org.openhds.task;
 
-import java.util.List;
 
+import org.hibernate.Query;
+import org.hibernate.SessionFactory;
 import org.openhds.controller.service.RelationshipService;
 import org.openhds.domain.model.Relationship;
 import org.openhds.domain.util.CalendarUtil;
@@ -13,13 +14,9 @@ import org.springframework.stereotype.Component;
 @Component("relationshipXmlWriter")
 public class RelationshipXmlWriterTask extends XmlWriterTemplate<Relationship> {
 
-    private RelationshipService relationshipService;
-
     @Autowired
-    public RelationshipXmlWriterTask(AsyncTaskService asyncTaskService, CalendarUtil calendarUtil,
-            RelationshipService relationshipService) {
-        super(asyncTaskService, AsyncTaskService.RELATIONSHIP_TASK_NAME);
-        this.relationshipService = relationshipService;
+    public RelationshipXmlWriterTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
+        super(asyncTaskService, factory, AsyncTaskService.RELATIONSHIP_TASK_NAME);
     }
 
     @Override
@@ -28,8 +25,9 @@ public class RelationshipXmlWriterTask extends XmlWriterTemplate<Relationship> {
     }
 
     @Override
-    protected List<Relationship> getEntitiesInRange(TaskContext taskContext, Relationship start, int pageSize) {
-        return relationshipService.getAllRelationshipInRange(start, pageSize);
+    protected String getExportQuery() {
+        return "from Relationship" +
+                " where deleted = false";
     }
 
     @Override
@@ -41,4 +39,5 @@ public class RelationshipXmlWriterTask extends XmlWriterTemplate<Relationship> {
     protected String getStartElementName() {
         return "relationships";
     }
+
 }

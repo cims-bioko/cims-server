@@ -4,6 +4,7 @@ import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.custommonkey.xmlunit.exceptions.XpathException;
+import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,7 +47,7 @@ public class IndividualXmlWriterTaskTest {
     private AsyncTaskService asyncTaskService;
 
     @Autowired
-    private IndividualService individualService;
+    private SessionFactory sessionFactory;
 
     @Autowired
     private CurrentUser currentUser;
@@ -73,7 +74,7 @@ public class IndividualXmlWriterTaskTest {
 
         try {
 
-            IndividualXmlWriterTask task = new IndividualXmlWriterTask(asyncTaskService, individualService);
+            IndividualXmlWriterTask task = new IndividualXmlWriterTask(asyncTaskService, sessionFactory);
             TaskContext context = new TaskContext(fileToWrite);
             task.writeXml(context);
 

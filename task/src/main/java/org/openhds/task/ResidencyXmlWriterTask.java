@@ -2,6 +2,9 @@ package org.openhds.task;
 
 import java.util.List;
 
+import org.h2.engine.Session;
+import org.hibernate.Query;
+import org.hibernate.SessionFactory;
 import org.openhds.controller.service.ResidencyService;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.util.ShallowCopier;
@@ -12,13 +15,9 @@ import org.springframework.stereotype.Component;
 @Component("residencyXmlWriter")
 public class ResidencyXmlWriterTask extends XmlWriterTemplate<Residency> {
 
-	private ResidencyService residencyService;
-
 	@Autowired
-	public ResidencyXmlWriterTask(AsyncTaskService asyncTaskService,
-			ResidencyService residencyService) {
-		super(asyncTaskService, AsyncTaskService.RESIDENCY_TASK_NAME);
-		this.residencyService = residencyService;
+	public ResidencyXmlWriterTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
+		super(asyncTaskService, factory, AsyncTaskService.RESIDENCY_TASK_NAME);
 	}
 
 	@Override
@@ -27,9 +26,9 @@ public class ResidencyXmlWriterTask extends XmlWriterTemplate<Residency> {
 	}
 
 	@Override
-	protected List<Residency> getEntitiesInRange(TaskContext taskContext,
-			Residency start, int pageSize) {
-		return residencyService.getAllResidenciesInRange(start, pageSize);
+	protected String getExportQuery() {
+		return "from Residency" +
+				" where deleted = false";
 	}
 
 	@Override
@@ -41,4 +40,5 @@ public class ResidencyXmlWriterTask extends XmlWriterTemplate<Residency> {
 	protected String getStartElementName() {
 		return "residencies";
 	}
+
 }

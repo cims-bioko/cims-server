@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import org.dom4j.DocumentException;
+import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -23,14 +24,12 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.core.context.SecurityContext;
 
 public class LocationXmlWriterTaskTest extends AbstractXmlWriterTest {
+
     @Mock
     private AsyncTaskService asyncTaskService;
 
     @Mock
-    private LocationHierarchyService locationService;
-
-    @Mock
-    private CalendarUtil calendarUtil;
+    private SessionFactory sessionFactory;
 
     @Before
     public void setUp() {
@@ -46,10 +45,7 @@ public class LocationXmlWriterTaskTest extends AbstractXmlWriterTest {
         }
 
         try {
-            LocationXmlWriterTask task = new LocationXmlWriterTask(asyncTaskService, calendarUtil, locationService);
-            when(locationService.getTotalLocationCount()).thenReturn(1L);
-            when(locationService.getAllLocationsInRange(null, 100)).thenReturn(Arrays.asList(createLocation()));
-            when(calendarUtil.formatDate(any(Calendar.class))).thenReturn("02-09-1987");
+            LocationXmlWriterTask task = new LocationXmlWriterTask(asyncTaskService, sessionFactory);
 
             task.writeXml(new TaskContext(locationFile));
 

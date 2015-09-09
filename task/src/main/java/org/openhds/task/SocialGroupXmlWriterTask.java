@@ -2,6 +2,8 @@ package org.openhds.task;
 
 import java.util.List;
 
+import org.hibernate.Query;
+import org.hibernate.SessionFactory;
 import org.openhds.controller.service.SocialGroupService;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.util.CalendarUtil;
@@ -13,13 +15,9 @@ import org.springframework.stereotype.Component;
 @Component("socialGroupXmlWriter")
 public class SocialGroupXmlWriterTask extends XmlWriterTemplate<SocialGroup> {
 
-    private SocialGroupService socialGroupService;
-
     @Autowired
-    public SocialGroupXmlWriterTask(AsyncTaskService asyncTaskService, CalendarUtil calendarUtil,
-            SocialGroupService socialGroupService) {
-        super(asyncTaskService, AsyncTaskService.SOCIALGROUP_TASK_NAME);
-        this.socialGroupService = socialGroupService;
+    public SocialGroupXmlWriterTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
+        super(asyncTaskService, factory, AsyncTaskService.SOCIALGROUP_TASK_NAME);
     }
 
     @Override
@@ -28,8 +26,9 @@ public class SocialGroupXmlWriterTask extends XmlWriterTemplate<SocialGroup> {
     }
 
     @Override
-    protected List<SocialGroup> getEntitiesInRange(TaskContext taskContext, SocialGroup start, int pageSize) {
-        return socialGroupService.getAllSocialGroupsInRange(start, pageSize);
+    protected String getExportQuery() {
+        return "from SocialGroup" +
+                " where deleted = false";
     }
 
     @Override
@@ -41,4 +40,5 @@ public class SocialGroupXmlWriterTask extends XmlWriterTemplate<SocialGroup> {
     protected String getStartElementName() {
         return "socialgroups";
     }
+
 }

@@ -1,5 +1,11 @@
 package org.openhds.task;
 
+import org.h2.engine.Session;
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Residency;
@@ -12,12 +18,10 @@ import java.util.*;
 
 @Component("individualXmlWriter")
 public class IndividualXmlWriterTask extends XmlWriterTemplate<Individual> {
-    private IndividualService individualService;
 
     @Autowired
-    public IndividualXmlWriterTask(AsyncTaskService asyncTaskService, IndividualService individualService) {
-        super(asyncTaskService, AsyncTaskService.INDIVIDUAL_TASK_NAME);
-        this.individualService = individualService;
+    public IndividualXmlWriterTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
+        super(asyncTaskService, factory, AsyncTaskService.INDIVIDUAL_TASK_NAME);
     }
 
     @Override
@@ -35,22 +39,15 @@ public class IndividualXmlWriterTask extends XmlWriterTemplate<Individual> {
     }
 
     @Override
-    protected List<Individual> getEntitiesInRange(TaskContext taskContext, Individual start, int pageSize) {
-        return getAllIndividualsWithResidencies(start, pageSize);
+    protected String getExportQuery() {
+        return "from Individual i" +
+                " join fetch i.allResidencies" +
+                " where i.extId != 'UNK'" +
+                " and i.deleted = false";
     }
 
-    private List<Individual> getAllIndividualsWithResidencies(Individual start, int pageSize) {
-        Individual indiv;
-        List<Individual> indivList = individualService.getAllIndividualsInRange(start, pageSize);
-        Iterator<Individual> it= indivList.iterator();
-        List<Individual> indivList2 = new ArrayList<Individual>();
-        while(it.hasNext()){
-            indiv= it.next();
-            if(indiv.getCurrentResidency()!=null){
-                indivList2.add(indiv);
-            }
-        }
-        return indivList2;
+    protected boolean skipEntity(Individual individual) {
+        return individual.getCurrentResidency() == null;
     }
 
     @Override
@@ -62,4 +59,5 @@ public class IndividualXmlWriterTask extends XmlWriterTemplate<Individual> {
     protected String getStartElementName() {
         return "individuals";
     }
+
 }

@@ -2,6 +2,8 @@ package org.openhds.task;
 
 import java.util.List;
 
+import org.hibernate.Query;
+import org.hibernate.SessionFactory;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.util.CalendarUtil;
@@ -13,13 +15,9 @@ import org.springframework.stereotype.Component;
 @Component("locationXmlWriter")
 public class LocationXmlWriterTask extends XmlWriterTemplate<Location> {
 
-    private LocationHierarchyService locationHierarchyService;
-
     @Autowired
-    public LocationXmlWriterTask(AsyncTaskService asyncTaskService, CalendarUtil calendarUtil,
-            LocationHierarchyService locationHierarchyService) {
-        super(asyncTaskService, AsyncTaskService.LOCATION_TASK_NAME);
-        this.locationHierarchyService = locationHierarchyService;
+    public LocationXmlWriterTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
+        super(asyncTaskService, factory, AsyncTaskService.LOCATION_TASK_NAME);
     }
 
     @Override
@@ -28,8 +26,15 @@ public class LocationXmlWriterTask extends XmlWriterTemplate<Location> {
     }
 
     @Override
-    protected List<Location> getEntitiesInRange(TaskContext taskContext, Location start, int pageSize) {
-        return locationHierarchyService.getAllLocationsInRange(start, pageSize);
+    protected String getExportQuery() {
+        return "from Location l" +
+                " left join fetch l.locationHierarchy h" +
+                " left join fetch l.residencies r" +
+                " left join fetch h.parent p" +
+                " left join fetch h.level" +
+                " left join fetch p.level" +
+                " left join fetch l.collectedBy" +
+                " where l.deleted = false";
     }
 
     @Override
@@ -41,4 +46,5 @@ public class LocationXmlWriterTask extends XmlWriterTemplate<Location> {
     protected String getStartElementName() {
         return "locations";
     }
+
 }

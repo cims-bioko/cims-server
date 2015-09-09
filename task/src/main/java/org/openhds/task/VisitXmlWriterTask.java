@@ -1,7 +1,14 @@
 package org.openhds.task;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.openhds.controller.service.VisitService;
 import org.openhds.domain.model.Visit;
 import org.openhds.domain.util.CalendarUtil;
@@ -13,12 +20,9 @@ import org.springframework.stereotype.Component;
 @Component("visitXmlWriter")
 public class VisitXmlWriterTask extends XmlWriterTemplate<Visit> {
 
-    private VisitService visitService;
-
     @Autowired
-    public VisitXmlWriterTask(AsyncTaskService asyncTaskService, CalendarUtil calendarUtil, VisitService visitService) {
-        super(asyncTaskService, AsyncTaskService.VISIT_TASK_NAME);
-        this.visitService = visitService;
+    public VisitXmlWriterTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
+        super(asyncTaskService, factory, AsyncTaskService.VISIT_TASK_NAME);
     }
 
     @Override
@@ -27,9 +31,17 @@ public class VisitXmlWriterTask extends XmlWriterTemplate<Visit> {
     }
 
     @Override
-    protected List<Visit> getEntitiesInRange(TaskContext taskContext, Visit start, int pageSize) {
-        int round = getRoundNumber(taskContext) - 1;
-        return visitService.getAllVisitsForRoundInRange(round, start, pageSize);
+    protected String getExportQuery() {
+        return "from Visit" +
+                " where deleted = false" +
+                " and roundNumber = :round";
+    }
+
+    @Override
+    protected Map<String, Object> getQueryParams(TaskContext ctx) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("round", getRoundNumber(ctx) - 1);
+        return params;
     }
 
     protected int getRoundNumber(TaskContext taskContext) {
@@ -45,4 +57,5 @@ public class VisitXmlWriterTask extends XmlWriterTemplate<Visit> {
     protected String getStartElementName() {
         return "visits";
     }
+
 }

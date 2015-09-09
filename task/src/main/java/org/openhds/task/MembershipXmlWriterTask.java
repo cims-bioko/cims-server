@@ -2,6 +2,8 @@ package org.openhds.task;
 
 import java.util.List;
 
+import org.hibernate.Query;
+import org.hibernate.SessionFactory;
 import org.openhds.controller.service.MembershipService;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.util.ShallowCopier;
@@ -12,13 +14,9 @@ import org.springframework.stereotype.Component;
 @Component("membershipXmlWriter")
 public class MembershipXmlWriterTask extends XmlWriterTemplate<Membership> {
 
-	private MembershipService membershipService;
-
 	@Autowired
-	public MembershipXmlWriterTask(AsyncTaskService asyncTaskService,
-			MembershipService membershipService) {
-		super(asyncTaskService, AsyncTaskService.MEMBERSHIP_TASK_NAME);
-		this.membershipService = membershipService;
+	public MembershipXmlWriterTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
+		super(asyncTaskService, factory, AsyncTaskService.MEMBERSHIP_TASK_NAME);
 	}
 
 	@Override
@@ -27,9 +25,9 @@ public class MembershipXmlWriterTask extends XmlWriterTemplate<Membership> {
 	}
 
 	@Override
-	protected List<Membership> getEntitiesInRange(TaskContext taskContext,
-			Membership start, int pageSize) {
-		return membershipService.getAllMembershipsInRange(start, pageSize);
+	protected String getExportQuery() {
+		return "from Membership" +
+				" where deleted = false";
 	}
 
 	@Override
@@ -41,4 +39,5 @@ public class MembershipXmlWriterTask extends XmlWriterTemplate<Membership> {
 	protected String getStartElementName() {
 		return "memberships";
 	}
+
 }
