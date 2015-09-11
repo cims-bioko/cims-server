@@ -47,7 +47,7 @@ public class ResidencyResource {
     @ResponseBody
     public ResponseEntity<? extends Serializable> getAllResidencies() {
     	int count = (int) residencyService.getTotalResidencyCount();
-        List<Residency> residencies = residencyService.getAllResidenciesInRange(0, count);
+        List<Residency> residencies = residencyService.getAllResidenciesInRange(null, count);
         List<Residency> copies = new ArrayList<Residency>(residencies.size());
 
         for (Residency r : residencies) {

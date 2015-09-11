@@ -47,7 +47,7 @@ public interface MembershipService {
     void createMembership(Membership item) throws ConstraintViolations;
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	List<Membership> getAllMembershipsInRange(int start, int size);
+	List<Membership> getAllMembershipsInRange(Membership start, int size);
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	long getTotalMembershipCount();

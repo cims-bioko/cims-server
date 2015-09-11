@@ -198,8 +198,9 @@ public class SocialGroupServiceImpl implements SocialGroupService {
 
     @Override
     @Authorized("VIEW_ENTITY")
-    public List<SocialGroup> getAllSocialGroupsInRange(int i, int pageSize) {
-        return genericDao.findPaged(SocialGroup.class, "extId", i, pageSize);
+    public List<SocialGroup> getAllSocialGroupsInRange(SocialGroup start, int pageSize) {
+        Object startProp = start == null? null : start.getUuid();
+        return genericDao.findPaged(SocialGroup.class, "id", startProp, pageSize);
     }
 
     @Override

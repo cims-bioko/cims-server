@@ -105,7 +105,7 @@ public interface LocationHierarchyService {
 	List<LocationHierarchy> getAllLocationHierarchies();
 
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	List<Location> getAllLocationsInRange(int i, int pageSize);
+	List<Location> getAllLocationsInRange(Location start, int pageSize);
 
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
     long getTotalLocationCount();

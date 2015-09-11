@@ -255,7 +255,8 @@ public class IndividualServiceImpl implements IndividualService {
 
     @Override
     @Authorized("VIEW_ENTITY")
-    public List<Individual> getAllIndividualsInRange(int start, int size) {
-        return genericDao.findPaged(Individual.class, "extId", start, size);
+    public List<Individual> getAllIndividualsInRange(Individual start, int size) {
+        Object startProp = start == null? null: start.getUuid();
+        return genericDao.findPaged(Individual.class, "id", startProp, size);
     }
 }

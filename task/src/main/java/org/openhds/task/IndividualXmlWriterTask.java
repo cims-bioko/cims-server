@@ -35,14 +35,13 @@ public class IndividualXmlWriterTask extends XmlWriterTemplate<Individual> {
     }
 
     @Override
-    protected List<Individual> getEntitiesInRange(TaskContext taskContext, int start, int pageSize) {
+    protected List<Individual> getEntitiesInRange(TaskContext taskContext, Individual start, int pageSize) {
         return getAllIndividualsWithResidencies(start, pageSize);
     }
 
-    private List<Individual> getAllIndividualsWithResidencies(int start,
-                                                              int pageSize) {
+    private List<Individual> getAllIndividualsWithResidencies(Individual start, int pageSize) {
         Individual indiv;
-        List<Individual> indivList= individualService.getAllIndividualsInRange(start,pageSize);
+        List<Individual> indivList = individualService.getAllIndividualsInRange(start, pageSize);
         Iterator<Individual> it= indivList.iterator();
         List<Individual> indivList2 = new ArrayList<Individual>();
         while(it.hasNext()){
@@ -63,10 +62,4 @@ public class IndividualXmlWriterTask extends XmlWriterTemplate<Individual> {
     protected String getStartElementName() {
         return "individuals";
     }
-
-    @Override
-    protected int getTotalEntityCount(TaskContext taskContext) {
-        return (int) individualService.getTotalIndividualCount();
-    }
-
 }

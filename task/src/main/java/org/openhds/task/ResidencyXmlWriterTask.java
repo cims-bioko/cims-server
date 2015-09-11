@@ -28,8 +28,8 @@ public class ResidencyXmlWriterTask extends XmlWriterTemplate<Residency> {
 
 	@Override
 	protected List<Residency> getEntitiesInRange(TaskContext taskContext,
-			int i, int pageSize) {
-		return residencyService.getAllResidenciesInRange(i, pageSize);
+			Residency start, int pageSize) {
+		return residencyService.getAllResidenciesInRange(start, pageSize);
 	}
 
 	@Override
@@ -41,10 +41,4 @@ public class ResidencyXmlWriterTask extends XmlWriterTemplate<Residency> {
 	protected String getStartElementName() {
 		return "residencies";
 	}
-
-	@Override
-	protected int getTotalEntityCount(TaskContext taskContext) {
-		return (int) residencyService.getTotalResidencyCount();
-	}
-
 }

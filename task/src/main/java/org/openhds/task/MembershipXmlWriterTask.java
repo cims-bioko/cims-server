@@ -28,8 +28,8 @@ public class MembershipXmlWriterTask extends XmlWriterTemplate<Membership> {
 
 	@Override
 	protected List<Membership> getEntitiesInRange(TaskContext taskContext,
-			int i, int pageSize) {
-		return membershipService.getAllMembershipsInRange(i, pageSize);
+			Membership start, int pageSize) {
+		return membershipService.getAllMembershipsInRange(start, pageSize);
 	}
 
 	@Override
@@ -41,10 +41,4 @@ public class MembershipXmlWriterTask extends XmlWriterTemplate<Membership> {
 	protected String getStartElementName() {
 		return "memberships";
 	}
-
-	@Override
-	protected int getTotalEntityCount(TaskContext taskContext) {
-		return (int) membershipService.getTotalMembershipCount();
-	}
-
 }

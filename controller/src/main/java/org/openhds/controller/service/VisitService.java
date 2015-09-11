@@ -48,7 +48,7 @@ public interface VisitService {
     List<Visit> getAllVisits();
 
     @Authorized({ PrivilegeConstants.VIEW_ENTITY })
-    List<Visit> getAllVisitsForRoundInRange(int round, int i, int pageSize);
+    List<Visit> getAllVisitsForRoundInRange(int round, Visit start, int pageSize);
 
     @Authorized({ PrivilegeConstants.VIEW_ENTITY })
     long getTotalVisitCountForRound(int roundNumber);

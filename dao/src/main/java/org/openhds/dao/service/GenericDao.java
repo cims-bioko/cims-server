@@ -100,11 +100,11 @@ public interface GenericDao {
 
     <T> List<T> findAllWithoutProperty(Class<T> entityType, String property, String value);
 
-    <T> List<T> findPaged(Class<?> entityType, String orderProperty, int start, int size);
+    <T> List<T> findPaged(Class<?> entityType, String orderProperty, Object startProp, int size);
 
     <T> List<T> findPagedFiltered(Class<?> entityType, String orderProperty, String filterProperty, Object filterValue, int start, int size);
 
     <T> long getTotalCountWithFilter(Class<T> entityType, String filterProperty, Object filterValue);
 
-    <T> List<T> findPagedFilteredgt(Class<?> entityType, String orderProperty, String filterProperty, Object filterValue, int start, int size);
+    <T> List<T> findPagedFilteredgt(Class<?> entityType, String orderProperty, String filterProperty, Object filterValue, Object startProp, int size);
 }

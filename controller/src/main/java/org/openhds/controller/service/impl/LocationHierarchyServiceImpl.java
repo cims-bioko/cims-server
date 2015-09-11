@@ -505,8 +505,9 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 
 	@Override
 	@Authorized("VIEW_ENTITY")
-	public List<Location> getAllLocationsInRange(int i, int pageSize) {
-		return genericDao.findPaged(Location.class, "extId", i, pageSize);
+	public List<Location> getAllLocationsInRange(Location start, int pageSize) {
+		Object startProp = start == null? null : start.getUuid();
+		return genericDao.findPaged(Location.class, "id", startProp, pageSize);
 	}
 
 	@Override

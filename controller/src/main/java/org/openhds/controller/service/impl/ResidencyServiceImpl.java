@@ -240,8 +240,9 @@ public class ResidencyServiceImpl extends EntityServiceRefactoredImpl implements
     
     @Override
     @Authorized("VIEW_ENTITY")
-    public List<Residency> getAllResidenciesInRange(int start, int size) {
-        List<Residency> list = genericDao.findPaged(Residency.class, "location", start, size);
+    public List<Residency> getAllResidenciesInRange(Residency start, int size) {
+        Object startProp = start == null? null : start.getUuid();
+        List<Residency> list = genericDao.findPaged(Residency.class, "id", startProp, size);
         return list;
     }
 

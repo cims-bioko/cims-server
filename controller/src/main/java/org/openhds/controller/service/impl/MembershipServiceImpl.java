@@ -192,8 +192,9 @@ public class MembershipServiceImpl extends EntityServiceRefactoredImpl implement
     
     @Override
     @Authorized("VIEW_ENTITY")
-    public List<Membership> getAllMembershipsInRange(int start, int size) {
-        return genericDao.findPaged(Membership.class, "individual", start, size);
+    public List<Membership> getAllMembershipsInRange(Membership start, int size) {
+        Object startProp = start == null? null : start.getUuid();
+        return genericDao.findPaged(Membership.class, "id", startProp, size);
     }
     
     @Override

@@ -48,7 +48,7 @@ public class LocationXmlWriterTaskTest extends AbstractXmlWriterTest {
         try {
             LocationXmlWriterTask task = new LocationXmlWriterTask(asyncTaskService, calendarUtil, locationService);
             when(locationService.getTotalLocationCount()).thenReturn(1L);
-            when(locationService.getAllLocationsInRange(0, 100)).thenReturn(Arrays.asList(createLocation()));
+            when(locationService.getAllLocationsInRange(null, 100)).thenReturn(Arrays.asList(createLocation()));
             when(calendarUtil.formatDate(any(Calendar.class))).thenReturn("02-09-1987");
 
             task.writeXml(new TaskContext(locationFile));

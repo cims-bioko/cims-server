@@ -74,6 +74,6 @@ public interface ResidencyService {
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	long getTotalResidencyCount();
 	
-    List<Residency> getAllResidenciesInRange(int start, int size);
+    List<Residency> getAllResidenciesInRange(Residency start, int size);
 
 }

@@ -3,7 +3,11 @@ package org.openhds.dao.service.impl;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.*;
+import org.hibernate.criterion.Example;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.AuditableEntity;
@@ -252,20 +256,23 @@ public class GenericDaoImpl implements GenericDao {
 		return (List<T>) crit.list();
 	}
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	@Override
-    public <T> List<T> findPaged(Class<?> entityType, String orderProperty, int start, int size) {
-        Criteria crit = getSession().createCriteria(entityType);
-        
-        if (Individual.class.isAssignableFrom(entityType)) {
-            crit.add(Restrictions.ne("extId", "UNK"));
-        }
-        
-        crit.add(Restrictions.eq("deleted", false));
-        crit.addOrder(Order.asc(orderProperty));
-        crit.setFirstResult(start).setMaxResults(size);
-        return (List<T>) crit.list();
-    }
+	public <T> List<T> findPaged(Class<?> entityType, String orderProperty, Object startProp, int size) {
+		Criteria crit = getSession().createCriteria(entityType);
+
+		if (Individual.class.isAssignableFrom(entityType)) {
+			crit.add(Restrictions.ne("extId", "UNK"));
+		}
+
+		crit.add(Restrictions.eq("deleted", false));
+		crit.addOrder(Order.asc(orderProperty));
+		if (startProp != null) {
+			crit.add(Restrictions.gt(orderProperty, startProp));
+		}
+		crit.setMaxResults(size);
+		return (List<T>) crit.list();
+	}
 
     @SuppressWarnings("unchecked")
 	@Override
@@ -279,20 +286,23 @@ public class GenericDaoImpl implements GenericDao {
         crit.setFirstResult(start).setMaxResults(size);
         return (List<T>) crit.list();
     }
-    
-    
-    @SuppressWarnings("unchecked")
-	@Override
-    public <T> List<T> findPagedFilteredgt(Class<?> entityType, String orderProperty, String filterProperty,
-            Object filterValue, int start, int size) {
-        Criteria crit = getSession().createCriteria(entityType);
 
-        crit.add(Restrictions.ge(filterProperty, filterValue));
-        crit.add(Restrictions.eq("deleted", false));
-        crit.addOrder(Order.asc(orderProperty));
-        crit.setFirstResult(start).setMaxResults(size);
-        return (List<T>) crit.list();
-    }
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> List<T> findPagedFilteredgt(Class<?> entityType, String orderProperty, String filterProperty,
+										   Object filterValue, Object startProp, int size) {
+		Criteria crit = getSession().createCriteria(entityType);
+
+		crit.add(Restrictions.ge(filterProperty, filterValue));
+		crit.add(Restrictions.eq("deleted", false));
+		crit.addOrder(Order.asc(orderProperty));
+		if (startProp != null) {
+			crit.add(Restrictions.gt(orderProperty, startProp));
+		}
+		crit.setMaxResults(size);
+		return (List<T>) crit.list();
+	}
 
     @Override
     public <T> long getTotalCountWithFilter(Class<T> entityType, String filterProperty, Object filterValue) {

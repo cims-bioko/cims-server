@@ -196,8 +196,9 @@ public class RelationshipServiceImpl implements RelationshipService {
 
     @Override
     @Authorized("VIEW_ENTITY")
-    public List<Relationship> getAllRelationshipInRange(int i, int pageSize) {
-        return genericDao.findPaged(Relationship.class, "individualA", i, pageSize);
+    public List<Relationship> getAllRelationshipInRange(Relationship start, int pageSize) {
+		Object startProp = start == null? null : start.getUuid();
+        return genericDao.findPaged(Relationship.class, "id", startProp, pageSize);
     }
 
     @Override

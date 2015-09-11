@@ -28,8 +28,8 @@ public class SocialGroupXmlWriterTask extends XmlWriterTemplate<SocialGroup> {
     }
 
     @Override
-    protected List<SocialGroup> getEntitiesInRange(TaskContext taskContext, int i, int pageSize) {
-        return socialGroupService.getAllSocialGroupsInRange(i, pageSize);
+    protected List<SocialGroup> getEntitiesInRange(TaskContext taskContext, SocialGroup start, int pageSize) {
+        return socialGroupService.getAllSocialGroupsInRange(start, pageSize);
     }
 
     @Override
@@ -41,10 +41,4 @@ public class SocialGroupXmlWriterTask extends XmlWriterTemplate<SocialGroup> {
     protected String getStartElementName() {
         return "socialgroups";
     }
-
-    @Override
-    protected int getTotalEntityCount(TaskContext taskContext) {
-        return (int) socialGroupService.getTotalSocialGroupCount();
-    }
-
 }

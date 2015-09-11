@@ -23,6 +23,7 @@ import java.util.List;
  *            The type of entities to write to the file
  */
 public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
+
     private static final int PAGE_SIZE = 100;
 
     private CalendarAdapter calendarAdapter;
@@ -48,10 +49,6 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
 
             asyncTaskService.startTask(taskName);
 
-            long itemsWritten = 0L;
-            int totalCount = getTotalEntityCount(taskContext);
-            int totalPages = (int) Math.ceil((double) totalCount / PAGE_SIZE);
-
             XMLStreamWriter xmlStreamWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream);
             xmlStreamWriter.writeStartDocument();
             xmlStreamWriter.writeStartElement(getStartElementName());
@@ -60,21 +57,29 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
             marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
             marshaller.setAdapter(calendarAdapter);
 
-            for (int i = 0; i < totalPages; i++) {
-                List<T> entities = getEntitiesInRange(taskContext, (i * PAGE_SIZE), PAGE_SIZE);
+            long totalWritten = 0, batchCount;
+            T lastWritten = null;
+            do {
+
+                batchCount = 0;
+
+                List<T> entities = getEntitiesInRange(taskContext, lastWritten, PAGE_SIZE);
                 for (T original : entities) {
                     T copy = makeCopyOf(original);
                     marshaller.marshal(copy, xmlStreamWriter);
-                    itemsWritten += 1;
+                    lastWritten = copy;
+                    batchCount += 1;
                 }
 
-                asyncTaskService.updateTaskProgress(taskName, itemsWritten);
+                totalWritten += batchCount;
+                asyncTaskService.updateTaskProgress(taskName, totalWritten);
 
                 // Empty the Hibernate cache
                 // Prevents excessive memory use for large data sets like locations or individuals
                 // See: http://docs.jboss.org/hibernate/orm/4.0/devguide/en-US/html/ch04.html
                 asyncTaskService.clearSession();
-            }
+
+            } while ( batchCount >= PAGE_SIZE );
 
             xmlStreamWriter.writeEndElement();
             xmlStreamWriter.close();
@@ -84,7 +89,7 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
             String md5 = DigestUtils.md5Hex(inputStream);
             inputStream.close();
 
-            asyncTaskService.finishTask(taskName, itemsWritten, md5);
+            asyncTaskService.finishTask(taskName, totalWritten, md5);
 
         } catch (Exception e) {
             asyncTaskService.finishTask(taskName, 0, e.getMessage());
@@ -93,12 +98,10 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
 
     protected abstract T makeCopyOf(T original);
 
-    protected abstract List<T> getEntitiesInRange(TaskContext taskContext, int i, int pageSize);
+    protected abstract List<T> getEntitiesInRange(TaskContext taskContext, T lastObject, int pageSize);
 
     protected abstract Class<?> getBoundClass();
 
     protected abstract String getStartElementName();
-
-    protected abstract int getTotalEntityCount(TaskContext taskContext);
 
 }

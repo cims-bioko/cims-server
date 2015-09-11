@@ -28,8 +28,8 @@ public class RelationshipXmlWriterTask extends XmlWriterTemplate<Relationship> {
     }
 
     @Override
-    protected List<Relationship> getEntitiesInRange(TaskContext taskContext,int i, int pageSize) {
-        return relationshipService.getAllRelationshipInRange(i, pageSize);
+    protected List<Relationship> getEntitiesInRange(TaskContext taskContext, Relationship start, int pageSize) {
+        return relationshipService.getAllRelationshipInRange(start, pageSize);
     }
 
     @Override
@@ -41,10 +41,4 @@ public class RelationshipXmlWriterTask extends XmlWriterTemplate<Relationship> {
     protected String getStartElementName() {
         return "relationships";
     }
-
-    @Override
-    protected int getTotalEntityCount(TaskContext taskContext) {
-        return (int) relationshipService.getTotalRelationshipCount();
-    }
-
 }

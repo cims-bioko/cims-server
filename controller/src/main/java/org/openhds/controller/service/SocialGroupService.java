@@ -52,7 +52,7 @@ public interface SocialGroupService {
 	void createSocialGroup(SocialGroup socialGroup) throws ConstraintViolations;
 
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-    List<SocialGroup> getAllSocialGroupsInRange(int i, int pageSize);
+    List<SocialGroup> getAllSocialGroupsInRange(SocialGroup start, int pageSize);
 
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
     long getTotalSocialGroupCount(); 

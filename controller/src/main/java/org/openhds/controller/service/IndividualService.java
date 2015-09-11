@@ -50,6 +50,6 @@ public interface IndividualService {
     long getTotalIndividualCount();
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	List<Individual> getAllIndividualsInRange(int start, int size);
+	List<Individual> getAllIndividualsInRange(Individual start, int size);
 }
 

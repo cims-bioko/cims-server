@@ -28,8 +28,8 @@ public class LocationXmlWriterTask extends XmlWriterTemplate<Location> {
     }
 
     @Override
-    protected List<Location> getEntitiesInRange(TaskContext taskContext, int i, int pageSize) {
-        return locationHierarchyService.getAllLocationsInRange(i, pageSize);
+    protected List<Location> getEntitiesInRange(TaskContext taskContext, Location start, int pageSize) {
+        return locationHierarchyService.getAllLocationsInRange(start, pageSize);
     }
 
     @Override
@@ -41,10 +41,4 @@ public class LocationXmlWriterTask extends XmlWriterTemplate<Location> {
     protected String getStartElementName() {
         return "locations";
     }
-
-    @Override
-    protected int getTotalEntityCount(TaskContext taskContext) {
-        return (int) locationHierarchyService.getTotalLocationCount();
-    }
-
 }
