@@ -82,6 +82,10 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
                         .setReadOnly(true)
                         .setFetchSize(Integer.MIN_VALUE);
 
+                for (Map.Entry<String,Object> param : getQueryParams(taskContext).entrySet()) {
+                    exportQuery.setParameter(param.getKey(), param.getValue());
+                }
+
                 results = exportQuery.scroll(ScrollMode.FORWARD_ONLY);
 
                 while (results.next()) {
