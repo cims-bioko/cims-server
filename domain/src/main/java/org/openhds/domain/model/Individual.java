@@ -26,55 +26,66 @@ import java.util.*;
 public class Individual extends AuditableCollectedEntity implements Serializable {
 
     public final static long serialVersionUID = 9058114832143454609L;
+
     @NotNull
     @Size(min = 1)
     @Searchable
     @Description(description = "External Id of the individual. This id is used internally.")
     private String extId;
+
     @NotNull
     @Searchable
     @Description(description = "First name of the individual.")
     private String firstName;
+
     @Searchable
     @Description(description = "Middle name of the individual.")
     private String middleName;
+
     @CheckFieldNotBlank
     @Searchable
     @Description(description = "Last name of the individual.")
     private String lastName;
+
     @ExtensionStringConstraint(constraint = "genderConstraint", message = "Invalid Value for gender", allowNull = true)
     @Description(description = "The gender of the individual.")
     private String gender;
+
     @Past(message = "Date of birth must a date in the past")
     @Temporal(TemporalType.DATE)
     @Description(description = "Birth date of the individual.")
     private Calendar dob;
+
     @CheckIndividualGenderFemale(allowNull = true, message = "The mother specified is not female gender")
     @CheckIndividualParentAge(allowNull = true, message = "The mother is younger than the minimum age required in order to be a parent")
     @CheckEntityNotVoided(allowNull = true, message = "The mother has been voided")
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = org.openhds.domain.model.Individual.class)
     @Description(description = "The individual's mother, identified by the external id.")
     private org.openhds.domain.model.Individual mother;
+
     @CheckIndividualGenderMale(allowNull = true, message = "The father specified is not male gender")
     @CheckIndividualParentAge(allowNull = true, message = "The father is younger than the minimum age required in order to be a parent")
     @CheckEntityNotVoided(allowNull = true, message = "The father has been voided")
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = org.openhds.domain.model.Individual.class)
     @Description(description = "The individual's father, identified by the external id.")
     private org.openhds.domain.model.Individual father;
+
     @ExtensionStringConstraint(constraint = "dobAspectConstraint", message = "Invalid Value for partial date", allowNull = true)
     @Description(description = "Identifer for determining if the birth date is partially known.")
     private String dobAspect;
 
     @OneToMany(mappedBy = "individual", cascade = { CascadeType.ALL })
-    @OrderBy("startDate")
     @Description(description = "The set of all residencies that the individual may have.")
     private Set<Residency> allResidencies = new HashSet<Residency>();
+
     @OneToMany(mappedBy = "individualA", cascade = { CascadeType.ALL })
     @Description(description = "The set of all relationships that the individual may have with another individual.")
     private Set<Relationship> allRelationships1 = new HashSet<Relationship>();
+
     @OneToMany(mappedBy = "individualB", cascade = { CascadeType.ALL })
     @Description(description = "The set of all relationships where another individual may have with this individual.")
     private Set<Relationship> allRelationships2 = new HashSet<Relationship>();
+
     @OneToMany(mappedBy = "individual", cascade = { CascadeType.ALL })
     @Description(description = "The set of all memberships the individual is participating in.")
     private Set<Membership> allMemberships = new HashSet<Membership>();
