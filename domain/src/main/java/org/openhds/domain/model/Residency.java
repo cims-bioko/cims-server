@@ -41,13 +41,11 @@ public class Residency extends AuditableCollectedEntity implements GenericStartE
     @Searchable
     @ManyToOne(fetch = FetchType.LAZY)
     @Description(description = "Individual who resides at this residency, identified by external id.")
-    @Fetch(FetchMode.SELECT)
     Individual individual;
 
     @Searchable
     @ManyToOne(fetch = FetchType.LAZY)
     @Description(description = "Location of the residency, identified by external id.")
-    @Fetch(FetchMode.SELECT)
     Location location;
 
     @NotNull

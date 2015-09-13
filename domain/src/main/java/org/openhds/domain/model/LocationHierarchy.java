@@ -51,7 +51,6 @@ public class LocationHierarchy implements UuidIdentifiable, Serializable {
 
     @Description(description="Parent location's name.")
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = LocationHierarchy.class, fetch = FetchType.LAZY)
-    @Fetch(FetchMode.SELECT)
     LocationHierarchy parent;
 
     @NotNull
