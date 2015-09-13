@@ -37,7 +37,7 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
     }
 
     @Async
-    @Transactional
+    @Transactional(readOnly = true)
     public void writeXmlAsync(TaskContext taskContext) {
         writeXml(taskContext);
     }
