@@ -40,7 +40,7 @@ public class VisitXmlWriterTask extends XmlWriterTemplate<Visit> {
     @Override
     protected Map<String, Object> getQueryParams(TaskContext ctx) {
         Map<String, Object> params = new HashMap<>();
-        params.put("round", getRoundNumber(ctx) - 1);
+        params.put("round", getRoundNumber(ctx));
         return params;
     }
 
