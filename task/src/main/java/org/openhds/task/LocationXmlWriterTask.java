@@ -28,12 +28,8 @@ public class LocationXmlWriterTask extends XmlWriterTemplate<Location> {
     @Override
     protected String getExportQuery() {
         return "from Location l" +
-                " left join fetch l.locationHierarchy h" +
-                " left join fetch l.residencies r" +
-                " left join fetch h.parent p" +
-                " left join fetch h.level" +
-                " left join fetch p.level" +
-                " left join fetch l.collectedBy" +
+                " join fetch l.locationHierarchy h" +
+                " join fetch h.level" +
                 " where l.deleted = false";
     }
 
