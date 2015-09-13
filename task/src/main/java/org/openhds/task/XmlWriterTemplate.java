@@ -61,8 +61,6 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
 
             asyncTaskService.startTask(taskName);
 
-            long itemsWritten = 0L, itemsFetched = 0L;
-
             XMLStreamWriter xmlStreamWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream);
             xmlStreamWriter.writeStartDocument();
             xmlStreamWriter.writeStartElement(getStartElementName());
@@ -91,18 +89,18 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
                 while (results.next()) {
 
                     T original = ((T[]) results.get())[0];
-                    itemsFetched++;
 
                     boolean writeEntity = !skipEntity(original);
 
                     if (writeEntity) {
                         T copy = makeCopyOf(original);
                         marshaller.marshal(copy, xmlStreamWriter);
-                        totalWritten += 1;
+                        totalWritten++;
                     }
 
-                    if (itemsFetched % PAGE_SIZE == 0) {
+                    if (totalWritten % PAGE_SIZE == 0) {
                         xmlStreamWriter.flush();
+                        asyncTaskService.updateTaskProgress(taskName, totalWritten);
                     }
                 }
             } finally {
@@ -113,8 +111,6 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
                     session.close();
                 }
             }
-
-            asyncTaskService.updateTaskProgress(taskName, totalWritten);
 
             xmlStreamWriter.writeEndElement();
             xmlStreamWriter.close();
