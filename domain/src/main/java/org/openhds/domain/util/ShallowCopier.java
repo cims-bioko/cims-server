@@ -3,6 +3,7 @@ package org.openhds.domain.util;
 
 import org.hibernate.Hibernate;
 import org.hibernate.proxy.HibernateProxy;
+import org.hibernate.proxy.LazyInitializer;
 import org.openhds.domain.model.UuidIdentifiable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,12 +105,18 @@ public class ShallowCopier {
 
     // Make a new blank object of the same concrete class as the given object using its no-argument constructor.
     private static Object newDefaultBlank(Object original) {
+
         if (null == original) {
             return null;
         }
 
         // Unfortunate dependency on Hibernate to avoid instantiating new HibernateProxy objects.
-        Class<?> currentClass = original instanceof HibernateProxy ? Hibernate.getClass(original) : original.getClass();
+        Class<?> currentClass;
+        if (original instanceof HibernateProxy) {
+            currentClass = ((HibernateProxy)original).getHibernateLazyInitializer().getPersistentClass();
+        } else {
+            currentClass = original.getClass();
+        }
 
         Constructor<?> constructor;
         try {
@@ -138,9 +145,16 @@ public class ShallowCopier {
         if (null == original) {
             return null;
         }
-
         UuidIdentifiable stub = (UuidIdentifiable) newDefaultBlank(original);
-        stub.setUuid(original.getUuid());
+        String uuid;
+        if (original instanceof HibernateProxy) {
+            HibernateProxy proxy = (HibernateProxy) original;
+            LazyInitializer initializer = proxy.getHibernateLazyInitializer();
+            uuid = (String) initializer.getIdentifier();
+        } else {
+            uuid = original.getUuid();
+        }
+        stub.setUuid(uuid);
         return stub;
     }
 
@@ -151,7 +165,7 @@ public class ShallowCopier {
         }
 
         for (Field field : fields) {
-            // direct reference to UuidIdentifiable
+
             if (UuidIdentifiable.class.isAssignableFrom(field.getType())) {
                 assignStub(original, target, field);
                 continue;
@@ -203,6 +217,10 @@ public class ShallowCopier {
 
         try {
             field.setAccessible(true);
+            /*
+               Due to using hibernate with field access, we can't fetch id fields without init'ing
+               the proxy.
+            */
             UuidIdentifiable originalEntity = (UuidIdentifiable) field.get(original);
             UuidIdentifiable stub = makeStub(originalEntity);
             field.set(target, stub);
@@ -229,7 +247,7 @@ public class ShallowCopier {
             field.setAccessible(true);
 
             Collection<?> originalCollection = (Collection<?>) field.get(original);
-            if (null == originalCollection) {
+            if (originalCollection == null || !Hibernate.isInitialized(originalCollection)) {
                 return;
             }
 
