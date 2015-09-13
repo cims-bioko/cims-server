@@ -8,7 +8,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.task.service.AsyncTaskService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +21,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 /**

@@ -65,5 +65,4 @@ public class TaskBean {
     public void setRoundNumber(Integer roundNumber) {
         this.roundNumber = roundNumber;
     }
-
 }
