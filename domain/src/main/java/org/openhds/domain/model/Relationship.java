@@ -14,6 +14,7 @@ import org.openhds.domain.util.CalendarAdapter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -43,14 +44,14 @@ public class Relationship extends AuditableCollectedEntity implements
     @Searchable
     @CheckEntityNotVoided
     @CheckIndividualNotUnknown
-    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
     @Description(description = "One of the individuals participating in the relationship, identified by external id.")
     Individual individualA;
 
     @Searchable
     @CheckEntityNotVoided
     @CheckIndividualNotUnknown
-    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
     @Description(description = "One of the individuals participating in the relationship, identified by external id.")
     Individual individualB;
 

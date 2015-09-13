@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -35,12 +36,12 @@ public class Membership extends AuditableCollectedEntity implements GenericEndDa
 	@Searchable
     @CheckEntityNotVoided
     @CheckIndividualNotUnknown
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@Description(description="Individual the membership is associated with, identified by external id.")
 	Individual individual;
 	
 	@Searchable
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@Description(description="The social group of the membership, identified by external id.")
 	SocialGroup socialGroup;
 	

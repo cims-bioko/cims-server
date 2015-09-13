@@ -2,15 +2,26 @@
 package org.openhds.domain.model;
 
 import org.openhds.domain.annotations.Description;
-import org.openhds.domain.constraint.*;
+import org.openhds.domain.constraint.CheckEntityNotVoided;
+import org.openhds.domain.constraint.CheckFieldNotBlank;
+import org.openhds.domain.constraint.CheckHouseholdHeadAge;
+import org.openhds.domain.constraint.CheckIndividualNotUnknown;
+import org.openhds.domain.constraint.ExtensionStringConstraint;
+import org.openhds.domain.constraint.Searchable;
 
-import javax.persistence.*;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 /**
@@ -30,29 +41,31 @@ public class SocialGroup
     @Searchable
     @Description(description = "External Id of the social group. This id is used internally.")
     private String extId;
+
     @Searchable
     @CheckFieldNotBlank
     @Description(description = "Name of the social group.")
     private String groupName;
+
     @Searchable
     @CheckEntityNotVoided
     @CheckIndividualNotUnknown
     @CheckHouseholdHeadAge(allowNull = true, message = "The social group head is younger than the minimum age required in order to be a household head.")
-    @ManyToOne(cascade = {
-        CascadeType.ALL
-    })
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @Description(description = "Individual who is head of the social group, identified by the external id.")
     private Individual groupHead;
+
     @ExtensionStringConstraint(constraint = "socialGroupTypeConstraint", message = "Invalid Value for social group type", allowNull = true)
     @Description(description = "Type of the social group.")
     private String groupType;
+
     @OneToMany(cascade = {
         CascadeType.ALL
     }, mappedBy = "socialGroup")
     @Description(description = "The set of all memberships of the social group.")
     private Set<Membership> memberships = new HashSet<Membership>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Description(description="The location associated with this social group")
     private Location location;
 

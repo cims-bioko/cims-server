@@ -37,21 +37,26 @@ public class Visit
 {
 
     public final static long serialVersionUID = -211408757055967973L;
+
     @Searchable
     @Description(description = "External Id of the visit. This id is used internally.")
     private String extId;
+
     @Searchable
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Description(description = "Location that this visit is for.")
     private Location visitLocation;
+
     @NotNull(message = "You must provide a visit date")
     @Temporal(TemporalType.DATE)
     @Description(description = "Date of the visit.")
     private Calendar visitDate;
+
     @CheckInteger(min = 1)
     @Description(description = "Round number for the visit.")
     private Integer roundNumber;
-    @OneToMany(mappedBy = "entity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+    @OneToMany(mappedBy = "entity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Description(description = "The assigned extension and their values specific for this entity.")
     private List<Extension> extensions = new ArrayList<Extension>();
 
