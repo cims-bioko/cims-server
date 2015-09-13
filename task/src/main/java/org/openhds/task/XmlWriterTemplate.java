@@ -32,7 +32,7 @@ import java.util.Map;
  */
 public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
 
-    private static final int PAGE_SIZE = 100;
+    private static final int PAGE_SIZE = 1000;
 
     private SessionFactory sessionFactory;
     private CalendarAdapter calendarAdapter;
