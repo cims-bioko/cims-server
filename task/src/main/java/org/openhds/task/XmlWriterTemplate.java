@@ -44,6 +44,8 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
 
     public void writeXml(TaskContext taskContext) {
 
+        long totalWritten = 0;
+
         try {
             OutputStream outputStream = new FileOutputStream(taskContext.getDestinationFile());
 
@@ -57,7 +59,7 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
             marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
             marshaller.setAdapter(calendarAdapter);
 
-            long totalWritten = 0, batchCount;
+            long batchCount;
             T lastWritten = null;
             do {
 
@@ -92,7 +94,7 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
             asyncTaskService.finishTask(taskName, totalWritten, md5);
 
         } catch (Exception e) {
-            asyncTaskService.finishTask(taskName, 0, e.getMessage());
+            asyncTaskService.finishTask(taskName, totalWritten, e.getMessage());
         }
     }
 
