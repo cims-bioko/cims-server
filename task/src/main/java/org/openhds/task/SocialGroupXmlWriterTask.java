@@ -1,12 +1,7 @@
 package org.openhds.task;
 
-import java.util.List;
-
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-import org.openhds.controller.service.SocialGroupService;
 import org.openhds.domain.model.SocialGroup;
-import org.openhds.domain.util.CalendarUtil;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;

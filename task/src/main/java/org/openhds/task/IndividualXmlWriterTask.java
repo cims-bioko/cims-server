@@ -1,12 +1,6 @@
 package org.openhds.task;
 
-import org.h2.engine.Session;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
-import org.openhds.controller.service.IndividualService;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.util.ShallowCopier;

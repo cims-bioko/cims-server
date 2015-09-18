@@ -1,10 +1,6 @@
 package org.openhds.task;
 
-import java.util.List;
-
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-import org.openhds.controller.service.MembershipService;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.service.AsyncTaskService;

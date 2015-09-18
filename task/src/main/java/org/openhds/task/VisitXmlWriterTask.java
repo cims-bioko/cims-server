@@ -1,17 +1,10 @@
 package org.openhds.task;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
-import org.openhds.controller.service.VisitService;
 import org.openhds.domain.model.Visit;
-import org.openhds.domain.util.CalendarUtil;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
