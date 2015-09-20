@@ -7,6 +7,7 @@ import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.Membership.Memberships;
 import org.openhds.domain.util.ShallowCopier;
+import org.openhds.task.service.AsyncTaskService;
 import org.openhds.task.support.FileResolver;
 import org.openhds.controller.util.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
@@ -25,6 +26,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -43,6 +45,9 @@ public class MembershipResource {
 
     @Autowired
     private CacheResponseWriter cacheResponseWriter;
+
+    @Autowired
+    private AsyncTaskService asyncTaskService;
 
 
     @Autowired
@@ -114,9 +119,18 @@ public class MembershipResource {
     }
     
     @RequestMapping(value = "/cached", method = RequestMethod.GET)
-    public void getCachedMemberships(HttpServletResponse response) {
+    public void getCachedMemberships(HttpServletRequest request, HttpServletResponse response) {
+
+        String contentHash = asyncTaskService.getContentHash(AsyncTaskService.MEMBERSHIP_TASK_NAME);
+        String eTag = request.getHeader(CacheHeaders.IF_NONE_MATCH);
+
+        if (eTag != null && eTag.equals(contentHash)) {
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            return;
+        }
+
         try {
-            cacheResponseWriter.writeResponse(MediaType.APPLICATION_XML_VALUE, fileResolver.resolveMembershipXmlFile(), response);
+            cacheResponseWriter.writeResponse(MediaType.APPLICATION_XML_VALUE, fileResolver.resolveMembershipXmlFile(), contentHash, response);
         } catch (IOException e) {
             logger.error("Problem writing membership xml file: " + e.getMessage());
         }

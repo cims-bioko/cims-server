@@ -12,7 +12,8 @@ import org.openhds.domain.model.PrivilegeConstants;
 public class CacheResponseWriter {
 
     @Authorized({PrivilegeConstants.VIEW_ENTITY})
-    public void writeResponse(String contentType, File fileToWrite, HttpServletResponse response) throws IOException {
+    public void writeResponse(String contentType, File fileToWrite, String contentHash, HttpServletResponse response) throws IOException {
+
         if (!fileToWrite.exists()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
@@ -20,6 +21,11 @@ public class CacheResponseWriter {
 
         response.setContentType(contentType);
         response.setHeader("Content-Length", String.valueOf(fileToWrite.length()));
+
+        if (contentHash != null) {
+            response.setHeader("ETag", contentHash);
+        }
+
         response.setStatus(HttpServletResponse.SC_OK);
 
         InputStream is = null;

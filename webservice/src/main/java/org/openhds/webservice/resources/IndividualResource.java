@@ -5,12 +5,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.openhds.controller.service.IndividualService;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Individual.Individuals;
 import org.openhds.domain.util.ShallowCopier;
+import org.openhds.task.service.AsyncTaskService;
 import org.openhds.task.support.FileResolver;
 import org.openhds.controller.util.CacheResponseWriter;
 import org.slf4j.Logger;
@@ -34,6 +36,9 @@ public class IndividualResource {
 
     @Autowired
     private CacheResponseWriter cacheResponseWriter;
+
+    @Autowired
+    private AsyncTaskService asyncTaskService;
 
     @Autowired
     public IndividualResource(IndividualService individualService, FileResolver fileResolver) {
@@ -68,9 +73,18 @@ public class IndividualResource {
     }
 
     @RequestMapping(value = "/cached", method = RequestMethod.GET)
-    public void getCachedIndividuals(HttpServletResponse response) {
+    public void getCachedIndividuals(HttpServletRequest request, HttpServletResponse response) {
+
+        String contentHash = asyncTaskService.getContentHash(AsyncTaskService.INDIVIDUAL_TASK_NAME);
+        String eTag = request.getHeader(CacheHeaders.IF_NONE_MATCH);
+
+        if (eTag != null && eTag.equals(contentHash)) {
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            return;
+        }
+
         try {
-            cacheResponseWriter.writeResponse(MediaType.APPLICATION_XML_VALUE, fileResolver.resolveIndividualXmlFile(), response);
+            cacheResponseWriter.writeResponse(MediaType.APPLICATION_XML_VALUE, fileResolver.resolveIndividualXmlFile(), contentHash, response);
         } catch (IOException e) {
             logger.error("Problem writing individual xml file: " + e.getMessage());
         }

@@ -10,6 +10,7 @@ import org.openhds.domain.util.ShallowCopier;
 import org.openhds.errorhandling.constants.ErrorConstants;
 import org.openhds.errorhandling.service.ErrorHandlingService;
 import org.openhds.errorhandling.util.ErrorLogUtil;
+import org.openhds.task.service.AsyncTaskService;
 import org.openhds.task.support.FileResolver;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -54,6 +56,9 @@ public class LocationResource {
 
     @Autowired
     private CacheResponseWriter cacheResponseWriter;
+
+    @Autowired
+    private AsyncTaskService asyncTaskService;
 
 
     @Autowired
@@ -143,18 +148,18 @@ public class LocationResource {
     }
 
     @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
-    public void getAllCachedLocationsXml(HttpServletResponse response) {
-        try {
-            cacheResponseWriter.writeResponse(MediaType.APPLICATION_XML_VALUE, fileResolver.resolveLocationXmlFile(), response);
-        } catch (IOException e) {
-            logger.error("Problem writing location xml file: " + e.getMessage());
-        }
-    }
+    public void getAllCachedLocationsXml(HttpServletRequest request, HttpServletResponse response) {
 
-    @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void getAllCachedLocationsJson(HttpServletResponse response) {
+        String contentHash = asyncTaskService.getContentHash(AsyncTaskService.LOCATION_TASK_NAME);
+        String eTag = request.getHeader(CacheHeaders.IF_NONE_MATCH);
+
+        if (eTag != null && eTag.equals(contentHash)) {
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            return;
+        }
+
         try {
-            cacheResponseWriter.writeResponse(MediaType.APPLICATION_JSON_VALUE, fileResolver.resolveLocationXmlFile(), response);
+            cacheResponseWriter.writeResponse(MediaType.APPLICATION_XML_VALUE, fileResolver.resolveLocationXmlFile(), contentHash, response);
         } catch (IOException e) {
             logger.error("Problem writing location xml file: " + e.getMessage());
         }

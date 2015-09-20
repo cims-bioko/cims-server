@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.openhds.controller.exception.ConstraintViolations;
@@ -13,6 +14,7 @@ import org.openhds.controller.service.VisitService;
 import org.openhds.domain.model.Visit;
 import org.openhds.domain.model.Visit.Visits;
 import org.openhds.domain.util.ShallowCopier;
+import org.openhds.task.service.AsyncTaskService;
 import org.openhds.task.support.FileResolver;
 import org.openhds.controller.util.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
@@ -40,6 +42,10 @@ public class VisitResource {
 
     @Autowired
     private CacheResponseWriter cacheResponseWriter;
+
+    @Autowired
+    private AsyncTaskService asyncTaskService;
+
 
     @Autowired
     public VisitResource(VisitService visitService, FieldBuilder fieldBuilder, EntityService entityService,
@@ -87,9 +93,18 @@ public class VisitResource {
     }
 
     @RequestMapping(value = "/cached", method = RequestMethod.GET)
-    public void getCachedVisits(HttpServletResponse response) {
+    public void getCachedVisits(HttpServletRequest request, HttpServletResponse response) {
+
+        String contentHash = asyncTaskService.getContentHash(AsyncTaskService.VISIT_TASK_NAME);
+        String eTag = request.getHeader(CacheHeaders.IF_NONE_MATCH);
+
+        if (eTag != null && eTag.equals(contentHash)) {
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            return;
+        }
+
         try {
-            cacheResponseWriter.writeResponse(MediaType.APPLICATION_XML_VALUE, fileResolver.resolveVisitXmlFile(), response);
+            cacheResponseWriter.writeResponse(MediaType.APPLICATION_XML_VALUE, fileResolver.resolveVisitXmlFile(), contentHash, response);
         } catch (IOException e) {
             logger.error("Problem writing visit xml file: " + e.getMessage());
         }

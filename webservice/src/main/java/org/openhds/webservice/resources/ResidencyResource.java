@@ -5,12 +5,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.openhds.controller.service.ResidencyService;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.Residency.Residencies;
 import org.openhds.domain.util.ShallowCopier;
+import org.openhds.task.service.AsyncTaskService;
 import org.openhds.task.support.FileResolver;
 import org.openhds.controller.util.CacheResponseWriter;
 import org.slf4j.Logger;
@@ -38,6 +40,9 @@ public class ResidencyResource {
     private CacheResponseWriter cacheResponseWriter;
 
     @Autowired
+    private AsyncTaskService asyncTaskService;
+
+    @Autowired
     public ResidencyResource(FileResolver fileResolver, ResidencyService residencyService) {
     	this.fileResolver = fileResolver;
     	this.residencyService = residencyService;
@@ -62,9 +67,18 @@ public class ResidencyResource {
     
     
     @RequestMapping(value = "/cached", method = RequestMethod.GET)
-    public void getCachedResidencies(HttpServletResponse response) {
+    public void getCachedResidencies(HttpServletRequest request, HttpServletResponse response) {
+
+        String contentHash = asyncTaskService.getContentHash(AsyncTaskService.RESIDENCY_TASK_NAME);
+        String eTag = request.getHeader(CacheHeaders.IF_NONE_MATCH);
+
+        if (eTag != null && eTag.equals(contentHash)) {
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            return;
+        }
+
         try {
-            cacheResponseWriter.writeResponse(MediaType.APPLICATION_XML_VALUE, fileResolver.resolveResidencyXmlFile(), response);
+            cacheResponseWriter.writeResponse(MediaType.APPLICATION_XML_VALUE, fileResolver.resolveResidencyXmlFile(), contentHash, response);
         } catch (IOException e) {
             logger.error("Problem writing residency xml file: " + e.getMessage());
         }

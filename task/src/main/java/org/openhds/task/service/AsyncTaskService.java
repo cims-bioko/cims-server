@@ -22,6 +22,8 @@ public interface AsyncTaskService {
 
     void updateTaskProgress(String taskName, long itemsWritten);
 
+    String getContentHash(String taskName);
+
     void finishTask(String taskName, long itemsWritten, String md5);
 
     List<AsyncTask> findAllAsyncTask();
