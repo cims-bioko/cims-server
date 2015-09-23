@@ -55,6 +55,19 @@
             <br />
 
             <h:commandButton action="#{taskBean.startAllTasks}" value="Queue All Tasks" />
+            <br />
+            <br />
+
+            <h:outputText value="Next Scheduled Run: " /> <h:outputText value="#{taskBean.nextScheduledRun}" />
+            <br />
+            <br />
+            <a href="http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger" target="_blank">
+                <h:outputText value="Schedule" /></a>
+            <br />
+            <h:inputText value="#{taskBean.cronSchedule}" />
+            <h:commandButton action="#{taskBean.scheduleAllTasks}" value="Schedule All Tasks" />
+            <h:commandButton action="#{taskBean.cancelScheduledTasks}" value="Cancel Scheduled Tasks" />
+
         </h:form>
 
         <br />

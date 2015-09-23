@@ -601,6 +601,7 @@
 	<bean id="taskBean" class="org.openhds.web.beans.TaskBean">
 		<constructor-arg ref="openhdsTaskExecutor" />
 		<constructor-arg ref="asyncTaskServiceImpl" />
+		<constructor-arg ref="taskScheduler" />
 	</bean>
 
 	<bean id="baselineFlowBean" class="org.openhds.web.beans.BaselineFlowBean"
