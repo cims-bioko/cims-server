@@ -27,6 +27,7 @@ public class AsyncTaskServiceImpl implements AsyncTaskService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public boolean taskShouldRun(String taskName) {
         return taskShouldRun(dao.findByProperty("taskName", taskName));
     }
