@@ -54,6 +54,18 @@ public class TaskBean {
         return TASK_VIEW;
     }
 
+    public String startAllTasks() {
+        startIndividualTask();
+        startLocationTask();
+        startRelationshipTask();
+        startSocialGroupTask();
+        startResidencyTask();
+        startMembershipTask();
+        startVisitTask();
+        startLocationTask();
+        return TASK_VIEW;
+    }
+
     public List<AsyncTask> getTasks() {
         return asyncTaskService.findAllAsyncTask();
     }
