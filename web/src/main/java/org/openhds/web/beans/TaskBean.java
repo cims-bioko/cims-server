@@ -8,7 +8,6 @@ import org.openhds.domain.model.AsyncTask;
 import org.openhds.task.service.AsyncTaskService;
 import org.openhds.task.support.TaskExecutor;
 import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.support.CronTrigger;
 
 public class TaskBean {
@@ -59,7 +58,9 @@ public class TaskBean {
     }
     
     public String startVisitTask() {
-        taskExecutor.executeVisitWriterTask(roundNumber);
+        if (roundNumber != null) {
+            taskExecutor.executeVisitWriterTask(roundNumber);
+        }
         return TASK_VIEW;
     }
 
