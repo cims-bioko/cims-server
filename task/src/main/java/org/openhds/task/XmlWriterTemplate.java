@@ -1,6 +1,8 @@
 package org.openhds.task;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import com.github.batkinson.jrsync.Metadata;
+import com.github.batkinson.jrsync.MetadataOutputWrapper;
+
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
@@ -16,12 +18,16 @@ import javax.xml.bind.Marshaller;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
 
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collections;
 import java.util.Map;
+
+import static org.apache.commons.codec.binary.Hex.encodeHexString;
 
 /**
  * Template for writing entities to an XML file
@@ -31,6 +37,8 @@ import java.util.Map;
 public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
 
     private static final int PAGE_SIZE = 1000;
+    private static final int SYNC_BLOCK_SIZE = 8192;
+    private static final String MD5 = "MD5";
 
     private SessionFactory sessionFactory;
     private CalendarAdapter calendarAdapter;
@@ -53,9 +61,16 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
     public void writeXml(TaskContext taskContext) {
 
         long totalWritten = 0;
-
         try {
-            OutputStream outputStream = new FileOutputStream(taskContext.getDestinationFile());
+
+            File dest = taskContext.getDestinationFile();
+            OutputStream outputStream = new FileOutputStream(dest);
+            outputStream = new BufferedOutputStream(outputStream);
+
+            // Wrap the stream so we compute sync metadata on-the-fly
+            MetadataOutputWrapper metadataOut = new MetadataOutputWrapper(
+                    outputStream, "", SYNC_BLOCK_SIZE, MD5, MD5);
+            outputStream = metadataOut;
 
             asyncTaskService.startTask(taskName);
 
@@ -101,22 +116,35 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
                         asyncTaskService.updateTaskProgress(taskName, totalWritten);
                     }
                 }
+
+                xmlStreamWriter.writeEndElement();
+                xmlStreamWriter.close();
+
             } finally {
                 if (results != null) {
-                    results.close();
+                    try {
+                        results.close();
+                    } catch (Exception e) { }
                 }
                 if (session != null) {
-                    session.close();
+                    try {
+                        session.close();
+                    } catch (Exception e) { }
                 }
+                try {
+                    outputStream.close();
+                } catch (Exception e) { }
             }
 
-            xmlStreamWriter.writeEndElement();
-            xmlStreamWriter.close();
-            outputStream.close();
+            // Install the generated metadata file now that it is complete
+            File metaDest = new File(dest.getParentFile(), dest.getName() + ".jrsmd");
+            metadataOut.getMetadataFile().renameTo(metaDest);
 
-            InputStream inputStream = new FileInputStream(taskContext.getDestinationFile());
-            String md5 = DigestUtils.md5Hex(inputStream);
-            inputStream.close();
+            // Read the file's content hash from the metadata file
+            String md5;
+            try (DataInputStream metaStream = new DataInputStream(new FileInputStream(metaDest))) {
+                md5 = encodeHexString(Metadata.read(metaStream).getFileHash());
+            }
 
             asyncTaskService.finishTask(taskName, totalWritten, md5);
 
@@ -128,8 +156,6 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
     protected boolean skipEntity(T entity) {
         return false;
     }
-
-    ;
 
     protected abstract T makeCopyOf(T original);
 
