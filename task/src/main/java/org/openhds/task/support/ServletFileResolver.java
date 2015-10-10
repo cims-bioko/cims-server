@@ -1,6 +1,5 @@
 package org.openhds.task.support;
 
-import org.openhds.task.service.AsyncTaskService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
 
@@ -10,6 +9,14 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+
+import static org.openhds.task.service.AsyncTaskService.INDIVIDUAL_TASK_NAME;
+import static org.openhds.task.service.AsyncTaskService.LOCATION_TASK_NAME;
+import static org.openhds.task.service.AsyncTaskService.MEMBERSHIP_TASK_NAME;
+import static org.openhds.task.service.AsyncTaskService.RELATIONSHIP_TASK_NAME;
+import static org.openhds.task.service.AsyncTaskService.RESIDENCY_TASK_NAME;
+import static org.openhds.task.service.AsyncTaskService.SOCIALGROUP_TASK_NAME;
+import static org.openhds.task.service.AsyncTaskService.VISIT_TASK_NAME;
 
 @Component
 public class ServletFileResolver implements FileResolver, ServletContextAware {
@@ -25,13 +32,48 @@ public class ServletFileResolver implements FileResolver, ServletContextAware {
     @PostConstruct
     public void createAsyncMap() {
         asyncFiles = new HashMap<>();
-        asyncFiles.put(AsyncTaskService.INDIVIDUAL_TASK_NAME, "individual.xml");
-        asyncFiles.put(AsyncTaskService.LOCATION_TASK_NAME, "location.xml");
-        asyncFiles.put(AsyncTaskService.MEMBERSHIP_TASK_NAME, "membership.xml");
-        asyncFiles.put(AsyncTaskService.RELATIONSHIP_TASK_NAME, "relationship.xml");
-        asyncFiles.put(AsyncTaskService.RESIDENCY_TASK_NAME, "residency.xml");
-        asyncFiles.put(AsyncTaskService.SOCIALGROUP_TASK_NAME, "socialgroup.xml");
-        asyncFiles.put(AsyncTaskService.VISIT_TASK_NAME, "visit.xml");
+        asyncFiles.put(INDIVIDUAL_TASK_NAME, "individual.xml");
+        asyncFiles.put(LOCATION_TASK_NAME, "location.xml");
+        asyncFiles.put(MEMBERSHIP_TASK_NAME, "membership.xml");
+        asyncFiles.put(RELATIONSHIP_TASK_NAME, "relationship.xml");
+        asyncFiles.put(RESIDENCY_TASK_NAME, "residency.xml");
+        asyncFiles.put(SOCIALGROUP_TASK_NAME, "socialgroup.xml");
+        asyncFiles.put(VISIT_TASK_NAME, "visit.xml");
+    }
+
+    @Override
+    public File resolveResidencyXmlFile() {
+        return getFileForTask(RESIDENCY_TASK_NAME);
+    }
+
+    @Override
+    public File resolveMembershipXmlFile() {
+        return getFileForTask(MEMBERSHIP_TASK_NAME);
+    }
+
+    @Override
+    public File resolveIndividualXmlFile() {
+        return getFileForTask(INDIVIDUAL_TASK_NAME);
+    }
+
+    @Override
+    public File resolveLocationXmlFile() {
+        return getFileForTask(LOCATION_TASK_NAME);
+    }
+
+    @Override
+    public File resolveRelationshipXmlFile() {
+        return getFileForTask(RELATIONSHIP_TASK_NAME);
+    }
+
+    @Override
+    public File resolveSocialGroupXmlFile() {
+        return getFileForTask(SOCIALGROUP_TASK_NAME);
+    }
+
+    @Override
+    public File resolveVisitXmlFile() {
+        return getFileForTask(VISIT_TASK_NAME);
     }
 
     protected File getGeneratedXmlFolder() {
@@ -42,47 +84,7 @@ public class ServletFileResolver implements FileResolver, ServletContextAware {
     }
 
     @Override
-    public File resolveResidencyXmlFile() {
-        return buildFile(AsyncTaskService.RESIDENCY_TASK_NAME);
-    }
-
-    @Override
-    public File resolveMembershipXmlFile() {
-        return buildFile(AsyncTaskService.MEMBERSHIP_TASK_NAME);
-    }
-
-    @Override
-    public File resolveIndividualXmlFile() {
-        return buildFile(AsyncTaskService.INDIVIDUAL_TASK_NAME);
-    }
-
-    @Override
-    public File resolveLocationXmlFile() {
-        return buildFile(AsyncTaskService.LOCATION_TASK_NAME);
-    }
-
-    @Override
-    public File resolveRelationshipXmlFile() {
-        return buildFile(AsyncTaskService.RELATIONSHIP_TASK_NAME);
-    }
-
-    @Override
-    public File resolveSocialGroupXmlFile() {
-        return buildFile(AsyncTaskService.SOCIALGROUP_TASK_NAME);
-    }
-
-    @Override
-    public File resolveVisitXmlFile() {
-        return buildFile(AsyncTaskService.VISIT_TASK_NAME);
-    }
-
-    @Override
     public File getFileForTask(String taskName) {
-        return buildFile(asyncFiles.get(taskName));
+        return new File(getGeneratedXmlFolder(), asyncFiles.get(taskName));
     }
-
-    protected File buildFile(String file) {
-        return new File(getGeneratedXmlFolder(), file);
-    }
-
 }
