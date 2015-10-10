@@ -30,7 +30,7 @@ public class ServletFileResolver implements FileResolver, ServletContextAware {
     }
 
     @PostConstruct
-    public void createAsyncMap() {
+    public void createTaskFileMap() {
         asyncFiles = new HashMap<>();
         asyncFiles.put(INDIVIDUAL_TASK_NAME, "individual.xml");
         asyncFiles.put(LOCATION_TASK_NAME, "location.xml");
