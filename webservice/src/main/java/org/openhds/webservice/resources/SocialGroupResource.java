@@ -24,8 +24,8 @@ import java.util.List;
 @RequestMapping("/socialgroups")
 public class SocialGroupResource {
 
-    private SocialGroupService socialGroupService;
-    private FieldBuilder fieldBuilder;
+    private final SocialGroupService socialGroupService;
+    private final FieldBuilder fieldBuilder;
 
     @Autowired
     public SocialGroupResource(SocialGroupService socialGroupService, FieldBuilder fieldBuilder) {
@@ -37,7 +37,7 @@ public class SocialGroupResource {
     @ResponseBody
     public SocialGroups getAllSocialGroups() {
         List<SocialGroup> allSocialGroups = socialGroupService.getAllSocialGroups();
-        List<SocialGroup> copies = new ArrayList<SocialGroup>();
+        List<SocialGroup> copies = new ArrayList<>();
 
         for (SocialGroup sg : allSocialGroups) {
             SocialGroup copy = ShallowCopier.makeShallowCopy(sg);
@@ -59,15 +59,15 @@ public class SocialGroupResource {
                 "Invalid Ext Id for Group Head"));
 
         if (cv.hasViolations()) {
-            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
         }
 
         try {
             socialGroupService.createSocialGroup(socialGroup);
         } catch (ConstraintViolations e) {
-            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(e), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new WebServiceCallException(e), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<SocialGroup>(ShallowCopier.makeShallowCopy(socialGroup), HttpStatus.CREATED);
+        return new ResponseEntity<>(ShallowCopier.makeShallowCopy(socialGroup), HttpStatus.CREATED);
     }
 }

@@ -37,7 +37,7 @@ public class VisitResource {
     @ResponseBody
     public Visits getAllVisits() {
         List<Visit> allVisits = visitService.getAllVisits();
-        List<Visit> copies = new ArrayList<Visit>(allVisits.size());
+        List<Visit> copies = new ArrayList<>(allVisits.size());
 
         for (Visit visit : allVisits) {
             Visit copy = ShallowCopier.makeShallowCopy(visit);
@@ -58,15 +58,15 @@ public class VisitResource {
         visit.setCollectedBy(fieldBuilder.referenceField(visit.getCollectedBy(), cv));
 
         if (cv.hasViolations()) {
-            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
         }
 
         try {
             visitService.createVisit(visit);
         } catch (ConstraintViolations e) {
-            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Visit>(ShallowCopier.makeShallowCopy(visit), HttpStatus.CREATED);
+        return new ResponseEntity<>(ShallowCopier.makeShallowCopy(visit), HttpStatus.CREATED);
     }
 }

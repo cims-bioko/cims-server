@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/individuals")
 public class IndividualResource {
 
-    private IndividualService individualService;
+    private final IndividualService individualService;
 
     @Autowired
     public IndividualResource(IndividualService individualService) {

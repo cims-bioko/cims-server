@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/residencies")
 public class ResidencyResource {
 
-    private ResidencyService residencyService;
+    private final ResidencyService residencyService;
 
     @Autowired
     public ResidencyResource(ResidencyService residencyService) {
@@ -32,7 +32,7 @@ public class ResidencyResource {
     public ResponseEntity<? extends Serializable> getAllResidencies() {
         int count = (int) residencyService.getTotalResidencyCount();
         List<Residency> residencies = residencyService.getAllResidenciesInRange(null, count);
-        List<Residency> copies = new ArrayList<Residency>(residencies.size());
+        List<Residency> copies = new ArrayList<>(residencies.size());
 
         for (Residency r : residencies) {
             Residency copy = ShallowCopier.makeShallowCopy(r);
@@ -41,6 +41,6 @@ public class ResidencyResource {
 
         Residencies allResidencies = new Residency.Residencies();
         allResidencies.setResidencies(copies);
-        return new ResponseEntity<Residencies>(allResidencies, HttpStatus.OK);
+        return new ResponseEntity<>(allResidencies, HttpStatus.OK);
     }
 }

@@ -24,8 +24,8 @@ import java.util.List;
 @RequestMapping("/relationships")
 public class RelationshipResource {
 
-    private RelationshipService relationshipService;
-    private FieldBuilder fieldBuilder;
+    private final RelationshipService relationshipService;
+    private final FieldBuilder fieldBuilder;
 
     @Autowired
     public RelationshipResource(RelationshipService relationshipService, FieldBuilder fieldBuilder) {
@@ -37,7 +37,7 @@ public class RelationshipResource {
     @ResponseBody
     public Relationships getAllRelationships() {
         List<Relationship> allRelationships = relationshipService.getAllRelationships();
-        List<Relationship> copies = new ArrayList<Relationship>();
+        List<Relationship> copies = new ArrayList<>();
 
         for (Relationship relationship : allRelationships) {
             Relationship copy = ShallowCopier.makeShallowCopy(relationship);
@@ -60,15 +60,15 @@ public class RelationshipResource {
         relationship.setCollectedBy(fieldBuilder.referenceField(relationship.getCollectedBy(), cv));
 
         if (cv.hasViolations()) {
-            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
         }
 
         try {
             relationshipService.createRelationship(relationship);
         } catch (ConstraintViolations e) {
-            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Relationship>(ShallowCopier.makeShallowCopy(relationship), HttpStatus.CREATED);
+        return new ResponseEntity<>(ShallowCopier.makeShallowCopy(relationship), HttpStatus.CREATED);
     }
 }

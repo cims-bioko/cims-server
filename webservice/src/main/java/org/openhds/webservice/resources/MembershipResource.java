@@ -27,11 +27,11 @@ import java.util.List;
 @RequestMapping("/memberships")
 public class MembershipResource {
 
-    private MembershipService membershipService;
+    private final MembershipService membershipService;
 
-    private IndividualService individualService;
+    private final IndividualService individualService;
 
-    private FieldBuilder fieldBuilder;
+    private final FieldBuilder fieldBuilder;
 
     @Autowired
     public MembershipResource(MembershipService membershipService, IndividualService individualService,
@@ -47,12 +47,12 @@ public class MembershipResource {
 
         Individual individual = individualService.findIndivById(extId);
         if (individual == null) {
-            return new ResponseEntity<String>("No such individual.", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("No such individual.", HttpStatus.NOT_FOUND);
         }
 
 
         List<Membership> memberships = membershipService.getAllMemberships();
-        List<Membership> copies = new ArrayList<Membership>(memberships.size());
+        List<Membership> copies = new ArrayList<>(memberships.size());
 
         for (Membership m : memberships) {
             Membership copy = ShallowCopier.makeShallowCopy(m);
@@ -61,14 +61,14 @@ public class MembershipResource {
 
         Memberships allMemberships = new Memberships();
         allMemberships.setMemberships(copies);
-        return new ResponseEntity<Memberships>(allMemberships, HttpStatus.OK);
+        return new ResponseEntity<>(allMemberships, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/xml")
     @ResponseBody
     public ResponseEntity<? extends Serializable> getAllMemberships() {
         List<Membership> memberships = membershipService.getAllMemberships();
-        List<Membership> copies = new ArrayList<Membership>(memberships.size());
+        List<Membership> copies = new ArrayList<>(memberships.size());
 
         for (Membership m : memberships) {
             Membership copy = ShallowCopier.makeShallowCopy(m);
@@ -77,7 +77,7 @@ public class MembershipResource {
 
         Memberships allMemberships = new Membership.Memberships();
         allMemberships.setMemberships(copies);
-        return new ResponseEntity<Memberships>(allMemberships, HttpStatus.OK);
+        return new ResponseEntity<>(allMemberships, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
@@ -88,15 +88,15 @@ public class MembershipResource {
         membership.setIndividual(fieldBuilder.referenceField(membership.getIndividual(), cv));
 
         if (cv.hasViolations()) {
-            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
         }
 
         try {
             membershipService.createMembership(membership);
         } catch (ConstraintViolations e) {
-            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Membership>(ShallowCopier.makeShallowCopy(membership), HttpStatus.CREATED);
+        return new ResponseEntity<>(ShallowCopier.makeShallowCopy(membership), HttpStatus.CREATED);
     }
 }
