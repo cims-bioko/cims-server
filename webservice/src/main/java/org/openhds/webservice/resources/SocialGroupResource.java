@@ -95,7 +95,7 @@ public class SocialGroupResource {
     public void getCachedSocialGroups(HttpServletRequest request, HttpServletResponse response) {
 
         String contentHash = asyncTaskService.getContentHash(AsyncTaskService.SOCIALGROUP_TASK_NAME);
-        String eTag = request.getHeader(CacheHeaders.IF_NONE_MATCH);
+        String eTag = request.getHeader(Headers.IF_NONE_MATCH);
 
         if (eTag != null && eTag.equals(contentHash)) {
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);

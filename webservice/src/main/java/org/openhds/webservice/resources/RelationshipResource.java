@@ -97,7 +97,7 @@ public class RelationshipResource {
     public void getCachedRelationships(HttpServletRequest request, HttpServletResponse response) {
 
         String contentHash = asyncTaskService.getContentHash(AsyncTaskService.RELATIONSHIP_TASK_NAME);
-        String eTag = request.getHeader(CacheHeaders.IF_NONE_MATCH);
+        String eTag = request.getHeader(Headers.IF_NONE_MATCH);
 
         if (eTag != null && eTag.equals(contentHash)) {
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);

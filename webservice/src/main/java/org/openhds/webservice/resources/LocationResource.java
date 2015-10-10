@@ -1,5 +1,7 @@
 package org.openhds.webservice.resources;
 
+import com.github.batkinson.jrsync.Metadata;
+
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.controller.util.CacheResponseWriter;
@@ -30,12 +32,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.ServletContextAware;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringWriter;
@@ -44,7 +52,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/locations")
-public class LocationResource {
+public class LocationResource implements ServletContextAware {
     private static final Logger logger = LoggerFactory.getLogger(LocationResource.class);
 
     private final FieldBuilder fieldBuilder;
@@ -60,6 +68,7 @@ public class LocationResource {
     @Autowired
     private AsyncTaskService asyncTaskService;
 
+    private ServletContext ctx;
 
     @Autowired
     public LocationResource(LocationHierarchyService locationHierarchyService, FieldBuilder fieldBuilder,
@@ -147,22 +156,49 @@ public class LocationResource {
         return new FileSystemResource(fileResolver.resolveLocationXmlFile());
     }
 
-    @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
-    public void getAllCachedLocationsXml(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = { MediaType.APPLICATION_XML_VALUE, Metadata.MIME_TYPE })
+    public void getAllCachedLocationsXml(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String contentHash = asyncTaskService.getContentHash(AsyncTaskService.LOCATION_TASK_NAME);
-        String eTag = request.getHeader(CacheHeaders.IF_NONE_MATCH);
+        String eTag = request.getHeader(Headers.IF_NONE_MATCH);
 
         if (eTag != null && eTag.equals(contentHash)) {
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             return;
         }
 
+        File xmlFile = fileResolver.resolveLocationXmlFile();
+        File metaFile = new File(xmlFile.getParentFile(), xmlFile.getName() + "." + Metadata.FILE_EXT);
+
+        if (Metadata.MIME_TYPE.equals(request.getHeader(Headers.ACCEPT)) && metaFile.exists()) {
+            response.setContentType(Metadata.MIME_TYPE);
+            request.getRequestDispatcher(contextPath(metaFile)).forward(request, response);
+            return;
+        }
+
+        if (contentHash != null) {
+            response.setHeader(Headers.ETAG, contentHash);
+        }
+
+        // This prevents the downstream servlet from overwriting our ETag value
+        HttpServletResponseWrapper ignoreEtag = new HttpServletResponseWrapper(response) {
+            @Override
+            public void setHeader(String name, String value) {
+                if (!Headers.ETAG.equalsIgnoreCase(name)) {
+                    super.setHeader(name, value);
+                }
+            }
+        };
+
         try {
-            cacheResponseWriter.writeResponse(MediaType.APPLICATION_XML_VALUE, fileResolver.resolveLocationXmlFile(), contentHash, response);
+            request.getRequestDispatcher(contextPath(xmlFile)).forward(request, ignoreEtag);
         } catch (IOException e) {
             logger.error("Problem writing location xml file: " + e.getMessage());
         }
+    }
+
+    private String contextPath(File file) {
+        return "/" + file.getAbsolutePath().replaceFirst(ctx.getRealPath("/"), "");
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
@@ -346,5 +382,10 @@ public class LocationResource {
         result.setResultMessage("Location was deleted");
 
         return new ResponseEntity<WebserviceResult>(result, HttpStatus.OK);
+    }
+
+    @Override
+    public void setServletContext(ServletContext servletContext) {
+        this.ctx = servletContext;
     }
 }

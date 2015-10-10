@@ -96,7 +96,7 @@ public class VisitResource {
     public void getCachedVisits(HttpServletRequest request, HttpServletResponse response) {
 
         String contentHash = asyncTaskService.getContentHash(AsyncTaskService.VISIT_TASK_NAME);
-        String eTag = request.getHeader(CacheHeaders.IF_NONE_MATCH);
+        String eTag = request.getHeader(Headers.IF_NONE_MATCH);
 
         if (eTag != null && eTag.equals(contentHash)) {
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);

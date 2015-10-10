@@ -70,7 +70,7 @@ public class ResidencyResource {
     public void getCachedResidencies(HttpServletRequest request, HttpServletResponse response) {
 
         String contentHash = asyncTaskService.getContentHash(AsyncTaskService.RESIDENCY_TASK_NAME);
-        String eTag = request.getHeader(CacheHeaders.IF_NONE_MATCH);
+        String eTag = request.getHeader(Headers.IF_NONE_MATCH);
 
         if (eTag != null && eTag.equals(contentHash)) {
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
