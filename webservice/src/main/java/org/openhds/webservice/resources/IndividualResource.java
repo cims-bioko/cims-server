@@ -1,25 +1,11 @@
 package org.openhds.webservice.resources;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.openhds.controller.service.IndividualService;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Individual.Individuals;
 import org.openhds.domain.util.ShallowCopier;
-import org.openhds.task.service.AsyncTaskService;
-import org.openhds.task.support.FileResolver;
-import org.openhds.controller.util.CacheResponseWriter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,40 +13,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("/individuals")
 public class IndividualResource {
-    private static final Logger logger = LoggerFactory.getLogger(IndividualResource.class);
+
     private IndividualService individualService;
-    private FileResolver fileResolver;
 
     @Autowired
-    private CacheResponseWriter cacheResponseWriter;
-
-    @Autowired
-    private AsyncTaskService asyncTaskService;
-
-    @Autowired
-    public IndividualResource(IndividualService individualService, FileResolver fileResolver) {
+    public IndividualResource(IndividualService individualService) {
         this.individualService = individualService;
-        this.fileResolver = fileResolver;
     }
 
     @RequestMapping(value = "/{extId}", method = RequestMethod.GET)
     public ResponseEntity<? extends Serializable> getIndividualById(@PathVariable String extId) {
         Individual individual = individualService.findIndivById(extId);
         if (individual == null) {
-            return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<Individual>(ShallowCopier.makeShallowCopy(individual), HttpStatus.OK);
+        return new ResponseEntity<>(ShallowCopier.makeShallowCopy(individual), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Individuals getAllIndividuals() {
         List<Individual> allIndividual = individualService.getAllIndividuals();
-        List<Individual> copies = new ArrayList<Individual>(allIndividual.size());
+        List<Individual> copies = new ArrayList<>(allIndividual.size());
         for (Individual individual : allIndividual) {
             Individual copy = ShallowCopier.makeShallowCopy(individual);
             copies.add(copy);
@@ -70,23 +52,5 @@ public class IndividualResource {
         individuals.setIndividuals(copies);
 
         return individuals;
-    }
-
-    @RequestMapping(value = "/cached", method = RequestMethod.GET)
-    public void getCachedIndividuals(HttpServletRequest request, HttpServletResponse response) {
-
-        String contentHash = asyncTaskService.getContentHash(AsyncTaskService.INDIVIDUAL_TASK_NAME);
-        String eTag = request.getHeader(Headers.IF_NONE_MATCH);
-
-        if (eTag != null && eTag.equals(contentHash)) {
-            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-            return;
-        }
-
-        try {
-            cacheResponseWriter.writeResponse(MediaType.APPLICATION_XML_VALUE, fileResolver.resolveIndividualXmlFile(), contentHash, response);
-        } catch (IOException e) {
-            logger.error("Problem writing individual xml file: " + e.getMessage());
-        }
     }
 }

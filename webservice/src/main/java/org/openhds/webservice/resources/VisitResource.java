@@ -1,29 +1,14 @@
 package org.openhds.webservice.resources;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.VisitService;
 import org.openhds.domain.model.Visit;
 import org.openhds.domain.model.Visit.Visits;
 import org.openhds.domain.util.ShallowCopier;
-import org.openhds.task.service.AsyncTaskService;
-import org.openhds.task.support.FileResolver;
-import org.openhds.controller.util.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,28 +16,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("/visits")
 public class VisitResource {
-    private static final Logger logger = LoggerFactory.getLogger(VisitResource.class);
 
     private final VisitService visitService;
     private final FieldBuilder fieldBuilder;
-    private final FileResolver fileResolver;
 
     @Autowired
-    private CacheResponseWriter cacheResponseWriter;
-
-    @Autowired
-    private AsyncTaskService asyncTaskService;
-
-
-    @Autowired
-    public VisitResource(VisitService visitService, FieldBuilder fieldBuilder, EntityService entityService,
-            FileResolver fileResolver) {
+    public VisitResource(VisitService visitService, FieldBuilder fieldBuilder) {
         this.visitService = visitService;
         this.fieldBuilder = fieldBuilder;
-        this.fileResolver = fileResolver;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -90,23 +68,5 @@ public class VisitResource {
         }
 
         return new ResponseEntity<Visit>(ShallowCopier.makeShallowCopy(visit), HttpStatus.CREATED);
-    }
-
-    @RequestMapping(value = "/cached", method = RequestMethod.GET)
-    public void getCachedVisits(HttpServletRequest request, HttpServletResponse response) {
-
-        String contentHash = asyncTaskService.getContentHash(AsyncTaskService.VISIT_TASK_NAME);
-        String eTag = request.getHeader(Headers.IF_NONE_MATCH);
-
-        if (eTag != null && eTag.equals(contentHash)) {
-            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-            return;
-        }
-
-        try {
-            cacheResponseWriter.writeResponse(MediaType.APPLICATION_XML_VALUE, fileResolver.resolveVisitXmlFile(), contentHash, response);
-        } catch (IOException e) {
-            logger.error("Problem writing visit xml file: " + e.getMessage());
-        }
     }
 }

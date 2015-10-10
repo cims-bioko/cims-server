@@ -103,7 +103,7 @@ public class TaskExecutorImplTest {
         executor.setSocialGroupTaskWriter(writeTask);
         executor.executeSocialGroupXmlWriterTask();
 
-        verify(fileResolver).resolvesocialGroupXmlFile();
+        verify(fileResolver).resolveSocialGroupXmlFile();
         verify(writeTask).writeXmlAsync(any(TaskContext.class));
     }
 

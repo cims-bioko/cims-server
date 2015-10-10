@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.File;
-import java.io.IOException;
 
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
@@ -78,7 +77,7 @@ public class CachedEndpointResourceTest {
             fileResolver.resolveMembershipXmlFile().createNewFile();
             fileResolver.resolveRelationshipXmlFile().createNewFile();
             fileResolver.resolveResidencyXmlFile().createNewFile();
-            fileResolver.resolvesocialGroupXmlFile().createNewFile();
+            fileResolver.resolveSocialGroupXmlFile().createNewFile();
             fileResolver.resolveVisitXmlFile().createNewFile();
 
     }

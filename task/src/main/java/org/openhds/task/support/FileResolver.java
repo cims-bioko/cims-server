@@ -8,11 +8,9 @@ public interface FileResolver {
 
     File resolveLocationXmlFile();
 
-    String resolveLocationXmlFilename();
-
     File resolveRelationshipXmlFile();
 
-    File resolvesocialGroupXmlFile();
+    File resolveSocialGroupXmlFile();
 
     File resolveResidencyXmlFile();
 
@@ -20,4 +18,5 @@ public interface FileResolver {
 
     File resolveVisitXmlFile();
 
+    File getFileForTask(String taskName);
 }

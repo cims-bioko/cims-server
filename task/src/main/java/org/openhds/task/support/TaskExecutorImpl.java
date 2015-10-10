@@ -78,7 +78,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     public void executeSocialGroupXmlWriterTask() {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.SOCIALGROUP_TASK_NAME)) {
             asyncTaskService.startTask(AsyncTaskService.SOCIALGROUP_TASK_NAME);
-            File socialGroupXmlFile = fileResolver.resolvesocialGroupXmlFile();
+            File socialGroupXmlFile = fileResolver.resolveSocialGroupXmlFile();
             socialGroupTaskWriter.writeXmlAsync(new TaskContext(socialGroupXmlFile));
         }
     }
