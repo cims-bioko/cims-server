@@ -81,7 +81,8 @@ public class CacheFileResource implements ServletContextAware {
             File xmlFile = fileResolver.getFileForTask(taskName);
             File metaFile = new File(xmlFile.getParentFile(), xmlFile.getName() + "." + Metadata.FILE_EXT);
 
-            if (Metadata.MIME_TYPE.equals(request.getHeader(Headers.ACCEPT)) && metaFile.exists()) {
+            String accept = request.getHeader(Headers.ACCEPT);
+            if (accept != null && accept.contains(Metadata.MIME_TYPE) && metaFile.exists()) {
                 response.setContentType(Metadata.MIME_TYPE);
                 request.getRequestDispatcher(contextPath(metaFile)).forward(request, response);
                 return;
