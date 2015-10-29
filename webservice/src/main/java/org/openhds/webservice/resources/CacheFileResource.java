@@ -30,6 +30,15 @@ import static org.openhds.task.service.AsyncTaskService.RESIDENCY_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.SOCIALGROUP_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.VISIT_TASK_NAME;
 
+/**
+ * Shared controller for all pre-generated cache files for tablet
+ * synchronization. It uses content negotiation and awareness of sync metadata
+ * to help tablets:
+ *
+ *   <li>skip syncing when its local content is identical</li>
+ *   <li>use a zsync to efficiently synchronize with existing content</li>
+ *   <li>perform a full-download is syncing is not possible</li>
+ */
 @Controller
 public class CacheFileResource implements ServletContextAware {
 
