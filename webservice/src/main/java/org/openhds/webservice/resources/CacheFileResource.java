@@ -78,6 +78,11 @@ public class CacheFileResource implements ServletContextAware {
                 return;
             }
 
+            if (contentHash != null) {
+                response.setHeader(Headers.ETAG, contentHash);
+                response = new ETagIgnoringResponse(response);
+            }
+
             File xmlFile = fileResolver.getFileForTask(taskName);
             File metaFile = new File(xmlFile.getParentFile(), xmlFile.getName() + "." + Metadata.FILE_EXT);
 
@@ -88,10 +93,8 @@ public class CacheFileResource implements ServletContextAware {
                 return;
             }
 
-            if (contentHash != null) {
-                response.setHeader(Headers.ETAG, contentHash);
-            }
-            request.getRequestDispatcher(contextPath(xmlFile)).forward(request, new ETagIgnoringResponse(response));
+            request.getRequestDispatcher(contextPath(xmlFile)).forward(request, response);
+
         } catch (Exception e) {
             log.error("problem servicing request" + e.getMessage());
         }
