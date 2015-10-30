@@ -13,11 +13,6 @@ import org.openhds.task.service.AsyncTaskService;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamWriter;
-
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
@@ -26,6 +21,11 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Collections;
 import java.util.Map;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamWriter;
 
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
 
@@ -96,7 +96,7 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
                         .setReadOnly(true)
                         .setFetchSize(Integer.MIN_VALUE);
 
-                for (Map.Entry<String,Object> param : getQueryParams(taskContext).entrySet()) {
+                for (Map.Entry<String, Object> param : getQueryParams(taskContext).entrySet()) {
                     exportQuery.setParameter(param.getKey(), param.getValue());
                 }
 
@@ -127,16 +127,19 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
                 if (results != null) {
                     try {
                         results.close();
-                    } catch (Exception e) { }
+                    } catch (Exception e) {
+                    }
                 }
                 if (session != null) {
                     try {
                         session.close();
-                    } catch (Exception e) { }
+                    } catch (Exception e) {
+                    }
                 }
                 try {
                     outputStream.close();
-                } catch (Exception e) { }
+                } catch (Exception e) {
+                }
             }
 
             if (scratch.renameTo(dest)) {
