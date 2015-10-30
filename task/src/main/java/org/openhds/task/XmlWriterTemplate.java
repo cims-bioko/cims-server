@@ -64,7 +64,10 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
         try {
 
             File dest = taskContext.getDestinationFile();
-            OutputStream outputStream = new FileOutputStream(dest);
+
+            // Protect clients from downloading partial content (write and move)
+            File scratch = new File(dest.getParentFile(), dest.getName() + ".tmp");
+            OutputStream outputStream = new FileOutputStream(scratch);
             outputStream = new BufferedOutputStream(outputStream);
 
             // Wrap the stream so we compute sync metadata on-the-fly
@@ -136,17 +139,23 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
                 } catch (Exception e) { }
             }
 
-            // Install the generated metadata file now that it is complete
-            File metaDest = new File(dest.getParentFile(), dest.getName() + ".jrsmd");
-            metadataOut.getMetadataFile().renameTo(metaDest);
+            if (scratch.renameTo(dest)) {
 
-            // Read the file's content hash from the metadata file
-            String md5;
-            try (DataInputStream metaStream = new DataInputStream(new FileInputStream(metaDest))) {
-                md5 = encodeHexString(Metadata.read(metaStream).getFileHash());
+                // Install the new file, generated metadata and update content hash
+
+                File metaDest = new File(dest.getParentFile(), dest.getName() + ".jrsmd");
+                metadataOut.getMetadataFile().renameTo(metaDest);
+
+                String md5;
+                try (DataInputStream metaStream = new DataInputStream(new FileInputStream(metaDest))) {
+                    md5 = encodeHexString(Metadata.read(metaStream).getFileHash());
+                }
+
+                asyncTaskService.finishTask(taskName, totalWritten, md5);
+
+            } else {
+                throw new RuntimeException("failed to move generated file");
             }
-
-            asyncTaskService.finishTask(taskName, totalWritten, md5);
 
         } catch (Exception e) {
             asyncTaskService.finishTask(taskName, totalWritten, e.getMessage());
