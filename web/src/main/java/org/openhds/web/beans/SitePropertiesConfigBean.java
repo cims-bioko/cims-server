@@ -45,8 +45,6 @@ public class SitePropertiesConfigBean {
 	Integer minAgeOfMarriage;
 	Integer minAgeOfPregnancy;
 	
-	Date dateOfEnumeration;
-	
 	JsfService jsfService;
 	
 	public void create() {
