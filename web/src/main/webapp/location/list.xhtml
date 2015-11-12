@@ -51,16 +51,16 @@
                             <h:outputText escape="false" value=""/>
                         </f:facet> 
                         <h:outputLink value="#{request.contextPath}/amendment/location/details/#{loc.uuid}">
-                            <h:graphicImage style="border: 0;" title="details" value="/resources/icons/details.ico" />
+                            <h:graphicImage style="border: 0;" title="details" value="/resources/icons/details.png" />
                         </h:outputLink>
                         <h:outputText value=" "/>
                         <h:commandLink id="edit" action="#{locationCrud.editSetup}" >
                         	<f:param name="itemId" value="#{loc.uuid}"/>
-                          	<h:graphicImage style="border: 0;" title="edit" value="/resources/icons/edit.ico" />
+                          	<h:graphicImage style="border: 0;" title="edit" value="/resources/icons/edit.png" />
                         </h:commandLink>
                         <sec:ifAllGranted roles="DELETE_ENTITY">
 						    <h:commandLink action="#{locationCrud.delete}">
-		                   	    <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.ico"/>
+		                   	    <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.png"/>
                            	    <f:param name="itemId" value="#{loc.uuid}"/>
 		                    </h:commandLink>
                         </sec:ifAllGranted>
@@ -98,17 +98,17 @@
                                	<h:outputText escape="false" value=""/>
                            	</f:facet>  
                             	<h:commandLink id="detail" action="location_detail">
-                               	<h:graphicImage title="view" style="border: 0;" value="/resources/icons/details.ico"/>
+                               	<h:graphicImage title="view" style="border: 0;" value="/resources/icons/details.png"/>
                                	<f:param name="itemId" value="#{loc.uuid}"/>
                             	</h:commandLink>
 							<h:outputText value=" "/>
                            	<h:commandLink id="edit" action="location_edit" >
                              		<f:param name="itemId" value="#{loc.uuid}"/>
-                             		<h:graphicImage style="border: 0;" title="edit" value="/resources/icons/edit.ico" />
+                             		<h:graphicImage style="border: 0;" title="edit" value="/resources/icons/edit.png" />
                           		</h:commandLink>
                            	<h:outputText value=" "/>
                            	<h:commandLink action="#{locationCrud.delete}">
-	                    		<h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.ico"/>
+	                    		<h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.png"/>
                           	    	<f:param name="itemId" value="#{loc.uuid}"/>
 	                		</h:commandLink>
                     	</h:column>

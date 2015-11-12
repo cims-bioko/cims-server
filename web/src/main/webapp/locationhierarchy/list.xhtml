@@ -49,15 +49,15 @@
                             <h:outputText escape="false" value=""/>
                         </f:facet>
                         <h:commandLink immediate="true" action="#{locationHierarchyCrud.detailSetup}">
-                            <h:graphicImage style="border: 0;" title="details" value="/resources/icons/details.ico" />
+                            <h:graphicImage style="border: 0;" title="details" value="/resources/icons/details.png" />
                             <f:param name="itemId" value="#{loc.uuid}"/>
                         </h:commandLink>
                         <h:commandLink immediate="true" action="#{locationHierarchyCrud.editSetup}">
-                            <h:graphicImage style="border: 0;" title="details" value="/resources/icons/edit.ico" />
+                            <h:graphicImage style="border: 0;" title="details" value="/resources/icons/edit.png" />
                             <f:param name="itemId" value="#{loc.uuid}"/>
                         </h:commandLink>
                         <h:commandLink  action="#{locationHierarchyCrud.delete}">
-                            <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.ico"/>
+                            <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.png"/>
                             <f:param name="itemId" value="#{loc.uuid}"/>
                        	  </h:commandLink>
                     </h:column>

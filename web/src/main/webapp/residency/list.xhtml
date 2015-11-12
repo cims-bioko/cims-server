@@ -53,12 +53,12 @@
 	                            <h:outputText escape="false" value=""/>
 	                        </f:facet>
 	                        <h:outputLink value="#{request.contextPath}/amendment/residency/details/#{item.uuid}">
-                              	<h:graphicImage style="border: 0;" title="details" value="/resources/icons/details.ico" />
+                              	<h:graphicImage style="border: 0;" title="details" value="/resources/icons/details.png" />
                           	 </h:outputLink>
                             <h:outputText value=" "/>
                             <sec:ifAllGranted roles="DELETE_ENTITY">
                                 <h:commandLink action="#{residencyCrud.delete}">
-                                    <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.ico"/>
+                                    <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.png"/>
                                     <f:param name="itemId" value="#{item.uuid}"/>
                                 </h:commandLink>
                             </sec:ifAllGranted>

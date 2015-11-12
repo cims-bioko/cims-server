@@ -57,19 +57,19 @@
                        	</f:facet>  
                         <h:commandLink id="veiwDetail" action="#{demRatesCrud.detailSetup}">
                             <f:param name="itemId" value="#{item.uuid}"/>
-                            <h:graphicImage style="border: 0;" title="details" value="../resources/icons/details.ico" />
+                            <h:graphicImage style="border: 0;" title="details" value="../resources/icons/details.png" />
                         </h:commandLink>
                         <h:commandLink id="edit" action="#{demRatesCrud.editSetup}" >
                           	<f:param name="itemId" value="#{item.uuid}"/>
-                          	<h:graphicImage style="border: 0;" title="edit" value="../resources/icons/edit.ico" />
+                          	<h:graphicImage style="border: 0;" title="edit" value="../resources/icons/edit.png" />
                         </h:commandLink>
                         <h:commandLink id="deleteLink" action="#{demRatesCrud.delete}">
                             <f:param name="itemId" value="#{item.uuid}"/>
-                            <h:graphicImage style="border: 0;" title="delete"  value="../resources/icons/delete.ico"/>
+                            <h:graphicImage style="border: 0;" title="delete"  value="../resources/icons/delete.png"/>
                         </h:commandLink>
                         <h:commandLink id="viewLink" action="#{demRatesCrud.redirectToReports}" target="_blank">
                             <f:param name="itemId" value="#{item.uuid}"/>
-                            <h:graphicImage style="border: 0;" title="view report" value="../resources/icons/report.ico"/>
+                            <h:graphicImage style="border: 0;" title="view report" value="../resources/icons/report.png"/>
                         </h:commandLink>
 		            </h:column>
 		        </h:dataTable>

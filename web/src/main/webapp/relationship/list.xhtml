@@ -51,16 +51,16 @@
                                 <h:outputText escape="false" value=""/>
                             </f:facet>
                           	<h:outputLink value="#{request.contextPath}/amendment/relationship/details/#{relationship.uuid}">
-                              	<h:graphicImage style="border: 0;" title="details" value="/resources/icons/details.ico" />
+                              	<h:graphicImage style="border: 0;" title="details" value="/resources/icons/details.png" />
                           	 </h:outputLink>
                             <h:outputText value=" "/>
                             <h:commandLink action="#{relationshipCrud.editSetup}">
-                                 <h:graphicImage title="edit" style="border: 0;" value="/resources/icons/edit.ico"/>
+                                 <h:graphicImage title="edit" style="border: 0;" value="/resources/icons/edit.png"/>
                                 <f:param name="itemId" value="#{relationship.uuid}"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink action="#{relationshipCrud.delete}">
-                                <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.ico"/>
+                                <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.png"/>
                                 <f:param name="itemId" value="#{relationship.uuid}"/>
                             </h:commandLink>
                         </h:column>
@@ -95,12 +95,12 @@
                                 <h:outputText escape="false" value=""/>
                             </f:facet>
                             <h:commandLink action="#{relationshipCrud.detailSetup}">
-                                <h:graphicImage title="view" style="border: 0;" value="/resources/icons/details.ico"/>
+                                <h:graphicImage title="view" style="border: 0;" value="/resources/icons/details.png"/>
                                 <f:param name="itemId" value="#{relationship.uuid}"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink  action="#{relationshipCrud.editSetup}">
-                                <h:graphicImage title="edit" style="border: 0;" value="/resources/icons/edit.ico"/>
+                                <h:graphicImage title="edit" style="border: 0;" value="/resources/icons/edit.png"/>
                                 <f:param name="itemId" value="#{relationship.uuid}"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
