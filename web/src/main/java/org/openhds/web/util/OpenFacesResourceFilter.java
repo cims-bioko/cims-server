@@ -15,7 +15,7 @@ public class OpenFacesResourceFilter extends ResourceFilter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        super.init(filterConfig);
         this.excludeSuffixPattern = filterConfig.getInitParameter("excludeSuffix");
     }
 
