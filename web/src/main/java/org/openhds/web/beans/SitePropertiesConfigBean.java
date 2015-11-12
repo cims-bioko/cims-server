@@ -84,16 +84,18 @@ public class SitePropertiesConfigBean {
 		writePropertyFile(properties);
 	}
 		
-    public Date getDateOfEnumeration() throws ParseException {
-    	
-    	if (earliestEnumerationDate == null)
-    		return new Date();
-    	
-    	DateFormat formatter = new SimpleDateFormat(dateFormat);
-        Date date = formatter.parse(earliestEnumerationDate);
-        Calendar dateCal = Calendar.getInstance();
-        dateCal.setTime(date);
-        return dateCal.getTime();
+    public Date getDateOfEnumeration() {
+		try {
+			DateFormat formatter = new SimpleDateFormat(dateFormat);
+			Date date = formatter.parse(earliestEnumerationDate);
+			Calendar dateCal = Calendar.getInstance();
+			dateCal.setTime(date);
+			return dateCal.getTime();
+		} catch (ParseException e) {
+			String msg = String.format("failed to parse date %s using format %s", earliestEnumerationDate, dateFormat);
+			jsfService.addErrorForComponent(msg, "enumDate");
+			return new Date();
+		}
 	}
 
 	public void setDateOfEnumeration(Date dateOfEnumeration) throws ParseException {
