@@ -76,6 +76,7 @@
 				</prop>
 				<prop key="hibernate.jdbc.use_streams_for_binary"></prop>
 				<prop key="hibernate.jdbc.batch_size">0</prop>
+				<prop key="hibernate.dialect">${hibernateDialect}</prop>
 			</props>
 		</property>
 	</bean>
