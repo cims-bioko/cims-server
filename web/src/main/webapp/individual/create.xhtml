@@ -21,7 +21,7 @@
     	<h:outputText value="#{navController.breadcrumbTrail}" />	
 
         <c:choose>
-            <c:when test="#{flowScope.baselineAddSG}">
+            <c:when test="#{flowScope.baselineAddSG == true}">
                 <h1>#{msg.socialGroupHead}</h1>
             </c:when>
             <c:otherwise>
