@@ -49,6 +49,10 @@
             <artifactId>hibernate-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.jdom</groupId>
             <artifactId>jdom</artifactId>
             <version>1.1</version>

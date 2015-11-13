@@ -39,7 +39,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <org.springframework.version>3.2.8.RELEASE</org.springframework.version>
         <org.springframework.security.version>3.2.1.RELEASE</org.springframework.security.version>
-        <org.hibernate.core.version>4.2.14.Final</org.hibernate.core.version>
+        <org.hibernate.core.version>3.5.3-Final</org.hibernate.core.version>
         <org.hibernate.validator.version>4.3.1.Final</org.hibernate.validator.version>
         <hibernate.validationMode>javax.persistence.validation.mode=NONE</hibernate.validationMode>
         <slf4j.version>1.5.6</slf4j.version>
@@ -181,6 +181,11 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
+                <version>${org.hibernate.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-annotations</artifactId>
                 <version>${org.hibernate.core.version}</version>
             </dependency>
             <dependency>
