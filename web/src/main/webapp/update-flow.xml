@@ -10,6 +10,7 @@
     <on-start>
         <evaluate expression="updateBean.clearAllValues()"></evaluate>
         <set name="flowScope.showNavMenu" value="true" />
+        <set name="flowScope.updating" value="false" />
     </on-start>
 
     <view-state id="home" view="update/update.xhtml">
