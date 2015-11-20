@@ -464,7 +464,6 @@
 		<navigation-case>
 			<from-outcome>socialgroup_edit</from-outcome>
 			<to-view-id>/socialgroup/edit.faces</to-view-id>
-			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>studyDocument_create</from-outcome>
