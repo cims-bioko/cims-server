@@ -306,6 +306,7 @@
 		<navigation-case>
 			<from-outcome>membership_edit</from-outcome>
 			<to-view-id>/membership/edit.faces</to-view-id>
+			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>neonatalvpm_create</from-outcome>
@@ -385,6 +386,7 @@
 		<navigation-case>
 			<from-outcome>relationship_edit</from-outcome>
 			<to-view-id>/relationship/edit.faces</to-view-id>
+			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>residency_list</from-outcome>
@@ -464,6 +466,7 @@
 		<navigation-case>
 			<from-outcome>socialgroup_edit</from-outcome>
 			<to-view-id>/socialgroup/edit.faces</to-view-id>
+			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>studyDocument_create</from-outcome>
@@ -503,6 +506,7 @@
 		<navigation-case>
 			<from-outcome>visit_edit</from-outcome>
 			<to-view-id>/visit/edit.faces</to-view-id>
+			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>user_list</from-outcome>

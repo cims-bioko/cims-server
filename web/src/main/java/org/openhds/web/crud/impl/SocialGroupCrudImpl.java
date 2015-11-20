@@ -9,6 +9,8 @@ import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.SocialGroupService;
 import org.springframework.binding.message.MessageContext;
 
+import static org.hibernate.Hibernate.initialize;
+
 public class SocialGroupCrudImpl extends EntityCrudImpl<SocialGroup, String> {
 
 	SocialGroupService socialGroupService;
@@ -16,6 +18,13 @@ public class SocialGroupCrudImpl extends EntityCrudImpl<SocialGroup, String> {
 	
 	public SocialGroupCrudImpl(Class<SocialGroup> entityClass) {
 		super(entityClass);
+	}
+
+	@Override
+	protected void postSetup() {
+		if (entityItem != null) {
+			initialize(entityItem.getGroupHead());
+		}
 	}
 
 	@Override

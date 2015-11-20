@@ -342,8 +342,15 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
             jsfService.addError("The item with id " + itemId
                     + " no longer exists.");
         }
+        postSetup();
         return outcome;
     }
+
+    /**
+     * Allows derived classes to perform post-processing after scalarSetup, but before
+     * dispatch to result.
+     */
+    protected void postSetup() { }
 
     public String next() {
         reset(false, false);

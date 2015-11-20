@@ -5,11 +5,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.faces.context.FacesContext;
+
 import org.openhds.controller.service.EntityValidationService;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Membership;
 import org.openhds.controller.service.MembershipService;
 import org.springframework.binding.message.MessageContext;
+
+import static org.hibernate.Hibernate.initialize;
 
 public class MembershipCrudImpl extends EntityCrudImpl<Membership, String> {
 
@@ -24,6 +27,15 @@ public class MembershipCrudImpl extends EntityCrudImpl<Membership, String> {
         super(entityClass);
         entityFilter = new RelationshipEntityFilter();
     }
+
+	@Override
+	protected void postSetup() {
+		// Initialize lazy associations (so detached objects work after redirects, etc.)
+		if (entityItem != null) {
+			initialize(entityItem.getIndividual());
+			initialize(entityItem.getSocialGroup());
+		}
+	}
 
 	// the entityitem, the pojo, can have its fields set before being created by super create
     // Note that super create calls dao.create(entityItem);

@@ -19,6 +19,8 @@ import org.openhds.controller.service.VisitService;
 import org.openhds.domain.service.SitePropertiesService;
 import org.springframework.binding.message.MessageContext;
 
+import static org.hibernate.Hibernate.initialize;
+
 public class VisitCrudImpl extends EntityCrudImpl<Visit, String> {
 
 	VisitService service;
@@ -34,7 +36,15 @@ public class VisitCrudImpl extends EntityCrudImpl<Visit, String> {
 	public VisitCrudImpl(Class<Visit> entityClass) {
         super(entityClass);
     }
-	
+
+	@Override
+	protected void postSetup() {
+		if (entityItem != null) {
+			initialize(entityItem.getExtensions());
+			initialize(entityItem.getVisitLocation());
+		}
+	}
+
 	/**
 	 * Overridden method for setting extensionsInitialized paramater.
 	 */

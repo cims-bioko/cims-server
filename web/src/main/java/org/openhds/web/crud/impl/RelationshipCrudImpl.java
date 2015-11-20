@@ -12,6 +12,8 @@ import org.openhds.domain.model.Relationship;
 import org.openhds.controller.service.RelationshipService;
 import org.springframework.binding.message.MessageContext;
 
+import static org.hibernate.Hibernate.initialize;
+
 public class RelationshipCrudImpl extends EntityCrudImpl<Relationship, String> {
 
     EntityValidationService<Relationship> entityValidator;
@@ -26,6 +28,14 @@ public class RelationshipCrudImpl extends EntityCrudImpl<Relationship, String> {
         super(entityClass);
         entityFilter = new RelationshipEntityFilter();
     }
+
+	@Override
+	protected void postSetup() {
+		if (entityItem != null) {
+			initialize((entityItem).getIndividualA());
+			initialize((entityItem).getIndividualB());
+		}
+	}
 
 	@Override
     public String create() {
