@@ -130,7 +130,7 @@
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>dhisDocument_create</from-outcome>
-			<to-view-id>/dhis-document/create.xhtml</to-view-id>
+			<to-view-id>/dhis-document/create.faces</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
@@ -470,7 +470,7 @@
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>studyDocument_create</from-outcome>
-			<to-view-id>/study-document/create.xhtml</to-view-id>
+			<to-view-id>/study-document/create.faces</to-view-id>
 			<redirect />
 		</navigation-case>
         <navigation-case>
