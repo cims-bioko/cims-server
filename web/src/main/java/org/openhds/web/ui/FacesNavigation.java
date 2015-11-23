@@ -18,10 +18,18 @@ public class FacesNavigation {
         return true;
     }
 
-    public String getNavigateTo() {
+    public String lookup(String event) {
         FacesContext ctx = FacesContext.getCurrentInstance();
         ConfigurableNavigationHandler handler = (ConfigurableNavigationHandler) ctx.getApplication().getNavigationHandler();
-        NavigationCase navCase = handler.getNavigationCase(ctx, null, eventId);
-        return navCase != null ? navCase.getToViewId(ctx) : eventId;
+        NavigationCase navCase = handler.getNavigationCase(ctx, null, event);
+        if (navCase != null) {
+            String viewId = navCase.getToViewId(ctx);
+            return viewId.replaceFirst("[.]xhtml$", ".faces");  // translate proper view-ids to faces URLs
+        }
+        return event;
+    }
+
+    public String getNavigateTo() {
+        return lookup(eventId);
     }
 }
