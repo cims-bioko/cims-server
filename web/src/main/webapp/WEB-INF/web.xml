@@ -28,15 +28,6 @@
     	<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
     	<param-value>client</param-value>
     </context-param>
-
-    <!-- description>
-            Comma separated list of URIs of additional faces files.
-            (e.g. /WEB-INF/my-config.xml) Attention: /WEB-INF/faces.config.xml is added automatically.
-    </description -->
-	<!-- context-param>
-        <param-name>javax.faces.CONFIG_FILES</param-name>
-        <param-value></param-value>
-    </context-param -->
 	
 	<listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
