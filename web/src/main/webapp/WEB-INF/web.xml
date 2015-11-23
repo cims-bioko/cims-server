@@ -5,12 +5,6 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
 
-    <display-name>OpenHDS</display-name>
-
-    <description>
-        Open Source Health and Demographic System Web Application
-    </description>
-
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath*:/META-INF/spring/application*.xml</param-value>
