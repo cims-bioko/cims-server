@@ -160,6 +160,10 @@
 	   <dispatcher>FORWARD</dispatcher> 
 	   <dispatcher>REQUEST</dispatcher> 
 	   <dispatcher>ERROR</dispatcher>
-	</filter-mapping>   
+	</filter-mapping>
+    
+    <welcome-file-list>
+        <welcome-file>/demowelcome.faces</welcome-file>
+    </welcome-file-list>
 
 </web-app>
