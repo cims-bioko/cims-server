@@ -31,7 +31,7 @@
     
     <end-state id="resetForm" />
     <end-state id="logout" view="externalRedirect:contextRelative:logoutProcess" />
-    <end-state id="exit" view="externalRedirect:contextRelative:${facesNavigation.navigateTo}" />
+    <end-state id="exit" view="externalRedirect:contextRelative:#{facesNavigation.navigateTo}" />
     
     <global-transitions>
     	<transition on="logoutLnk" to="logOut" />

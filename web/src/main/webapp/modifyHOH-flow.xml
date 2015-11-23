@@ -74,7 +74,7 @@
     </view-state>
     
     <view-state id="confirm" view="modifyHOH/confirm.xhtml">
-        <transition on="continue" to="${flowScope.currentView}" />
+        <transition on="continue" to="#{flowScope.currentView}" />
         <transition on="cancel" to="directCancel" />
     </view-state>
     
@@ -86,7 +86,7 @@
     	<if test="flowScope.modifyHOH" then="confirm" else="logout" />
 	</decision-state>
 	
-    <end-state id="exit" view="externalRedirect:contextRelative:${facesNavigation.navigateTo}" />
+    <end-state id="exit" view="externalRedirect:contextRelative:#{facesNavigation.navigateTo}" />
     <end-state id="logout" view="externalRedirect:contextRelative:logoutProcess" />
     <end-state id="resetForm" />
     

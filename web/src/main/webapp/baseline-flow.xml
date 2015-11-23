@@ -86,7 +86,7 @@
     </view-state>
 
     <view-state id="confirmFromLocation" view="baseline/confirm.xhtml">
-        <transition on="continue" to="${flowScope.currentView}" />
+        <transition on="continue" to="#{flowScope.currentView}" />
         <transition on="cancel" to="exit">
             <evaluate expression="locationCrud.editByUuid(flowScope.uuid, messageContext)" />
         </transition>
@@ -124,7 +124,7 @@
     </view-state>
 
     <view-state id="confirmFromSocialGroup" view="baseline/confirm.xhtml">
-        <transition on="continue" to="${flowScope.currentView}" />
+        <transition on="continue" to="#{flowScope.currentView}" />
         <transition on="cancel" to="exit">
             <evaluate expression="socialGroupCrud.editByUuid(flowScope.uuid, messageContext)" />
         </transition>
@@ -194,7 +194,7 @@
     </view-state>
 
     <view-state id="confirm" view="baseline/confirm.xhtml">
-        <transition on="continue" to="${flowScope.currentView}" />
+        <transition on="continue" to="#{flowScope.currentView}" />
         <transition on="cancel" to="directCancel" />
     </view-state>
 
@@ -206,7 +206,7 @@
         <if test="flowScope.updatingBaseline" then="confirm" else="logout" />
     </decision-state>
 
-    <end-state id="exit" view="externalRedirect:contextRelative:${facesNavigation.navigateTo}" />
+    <end-state id="exit" view="externalRedirect:contextRelative:#{facesNavigation.navigateTo}" />
     <end-state id="logout" view="externalRedirect:contextRelative:logoutProcess" />
     <end-state id="resetForm" />
 

@@ -140,7 +140,7 @@
 	<!-- opportunity to continue with an in migration -->
 	<view-state id="confirm" view="migration/confirm.xhtml">
 		<!-- If continue, send to the current view -->
-		<transition on="continue" to="${flowScope.currentView}" />
+		<transition on="continue" to="#{flowScope.currentView}" />
 		
 		<!-- Otherwise forward user to desired form -->
 		<transition on="cancel" to="exit" />
@@ -149,7 +149,7 @@
 	<!-- A view to confirm logging out in the case where the user has started an in migration -->
 	<view-state id="confirmToLogout" view="migration/confirm.xhtml">
 		<!-- user wants to continue with current in migration -->
-		<transition on="continue" to="${flowScope.currentView}" />
+		<transition on="continue" to="#{flowScope.currentView}" />
 		
 		<!-- user wants to cancel current in migration and logout -->
 		<transition on="cancel" to="logout" />
@@ -183,7 +183,7 @@
 	<end-state id="logout" view="externalRedirect:contextRelative:logoutProcess" />
 	
 	<!-- Allow users to navigate away from this flow - They will be redirected to the page they clicked on -->	 
-	<end-state id="exit" view="externalRedirect:contextRelative:${facesNavigation.navigateTo}" />
+	<end-state id="exit" view="externalRedirect:contextRelative:#{facesNavigation.navigateTo}" />
 	
 	<global-transitions>
 		<!-- User clicked the logout link -->

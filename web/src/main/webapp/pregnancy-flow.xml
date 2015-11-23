@@ -180,13 +180,13 @@
     <!-- Confirm dialog form used when a user attempts to navigate away from -->
     <!-- the pregnancy outcome form -->
     <view-state id="confirm" view="pregnancy-outcome/confirm.xhtml">
-        <transition on="continue" to="${flowScope.currentView}" />
+        <transition on="continue" to="#{flowScope.currentView}" />
         <transition on="cancel" to="exit" />
     </view-state>
 
     <!-- Confirm dialog form used when user attempts to logout of the system -->
     <view-state id="confirmLogout" view="pregnancy-outcome/confirm.xhtml">
-        <transition on="continue" to="${flowScope.currentView}" />
+        <transition on="continue" to="#{flowScope.currentView}" />
 
         <transition on="cancel" to="logout" />
     </view-state>
@@ -217,7 +217,7 @@
 
     <!-- This end state is used when the user attempts to navigate away from this flow -->
         <!-- In theory, it should redirect the user to the page they clicked on -->
-    <end-state id="exit" view="externalRedirect:contextRelative:${facesNavigation.navigateTo}" />
+    <end-state id="exit" view="externalRedirect:contextRelative:#{facesNavigation.navigateTo}" />
 
     <!-- This end state is used when the user clicks the logout link -->
     <end-state id="logout" view="externalRedirect:contextRelative:logoutProcess" />
