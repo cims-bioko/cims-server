@@ -7,7 +7,6 @@
 
 	<application>
 		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
-		<view-handler>com.sun.facelets.FaceletViewHandler</view-handler> 
 		<el-resolver>org.openhds.web.util.JsfCrudELResolver</el-resolver>
 		<el-resolver>org.openhds.web.util.ValueExtensionResolver</el-resolver>
 	</application>
