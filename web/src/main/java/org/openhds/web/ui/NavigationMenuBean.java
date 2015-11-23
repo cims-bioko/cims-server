@@ -116,9 +116,9 @@ public class NavigationMenuBean {
 	 * If the Pregnancy Outcome is a subflow, simply append to
 	 * the trail. If not, clear everything.
 	 */
-	public void determineOriginForPregOutcome(boolean flag) {
+	public void determineOriginForPregOutcome(Boolean flag) {
 		
-		if (flag == false) 
+		if (Boolean.FALSE.equals(flag))
 			clearTrailExceptFirst();
 		
 		addItemToTrail("PregnancyOutcome Create");
