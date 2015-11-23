@@ -5,206 +5,206 @@
 	
 	<url-mapping id="adultvpmDetail">
 		<pattern value="/amendment/adultvpm/details/#{itemId}" />
-		<view-id>/adultvpm/detail.xhtml</view-id>
+		<view-id>/adultvpm/detail.faces</view-id>
 		<action onPostback="false">#{adultVPMCrud.detailSetup}</action>
 	</url-mapping>
-	
+
 	<url-mapping id="locationDetail" >
 		<pattern value="/amendment/location/details/#{itemId}" />
-		<view-id>/location/detail.xhtml</view-id> 
+		<view-id>/location/detail.faces</view-id>
 		<action onPostback="false">#{locationCrud.detailSetup}</action>
 	</url-mapping>
-	
+
 	<url-mapping id="individualDetail" >
 		<pattern value="/amendment/individual/details/#{itemId}" />
-		<view-id>/individual/detail.xhtml</view-id> 
+		<view-id>/individual/detail.faces</view-id>
 		<action onPostback="false">#{individualCrud.detailSetup}</action>
 	</url-mapping>
-	
+
 	<url-mapping id="deathDetail" >
 		<pattern value="/amendment/death/details/#{itemId}" />
-		<view-id>/death/detail.xhtml</view-id> 
+		<view-id>/death/detail.faces</view-id>
 		<action onPostback="false">#{deathCrud.detailSetup}</action>
 	</url-mapping>
-		
+
 	<url-mapping id="membershipDetail" >
 		<pattern value="/amendment/membership/details/#{itemId}" />
-		<view-id>/membership/detail.xhtml</view-id> 
+		<view-id>/membership/detail.faces</view-id>
 		<action onPostback="false">#{membershipCrud.detailSetup}</action>
 	</url-mapping>
-	
+
 	<url-mapping id="neonatalvpmDetail" >
 		<pattern value="/amendment/neonatalvpm/details/#{itemId}" />
-		<view-id>/neonatalvpm/detail.xhtml</view-id> 
+		<view-id>/neonatalvpm/detail.faces</view-id>
 		<action onPostback="false">#{neonatalVPMCrud.detailSetup}</action>
 	</url-mapping>
-	
+
 	<url-mapping id="outmigrationDetail" >
 		<pattern value="/amendment/outmigration/details/#{itemId}" />
-		<view-id>/outmigration/detail.xhtml</view-id> 
+		<view-id>/outmigration/detail.faces</view-id>
 		<action onPostback="false">#{outMigrationCrud.detailSetup}</action>
 	</url-mapping>
-	
+
 	<url-mapping id="postneonatalvpmDetail" >
 		<pattern value="/amendment/postneonatalvpm/details/#{itemId}" />
-		<view-id>/postneonatalvpm/detail.xhtml</view-id> 
+		<view-id>/postneonatalvpm/detail.faces</view-id>
 		<action onPostback="false">#{postneonatalVPMCrud.detailSetup}</action>
 	</url-mapping>
-	
+
 	<url-mapping id="pregnancyobservationDetail" >
 		<pattern value="/amendment/pregnancyobservation/details/#{itemId}" />
-		<view-id>/pregnancyobservation/detail.xhtml</view-id> 
+		<view-id>/pregnancyobservation/detail.faces</view-id>
 		<action onPostback="false">#{pregnancyObservationCrud.detailSetup}</action>
 	</url-mapping>
-	
+
 	<url-mapping id="pregnancyoutcomeDetail" >
-	
+
 		<pattern value="/amendment/pregnancy-outcome/details/#{itemId}" />
-		<view-id>/pregnancy-outcome/detail.xhtml</view-id> 
+		<view-id>/pregnancy-outcome/detail.faces</view-id>
 		<action onPostback="false">#{pregnancyOutcomeCrud.detailSetup}</action>
 	</url-mapping>
-	
+
 	<url-mapping id="relationshipDetail" >
 		<pattern value="/amendment/relationship/details/#{itemId}" />
-		<view-id>/relationship/detail.xhtml</view-id> 
+		<view-id>/relationship/detail.faces</view-id>
 		<action onPostback="false">#{relationshipCrud.detailSetup}</action>
 	</url-mapping>
-	
+
 	<url-mapping id="socialgroupDetail" >
 		<pattern value="/amendment/socialgroup/details/#{itemId}" />
-		<view-id>/socialgroup/detail.xhtml</view-id> 
+		<view-id>/socialgroup/detail.faces</view-id>
 		<action onPostback="false">#{socialGroupCrud.detailSetup}</action>
 	</url-mapping>
-	
+
 	<url-mapping id="vaccinationDetail" >
 		<pattern value="/amendment/vaccination/details/#{itemId}" />
-		<view-id>/vaccination/detail.xhtml</view-id> 
+		<view-id>/vaccination/detail.faces</view-id>
 		<action onPostback="false">#{vaccinationCrud.detailSetup}</action>
 	</url-mapping>
-			
+
 	<url-mapping id="visitDetail" >
 		<pattern value="/amendment/visit/details/#{itemId}" />
-		<view-id>/visit/detail.xhtml</view-id> 
+		<view-id>/visit/detail.faces</view-id>
 		<action onPostback="false">#{visitCrud.detailSetup}</action>
 	</url-mapping>
-	
+
 	<url-mapping id="residencyDetail" >
 		<pattern value="/amendment/residency/details/#{itemId}" />
-		<view-id>/residency/detail.xhtml</view-id> 
+		<view-id>/residency/detail.faces</view-id>
 		<action onPostback="false">#{residencyCrud.detailSetup}</action>
 	</url-mapping>
-	
+
 	<url-mapping id="inmigrationDetail" >
 		<pattern value="/amendment/inmigration/details/#{itemId}" />
-		<view-id>/migration/detail.xhtml</view-id> 
+		<view-id>/migration/detail.faces</view-id>
 		<action onPostback="false">#{inMigrationCrud.detailSetup}</action>
 	</url-mapping>
-		
+
 	<url-mapping id="inMigrationEdit" >
 		<pattern value="/amendment/inmigration/edit/#{itemId}" />
-		<view-id>/migration/edit.xhtml</view-id> 
+		<view-id>/migration/edit.faces</view-id>
 		<action onPostback="false">#{inMigrationCrud.editSetup}</action>
 	</url-mapping>
-	
+
 	<url-mapping id="validationRoutine" >
 		<pattern value="/validationRoutine" />
-		<view-id>/validation/validate.xhtml</view-id> 
+		<view-id>/validation/validate.faces</view-id>
 		<action onPostback="false">#{validationRoutineBean.setup}</action>
 	</url-mapping>
-		
+
 	<!-- These URL mappings only serve the purpose of redirecting back to a URL mappings above -->
 	<!-- This is a workaround so that when an entity that is being edited is saved, it gets properly -->
 	<!-- redirected back to the details page. At the time of writing, there didn't appear to be any -->
 	<!-- other way around this problem -->
-	
+
 	<url-mapping id="adultvpmEdit" >
 		<pattern value="/amendment/adultvpm/details/#{itemId: adultVPMCrud.item.uuid}" />
-		<view-id>/adultvpm/detail.xhtml</view-id> 
+		<view-id>/adultvpm/detail.faces</view-id>
 	</url-mapping>
-			
+
 	<url-mapping id="deathEdit" >
 		<pattern value="/amendment/death/details/#{itemId: deathCrud.item.uuid}" />
-		<view-id>/death/detail.xhtml</view-id> 
+		<view-id>/death/detail.faces</view-id>
 	</url-mapping>
-	
+
 	<url-mapping id="individualEdit" >
 		<pattern value="/amendment/individual/details/#{itemId: individualCrud.item.uuid}" />
-		<view-id>/individual/detail.xhtml</view-id> 
+		<view-id>/individual/detail.faces</view-id>
 	</url-mapping>
 
 	<url-mapping id="locationEdit" >
 		<pattern value="/amendment/location/details/#{itemId: locationCrud.item.uuid}" />
-		<view-id>/location/detail.xhtml</view-id> 
+		<view-id>/location/detail.faces</view-id>
 	</url-mapping>
-	
+
 	<url-mapping id="membershipEdit" >
 		<pattern value="/amendment/membership/details/#{itemId : membershipCrud.item.uuid}" />
-		<view-id>/membership/detail.xhtml</view-id> 
+		<view-id>/membership/detail.faces</view-id>
 	</url-mapping>
-	
+
 	<url-mapping id="neonatalvpmEdit" >
 		<pattern value="/amendment/neonatalvpm/details/#{itemId: neonatalVPMCrud.item.uuid}" />
-		<view-id>/neonatalvpm/detail.xhtml</view-id> 
+		<view-id>/neonatalvpm/detail.faces</view-id>
 	</url-mapping>
-	
+
 	<url-mapping id="postneonatalvpmEdit" >
 		<pattern value="/amendment/postneonatalvpm/details/#{itemId: postneonatalVPMCrud.item.uuid}" />
-		<view-id>/postneonatalvpm/detail.xhtml</view-id> 
+		<view-id>/postneonatalvpm/detail.faces</view-id>
 	</url-mapping>
-		
+
 	<url-mapping id="pregnancyoutcomeEdit" >
 		<pattern value="/amendment/pregnancyoutcome/details/#{itemId: pregnancyOutcomeCrud.item.uuid}" />
-		<view-id>/pregnancy-outcome/detail.xhtml</view-id> 
+		<view-id>/pregnancy-outcome/detail.faces</view-id>
 	</url-mapping>
-		
+
 	<url-mapping id="pregnancyobservationEdit" >
 		<pattern value="/amendment/pregnancyobservation/details/#{itemId: pregnancyObservationCrud.item.uuid}" />
-		<view-id>/pregnancyobservation/detail.xhtml</view-id> 
+		<view-id>/pregnancyobservation/detail.faces</view-id>
 	</url-mapping>
-	
+
 	<url-mapping id="relationshipEdit" >
 		<pattern value="/amendment/relationship/details/#{itemId: relationshipCrud.item.uuid}" />
-		<view-id>/relationship/detail.xhtml</view-id>
+		<view-id>/relationship/detail.faces</view-id>
 	</url-mapping>
-	
+
 	<url-mapping id="socialgroupEdit" >
 		<pattern value="/amendment/socialgroup/details/#{itemId: socialGroupCrud.item.uuid}" />
-		<view-id>/socialgroup/detail.xhtml</view-id> 
+		<view-id>/socialgroup/detail.faces</view-id>
 	</url-mapping>
-	
+
 	<url-mapping id="vaccinationEdit" >
 		<pattern value="/amendment/vaccination/details/#{itemId: vaccinationCrud.item.uuid}" />
-		<view-id>/vaccination/detail.xhtml</view-id> 
+		<view-id>/vaccination/detail.faces</view-id>
 	</url-mapping>
-			
+
 	<url-mapping id="visitEdit" >
 		<pattern value="/amendment/visit/details/#{itemId: visitCrud.item.uuid}" />
-		<view-id>/visit/detail.xhtml</view-id> 
+		<view-id>/visit/detail.faces</view-id>
 	</url-mapping>
-	
+
 	<url-mapping id="outMigEdit" >
 		<pattern value="/amendment/outmigration/details/#{itemId: outMigrationCrud.item.uuid}" />
-		<view-id>/outmigration/detail.xhtml</view-id> 
+		<view-id>/outmigration/detail.faces</view-id>
 	</url-mapping>
-	
+
 	<url-mapping id="migrationsEdit" >
 		<pattern value="/amendment/inmigration/details/#{itemId: inMigrationCrud.item.uuid}" />
-		<view-id>/migration/detail.xhtml</view-id> 
-	</url-mapping>	
-	
+		<view-id>/migration/detail.faces</view-id>
+	</url-mapping>
+
 	<url-mapping id="databaseConfiguration" >
 		<pattern value="/database-config/" />
-		<view-id>/database-config/setup.xhtml</view-id> 
+		<view-id>/database-config/setup.faces</view-id>
 	</url-mapping>
-	
+
 	<url-mapping id="locationLevelsConfiguration" >
 		<pattern value="/location-levels/" />
-		<view-id>/location-levels/setup.xhtml</view-id> 
+		<view-id>/location-levels/setup.faces</view-id>
 	</url-mapping>
-	
+
 	<url-mapping id="codesConfiguration" >
 		<pattern value="/codes-config/" />
-		<view-id>/codes-config/setup.xhtml</view-id> 
+		<view-id>/codes-config/setup.faces</view-id>
 	</url-mapping>
 		
 </pretty-config>
