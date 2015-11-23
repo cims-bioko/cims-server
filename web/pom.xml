@@ -14,7 +14,7 @@
     <name>OpenHDS Web Application</name>
 
     <properties>
-        <org.springframework.swf.version>2.0.9.RELEASE</org.springframework.swf.version>
+        <org.springframework.swf.version>2.4.2.RELEASE</org.springframework.swf.version>
         <demo.login.credentials />
     </properties>
 
@@ -139,8 +139,14 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
-            <artifactId>facelets-taglib-jsf12-spring-3</artifactId>
+            <artifactId>facelets-taglib-jsf20-spring-3</artifactId>
             <version>0.4</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.faces</groupId>
+                    <artifactId>jsf-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -180,7 +186,7 @@
         </dependency>
         <dependency>
             <groupId>com.ocpsoft</groupId>
-            <artifactId>prettyfaces-jsf12</artifactId>
+            <artifactId>prettyfaces-jsf2</artifactId>
             <version>3.1.0</version>
             <exclusions>
                 <exclusion>
@@ -192,7 +198,7 @@
         <dependency>
             <groupId>org.openfaces</groupId>
             <artifactId>openfaces</artifactId>
-            <version>2.0</version>
+            <version>3.0</version>
         </dependency>
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
