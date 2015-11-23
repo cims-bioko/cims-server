@@ -60,10 +60,10 @@
 	                	<h:commandLink styleClass="welcome-link" value="#{msg.mnFieldWorkers}" action="#{fieldWorkerCrud.createSetup}">
 	                		<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
 	                	</h:commandLink>
-	                	<h:commandLink styleClass="welcome-link" action="baseline_flow" value="#{msg.mnBaseline}" >
+	                	<h:commandLink styleClass="welcome-link" action="#{facesNavigation.redirect('baseline_flow')}" value="#{msg.mnBaseline}" >
 	                        <f:setPropertyActionListener target="#{navController.showBaseline}" value="true" /> 
 	                    </h:commandLink> 
-	                   	<h:commandLink styleClass="welcome-link" action="update_flow" value="#{msg.mnUpdate}" >
+	                   	<h:commandLink styleClass="welcome-link" action="#{facesNavigation.redirect('update_flow')}" value="#{msg.mnUpdate}" >
 	                        <f:setPropertyActionListener target="#{navController.showUpdate}" value="true" /> 
 	                   	</h:commandLink> 
                 	</h:panelGrid>
