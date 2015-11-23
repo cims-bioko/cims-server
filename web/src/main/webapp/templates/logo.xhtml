@@ -17,7 +17,7 @@
                         <f:loadBundle basename="MessageResource_#{siteProperties.locale}" var="msg"/>
                     <c:if test="#{currentUser.name != null}">
                         <div>
-		          			#{msg.welcome} #{currentUser.name}, <h:outputText value=" " /> <h:commandLink action="logoutLnk" value="#{msg.logout}" />						
+		          			#{msg.welcome} #{currentUser.name}, <h:outputText value=" " /> <h:outputLink value="#{request.contextPath}/logoutProcess">#{msg.logout}</h:outputLink>
                         </div>
                     </c:if>
                 </div>
