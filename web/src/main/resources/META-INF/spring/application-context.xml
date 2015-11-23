@@ -84,6 +84,8 @@
 			access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:intercept-url pattern="/primefaces_resource/**"
 			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/javax.faces.resource/**"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:intercept-url pattern="/module/dsl/binding-def/**"
 			access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:intercept-url pattern="/module/dsl/validation"
