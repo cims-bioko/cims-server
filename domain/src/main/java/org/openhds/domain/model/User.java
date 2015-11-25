@@ -60,7 +60,7 @@ public class User implements Serializable, UuidIdentifiable {
     @Description(description="Password associated with the username.")
     String password;
     
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(name="user_roles", joinColumns = {@JoinColumn(name="user_uuid")}, inverseJoinColumns = @JoinColumn(name="role_uuid"))
     @Description(description="Set of roles applied to the user.")
     Set<Role> roles = new HashSet<Role>();
