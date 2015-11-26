@@ -22,7 +22,7 @@
             
                 <h1>#{msg.userCreate}</h1>
                 <h:messages id="errors" globalOnly="true" />
-                <h:form>
+                <h:form id="form">
                     <h:panelGrid columns="3">
                         <h:outputText value="#{msg.userFirstName}:"/>
                         <h:inputText id="firstName" value="#{userCrud.item.firstName}" converter="#{defaultStringConverter}"/>
