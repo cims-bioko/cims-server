@@ -213,7 +213,7 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK>, Find
 
     public List<T> findListByPropertyPagedInsensitive(String propertyName, Object value, int firstResult, int maxResults) {
         Criteria criteria = getSession().createCriteria(entityType).add(Restrictions.ilike(propertyName, (String)value, MatchMode.ANYWHERE));
-    	if (AuditableEntity.class.isAssignableFrom(entityType)) {
+    	if (AuditableEntity.class.isAssignableFrom(entityType) || User.class.isAssignableFrom(entityType)) {
     		criteria = addImplicitRestrictions(criteria);
         }
     	return (List<T>) criteria.setFirstResult(firstResult).setMaxResults(maxResults).
