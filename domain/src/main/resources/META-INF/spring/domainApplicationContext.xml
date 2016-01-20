@@ -12,10 +12,7 @@
 
     <bean id="appSettings" class="org.openhds.domain.model.AppSettings" scope="prototype">
         <property name="versionNumber">
-            <value>${openhds.tag.number}</value>
-        </property>
-        <property name="versionName">
-            <value>${openhds.tag.name}</value>
+            <value>${project.version}</value>
         </property>
     </bean>
 
