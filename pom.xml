@@ -229,6 +229,12 @@
                     </configuration>
                 </plugin>
                 <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <configuration>
+                        <escapeString>\</escapeString>
+                    </configuration>
+                </plugin>
+                <plugin>
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.3.2</version>
                 </plugin>
