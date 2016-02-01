@@ -62,6 +62,7 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
         writeXml(taskContext);
     }
 
+    @SuppressWarnings("unchecked")
     public void writeXml(TaskContext taskContext) {
 
         long totalWritten = 0;
@@ -181,6 +182,7 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
         return session.createQuery(query);
     }
 
+    @SuppressWarnings("unchecked")
     protected T makeCopyOf(T original) {
         return (T)ShallowCopier.makeShallowCopy((UuidIdentifiable)original);
     }
