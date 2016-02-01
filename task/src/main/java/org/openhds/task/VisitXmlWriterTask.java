@@ -19,11 +19,6 @@ public class VisitXmlWriterTask extends XmlWriterTemplate<Visit> {
     }
 
     @Override
-    protected Visit makeCopyOf(Visit original) {
-        return ShallowCopier.makeShallowCopy(original);
-    }
-
-    @Override
     protected String getExportQuery() {
         return "from Visit" +
                 " where deleted = false" +

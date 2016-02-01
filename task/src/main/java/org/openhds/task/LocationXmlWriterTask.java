@@ -16,11 +16,6 @@ public class LocationXmlWriterTask extends XmlWriterTemplate<Location> {
     }
 
     @Override
-    protected Location makeCopyOf(Location original) {
-        return ShallowCopier.makeShallowCopy(original);
-    }
-
-    @Override
     protected String getExportQuery() {
         return "from Location l" +
                 " join fetch l.locationHierarchy h" +

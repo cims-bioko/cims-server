@@ -16,11 +16,6 @@ public class ResidencyXmlWriterTask extends XmlWriterTemplate<Residency> {
 	}
 
 	@Override
-	protected Residency makeCopyOf(Residency original) {
-		return ShallowCopier.makeShallowCopy(original);
-	}
-
-	@Override
 	protected String getExportQuery() {
 		return "from Residency" +
 				" where deleted = false";

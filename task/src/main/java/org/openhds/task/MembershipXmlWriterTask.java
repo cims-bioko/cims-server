@@ -16,11 +16,6 @@ public class MembershipXmlWriterTask extends XmlWriterTemplate<Membership> {
 	}
 
 	@Override
-	protected Membership makeCopyOf(Membership original) {
-		return ShallowCopier.makeShallowCopy(original);
-	}
-
-	@Override
 	protected String getExportQuery() {
 		return "from Membership" +
 				" where deleted = false";

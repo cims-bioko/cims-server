@@ -8,7 +8,9 @@ import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
+import org.openhds.domain.model.UuidIdentifiable;
 import org.openhds.domain.util.CalendarAdapter;
+import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
@@ -167,7 +169,9 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
         return false;
     }
 
-    protected abstract T makeCopyOf(T original);
+    protected T makeCopyOf(T original) {
+        return (T)ShallowCopier.makeShallowCopy((UuidIdentifiable)original);
+    }
 
     protected abstract String getExportQuery();
 

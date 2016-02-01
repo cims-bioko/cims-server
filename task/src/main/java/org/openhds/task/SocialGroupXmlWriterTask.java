@@ -16,11 +16,6 @@ public class SocialGroupXmlWriterTask extends XmlWriterTemplate<SocialGroup> {
     }
 
     @Override
-    protected SocialGroup makeCopyOf(SocialGroup original) {
-        return ShallowCopier.makeShallowCopy(original);
-    }
-
-    @Override
     protected String getExportQuery() {
         return "from SocialGroup" +
                 " where deleted = false";
