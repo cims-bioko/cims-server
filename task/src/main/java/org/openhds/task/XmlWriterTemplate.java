@@ -67,12 +67,10 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
 
             // Protect clients from downloading partial content (write and move)
             File scratch = new File(dest.getParentFile(), dest.getName() + ".tmp");
-            OutputStream outputStream = new FileOutputStream(scratch);
-            outputStream = new BufferedOutputStream(outputStream);
+            OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(scratch));
 
-            // Wrap the stream so we compute sync metadata on-the-fly
-            MetadataOutputWrapper metadataOut = new MetadataOutputWrapper(
-                    outputStream, "", SYNC_BLOCK_SIZE, MD5, MD5);
+            // Wrap the stream so we compute sync metadata on-the-fly, keep reference for post-processing
+            MetadataOutputWrapper metadataOut = new MetadataOutputWrapper(outputStream, "", SYNC_BLOCK_SIZE, MD5, MD5);
             outputStream = metadataOut;
 
             asyncTaskService.startTask(taskName);
