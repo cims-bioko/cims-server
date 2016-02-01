@@ -41,7 +41,7 @@ import static org.apache.commons.codec.binary.Hex.encodeHexString;
 public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
 
     private static final int PAGE_SIZE = 1000;
-    private static final int SYNC_BLOCK_SIZE = 8192;
+    private static final int DEFAULT_SYNC_BLOCK_SIZE = 8192;
     private static final String MD5 = "MD5";
 
     private SessionFactory sessionFactory;
@@ -74,7 +74,7 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
             OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(scratch));
 
             // Wrap the stream so we compute sync metadata on-the-fly, keep reference for post-processing
-            MetadataOutputWrapper metadataOut = new MetadataOutputWrapper(outputStream, "", SYNC_BLOCK_SIZE, MD5, MD5);
+            MetadataOutputWrapper metadataOut = new MetadataOutputWrapper(outputStream, "", getSyncBlockSize(), MD5, MD5);
             outputStream = metadataOut;
 
             asyncTaskService.startTask(taskName);
@@ -162,6 +162,10 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
         } catch (Exception e) {
             asyncTaskService.finishTask(taskName, totalWritten, e.getMessage());
         }
+    }
+
+    protected int getSyncBlockSize() {
+        return DEFAULT_SYNC_BLOCK_SIZE;
     }
 
     protected void writeXml(XMLStreamWriter xmlStreamWriter, Marshaller marshaller, T original) throws JAXBException {
