@@ -1,14 +1,10 @@
 package org.openhds.task;
 
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Calendar;
 
 import org.dom4j.DocumentException;
 import org.hibernate.SessionFactory;
@@ -16,12 +12,9 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.domain.model.Location;
-import org.openhds.domain.util.CalendarUtil;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.security.core.context.SecurityContext;
 
 public class LocationXmlWriterTaskTest extends AbstractXmlWriterTest {
 

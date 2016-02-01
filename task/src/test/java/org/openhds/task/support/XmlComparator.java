@@ -1,7 +1,5 @@
 package org.openhds.task.support;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.io.StringWriter;
 

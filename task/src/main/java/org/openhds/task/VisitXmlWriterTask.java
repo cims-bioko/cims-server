@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.hibernate.SessionFactory;
 import org.openhds.domain.model.Visit;
-import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

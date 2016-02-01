@@ -10,7 +10,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhds.controller.service.CurrentUser;
-import org.openhds.controller.service.MembershipService;
 import org.openhds.domain.model.PrivilegeConstants;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
