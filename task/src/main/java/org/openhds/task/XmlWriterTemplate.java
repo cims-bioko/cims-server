@@ -7,6 +7,7 @@ import org.hibernate.Query;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.SessionFactory;
+import org.hibernate.SharedSessionContract;
 import org.hibernate.StatelessSession;
 import org.openhds.domain.model.UuidIdentifiable;
 import org.openhds.domain.util.CalendarAdapter;
@@ -92,7 +93,7 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
 
                 session = sessionFactory.openStatelessSession();
 
-                Query exportQuery = session.createQuery(getExportQuery())
+                Query exportQuery = createQuery(session, getExportQuery())
                         .setReadOnly(true)
                         .setFetchSize(Integer.MIN_VALUE);
 
@@ -167,6 +168,10 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
 
     protected boolean skipEntity(T entity) {
         return false;
+    }
+
+    protected Query createQuery(SharedSessionContract session, String query) {
+        return session.createQuery(query);
     }
 
     protected T makeCopyOf(T original) {
