@@ -25,7 +25,7 @@ public class IndividualXmlWriterTask extends XmlWriterTemplate<Individual> {
 
         if (!original.getAllResidencies().isEmpty()) {
             Residency residencyCopy = ShallowCopier.makeShallowCopy(original.getCurrentResidency());
-            Set<Residency> nestedResidencies = new HashSet<Residency>();
+            Set<Residency> nestedResidencies = new HashSet<>();
             nestedResidencies.add(residencyCopy);
             individualCopy.setAllResidencies(nestedResidencies);
         }

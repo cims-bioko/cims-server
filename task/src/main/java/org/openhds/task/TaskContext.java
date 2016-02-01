@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class TaskContext {
     private File destinationFile;
-    private Map<String, String> extraData = new HashMap<String, String>();
+    private Map<String, String> extraData = new HashMap<>();
 
     public TaskContext(File destinationFile) {
         this.destinationFile = destinationFile;
