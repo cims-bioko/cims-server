@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
@@ -107,11 +108,8 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
 
                     T original = ((T[]) results.get())[0];
 
-                    boolean writeEntity = !skipEntity(original);
-
-                    if (writeEntity) {
-                        T copy = makeCopyOf(original);
-                        marshaller.marshal(copy, xmlStreamWriter);
+                    if (!skipEntity(original)) {
+                        writeXml(xmlStreamWriter, marshaller, original);
                         totalWritten++;
                     }
 
@@ -164,6 +162,11 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
         } catch (Exception e) {
             asyncTaskService.finishTask(taskName, totalWritten, e.getMessage());
         }
+    }
+
+    protected void writeXml(XMLStreamWriter xmlStreamWriter, Marshaller marshaller, T original) throws JAXBException {
+        T copy = makeCopyOf(original);
+        marshaller.marshal(copy, xmlStreamWriter);
     }
 
     protected boolean skipEntity(T entity) {
