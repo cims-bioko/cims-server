@@ -22,7 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
+import static org.openhds.task.service.AsyncTaskService.FIELDWORKER_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.INDIVIDUAL_TASK_NAME;
+import static org.openhds.task.service.AsyncTaskService.LOCATIONHIERARCHY_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.LOCATION_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.MEMBERSHIP_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.RELATIONSHIP_TASK_NAME;
@@ -136,5 +138,15 @@ public class CacheFileResource implements ServletContextAware {
     @RequestMapping(value = "/visits/cached", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, Metadata.MIME_TYPE})
     public void visits(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         serviceTask(VISIT_TASK_NAME, request, response);
+    }
+
+    @RequestMapping(value = "/fieldworkers/cached", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, Metadata.MIME_TYPE})
+    public void fieldWorkers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        serviceTask(FIELDWORKER_TASK_NAME, request, response);
+    }
+
+    @RequestMapping(value = "/locationhierarchies/cached", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, Metadata.MIME_TYPE})
+    public void locationHierarchies(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        serviceTask(LOCATIONHIERARCHY_TASK_NAME, request, response);
     }
 }

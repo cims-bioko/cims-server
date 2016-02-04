@@ -14,4 +14,8 @@ public interface TaskExecutor {
     
     void executeVisitWriterTask(int roundNumber);
 
+    void executeFieldWorkerXmlWriterTask();
+
+    void executeLocationHierarchyXmlWriterTask();
+
 }

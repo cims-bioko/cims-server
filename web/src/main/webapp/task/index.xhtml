@@ -10,6 +10,19 @@
         <h1>Tasks</h1>
         <h:messages id="errors" globalOnly="true" />
         <h:form id="taskForm">
+
+            <h:outputText value="Generate Field Worker XML File" />
+            <br />
+            <h:commandButton action="#{taskBean.startFieldWorkerTask}" value="Queue Field Worker Task" />
+            <br />
+            <br />
+
+            <h:outputText value="Generate Location Hierarchy XML File" />
+            <br />
+            <h:commandButton action="#{taskBean.startLocationHierarchyTask}" value="Queue Location Hierarchy Task" />
+            <br />
+            <br />
+
             <h:outputText value="Generate Individual XML File" />
             <br />
             <h:commandButton action="#{taskBean.startIndividualTask}" value="Queue Individual Task" />

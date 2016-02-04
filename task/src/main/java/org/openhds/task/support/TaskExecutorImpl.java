@@ -21,7 +21,9 @@ public class TaskExecutorImpl implements TaskExecutor {
     private XmlWriterTask socialGroupTaskWriter;
     private XmlWriterTask visitTaskWriter;
     private XmlWriterTask membershipTaskWriter;
-    private XmlWriterTask residencyTaskWriter;
+    private XmlWriterTask fieldWorkerTaskWriter;
+    private XmlWriterTask locationHierarchyTaskWriter;
+
 
     @Autowired
     public TaskExecutorImpl(AsyncTaskService asyncTaskService, FileResolver fileResolver) {
@@ -85,6 +87,24 @@ public class TaskExecutorImpl implements TaskExecutor {
         }
     }
 
+    @Override
+    public void executeFieldWorkerXmlWriterTask() {
+        if (asyncTaskService.taskShouldRun(AsyncTaskService.FIELDWORKER_TASK_NAME)) {
+            asyncTaskService.startTask(AsyncTaskService.FIELDWORKER_TASK_NAME);
+            File xmlFile = fileResolver.resolveFieldWorkerFile();
+            fieldWorkerTaskWriter.writeXmlAsync(new TaskContext(xmlFile));
+        }
+    }
+
+    @Override
+    public void executeLocationHierarchyXmlWriterTask() {
+        if (asyncTaskService.taskShouldRun(AsyncTaskService.LOCATIONHIERARCHY_TASK_NAME)) {
+            asyncTaskService.startTask(AsyncTaskService.LOCATIONHIERARCHY_TASK_NAME);
+            File xmlFile = fileResolver.resolveLocationHierarchyFile();
+            locationHierarchyTaskWriter.writeXmlAsync(new TaskContext(xmlFile));
+        }
+    }
+
     @Resource(name="individualXmlWriter")
     public void setIndividualTaskWriter(XmlWriterTask individualTaskWriter) {
         this.individualTaskWriter = individualTaskWriter;
@@ -115,4 +135,13 @@ public class TaskExecutorImpl implements TaskExecutor {
         this.membershipTaskWriter = membershipTaskWriter;
     }
 
+    @Resource(name="fieldWorkerXmlWriter")
+    public void setFieldWorkerTaskWriter(XmlWriterTask fieldWorkerTaskWriter) {
+        this.fieldWorkerTaskWriter = fieldWorkerTaskWriter;
+    }
+
+    @Resource(name="locationHierarchyXmlWriter")
+    public void setLocationHierarchyTaskWriter(XmlWriterTask locationHierarchyTaskWriter) {
+        this.locationHierarchyTaskWriter = locationHierarchyTaskWriter;
+    }
 }

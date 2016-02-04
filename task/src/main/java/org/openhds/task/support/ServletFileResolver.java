@@ -10,7 +10,9 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 
+import static org.openhds.task.service.AsyncTaskService.FIELDWORKER_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.INDIVIDUAL_TASK_NAME;
+import static org.openhds.task.service.AsyncTaskService.LOCATIONHIERARCHY_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.LOCATION_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.MEMBERSHIP_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.RELATIONSHIP_TASK_NAME;
@@ -37,6 +39,8 @@ public class ServletFileResolver implements FileResolver, ServletContextAware {
         asyncFiles.put(RELATIONSHIP_TASK_NAME, "relationship.xml");
         asyncFiles.put(SOCIALGROUP_TASK_NAME, "socialgroup.xml");
         asyncFiles.put(VISIT_TASK_NAME, "visit.xml");
+        asyncFiles.put(FIELDWORKER_TASK_NAME, "fieldworker.xml");
+        asyncFiles.put(LOCATIONHIERARCHY_TASK_NAME, "locationhierarchy.xml");
     }
 
     @Override
@@ -67,6 +71,16 @@ public class ServletFileResolver implements FileResolver, ServletContextAware {
     @Override
     public File resolveVisitXmlFile() {
         return getFileForTask(VISIT_TASK_NAME);
+    }
+
+    @Override
+    public File resolveFieldWorkerFile() {
+        return getFileForTask(FIELDWORKER_TASK_NAME);
+    }
+
+    @Override
+    public File resolveLocationHierarchyFile() {
+        return getFileForTask(LOCATIONHIERARCHY_TASK_NAME);
     }
 
     protected File getGeneratedXmlFolder() {

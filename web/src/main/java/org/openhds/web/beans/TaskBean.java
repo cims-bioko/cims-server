@@ -51,7 +51,18 @@ public class TaskBean {
     	taskExecutor.executeMembershipXmlWriterTask();
     	return TASK_VIEW;
     }
-    
+
+    public String startFieldWorkerTask() {
+        taskExecutor.executeFieldWorkerXmlWriterTask();
+        return TASK_VIEW;
+    }
+
+    public String startLocationHierarchyTask() {
+        taskExecutor.executeLocationHierarchyXmlWriterTask();
+        return TASK_VIEW;
+    }
+
+
     public String startVisitTask() {
         if (roundNumber != null) {
             taskExecutor.executeVisitWriterTask(roundNumber);
@@ -78,6 +89,8 @@ public class TaskBean {
     }
 
     private void startTasks() {
+        startFieldWorkerTask();
+        startLocationHierarchyTask();
         startIndividualTask();
         startLocationTask();
         startRelationshipTask();

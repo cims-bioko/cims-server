@@ -16,5 +16,9 @@ public interface FileResolver {
 
     File resolveVisitXmlFile();
 
+    File resolveFieldWorkerFile();
+
+    File resolveLocationHierarchyFile();
+
     File getFileForTask(String taskName);
 }
