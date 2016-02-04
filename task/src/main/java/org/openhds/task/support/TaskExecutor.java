@@ -10,8 +10,6 @@ public interface TaskExecutor {
     
     void executeSocialGroupXmlWriterTask();
     
-    void executeResidencyXmlWriterTask();
-    
     void executeMembershipXmlWriterTask();
     
     void executeVisitWriterTask(int roundNumber);

@@ -76,7 +76,6 @@ public class CachedEndpointResourceTest {
             fileResolver.resolveLocationXmlFile().createNewFile();
             fileResolver.resolveMembershipXmlFile().createNewFile();
             fileResolver.resolveRelationshipXmlFile().createNewFile();
-            fileResolver.resolveResidencyXmlFile().createNewFile();
             fileResolver.resolveSocialGroupXmlFile().createNewFile();
             fileResolver.resolveVisitXmlFile().createNewFile();
 
@@ -128,20 +127,6 @@ public class CachedEndpointResourceTest {
     @Test(expected = AssertionError.class)
     public void testGetCachedVisitsWithoutSession() throws Exception {
         mockMvc.perform(get("/visits/cached")
-                .accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void testGetCachedResidencies() throws Exception {
-        mockMvc.perform(get("/residencies/cached").session(session)
-                .accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk());
-    }
-
-    @Test(expected = AssertionError.class)
-    public void testGetCachedResidenciesWithoutSession() throws Exception {
-        mockMvc.perform(get("/residencies/cached")
                 .accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk());
     }

@@ -14,7 +14,6 @@ import static org.openhds.task.service.AsyncTaskService.INDIVIDUAL_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.LOCATION_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.MEMBERSHIP_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.RELATIONSHIP_TASK_NAME;
-import static org.openhds.task.service.AsyncTaskService.RESIDENCY_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.SOCIALGROUP_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.VISIT_TASK_NAME;
 
@@ -36,14 +35,8 @@ public class ServletFileResolver implements FileResolver, ServletContextAware {
         asyncFiles.put(LOCATION_TASK_NAME, "location.xml");
         asyncFiles.put(MEMBERSHIP_TASK_NAME, "membership.xml");
         asyncFiles.put(RELATIONSHIP_TASK_NAME, "relationship.xml");
-        asyncFiles.put(RESIDENCY_TASK_NAME, "residency.xml");
         asyncFiles.put(SOCIALGROUP_TASK_NAME, "socialgroup.xml");
         asyncFiles.put(VISIT_TASK_NAME, "visit.xml");
-    }
-
-    @Override
-    public File resolveResidencyXmlFile() {
-        return getFileForTask(RESIDENCY_TASK_NAME);
     }
 
     @Override

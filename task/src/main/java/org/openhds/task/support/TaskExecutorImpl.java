@@ -30,15 +30,6 @@ public class TaskExecutorImpl implements TaskExecutor {
     }
 
     @Override
-    public void executeResidencyXmlWriterTask() {
-        if (asyncTaskService.taskShouldRun(AsyncTaskService.RESIDENCY_TASK_NAME)) {
-            asyncTaskService.startTask(AsyncTaskService.RESIDENCY_TASK_NAME);
-            File residencyXmlFile = fileResolver.resolveResidencyXmlFile();
-            residencyTaskWriter.writeXmlAsync(new TaskContext(residencyXmlFile));
-        }
-    }
-
-    @Override
     public void executeMembershipXmlWriterTask() {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.MEMBERSHIP_TASK_NAME)) {
             asyncTaskService.startTask(AsyncTaskService.MEMBERSHIP_TASK_NAME);
@@ -117,11 +108,6 @@ public class TaskExecutorImpl implements TaskExecutor {
     @Resource(name="visitXmlWriter")
     public void setVisitTaskWriter(XmlWriterTask visitTaskWriter) {
         this.visitTaskWriter = visitTaskWriter;
-    }
-
-    @Resource(name="residencyXmlWriter")
-    public void setResidencyTaskWriter(XmlWriterTask residencyTaskWriter) {
-        this.residencyTaskWriter = residencyTaskWriter;
     }
 
     @Resource(name="membershipXmlWriter")

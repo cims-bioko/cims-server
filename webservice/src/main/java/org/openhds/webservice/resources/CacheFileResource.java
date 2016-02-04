@@ -26,7 +26,6 @@ import static org.openhds.task.service.AsyncTaskService.INDIVIDUAL_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.LOCATION_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.MEMBERSHIP_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.RELATIONSHIP_TASK_NAME;
-import static org.openhds.task.service.AsyncTaskService.RESIDENCY_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.SOCIALGROUP_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.VISIT_TASK_NAME;
 
@@ -127,11 +126,6 @@ public class CacheFileResource implements ServletContextAware {
     @RequestMapping(value = "/relationships/cached", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, Metadata.MIME_TYPE})
     public void relationships(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         serviceTask(RELATIONSHIP_TASK_NAME, request, response);
-    }
-
-    @RequestMapping(value = "/residencies/cached", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, Metadata.MIME_TYPE})
-    public void residencies(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        serviceTask(RESIDENCY_TASK_NAME, request, response);
     }
 
     @RequestMapping(value = "/socialgroups/cached", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, Metadata.MIME_TYPE})

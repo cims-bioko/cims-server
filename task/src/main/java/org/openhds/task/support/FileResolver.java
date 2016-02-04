@@ -12,8 +12,6 @@ public interface FileResolver {
 
     File resolveSocialGroupXmlFile();
 
-    File resolveResidencyXmlFile();
-
     File resolveMembershipXmlFile();
 
     File resolveVisitXmlFile();

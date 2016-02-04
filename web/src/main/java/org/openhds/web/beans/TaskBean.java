@@ -52,11 +52,6 @@ public class TaskBean {
     	return TASK_VIEW;
     }
     
-    public String startResidencyTask() {
-    	taskExecutor.executeResidencyXmlWriterTask();
-    	return TASK_VIEW;
-    }
-    
     public String startVisitTask() {
         if (roundNumber != null) {
             taskExecutor.executeVisitWriterTask(roundNumber);
@@ -87,7 +82,6 @@ public class TaskBean {
         startLocationTask();
         startRelationshipTask();
         startSocialGroupTask();
-        startResidencyTask();
         startMembershipTask();
         startVisitTask();
         startLocationTask();

@@ -11,7 +11,6 @@ public interface AsyncTaskService {
     String RELATIONSHIP_TASK_NAME = "Relationship Task";
     String SOCIALGROUP_TASK_NAME = "Social Group Task";
     String VISIT_TASK_NAME = "Visit Task";
-    String RESIDENCY_TASK_NAME = "Residency Task";
     String MEMBERSHIP_TASK_NAME = "Membership Task";
 
     boolean taskShouldRun(String taskName);
