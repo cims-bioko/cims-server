@@ -39,8 +39,6 @@ public class IndividualXmlWriterTask extends XmlWriterTemplate<IndividualXmlWrit
                 .addScalar("lastName")
                 .addScalar("dob", CalendarType.INSTANCE)
                 .addScalar("gender")
-                .addScalar("mother")
-                .addScalar("father")
                 .addScalar("residenceLocation")
                 .addScalar("residenceEndType")
                 .addScalar("dip")
@@ -86,13 +84,9 @@ public class IndividualXmlWriterTask extends XmlWriterTemplate<IndividualXmlWrit
         public String firstName;
         public String middleName;
         public String lastName;
-
         @XmlJavaTypeAdapter(CalendarAdapter.class)
         public Calendar dob;
-
         public String gender;
-        public String mother;
-        public String father;
         public String residenceLocation;
         public String residenceEndType;
         public Integer dip;
