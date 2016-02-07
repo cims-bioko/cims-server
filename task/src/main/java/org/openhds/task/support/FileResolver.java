@@ -4,17 +4,17 @@ import java.io.File;
 
 public interface FileResolver {
 
-    File resolveIndividualXmlFile();
+    File resolveIndividualFile();
 
-    File resolveLocationXmlFile();
+    File resolveLocationFile();
 
-    File resolveRelationshipXmlFile();
+    File resolveRelationshipFile();
 
-    File resolveSocialGroupXmlFile();
+    File resolveSocialGroupFile();
 
-    File resolveMembershipXmlFile();
+    File resolveMembershipFile();
 
-    File resolveVisitXmlFile();
+    File resolveVisitFile();
 
     File resolveFieldWorkerFile();
 

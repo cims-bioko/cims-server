@@ -72,19 +72,19 @@ public class CachedEndpointResourceTest {
 
     private void createTestCachedXml() throws Exception {
 
-            fileResolver.resolveIndividualXmlFile().createNewFile();
-            fileResolver.resolveLocationXmlFile().createNewFile();
-            fileResolver.resolveMembershipXmlFile().createNewFile();
-            fileResolver.resolveRelationshipXmlFile().createNewFile();
-            fileResolver.resolveSocialGroupXmlFile().createNewFile();
-            fileResolver.resolveVisitXmlFile().createNewFile();
+            fileResolver.resolveIndividualFile().createNewFile();
+            fileResolver.resolveLocationFile().createNewFile();
+            fileResolver.resolveMembershipFile().createNewFile();
+            fileResolver.resolveRelationshipFile().createNewFile();
+            fileResolver.resolveSocialGroupFile().createNewFile();
+            fileResolver.resolveVisitFile().createNewFile();
 
     }
 
     @After
     public void tearDown() throws Exception {
 
-        FileUtils.cleanDirectory(new File(fileResolver.resolveIndividualXmlFile().getParent()));
+        FileUtils.cleanDirectory(new File(fileResolver.resolveIndividualFile().getParent()));
 
     }
 

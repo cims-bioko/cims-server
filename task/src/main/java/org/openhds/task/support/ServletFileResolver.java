@@ -44,32 +44,32 @@ public class ServletFileResolver implements FileResolver, ServletContextAware {
     }
 
     @Override
-    public File resolveMembershipXmlFile() {
+    public File resolveMembershipFile() {
         return getFileForTask(MEMBERSHIP_TASK_NAME);
     }
 
     @Override
-    public File resolveIndividualXmlFile() {
+    public File resolveIndividualFile() {
         return getFileForTask(INDIVIDUAL_TASK_NAME);
     }
 
     @Override
-    public File resolveLocationXmlFile() {
+    public File resolveLocationFile() {
         return getFileForTask(LOCATION_TASK_NAME);
     }
 
     @Override
-    public File resolveRelationshipXmlFile() {
+    public File resolveRelationshipFile() {
         return getFileForTask(RELATIONSHIP_TASK_NAME);
     }
 
     @Override
-    public File resolveSocialGroupXmlFile() {
+    public File resolveSocialGroupFile() {
         return getFileForTask(SOCIALGROUP_TASK_NAME);
     }
 
     @Override
-    public File resolveVisitXmlFile() {
+    public File resolveVisitFile() {
         return getFileForTask(VISIT_TASK_NAME);
     }
 

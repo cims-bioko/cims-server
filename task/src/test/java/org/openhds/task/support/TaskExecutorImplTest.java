@@ -39,7 +39,7 @@ public class TaskExecutorImplTest {
 //        executor.setMembershipTaskWriter(writeTask);
 //        executor.executeMembershipXmlWriterTask();
 //
-//        verify(fileResolver).resolveMembershipXmlFile();
+//        verify(fileResolver).resolveMembershipFile();
 //        verify(writeTask).writeXml(any(TaskContext.class));
 //    }
 //
@@ -61,7 +61,7 @@ public class TaskExecutorImplTest {
         executor.setIndividualTaskWriter(writeTask);
         executor.executeIndividualXmlWriterTask();
 
-        verify(fileResolver).resolveIndividualXmlFile();
+        verify(fileResolver).resolveIndividualFile();
         verify(writeTask).run(any(TaskContext.class));
     }
 
@@ -82,7 +82,7 @@ public class TaskExecutorImplTest {
         executor.setLocationTaskWriter(writeTask);
         executor.executeLocationXmlWriterTask();
 
-        verify(fileResolver).resolveLocationXmlFile();
+        verify(fileResolver).resolveLocationFile();
         verify(writeTask).run(any(TaskContext.class));
     }
 
@@ -103,7 +103,7 @@ public class TaskExecutorImplTest {
         executor.setSocialGroupTaskWriter(writeTask);
         executor.executeSocialGroupXmlWriterTask();
 
-        verify(fileResolver).resolveSocialGroupXmlFile();
+        verify(fileResolver).resolveSocialGroupFile();
         verify(writeTask).run(any(TaskContext.class));
     }
 
@@ -124,7 +124,7 @@ public class TaskExecutorImplTest {
         executor.setRelationshipTaskWriter(writeTask);
         executor.executeRelationshipXmlWriterTask();
 
-        verify(fileResolver).resolveRelationshipXmlFile();
+        verify(fileResolver).resolveRelationshipFile();
         verify(writeTask).run(any(TaskContext.class));
     }
 
