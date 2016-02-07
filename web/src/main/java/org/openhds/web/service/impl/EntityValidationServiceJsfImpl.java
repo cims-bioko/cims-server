@@ -1,7 +1,6 @@
 package org.openhds.web.service.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.openhds.controller.exception.ConstraintViolations;

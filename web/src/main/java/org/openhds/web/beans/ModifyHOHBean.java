@@ -2,7 +2,6 @@ package org.openhds.web.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.dao.service.GenericDao.ValueProperty;
