@@ -98,7 +98,7 @@ public class OutMigrationFormResource extends AbstractFormResource {
             return requestError(cv);
         }
 
-        return new ResponseEntity<OutMigrationForm>(outMigrationForm, HttpStatus.CREATED);
+        return new ResponseEntity<>(outMigrationForm, HttpStatus.CREATED);
 
     }
 

@@ -91,7 +91,7 @@ public class VisitCrudImpl extends EntityCrudImpl<Visit, String> {
      * Note: at this point, entity item is a transient object.
      */
     private void clearExtensionsByType(EntityType entityType) {
-    	List<Extension> list = new ArrayList<Extension>();
+    	List<Extension> list = new ArrayList<>();
     	int size = service.getExtensionsByEntityClassAndRoundNumber(entityType, entityItem.getRoundNumber()).size();
     	
     	for (Extension e : entityItem.getExtensions()) {
@@ -148,7 +148,7 @@ public class VisitCrudImpl extends EntityCrudImpl<Visit, String> {
      * Note: at this point the entity item is a transient object.
      */
     public List<Extension> getAllVisitExtensions() throws ConstraintViolations {
-    	List<Extension> list = new ArrayList<Extension>();
+    	List<Extension> list = new ArrayList<>();
     	for (Extension e : entityItem.getExtensions()) {		
     		if (e.getClassExtension().getEntityClass().equals(EntityType.VISIT)) {
     			e.setEntityExtId(service.generateId(entityItem).getExtId());
@@ -163,7 +163,7 @@ public class VisitCrudImpl extends EntityCrudImpl<Visit, String> {
      * Note: at this point the entity item is a transient object.
      */
     public List<Extension> getAllLocationExtensions() {
-    	List<Extension> list = new ArrayList<Extension>();
+    	List<Extension> list = new ArrayList<>();
     	for (Extension e : entityItem.getExtensions()) {		
     		if (e.getClassExtension().getEntityClass().equals(EntityType.LOCATION)) {
     			e.setEntityExtId(entityItem.getVisitLocation().getExtId());
@@ -178,7 +178,7 @@ public class VisitCrudImpl extends EntityCrudImpl<Visit, String> {
      * Note: at this point the entity item is a transient object.
      */
     public List<Extension> getExtensionsByType(EntityType entityType) {
-    	List<Extension> list = new ArrayList<Extension>();
+    	List<Extension> list = new ArrayList<>();
     	if (entityItem != null) {
 	    	for (Extension e : entityItem.getExtensions()) {		
 	    		if (e.getClassExtension().getEntityClass().equals(entityType)) 

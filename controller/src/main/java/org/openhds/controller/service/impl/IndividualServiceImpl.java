@@ -114,7 +114,7 @@ public class IndividualServiceImpl implements IndividualService {
      * performing autocomplete.
      */
     public List<String> getIndividualExtIds(String term) {
-        List<String> ids = new ArrayList<String>();
+        List<String> ids = new ArrayList<>();
         List<Individual> list = genericDao.findListByPropertyPrefix(Individual.class, "extId",
                 term, 10, true);
         for (Individual indiv : list) {
@@ -179,7 +179,7 @@ public class IndividualServiceImpl implements IndividualService {
         Membership membership = genericDao.findUniqueByPropertyWithOrder(Membership.class,
                 "individual", individual, "startDate", false);
 
-        List<LastEvent> events = new ArrayList<LastEvent>();
+        List<LastEvent> events = new ArrayList<>();
 
         events.add(new LastEvent("Enumeration/Baseline", individual.getDob()));
         if (om != null)

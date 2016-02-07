@@ -67,7 +67,7 @@ public class SocialGroupServiceImpl implements SocialGroupService {
      * in performing autocomplete.
      */
     public List<String> getSocialGroupExtIds(String term) {
-        List<String> ids = new ArrayList<String>();
+        List<String> ids = new ArrayList<>();
         List<SocialGroup> list = genericDao.findListByPropertyPrefix(SocialGroup.class, "extId",
                 term, 10, true);
         for (SocialGroup sg : list) {
@@ -102,7 +102,7 @@ public class SocialGroupServiceImpl implements SocialGroupService {
 
     public List<Individual> getAllIndividualsOfSocialGroup(SocialGroup group) {
 
-        List<Individual> list = new ArrayList<Individual>();
+        List<Individual> list = new ArrayList<>();
         List<Membership> mems = genericDao.findListByProperty(Membership.class, "socialGroup",
                 group);
 

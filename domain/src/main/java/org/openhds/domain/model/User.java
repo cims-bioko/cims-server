@@ -63,7 +63,7 @@ public class User implements Serializable, UuidIdentifiable {
     @ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(name="user_roles", joinColumns = {@JoinColumn(name="user_uuid")}, inverseJoinColumns = @JoinColumn(name="role_uuid"))
     @Description(description="Set of roles applied to the user.")
-    Set<Role> roles = new HashSet<Role>();
+    Set<Role> roles = new HashSet<>();
     
 	@Description(description="Indicator for signaling some data to be deleted.")
     boolean deleted = false;

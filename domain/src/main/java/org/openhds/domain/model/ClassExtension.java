@@ -117,7 +117,7 @@ public class ClassExtension implements Serializable {
 	}
 	
 	public List<String> getExtensionAnswers() {
-		List<String> output = new ArrayList<String>();
+		List<String> output = new ArrayList<>();
 		String[] array = answers.split(", ");
 		
 		for (String s : array)

@@ -19,8 +19,8 @@ public class RoleCrudImpl extends EntityCrudImpl<Role, String> {
 
 	public RoleCrudImpl(Class<Role> entityClass) {
         super(entityClass);
-        privileges = new ArrayList<String>();
-        usersAndRoles = new ArrayList<UserAndRole>();
+        privileges = new ArrayList<>();
+        usersAndRoles = new ArrayList<>();
     }
 	
 	@Override
@@ -136,7 +136,7 @@ public class RoleCrudImpl extends EntityCrudImpl<Role, String> {
     }
     
     public List<SelectItem> getAllRolesExceptSelected() {
-    	List<SelectItem> selectItems = new ArrayList<SelectItem>();
+    	List<SelectItem> selectItems = new ArrayList<>();
     	selectItems.add(new SelectItem(RoleService.NOROLE_VALUE, "Remove Role from User"));
     	
     	List<Role> roles = service.findRolesExcluding(selectedRole);
@@ -152,7 +152,7 @@ public class RoleCrudImpl extends EntityCrudImpl<Role, String> {
 	 */
     public List<String> getPrivileges() {
     	Set<Privilege> privileges = entityItem.getPrivileges();
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		for (Privilege p : privileges) {
 			list.add(p.getPrivilege());
 		}
@@ -163,7 +163,7 @@ public class RoleCrudImpl extends EntityCrudImpl<Role, String> {
      * Retrieves the privileges to be displayed as checkboxes on the UI.
      */
     public List<SelectItem> getPrivilegeSelectItems() {
-    	List<SelectItem> privilegesSelectItems = new ArrayList<SelectItem>();
+    	List<SelectItem> privilegesSelectItems = new ArrayList<>();
     	List<Privilege> privileges = service.getPrivileges();
     	
     	for(Privilege p : privileges) {

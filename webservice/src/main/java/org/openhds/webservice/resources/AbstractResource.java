@@ -27,11 +27,11 @@ public abstract class AbstractResource<T extends Serializable> {
             return buildBadRequest(violations);
         }
 
-        return new ResponseEntity<T>(copy(item), HttpStatus.CREATED);
+        return new ResponseEntity<>(copy(item), HttpStatus.CREATED);
     }
 
     protected ResponseEntity<WebServiceCallException> buildBadRequest(ConstraintViolations cv) {
-        return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
     }
 
     protected abstract T copy(T item);

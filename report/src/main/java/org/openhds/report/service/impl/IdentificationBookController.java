@@ -48,7 +48,7 @@ public class IdentificationBookController implements IdentificationBookService {
 	}
 	
 	private Collection<IdentificationBookBean> getIds() {
-		Collection<IdentificationBookBean> beans = new ArrayList<IdentificationBookBean>();
+		Collection<IdentificationBookBean> beans = new ArrayList<>();
 		
 		// retrieve all locations
 		// setup order properties

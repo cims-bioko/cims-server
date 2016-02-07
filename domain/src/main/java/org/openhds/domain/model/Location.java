@@ -73,7 +73,7 @@ public class Location
 
     @OneToMany(targetEntity = org.openhds.domain.model.Residency.class)
     @JoinColumn(name = "location_uuid")
-    private List<Residency> residencies = new ArrayList<Residency>();
+    private List<Residency> residencies = new ArrayList<>();
 
     // Extensions for bioko island project
     @Description(description = "The number of this building within a sector")

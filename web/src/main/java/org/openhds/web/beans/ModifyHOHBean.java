@@ -44,8 +44,8 @@ public class ModifyHOHBean implements Serializable {
 	 */
 	public boolean checkValidHOH(MessageContext messageContext) {
 		
-		membershipsOfSocialGroup = new ArrayList<Membership>();
-		newMemberships = new ArrayList<Membership>();
+		membershipsOfSocialGroup = new ArrayList<>();
+		newMemberships = new ArrayList<>();
 		
 		if (!determineValidSocialGroup()) {
 			webFlowService.createMessage(messageContext, 

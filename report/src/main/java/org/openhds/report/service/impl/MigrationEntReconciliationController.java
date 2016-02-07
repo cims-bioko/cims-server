@@ -35,7 +35,7 @@ public class MigrationEntReconciliationController implements MigrationEntReconci
 	@RequestMapping("/migration-ent-reconciliation.report")
 	public ModelAndView getMigrationEntReconciliation() {
 		ModelAndView mv = new ModelAndView("migrationEntReconciliation");
-		Collection<MigrationEntReconciliationBean> beans = new ArrayList<MigrationEntReconciliationBean>();
+		Collection<MigrationEntReconciliationBean> beans = new ArrayList<>();
 		
 		ValueProperty migrationType = new ValueProperty() {
 

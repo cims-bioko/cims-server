@@ -12,7 +12,7 @@ import org.openhds.controller.exception.ConstraintViolations;
 public class WebServiceCallException implements Serializable {
 	
     private static final long serialVersionUID = -5429038867393148120L;
-    private List<String> errors = new ArrayList<String>();
+    private List<String> errors = new ArrayList<>();
 
 	public WebServiceCallException() {   		
 	}

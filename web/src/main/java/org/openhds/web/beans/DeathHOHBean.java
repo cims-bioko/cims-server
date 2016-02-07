@@ -61,12 +61,12 @@ public class DeathHOHBean implements Serializable {
 	 */
 	public boolean checkValidHOH(MessageContext messageContext) {
 		
-		successors = new ArrayList<Individual>();
-		indivsOfSocialGroup = new ArrayList<Individual>();
-		socialGroups = new ArrayList<SocialGroup>();
-		memberships = new HashMap<Integer, List<Membership>>();
+		successors = new ArrayList<>();
+		indivsOfSocialGroup = new ArrayList<>();
+		socialGroups = new ArrayList<>();
+		memberships = new HashMap<>();
 		
-		ArrayList<Membership> list = new ArrayList<Membership>();
+		ArrayList<Membership> list = new ArrayList<>();
 		memberships.put(current, list);
 		
 		if (determineValidSocialGroups()) {
@@ -82,7 +82,7 @@ public class DeathHOHBean implements Serializable {
 	 * Reinitialize membership list
 	 */
 	public void initializeMembershipList() {
-		membershipList = new ArrayList<Membership>();
+		membershipList = new ArrayList<>();
 	}
 	
 	/**
@@ -111,7 +111,7 @@ public class DeathHOHBean implements Serializable {
 	 */
 	private List<SocialGroup> filterDeleted(List<SocialGroup> groups) {
 		
-		List<SocialGroup> list = new ArrayList<SocialGroup>();
+		List<SocialGroup> list = new ArrayList<>();
 		
 		for (SocialGroup item : groups) {
 			if (!item.isDeleted())
@@ -352,7 +352,7 @@ public class DeathHOHBean implements Serializable {
 	 */
 	public void incCurrent() {
 		current++;
-		ArrayList<Membership> list = new ArrayList<Membership>();
+		ArrayList<Membership> list = new ArrayList<>();
 		memberships.put(current, list);
 	}
 		

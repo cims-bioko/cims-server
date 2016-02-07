@@ -52,11 +52,11 @@ public class DeathResource {
             return badRequest(new ConstraintViolations("There was a database problem saving the death event"));
         }
 
-        return new ResponseEntity<Death>(copy(death), HttpStatus.CREATED);
+        return new ResponseEntity<>(copy(death), HttpStatus.CREATED);
     }
 
     private ResponseEntity<? extends Serializable> badRequest(ConstraintViolations cv) {
-        return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
     }
 
     private Death copy(Death death) {

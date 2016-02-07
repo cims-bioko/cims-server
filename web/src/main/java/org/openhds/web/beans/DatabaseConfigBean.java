@@ -190,7 +190,6 @@ public class DatabaseConfigBean {
             logger.info("Database properties saved to "+res.getURL());
 		} catch (Exception e) {
             warnAndDisplay("Error writing Property file: " + e.getMessage());
-			return;
 		}
 	}
 	

@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 public class NavigationMenuBean {
 	
-    ArrayList<String> trail = new ArrayList<String>();
+    ArrayList<String> trail = new ArrayList<>();
 	
     boolean showHome;
 	boolean showAmendments;
@@ -93,7 +93,7 @@ public class NavigationMenuBean {
 			int index = trail.indexOf(item);
 			
 			// keep all items before the index
-			ArrayList<String> tempTrail = new ArrayList<String>();
+			ArrayList<String> tempTrail = new ArrayList<>();
 			for (int i = 0; i <= index; i++) {
 				tempTrail.add(trail.get(i));
 			}
@@ -133,7 +133,7 @@ public class NavigationMenuBean {
 	public void removeItemFromTrailInFlow(String item) {
 		Iterator<String> itr = trail.iterator();
 		
-		ArrayList<String> temp = new ArrayList<String>();
+		ArrayList<String> temp = new ArrayList<>();
 		
 		// get the index of the item in the trail.
 		// this has to be obtained by using contains since
@@ -161,7 +161,7 @@ public class NavigationMenuBean {
 	}
 	
 	public void clearTrailExceptFirst() {
-        ArrayList<String> tempTrail = new ArrayList<String>();
+        ArrayList<String> tempTrail = new ArrayList<>();
         if( trail.size() > 0 )
 		    tempTrail.add(trail.get(0));
 		trail = tempTrail;

@@ -34,7 +34,7 @@ public class CurrentUserImpl implements CurrentUser, BeanFactoryAware {
     private BeanFactory beanFactory;
     
 	public void setProxyUser(String username, String password, String[] privileges) {
-		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		Collection<GrantedAuthority> authorities = new ArrayList<>();
 		
 		for(String privilege : privileges) {
 			authorities.add(new GrantedAuthorityImpl(privilege));
@@ -49,7 +49,7 @@ public class CurrentUserImpl implements CurrentUser, BeanFactoryAware {
     }
 
 	public Set<Privilege> getCurrentUserPrivileges() {
-		Set<Privilege> privileges = new HashSet<Privilege>();
+		Set<Privilege> privileges = new HashSet<>();
 
 		for(GrantedAuthority authority : getGrantedAuthorities()) {
 			Privilege privilege = new Privilege(authority.getAuthority());

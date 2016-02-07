@@ -176,7 +176,7 @@ public class PregnancyOutcomeCrudImpl extends EntityCrudImpl<PregnancyOutcome, S
             if(entityItem!=null){
                 return service.getPregnancyOutcomesByIndividual(entityItem.getMother());
             }
-            return new ArrayList<PregnancyOutcome>();
+            return new ArrayList<>();
         }
     }
 

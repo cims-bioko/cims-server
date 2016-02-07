@@ -36,7 +36,7 @@ public class PregnancyObservReconciliationController implements PregnancyObservR
 	@RequestMapping("/pregnancy-observ-reconciliation.report")
 	public ModelAndView getPregnancyObservReconciliation() {
 		ModelAndView mv = new ModelAndView("pregnancyObservReconciliation");
-		Collection<PregObservReconciliationBean> beans = new ArrayList<PregObservReconciliationBean>();
+		Collection<PregObservReconciliationBean> beans = new ArrayList<>();
 					
 		PregObservReconciliationBean bean = new PregObservReconciliationBean();
 		bean.setCurrentDate(calendarUtil.formatDate(Calendar.getInstance()));

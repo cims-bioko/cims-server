@@ -66,7 +66,7 @@ public class PregnancyOutcome extends AuditableCollectedEntity implements Serial
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pregnancyOutcome")
     @Description(description="List of all outcomes for the pregnancy.")
-    private List<Outcome> outcomes = new ArrayList<Outcome>();
+    private List<Outcome> outcomes = new ArrayList<>();
 
     public Integer getChildEverBorn() {
         return childEverBorn;

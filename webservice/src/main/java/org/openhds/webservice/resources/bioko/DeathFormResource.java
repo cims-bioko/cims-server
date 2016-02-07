@@ -115,7 +115,7 @@ public class DeathFormResource extends AbstractFormResource {
             errorService.logError(error);
             return requestError(cv);
         }
-        return new ResponseEntity<DeathForm>(deathForm, HttpStatus.CREATED);
+        return new ResponseEntity<>(deathForm, HttpStatus.CREATED);
 
     }
 

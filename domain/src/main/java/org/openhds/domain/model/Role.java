@@ -34,7 +34,7 @@ public class Role extends AuditableEntity implements Serializable {
     @ManyToMany(fetch=FetchType.EAGER)
     @Description(description="Set of privileges which define the rights that actors have.")
     @JoinTable(name="role_privileges", joinColumns = {@JoinColumn(name="role_uuid")}, inverseJoinColumns = @JoinColumn(name="privilege_uuid"))
-    Set<Privilege> privileges = new HashSet<Privilege>();
+    Set<Privilege> privileges = new HashSet<>();
 
 	public String getName() {
 		return name;

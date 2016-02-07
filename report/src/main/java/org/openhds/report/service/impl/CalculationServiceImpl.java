@@ -22,7 +22,7 @@ import org.openhds.report.service.CalculationService;
 
 public class CalculationServiceImpl implements CalculationService {
 
-	List<ReportRecordBean> reportRecords = new ArrayList<ReportRecordBean>();
+	List<ReportRecordBean> reportRecords = new ArrayList<>();
 	
 	SitePropertiesService siteProperties;
 	GenericDao genericDao;
@@ -163,7 +163,7 @@ public class CalculationServiceImpl implements CalculationService {
 	public List<Residency> getResidenciesAtMidPoint(Calendar midpoint) {
 		
 		List<Residency> residencies = genericDao.findAll(Residency.class, true);
-		List<Residency> midPointResidencies = new ArrayList<Residency>();
+		List<Residency> midPointResidencies = new ArrayList<>();
 			
 		Calendar resEndDate = null;
 		for (Residency res : residencies) {
@@ -205,7 +205,7 @@ public class CalculationServiceImpl implements CalculationService {
 	public List<Residency> getResidenciesInBetween(Calendar startDate, Calendar endDate) {
 		
 		List<Residency> residencies = genericDao.findAll(Residency.class, true);
-		List<Residency> validResidencies = new ArrayList<Residency>();
+		List<Residency> validResidencies = new ArrayList<>();
 
 		Calendar resEndDate = null;
 		for (Residency res : residencies) {
@@ -307,7 +307,7 @@ public class CalculationServiceImpl implements CalculationService {
 	public List<InMigration> getInMigrationsBetweenInterval(Calendar startDate, Calendar endDate) {
 		
 		List<InMigration> inmigrations = genericDao.findAll(InMigration.class, true);
-		List<InMigration> inmigrationsInInterval = new ArrayList<InMigration>();
+		List<InMigration> inmigrationsInInterval = new ArrayList<>();
 		
 		for (InMigration inmig : inmigrations) {		
 			if (inmig.getRecordedDate().after(startDate) &&
@@ -321,7 +321,7 @@ public class CalculationServiceImpl implements CalculationService {
 	public List<OutMigration> getOutMigrationsBetweenInterval(Calendar startDate, Calendar endDate) {
 		
 		List<OutMigration> outmigrations = genericDao.findAll(OutMigration.class, true);
-		List<OutMigration> outmigrationsInInterval = new ArrayList<OutMigration>();
+		List<OutMigration> outmigrationsInInterval = new ArrayList<>();
 		
 		for (OutMigration outmig : outmigrations) {		
 			if (outmig.getRecordedDate().after(startDate) &&
@@ -335,7 +335,7 @@ public class CalculationServiceImpl implements CalculationService {
 	public List<Death> getDeathsBetweenInterval(Calendar startDate, Calendar endDate) {
 		
 		List<Death> deaths = genericDao.findAll(Death.class, true);
-		List<Death> deathsInInterval = new ArrayList<Death>();
+		List<Death> deathsInInterval = new ArrayList<>();
 		
 		for (Death death : deaths) {		
 			if (death.getDeathDate().after(startDate) &&

@@ -109,7 +109,7 @@ public class PregnancyObservationFormResource extends AbstractFormResource {
             return requestError(e);
         }
 
-        return new ResponseEntity<PregnancyObservationForm>(pregnancyObservationForm, HttpStatus.CREATED);
+        return new ResponseEntity<>(pregnancyObservationForm, HttpStatus.CREATED);
 
     }
 

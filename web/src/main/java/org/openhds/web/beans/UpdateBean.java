@@ -91,7 +91,7 @@ public class UpdateBean implements Serializable {
 	 */
 	public List<Individual> getIndividualsAtLocation() {
 		if (currentVisit == null) {
-			return new ArrayList<Individual>();
+			return new ArrayList<>();
 		}
 		
 		if (residentIndividuals == null) {

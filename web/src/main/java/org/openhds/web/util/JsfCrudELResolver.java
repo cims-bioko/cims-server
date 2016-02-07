@@ -390,7 +390,7 @@ public class JsfCrudELResolver extends ELResolver {
 
 		public JsfCrudParameterizedMethod(JsfCrudMethod method) {
 			this.method = method;
-			actualParams = new ArrayList<Object>();
+			actualParams = new ArrayList<>();
 		}
 
 		public JsfCrudMethod getMethod() {

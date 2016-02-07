@@ -33,7 +33,7 @@ public class InMigrationCrudImpl extends EntityCrudImpl<InMigration, String> {
     }
     
     public List<SelectItem> getReasonsForMigration() {
-    	List<SelectItem> output = new ArrayList<SelectItem>();
+    	List<SelectItem> output = new ArrayList<>();
 		List<ReasonForMigration> items = jsfService.arrayToList(ReasonForMigration.values());
 		
 		for (ReasonForMigration pt : items) {
@@ -117,7 +117,7 @@ public class InMigrationCrudImpl extends EntityCrudImpl<InMigration, String> {
 				return service.getInMigrationsByIndividual(entityItem.getIndividual());				
 			}
 			
-			return new ArrayList<InMigration>();
+			return new ArrayList<>();
 		}
 		
 	}

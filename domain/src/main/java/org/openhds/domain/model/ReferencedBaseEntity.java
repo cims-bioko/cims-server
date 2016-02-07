@@ -12,7 +12,7 @@ public class ReferencedBaseEntity {
 	
 	String extId;
 	String type;
-	Map<String, String> params = new HashMap<String, String>();
+	Map<String, String> params = new HashMap<>();
 
 	public String getExtId() {
 		return extId;

@@ -15,7 +15,7 @@ public class WebserviceResult implements Serializable {
     private String parameterResultsMessage = "";
     private String dateRangeMessage = "";
 	private int resultCode;
-	private Map<Object, Object> data = new HashMap<Object, Object>();
+	private Map<Object, Object> data = new HashMap<>();
 
     public String getDateRangeMessage() {
         return dateRangeMessage;

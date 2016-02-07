@@ -137,7 +137,7 @@ public class VisitFormResource extends AbstractFormResource {
             }
         }
 
-        return new ResponseEntity<VisitForm>(visitForm, HttpStatus.CREATED);
+        return new ResponseEntity<>(visitForm, HttpStatus.CREATED);
     }
 
 }

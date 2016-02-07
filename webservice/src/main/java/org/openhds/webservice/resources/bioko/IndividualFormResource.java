@@ -98,7 +98,7 @@ public class IndividualFormResource extends AbstractFormResource {
             throw new RuntimeException("Could not create JAXB context and marshaller for OutMigrationFormResource");
         }
 
-        List<String> logMessage = new ArrayList<String>();
+        List<String> logMessage = new ArrayList<>();
 
         // Clean up "null" strings created by Mirth
         if ("null".equals(individualForm.getIndividualRelationshipToHeadOfHousehold())) {
@@ -276,7 +276,7 @@ public class IndividualFormResource extends AbstractFormResource {
             return serverError("SQL Error updating or saving membership: " + e.getMessage());
         }
 
-        return new ResponseEntity<IndividualForm>(individualForm, HttpStatus.CREATED);
+        return new ResponseEntity<>(individualForm, HttpStatus.CREATED);
     }
 
     private void updateIndividualExtId(Individual individual, Location location) {

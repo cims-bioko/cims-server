@@ -46,7 +46,7 @@ public class HouseholdRegistrationController implements HouseholdRegistrationSer
 	}
 	
 	private Collection<HouseholdRegisterBean> getHouseholds() {
-		Collection<HouseholdRegisterBean> beans = new ArrayList<HouseholdRegisterBean>();
+		Collection<HouseholdRegisterBean> beans = new ArrayList<>();
 		
 		// retrieve all locations
 		// setup order properties

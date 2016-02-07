@@ -27,7 +27,7 @@ public class LuhnValidator {
 	private static HashMap<Character, Integer> map = createMap();
 	
 	private static HashMap<Character, Integer> createMap() {
-		 HashMap<Character, Integer> result = new HashMap<Character, Integer>();
+		 HashMap<Character, Integer> result = new HashMap<>();
 		 result.put('A', 0);
 		 result.put('B', 1);
 		 result.put('C', 2);

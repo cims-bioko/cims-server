@@ -46,16 +46,16 @@ public class JsfServiceImpl implements JsfService {
 	
 	public <T> List<T> arrayToList(T[] arr) {
 		if (arr == null) {
-			return new ArrayList<T>();
+			return new ArrayList<>();
 		}
 		return Arrays.asList(arr);
 	}
 
 	public <T> Set<T> arrayToSet(T[] arr) {
 		if (arr == null) {
-			return new HashSet<T>();
+			return new HashSet<>();
 		}
-		return new HashSet<T>(Arrays.asList(arr));
+		return new HashSet<>(Arrays.asList(arr));
 	}
 
 	public Object[] collectionToArray(Collection<?> c) {
@@ -66,7 +66,7 @@ public class JsfServiceImpl implements JsfService {
 	}
 
 	public <T> List<T> setToList(Set<T> set) {
-		return new ArrayList<T>(set);
+		return new ArrayList<>(set);
 	}
 
 	public String getReqParam(String name) {

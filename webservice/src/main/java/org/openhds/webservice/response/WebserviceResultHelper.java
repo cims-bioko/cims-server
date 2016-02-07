@@ -18,7 +18,7 @@ public class WebserviceResultHelper {
         result.setResultCode(resultCode);
         result.setStatus(status);
         result.setResultMessage(msg);
-        return new ResponseEntity<WebserviceResult>(result, httpResponseCode);
+        return new ResponseEntity<>(result, httpResponseCode);
     }
 
     public static ResponseEntity<WebserviceResult> entityNotFoundResponse(String msg, String status) {
@@ -26,6 +26,6 @@ public class WebserviceResultHelper {
         result.setResultCode(ResultCodes.ENTITY_NOT_FOUND_CODE);
         result.setStatus(status);
         result.setResultMessage(msg);
-        return new ResponseEntity<WebserviceResult>(result, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
     }
 }

@@ -29,7 +29,7 @@ public class FieldWorkerResource {
     @ResponseBody
     public FieldWorkers getAllFieldWorkers() {
         List<FieldWorker> allFieldWorkers = fieldWorkerService.getAllFieldWorkers();
-        List<FieldWorker> copies = new ArrayList<FieldWorker>();
+        List<FieldWorker> copies = new ArrayList<>();
         for (FieldWorker fw : allFieldWorkers) {
             copies.add(ShallowCopier.makeShallowCopy(fw));
         }

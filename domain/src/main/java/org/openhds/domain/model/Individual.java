@@ -76,19 +76,19 @@ public class Individual extends AuditableCollectedEntity implements Serializable
 
     @OneToMany(mappedBy = "individual", cascade = { CascadeType.ALL })
     @Description(description = "The set of all residencies that the individual may have.")
-    private Set<Residency> allResidencies = new HashSet<Residency>();
+    private Set<Residency> allResidencies = new HashSet<>();
 
     @OneToMany(mappedBy = "individualA", cascade = { CascadeType.ALL })
     @Description(description = "The set of all relationships that the individual may have with another individual.")
-    private Set<Relationship> allRelationships1 = new HashSet<Relationship>();
+    private Set<Relationship> allRelationships1 = new HashSet<>();
 
     @OneToMany(mappedBy = "individualB", cascade = { CascadeType.ALL })
     @Description(description = "The set of all relationships where another individual may have with this individual.")
-    private Set<Relationship> allRelationships2 = new HashSet<Relationship>();
+    private Set<Relationship> allRelationships2 = new HashSet<>();
 
     @OneToMany(mappedBy = "individual", cascade = { CascadeType.ALL })
     @Description(description = "The set of all memberships the individual is participating in.")
-    private Set<Membership> allMemberships = new HashSet<Membership>();
+    private Set<Membership> allMemberships = new HashSet<>();
 
     //Project-specific fields
     @Column
@@ -227,7 +227,7 @@ public class Individual extends AuditableCollectedEntity implements Serializable
         }
 
         // sort by "earliest" and pick off the "least early" ie "latest"
-        PriorityQueue<Residency> residencyHeap = new PriorityQueue<Residency>(
+        PriorityQueue<Residency> residencyHeap = new PriorityQueue<>(
                 allResidencies.size(), Residency.earliestByStartDateAndInsertDate());
         residencyHeap.addAll(allResidencies);
 

@@ -61,7 +61,7 @@ public class ValueConstraintServiceImpl {
 	
 	public List<String> getAllConstraintNames() {
 		
-		List<String> output = new ArrayList<String>();
+		List<String> output = new ArrayList<>();
 		List list = doc.getRootElement().getChildren();
 		for (int i = 0; i < list.size(); i++) {
 			Element ele = (Element)list.get(i);
@@ -71,7 +71,7 @@ public class ValueConstraintServiceImpl {
 	}
 	
 	public Map<String, String> getMapForConstraint(String constraintName) {
-		Map<String, String> keyValues = new TreeMap<String, String>();
+		Map<String, String> keyValues = new TreeMap<>();
 		Element constraint = findConstraintByName(constraintName);
 		List children = constraint.getChildren();
 		for (int i = 0; i < children.size(); i++) {

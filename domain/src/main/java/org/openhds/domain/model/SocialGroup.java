@@ -63,7 +63,7 @@ public class SocialGroup
         CascadeType.ALL
     }, mappedBy = "socialGroup")
     @Description(description = "The set of all memberships of the social group.")
-    private Set<Membership> memberships = new HashSet<Membership>();
+    private Set<Membership> memberships = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @Description(description="The location associated with this social group")

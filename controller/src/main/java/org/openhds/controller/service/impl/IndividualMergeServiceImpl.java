@@ -80,7 +80,7 @@ public class IndividualMergeServiceImpl implements IndividualMergeService {
 	 * @return a copy of any membership events from the toMergeFrom individual
 	 */
 	private List<Membership> getMembershipEvents(Individual primary, Individual toMergeFrom) {
-		List<Membership> events = new ArrayList<Membership>();
+		List<Membership> events = new ArrayList<>();
 		
 		List<Membership> memberships = genericDao.findListByProperty(Membership.class, "individual", toMergeFrom);
 		
@@ -100,7 +100,7 @@ public class IndividualMergeServiceImpl implements IndividualMergeService {
 	 */
 	private List<InMigration> getInMigrationEvents(Individual primary, Individual toMergeFrom) {
 		
-		List<InMigration> events = new ArrayList<InMigration>();
+		List<InMigration> events = new ArrayList<>();
 		
 		// first attempt to merge any in migration events
 		List<InMigration> inMigrations = genericDao.findListByProperty(InMigration.class, "individual", toMergeFrom);

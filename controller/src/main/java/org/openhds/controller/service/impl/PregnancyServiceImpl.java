@@ -201,7 +201,7 @@ public class PregnancyServiceImpl implements PregnancyService {
 		
 	public List<PregnancyOutcome> findAllLiveBirthsBetweenInterval(Calendar startDate, Calendar endDate) {
 		
-		List<PregnancyOutcome> output = new ArrayList<PregnancyOutcome>();
+		List<PregnancyOutcome> output = new ArrayList<>();
 		List<PregnancyOutcome> outcomes = genericDao.findAll(PregnancyOutcome.class, true);
 		
 		for (PregnancyOutcome outcome : outcomes) {			

@@ -57,7 +57,7 @@ public class Visit
 
     @OneToMany(mappedBy = "entity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Description(description = "The assigned extension and their values specific for this entity.")
-    private List<Extension> extensions = new ArrayList<Extension>();
+    private List<Extension> extensions = new ArrayList<>();
 
     public String getExtId() {
         return extId;

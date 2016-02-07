@@ -72,7 +72,7 @@ public class DemographicRatesController implements DemographicRatesService {
 		 * Collection.class, Object[].class
 		 */
 		
-		Map<String, Object> modelMap = new HashMap<String, Object>();
+		Map<String, Object> modelMap = new HashMap<>();
 		modelMap.put("event", event);
 		modelMap.put("denomType", denomType);
 		modelMap.put("firstDate", calendarUtil.formatDate(startDate));
@@ -214,7 +214,7 @@ public class DemographicRatesController implements DemographicRatesService {
 	
 	public List<MortalityRecordBean> setAgeGroupsForDeaths(List<Death> deaths) {
 		
-		List<MortalityRecordBean> mortalityRecords = new ArrayList<MortalityRecordBean>();
+		List<MortalityRecordBean> mortalityRecords = new ArrayList<>();
 		MortalityRecordBean neoNatalRecord = new MortalityRecordBean("Neo-Natal", 0, 0.079);
 		MortalityRecordBean postNatalRecord = new MortalityRecordBean("Post-Natal", 0.079, 0.916);
 		MortalityRecordBean infantRecord = new MortalityRecordBean("Infant", 0, 1);

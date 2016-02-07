@@ -158,7 +158,7 @@ public class InMigrationFormResource extends AbstractFormResource {
             return requestError(cv);
         }
 
-        return new ResponseEntity<InMigrationForm>(inMigrationForm, HttpStatus.CREATED);
+        return new ResponseEntity<>(inMigrationForm, HttpStatus.CREATED);
 
     }
 

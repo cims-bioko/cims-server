@@ -70,7 +70,7 @@ public class VisitServiceImpl implements VisitService {
      * Retrieves all Visit extId's that contain the term provided. Used in performing autocomplete.
      */
     public List<String> getVisitExtIds(String term) {
-        List<String> ids = new ArrayList<String>();
+        List<String> ids = new ArrayList<>();
         List<Visit> list = genericDao.findListByPropertyPrefix(Visit.class, "extId", term, 10, true);
         for (Visit visit : list) {
             ids.add(visit.getExtId());

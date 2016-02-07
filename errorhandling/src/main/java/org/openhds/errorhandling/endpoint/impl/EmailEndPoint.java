@@ -43,7 +43,6 @@ public class EmailEndPoint implements ErrorServiceEndPoint {
                 errorLog.getResolutionStatus().equals(ErrorConstants.RESOLVED_ERROR_STATUS)) {
             sendEmail(EmailEndPoint.RESOLVE, errorLog);
         }
-        return;
     }
 
     private void sendEmail(String type, ErrorLog errorLog) {

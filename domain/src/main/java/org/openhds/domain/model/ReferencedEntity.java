@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ReferencedEntity {
 	
 	int count;
-	List<ReferencedBaseEntity> entity = new ArrayList<ReferencedBaseEntity>();
+	List<ReferencedBaseEntity> entity = new ArrayList<>();
 	
 	public int getCount() {
 		return count;

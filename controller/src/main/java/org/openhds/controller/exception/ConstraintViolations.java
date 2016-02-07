@@ -37,7 +37,7 @@ public class ConstraintViolations extends Exception {
     public static final String INVALID_PREGNANCY_OUTCOME_CHILD = "Error Processing Pregnancy Outcome Child Form.";
 
     private static final long serialVersionUID = 4392790814928552607L;
-	private List<String> violations = new ArrayList<String>();
+	private List<String> violations = new ArrayList<>();
 	
 	public ConstraintViolations() {}
 	

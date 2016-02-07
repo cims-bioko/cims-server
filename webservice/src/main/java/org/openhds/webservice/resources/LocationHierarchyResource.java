@@ -29,7 +29,7 @@ public class LocationHierarchyResource {
 	@ResponseBody
 	public LocationHierarchies getEntireLocationHierarchy() {
 		List<LocationHierarchy> allLocationHierarcies = locationHierarchyService.getAllLocationHierarchies();
-		List<LocationHierarchy> copies = new ArrayList<LocationHierarchy>();
+		List<LocationHierarchy> copies = new ArrayList<>();
 		
 		for (LocationHierarchy lh : allLocationHierarcies) {
 			LocationHierarchy copy = new LocationHierarchy();

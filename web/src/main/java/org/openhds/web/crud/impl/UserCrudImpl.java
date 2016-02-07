@@ -16,7 +16,7 @@ public class UserCrudImpl extends EntityCrudImpl<User, String> {
 
 	public UserCrudImpl(Class<User> entityClass) {
         super(entityClass);
-        roles = new ArrayList<String>();
+        roles = new ArrayList<>();
     }
 	
 	@Override
@@ -64,7 +64,7 @@ public class UserCrudImpl extends EntityCrudImpl<User, String> {
      * Retrieves the available roles to be displayed as checkboxes on the UI.
      */
     public List<SelectItem> getRoleSelectItems() {
-    	List<SelectItem> rolesSelectItems = new ArrayList<SelectItem>();
+    	List<SelectItem> rolesSelectItems = new ArrayList<>();
     	List<Role> roles = service.getRoles();
     	
     	for(Role role : roles) {
@@ -95,7 +95,7 @@ public class UserCrudImpl extends EntityCrudImpl<User, String> {
 	 */
 	public List<String> getRoles() {
 		Set<Role> roles = entityItem.getRoles();
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		for (Role r : roles) {
 			list.add(r.getName());
 		}

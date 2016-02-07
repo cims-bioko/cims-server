@@ -364,7 +364,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 	 * Used in performing autocomplete.
 	 */
 	public List<String> getLocationExtIds(String term) {
-		List<String> ids = new ArrayList<String>();
+		List<String> ids = new ArrayList<>();
 		List<Location> locs = genericDao.findListByPropertyPrefix(Location.class, "extId", term, 10, true);
 		for (Location loc : locs) {
 			ids.add(loc.getExtId());
@@ -377,7 +377,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 	 * Used in performing autocomplete.
 	 */
 	public List<String> getLocationNames(String term) {
-		List<String> names = new ArrayList<String>();
+		List<String> names = new ArrayList<>();
 		List<LocationHierarchy> list = genericDao.findListByPropertyPrefix(LocationHierarchy.class, "name", term, 10,
 				false);
 		Iterator<LocationHierarchy> itr = list.iterator();
@@ -436,7 +436,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 
 	public List<String> getValidLocationsInHierarchy(String locationHierarchyItem) {
 
-		List<String> locations = new ArrayList<String>();
+		List<String> locations = new ArrayList<>();
 		locations.add(locationHierarchyItem);
 		List<LocationHierarchy> hierarchyList = genericDao.findListByProperty(LocationHierarchy.class, "extId", locationHierarchyItem);
 		for (LocationHierarchy item : hierarchyList) {

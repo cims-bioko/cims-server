@@ -67,7 +67,7 @@ public class LocationFormResource extends AbstractFormResource{
             throw new RuntimeException("Could not create JAXB context and marshaller for OutMigrationFormResource");
         }
 
-        List<String> logMessage = new ArrayList<String>();
+        List<String> logMessage = new ArrayList<>();
         ConstraintViolations cv = new ConstraintViolations();
 
         // clean up "null" strings created by Mirth0
@@ -160,7 +160,7 @@ public class LocationFormResource extends AbstractFormResource{
             return serverError("General Error creating location: " + e.getMessage());
         }
 
-        return new ResponseEntity<LocationForm>(locationForm, HttpStatus.CREATED);
+        return new ResponseEntity<>(locationForm, HttpStatus.CREATED);
     }
 
     private void modifyExtId(Location location, LocationForm locationForm) {

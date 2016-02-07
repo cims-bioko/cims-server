@@ -66,7 +66,7 @@ public class ExtensionCrudImpl extends EntityCrudImpl<ClassExtension, String> {
     }
     
     public List<SelectItem> getEntityTypes() {
-    	List<SelectItem> output = new ArrayList<SelectItem>();
+    	List<SelectItem> output = new ArrayList<>();
 		List<EntityType> items = jsfService.arrayToList(EntityType.values());	
 		
 		for (EntityType et : items) {
@@ -76,7 +76,7 @@ public class ExtensionCrudImpl extends EntityCrudImpl<ClassExtension, String> {
     }
     
     public List<SelectItem> getPrimTypes() {
-    	List<SelectItem> output = new ArrayList<SelectItem>();
+    	List<SelectItem> output = new ArrayList<>();
 		List<PrimitiveType> items = jsfService.arrayToList(PrimitiveType.values());
 		
 		for (PrimitiveType pt : items) {

@@ -18,7 +18,7 @@ public class IndividualMergeCrudImpl extends EntityCrudImpl<IndividualMerge, Str
 	@Override
 	public String create() {
 		// determine the event types to attempt to merge
-		List<MergeEvents> events = new ArrayList<MergeEvents>();
+		List<MergeEvents> events = new ArrayList<>();
 		if (entityItem.isMergeInMigrations()) {
 			events.add(MergeEvents.IN_MIGRATION);
 		}

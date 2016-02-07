@@ -61,7 +61,7 @@ public class ValidationRoutineBean {
 	VisitGenerator visitGenerator;
 	
 	boolean run = false;
-	Map<String, List<String>> errors = new HashMap<String, List<String>>();
+	Map<String, List<String>> errors = new HashMap<>();
 	
 	public void setup() {
 		errors.clear();
@@ -72,7 +72,7 @@ public class ValidationRoutineBean {
 	public void validateIndividuals() throws ConstraintViolations, SQLException {
 		setup();
 		run = true;
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		List<Individual> indivs = genericDao.findAll(Individual.class, false);
 		for (Individual i : indivs) {
 			if (processDeletedEntity(i))
@@ -114,7 +114,7 @@ public class ValidationRoutineBean {
 	public void validateLocations() throws ConstraintViolations, SQLException {
 		setup();
 		run = true;
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		List<Location> locs = genericDao.findAll(Location.class, false);
 		for (Location loc : locs) {		
 			if (processDeletedEntity(loc))
@@ -129,7 +129,7 @@ public class ValidationRoutineBean {
 	public void validateSocialGroups() {
 		setup();
 		run = true;
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		List<SocialGroup> sgs = genericDao.findAll(SocialGroup.class, false);
 		for (SocialGroup sg : sgs) {
 			if (processDeletedEntity(sg))
@@ -145,7 +145,7 @@ public class ValidationRoutineBean {
 	public void validateRelationships() {
 		setup();
 		run = true;	
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		List<Relationship> rels = genericDao.findAll(Relationship.class, false);
 		for (Relationship rel : rels) {
 			
@@ -183,7 +183,7 @@ public class ValidationRoutineBean {
 	public void validateMemberships() {
 		setup();
 		run = true;	
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		List<Membership> mems = genericDao.findAll(Membership.class, false);
 		for (Membership mem : mems) {
 			
@@ -221,7 +221,7 @@ public class ValidationRoutineBean {
 	public void validatePregnancyOutcomes() {
 		setup();
 		run = true;	
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		List<PregnancyOutcome> pos = genericDao.findAll(PregnancyOutcome.class, false);
 		for (PregnancyOutcome po : pos) {
 			
@@ -261,7 +261,7 @@ public class ValidationRoutineBean {
 	public void validatePregnancyObservations() {
 		setup();
 		run = true;	
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		List<PregnancyObservation> pos = genericDao.findAll(PregnancyObservation.class, false);
 		for (PregnancyObservation po : pos) {
 			
@@ -300,7 +300,7 @@ public class ValidationRoutineBean {
 	public void validateInMigrations() {
 		setup();
 		run = true;	
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		List<InMigration> inmigs = genericDao.findAll(InMigration.class, false);
 		for (InMigration inmig : inmigs) {
 			
@@ -339,7 +339,7 @@ public class ValidationRoutineBean {
 	public void validateOutMigrations() {
 		setup();
 		run = true;	
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		List<OutMigration> outmigs = genericDao.findAll(OutMigration.class, false);
 		for (OutMigration outmig : outmigs) {
 			
@@ -378,7 +378,7 @@ public class ValidationRoutineBean {
 	public void validateResidencies() {
 		setup();
 		run = true;	
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		List<Residency> residencies = genericDao.findAll(Residency.class, false);
 		for (Residency res : residencies) {
 			
@@ -414,7 +414,7 @@ public class ValidationRoutineBean {
 	public void validateVisits() {
 		setup();
 		run = true;	
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		List<Visit> visits = genericDao.findAll(Visit.class, false);
 		for (Visit visit : visits) {		
 			processDeletedEntity(visit);	
@@ -428,7 +428,7 @@ public class ValidationRoutineBean {
 	public void validateDeaths() {
 		setup();
 		run = true;	
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		List<Death> deaths = genericDao.findAll(Death.class, false);
 		for (Death death : deaths) {
 			
@@ -463,7 +463,7 @@ public class ValidationRoutineBean {
 	
 	@SuppressWarnings("unchecked")
 	private List<String> validateLocation(Location loc) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		try {
 			List<String> violations = entityValidator.validateType(loc);
 			
@@ -495,7 +495,7 @@ public class ValidationRoutineBean {
 	
 	@SuppressWarnings("unchecked")
 	private List<String> validateVisit(Visit visit) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		try {
 			List<String> violations = entityValidator.validateType(visit);
 			
@@ -530,7 +530,7 @@ public class ValidationRoutineBean {
 	
 	@SuppressWarnings("unchecked")
 	private List<String> validateSocialGroup(SocialGroup sg) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		try {
 			List<String> violations = entityValidator.validateType(sg);
 			

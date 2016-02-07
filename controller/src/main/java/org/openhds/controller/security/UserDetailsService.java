@@ -65,7 +65,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 	 * @return a collection of {@link GrantedAuthority} instances
 	 */
 	private Collection<GrantedAuthority> convertAuthorities(Set<Role> roles) {
-		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		Collection<GrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new GrantedAuthorityImpl(SPRING_ROLE));
 
 		for(Role role : roles) {

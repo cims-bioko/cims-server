@@ -63,7 +63,7 @@ public class EntityValidationServiceJsfImpl<T> implements EntityValidationServic
 
     @SuppressWarnings("rawtypes")
     public <S> List validateType(S entity) {
-        List<String> violations = new ArrayList<String>();
+        List<String> violations = new ArrayList<>();
 
         Validator validator = getValidator();
         Set<ConstraintViolation<S>> constraintViolations = validator.validate(entity);

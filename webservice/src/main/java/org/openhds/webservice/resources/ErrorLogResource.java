@@ -54,7 +54,7 @@ public class ErrorLogResource {
                                        @RequestParam(value="minDate", required = false) String minDate,
                                        @RequestParam(value = "maxDate", required = false) String maxDate) throws NoSuchMethodException, SecurityException, ConstraintViolations {
 
-        List<ValueProperty> properties = new ArrayList<ValueProperty>();
+        List<ValueProperty> properties = new ArrayList<>();
         WebserviceResult result = new WebserviceResult();
 
         if (resolutionStatus != null && !resolutionStatus.isEmpty()) {
@@ -102,7 +102,7 @@ public class ErrorLogResource {
             result.setResultCode(ResultCodes.BAD_PARAMETER_CODE);
             result.setStatus(ResultCodes.ERROR);
 
-            return new ResponseEntity<WebserviceResult>(result, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
         }
 
         result.setDateRangeMessage("Showing results from "+format.format(minRange.getTime())+ " to "+format.format(maxRange.getTime()));
@@ -110,7 +110,7 @@ public class ErrorLogResource {
 
         List<ErrorLog> errors = errorService.findAllErrorsByFilters(range, properties.toArray(new ValueProperty[properties.size()]));
 
-        List<ErrorLog> shallowCopies = new ArrayList<ErrorLog>();
+        List<ErrorLog> shallowCopies = new ArrayList<>();
 
         for (ErrorLog error : errors) {
             shallowCopies.add(shallowCopyErrorLog(error));
@@ -121,7 +121,7 @@ public class ErrorLogResource {
         result.setStatus(ResultCodes.SUCCESS);
         result.setResultMessage("There are " + errors.size() + " matching records");
 
-        return new ResponseEntity<WebserviceResult>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{uuid}", method = RequestMethod.GET, produces = "application/json")
@@ -138,7 +138,7 @@ public class ErrorLogResource {
         result.setStatus(ResultCodes.SUCCESS);
         result.setResultMessage("Error log was successfully retrieved");
 
-        return new ResponseEntity<WebserviceResult>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, produces = "application/json")
@@ -171,7 +171,7 @@ public class ErrorLogResource {
 
         errorService.updateErrorLog(existingError);
 
-        return new ResponseEntity<WebserviceResult>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     public static ErrorLog shallowCopyErrorLog(ErrorLog errorLog) {

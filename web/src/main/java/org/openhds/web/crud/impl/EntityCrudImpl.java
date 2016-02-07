@@ -65,7 +65,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     List<T> entitiesByProperty;
     List<T> entitiesByExample;
     List<T> allEntities;
-    HashMap<T, Class<?>> searchableFieldsMap = new HashMap<T, Class<?>>();
+    HashMap<T, Class<?>> searchableFieldsMap = new HashMap<>();
     NavigationMenuBean navMenuBean;
     
 	String propertyName;
@@ -625,7 +625,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 
 	@SuppressWarnings("unchecked")
 	public List<SelectItem> getSearchableFieldsList() {
-		searchableFieldsList = new ArrayList<SelectItem>();
+		searchableFieldsList = new ArrayList<>();
 		Field[] f = entityClass.getDeclaredFields();
 
 		for (Field ff : f) {	

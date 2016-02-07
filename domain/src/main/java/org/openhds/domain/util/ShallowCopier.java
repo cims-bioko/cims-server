@@ -62,7 +62,7 @@ public class ShallowCopier {
 
     // Walk up the inheritance hierarchy for the given object.
     private static Set<Class<?>> getInheritanceHierarchy(UuidIdentifiable original) {
-        Set<Class<?>> superclasses = new HashSet<Class<?>>();
+        Set<Class<?>> superclasses = new HashSet<>();
 
         if (null == original) {
             return superclasses;
@@ -78,7 +78,7 @@ public class ShallowCopier {
 
     // Get all declared fields of the given object and its superclasses.
     private static Set<Field> getAllFields(UuidIdentifiable original) {
-        Set<Field> allFields = new HashSet<Field>();
+        Set<Field> allFields = new HashSet<>();
 
         if (null == original) {
             return allFields;
@@ -93,7 +93,7 @@ public class ShallowCopier {
 
     // Get all declared fields for the given class.
     private static Set<Field> getDeclaredFields(Class<?> clazz) {
-        Set<Field> declaredFields = new HashSet<Field>();
+        Set<Field> declaredFields = new HashSet<>();
 
         if (null == clazz) {
             return declaredFields;

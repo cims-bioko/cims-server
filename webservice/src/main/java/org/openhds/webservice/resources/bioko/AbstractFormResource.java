@@ -26,17 +26,17 @@ public class AbstractFormResource {
     protected ResponseEntity<WebServiceCallException> requestError(String message) {
         WebServiceCallException error = new WebServiceCallException();
         error.getErrors().add(message);
-        return new ResponseEntity<WebServiceCallException>(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     protected ResponseEntity<WebServiceCallException> serverError(String message) {
         WebServiceCallException error = new WebServiceCallException();
         error.getErrors().add(message);
-        return new ResponseEntity<WebServiceCallException>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     protected ResponseEntity<WebServiceCallException> requestError(ConstraintViolations cv) {
-        return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv),
+        return new ResponseEntity<>(new WebServiceCallException(cv),
                 HttpStatus.BAD_REQUEST);
     }
 

@@ -77,7 +77,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
             throw new RuntimeException("Could not create JAXB context and marshaller for PregnancyOutcomeFormResource");
         }
 
-        List<String> logMessage = new ArrayList<String>();
+        List<String> logMessage = new ArrayList<>();
 
         PregnancyOutcome pregnancyOutcome = new PregnancyOutcome();
         try {
@@ -93,7 +93,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
             return requestError(constraintViolations.getMessage());
         }
 
-        return new ResponseEntity<PregnancyOutcomeCoreForm>(coreForm, HttpStatus.CREATED);
+        return new ResponseEntity<>(coreForm, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/outcomes", method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
@@ -109,7 +109,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
             throw new RuntimeException("Could not create JAXB context and marshaller for PregnancyOutcomeFormResource");
         }
 
-        List<String> logMessage = new ArrayList<String>();
+        List<String> logMessage = new ArrayList<>();
 
         try {
             PregnancyOutcome updatedOutcome = fillInOutcomesFields(outcomesForm);
@@ -126,7 +126,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
 
 
 
-        return new ResponseEntity<PregnancyOutcomeOutcomesForm>(outcomesForm, HttpStatus.CREATED);
+        return new ResponseEntity<>(outcomesForm, HttpStatus.CREATED);
     }
 
     private PregnancyOutcome fillInOutcomesFields(PregnancyOutcomeOutcomesForm outcomesForm) throws ConstraintViolations {
@@ -138,7 +138,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
 
         List<Outcome> existingOutcomes = parentOutcome.getOutcomes();
         if (null == existingOutcomes) {
-            existingOutcomes = new ArrayList<Outcome>();
+            existingOutcomes = new ArrayList<>();
         }
 
         Outcome outcome = new Outcome();
