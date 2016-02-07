@@ -97,59 +97,61 @@ public class DemographicRatesController implements DemographicRatesService {
 		}
 		
 		// numerator
-		if (event.equals("InMigration")) {
-			List<InMigration> inmigrations = calculationService.getInMigrationsBetweenInterval(startDate, endDate);
-			setAgeGroupsForInMigrations(inmigrations);
-		}
-		else if (event.equals("OutMigration")) {
-			List<OutMigration> outmigrations = calculationService.getOutMigrationsBetweenInterval(startDate, endDate);
-			setAgeGroupsForOutMigrations(outmigrations);
-		}
-		else if (event.equals("Mortality")) {
-			List<Death> deaths = calculationService.getDeathsBetweenInterval(startDate, endDate);
-			List<MortalityRecordBean> mortalityRecords = setAgeGroupsForDeaths(deaths);
-			
-			MortalityRecordBean neoNatal = mortalityRecords.get(0);
-			MortalityRecordBean postNatal = mortalityRecords.get(1);
-			MortalityRecordBean infant = mortalityRecords.get(2);
-			
-			modelMap.put("neoNatalMale", neoNatal.getNeoNatalMale());
-			modelMap.put("neoNatalFemale", neoNatal.getNeoNatalFemale());
-			modelMap.put("neoNatalTotal", neoNatal.getNeoNatalTotal());
-			modelMap.put("neoNatalMaleRatio", neoNatal.getNeoNatalMaleRatio());
-			modelMap.put("neoNatalFemaleRatio", neoNatal.getNeoNatalFemaleRatio());
-			modelMap.put("neoNatalRatioTotal", neoNatal.getNeoNatalRatioTotal());
-			
-			modelMap.put("postNatalMale", postNatal.getPostNatalMale());
-			modelMap.put("postNatalFemale", postNatal.getPostNatalFemale());
-			modelMap.put("postNatalTotal", postNatal.getPostNatalTotal());
-			modelMap.put("postNatalMaleRatio", postNatal.getPostNatalMaleRatio());
-			modelMap.put("postNatalFemaleRatio", postNatal.getPostNatalFemaleRatio());
-			modelMap.put("postNatalRatioTotal", postNatal.getPostNatalRatioTotal());
-			
-			modelMap.put("infantMale", infant.getInfantMale());
-			modelMap.put("infantFemale", infant.getInfantFemale());
-			modelMap.put("infantTotal", infant.getInfantTotal());
-			modelMap.put("infantMaleRatio", infant.getInfantMaleRatio());
-			modelMap.put("infantFemaleRatio", infant.getInfantFemaleRatio());
-			modelMap.put("infantRatioTotal", infant.getInfantRatioTotal());
-			
-			modelMap.put("totalOutcomes", postNatal.getTotalOutcomes());
-		}
-		else if (event.equals("Fertility")) {
-			List<PregnancyOutcome> outcomes = calculationService.getPregnanciesBetweenInterval(startDate, endDate);
-			setAgeGroupsForPregnancyOutcomes(outcomes);
-			// only want intervals 15-49
-			calculationService.getReportRecords().remove(1);
-			calculationService.getReportRecords().remove(1);
-			calculationService.getReportRecords().remove(1);
-		}
-		else if (event.equals("Population")) {
-			if (denomType.equals("Person Days Observed")) {
-				calculationService.setNumeratorsForPopulation();
-			} else {
-				setAgeGroupsForResidenciesAtMidpoint(residencies, midpoint, false);
-			}
+		switch (event) {
+			case "InMigration":
+				List<InMigration> inmigrations = calculationService.getInMigrationsBetweenInterval(startDate, endDate);
+				setAgeGroupsForInMigrations(inmigrations);
+				break;
+			case "OutMigration":
+				List<OutMigration> outmigrations = calculationService.getOutMigrationsBetweenInterval(startDate, endDate);
+				setAgeGroupsForOutMigrations(outmigrations);
+				break;
+			case "Mortality":
+				List<Death> deaths = calculationService.getDeathsBetweenInterval(startDate, endDate);
+				List<MortalityRecordBean> mortalityRecords = setAgeGroupsForDeaths(deaths);
+
+				MortalityRecordBean neoNatal = mortalityRecords.get(0);
+				MortalityRecordBean postNatal = mortalityRecords.get(1);
+				MortalityRecordBean infant = mortalityRecords.get(2);
+
+				modelMap.put("neoNatalMale", neoNatal.getNeoNatalMale());
+				modelMap.put("neoNatalFemale", neoNatal.getNeoNatalFemale());
+				modelMap.put("neoNatalTotal", neoNatal.getNeoNatalTotal());
+				modelMap.put("neoNatalMaleRatio", neoNatal.getNeoNatalMaleRatio());
+				modelMap.put("neoNatalFemaleRatio", neoNatal.getNeoNatalFemaleRatio());
+				modelMap.put("neoNatalRatioTotal", neoNatal.getNeoNatalRatioTotal());
+
+				modelMap.put("postNatalMale", postNatal.getPostNatalMale());
+				modelMap.put("postNatalFemale", postNatal.getPostNatalFemale());
+				modelMap.put("postNatalTotal", postNatal.getPostNatalTotal());
+				modelMap.put("postNatalMaleRatio", postNatal.getPostNatalMaleRatio());
+				modelMap.put("postNatalFemaleRatio", postNatal.getPostNatalFemaleRatio());
+				modelMap.put("postNatalRatioTotal", postNatal.getPostNatalRatioTotal());
+
+				modelMap.put("infantMale", infant.getInfantMale());
+				modelMap.put("infantFemale", infant.getInfantFemale());
+				modelMap.put("infantTotal", infant.getInfantTotal());
+				modelMap.put("infantMaleRatio", infant.getInfantMaleRatio());
+				modelMap.put("infantFemaleRatio", infant.getInfantFemaleRatio());
+				modelMap.put("infantRatioTotal", infant.getInfantRatioTotal());
+
+				modelMap.put("totalOutcomes", postNatal.getTotalOutcomes());
+				break;
+			case "Fertility":
+				List<PregnancyOutcome> outcomes = calculationService.getPregnanciesBetweenInterval(startDate, endDate);
+				setAgeGroupsForPregnancyOutcomes(outcomes);
+				// only want intervals 15-49
+				calculationService.getReportRecords().remove(1);
+				calculationService.getReportRecords().remove(1);
+				calculationService.getReportRecords().remove(1);
+				break;
+			case "Population":
+				if (denomType.equals("Person Days Observed")) {
+					calculationService.setNumeratorsForPopulation();
+				} else {
+					setAgeGroupsForResidenciesAtMidpoint(residencies, midpoint, false);
+				}
+				break;
 		}
 			
 		// call this once denominator and numerator totals have been calculated

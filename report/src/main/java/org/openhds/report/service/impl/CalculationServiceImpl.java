@@ -37,84 +37,87 @@ public class CalculationServiceImpl implements CalculationService {
 	
 	public void initializeGroups(String path) {
 		reportRecords.clear();
-		
-		if (path.equals("/outmigration.report") || path.equals("/inmigration.report")) {
-			reportRecords.add(new ReportRecordBean("ALL", 0, 110));
-			reportRecords.add(new ReportRecordBean("0-4", 0, 5));
-			reportRecords.add(new ReportRecordBean("5-9", 5, 10));
-			reportRecords.add(new ReportRecordBean("10-14", 10, 15));
-			reportRecords.add(new ReportRecordBean("15-19", 15, 20));
-			reportRecords.add(new ReportRecordBean("20-24", 20, 25));
-			reportRecords.add(new ReportRecordBean("25-29", 25, 30));
-			reportRecords.add(new ReportRecordBean("30-34", 30, 35));
-			reportRecords.add(new ReportRecordBean("35-39", 35, 40));
-			reportRecords.add(new ReportRecordBean("40-44", 40, 45));
-			reportRecords.add(new ReportRecordBean("45-49", 45, 50));
-			reportRecords.add(new ReportRecordBean("50-54", 50, 55));
-			reportRecords.add(new ReportRecordBean("55-59", 55, 60));
-			reportRecords.add(new ReportRecordBean("60-64", 60, 65));
-			reportRecords.add(new ReportRecordBean("65+", 65, 100));
-		}
-		else if (path.equals("/mortality.report")) {
-			reportRecords.add(new ReportRecordBean("ALL", 0, 110));
-			reportRecords.add(new ReportRecordBean("< 12 months", 0, 1));
-			reportRecords.add(new ReportRecordBean("1-4", 1, 5));
-			reportRecords.add(new ReportRecordBean("5-9", 5, 10));
-			reportRecords.add(new ReportRecordBean("10-14", 10, 15));
-			reportRecords.add(new ReportRecordBean("15-19", 15, 20));
-			reportRecords.add(new ReportRecordBean("20-24", 20, 25));
-			reportRecords.add(new ReportRecordBean("25-29", 25, 30));
-			reportRecords.add(new ReportRecordBean("30-34", 30, 35));
-			reportRecords.add(new ReportRecordBean("35-39", 35, 40));
-			reportRecords.add(new ReportRecordBean("40-44", 40, 45));
-			reportRecords.add(new ReportRecordBean("45-49", 45, 50));
-			reportRecords.add(new ReportRecordBean("50-54", 50, 55));
-			reportRecords.add(new ReportRecordBean("55-59", 55, 60));
-			reportRecords.add(new ReportRecordBean("60-64", 60, 65));
-			reportRecords.add(new ReportRecordBean("65-69", 65, 70));
-			reportRecords.add(new ReportRecordBean("70-74", 70, 75));
-			reportRecords.add(new ReportRecordBean("75-79", 75, 80));
-			reportRecords.add(new ReportRecordBean("80-84", 80, 85));
-			reportRecords.add(new ReportRecordBean("85+", 85, 100));
-		}
-		else if (path.equals("/fertility.report")) {
-			reportRecords.add(new ReportRecordBean("ALL", 15, 50));
-			//ignored
-			reportRecords.add(new ReportRecordBean("0-4", 0, 5));
-			//ignored
-			reportRecords.add(new ReportRecordBean("5-9", 5, 10));
-			//ignored
-			reportRecords.add(new ReportRecordBean("10-14", 10, 15));
-			reportRecords.add(new ReportRecordBean("15-19", 15, 20));
-			reportRecords.add(new ReportRecordBean("20-24", 20, 25));
-			reportRecords.add(new ReportRecordBean("24-29", 25, 30));
-			reportRecords.add(new ReportRecordBean("30-34", 30, 35));
-			reportRecords.add(new ReportRecordBean("35-39", 35, 40));
-			reportRecords.add(new ReportRecordBean("40-44", 40, 45));
-			reportRecords.add(new ReportRecordBean("45-49", 45, 50));
-		}
-		else if (path.equals("/population.report")) {
-			reportRecords.add(new ReportRecordBean("ALL", 0, 110));
-			reportRecords.add(new ReportRecordBean("0-4", 0, 5));
-			reportRecords.add(new ReportRecordBean("5-9", 5, 10));
-			reportRecords.add(new ReportRecordBean("10-14", 10, 15));
-			reportRecords.add(new ReportRecordBean("15-19", 15, 20));
-			reportRecords.add(new ReportRecordBean("20-24", 20, 25));
-			reportRecords.add(new ReportRecordBean("25-29", 25, 30));
-			reportRecords.add(new ReportRecordBean("30-34", 30, 35));
-			reportRecords.add(new ReportRecordBean("35-39", 35, 40));
-			reportRecords.add(new ReportRecordBean("40-44", 40, 45));
-			reportRecords.add(new ReportRecordBean("45-49", 45, 50));
-			reportRecords.add(new ReportRecordBean("50-54", 50, 55));
-			reportRecords.add(new ReportRecordBean("55-59", 55, 60));
-			reportRecords.add(new ReportRecordBean("60-64", 60, 65));
-			reportRecords.add(new ReportRecordBean("65-69", 65, 70));
-			reportRecords.add(new ReportRecordBean("70-74", 70, 75));
-			reportRecords.add(new ReportRecordBean("75-79", 75, 80));
-			reportRecords.add(new ReportRecordBean("80-84", 80, 85));
-			reportRecords.add(new ReportRecordBean("85-89", 85, 90));
-			reportRecords.add(new ReportRecordBean("90-95", 90, 95));
-			reportRecords.add(new ReportRecordBean("95+", 95, 110));
+
+		switch (path) {
+			case "/outmigration.report":
+			case "/inmigration.report":
+				reportRecords.add(new ReportRecordBean("ALL", 0, 110));
+				reportRecords.add(new ReportRecordBean("0-4", 0, 5));
+				reportRecords.add(new ReportRecordBean("5-9", 5, 10));
+				reportRecords.add(new ReportRecordBean("10-14", 10, 15));
+				reportRecords.add(new ReportRecordBean("15-19", 15, 20));
+				reportRecords.add(new ReportRecordBean("20-24", 20, 25));
+				reportRecords.add(new ReportRecordBean("25-29", 25, 30));
+				reportRecords.add(new ReportRecordBean("30-34", 30, 35));
+				reportRecords.add(new ReportRecordBean("35-39", 35, 40));
+				reportRecords.add(new ReportRecordBean("40-44", 40, 45));
+				reportRecords.add(new ReportRecordBean("45-49", 45, 50));
+				reportRecords.add(new ReportRecordBean("50-54", 50, 55));
+				reportRecords.add(new ReportRecordBean("55-59", 55, 60));
+				reportRecords.add(new ReportRecordBean("60-64", 60, 65));
+				reportRecords.add(new ReportRecordBean("65+", 65, 100));
+				break;
+			case "/mortality.report":
+				reportRecords.add(new ReportRecordBean("ALL", 0, 110));
+				reportRecords.add(new ReportRecordBean("< 12 months", 0, 1));
+				reportRecords.add(new ReportRecordBean("1-4", 1, 5));
+				reportRecords.add(new ReportRecordBean("5-9", 5, 10));
+				reportRecords.add(new ReportRecordBean("10-14", 10, 15));
+				reportRecords.add(new ReportRecordBean("15-19", 15, 20));
+				reportRecords.add(new ReportRecordBean("20-24", 20, 25));
+				reportRecords.add(new ReportRecordBean("25-29", 25, 30));
+				reportRecords.add(new ReportRecordBean("30-34", 30, 35));
+				reportRecords.add(new ReportRecordBean("35-39", 35, 40));
+				reportRecords.add(new ReportRecordBean("40-44", 40, 45));
+				reportRecords.add(new ReportRecordBean("45-49", 45, 50));
+				reportRecords.add(new ReportRecordBean("50-54", 50, 55));
+				reportRecords.add(new ReportRecordBean("55-59", 55, 60));
+				reportRecords.add(new ReportRecordBean("60-64", 60, 65));
+				reportRecords.add(new ReportRecordBean("65-69", 65, 70));
+				reportRecords.add(new ReportRecordBean("70-74", 70, 75));
+				reportRecords.add(new ReportRecordBean("75-79", 75, 80));
+				reportRecords.add(new ReportRecordBean("80-84", 80, 85));
+				reportRecords.add(new ReportRecordBean("85+", 85, 100));
+				break;
+			case "/fertility.report":
+				reportRecords.add(new ReportRecordBean("ALL", 15, 50));
+				//ignored
+				reportRecords.add(new ReportRecordBean("0-4", 0, 5));
+				//ignored
+				reportRecords.add(new ReportRecordBean("5-9", 5, 10));
+				//ignored
+				reportRecords.add(new ReportRecordBean("10-14", 10, 15));
+				reportRecords.add(new ReportRecordBean("15-19", 15, 20));
+				reportRecords.add(new ReportRecordBean("20-24", 20, 25));
+				reportRecords.add(new ReportRecordBean("24-29", 25, 30));
+				reportRecords.add(new ReportRecordBean("30-34", 30, 35));
+				reportRecords.add(new ReportRecordBean("35-39", 35, 40));
+				reportRecords.add(new ReportRecordBean("40-44", 40, 45));
+				reportRecords.add(new ReportRecordBean("45-49", 45, 50));
+				break;
+			case "/population.report":
+				reportRecords.add(new ReportRecordBean("ALL", 0, 110));
+				reportRecords.add(new ReportRecordBean("0-4", 0, 5));
+				reportRecords.add(new ReportRecordBean("5-9", 5, 10));
+				reportRecords.add(new ReportRecordBean("10-14", 10, 15));
+				reportRecords.add(new ReportRecordBean("15-19", 15, 20));
+				reportRecords.add(new ReportRecordBean("20-24", 20, 25));
+				reportRecords.add(new ReportRecordBean("25-29", 25, 30));
+				reportRecords.add(new ReportRecordBean("30-34", 30, 35));
+				reportRecords.add(new ReportRecordBean("35-39", 35, 40));
+				reportRecords.add(new ReportRecordBean("40-44", 40, 45));
+				reportRecords.add(new ReportRecordBean("45-49", 45, 50));
+				reportRecords.add(new ReportRecordBean("50-54", 50, 55));
+				reportRecords.add(new ReportRecordBean("55-59", 55, 60));
+				reportRecords.add(new ReportRecordBean("60-64", 60, 65));
+				reportRecords.add(new ReportRecordBean("65-69", 65, 70));
+				reportRecords.add(new ReportRecordBean("70-74", 70, 75));
+				reportRecords.add(new ReportRecordBean("75-79", 75, 80));
+				reportRecords.add(new ReportRecordBean("80-84", 80, 85));
+				reportRecords.add(new ReportRecordBean("85-89", 85, 90));
+				reportRecords.add(new ReportRecordBean("90-95", 90, 95));
+				reportRecords.add(new ReportRecordBean("95+", 95, 110));
+				break;
 		}
 	}
 	
