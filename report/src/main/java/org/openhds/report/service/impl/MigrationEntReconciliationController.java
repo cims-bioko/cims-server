@@ -55,7 +55,7 @@ public class MigrationEntReconciliationController implements MigrationEntReconci
 			}
 
 			public Object getValue() {
-				return new Boolean(true);
+				return true;
 			}
 		};
 		
