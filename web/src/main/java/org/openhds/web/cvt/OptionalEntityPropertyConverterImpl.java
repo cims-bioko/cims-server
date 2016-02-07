@@ -80,7 +80,7 @@ public class OptionalEntityPropertyConverterImpl<T, PK extends Serializable> imp
 			Object value) {
 		if (value == null)
 			return null;
-		Object propertyValue = null;
+		Object propertyValue;
 		if (entityClass.isAssignableFrom(value.getClass())) {
 			try {
 				propertyValue = propertyGetter.invoke(value);

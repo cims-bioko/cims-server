@@ -181,7 +181,7 @@ public class DatabaseConfigBean {
 	}
 	
 	public void writePropertyFile(Resource res, Properties props) {
-		FileOutputStream fos = null;
+		FileOutputStream fos;
 		try {
 			fos = new FileOutputStream(res.getFile());
 			props.store(fos, "Database Configuration updated");

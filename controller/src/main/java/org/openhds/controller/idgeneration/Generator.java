@@ -47,7 +47,7 @@ public abstract class Generator<T> extends LuhnValidator {
 					
 		Integer suffixInt = 0;
 		String numberGen;
-		List<T> list = null;  
+		List<T> list;
 		do {  		      	  
 			suffixInt++;
 			numberGen = suffixInt.toString();

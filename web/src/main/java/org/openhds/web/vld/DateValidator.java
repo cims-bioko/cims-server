@@ -20,7 +20,7 @@ public class DateValidator extends AppContextAware {
 
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		
-		Calendar cal = null;
+		Calendar cal;
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat(properties.getDateFormat());
 			sdf.setLenient(false);

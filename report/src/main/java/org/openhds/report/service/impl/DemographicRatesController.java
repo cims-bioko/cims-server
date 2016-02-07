@@ -80,7 +80,7 @@ public class DemographicRatesController implements DemographicRatesService {
 		modelMap.put("locations", "All Locations");
 		modelMap.put("individuals", "All Individuals");
 			
-		List<Residency> residencies = null;
+		List<Residency> residencies;
 		Calendar midpoint = null;
 		
 		calculationService.initializeGroups(request.getServletPath());

@@ -61,7 +61,7 @@ public class ModifyHOHBean implements Serializable {
 	 */
 	private boolean determineValidSocialGroup() {
 		
-    	List<Individual> indivsAtSocialGroup = null;
+    	List<Individual> indivsAtSocialGroup;
 
         SocialGroup socialGroup = genericDao.findByProperty(SocialGroup.class, "extId", group.getExtId(), true);      
         if (socialGroup == null) 

@@ -48,7 +48,7 @@ public class JsfCrudELResolver extends ELResolver {
 							+ base);
 		}
 
-		Object result = null;
+		Object result;
 
 		if (JSFCRUD_CLASS.equals(propertyName)) {
 			if (base != null) {
@@ -614,7 +614,7 @@ public class JsfCrudELResolver extends ELResolver {
 						+ " of base object " + base + " with raw value "
 						+ value + ": base object has no such property");
 			}
-			Object transformedOrUntransformedValue = null;
+			Object transformedOrUntransformedValue;
 			if (transformMethods[1] == null) {
 				transformedOrUntransformedValue = value;
 			} else {

@@ -89,7 +89,7 @@ public class DeathHOHBean implements Serializable {
 	 */
 	private boolean determineValidSocialGroups() {
 		
-    	List<Individual> indivsAtSocialGroup = null;
+    	List<Individual> indivsAtSocialGroup;
 
         socialGroups = filterDeleted(genericDao.findListByProperty(SocialGroup.class, "groupHead", group.getGroupHead())); 
               

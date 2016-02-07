@@ -80,10 +80,10 @@ public class EntityServiceImpl implements EntityService {
 	
 	@Transactional
 	public <T> void delete(T persistentObject) throws SQLException {
-        Method setDeletedMethod = null;
+        Method setDeletedMethod;
         if (persistentObject instanceof AuditableEntity) {
-            Method voidedByMethod = null;
-            Method voidedDateMethod = null;
+            Method voidedByMethod;
+            Method voidedDateMethod;
 
             try {
                 voidedByMethod = persistentObject.getClass().getMethod("setVoidBy", User.class);

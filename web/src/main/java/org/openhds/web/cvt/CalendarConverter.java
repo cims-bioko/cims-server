@@ -17,7 +17,7 @@ public class CalendarConverter implements Converter {
 
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 	
-			Calendar cal = null;	
+			Calendar cal;
 								
 		try {
 			DateFormat formatter = new SimpleDateFormat(dateFormat);

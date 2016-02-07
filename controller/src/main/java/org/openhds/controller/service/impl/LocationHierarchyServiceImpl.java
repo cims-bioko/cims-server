@@ -240,7 +240,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 	 */
 	public boolean checkValidParentLocation(String parent) {
 
-		LocationHierarchy item = null;
+		LocationHierarchy item;
 
 		// Must check that the location exists
 		item = genericDao.findByProperty(LocationHierarchy.class, "name", parent);

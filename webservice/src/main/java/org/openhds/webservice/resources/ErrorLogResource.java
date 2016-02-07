@@ -78,7 +78,7 @@ public class ErrorLogResource {
             }
         }
 
-        RangeProperty range = null;
+        RangeProperty range;
 
         SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
 

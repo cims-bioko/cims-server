@@ -77,7 +77,7 @@ public class EntityPropertyConverterImpl<T, PK extends Serializable> implements 
 		
 		if (value == null)
 			return null;
-		Object propertyValue = null;
+		Object propertyValue;
 		if (entityClass.isAssignableFrom(value.getClass())) {
 			try {
 				propertyValue = propertyGetter.invoke(value);

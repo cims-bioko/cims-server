@@ -248,8 +248,8 @@ public class CalculationServiceImpl implements CalculationService {
 	public void setIntervalsOfResidencies(List<Residency> list, Calendar startDate, Calendar endDate) {
 				
 		for (Residency res : list) {
-			Calendar beginInterval = null;
-			Calendar endInterval = null;
+			Calendar beginInterval;
+			Calendar endInterval;
 			
 			// determine intervals
 			if (res.getStartDate().after(startDate)) 

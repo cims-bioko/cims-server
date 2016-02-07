@@ -102,7 +102,7 @@ public class SitePropertiesConfigBean {
 	}
 			
 	public Properties readCodeProperties() {
-		FileInputStream fis = null;
+		FileInputStream fis;
 		Properties prop = null;
 		
 		try {
@@ -121,7 +121,7 @@ public class SitePropertiesConfigBean {
 	}
 	
 	public void writePropertyFile(Properties props) {
-		FileOutputStream fos = null;
+		FileOutputStream fos;
 		try {	
 			fos = new FileOutputStream(
 					new ClassPathResource("codes.properties").getFile());

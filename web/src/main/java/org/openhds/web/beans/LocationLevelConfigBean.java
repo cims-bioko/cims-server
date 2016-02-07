@@ -35,7 +35,7 @@ public class LocationLevelConfigBean {
 	}
 	
 	public Properties readLocationProperties() {
-		FileInputStream fis = null;
+		FileInputStream fis;
 		Properties prop = null;
 		
 		try {
@@ -54,7 +54,7 @@ public class LocationLevelConfigBean {
 	}
 	
 	public void writePropertyFile(Properties props) {
-		FileOutputStream fos = null;
+		FileOutputStream fos;
 		try {
 			fos = new FileOutputStream(
 					new ClassPathResource("location-levels.properties").getFile());
