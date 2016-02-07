@@ -148,7 +148,7 @@ public class RelationshipServiceImpl implements RelationshipService {
 	        		for(Membership m : memsA) {
 	        			if (m.getSocialGroup().getExtId().equals(group.getExtId())) {
 	        				found = true;
-	        				continue;
+	        				break;
 	        			}
 	        		}
 	        		if (!found)
@@ -162,7 +162,7 @@ public class RelationshipServiceImpl implements RelationshipService {
 	        		for(Membership m : memsB) {
 	        			if (m.getSocialGroup().getExtId().equals(group.getExtId())) {
 	        				found = true;
-	        				continue;
+	        				break;
 	        			}
 	        		}
 	        		if (!found)
