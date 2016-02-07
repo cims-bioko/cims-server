@@ -1,7 +1,7 @@
 package org.openhds.task.support;
 
 import org.openhds.task.TaskContext;
-import org.openhds.task.XmlWriterTask;
+import org.openhds.task.SyncFileTask;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,14 +15,14 @@ public class TaskExecutorImpl implements TaskExecutor {
     private FileResolver fileResolver;
     private AsyncTaskService asyncTaskService;
 
-    private XmlWriterTask individualTaskWriter;
-    private XmlWriterTask locationTaskWriter;
-    private XmlWriterTask relationshipTaskWriter;
-    private XmlWriterTask socialGroupTaskWriter;
-    private XmlWriterTask visitTaskWriter;
-    private XmlWriterTask membershipTaskWriter;
-    private XmlWriterTask fieldWorkerTaskWriter;
-    private XmlWriterTask locationHierarchyTaskWriter;
+    private SyncFileTask individualTaskWriter;
+    private SyncFileTask locationTaskWriter;
+    private SyncFileTask relationshipTaskWriter;
+    private SyncFileTask socialGroupTaskWriter;
+    private SyncFileTask visitTaskWriter;
+    private SyncFileTask membershipTaskWriter;
+    private SyncFileTask fieldWorkerTaskWriter;
+    private SyncFileTask locationHierarchyTaskWriter;
 
 
     @Autowired
@@ -36,7 +36,7 @@ public class TaskExecutorImpl implements TaskExecutor {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.MEMBERSHIP_TASK_NAME)) {
             asyncTaskService.startTask(AsyncTaskService.MEMBERSHIP_TASK_NAME);
             File membershipXmlFile = fileResolver.resolveMembershipXmlFile();
-            membershipTaskWriter.writeXmlAsync(new TaskContext(membershipXmlFile));
+            membershipTaskWriter.run(new TaskContext(membershipXmlFile));
         }
     }
 
@@ -45,7 +45,7 @@ public class TaskExecutorImpl implements TaskExecutor {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.INDIVIDUAL_TASK_NAME)) {
             asyncTaskService.startTask(AsyncTaskService.INDIVIDUAL_TASK_NAME);
             File individualXmlFile = fileResolver.resolveIndividualXmlFile();
-            individualTaskWriter.writeXmlAsync(new TaskContext(individualXmlFile));
+            individualTaskWriter.run(new TaskContext(individualXmlFile));
         }
     }
 
@@ -54,7 +54,7 @@ public class TaskExecutorImpl implements TaskExecutor {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.LOCATION_TASK_NAME)) {
             asyncTaskService.startTask(AsyncTaskService.LOCATION_TASK_NAME);
             File locationXmlFile = fileResolver.resolveLocationXmlFile();
-            locationTaskWriter.writeXmlAsync(new TaskContext(locationXmlFile));
+            locationTaskWriter.run(new TaskContext(locationXmlFile));
         }
     }
 
@@ -63,7 +63,7 @@ public class TaskExecutorImpl implements TaskExecutor {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.RELATIONSHIP_TASK_NAME)) {
             asyncTaskService.startTask(AsyncTaskService.RELATIONSHIP_TASK_NAME);
             File relationshipXmlFile = fileResolver.resolveRelationshipXmlFile();
-            relationshipTaskWriter.writeXmlAsync(new TaskContext(relationshipXmlFile));
+            relationshipTaskWriter.run(new TaskContext(relationshipXmlFile));
         }
     }
 
@@ -72,7 +72,7 @@ public class TaskExecutorImpl implements TaskExecutor {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.SOCIALGROUP_TASK_NAME)) {
             asyncTaskService.startTask(AsyncTaskService.SOCIALGROUP_TASK_NAME);
             File socialGroupXmlFile = fileResolver.resolveSocialGroupXmlFile();
-            socialGroupTaskWriter.writeXmlAsync(new TaskContext(socialGroupXmlFile));
+            socialGroupTaskWriter.run(new TaskContext(socialGroupXmlFile));
         }
     }
 
@@ -83,7 +83,7 @@ public class TaskExecutorImpl implements TaskExecutor {
             File visitXmlFile = fileResolver.resolveVisitXmlFile();
             TaskContext taskContext = new TaskContext(visitXmlFile);
             taskContext.addExtraData("roundNumber", roundNumber + "");
-            visitTaskWriter.writeXmlAsync(taskContext);
+            visitTaskWriter.run(taskContext);
         }
     }
 
@@ -92,7 +92,7 @@ public class TaskExecutorImpl implements TaskExecutor {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.FIELDWORKER_TASK_NAME)) {
             asyncTaskService.startTask(AsyncTaskService.FIELDWORKER_TASK_NAME);
             File xmlFile = fileResolver.resolveFieldWorkerFile();
-            fieldWorkerTaskWriter.writeXmlAsync(new TaskContext(xmlFile));
+            fieldWorkerTaskWriter.run(new TaskContext(xmlFile));
         }
     }
 
@@ -101,47 +101,47 @@ public class TaskExecutorImpl implements TaskExecutor {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.LOCATIONHIERARCHY_TASK_NAME)) {
             asyncTaskService.startTask(AsyncTaskService.LOCATIONHIERARCHY_TASK_NAME);
             File xmlFile = fileResolver.resolveLocationHierarchyFile();
-            locationHierarchyTaskWriter.writeXmlAsync(new TaskContext(xmlFile));
+            locationHierarchyTaskWriter.run(new TaskContext(xmlFile));
         }
     }
 
     @Resource(name="individualXmlWriter")
-    public void setIndividualTaskWriter(XmlWriterTask individualTaskWriter) {
+    public void setIndividualTaskWriter(SyncFileTask individualTaskWriter) {
         this.individualTaskWriter = individualTaskWriter;
     }
 
     @Resource(name="locationXmlWriter")
-    public void setLocationTaskWriter(XmlWriterTask individualTaskWriter) {
+    public void setLocationTaskWriter(SyncFileTask individualTaskWriter) {
         this.locationTaskWriter = individualTaskWriter;
     }
 
     @Resource(name="relationshipXmlWriter")
-    public void setRelationshipTaskWriter(XmlWriterTask relationshipTaskWriter) {
+    public void setRelationshipTaskWriter(SyncFileTask relationshipTaskWriter) {
         this.relationshipTaskWriter = relationshipTaskWriter;
     }
 
     @Resource(name="socialGroupXmlWriter")
-    public void setSocialGroupTaskWriter(XmlWriterTask socialGroupTaskWriter) {
+    public void setSocialGroupTaskWriter(SyncFileTask socialGroupTaskWriter) {
         this.socialGroupTaskWriter = socialGroupTaskWriter;
     }
 
     @Resource(name="visitXmlWriter")
-    public void setVisitTaskWriter(XmlWriterTask visitTaskWriter) {
+    public void setVisitTaskWriter(SyncFileTask visitTaskWriter) {
         this.visitTaskWriter = visitTaskWriter;
     }
 
     @Resource(name="membershipXmlWriter")
-    public void setMembershipTaskWriter(XmlWriterTask membershipTaskWriter) {
+    public void setMembershipTaskWriter(SyncFileTask membershipTaskWriter) {
         this.membershipTaskWriter = membershipTaskWriter;
     }
 
     @Resource(name="fieldWorkerXmlWriter")
-    public void setFieldWorkerTaskWriter(XmlWriterTask fieldWorkerTaskWriter) {
+    public void setFieldWorkerTaskWriter(SyncFileTask fieldWorkerTaskWriter) {
         this.fieldWorkerTaskWriter = fieldWorkerTaskWriter;
     }
 
     @Resource(name="locationHierarchyXmlWriter")
-    public void setLocationHierarchyTaskWriter(XmlWriterTask locationHierarchyTaskWriter) {
+    public void setLocationHierarchyTaskWriter(SyncFileTask locationHierarchyTaskWriter) {
         this.locationHierarchyTaskWriter = locationHierarchyTaskWriter;
     }
 }

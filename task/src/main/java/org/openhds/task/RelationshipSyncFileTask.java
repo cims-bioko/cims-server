@@ -23,10 +23,10 @@ import javax.xml.stream.XMLStreamWriter;
 import static org.hibernate.transform.Transformers.aliasToBean;
 
 @Component("relationshipXmlWriter")
-public class RelationshipXmlWriterTask extends XmlWriterTemplate<RelationshipXmlWriterTask.RelationshipXml> {
+public class RelationshipSyncFileTask extends SyncFileTemplate<RelationshipSyncFileTask.RelationshipXml> {
 
     @Autowired
-    public RelationshipXmlWriterTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
+    public RelationshipSyncFileTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
         super(asyncTaskService, factory, AsyncTaskService.RELATIONSHIP_TASK_NAME);
     }
 

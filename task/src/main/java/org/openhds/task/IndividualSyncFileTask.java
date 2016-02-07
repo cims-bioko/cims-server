@@ -22,10 +22,10 @@ import javax.xml.stream.XMLStreamWriter;
 import static org.hibernate.transform.Transformers.aliasToBean;
 
 @Component("individualXmlWriter")
-public class IndividualXmlWriterTask extends XmlWriterTemplate<IndividualXmlWriterTask.IndividualXml> {
+public class IndividualSyncFileTask extends SyncFileTemplate<IndividualSyncFileTask.IndividualXml> {
 
     @Autowired
-    public IndividualXmlWriterTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
+    public IndividualSyncFileTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
         super(asyncTaskService, factory, AsyncTaskService.INDIVIDUAL_TASK_NAME);
     }
 

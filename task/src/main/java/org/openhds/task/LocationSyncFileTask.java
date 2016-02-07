@@ -18,10 +18,10 @@ import javax.xml.stream.XMLStreamWriter;
 import static org.hibernate.transform.Transformers.aliasToBean;
 
 @Component("locationXmlWriter")
-public class LocationXmlWriterTask extends XmlWriterTemplate<LocationXmlWriterTask.LocationXml> {
+public class LocationSyncFileTask extends SyncFileTemplate<LocationSyncFileTask.LocationXml> {
 
     @Autowired
-    public LocationXmlWriterTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
+    public LocationSyncFileTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
         super(asyncTaskService, factory, AsyncTaskService.LOCATION_TASK_NAME);
     }
 

@@ -16,52 +16,56 @@ import javax.xml.stream.XMLStreamWriter;
 
 import static org.hibernate.transform.Transformers.aliasToBean;
 
-@Component("membershipXmlWriter")
-public class MembershipXmlWriterTask extends XmlWriterTemplate<MembershipXmlWriterTask.MembershipXml> {
+@Component("fieldWorkerXmlWriter")
+public class FieldWorkerSyncFileTask extends SyncFileTemplate<FieldWorkerSyncFileTask.FieldWorkerXml> {
 
     @Autowired
-    public MembershipXmlWriterTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
-        super(asyncTaskService, factory, AsyncTaskService.MEMBERSHIP_TASK_NAME);
+    public FieldWorkerSyncFileTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
+        super(asyncTaskService, factory, AsyncTaskService.FIELDWORKER_TASK_NAME);
     }
 
     @Override
     protected Query createQuery(SharedSessionContract session, String query) {
         return session.createSQLQuery(query)
                 .addScalar("uuid")
-                .addScalar("indiv")
-                .addScalar("bIsToA")
-                .addScalar("socialGroup")
-                .setResultTransformer(aliasToBean(MembershipXml.class));
+                .addScalar("extId")
+                .addScalar("id")
+                .addScalar("pass")
+                .addScalar("firstName")
+                .addScalar("lastName")
+                .setResultTransformer(aliasToBean(FieldWorkerXml.class));
     }
 
     @Override
     protected String getExportQuery() {
-        return "select * from v_membership_sync";
+        return "select * from v_fieldworker_sync";
     }
 
     @Override
-    protected void writeXml(XMLStreamWriter xmlStreamWriter, Marshaller marshaller, MembershipXml original)
+    protected void writeXml(XMLStreamWriter xmlStreamWriter, Marshaller marshaller, FieldWorkerXml original)
             throws JAXBException {
         marshaller.marshal(original, xmlStreamWriter);
     }
 
     @Override
     protected Class<?> getBoundClass() {
-        return MembershipXml.class;
+        return FieldWorkerXml.class;
     }
 
     @Override
     protected String getStartElementName() {
-        return "memberships";
+        return "fieldworkers";
     }
 
     @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlRootElement(name = "membership")
-    public static class MembershipXml {
+    @XmlRootElement(name = "fieldworker")
+    public static class FieldWorkerXml {
         public String uuid;
-        public String indiv;
-        public String bIsToA;
-        public String socialGroup;
+        public String extId;
+        public Integer id;
+        public String pass;
+        public String firstName;
+        public String lastName;
     }
 
 }

@@ -9,8 +9,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.openhds.task.SyncFileTask;
 import org.openhds.task.TaskContext;
-import org.openhds.task.XmlWriterTask;
 import org.openhds.task.service.AsyncTaskService;
 
 public class TaskExecutorImplTest {
@@ -22,7 +22,7 @@ public class TaskExecutorImplTest {
     AsyncTaskService asyncTaskService;
 
     @Mock
-    private XmlWriterTask writeTask;
+    private SyncFileTask writeTask;
 
     private TaskExecutorImpl executor;
 
@@ -62,7 +62,7 @@ public class TaskExecutorImplTest {
         executor.executeIndividualXmlWriterTask();
 
         verify(fileResolver).resolveIndividualXmlFile();
-        verify(writeTask).writeXmlAsync(any(TaskContext.class));
+        verify(writeTask).run(any(TaskContext.class));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class TaskExecutorImplTest {
         executor.setIndividualTaskWriter(writeTask);
         executor.executeIndividualXmlWriterTask();
 
-        verify(writeTask, times(0)).writeXmlAsync(any(TaskContext.class));
+        verify(writeTask, times(0)).run(any(TaskContext.class));
     }
 
     @Test
@@ -83,7 +83,7 @@ public class TaskExecutorImplTest {
         executor.executeLocationXmlWriterTask();
 
         verify(fileResolver).resolveLocationXmlFile();
-        verify(writeTask).writeXmlAsync(any(TaskContext.class));
+        verify(writeTask).run(any(TaskContext.class));
     }
 
     @Test
@@ -93,7 +93,7 @@ public class TaskExecutorImplTest {
         executor.setLocationTaskWriter(writeTask);
         executor.executeLocationXmlWriterTask();
 
-        verify(writeTask, times(0)).writeXmlAsync(any(TaskContext.class));
+        verify(writeTask, times(0)).run(any(TaskContext.class));
     }
 
     @Test
@@ -104,7 +104,7 @@ public class TaskExecutorImplTest {
         executor.executeSocialGroupXmlWriterTask();
 
         verify(fileResolver).resolveSocialGroupXmlFile();
-        verify(writeTask).writeXmlAsync(any(TaskContext.class));
+        verify(writeTask).run(any(TaskContext.class));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class TaskExecutorImplTest {
         executor.setSocialGroupTaskWriter(writeTask);
         executor.executeSocialGroupXmlWriterTask();
 
-        verify(writeTask, times(0)).writeXmlAsync(any(TaskContext.class));
+        verify(writeTask, times(0)).run(any(TaskContext.class));
     }
 
     @Test
@@ -125,7 +125,7 @@ public class TaskExecutorImplTest {
         executor.executeRelationshipXmlWriterTask();
 
         verify(fileResolver).resolveRelationshipXmlFile();
-        verify(writeTask).writeXmlAsync(any(TaskContext.class));
+        verify(writeTask).run(any(TaskContext.class));
     }
 
     @Test
@@ -135,6 +135,6 @@ public class TaskExecutorImplTest {
         executor.setRelationshipTaskWriter(writeTask);
         executor.executeRelationshipXmlWriterTask();
 
-        verify(writeTask, times(0)).writeXmlAsync(any(TaskContext.class));
+        verify(writeTask, times(0)).run(any(TaskContext.class));
     }
 }

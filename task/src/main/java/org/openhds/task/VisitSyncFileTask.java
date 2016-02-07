@@ -24,10 +24,10 @@ import javax.xml.stream.XMLStreamWriter;
 import static org.hibernate.transform.Transformers.aliasToBean;
 
 @Component("visitXmlWriter")
-public class VisitXmlWriterTask extends XmlWriterTemplate<VisitXmlWriterTask.VisitXml> {
+public class VisitSyncFileTask extends SyncFileTemplate<VisitSyncFileTask.VisitXml> {
 
     @Autowired
-    public VisitXmlWriterTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
+    public VisitSyncFileTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
         super(asyncTaskService, factory, AsyncTaskService.VISIT_TASK_NAME);
     }
 

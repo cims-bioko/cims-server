@@ -17,10 +17,10 @@ import javax.xml.stream.XMLStreamWriter;
 import static org.hibernate.transform.Transformers.aliasToBean;
 
 @Component("locationHierarchyXmlWriter")
-public class LocationHierarchyXmlWriterTask extends XmlWriterTemplate<LocationHierarchyXmlWriterTask.LocationHierarchyXml> {
+public class LocationHierarchySyncFileTask extends SyncFileTemplate<LocationHierarchySyncFileTask.LocationHierarchyXml> {
 
     @Autowired
-    public LocationHierarchyXmlWriterTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
+    public LocationHierarchySyncFileTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
         super(asyncTaskService, factory, AsyncTaskService.LOCATIONHIERARCHY_TASK_NAME);
     }
 

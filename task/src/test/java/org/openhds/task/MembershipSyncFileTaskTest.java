@@ -42,7 +42,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @DatabaseSetup(value = "/taskTestDb.xml", type = DatabaseOperation.REFRESH)
 @Transactional
 @Ignore("implementation changed to use MySQL streaming, no longer runs on h2")
-public class IndividualXmlWriterTaskTest {
+public class MembershipSyncFileTaskTest {
 
     @Autowired
     private AsyncTaskService asyncTaskService;
@@ -61,47 +61,38 @@ public class IndividualXmlWriterTaskTest {
                 PrivilegeConstants.VIEW_ENTITY });
     }
 
-    // Current implementation of the IndividualXmlWriterTask will only generate
-    // XML for individuals that
-    // have a residency. This test presumes that only the individual1 of the
-    // test database will be written to xml
     @Test
     public void shouldWriteXml() {
 
-        File fileToWrite = new File("individuals-test.xml");
+        File fileToWrite = new File("memberships-test.xml");
         if (fileToWrite.exists()) {
             fileToWrite.delete();
         }
 
         try {
-
-            IndividualXmlWriterTask task = new IndividualXmlWriterTask(asyncTaskService, sessionFactory);
+            MembershipSyncFileTask task = new MembershipSyncFileTask(asyncTaskService, sessionFactory);
             TaskContext context = new TaskContext(fileToWrite);
             task.writeXml(context);
 
             assertTrue(fileToWrite.exists());
-            String xmlWritten = new String(Files.readAllBytes(Paths.get(fileToWrite.getPath())));
-            assertXpathExists("/individuals", xmlWritten);
-            assertXpathExists("/individuals/individual", xmlWritten);
-            assertXpathExists("/individuals/individual/memberships", xmlWritten);
-            assertXpathExists("/individuals/individual/residencies", xmlWritten);
 
-            assertXpathEvaluatesTo("Individual1", "/individuals/individual/uuid", xmlWritten);
-            assertXpathEvaluatesTo("60", "/individuals/individual/age", xmlWritten);
-            assertXpathEvaluatesTo("Individual", "/individuals/individual/firstName", xmlWritten);
-            assertXpathEvaluatesTo("1", "/individuals/individual/lastName", xmlWritten);
+            String xmlWritten = new String(Files.readAllBytes(Paths.get(fileToWrite.getPath())));
+            assertXpathExists("/memberships", xmlWritten);
+            assertXpathExists("/memberships/membership", xmlWritten);
+            assertXpathEvaluatesTo("Individual1", "/memberships/membership/individual/uuid", xmlWritten);
+            assertXpathEvaluatesTo("SocialGroup1", "/memberships/membership/socialGroup/uuid", xmlWritten);
+            assertXpathEvaluatesTo("1", "/memberships/membership/bIsToA", xmlWritten);
 
         } catch (IOException e) {
-            fail("IOException testing Individual XML: " + e.getMessage());
+            fail("IOException testing Membership XML: " + e.getMessage());
         } catch (SAXException e) {
-            fail("SAXException testing Individual XML: " + e.getMessage());
+            fail("SAXException testing Membership XML: " + e.getMessage());
         } catch (XpathException e) {
-            fail("XpathException testing Individual XML: " + e.getMessage());
+            fail("XpathException testing Membership XML: " + e.getMessage());
         }
 
         if (fileToWrite.exists()) {
             fileToWrite.delete();
         }
     }
-
 }

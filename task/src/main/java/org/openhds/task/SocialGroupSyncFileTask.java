@@ -17,10 +17,10 @@ import javax.xml.stream.XMLStreamWriter;
 import static org.hibernate.transform.Transformers.aliasToBean;
 
 @Component("socialGroupXmlWriter")
-public class SocialGroupXmlWriterTask extends XmlWriterTemplate<SocialGroupXmlWriterTask.SocialGroupXml> {
+public class SocialGroupSyncFileTask extends SyncFileTemplate<SocialGroupSyncFileTask.SocialGroupXml> {
 
     @Autowired
-    public SocialGroupXmlWriterTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
+    public SocialGroupSyncFileTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
         super(asyncTaskService, factory, AsyncTaskService.SOCIALGROUP_TASK_NAME);
     }
 

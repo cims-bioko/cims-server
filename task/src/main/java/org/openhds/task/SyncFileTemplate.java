@@ -38,7 +38,7 @@ import static org.apache.commons.codec.binary.Hex.encodeHexString;
  *
  * @param <T> The type of entities to write to the file
  */
-public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
+public abstract class SyncFileTemplate<T> implements SyncFileTask {
 
     private static final int PAGE_SIZE = 1000;
     private static final int DEFAULT_SYNC_BLOCK_SIZE = 8192;
@@ -49,7 +49,7 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
     private AsyncTaskService asyncTaskService;
     private String taskName;
 
-    public XmlWriterTemplate(AsyncTaskService asyncTaskService, SessionFactory factory, String taskName) {
+    public SyncFileTemplate(AsyncTaskService asyncTaskService, SessionFactory factory, String taskName) {
         this.asyncTaskService = asyncTaskService;
         this.sessionFactory = factory;
         this.taskName = taskName;
@@ -58,7 +58,7 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
 
     @Async
     @Transactional(readOnly = true)
-    public void writeXmlAsync(TaskContext taskContext) {
+    public void run(TaskContext taskContext) {
         writeXml(taskContext);
     }
 

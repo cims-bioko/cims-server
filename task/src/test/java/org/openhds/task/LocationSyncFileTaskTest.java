@@ -16,7 +16,7 @@ import org.openhds.domain.model.Location;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.core.io.ClassPathResource;
 
-public class LocationXmlWriterTaskTest extends AbstractXmlWriterTest {
+public class LocationSyncFileTaskTest extends AbstractXmlWriterTest {
 
     @Mock
     private AsyncTaskService asyncTaskService;
@@ -38,7 +38,7 @@ public class LocationXmlWriterTaskTest extends AbstractXmlWriterTest {
         }
 
         try {
-            LocationXmlWriterTask task = new LocationXmlWriterTask(asyncTaskService, sessionFactory);
+            LocationSyncFileTask task = new LocationSyncFileTask(asyncTaskService, sessionFactory);
 
             task.writeXml(new TaskContext(locationFile));
 
