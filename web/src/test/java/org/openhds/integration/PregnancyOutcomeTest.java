@@ -1,11 +1,5 @@
 package org.openhds.integration;
 
-import static org.junit.Assert.*;
-
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,9 +12,6 @@ import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.LocationHierarchy;
-import org.openhds.domain.model.Outcome;
-import org.openhds.domain.model.PregnancyOutcome;
-import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.Visit;
 import org.openhds.domain.service.SitePropertiesService;

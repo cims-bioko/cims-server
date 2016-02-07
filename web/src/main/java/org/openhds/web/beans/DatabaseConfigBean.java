@@ -3,12 +3,10 @@ package org.openhds.web.beans;
 import java.io.*;
 import java.sql.DriverManager;
 import java.util.Properties;
-import javax.faces.application.FacesMessage;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlInputText;
-import javax.faces.component.html.HtmlSelectOneMenu;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import org.openhds.web.service.JsfService;
 import org.openhds.controller.util.ScriptRunner;

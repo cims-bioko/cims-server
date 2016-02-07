@@ -15,7 +15,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.*;
-import org.openhds.domain.constraint.CheckEndDateNotBeforeStartDate;
 import org.openhds.domain.util.CalendarAdapter;
 
 @Description(description="A Membership represents an Individual's association with a " +

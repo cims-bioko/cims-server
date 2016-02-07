@@ -1,9 +1,6 @@
 package org.openhds.integration;
 
 import static org.junit.Assert.assertNotNull;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
@@ -16,11 +13,9 @@ import org.openhds.controller.service.CurrentUser;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.ClassExtension;
 import org.openhds.domain.model.EntityType;
-import org.openhds.domain.model.Extension;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.PrimitiveType;
-import org.openhds.domain.model.Visit;
 import org.openhds.domain.util.CalendarUtil;
 import org.openhds.integration.util.JsfServiceMock;
 import org.openhds.web.crud.impl.ExtensionCrudImpl;

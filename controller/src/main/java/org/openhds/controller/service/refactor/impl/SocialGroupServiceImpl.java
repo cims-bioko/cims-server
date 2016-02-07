@@ -6,7 +6,6 @@ import org.openhds.controller.service.refactor.SocialGroupService;
 import org.openhds.controller.service.refactor.crudhelpers.EntityCrudHelper;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.annotations.Authorized;
-import org.openhds.domain.model.Death;
 import org.openhds.domain.model.SocialGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

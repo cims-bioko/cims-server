@@ -1,13 +1,11 @@
 package org.openhds.web.beans;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.dao.service.GenericDao.ValueProperty;
-import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.SocialGroup;

@@ -26,7 +26,6 @@ import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.Visit;
 import org.openhds.controller.service.DeathService;
-import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.InMigrationService;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.LocationHierarchyService;

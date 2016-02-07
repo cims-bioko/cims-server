@@ -5,13 +5,11 @@ import org.openhds.controller.service.CurrentUser;
 import org.openhds.controller.service.EntityValidationService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.AuditableEntity;
-import org.openhds.domain.model.User;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.domain.util.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;

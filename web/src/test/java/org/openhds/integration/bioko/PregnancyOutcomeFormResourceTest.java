@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.PregnancyOutcome;
-import org.openhds.domain.model.bioko.IndividualForm;
 import org.openhds.domain.model.bioko.PregnancyOutcomeCoreForm;
 import org.openhds.domain.model.bioko.PregnancyOutcomeOutcomesForm;
 import org.openhds.domain.util.CalendarAdapter;

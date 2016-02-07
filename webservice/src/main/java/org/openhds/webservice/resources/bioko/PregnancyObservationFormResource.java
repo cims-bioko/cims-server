@@ -9,7 +9,6 @@ import org.openhds.domain.model.*;
 import org.openhds.domain.model.bioko.PregnancyObservationForm;
 import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.errorhandling.constants.ErrorConstants;
-import org.openhds.errorhandling.endpoint.ErrorServiceEndPoint;
 import org.openhds.errorhandling.service.ErrorHandlingService;
 import org.openhds.errorhandling.util.ErrorLogUtil;
 import org.springframework.beans.factory.annotation.Autowired;

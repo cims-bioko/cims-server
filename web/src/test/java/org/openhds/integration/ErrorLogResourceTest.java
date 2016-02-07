@@ -11,14 +11,11 @@ import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.ErrorLog;
 import org.openhds.domain.model.Error;
 import org.openhds.domain.model.FieldWorker;
-import org.openhds.domain.model.bioko.VisitForm;
 import org.openhds.errorhandling.service.ErrorHandlingService;
 import org.openhds.integration.util.WebContextLoader;
-import org.openhds.webservice.resources.bioko.AbstractFormResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -27,13 +24,11 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.web.server.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 

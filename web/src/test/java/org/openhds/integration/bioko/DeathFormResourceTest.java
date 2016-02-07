@@ -23,7 +23,6 @@ import org.springframework.test.web.server.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;

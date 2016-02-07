@@ -11,7 +11,6 @@ import org.openhds.errorhandling.service.ErrorHandlingPropertiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Component;
 
 //@Component -- putting this issue on the back-burner for now: consisted javax.mail.MessagingException: can't determine local email address
 public class EmailEndPoint implements ErrorServiceEndPoint {

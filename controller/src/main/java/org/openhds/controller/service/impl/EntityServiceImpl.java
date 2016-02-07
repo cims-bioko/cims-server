@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.UUID;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.CurrentUser;

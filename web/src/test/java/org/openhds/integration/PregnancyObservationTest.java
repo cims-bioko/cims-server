@@ -1,8 +1,5 @@
 package org.openhds.integration;
 
-import static org.junit.Assert.*;
-import java.util.Calendar;
-import java.util.List;
 import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +9,6 @@ import org.openhds.controller.service.PregnancyService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Individual;
-import org.openhds.domain.model.PregnancyObservation;
 import org.openhds.domain.model.Visit;
 import org.openhds.domain.util.CalendarUtil;
 import org.openhds.integration.util.JsfServiceMock;
