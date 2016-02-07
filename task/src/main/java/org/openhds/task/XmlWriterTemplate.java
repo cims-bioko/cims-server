@@ -169,10 +169,7 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
         return DEFAULT_SYNC_BLOCK_SIZE;
     }
 
-    protected void writeXml(XMLStreamWriter xmlStreamWriter, Marshaller marshaller, T original) throws JAXBException {
-        T copy = makeCopyOf(original);
-        marshaller.marshal(copy, xmlStreamWriter);
-    }
+    abstract void writeXml(XMLStreamWriter xmlStreamWriter, Marshaller marshaller, T original) throws JAXBException;
 
     protected boolean skipEntity(T entity) {
         return false;
@@ -180,11 +177,6 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
 
     protected Query createQuery(SharedSessionContract session, String query) {
         return session.createQuery(query);
-    }
-
-    @SuppressWarnings("unchecked")
-    protected T makeCopyOf(T original) {
-        return (T)ShallowCopier.makeShallowCopy((UuidIdentifiable)original);
     }
 
     protected abstract String getExportQuery();
