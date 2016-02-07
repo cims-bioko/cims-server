@@ -32,7 +32,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     }
 
     @Override
-    public void executeMembershipXmlWriterTask() {
+    public void executeMembershipTask() {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.MEMBERSHIP_TASK_NAME)) {
             asyncTaskService.startTask(AsyncTaskService.MEMBERSHIP_TASK_NAME);
             File membershipXmlFile = fileResolver.resolveMembershipFile();
@@ -41,7 +41,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     }
 
     @Override
-    public void executeIndividualXmlWriterTask() {
+    public void executeIndividualTask() {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.INDIVIDUAL_TASK_NAME)) {
             asyncTaskService.startTask(AsyncTaskService.INDIVIDUAL_TASK_NAME);
             File individualXmlFile = fileResolver.resolveIndividualFile();
@@ -50,7 +50,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     }
 
     @Override
-    public void executeLocationXmlWriterTask() {
+    public void executeLocationTask() {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.LOCATION_TASK_NAME)) {
             asyncTaskService.startTask(AsyncTaskService.LOCATION_TASK_NAME);
             File locationXmlFile = fileResolver.resolveLocationFile();
@@ -59,7 +59,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     }
 
     @Override
-    public void executeRelationshipXmlWriterTask() {
+    public void executeRelationshipTask() {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.RELATIONSHIP_TASK_NAME)) {
             asyncTaskService.startTask(AsyncTaskService.RELATIONSHIP_TASK_NAME);
             File relationshipXmlFile = fileResolver.resolveRelationshipFile();
@@ -68,7 +68,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     }
 
     @Override
-    public void executeSocialGroupXmlWriterTask() {
+    public void executeSocialGroupTask() {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.SOCIALGROUP_TASK_NAME)) {
             asyncTaskService.startTask(AsyncTaskService.SOCIALGROUP_TASK_NAME);
             File socialGroupXmlFile = fileResolver.resolveSocialGroupFile();
@@ -77,7 +77,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     }
 
     @Override
-    public void executeVisitWriterTask(int roundNumber) {
+    public void executeVisitTask(int roundNumber) {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.VISIT_TASK_NAME)) {
             asyncTaskService.startTask(AsyncTaskService.VISIT_TASK_NAME);
             File visitXmlFile = fileResolver.resolveVisitFile();
@@ -88,7 +88,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     }
 
     @Override
-    public void executeFieldWorkerXmlWriterTask() {
+    public void executeFieldWorkerTask() {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.FIELDWORKER_TASK_NAME)) {
             asyncTaskService.startTask(AsyncTaskService.FIELDWORKER_TASK_NAME);
             File xmlFile = fileResolver.resolveFieldWorkerFile();
@@ -97,7 +97,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     }
 
     @Override
-    public void executeLocationHierarchyXmlWriterTask() {
+    public void executeLocationHierarchyTask() {
         if (asyncTaskService.taskShouldRun(AsyncTaskService.LOCATIONHIERARCHY_TASK_NAME)) {
             asyncTaskService.startTask(AsyncTaskService.LOCATIONHIERARCHY_TASK_NAME);
             File xmlFile = fileResolver.resolveLocationHierarchyFile();

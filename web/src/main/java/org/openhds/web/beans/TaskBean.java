@@ -28,44 +28,44 @@ public class TaskBean {
     }
 
     public String startIndividualTask() {
-        taskExecutor.executeIndividualXmlWriterTask();
+        taskExecutor.executeIndividualTask();
         return TASK_VIEW;
     }
 
     public String startLocationTask() {
-        taskExecutor.executeLocationXmlWriterTask();
+        taskExecutor.executeLocationTask();
         return TASK_VIEW;
     }
 
     public String startRelationshipTask() {
-        taskExecutor.executeRelationshipXmlWriterTask();
+        taskExecutor.executeRelationshipTask();
         return TASK_VIEW;
     }
 
     public String startSocialGroupTask() {
-        taskExecutor.executeSocialGroupXmlWriterTask();
+        taskExecutor.executeSocialGroupTask();
         return TASK_VIEW;
     }
     
     public String startMembershipTask() {
-    	taskExecutor.executeMembershipXmlWriterTask();
+    	taskExecutor.executeMembershipTask();
     	return TASK_VIEW;
     }
 
     public String startFieldWorkerTask() {
-        taskExecutor.executeFieldWorkerXmlWriterTask();
+        taskExecutor.executeFieldWorkerTask();
         return TASK_VIEW;
     }
 
     public String startLocationHierarchyTask() {
-        taskExecutor.executeLocationHierarchyXmlWriterTask();
+        taskExecutor.executeLocationHierarchyTask();
         return TASK_VIEW;
     }
 
 
     public String startVisitTask() {
         if (roundNumber != null) {
-            taskExecutor.executeVisitWriterTask(roundNumber);
+            taskExecutor.executeVisitTask(roundNumber);
         }
         return TASK_VIEW;
     }

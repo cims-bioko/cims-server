@@ -2,20 +2,20 @@ package org.openhds.task.support;
 
 public interface TaskExecutor {
 
-    void executeIndividualXmlWriterTask();
+    void executeIndividualTask();
     
-    void executeLocationXmlWriterTask();
+    void executeLocationTask();
     
-    void executeRelationshipXmlWriterTask();
+    void executeRelationshipTask();
     
-    void executeSocialGroupXmlWriterTask();
+    void executeSocialGroupTask();
     
-    void executeMembershipXmlWriterTask();
+    void executeMembershipTask();
     
-    void executeVisitWriterTask(int roundNumber);
+    void executeVisitTask(int roundNumber);
 
-    void executeFieldWorkerXmlWriterTask();
+    void executeFieldWorkerTask();
 
-    void executeLocationHierarchyXmlWriterTask();
+    void executeLocationHierarchyTask();
 
 }
