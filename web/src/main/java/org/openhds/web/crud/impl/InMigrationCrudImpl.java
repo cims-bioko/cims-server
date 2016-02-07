@@ -130,7 +130,7 @@ public class InMigrationCrudImpl extends EntityCrudImpl<InMigration, String> {
 	 * @return
 	 */
 	public boolean isUnknownIndividual() {
-		return entityItem.isUnknownIndividual() ? true : false;
+		return entityItem.isUnknownIndividual();
 	}
 	
     public Date getRecordedDate() {

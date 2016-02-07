@@ -117,7 +117,7 @@ public class DatabaseConfigBean {
         
         Properties properties = new Properties();
         if( res.exists() ){
-            if( readDatabaseProperties(res, properties) != true ){
+            if(!readDatabaseProperties(res, properties)){
                 return; // error reading from res; abort (message already displayed)
             }
         }else{

@@ -44,7 +44,7 @@ public class MembershipCrudImpl extends EntityCrudImpl<Membership, String> {
     	    	
     	try {
     		entityItem.setEndType(properties.getNotApplicableCode());
-    		if (entityValidator.checkConstraints(entityItem) == false) {	
+    		if (!entityValidator.checkConstraints(entityItem)) {
 	    		service.evaluateMembershipBeforeCreate(entityItem);
 		        entityItem.setInsertDate(Calendar.getInstance());
 		        return super.create();

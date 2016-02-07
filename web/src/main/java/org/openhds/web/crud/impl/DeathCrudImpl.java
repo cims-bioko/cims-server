@@ -30,7 +30,7 @@ public class DeathCrudImpl extends EntityCrudImpl<Death, String> {
     @Override
     public String create() {
         try {       	
-        	if (entityValidator.checkConstraints(entityItem) == false) {	
+        	if (!entityValidator.checkConstraints(entityItem)) {
 	        	service.evaluateDeath(entityItem);
 	        	service.createDeath(entityItem);
 	        	return listSetup();

@@ -42,7 +42,7 @@ public class RelationshipCrudImpl extends EntityCrudImpl<Relationship, String> {
 			
         try {  
         	entityItem.setEndType(properties.getNotApplicableCode());
-        	if (entityValidator.checkConstraints(entityItem) == false) {
+        	if (!entityValidator.checkConstraints(entityItem)) {
         		
         		service.evaluateRelationship(entityItem);	
     	        entityItem.setInsertDate(Calendar.getInstance());

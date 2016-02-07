@@ -23,7 +23,7 @@ public class ExtensionStringConstraintImpl extends AppContextAware implements Co
 		if (arg0 == null)
 			return true;
 		
-		if (allowNull == true && arg0.equals(""))
+		if (allowNull && arg0.equals(""))
 			return true;
 		
 		return service.isValidConstraintValue(constraint, arg0);

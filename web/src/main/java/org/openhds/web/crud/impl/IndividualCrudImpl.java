@@ -31,7 +31,7 @@ public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
     @Override
     public String create() {
         try {
-            if (entityValidator.checkConstraints(entityItem) == false) {
+            if (!entityValidator.checkConstraints(entityItem)) {
                 service.createIndividual(entityItem);   
                 return onCreateComplete();
             }

@@ -29,7 +29,7 @@ public class ValueConstraintServiceImpl {
 	
 	public boolean isConstraintDefined(String constraintName) {
 		Element ele = findConstraintByName(constraintName);
-		return ele != null ? true : false;
+		return ele != null;
 	}
 	
 	private Element findConstraintByName(String constraintName) {

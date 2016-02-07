@@ -151,7 +151,7 @@ public class RelationshipServiceImpl implements RelationshipService {
 	        				continue;
 	        			}
 	        		}
-	        		if (found == false)
+	        		if (!found)
 	        			itemsA.remove(i);
 	        	}
 	        	
@@ -165,7 +165,7 @@ public class RelationshipServiceImpl implements RelationshipService {
 	        				continue;
 	        			}
 	        		}
-	        		if (found == false)
+	        		if (!found)
 	        			itemsA.remove(i);
 	        	}
 		 }	
