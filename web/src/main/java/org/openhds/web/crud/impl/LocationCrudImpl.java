@@ -38,11 +38,9 @@ public class LocationCrudImpl extends EntityCrudImpl<Location, String> {
             }
             service.createLocation(entityItem);
             return onCreateComplete();
-        } catch (ConstraintViolations e) {
+        } catch (ConstraintViolations | AuthorizationException e) {
             jsfService.addError(e.getMessage());
-        } catch(AuthorizationException e) {
-    		jsfService.addError(e.getMessage());
-    	}
+        }
         return null;
     }
     

@@ -35,11 +35,7 @@ public class ErrorLogDAOImpl implements ErrorLogDAO {
             Calendar insertDate = calendarUtil.convertDateToCalendar(new Date());
             error.setInsertDate(insertDate);
             entityService.create(error);
-        } catch (IllegalArgumentException e) {
-            logger.warn("Unable to insert error log into DB: " + e.getMessage());
-        } catch (ConstraintViolations e) {
-            logger.warn("Unable to insert error log into DB: " + e.getMessage());
-        } catch (SQLException e) {
+        } catch (IllegalArgumentException | SQLException | ConstraintViolations e) {
             logger.warn("Unable to insert error log into DB: " + e.getMessage());
         }
 
@@ -91,11 +87,8 @@ public class ErrorLogDAOImpl implements ErrorLogDAO {
     public ErrorLog updateErrorLog(ErrorLog error) {
         try {
             entityService.save(error);
-        } catch (ConstraintViolations e) {
+        } catch (ConstraintViolations | SQLException e) {
             logger.warn("Unable to update error log: " + e.getMessage());
-        } catch (SQLException e) {
-            logger.warn("Unable to update error log: " + e.getMessage());
-
         }
 
         return error;

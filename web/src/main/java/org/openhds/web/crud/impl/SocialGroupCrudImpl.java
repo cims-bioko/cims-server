@@ -54,8 +54,6 @@ public class SocialGroupCrudImpl extends EntityCrudImpl<SocialGroup, String> {
         	}
         	
         	return null;
-		} catch (AuthorizationException e) {
-			jsfService.addError(e.getMessage());
 		} catch(Exception e) {
         	jsfService.addError(e.getMessage());
 		}

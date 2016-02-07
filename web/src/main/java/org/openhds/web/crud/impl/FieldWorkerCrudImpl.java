@@ -36,12 +36,10 @@ public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
             fieldWorkerService.isEligibleForCreation(entityItem, new ConstraintViolations());
 	        return super.create();
     	}
-    	catch(ConstraintViolations e) {
-    		jsfService.addError(e.getMessage());
-    	} catch(AuthorizationException e) {
+    	catch(ConstraintViolations | AuthorizationException e) {
     		jsfService.addError(e.getMessage());
     	}
-    	return null;
+        return null;
     }
 
     public FieldWorkerService getFieldWorkerService() {

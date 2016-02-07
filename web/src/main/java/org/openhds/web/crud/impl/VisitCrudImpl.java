@@ -197,12 +197,10 @@ public class VisitCrudImpl extends EntityCrudImpl<Visit, String> {
         try {
             service.createVisit(entityItem);
             return onCreateComplete();
-        } catch (ConstraintViolations e) {
+        } catch (ConstraintViolations | AuthorizationException e) {
             jsfService.addError(e.getMessage());
-        } catch(AuthorizationException e) {
-    		jsfService.addError(e.getMessage());
-    	}
-        return null;
+        }
+		return null;
     }
     
     @Override
@@ -216,8 +214,6 @@ public class VisitCrudImpl extends EntityCrudImpl<Visit, String> {
         	super.edit();
         	
         	return "pretty:visitEdit";
-		} catch (AuthorizationException e) {
-			jsfService.addError(e.getMessage());
 		} catch(Exception e) {
         	jsfService.addError(e.getMessage());
 		}

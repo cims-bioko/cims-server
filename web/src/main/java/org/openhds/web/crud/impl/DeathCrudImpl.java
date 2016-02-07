@@ -37,15 +37,11 @@ public class DeathCrudImpl extends EntityCrudImpl<Death, String> {
 	        	//super.create();
         	}
         } 
-        catch(ConstraintViolations e) {
+        catch(ConstraintViolations | AuthorizationException | SQLException e) {
         	jsfService.addError(e.getMessage());
-        } catch (SQLException e) {
-			jsfService.addError(e.getMessage());
-		} catch (AuthorizationException e) {
-			jsfService.addError(e.getMessage());
-		}
+        }
 
-        return null;
+		return null;
     }
     
     @Override

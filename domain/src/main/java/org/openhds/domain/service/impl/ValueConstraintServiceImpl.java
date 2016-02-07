@@ -20,9 +20,7 @@ public class ValueConstraintServiceImpl {
 		try {
 			ClassPathResource res = new ClassPathResource("value-constraint.xml");
 			doc = builder.build(res.getInputStream());
-		} catch (JDOMException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (JDOMException | IOException e) {
 			e.printStackTrace();
 		}
 	}

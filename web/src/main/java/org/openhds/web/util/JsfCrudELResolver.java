@@ -430,9 +430,7 @@ public class JsfCrudELResolver extends ELResolver {
 			Object[] paramArray = actualParams.toArray();
 			try {
 				return methodToInvoke.invoke(instance, paramArray);
-			} catch (IllegalAccessException e) {
-				throw new ELException(e);
-			} catch (InvocationTargetException e) {
+			} catch (IllegalAccessException | InvocationTargetException e) {
 				throw new ELException(e);
 			}
 		}
@@ -586,9 +584,7 @@ public class JsfCrudELResolver extends ELResolver {
 			Object rawResult;
 			try {
 				rawResult = readMethod.invoke(base);
-			} catch (IllegalAccessException e) {
-				throw new ELException(e);
-			} catch (InvocationTargetException e) {
+			} catch (IllegalAccessException | InvocationTargetException e) {
 				throw new ELException(e);
 			}
 			return rawResult;
@@ -630,9 +626,7 @@ public class JsfCrudELResolver extends ELResolver {
 			Method writeMethod = pd.getWriteMethod();
 			try {
 				writeMethod.invoke(base, transformedOrUntransformedValue);
-			} catch (IllegalAccessException e) {
-				throw new ELException(e);
-			} catch (InvocationTargetException e) {
+			} catch (IllegalAccessException | InvocationTargetException e) {
 				throw new ELException(e);
 			}
 		}
