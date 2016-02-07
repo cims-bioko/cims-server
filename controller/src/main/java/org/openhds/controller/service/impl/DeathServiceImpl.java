@@ -77,28 +77,24 @@ public class DeathServiceImpl implements DeathService {
         // Iterates through the relationships and sets endType(DEATH) and endDate
          if (!entityItem.getIndividual().getAllRelationships1().isEmpty()) {
             Set<Relationship> relationships = entityItem.getIndividual().getAllRelationships1();
-            Iterator<Relationship> it = relationships.iterator();
-            while (it.hasNext()) {
-                Relationship rel = it.next();
-                if (null == rel.getEndType() || rel.getEndType().equals(siteProperties.getNotApplicableCode())) {
-	                rel.setEndDate(endDate);
-	                rel.setEndType(siteProperties.getDeathCode());
-	                entityService.save(rel);
-                }
-            }
+			 for (Relationship rel : relationships) {
+				 if (null == rel.getEndType() || rel.getEndType().equals(siteProperties.getNotApplicableCode())) {
+					 rel.setEndDate(endDate);
+					 rel.setEndType(siteProperties.getDeathCode());
+					 entityService.save(rel);
+				 }
+			 }
         }
          
 		 if (!entityItem.getIndividual().getAllRelationships2().isEmpty()) {
 		     Set<Relationship> relationships = entityItem.getIndividual().getAllRelationships2();
-		     Iterator<Relationship> it = relationships.iterator();
-		     while (it.hasNext()) {
-		         Relationship rel = it.next();
-		         if (null == rel.getEndType() || rel.getEndType().equals(siteProperties.getNotApplicableCode())) {
-		             rel.setEndDate(endDate);
-		             rel.setEndType(siteProperties.getDeathCode());
-		             entityService.save(rel);
-		         }
-		     }
+			 for (Relationship rel : relationships) {
+				 if (null == rel.getEndType() || rel.getEndType().equals(siteProperties.getNotApplicableCode())) {
+					 rel.setEndDate(endDate);
+					 rel.setEndType(siteProperties.getDeathCode());
+					 entityService.save(rel);
+				 }
+			 }
 		 }
          
          entityService.create(entityItem);
@@ -126,26 +122,22 @@ public class DeathServiceImpl implements DeathService {
 
          if (!entityItem.getIndividual().getAllRelationships1().isEmpty()) {
             Set<Relationship> relationships = entityItem.getIndividual().getAllRelationships1();
-            Iterator<Relationship> it = relationships.iterator();
-            while (it.hasNext()) {
-                Relationship rel = it.next();
-                if (!individualService.getLatestEvent(rel.getIndividualB()).equals("Death") && rel.getEndType().equals(siteProperties.getDeathCode())) {
-	                rel.setEndDate(null);
-	                rel.setEndType(siteProperties.getNotApplicableCode());
-                }
-            }
+			 for (Relationship rel : relationships) {
+				 if (!individualService.getLatestEvent(rel.getIndividualB()).equals("Death") && rel.getEndType().equals(siteProperties.getDeathCode())) {
+					 rel.setEndDate(null);
+					 rel.setEndType(siteProperties.getNotApplicableCode());
+				 }
+			 }
         }
          
          if (!entityItem.getIndividual().getAllRelationships2().isEmpty()) {
              Set<Relationship> relationships = entityItem.getIndividual().getAllRelationships2();
-             Iterator<Relationship> it = relationships.iterator();
-             while (it.hasNext()) {
-                 Relationship rel = it.next();
-                 if (!individualService.getLatestEvent(rel.getIndividualA()).equals("Death") && rel.getEndType().equals(siteProperties.getDeathCode())) {
-	                 rel.setEndDate(null);
-	                 rel.setEndType(siteProperties.getNotApplicableCode());
-                 }
-             }
+			 for (Relationship rel : relationships) {
+				 if (!individualService.getLatestEvent(rel.getIndividualA()).equals("Death") && rel.getEndType().equals(siteProperties.getDeathCode())) {
+					 rel.setEndDate(null);
+					 rel.setEndType(siteProperties.getNotApplicableCode());
+				 }
+			 }
          } 
 	}
 	
@@ -164,14 +156,12 @@ public class DeathServiceImpl implements DeathService {
     	// Remove all Memberships from all Social Groups
     	for (SocialGroup item : groups) {
     		
-    		Set<Membership> mems = item.getMemberships();  		
-    		Iterator<Membership> itr = mems.iterator();
-    		
-    		while(itr.hasNext()) {
-    			Membership mem = itr.next();
-    			mem.setDeleted(true);
-    			entityService.save(mem);
-    		}
+    		Set<Membership> mems = item.getMemberships();
+
+			for (Membership mem : mems) {
+				mem.setDeleted(true);
+				entityService.save(mem);
+			}
     	}
     	
     	// Create new Memberships 

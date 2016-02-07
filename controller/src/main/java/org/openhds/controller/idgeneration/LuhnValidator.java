@@ -127,9 +127,7 @@ public class LuhnValidator {
 	
 	public Character getCharacterFromCodePoint(int n) {
 		Set<Character> set = map.keySet();
-		Iterator<Character> itr = set.iterator();
-		while(itr.hasNext()) {
-			Character c = itr.next();
+		for (Character c : set) {
 			if (map.get(c) == n)
 				return c;
 		}

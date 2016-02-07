@@ -71,10 +71,7 @@ public class MembershipServiceImpl extends EntityServiceRefactoredImpl implement
         List<Membership> list = genericDao
                 .findListByProperty(Membership.class, "individual", indiv);
 
-        Iterator<Membership> itr = list.iterator();
-
-        while (itr.hasNext()) {
-            Membership item = itr.next();
+        for (Membership item : list) {
             if (item.getSocialGroup().getExtId().equals(group.getExtId()) && !item.isDeleted())
                 return false;
         }

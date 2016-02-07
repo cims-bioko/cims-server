@@ -159,15 +159,11 @@ public class DeathHOHBean implements Serializable {
 	 * be the same as the new successor to the Group.
 	 */
 	public boolean checkValidMembershipToCreate(Membership membership, MessageContext messageContext) {
-		
-		Iterator<Individual> itr = indivsOfSocialGroup.iterator();
-		
-		while(itr.hasNext()) {
-			Individual item = itr.next();
-		
+
+		for (Individual item : indivsOfSocialGroup) {
 			if (membership.getIndividual().getExtId().equals(selectedSuccessor.getExtId())) {
-				webFlowService.createMessage(messageContext, 
-				"A new Membership cannot be created for the selected successor.");
+				webFlowService.createMessage(messageContext,
+						"A new Membership cannot be created for the selected successor.");
 				return false;
 			}
 			if (item.getExtId().equals(membership.getIndividual().getExtId()))

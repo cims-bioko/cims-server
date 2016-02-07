@@ -142,16 +142,14 @@ public class SocialGroupServiceImpl implements SocialGroupService {
 
         // Remove all Memberships from the Social Group
         Set<Membership> mems = group.getMemberships();
-        Iterator<Membership> itr = mems.iterator();
 
-        while (itr.hasNext()) {
-            Membership item = itr.next();
+        for (Membership item : mems) {
             item.setDeleted(true);
             service.save(item);
         }
 
         // Create new Memberships
-        itr = memberships.iterator();
+        Iterator<Membership> itr = memberships.iterator();
         for (Membership item : memberships)
             service.create(item);
 

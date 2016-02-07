@@ -275,10 +275,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 
 		List<LocationHierarchy> list = genericDao.findListByProperty(LocationHierarchy.class, "level", getLowestLevel(), false);
 
-		Iterator<LocationHierarchy> itr = list.iterator();
-
-		while(itr.hasNext()) {
-			LocationHierarchy item = itr.next();
+		for (LocationHierarchy item : list) {
 			if (item.getExtId().equals(locExtId))
 				return true;
 		}
@@ -292,10 +289,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 
 		List<Location> list = genericDao.findListByProperty(Location.class, "locationHierarchy", locLvlName, true);
 
-		Iterator<Location> itr = list.iterator();
-
-		while(itr.hasNext()) {
-			Location loc = itr.next();
+		for (Location loc : list) {
 			if (loc.getLocationName().equals(locName))
 				return false;
 		}
@@ -380,9 +374,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 		List<String> names = new ArrayList<>();
 		List<LocationHierarchy> list = genericDao.findListByPropertyPrefix(LocationHierarchy.class, "name", term, 10,
 				false);
-		Iterator<LocationHierarchy> itr = list.iterator();
-		while (itr.hasNext()) {
-			LocationHierarchy item = itr.next();
+		for (LocationHierarchy item : list) {
 			if (!item.getExtId().equals("HIERARCHY_ROOT")) {
 				if (item.getLevel().equals(getLowestLevel())
 						&& item.getName().toLowerCase().contains(term.toLowerCase())

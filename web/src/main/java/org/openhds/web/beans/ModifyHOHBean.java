@@ -112,15 +112,11 @@ public class ModifyHOHBean implements Serializable {
 	 * be the same as the new successor to the Group.
 	 */
 	public boolean checkValidMembershipToCreate(Membership membership, MessageContext messageContext) {
-		
-		Iterator<Membership> itr = membershipsOfSocialGroup.iterator();
-		
-		while(itr.hasNext()) {
-			Membership item = itr.next();
-		
+
+		for (Membership item : membershipsOfSocialGroup) {
 			if (membership.getIndividual().getExtId().equals(selectedSuccessor.getExtId())) {
-				webFlowService.createMessage(messageContext, 
-				"A new Membership cannot be created for the selected successor.");
+				webFlowService.createMessage(messageContext,
+						"A new Membership cannot be created for the selected successor.");
 				return false;
 			}
 			if (item.getIndividual().getExtId().equals(membership.getIndividual().getExtId()))

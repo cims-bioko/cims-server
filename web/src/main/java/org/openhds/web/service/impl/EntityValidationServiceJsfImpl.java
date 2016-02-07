@@ -52,9 +52,8 @@ public class EntityValidationServiceJsfImpl<T> implements EntityValidationServic
         Set<ConstraintViolation<T>> constraintViolations = validator.validate(entityItem);
 
         if (constraintViolations.size() > 0) {
-            Iterator<ConstraintViolation<T>> iter = constraintViolations.iterator();
-            while (iter.hasNext()) {
-                jsfService.addError(iter.next().getMessage());
+            for (ConstraintViolation<T> constraintViolation : constraintViolations) {
+                jsfService.addError(constraintViolation.getMessage());
             }
             return true;
         }
