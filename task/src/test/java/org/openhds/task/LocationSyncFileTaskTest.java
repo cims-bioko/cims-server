@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.openhds.domain.model.Location;
 import org.openhds.task.service.AsyncTaskService;
+import org.openhds.task.xml.LocationSyncFileTask;
 import org.springframework.core.io.ClassPathResource;
 
 public class LocationSyncFileTaskTest extends AbstractXmlWriterTest {

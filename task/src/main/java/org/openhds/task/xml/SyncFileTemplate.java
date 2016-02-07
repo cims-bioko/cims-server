@@ -1,4 +1,4 @@
-package org.openhds.task;
+package org.openhds.task.xml;
 
 import com.github.batkinson.jrsync.Metadata;
 import com.github.batkinson.jrsync.MetadataOutputWrapper;
@@ -12,6 +12,8 @@ import org.hibernate.StatelessSession;
 import org.openhds.domain.model.UuidIdentifiable;
 import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.domain.util.ShallowCopier;
+import org.openhds.task.SyncFileTask;
+import org.openhds.task.TaskContext;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;

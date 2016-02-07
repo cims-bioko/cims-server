@@ -1,4 +1,4 @@
-package org.openhds.task;
+package org.openhds.task.xml;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;

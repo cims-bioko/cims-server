@@ -1,4 +1,4 @@
-package org.openhds.task;
+package org.openhds.task.xml;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -16,12 +16,12 @@ import javax.xml.stream.XMLStreamWriter;
 
 import static org.hibernate.transform.Transformers.aliasToBean;
 
-@Component("locationHierarchyXmlWriter")
-public class LocationHierarchySyncFileTask extends SyncFileTemplate<LocationHierarchySyncFileTask.LocationHierarchyXml> {
+@Component("fieldWorkerXmlWriter")
+public class FieldWorkerSyncFileTask extends SyncFileTemplate<FieldWorkerSyncFileTask.FieldWorkerXml> {
 
     @Autowired
-    public LocationHierarchySyncFileTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
-        super(asyncTaskService, factory, AsyncTaskService.LOCATIONHIERARCHY_TASK_NAME);
+    public FieldWorkerSyncFileTask(AsyncTaskService asyncTaskService, SessionFactory factory) {
+        super(asyncTaskService, factory, AsyncTaskService.FIELDWORKER_TASK_NAME);
     }
 
     @Override
@@ -29,41 +29,43 @@ public class LocationHierarchySyncFileTask extends SyncFileTemplate<LocationHier
         return session.createSQLQuery(query)
                 .addScalar("uuid")
                 .addScalar("extId")
-                .addScalar("name")
-                .addScalar("level")
-                .addScalar("parent")
-                .setResultTransformer(aliasToBean(LocationHierarchyXml.class));
+                .addScalar("id")
+                .addScalar("pass")
+                .addScalar("firstName")
+                .addScalar("lastName")
+                .setResultTransformer(aliasToBean(FieldWorkerXml.class));
     }
 
     @Override
     protected String getExportQuery() {
-        return "select * from v_locationhierarchy_sync";
+        return "select * from v_fieldworker_sync";
     }
 
     @Override
-    protected void writeXml(XMLStreamWriter xmlStreamWriter, Marshaller marshaller, LocationHierarchyXml original)
+    protected void writeXml(XMLStreamWriter xmlStreamWriter, Marshaller marshaller, FieldWorkerXml original)
             throws JAXBException {
         marshaller.marshal(original, xmlStreamWriter);
     }
 
     @Override
     protected Class<?> getBoundClass() {
-        return LocationHierarchyXml.class;
+        return FieldWorkerXml.class;
     }
 
     @Override
     protected String getStartElementName() {
-        return "locationHierarchies";
+        return "fieldworkers";
     }
 
     @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlRootElement(name = "hierarchy")
-    public static class LocationHierarchyXml {
+    @XmlRootElement(name = "fieldworker")
+    public static class FieldWorkerXml {
         public String uuid;
         public String extId;
-        public String name;
-        public String level;
-        public String parent;
+        public Integer id;
+        public String pass;
+        public String firstName;
+        public String lastName;
     }
 
 }

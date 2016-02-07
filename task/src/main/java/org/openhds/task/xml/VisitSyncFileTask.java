@@ -1,10 +1,11 @@
-package org.openhds.task;
+package org.openhds.task.xml;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.SharedSessionContract;
 import org.hibernate.type.CalendarType;
 import org.openhds.domain.util.CalendarAdapter;
+import org.openhds.task.TaskContext;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
