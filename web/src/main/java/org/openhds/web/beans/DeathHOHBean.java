@@ -332,7 +332,7 @@ public class DeathHOHBean implements Serializable {
 	 * It reads in the uuid of the Individual and fetches it from the database.
 	 */
 	public void setSuccessor(String individualId) {
-		if (individualId != "") {
+		if (!"".equals(individualId)) {
 			this.successors.add(current, genericDao.read(Individual.class, individualId));
 			selectedSuccessor = successors.get(current);
 		}

@@ -141,7 +141,7 @@ public class LocationGenerator extends Generator<Location> {
 		if (validateIdLength(loc.getExtId(), scheme)) {
 		
 			// test for proper prefix
-			if (scheme.getPrefix() != "") {
+			if (!"".equals(scheme.getPrefix())) {
 				if (!loc.getExtId().substring(0, scheme.getPrefix().length()).equals(scheme.getPrefix()))	
 					throw new ConstraintViolations("The Location Id doesn't contain the correct prefix " +
 					"as specified in the IdScheme. The Location Id must start with " + scheme.getPrefix());

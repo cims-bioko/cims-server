@@ -207,13 +207,12 @@ public class IndividualServiceImpl implements IndividualService {
         });
 
         LastEvent le = new LastEvent(null, null);
-        LastEvent equallyLastEvent = new LastEvent(null, null);
         if (!events.isEmpty() && events.size() > 1) {
             le = events.get(events.size() - 1);
-            equallyLastEvent = events.get(events.size() - 2);
-            if (le.eventType == "In Migration. Create membership for this individual"
-                    && equallyLastEvent.eventType == "Membership"
-                    && le.eventDate == equallyLastEvent.eventDate) {
+            LastEvent equallyLastEvent = events.get(events.size() - 2);
+            if ("In Migration. Create membership for this individual".equals(le.eventType)
+                    && "Membership".equals(equallyLastEvent.eventType)
+                    && le.eventDate == equallyLastEvent.eventDate) {  // FIXME: identity comparison, a defect?
                 le = equallyLastEvent;
             }
 

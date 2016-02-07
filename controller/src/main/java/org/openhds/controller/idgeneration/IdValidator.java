@@ -1,11 +1,11 @@
 package org.openhds.controller.idgeneration;
 
-import java.util.HashMap;
-import java.util.List;
-
 import org.openhds.controller.util.OpenHDSResult;
 import org.openhds.domain.service.SitePropertiesService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class IdValidator {
 	
@@ -29,56 +29,40 @@ public class IdValidator {
     	this.resource = resource;
     }
 
-	public OpenHDSResult evaluateCheckDigits(HashMap<String, List<String>> map) {	
+	public OpenHDSResult evaluateCheckDigits(HashMap<String, List<String>> map) {
 		OpenHDSResult result = new OpenHDSResult();
-		
-    	try {	
-	    	for (String item : map.keySet()) {
-	    		if (item == "Location") {
-	    			if (checkIdSchemeForCheckDigit(item) && (!validateId(map.get(item)))) {
-	    				result.setSuccess(false);
-	    				result.setFailureReason(INVALID_CHECKCHAR_LOCATION);
-	        			return result;
-	    			}
-	    		}
-	    		if (item == "FieldWorker") {
-		    		if (checkIdSchemeForCheckDigit(item) && !validateId(map.get(item))) {
-		    			result.setSuccess(false);
-		    			result.setFailureReason(INVALID_CHECKCHAR_FIELDWORKER);
-		    			return result;
-		    		}
-	    		}
-	    		if (item == "Visit") {
-	    			if (checkIdSchemeForCheckDigit(item) && !validateId(map.get(item))) {
-		     			result.setSuccess(false);
-		     			result.setFailureReason(INVALID_CHECKCHAR_VISIT);
-		     			return result;
-	    			}
-	    		}
-	    		if (item == "SocialGroup") {
-	    			if (checkIdSchemeForCheckDigit(item) && !validateId(map.get(item))) {
-	    				result.setSuccess(false);
-	    				result.setFailureReason(INVALID_CHECKCHAR_SOCIALGROUP);
-	    				return result;
-	    			}
-	    		}
-	    		if (item == "Individual") {
-	    			if (checkIdSchemeForCheckDigit(item) && !validateId(map.get(item)))
-	    				result.setSuccess(false);
-	    				result.setFailureReason(INVALID_CHECKCHAR_INDIVIDUAL);
-		     			return result;
-	    		}
-	    	}
-    	} catch (Exception e) {
-    		result.setSuccess(false);
-    		result.setFailureReason(BAD_ID_FORMAT);
-    		return result;
-    	}
-    	result.setSuccess(true);
-        return result;
-    }
-    
-    public boolean validateId(List<String> ids) {    	
+		try {
+			result.setSuccess(true);
+			for (String item : map.keySet()) {
+				if (checkIdSchemeForCheckDigit(item) && !validateId(map.get(item))) {
+					result.setSuccess(false);
+					switch (item) {
+						case "Location":
+							result.setFailureReason(INVALID_CHECKCHAR_LOCATION);
+							break;
+						case "FieldWorker":
+							result.setFailureReason(INVALID_CHECKCHAR_FIELDWORKER);
+							break;
+						case "Visit":
+							result.setFailureReason(INVALID_CHECKCHAR_VISIT);
+							break;
+						case "SocialGroup":
+							result.setFailureReason(INVALID_CHECKCHAR_SOCIALGROUP);
+							break;
+						case "Individual":
+							result.setFailureReason(INVALID_CHECKCHAR_INDIVIDUAL);
+							break;
+					}
+				}
+			}
+		} catch (Exception e) {
+			result.setSuccess(false);
+			result.setFailureReason(BAD_ID_FORMAT);
+		}
+		return result;
+	}
+
+	public boolean validateId(List<String> ids) {
     	for (String item : ids) {
     		
     		if (item.equals(siteProperties.getUnknownIdentifier()))

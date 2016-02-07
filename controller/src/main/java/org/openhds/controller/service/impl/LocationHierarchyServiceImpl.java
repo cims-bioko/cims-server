@@ -246,7 +246,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 		item = genericDao.findByProperty(LocationHierarchy.class, "name", parent);
 
 		if (genericDao.getTotalCount(LocationHierarchy.class) == 0) {
-			if (item == null && parent == "")
+			if (item == null && "".equals(parent))
 				return true;
 		}
 		else

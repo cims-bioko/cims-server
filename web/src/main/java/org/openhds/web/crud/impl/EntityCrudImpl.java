@@ -413,16 +413,14 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     }
     
     private long processSearchCriteria() {
-    	
-    	if (searchableFieldsMap.get(propertyName).getName() != "java.lang.String") 
+    	if (!"java.lang.String".equals(searchableFieldsMap.get(propertyName).getName()))
     		 return searchForEntitiesById(propertyName, searchableFieldsMap.get(propertyName), searchString, entityClass).size();
     	else 
 	    	return dao.getCountByProperty(propertyName, searchString);
     }
     
     private List<T> generateSearchResults() {
-    	
-    	if (searchableFieldsMap.get(propertyName).getName() != "java.lang.String") 
+    	if (!"java.lang.String".equals(searchableFieldsMap.get(propertyName).getName()))
     		 return searchForEntitiesById(propertyName, searchableFieldsMap.get(propertyName), searchString, entityClass);
 
 	    return dao.findListByPropertyPagedInsensitive(propertyName, searchString, pager.getPageIndex(), pager.getPageIncrement());

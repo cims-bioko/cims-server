@@ -240,7 +240,7 @@ public class ModifyHOHBean implements Serializable {
 	 * It reads in the uuid of the Membership and fetches it from the database.
 	 */
 	public void setSuccessor(String membershipId) {
-		if (membershipId != "") {
+		if (!"".equals(membershipId)) {
 			Membership item = genericDao.read(Membership.class, membershipId);
 			selectedSuccessor = genericDao.read(Individual.class, item.getIndividual().getUuid());
 		}
