@@ -406,7 +406,7 @@ public class JsfCrudELResolver extends ELResolver {
 
 		@Override
 		public String toString() {
-			StringBuffer sb = new StringBuffer(
+			StringBuilder sb = new StringBuilder(
 					"JsfCrudParameterizedMethod[method=");
 			sb.append(method);
 			sb.append(",params=List[");
@@ -518,7 +518,7 @@ public class JsfCrudELResolver extends ELResolver {
 
 		@Override
 		public String toString() {
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			sb.append("JsfCrudTransform=[base=");
 			sb.append(base);
 			sb.append(",transformMethod0=");
