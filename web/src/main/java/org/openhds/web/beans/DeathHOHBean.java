@@ -64,9 +64,8 @@ public class DeathHOHBean implements Serializable {
 		indivsOfSocialGroup = new ArrayList<>();
 		socialGroups = new ArrayList<>();
 		memberships = new HashMap<>();
-		
-		ArrayList<Membership> list = new ArrayList<>();
-		memberships.put(current, list);
+
+		memberships.put(current,  new ArrayList<Membership>());
 		
 		if (determineValidSocialGroups()) {
 			webFlowService.createMessage(messageContext, 
@@ -347,8 +346,7 @@ public class DeathHOHBean implements Serializable {
 	 */
 	public void incCurrent() {
 		current++;
-		ArrayList<Membership> list = new ArrayList<>();
-		memberships.put(current, list);
+		memberships.put(current, new ArrayList<Membership>());
 	}
 		
 	public int getCurrent() {
