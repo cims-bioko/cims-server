@@ -1,4 +1,4 @@
-package org.openhds.task;
+package org.openhds.task.xml;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhds.controller.service.CurrentUser;
 import org.openhds.domain.model.PrivilegeConstants;
+import org.openhds.task.TaskContext;
 import org.openhds.task.service.AsyncTaskService;
 import org.openhds.task.xml.IndividualSyncFileTask;
 import org.springframework.beans.factory.annotation.Autowired;

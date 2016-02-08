@@ -1,4 +1,4 @@
-package org.openhds.task;
+package org.openhds.task.xml;
 
 import static org.junit.Assert.fail;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -13,8 +13,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.openhds.domain.model.Location;
+import org.openhds.task.TaskContext;
 import org.openhds.task.service.AsyncTaskService;
-import org.openhds.task.xml.LocationSyncFileTask;
 import org.springframework.core.io.ClassPathResource;
 
 public class LocationSyncFileTaskTest extends AbstractXmlWriterTest {

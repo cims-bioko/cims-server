@@ -1,4 +1,4 @@
-package org.openhds.task;
+package org.openhds.task.xml;
 
 import static org.junit.Assert.assertEquals;
 
