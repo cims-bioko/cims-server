@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+	    http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="DriverClassName" value="org.h2.Driver" />
+        <property name="Url" value="jdbc:h2:mem:openhds" />
+        <property name="Username" value="sa" />
+        <property name="Password" value="" />
+    </bean>
+
+    <bean id="transactionManager" class=" org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <tx:annotation-driven />
+
+    <bean id="source" class="org.openhds.task.sqlite.DSSource">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <bean id="target" class="org.openhds.task.sqlite.TransactionalSqliteTarget" init-method="loadDriver" />
+
+    <bean id="mapperFactory" class="org.openhds.task.sqlite.SqliteMapperFactory">
+        <constructor-arg>
+            <bean class="org.openhds.task.sqlite.DBTypeExtractor"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="exporter" class="org.openhds.task.sqlite.Exporter">
+        <constructor-arg ref="source" />
+        <constructor-arg ref="target" />
+        <constructor-arg ref="mapperFactory"/>
+    </bean>
+
+</beans>

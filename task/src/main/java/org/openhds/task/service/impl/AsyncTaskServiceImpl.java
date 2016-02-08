@@ -63,7 +63,7 @@ public class AsyncTaskServiceImpl implements AsyncTaskService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public String getContentHash(String taskName) {
         AsyncTask task = dao.findByProperty("taskName", taskName);
-        return task == null? null: task.getMd5Hash();
+        return task == null ? null : task.getMd5Hash();
     }
 
     // REQUIRES_NEW allows status updates to be written during long tasks

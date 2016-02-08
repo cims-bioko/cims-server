@@ -1,13 +1,14 @@
 package org.openhds.task.support;
 
-import org.openhds.task.TaskContext;
 import org.openhds.task.SyncFileTask;
+import org.openhds.task.TaskContext;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.io.File;
+
+import javax.annotation.Resource;
 
 @Component("openhdsTaskExecutor")
 public class TaskExecutorImpl implements TaskExecutor {
@@ -105,42 +106,42 @@ public class TaskExecutorImpl implements TaskExecutor {
         }
     }
 
-    @Resource(name="individualXmlWriter")
+    @Resource(name = "individualXmlWriter")
     public void setIndividualTaskWriter(SyncFileTask individualTaskWriter) {
         this.individualTaskWriter = individualTaskWriter;
     }
 
-    @Resource(name="locationXmlWriter")
+    @Resource(name = "locationXmlWriter")
     public void setLocationTaskWriter(SyncFileTask individualTaskWriter) {
         this.locationTaskWriter = individualTaskWriter;
     }
 
-    @Resource(name="relationshipXmlWriter")
+    @Resource(name = "relationshipXmlWriter")
     public void setRelationshipTaskWriter(SyncFileTask relationshipTaskWriter) {
         this.relationshipTaskWriter = relationshipTaskWriter;
     }
 
-    @Resource(name="socialGroupXmlWriter")
+    @Resource(name = "socialGroupXmlWriter")
     public void setSocialGroupTaskWriter(SyncFileTask socialGroupTaskWriter) {
         this.socialGroupTaskWriter = socialGroupTaskWriter;
     }
 
-    @Resource(name="visitXmlWriter")
+    @Resource(name = "visitXmlWriter")
     public void setVisitTaskWriter(SyncFileTask visitTaskWriter) {
         this.visitTaskWriter = visitTaskWriter;
     }
 
-    @Resource(name="membershipXmlWriter")
+    @Resource(name = "membershipXmlWriter")
     public void setMembershipTaskWriter(SyncFileTask membershipTaskWriter) {
         this.membershipTaskWriter = membershipTaskWriter;
     }
 
-    @Resource(name="fieldWorkerXmlWriter")
+    @Resource(name = "fieldWorkerXmlWriter")
     public void setFieldWorkerTaskWriter(SyncFileTask fieldWorkerTaskWriter) {
         this.fieldWorkerTaskWriter = fieldWorkerTaskWriter;
     }
 
-    @Resource(name="locationHierarchyXmlWriter")
+    @Resource(name = "locationHierarchyXmlWriter")
     public void setLocationHierarchyTaskWriter(SyncFileTask locationHierarchyTaskWriter) {
         this.locationHierarchyTaskWriter = locationHierarchyTaskWriter;
     }
