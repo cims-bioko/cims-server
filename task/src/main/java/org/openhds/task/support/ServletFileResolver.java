@@ -35,8 +35,8 @@ public class ServletFileResolver implements FileResolver, ServletContextAware {
     }
 
     protected File getGeneratedXmlFolder() {
-        String fullPath = servletContext.getRealPath("/");
-        File generatedXmlFileDir = new File(fullPath + File.separator + "generated-xml");
+        String fullPath = servletContext.getRealPath("/WEB-INF");
+        File generatedXmlFileDir = new File(fullPath + File.separator + "cached-files");
         generatedXmlFileDir.mkdirs();
         return generatedXmlFileDir;
     }
