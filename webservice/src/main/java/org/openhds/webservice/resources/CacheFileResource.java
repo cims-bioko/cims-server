@@ -14,6 +14,8 @@ import org.springframework.web.context.ServletContextAware;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -57,13 +59,21 @@ public class CacheFileResource implements ServletContextAware {
      * Allows us to set the ETag and forward to another servlet without it
      * overwriting it.
      */
-    private static class ETagIgnoringResponse extends HttpServletResponseWrapper {
-        public ETagIgnoringResponse(HttpServletResponse response) {
+    private static class OverrideHeaderResponse extends HttpServletResponseWrapper {
+
+        Set<String> overridden = new HashSet<>();
+
+        public OverrideHeaderResponse(HttpServletResponse response) {
             super(response);
         }
 
+        public void fixHeader(String name, String value) {
+            overridden.add(name.toLowerCase());
+            super.setHeader(name, value);
+        }
+
         public void setHeader(String name, String value) {
-            if (!Headers.ETAG.equalsIgnoreCase(name)) {
+            if (!overridden.contains(name.toLowerCase())) {
                 super.setHeader(name, value);
             }
         }
@@ -73,7 +83,9 @@ public class CacheFileResource implements ServletContextAware {
         return "/" + file.getAbsolutePath().replaceFirst(ctx.getRealPath("/"), "");
     }
 
-    private void serviceTask(String taskName, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void serviceTask(String taskName, HttpServletRequest request, HttpServletResponse response, String contentType)
+            throws ServletException, IOException {
+
         try {
             String contentHash = asyncTaskService.getContentHash(taskName);
             String eTag = request.getHeader(Headers.IF_NONE_MATCH);
@@ -83,22 +95,28 @@ public class CacheFileResource implements ServletContextAware {
                 return;
             }
 
+            OverrideHeaderResponse overrideResponse = new OverrideHeaderResponse(response);
+            response = overrideResponse;
+
             if (contentHash != null) {
-                response.setHeader(Headers.ETAG, contentHash);
-                response = new ETagIgnoringResponse(response);
+                overrideResponse.fixHeader(Headers.ETAG, contentHash);
             }
 
-            File xmlFile = fileResolver.getFileForTask(taskName);
-            File metaFile = new File(xmlFile.getParentFile(), xmlFile.getName() + "." + Metadata.FILE_EXT);
+            if (contentType != null) {
+                overrideResponse.fixHeader(Headers.CONTENT_TYPE, contentType);
+            }
+
+            File cacheFile = fileResolver.getFileForTask(taskName);
+            File metadataFile = new File(cacheFile.getParentFile(), cacheFile.getName() + "." + Metadata.FILE_EXT);
 
             String accept = request.getHeader(Headers.ACCEPT);
-            if (accept != null && accept.contains(Metadata.MIME_TYPE) && metaFile.exists()) {
+            if (accept != null && accept.contains(Metadata.MIME_TYPE) && metadataFile.exists()) {
                 response.setContentType(Metadata.MIME_TYPE);
-                request.getRequestDispatcher(contextPath(metaFile)).forward(request, response);
+                request.getRequestDispatcher(contextPath(metadataFile)).forward(request, response);
                 return;
             }
 
-            request.getRequestDispatcher(contextPath(xmlFile)).forward(request, response);
+            request.getRequestDispatcher(contextPath(cacheFile)).forward(request, response);
 
         } catch (Exception e) {
             log.error("problem servicing request" + e.getMessage());
@@ -107,6 +125,6 @@ public class CacheFileResource implements ServletContextAware {
 
     @RequestMapping(value = "/mobiledb/cached", method = RequestMethod.GET, produces = {SQLITE_MIME_TYPE, Metadata.MIME_TYPE})
     public void mobileDB(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        serviceTask(MOBILEDB_TASK_NAME, request, response);
+        serviceTask(MOBILEDB_TASK_NAME, request, response, SQLITE_MIME_TYPE);
     }
 }
