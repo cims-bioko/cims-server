@@ -17,6 +17,7 @@ import org.openhds.task.TaskContext;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.core.io.ClassPathResource;
 
+@Ignore("implementation changed to use MySQL streaming, no longer runs on h2")
 public class LocationSyncFileTaskTest extends AbstractXmlWriterTest {
 
     @Mock
@@ -31,7 +32,6 @@ public class LocationSyncFileTaskTest extends AbstractXmlWriterTest {
     }
 
     @Test
-    @Ignore
     public void shouldWriteXml() {
         File locationFile = new File("location.xml");
         if (locationFile.exists()) {
