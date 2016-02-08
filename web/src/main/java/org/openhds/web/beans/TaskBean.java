@@ -18,7 +18,7 @@ public class TaskBean {
     private TaskScheduler scheduler;
     private ScheduledFuture scheduledTask;
     
-    private Integer roundNumber;
+    private Integer roundNumber = 1;
     private String cronSchedule = "0 0 * * * ?";
 
     public TaskBean(TaskExecutor taskExecutor, AsyncTaskService asyncTaskService, TaskScheduler scheduler) {
