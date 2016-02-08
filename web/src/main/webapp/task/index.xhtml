@@ -13,63 +13,9 @@
         <h:messages id="errors" globalOnly="true" />
         <h:form id="taskForm">
 
-            <h:outputText value="Generate Field Worker XML File" />
+            <h:outputText value="Visit Round Number:" />
             <br />
-            <h:commandButton action="#{taskBean.startFieldWorkerTask}" value="Queue Field Worker Task" />
-            <br />
-            <br />
-
-            <h:outputText value="Generate Location Hierarchy XML File" />
-            <br />
-            <h:commandButton action="#{taskBean.startLocationHierarchyTask}" value="Queue Location Hierarchy Task" />
-            <br />
-            <br />
-
-            <h:outputText value="Generate Individual XML File" />
-            <br />
-            <h:commandButton action="#{taskBean.startIndividualTask}" value="Queue Individual Task" />
-            <br />
-            <br />
-
-            <h:outputText value="Generate Location XML File" />
-            <br />
-            <h:commandButton action="#{taskBean.startLocationTask}" value="Queue Location Task" />
-            <br />
-            <br />
-
-            <h:outputText value="Generate Relationship XML File" />
-            <br />
-            <h:commandButton action="#{taskBean.startRelationshipTask}" value="Queue Relationship Task" />
-            <br />
-            <br />
-
-            <h:outputText value="Generate Social Group XML File" />
-            <br />
-            <h:commandButton action="#{taskBean.startSocialGroupTask}" value="Queue Social Group Task" />
-            <br />
-            <br />
-            
-            <h:outputText value="Generate Membership XML File" />
-            <br />
-            <h:commandButton action="#{taskBean.startMembershipTask}" value="Queue Membership Task" />
-            <br />
-            <br />
-
-            <h:outputText value="Generate Visit XML File" />
-            <br />
-            <h:outputText value="Round Number:" />
-            <br />
-            <h:inputText value="#{taskBean.roundNumber}" /> <h:commandButton action="#{taskBean.startVisitTask}" value="Queue Visit Task" />
-            <br />
-            <br />
-
-            <h:outputText value="Generate Mobile DB" />
-            <br />
-            <h:commandButton action="#{taskBean.startMobileDBTask}" value="Queue Mobile DB Task" />
-            <br />
-            <br />
-
-            <h:commandButton action="#{taskBean.startAllTasks}" value="Queue All Tasks" />
+            <h:inputText value="#{taskBean.roundNumber}" /> <h:commandButton action="#{taskBean.startMobileDBTask}" value="Generate Mobile DB" />
             <br />
             <br />
 
@@ -77,11 +23,11 @@
             <br />
             <br />
             <a href="http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger" target="_blank">
-                <h:outputText value="Schedule" /></a>
+                <h:outputText value="Schedule Format" /></a>
             <br />
             <h:inputText value="#{taskBean.cronSchedule}" />
-            <h:commandButton action="#{taskBean.scheduleAllTasks}" value="Schedule All Tasks" />
-            <h:commandButton action="#{taskBean.cancelScheduledTasks}" value="Cancel Scheduled Tasks" />
+            <h:commandButton action="#{taskBean.scheduleAllTasks}" value="Schedule Tasks" />
+            <h:commandButton action="#{taskBean.cancelScheduledTasks}" value="Cancel Scheduled" />
 
         </h:form>
 

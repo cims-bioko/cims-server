@@ -27,51 +27,13 @@ public class TaskBean {
         this.scheduler = scheduler;
     }
 
-    public String startIndividualTask() {
-        taskExecutor.executeIndividualTask();
-        return TASK_VIEW;
-    }
-
-    public String startLocationTask() {
-        taskExecutor.executeLocationTask();
-        return TASK_VIEW;
-    }
-
-    public String startRelationshipTask() {
-        taskExecutor.executeRelationshipTask();
-        return TASK_VIEW;
-    }
-
-    public String startSocialGroupTask() {
-        taskExecutor.executeSocialGroupTask();
-        return TASK_VIEW;
-    }
-    
-    public String startMembershipTask() {
-    	taskExecutor.executeMembershipTask();
-    	return TASK_VIEW;
-    }
-
-    public String startFieldWorkerTask() {
-        taskExecutor.executeFieldWorkerTask();
-        return TASK_VIEW;
-    }
-
-    public String startLocationHierarchyTask() {
-        taskExecutor.executeLocationHierarchyTask();
-        return TASK_VIEW;
-    }
-
     public String startMobileDBTask() {
         taskExecutor.executeMobileDBTask();
         return TASK_VIEW;
     }
 
-    public String startVisitTask() {
-        if (roundNumber != null) {
-            taskExecutor.executeVisitTask(roundNumber);
-        }
-        return TASK_VIEW;
+    private void startTasks() {
+        startMobileDBTask();
     }
 
     public String startAllTasks() {
@@ -90,19 +52,6 @@ public class TaskBean {
         cancelScheduled();
         scheduledTask = scheduler.schedule(new StartTasksExecutor(), new CronTrigger(cronSchedule));
         return TASK_VIEW;
-    }
-
-    private void startTasks() {
-        startFieldWorkerTask();
-        startLocationHierarchyTask();
-        startIndividualTask();
-        startLocationTask();
-        startRelationshipTask();
-        startSocialGroupTask();
-        startMembershipTask();
-        startVisitTask();
-        startLocationTask();
-        startMobileDBTask();
     }
 
     public String getNextScheduledRun() {

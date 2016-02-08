@@ -126,12 +126,6 @@ public class LocationResource {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/streamtest", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @ResponseBody
-    public FileSystemResource streamOutCachedXml() {
-        return new FileSystemResource(fileResolver.resolveLocationFile());
-    }
-
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     public ResponseEntity<? extends Serializable> insertXml(@RequestBody Location location) throws JAXBException {
         ConstraintViolations cv = new ConstraintViolations();

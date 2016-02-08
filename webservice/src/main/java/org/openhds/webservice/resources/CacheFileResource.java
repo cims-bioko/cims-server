@@ -7,7 +7,6 @@ import org.openhds.task.support.FileResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,19 +21,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import static org.openhds.task.service.AsyncTaskService.FIELDWORKER_TASK_NAME;
-import static org.openhds.task.service.AsyncTaskService.INDIVIDUAL_TASK_NAME;
-import static org.openhds.task.service.AsyncTaskService.LOCATIONHIERARCHY_TASK_NAME;
-import static org.openhds.task.service.AsyncTaskService.LOCATION_TASK_NAME;
-import static org.openhds.task.service.AsyncTaskService.MEMBERSHIP_TASK_NAME;
-import static org.openhds.task.service.AsyncTaskService.RELATIONSHIP_TASK_NAME;
-import static org.openhds.task.service.AsyncTaskService.SOCIALGROUP_TASK_NAME;
-import static org.openhds.task.service.AsyncTaskService.VISIT_TASK_NAME;
+import static org.openhds.task.service.AsyncTaskService.MOBILEDB_TASK_NAME;
+
 
 /**
  * Shared controller for all pre-generated cache files for tablet
  * synchronization. It uses content negotiation and awareness of sync metadata
- * to help tablets:
+ * to help tablets optimize bandwidth consumption:
  *
  *   <li>skip syncing when its local content is identical</li>
  *   <li>use a zsync to efficiently synchronize with existing content</li>
@@ -42,6 +35,8 @@ import static org.openhds.task.service.AsyncTaskService.VISIT_TASK_NAME;
  */
 @Controller
 public class CacheFileResource implements ServletContextAware {
+
+    public static final String SQLITE_MIME_TYPE = "application/x-sqlite3";
 
     private static Logger log = LoggerFactory.getLogger(CacheFileResource.class);
 
@@ -110,43 +105,8 @@ public class CacheFileResource implements ServletContextAware {
         }
     }
 
-    @RequestMapping(value = "/individuals/cached", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, Metadata.MIME_TYPE})
-    public void individuals(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        serviceTask(INDIVIDUAL_TASK_NAME, request, response);
-    }
-
-    @RequestMapping(value = "/locations/cached", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, Metadata.MIME_TYPE})
-    public void locations(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        serviceTask(LOCATION_TASK_NAME, request, response);
-    }
-
-    @RequestMapping(value = "/memberships/cached", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, Metadata.MIME_TYPE})
-    public void memberships(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        serviceTask(MEMBERSHIP_TASK_NAME, request, response);
-    }
-
-    @RequestMapping(value = "/relationships/cached", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, Metadata.MIME_TYPE})
-    public void relationships(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        serviceTask(RELATIONSHIP_TASK_NAME, request, response);
-    }
-
-    @RequestMapping(value = "/socialgroups/cached", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, Metadata.MIME_TYPE})
-    public void socialGroups(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        serviceTask(SOCIALGROUP_TASK_NAME, request, response);
-    }
-
-    @RequestMapping(value = "/visits/cached", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, Metadata.MIME_TYPE})
-    public void visits(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        serviceTask(VISIT_TASK_NAME, request, response);
-    }
-
-    @RequestMapping(value = "/fieldworkers/cached", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, Metadata.MIME_TYPE})
-    public void fieldWorkers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        serviceTask(FIELDWORKER_TASK_NAME, request, response);
-    }
-
-    @RequestMapping(value = "/locationhierarchies/cached", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, Metadata.MIME_TYPE})
-    public void locationHierarchies(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        serviceTask(LOCATIONHIERARCHY_TASK_NAME, request, response);
+    @RequestMapping(value = "/mobiledb/cached", method = RequestMethod.GET, produces = {SQLITE_MIME_TYPE, Metadata.MIME_TYPE})
+    public void mobileDB(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        serviceTask(MOBILEDB_TASK_NAME, request, response);
     }
 }

@@ -13,6 +13,8 @@ import org.openhds.task.SyncFileTask;
 import org.openhds.task.TaskContext;
 import org.openhds.task.service.AsyncTaskService;
 
+import static org.openhds.task.service.AsyncTaskService.MOBILEDB_TASK_NAME;
+
 public class TaskExecutorImplTest {
 
     @Mock
@@ -32,108 +34,23 @@ public class TaskExecutorImplTest {
         executor = new TaskExecutorImpl(asyncTaskService, fileResolver);
     }
     
-//    @Test
-//    public void shouldRunMembershipXmlTask() {
-//        when(asyncTaskService.taskShouldRun(AsyncTaskService.MEMBERSHIP_TASK_NAME)).thenReturn(true);
-//
-//        executor.setMembershipTaskWriter(writeTask);
-//        executor.executeMembershipTask();
-//
-//        verify(fileResolver).resolveMembershipFile();
-//        verify(writeTask).writeXml(any(TaskContext.class));
-//    }
-//
-//    @Test
-//    public void shouldRunResidencyXmlTask() {
-//        when(asyncTaskService.taskShouldRun(AsyncTaskService.RESIDENCY_TASK_NAME)).thenReturn(true);
-//
-//        executor.setResidencyTaskWriter(writeTask);
-//        executor.executeResidencyXmlWriterTask();
-//
-//        verify(fileResolver).resolveResidencyXmlFile();
-//        verify(writeTask).writeXml(any(TaskContext.class));
-//    }
-    
     @Test
     public void shouldRunIndividualXmlTask() {
-        when(asyncTaskService.taskShouldRun(AsyncTaskService.INDIVIDUAL_TASK_NAME)).thenReturn(true);
+        when(asyncTaskService.taskShouldRun(MOBILEDB_TASK_NAME)).thenReturn(true);
 
-        executor.setIndividualTaskWriter(writeTask);
-        executor.executeIndividualTask();
+        executor.setMobileDBWriter(writeTask);
+        executor.executeMobileDBTask();
 
-        verify(fileResolver).resolveIndividualFile();
+        verify(fileResolver).resolveMobileDBFile();
         verify(writeTask).run(any(TaskContext.class));
     }
 
     @Test
     public void shouldNotRunIndividualXmlTask() {
-        when(asyncTaskService.taskShouldRun(AsyncTaskService.INDIVIDUAL_TASK_NAME)).thenReturn(false);
+        when(asyncTaskService.taskShouldRun(MOBILEDB_TASK_NAME)).thenReturn(false);
 
-        executor.setIndividualTaskWriter(writeTask);
-        executor.executeIndividualTask();
-
-        verify(writeTask, times(0)).run(any(TaskContext.class));
-    }
-
-    @Test
-    public void shouldRunLocationXmlTask() {
-        when(asyncTaskService.taskShouldRun(AsyncTaskService.LOCATION_TASK_NAME)).thenReturn(true);
-
-        executor.setLocationTaskWriter(writeTask);
-        executor.executeLocationTask();
-
-        verify(fileResolver).resolveLocationFile();
-        verify(writeTask).run(any(TaskContext.class));
-    }
-
-    @Test
-    public void shouldNotRunLocationXmlTask() {
-        when(asyncTaskService.taskShouldRun(AsyncTaskService.LOCATION_TASK_NAME)).thenReturn(false);
-
-        executor.setLocationTaskWriter(writeTask);
-        executor.executeLocationTask();
-
-        verify(writeTask, times(0)).run(any(TaskContext.class));
-    }
-
-    @Test
-    public void shouldRunSocialGroupXmlTask() {
-        when(asyncTaskService.taskShouldRun(AsyncTaskService.SOCIALGROUP_TASK_NAME)).thenReturn(true);
-
-        executor.setSocialGroupTaskWriter(writeTask);
-        executor.executeSocialGroupTask();
-
-        verify(fileResolver).resolveSocialGroupFile();
-        verify(writeTask).run(any(TaskContext.class));
-    }
-
-    @Test
-    public void shouldNotRunSocialGroupXmlTask() {
-        when(asyncTaskService.taskShouldRun(AsyncTaskService.SOCIALGROUP_TASK_NAME)).thenReturn(false);
-
-        executor.setSocialGroupTaskWriter(writeTask);
-        executor.executeSocialGroupTask();
-
-        verify(writeTask, times(0)).run(any(TaskContext.class));
-    }
-
-    @Test
-    public void shouldRunRelationshipXmlTask() {
-        when(asyncTaskService.taskShouldRun(AsyncTaskService.RELATIONSHIP_TASK_NAME)).thenReturn(true);
-
-        executor.setRelationshipTaskWriter(writeTask);
-        executor.executeRelationshipTask();
-
-        verify(fileResolver).resolveRelationshipFile();
-        verify(writeTask).run(any(TaskContext.class));
-    }
-
-    @Test
-    public void shouldNotRunRelationshipXmlTask() {
-        when(asyncTaskService.taskShouldRun(AsyncTaskService.RELATIONSHIP_TASK_NAME)).thenReturn(false);
-
-        executor.setRelationshipTaskWriter(writeTask);
-        executor.executeRelationshipTask();
+        executor.setMobileDBWriter(writeTask);
+        executor.executeMobileDBTask();
 
         verify(writeTask, times(0)).run(any(TaskContext.class));
     }

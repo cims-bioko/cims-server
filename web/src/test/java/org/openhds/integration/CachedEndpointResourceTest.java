@@ -3,6 +3,7 @@ package org.openhds.integration;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -11,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.openhds.integration.util.WebContextLoader;
 import org.openhds.task.support.FileResolver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
@@ -27,21 +27,19 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.File;
 
+import static org.openhds.webservice.resources.CacheFileResource.SQLITE_MIME_TYPE;
+import static org.springframework.http.MediaType.parseMediaType;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
-/**
- * Created by ADT on 12/5/14.
- */
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-@ContextConfiguration(loader=WebContextLoader.class, locations={"/testContext.xml"})
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+@ContextConfiguration(loader = WebContextLoader.class, locations = {"/testContext.xml"})
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
-        DbUnitTestExecutionListener.class })
+        DbUnitTestExecutionListener.class})
 @DatabaseSetup(value = "/formResourceTestDb.xml", type = DatabaseOperation.REFRESH)
 public class CachedEndpointResourceTest {
 
@@ -65,118 +63,38 @@ public class CachedEndpointResourceTest {
                 .addFilter(springSecurityFilterChain)
                 .build();
 
-        createTestCachedXml();
+        createTestFiles();
 
         session = getMockHttpSession("admin", "test");
     }
 
-    private void createTestCachedXml() throws Exception {
-
-            fileResolver.resolveIndividualFile().createNewFile();
-            fileResolver.resolveLocationFile().createNewFile();
-            fileResolver.resolveMembershipFile().createNewFile();
-            fileResolver.resolveRelationshipFile().createNewFile();
-            fileResolver.resolveSocialGroupFile().createNewFile();
-            fileResolver.resolveVisitFile().createNewFile();
-
+    private void createTestFiles() throws Exception {
+        fileResolver.resolveMobileDBFile().createNewFile();
     }
 
     @After
     public void tearDown() throws Exception {
-
-        FileUtils.cleanDirectory(new File(fileResolver.resolveIndividualFile().getParent()));
-
+        FileUtils.cleanDirectory(new File(fileResolver.resolveMobileDBFile().getParent()));
     }
 
     @Test
-    public void testGetCachedLocations() throws Exception {
-        mockMvc.perform(get("/locations/cached").session(session)
-                .accept(MediaType.APPLICATION_XML))
+    public void testGetCachedDB() throws Exception {
+        mockMvc.perform(get("/mobiledb/cached").session(session)
+                .accept(parseMediaType(SQLITE_MIME_TYPE)))
                 .andExpect(status().isOk());
     }
 
     @Test(expected = AssertionError.class)
-    public void testGetCachedLocationsWithoutSession() throws Exception {
-        mockMvc.perform(get("/locations/cached")
-                .accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk());
-    }
-
-
-    @Test
-    public void testGetCachedMemberships() throws Exception {
-        mockMvc.perform(get("/memberships/cached").session(session)
-                .accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk());
-    }
-
-    @Test(expected = AssertionError.class)
-    public void testGetCachedMembershipsWithoutSession() throws Exception {
-        mockMvc.perform(get("/memberships/cached")
-                .accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void testGetCachedVisits() throws Exception {
-        mockMvc.perform(get("/visits/cached").session(session)
-                .accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk());
-    }
-
-    @Test(expected = AssertionError.class)
-    public void testGetCachedVisitsWithoutSession() throws Exception {
-        mockMvc.perform(get("/visits/cached")
-                .accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void testGetCachedRelationships() throws Exception {
-        mockMvc.perform(get("/relationships/cached").session(session)
-                .accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk());
-    }
-
-    @Test(expected = AssertionError.class)
-    public void testGetCachedRelationshipsWithoutSession() throws Exception {
-        mockMvc.perform(get("/relationships/cached")
-                .accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void testGetCachedSocialGroups() throws Exception {
-        mockMvc.perform(get("/socialgroups/cached").session(session)
-                .accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk());
-    }
-
-    @Test(expected = AssertionError.class)
-    public void testGetCachedSocialGroupsWithoutSession() throws Exception {
-        mockMvc.perform(get("/socialgroups/cached")
-                .accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void testGetCachedIndividualsGroups() throws Exception {
-        mockMvc.perform(get("/individuals/cached").session(session)
-                .accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk());
-    }
-
-    @Test(expected = AssertionError.class)
-    public void testGetCachedIndividualsWithoutSession() throws Exception {
-        mockMvc.perform(get("/individuals/cached")
-                .accept(MediaType.APPLICATION_XML))
+    public void testGetCachedDBWithoutSession() throws Exception {
+        mockMvc.perform(get("/mobiledb/cached")
+                .accept(parseMediaType(SQLITE_MIME_TYPE)))
                 .andExpect(status().isOk());
     }
 
     private MockHttpSession getMockHttpSession(String username, String password) throws Exception {
-        return (MockHttpSession)mockMvc.perform(post("/loginProcess")
-                        .param("j_username", username)
-                        .param("j_password", password)
+        return (MockHttpSession) mockMvc.perform(post("/loginProcess")
+                .param("j_username", username)
+                .param("j_password", password)
         ).andReturn()
                 .getRequest()
                 .getSession();
