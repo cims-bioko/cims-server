@@ -24,6 +24,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     private SyncFileTask membershipTaskWriter;
     private SyncFileTask fieldWorkerTaskWriter;
     private SyncFileTask locationHierarchyTaskWriter;
+    private SyncFileTask mobileDBWriter;
 
 
     @Autowired
@@ -106,6 +107,16 @@ public class TaskExecutorImpl implements TaskExecutor {
         }
     }
 
+    @Override
+    public void executeMobileDBTask() {
+        if (asyncTaskService.taskShouldRun(AsyncTaskService.MOBILEDB_TASK_NAME)) {
+            asyncTaskService.startTask(AsyncTaskService.MOBILEDB_TASK_NAME);
+            File dbFile = fileResolver.resolveMobileDBFile();
+            mobileDBWriter.run(new TaskContext(dbFile));
+        }
+    }
+
+
     @Resource(name = "individualXmlWriter")
     public void setIndividualTaskWriter(SyncFileTask individualTaskWriter) {
         this.individualTaskWriter = individualTaskWriter;
@@ -144,5 +155,10 @@ public class TaskExecutorImpl implements TaskExecutor {
     @Resource(name = "locationHierarchyXmlWriter")
     public void setLocationHierarchyTaskWriter(SyncFileTask locationHierarchyTaskWriter) {
         this.locationHierarchyTaskWriter = locationHierarchyTaskWriter;
+    }
+
+    @Resource(name = "mobileDBWriter")
+    public void setMobileDBWriter(SyncFileTask mobileDBWriter) {
+        this.mobileDBWriter = mobileDBWriter;
     }
 }

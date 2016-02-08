@@ -18,4 +18,6 @@ public interface TaskExecutor {
 
     void executeLocationHierarchyTask();
 
+    void executeMobileDBTask();
+
 }

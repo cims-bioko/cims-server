@@ -14,6 +14,7 @@ public interface AsyncTaskService {
     String MEMBERSHIP_TASK_NAME = "Membership Task";
     String FIELDWORKER_TASK_NAME = "Field Worker Task";
     String LOCATIONHIERARCHY_TASK_NAME = "Location Hierarchy Task";
+    String MOBILEDB_TASK_NAME = "Mobile DB Task";
 
     boolean taskShouldRun(String taskName);
 

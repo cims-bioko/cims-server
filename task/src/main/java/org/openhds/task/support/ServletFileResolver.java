@@ -15,6 +15,7 @@ import static org.openhds.task.service.AsyncTaskService.INDIVIDUAL_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.LOCATIONHIERARCHY_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.LOCATION_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.MEMBERSHIP_TASK_NAME;
+import static org.openhds.task.service.AsyncTaskService.MOBILEDB_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.RELATIONSHIP_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.SOCIALGROUP_TASK_NAME;
 import static org.openhds.task.service.AsyncTaskService.VISIT_TASK_NAME;
@@ -41,6 +42,7 @@ public class ServletFileResolver implements FileResolver, ServletContextAware {
         asyncFiles.put(VISIT_TASK_NAME, "visit.xml");
         asyncFiles.put(FIELDWORKER_TASK_NAME, "fieldworker.xml");
         asyncFiles.put(LOCATIONHIERARCHY_TASK_NAME, "locationhierarchy.xml");
+        asyncFiles.put(MOBILEDB_TASK_NAME, "cims-tablet.db");
     }
 
     @Override
@@ -81,6 +83,11 @@ public class ServletFileResolver implements FileResolver, ServletContextAware {
     @Override
     public File resolveLocationHierarchyFile() {
         return getFileForTask(LOCATIONHIERARCHY_TASK_NAME);
+    }
+
+    @Override
+    public File resolveMobileDBFile() {
+        return getFileForTask(MOBILEDB_TASK_NAME);
     }
 
     protected File getGeneratedXmlFolder() {

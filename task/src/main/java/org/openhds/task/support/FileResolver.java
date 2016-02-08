@@ -20,5 +20,7 @@ public interface FileResolver {
 
     File resolveLocationHierarchyFile();
 
+    File resolveMobileDBFile();
+
     File getFileForTask(String taskName);
 }

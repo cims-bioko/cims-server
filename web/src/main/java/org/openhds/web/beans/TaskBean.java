@@ -62,6 +62,10 @@ public class TaskBean {
         return TASK_VIEW;
     }
 
+    public String startMobileDBTask() {
+        taskExecutor.executeMobileDBTask();
+        return TASK_VIEW;
+    }
 
     public String startVisitTask() {
         if (roundNumber != null) {
@@ -98,6 +102,7 @@ public class TaskBean {
         startMembershipTask();
         startVisitTask();
         startLocationTask();
+        startMobileDBTask();
     }
 
     public String getNextScheduledRun() {
