@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -71,5 +73,10 @@ class SqliteMapper implements Mapper {
         for (int c = 1; c <= md.getColumnCount(); c++) {
             target.setObject(c, source.getObject(c));
         }
+    }
+
+    @Override
+    public List<String> getPostDdl() {
+        return Collections.emptyList();
     }
 }

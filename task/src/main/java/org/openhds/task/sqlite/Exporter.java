@@ -36,6 +36,9 @@ public class Exporter {
                 }
                 dst.commit();
             }
+            for (String postDdl : mapper.getPostDdl()) {
+                d.executeUpdate(postDdl);
+            }
         }
     }
 }
