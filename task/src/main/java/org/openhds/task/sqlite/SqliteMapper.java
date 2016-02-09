@@ -46,9 +46,18 @@ class SqliteMapper implements Mapper {
     }
 
     public String getInsertDml() throws SQLException {
-        StringBuilder b = new StringBuilder("insert into " + table + " values (");
-        for (int c = 1; c <= md.getColumnCount(); c++) {
-            boolean lastColumn = c == md.getColumnCount();
+        StringBuilder b = new StringBuilder("insert into " + table + " (");
+        int columnCount = md.getColumnCount();
+        for (int c = 1; c <= columnCount; c++) {
+            boolean lastColumn = c == columnCount;
+            b.append(md.getColumnLabel(c));
+            if (!lastColumn) {
+                b.append(',');
+            }
+        }
+        b.append(") values (");
+        for (int c = 1; c <= columnCount; c++) {
+            boolean lastColumn = c == columnCount;
             b.append('?');
             if (!lastColumn) {
                 b.append(',');
