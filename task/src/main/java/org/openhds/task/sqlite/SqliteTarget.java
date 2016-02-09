@@ -11,7 +11,7 @@ import static java.sql.DriverManager.getConnection;
 /**
  * A {@link Target} implementation that generates non-auto-commit connections for export to Sqlite.
  */
-public class TransactionalSqliteTarget implements Target {
+public class SqliteTarget implements Target {
 
     public final String DRIVER_CLASS = "org.sqlite.JDBC";
 
@@ -24,9 +24,9 @@ public class TransactionalSqliteTarget implements Target {
     }
 
     @Override
-    public Connection createConnection(File target) throws IOException, SQLException {
+    public Connection createConnection(File target, boolean autoCommit) throws IOException, SQLException {
         Connection c = getConnection(getUrl(target));
-        c.setAutoCommit(false);
+        c.setAutoCommit(autoCommit);
         return c;
     }
 

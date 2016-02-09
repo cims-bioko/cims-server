@@ -27,7 +27,7 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="target" class="org.openhds.task.sqlite.TransactionalSqliteTarget" init-method="loadDriver" />
+    <bean id="target" class="org.openhds.task.sqlite.SqliteTarget" init-method="loadDriver" />
 
     <bean id="mapperFactory" class="org.openhds.task.sqlite.SqliteMapperFactory">
         <constructor-arg>

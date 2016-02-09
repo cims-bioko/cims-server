@@ -11,7 +11,7 @@ import java.sql.Statement;
  */
 public interface Target {
 
-    Connection createConnection(File target) throws IOException, SQLException;
+    Connection createConnection(File target, boolean autoCommit) throws IOException, SQLException;
 
     Statement createStatement(Connection c) throws SQLException;
 

@@ -33,40 +33,42 @@ public class ExporterTest {
     private Exporter exporter;
 
     @Autowired
-    private TransactionalSqliteTarget target;
+    private SqliteTarget target;
 
-    File file = new File("exported.db");
+    private File file = new File("exported.db");
+
+    private String destTable = "dest_table";
+
 
     @Before
-    public void setUp() throws SQLException {
-        try (Connection c = ds.getConnection();
-             Statement s = c.createStatement()) {
+    public void setUp() throws SQLException, IOException {
+        try (Connection c = ds.getConnection(); Statement s = c.createStatement()) {
             s.executeUpdate("create table source_table (f1 INT, f2 BOOLEAN, f3 VARCHAR, f4 DATE, f5 TIMESTAMP)");
             s.executeUpdate("insert into source_table VALUES ('1', 'true', 'Hello', current_date(), current_timestamp())");
             s.executeUpdate("insert into source_table VALUES ('2', 'false', 'Goodbye', current_date(), current_time())");
+        }
+        try (Connection c = target.createConnection(file, true); Statement s = c.createStatement()) {
+            s.executeUpdate(String.format("create table %s (f1 INT, f2 BOOLEAN, f3 VARCHAR, f4 DATE, f5 TIMESTAMP)", destTable));
         }
     }
 
     @After
     public void tearDown() throws SQLException {
         assertTrue("failed to delete generated database", file.delete());
-        try (Connection c = ds.getConnection();
-             Statement s = c.createStatement()) {
+        try (Connection c = ds.getConnection(); Statement s = c.createStatement()) {
             s.executeUpdate("drop table source_table");
         }
     }
 
     @Test
     public void testExporter() throws SQLException, IOException, ClassNotFoundException {
-        String destTable = "dest_table";
         exporter.export("select * from source_table", destTable, file);
         assertTrue(file.exists());
         assertDatabase(file, destTable);
     }
 
     private void assertDatabase(File file, String destTable) throws IOException, SQLException {
-        try (Connection c = target.createConnection(file);
-             Statement s = target.createStatement(c);
+        try (Connection c = target.createConnection(file, true); Statement s = target.createStatement(c);
              ResultSet results = s.executeQuery("select * from " + destTable)) {
             ResultSetMetaData md = results.getMetaData();
             int rowCount = 0;

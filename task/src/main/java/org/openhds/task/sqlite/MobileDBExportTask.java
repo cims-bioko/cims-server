@@ -8,6 +8,7 @@ import org.openhds.task.service.AsyncTaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +44,10 @@ public class MobileDBExportTask implements SyncFileTask {
 
     private Properties tableQueries;
 
+    private InputStream preDdl;
+
+    private InputStream postDdl;
+
     @Autowired
     public MobileDBExportTask(AsyncTaskService taskService, Exporter exporter) {
         asyncTaskService = taskService;
@@ -53,6 +58,16 @@ public class MobileDBExportTask implements SyncFileTask {
     @Resource(name = "exportQueries")
     public void setTableQueries(Properties tableQueries) {
         this.tableQueries = tableQueries;
+    }
+
+    @Value("classpath:/pre-export.sql")
+    public void setPreDdl(InputStream scriptStream) {
+        preDdl = scriptStream;
+    }
+
+    @Value("classpath:/post-export.sql")
+    public void setPostDdl(InputStream scriptStream) {
+        postDdl = scriptStream;
     }
 
     @Override
@@ -70,14 +85,16 @@ public class MobileDBExportTask implements SyncFileTask {
             File metaScratch = new File(metaDest.getParentFile(), metaDest.getName() + ".tmp");
 
             // Export each of the queries as a table in the target database file
+            exporter.scriptTarget(preDdl, scratch);
             for (Map.Entry e : tableQueries.entrySet()) {
                 exporter.export(e.getValue().toString(), e.getKey().toString(), scratch);
                 asyncTaskService.updateTaskProgress(MOBILEDB_TASK_NAME, ++tablesExported);
             }
+            exporter.scriptTarget(postDdl, scratch);
 
             // Generate sync metadata
             try (InputStream in = new FileInputStream(scratch)) {
-                Metadata.generate("",DEFAULT_SYNC_BLOCK_SIZE, MD5, MD5, in, metaScratch);
+                Metadata.generate("", DEFAULT_SYNC_BLOCK_SIZE, MD5, MD5, in, metaScratch);
             }
             String md5;
             try (DataInputStream metaStream = new DataInputStream(new FileInputStream(metaScratch))) {

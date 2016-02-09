@@ -3,7 +3,6 @@ package org.openhds.task.sqlite;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Specifies a method of mapping data from a {@link Source} to a {@link Target} for an {@link Exporter}.
@@ -42,11 +41,4 @@ interface Mapper {
      * @throws SQLException upon error binding values
      */
     void bind(ResultSet source, PreparedStatement target) throws SQLException;
-
-    /**
-     * Yields a list of ddl statements to execute after data is exported to the table.
-     *
-     * @return a list of ddl statements to execute after data export
-     */
-    List<String> getPostDdl();
 }
