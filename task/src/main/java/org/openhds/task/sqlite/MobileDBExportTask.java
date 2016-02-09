@@ -44,9 +44,9 @@ public class MobileDBExportTask implements SyncFileTask {
 
     private Properties tableQueries;
 
-    private InputStream preDdl;
+    private org.springframework.core.io.Resource preDdl;
 
-    private InputStream postDdl;
+    private org.springframework.core.io.Resource postDdl;
 
     @Autowired
     public MobileDBExportTask(AsyncTaskService taskService, Exporter exporter) {
@@ -61,12 +61,12 @@ public class MobileDBExportTask implements SyncFileTask {
     }
 
     @Value("classpath:/pre-export.sql")
-    public void setPreDdl(InputStream scriptStream) {
+    public void setPreDdl(org.springframework.core.io.Resource scriptStream) {
         preDdl = scriptStream;
     }
 
     @Value("classpath:/post-export.sql")
-    public void setPostDdl(InputStream scriptStream) {
+    public void setPostDdl(org.springframework.core.io.Resource scriptStream) {
         postDdl = scriptStream;
     }
 
@@ -85,12 +85,12 @@ public class MobileDBExportTask implements SyncFileTask {
             File metaScratch = new File(metaDest.getParentFile(), metaDest.getName() + ".tmp");
 
             // Export each of the queries as a table in the target database file
-            exporter.scriptTarget(preDdl, scratch);
+            exporter.scriptTarget(preDdl.getInputStream(), scratch);
             for (Map.Entry e : tableQueries.entrySet()) {
                 exporter.export(e.getValue().toString(), e.getKey().toString(), scratch);
                 asyncTaskService.updateTaskProgress(MOBILEDB_TASK_NAME, ++tablesExported);
             }
-            exporter.scriptTarget(postDdl, scratch);
+            exporter.scriptTarget(postDdl.getInputStream(), scratch);
 
             // Generate sync metadata
             try (InputStream in = new FileInputStream(scratch)) {
