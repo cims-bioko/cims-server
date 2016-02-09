@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.String.format;
+
 /**
  * A {@link Mapper} implementation capable for exporting tables to the Sqlite database.
  */
@@ -27,11 +29,11 @@ class SqliteMapper implements Mapper {
 
     @Override
     public String getDropDdl() {
-        return String.format("drop table if exists %s", table);
+        return format("drop table if exists %s", table);
     }
 
     public String getCreateDdl() throws SQLException {
-        StringBuilder b = new StringBuilder("create table " + table + " (");
+        StringBuilder b = new StringBuilder(format("create table if not exists %s (", table));
         for (int c = 1; c <= md.getColumnCount(); c++) {
             String colName = md.getColumnLabel(c);
             int colType = md.getColumnType(c);
