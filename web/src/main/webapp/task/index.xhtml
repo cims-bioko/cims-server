@@ -13,9 +13,13 @@
         <h:messages id="errors" globalOnly="true" />
         <h:form id="taskForm">
 
+            <!-- Due to mounting time constraints, disabling round UI - it is baked into export query. -->
+            <!--
             <h:outputText value="Visit Round Number:" />
             <br />
-            <h:inputText value="#{taskBean.roundNumber}" /> <h:commandButton action="#{taskBean.startMobileDBTask}" value="Generate Mobile DB" />
+            <h:inputText value="#{taskBean.roundNumber}" />
+            -->
+            <h:commandButton action="#{taskBean.startMobileDBTask}" value="Generate Mobile DB" />
             <br />
             <br />
 
