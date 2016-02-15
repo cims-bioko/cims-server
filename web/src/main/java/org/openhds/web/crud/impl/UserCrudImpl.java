@@ -8,6 +8,8 @@ import org.openhds.domain.model.Role;
 import org.openhds.domain.model.User;
 import org.openhds.web.service.UserService;
 
+import static org.hibernate.Hibernate.initialize;
+
 public class UserCrudImpl extends EntityCrudImpl<User, String> {
 
 	UserService service;
@@ -29,8 +31,14 @@ public class UserCrudImpl extends EntityCrudImpl<User, String> {
         return outcomePrefix + "_create";
     }
 
-	
-    @Override
+	@Override
+	protected void postSetup() {
+		if (entityItem != null) {
+			initialize(entityItem.getRoles());
+		}
+	}
+
+	@Override
     public String create() {
 
         try {
