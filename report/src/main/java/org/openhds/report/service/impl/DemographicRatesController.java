@@ -87,7 +87,7 @@ public class DemographicRatesController implements DemographicRatesService {
 		
 		// denominator
 		if (denomType.equals("Population at Midpoint")) {
-			midpoint = CalendarUtil.getMidPointDate(startDate, endDate);
+			midpoint = calendarUtil.getMidPointDate(startDate, endDate);
 			residencies = calculationService.getResidenciesAtMidPoint(midpoint);
 			setAgeGroupsForResidenciesAtMidpoint(residencies, midpoint, true);
 		}
@@ -190,7 +190,7 @@ public class DemographicRatesController implements DemographicRatesService {
 	public void setAgeGroupsForResidenciesAtMidpoint(List<Residency> residencies, Calendar midpoint, boolean flag) {	
 		for (Residency residency : residencies) {		
 			Individual individual = residency.getIndividual();
-			int days = (int) CalendarUtil.daysBetween(individual.getDob(), midpoint);
+			int days = (int) calendarUtil.daysBetween(individual.getDob(), midpoint);
 			long age = (long) (days / 365.25);
 			calculationService.setAgeGroups(age, individual, flag);
 		}
@@ -199,7 +199,7 @@ public class DemographicRatesController implements DemographicRatesService {
 	public void setAgeGroupsForInMigrations(List<InMigration> inmigrations) {
 		for (InMigration inmigration : inmigrations) {
 			Individual individual = inmigration.getIndividual();
-			int days = (int) CalendarUtil.daysBetween(individual.getDob(), inmigration.getRecordedDate());		
+			int days = (int) calendarUtil.daysBetween(individual.getDob(), inmigration.getRecordedDate());
 			long age = (long) (days / 365.25);
 			calculationService.setAgeGroups(age, individual, false);
 		}
@@ -208,7 +208,7 @@ public class DemographicRatesController implements DemographicRatesService {
 	public void setAgeGroupsForOutMigrations(List<OutMigration> outmigrations) {
 		for (OutMigration outmigration : outmigrations) {
 			Individual individual = outmigration.getIndividual();
-			int days = (int) CalendarUtil.daysBetween(individual.getDob(), outmigration.getRecordedDate());		
+			int days = (int) calendarUtil.daysBetween(individual.getDob(), outmigration.getRecordedDate());
 			long age = (long) (days / 365.25);
 			calculationService.setAgeGroups(age, individual, false);
 		}
@@ -223,7 +223,7 @@ public class DemographicRatesController implements DemographicRatesService {
 		
 		for (Death death : deaths) {
 			Individual individual = death.getIndividual();
-			int days = (int) CalendarUtil.daysBetween(individual.getDob(), death.getDeathDate());		
+			int days = (int) calendarUtil.daysBetween(individual.getDob(), death.getDeathDate());
 			double age = ((double)days / 365.25);
 			calculationService.setAgeGroups(age, individual, false);
 			calculationService.setInfantGroups(age, individual, startDate, endDate, neoNatalRecord, postNatalRecord, infantRecord);
@@ -237,7 +237,7 @@ public class DemographicRatesController implements DemographicRatesService {
 	public void setAgeGroupsForPregnancyOutcomes(List<PregnancyOutcome> outcomes) {
 		for (PregnancyOutcome outcome : outcomes) {
 			Individual individual = outcome.getMother();
-			int days = (int) CalendarUtil.daysBetween(individual.getDob(), outcome.getOutcomeDate());		
+			int days = (int) calendarUtil.daysBetween(individual.getDob(), outcome.getOutcomeDate());
 			long age = (long) (days / 365.25);
 			calculationService.setAgeGroupsForBirths(age, individual, outcome);
 		}

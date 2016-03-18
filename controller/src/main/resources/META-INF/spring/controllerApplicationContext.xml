@@ -214,6 +214,7 @@
     			<constructor-arg ref="individualService" />
     			<constructor-arg ref="genericDao" />
     			<constructor-arg ref="siteProperties" />
+    			<constructor-arg ref="calendarUtil" />
 		    </bean>
 	    </property>
     </bean>

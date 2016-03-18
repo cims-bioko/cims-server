@@ -33,17 +33,19 @@ public class PregnancyServiceImpl implements PregnancyService {
 	private IndividualService individualService;
 	private GenericDao genericDao;
 	private SitePropertiesService siteProperties;
+	private CalendarUtil calendarUtil;
 	
-	public PregnancyServiceImpl(EntityService entityService, IndividualService individualService, GenericDao genericDao, SitePropertiesService siteProperties) {
+	public PregnancyServiceImpl(EntityService entityService, IndividualService individualService, GenericDao genericDao, SitePropertiesService siteProperties, CalendarUtil calUtil) {
 		this.entityService = entityService;
 		this.individualService = individualService;
 		this.genericDao = genericDao;
 		this.siteProperties = siteProperties;
+		calendarUtil = calUtil;
 	}
 	
 	public PregnancyObservation evaluatePregnancyObservation(PregnancyObservation entityItem) throws ConstraintViolations {
     	
-		int age = (int) (CalendarUtil.daysBetween(entityItem.getMother().getDob(), entityItem.getExpectedDeliveryDate()) / 365.25);
+		int age = (int) (calendarUtil.daysBetween(entityItem.getMother().getDob(), entityItem.getExpectedDeliveryDate()) / 365.25);
 		if (age  < siteProperties.getMinimumAgeOfPregnancy())
 			throw new ConstraintViolations("The Mother specified is younger than the minimum age required to have a Pregnancy Observation.");	
 		if (!checkDuplicatePregnancyObservation(entityItem.getMother())) 
@@ -89,9 +91,9 @@ public class PregnancyServiceImpl implements PregnancyService {
 		int age;
 		   
 		if (entityItem.getOutcomeDate()==null) {
-			age =  (int) (CalendarUtil.daysBetween(entityItem.getMother().getDob(), entityItem.getVisit().getVisitDate()) / 365.25);
+			age =  (int) (calendarUtil.daysBetween(entityItem.getMother().getDob(), entityItem.getVisit().getVisitDate()) / 365.25);
 		} else {
-			age = (int) (CalendarUtil.daysBetween(entityItem.getMother().getDob(), entityItem.getOutcomeDate()) / 365.25);
+			age = (int) (calendarUtil.daysBetween(entityItem.getMother().getDob(), entityItem.getOutcomeDate()) / 365.25);
 		}
 		if (age < siteProperties.getMinimumAgeOfPregnancy())
 			throw new ConstraintViolations("The Mother specified is younger than the minimum age required to have a Pregnancy Outcome.");	

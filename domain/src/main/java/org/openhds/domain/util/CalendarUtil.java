@@ -16,7 +16,7 @@ public class CalendarUtil {
 	@Autowired
 	private SitePropertiesService siteProperties;
 	
-	public static Calendar getMidPointDate(Calendar startDate, Calendar endDate) {
+	public Calendar getMidPointDate(Calendar startDate, Calendar endDate) {
 		int daysBtw = (int)daysBetween(startDate, endDate);
 		Calendar midPoint = (Calendar)startDate.clone();
 		midPoint.add(Calendar.DATE, (int) (daysBtw * 0.5));
@@ -39,7 +39,7 @@ public class CalendarUtil {
 		return cal;
 	}
 	
-	public static long daysBetween(Calendar startDate, Calendar endDate) {  
+	public long daysBetween(Calendar startDate, Calendar endDate) {
 		Calendar date = (Calendar) startDate.clone();  
 		long daysBetween = 0;  
 		while (date.before(endDate)) {  

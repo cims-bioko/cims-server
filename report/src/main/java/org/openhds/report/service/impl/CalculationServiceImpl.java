@@ -27,12 +27,13 @@ public class CalculationServiceImpl implements CalculationService {
 	SitePropertiesService siteProperties;
 	GenericDao genericDao;
 	PregnancyService pregnancyService;
+	CalendarUtil calendarUtil;
 	
-	public CalculationServiceImpl(SitePropertiesService siteProperties, GenericDao genericDao,
-			PregnancyService pregnancyService) {
+	public CalculationServiceImpl(SitePropertiesService siteProperties, GenericDao genericDao, PregnancyService pregnancyService, CalendarUtil calUtil) {
 		this.siteProperties = siteProperties;
 		this.genericDao = genericDao;
 		this.pregnancyService = pregnancyService;
+		calendarUtil = calUtil;
 	}
 	
 	public void initializeGroups(String path) {
@@ -123,7 +124,7 @@ public class CalculationServiceImpl implements CalculationService {
 	
 	public void completeReportRecordsForMidpoint(Calendar startDate, Calendar endDate) {	
 		
-		int daysBetween = (int) CalendarUtil.daysBetween(startDate, endDate);
+		int daysBetween = (int) calendarUtil.daysBetween(startDate, endDate);
 		
 		// calculate all
 		ReportRecordBean ageGrpAll = reportRecords.get(0);
@@ -262,8 +263,8 @@ public class CalculationServiceImpl implements CalculationService {
 				endInterval = endDate;	
 			
 			// determine age groups at beginning and end of residency
-			int ageAtBeg = (int) (CalendarUtil.daysBetween(res.getIndividual().getDob(), beginInterval) / 365.25);
-			int ageAtEnd = (int) (CalendarUtil.daysBetween(res.getIndividual().getDob(), endInterval) / 365.25);
+			int ageAtBeg = (int) (calendarUtil.daysBetween(res.getIndividual().getDob(), beginInterval) / 365.25);
+			int ageAtEnd = (int) (calendarUtil.daysBetween(res.getIndividual().getDob(), endInterval) / 365.25);
 			int firstGroup = determineAgeGroup(ageAtBeg);
 			int lastGroup = determineAgeGroup(ageAtEnd);
 			
@@ -273,9 +274,9 @@ public class CalculationServiceImpl implements CalculationService {
 				
 				ReportRecordBean group = reportRecords.get(currentGroup);
 				if (res.getIndividual().getGender().equals(siteProperties.getMaleCode())) 
-					group.addPdoMale((double)CalendarUtil.daysBetween(beginInterval, endInterval));
+					group.addPdoMale((double)calendarUtil.daysBetween(beginInterval, endInterval));
 				else 
-					group.addPdoFemale((double)CalendarUtil.daysBetween(beginInterval, endInterval));
+					group.addPdoFemale((double)calendarUtil.daysBetween(beginInterval, endInterval));
 			}
 			// determine where to split the residencies
 			else {
@@ -294,9 +295,9 @@ public class CalculationServiceImpl implements CalculationService {
 						groupEndDate = endInterval;
 					
 					if (res.getIndividual().getGender().equals(siteProperties.getMaleCode())) 
-						group.addPdoMale((int)CalendarUtil.daysBetween(beginInterval, groupEndDate));
+						group.addPdoMale((int)calendarUtil.daysBetween(beginInterval, groupEndDate));
 					else 
-						group.addPdoFemale((int)CalendarUtil.daysBetween(beginInterval, groupEndDate));
+						group.addPdoFemale((int)calendarUtil.daysBetween(beginInterval, groupEndDate));
 					
 					groupEndDate.add(Calendar.DAY_OF_MONTH, 1);
 					beginInterval = (Calendar) groupEndDate.clone();
