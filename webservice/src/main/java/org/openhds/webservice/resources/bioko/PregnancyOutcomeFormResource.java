@@ -11,6 +11,7 @@ import org.openhds.domain.model.bioko.PregnancyOutcomeCoreForm;
 import org.openhds.domain.model.bioko.PregnancyOutcomeOutcomesForm;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.domain.util.CalendarAdapter;
+import org.openhds.domain.util.UUIDGenerator;
 import org.openhds.errorhandling.constants.ErrorConstants;
 import org.openhds.errorhandling.service.ErrorHandlingService;
 import org.openhds.errorhandling.util.ErrorLogUtil;
@@ -143,7 +144,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
 
         Outcome outcome = new Outcome();
         outcome.setType(outcomesForm.getOutcomeType());
-        outcome.setUuid(UUID.randomUUID().toString().replace("-", ""));
+        outcome.setUuid(UUIDGenerator.generate());
 
         if (outcome.getType().equalsIgnoreCase(siteProperties.getLiveBirthCode())) {
             Individual child = new Individual();
@@ -183,7 +184,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
 
     private Membership establishMembership(Individual child, PregnancyOutcomeOutcomesForm form, SocialGroup socialGroup) {
         Membership mem = new Membership();
-        mem.setUuid(UUID.randomUUID().toString().replace("-",""));
+        mem.setUuid(UUIDGenerator.generate());
         mem.setIndividual(child);
         mem.setInsertDate(form.getCollectionDateTime());
         mem.setbIsToA(form.getChildRelationshipToGroupHead());
@@ -197,7 +198,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
 
     private void establishRelationship(Individual child, PregnancyOutcomeOutcomesForm form, SocialGroup socialGroup) {
         Relationship rel = new Relationship();
-        rel.setUuid(UUID.randomUUID().toString().replace("-", ""));
+        rel.setUuid(UUIDGenerator.generate());
         rel.setInsertDate(form.getCollectionDateTime());
         rel.setIndividualA(child);
         rel.setIndividualB(socialGroup.getGroupHead());

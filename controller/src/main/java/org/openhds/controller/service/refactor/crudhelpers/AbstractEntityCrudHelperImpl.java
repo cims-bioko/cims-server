@@ -7,6 +7,7 @@ import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.AuditableEntity;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.domain.util.CalendarUtil;
+import org.openhds.domain.util.UUIDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,7 +88,7 @@ public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> im
 
     public static void setEntityUuidIfNull(AuditableEntity entity){
         if(null == entity.getUuid() || entity.getUuid().isEmpty() || entity.getUuid().equals("null")){
-            entity.setUuid(UUID.randomUUID().toString().replace("-",""));
+            entity.setUuid(UUIDGenerator.generate());
         }
     }
 

@@ -13,6 +13,7 @@ import org.openhds.domain.model.bioko.InMigrationForm;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.domain.util.CalendarUtil;
+import org.openhds.domain.util.UUIDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -135,7 +136,7 @@ public class InMigrationFormResource extends AbstractFormResource {
 
         newResidency.setLocation(location);
         newResidency.setIndividual(individual);
-        newResidency.setUuid(UUID.randomUUID().toString().replace("-", ""));
+        newResidency.setUuid(UUIDGenerator.generate());
         newResidency.setStartDate(inMigration.getRecordedDate());
         newResidency.setStartType(sitePropertiesService.getInmigrationCode());
         newResidency.setEndType(sitePropertiesService.getNotApplicableCode());
