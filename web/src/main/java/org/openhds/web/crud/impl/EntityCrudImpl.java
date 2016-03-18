@@ -102,17 +102,12 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 	
     public EntityCrudImpl(Class<T> entityClass) {
         if (entityClass == null) {
-            throw new IllegalArgumentException(
-                    "entity class type required for crud");
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("creating crud for class: " + entityClass.getName());
+            throw new IllegalArgumentException("entity class type required for crud");
         }
         this.entityClass = entityClass;
         this.outcomePrefix = entityClass.getSimpleName().toLowerCase();
         pager = new PagingState();
         filteredPager = new PagingState();
-
     }
 
 	public void setJsfService(JsfService jsfService) {
