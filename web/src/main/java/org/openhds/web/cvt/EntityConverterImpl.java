@@ -8,9 +8,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openhds.dao.service.Dao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class EntityConverterImpl<T, PK extends Serializable> implements Converter {
 
-	private static Log log = LogFactory.getLog(EntityConverterImpl.class);
+	private static Logger log = LoggerFactory.getLogger(EntityConverterImpl.class);
 
 	Dao<T, PK> entityDao;
 	Class<T> entityClass;

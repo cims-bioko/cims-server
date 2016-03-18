@@ -13,8 +13,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.openhds.controller.exception.AuthorizationException;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
@@ -29,6 +28,8 @@ import org.openhds.web.service.JsfService;
 import org.openhds.web.service.WebFlowService;
 import org.openhds.web.ui.NavigationMenuBean;
 import org.openhds.web.ui.PagingState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.binding.message.MessageContext;
 
 /**
@@ -42,7 +43,7 @@ import org.springframework.binding.message.MessageContext;
 
 public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T, PK> {
 
-    static Log log = LogFactory.getLog(EntityCrudImpl.class);
+    static Logger log = LoggerFactory.getLogger(EntityCrudImpl.class);
     
     // This is currently being used to create a new
     // instance of the entity type
