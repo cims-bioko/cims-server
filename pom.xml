@@ -282,6 +282,14 @@
                         <downloadJavadocs>true</downloadJavadocs>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <systemPropertyVariables>
+                            <org.jboss.logging.provider>slf4j</org.jboss.logging.provider>
+                        </systemPropertyVariables>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
