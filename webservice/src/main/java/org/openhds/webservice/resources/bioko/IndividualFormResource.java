@@ -226,8 +226,7 @@ public class IndividualFormResource extends AbstractFormResource {
         }
 
         SocialGroup socialGroup;
-        if (individualForm.getIndividualRelationshipToHeadOfHousehold().equals(
-                HEAD_OF_HOUSEHOLD_SELF)) {
+        if (individualForm.getIndividualRelationshipToHeadOfHousehold().equals(HEAD_OF_HOUSEHOLD_SELF)) {
 
             // may create social group for head of household
             socialGroup = findOrMakeSocialGroup(individualForm, location, individual, insertTime, collectedBy);

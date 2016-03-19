@@ -359,8 +359,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
                                   String membershipType) {
 
         // individual exists
-        Individual individual = genericDao.findByProperty(Individual.class, "uuid",
-                individualUuid);
+        Individual individual = genericDao.findByProperty(Individual.class, "uuid", individualUuid);
         assertNotNull(individual);
 
         // location exists
@@ -378,8 +377,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         assertNotNull(residency);
 
         // socialGroup exists
-        SocialGroup socialGroup = genericDao.findByProperty(SocialGroup.class, "extId",
-                householdExtId);
+        SocialGroup socialGroup = genericDao.findByProperty(SocialGroup.class, "extId", householdExtId);
         assertNotNull(socialGroup);
 
         // membership in social group
