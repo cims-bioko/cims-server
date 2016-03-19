@@ -56,7 +56,7 @@ public class IndividualCrudHelper extends AbstractEntityCrudHelperImpl<Individua
 
     @Override
     public Individual getByExtId(String id) {
-        return genericDao.findByProperty(Individual.class,"extId",id);
+        return genericDao.findByProperty(Individual.class, "extId", id, true);
     }
 
     @Override
