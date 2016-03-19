@@ -112,7 +112,7 @@ StringBuilder sb = new StringBuilder();
 				tempExtId = tempExtId.concat(resultChar);
 			}
 			
-			tempSocialGroup = genericDao.findByProperty(SocialGroup.class, "extId", tempExtId);
+			tempSocialGroup = genericDao.findByProperty(SocialGroup.class, "extId", tempExtId, true);
 			size++;
 		}
 		return result;
