@@ -59,14 +59,8 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
         return ids;
     }
 
-    public FieldWorker findFieldWorkerById(String fieldWorkerId) {
-        FieldWorker fw = genericDao.findByProperty(FieldWorker.class, "extId", fieldWorkerId);
-        return fw;
-    }
-
 	public FieldWorker findFieldWorkerByExtId(String fieldWorkerId) {
-		 FieldWorker fw = genericDao.findByProperty(FieldWorker.class, "extId", fieldWorkerId);
-		 return fw;
+		return genericDao.findByProperty(FieldWorker.class, "extId", fieldWorkerId, true);
 	}
 
 	@Override
