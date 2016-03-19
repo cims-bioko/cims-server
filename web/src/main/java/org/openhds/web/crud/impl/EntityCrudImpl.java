@@ -432,8 +432,8 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 	
 	@SuppressWarnings("unchecked")
 	public List<T> searchForEntitiesById(String searchPropertyName, Class<?> propertyName, String propertyValue, Class<T> entityClass) {
-		T item = (T) genericDao.findByProperty(propertyName, "extId", propertyValue);
-		List<T> list = genericDao.findListByProperty(entityClass, searchPropertyName, item);
+		T item = (T) genericDao.findByProperty(propertyName, "extId", propertyValue, true);
+		List<T> list = genericDao.findListByProperty(entityClass, searchPropertyName, item, true);
 		return list;
 	}
     
