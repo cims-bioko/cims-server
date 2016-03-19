@@ -36,7 +36,7 @@ public class MembershipCrudHelper extends AbstractEntityCrudHelperImpl<Membershi
 
     @Override
     public Membership getByExtId(String id) {
-        return genericDao.findByProperty(Membership.class,"extId",id);
+        return genericDao.findByProperty(Membership.class, "extId", id, true);
     }
 
     @Override
