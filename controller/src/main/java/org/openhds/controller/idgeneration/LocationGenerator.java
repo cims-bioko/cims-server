@@ -114,7 +114,7 @@ public class LocationGenerator extends Generator<Location> {
 				tempExtId = tempExtId.concat(resultChar);
 			}
 			
-			loc = genericDao.findByProperty(Location.class, "extId", tempExtId);
+			loc = genericDao.findByProperty(Location.class, "extId", tempExtId, true);
 			size++;
 		}
 		return result;
