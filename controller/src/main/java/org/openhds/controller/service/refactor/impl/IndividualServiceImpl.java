@@ -48,10 +48,8 @@ public class IndividualServiceImpl implements IndividualService {
 
     @Override
     public int getExistingExtIdCount(String extId) {
-
-        List<Individual> existingIndividuals = genericDao.findListByProperty(Individual.class, "extId", extId);
-        return (null == existingIndividuals) ?  0 : existingIndividuals.size();
-
+        List<Individual> existingIndividuals = genericDao.findListByProperty(Individual.class, "extId", extId, true);
+        return existingIndividuals == null ? 0 : existingIndividuals.size();
     }
 
     @Override

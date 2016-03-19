@@ -32,6 +32,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
@@ -227,6 +228,47 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         ErrorLog error = genericDao.findByProperty(ErrorLog.class, "entityType", "IndividualForm");
         assertNotNull(error);
         assertEquals(ErrorConstants.DUPLICATE_EXTID, error.getResolutionStatus());
+    }
+
+    @Test
+    public void testReusingExtIdAllowed() throws Exception {
+
+        mockMvc.perform(
+                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(MEMBER_OF_HOUSEHOLD_FORM_XML.getBytes()))
+                .andExpect(status().isCreated())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+        ErrorLog error = genericDao.findByProperty(ErrorLog.class, "entityType", "IndividualForm");
+        assertNull("no error should exist after processing first form", error);
+
+        verifyEntityCrud("12345678901234935890123456789012", "existing_id", "Individual2", "2");
+
+        Individual original = genericDao.findByProperty(Individual.class, "extId", "existing_id-002", true);
+        assertNotNull("original individual should exist", original);
+
+        // Mark the original individual as deleted
+        original.setDeleted(true);
+        original = genericDao.findByProperty(Individual.class, "extId", "existing_id-002", true);
+        assertNull("original individual should be deleted", original);
+
+        // Attempt to create a new individual with the same extid
+        mockMvc.perform(
+                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(DUPLICATE_EXTID_MEMBER_OF_HOUSEHOLD_FORM_XML.getBytes()))
+                .andExpect(status().isCreated())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+        error = genericDao.findByProperty(ErrorLog.class, "entityType", "IndividualForm");
+        assertNull("no error should exist after processing second form", error);
+
+        verifyEntityCrud("1234567890133335890123456789012", "existing_id", "Individual2", "2");
+
+        Individual second = genericDao.findByProperty(Individual.class, "extId", "existing_id-002", true);
+        assertNotNull("second individual should exist with previously deleted extId", second);
+        assertEquals("second individual uuid should match submitted uuid", "1234567890133335890123456789012", second.getUuid());
     }
 
     @Test
