@@ -3,6 +3,7 @@ package org.openhds.integration.bioko;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,8 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
@@ -166,6 +167,38 @@ public class LocationFormResourceTest extends AbstractResourceTest {
         assertNotNull(loggedErrors);
         assertEquals(2, loggedErrors.size());
 
+    }
+
+    @Test
+    public void testReusingExtIdCreatesNoDuplicate() throws Exception {
+
+        mockMvc.perform(
+                post("/locationForm").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(LOCATION_FORM_XML.getBytes()))
+                .andExpect(status().isCreated())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+        Location original = genericDao.findByProperty(Location.class, "extId", "M1000S57E09P1", true);
+        assertNotNull("location should exist after first form", original);
+        original.setDeleted(true);
+        original = genericDao.findByProperty(Location.class, "extId", "M1000S57E09P1", true);
+        assertNull("location should not exist after being marked deleted", original);
+
+        mockMvc.perform(
+                post("/locationForm").session(session).accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(DUPLICATE_LOCATION_FORM_XML.getBytes()))
+                .andExpect(status().isCreated())
+                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+
+        Location duplicate = genericDao.findByProperty(Location.class, "extId", "M1000S57E09P1-d1");
+        assertNull("no duplicate should exist after second form", duplicate);
+        Location second = genericDao.findByProperty(Location.class, "extId", "M1000S57E09P1", true);
+        assertNotNull("location should exist after second form", second);
+        List<ErrorLog> loggedErrors = genericDao.findAll(ErrorLog.class, true);
+        assertNotNull(loggedErrors);
+        assertEquals("no errors should have been created after both forms processed", 0, loggedErrors.size());
     }
 
     public void verifyLocationCrud(String locationExtId) {

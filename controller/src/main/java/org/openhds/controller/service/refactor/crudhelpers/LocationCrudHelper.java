@@ -56,7 +56,7 @@ public class LocationCrudHelper extends AbstractEntityCrudHelperImpl<Location> {
 
     @Override
     public Location getByExtId(String id) {
-        return genericDao.findByProperty(Location.class,"extId",id);
+        return genericDao.findByProperty(Location.class, "extId", id, true);
     }
 
     @Override
