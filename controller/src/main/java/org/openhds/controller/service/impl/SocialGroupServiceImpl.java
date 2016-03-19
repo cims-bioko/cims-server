@@ -157,7 +157,7 @@ public class SocialGroupServiceImpl implements SocialGroupService {
     }
 
     public SocialGroup findSocialGroupById(String socialGroupId, String msg) throws Exception {
-        SocialGroup sg = genericDao.findByProperty(SocialGroup.class, "extId", socialGroupId);
+        SocialGroup sg = genericDao.findByProperty(SocialGroup.class, "extId", socialGroupId, true);
         if (sg == null) {
             throw new Exception(msg);
         }
@@ -165,7 +165,7 @@ public class SocialGroupServiceImpl implements SocialGroupService {
     }
 
     public SocialGroup findSocialGroupById(String sgExtId) {
-        SocialGroup sg = genericDao.findByProperty(SocialGroup.class, "extId", sgExtId);
+        SocialGroup sg = genericDao.findByProperty(SocialGroup.class, "extId", sgExtId, true);
         return sg;
     }
 
