@@ -112,7 +112,7 @@ public class IndividualGenerator extends Generator<Individual> {
 				tempExtId = tempExtId.concat(resultChar);
 			}
 
-			tempIndividual = genericDao.findByProperty(Individual.class, "extId", tempExtId);
+			tempIndividual = genericDao.findByProperty(Individual.class, "extId", tempExtId, true);
 			size++;
 		}
 		return result;
