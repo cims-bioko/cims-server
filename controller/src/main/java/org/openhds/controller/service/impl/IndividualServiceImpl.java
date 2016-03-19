@@ -125,7 +125,7 @@ public class IndividualServiceImpl implements IndividualService {
     }
 
     public Individual findIndivById(String indivExtId, String msg) throws Exception {
-        Individual indiv = genericDao.findByProperty(Individual.class, "extId", indivExtId);
+        Individual indiv = genericDao.findByProperty(Individual.class, "extId", indivExtId, true);
         if (indiv == null) {
             throw new Exception(msg);
         }
@@ -134,7 +134,7 @@ public class IndividualServiceImpl implements IndividualService {
 
     @Transactional(readOnly = true)
     public Individual findIndivById(String indivExtId) {
-        Individual indiv = genericDao.findByProperty(Individual.class, "extId", indivExtId);
+        Individual indiv = genericDao.findByProperty(Individual.class, "extId", indivExtId, true);
         return indiv;
     }
 
