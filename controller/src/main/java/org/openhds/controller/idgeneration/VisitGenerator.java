@@ -118,7 +118,7 @@ public class VisitGenerator extends Generator<Visit> {
 				tempExtId = tempExtId.concat(resultChar);
 			}
 			
-			visit = genericDao.findByProperty(Visit.class, "extId", tempExtId);
+			visit = genericDao.findByProperty(Visit.class, "extId", tempExtId, true);
 			size++;
 		}
 		return result;
