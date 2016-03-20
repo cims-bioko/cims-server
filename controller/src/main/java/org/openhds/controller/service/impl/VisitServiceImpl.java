@@ -80,8 +80,7 @@ public class VisitServiceImpl implements VisitService {
     }
 
     public Visit findVisitByExtId(String extId) {
-        Visit visit = genericDao.findByProperty(Visit.class, "extId", extId);
-        return visit;
+        return genericDao.findByProperty(Visit.class, "extId", extId, true);
     }
 
     public Visit findVisitByUuid(String uuid) {
