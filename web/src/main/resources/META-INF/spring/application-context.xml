@@ -597,7 +597,7 @@
 		<property name="jsfService" ref="jsfService" />
 	</bean>
 
-	<bean id="taskBean" class="org.openhds.web.beans.TaskBean">
+	<bean id="taskBean" class="org.openhds.web.beans.TaskBean" init-method="scheduleAllTasks">
 		<constructor-arg ref="openhdsTaskExecutor" />
 		<constructor-arg ref="asyncTaskServiceImpl" />
 		<constructor-arg ref="taskScheduler" />
