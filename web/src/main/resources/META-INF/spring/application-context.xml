@@ -76,7 +76,7 @@
 		<security:intercept-url pattern="/logout.faces"
 			access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:intercept-url pattern="/api/rest/**"
-			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+			access="ROLE_AUTHENTICATED" />
 		<security:intercept-url pattern="/openFacesResources/**"
 			access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:intercept-url pattern="/primefaces_resource/**"
