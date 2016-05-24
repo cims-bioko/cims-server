@@ -5,9 +5,8 @@ import org.openhds.controller.service.refactor.DeathService;
 import org.openhds.controller.service.refactor.FieldWorkerService;
 import org.openhds.controller.service.refactor.IndividualService;
 import org.openhds.controller.service.VisitService;
+import org.openhds.domain.annotations.Description;
 import org.openhds.domain.model.*;
-import org.openhds.domain.model.bioko.DeathForm;
-import org.openhds.domain.model.bioko.OutMigrationForm;
 import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.errorhandling.constants.ErrorConstants;
 import org.openhds.errorhandling.service.ErrorHandlingService;
@@ -24,8 +23,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.util.Calendar;
 
 @Controller
 @RequestMapping("/deathForm")
@@ -54,10 +56,10 @@ public class DeathFormResource extends AbstractFormResource {
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
-    public ResponseEntity<? extends Serializable> processForm(@RequestBody DeathForm deathForm) throws JAXBException {
+    public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form) throws JAXBException {
 
         try {
-            context = JAXBContext.newInstance(DeathForm.class);
+            context = JAXBContext.newInstance(Form.class);
             marshaller = context.createMarshaller();
             marshaller.setAdapter(adapter);
         } catch (JAXBException e) {
@@ -66,40 +68,40 @@ public class DeathFormResource extends AbstractFormResource {
 
         Death death = new Death();
 
-        death.setDeathCause(deathForm.getCauseOfDeath());
-        death.setDeathDate(deathForm.getDateOfDeath());
-        death.setDeathPlace(deathForm.getPlaceOfDeath());
+        death.setDeathCause(form.getCauseOfDeath());
+        death.setDeathDate(form.getDateOfDeath());
+        death.setDeathPlace(form.getPlaceOfDeath());
 
-        FieldWorker fieldWorker = fieldWorkerService.getByUuid(deathForm.getFieldWorkerUuid());
+        FieldWorker fieldWorker = fieldWorkerService.getByUuid(form.getFieldWorkerUuid());
         if (null == fieldWorker) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_UUID +" : " + deathForm.getFieldWorkerUuid());
-            String errorDataPayload = createDTOPayload(deathForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, DeathForm.class.getSimpleName(),
+            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_UUID +" : " + form.getFieldWorkerUuid());
+            String errorDataPayload = createDTOPayload(form);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, Form.LOG_NAME,
                     fieldWorker, ConstraintViolations.INVALID_FIELD_WORKER_UUID, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);
         }
         death.setCollectedBy(fieldWorker);
 
-        Visit visit = visitService.findVisitByUuid(deathForm.getVisitUuid());
+        Visit visit = visitService.findVisitByUuid(form.getVisitUuid());
         if (null == visit) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_VISIT_UUID +" : " + deathForm.getVisitUuid());
-            String errorDataPayload = createDTOPayload(deathForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, DeathForm.class.getSimpleName(),
+            cv.addViolations(ConstraintViolations.INVALID_VISIT_UUID +" : " + form.getVisitUuid());
+            String errorDataPayload = createDTOPayload(form);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, Form.LOG_NAME,
                     fieldWorker, ConstraintViolations.INVALID_VISIT_UUID, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);
         }
         death.setVisitDeath(visit);
 
-        Individual individual = individualService.getByUuid(deathForm.getIndividualUuid());
+        Individual individual = individualService.getByUuid(form.getIndividualUuid());
         if (null == individual) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_UUID +" : " + deathForm.getIndividualUuid());
-            String errorDataPayload = createDTOPayload(deathForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, DeathForm.class.getSimpleName(),
+            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_UUID +" : " + form.getIndividualUuid());
+            String errorDataPayload = createDTOPayload(form);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, Form.LOG_NAME,
                     fieldWorker, ConstraintViolations.INVALID_INDIVIDUAL_UUID, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);
@@ -109,20 +111,178 @@ public class DeathFormResource extends AbstractFormResource {
         try {
             deathService.create(death);
         } catch (ConstraintViolations cv) {
-            String errorDataPayload = createDTOPayload(deathForm);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, OutMigrationForm.class.getSimpleName(),
+            String errorDataPayload = createDTOPayload(form);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, Form.LOG_NAME,
                     fieldWorker, ErrorConstants.CONSTRAINT_VIOLATION, cv.getViolations());
             errorService.logError(error);
             return requestError(cv);
         }
-        return new ResponseEntity<>(deathForm, HttpStatus.CREATED);
+        return new ResponseEntity<>(form, HttpStatus.CREATED);
 
     }
 
-    private String createDTOPayload(DeathForm deathForm) throws JAXBException {
+    private String createDTOPayload(Form form) throws JAXBException {
         StringWriter writer = new StringWriter();
-        marshaller.marshal(deathForm, writer);
+        marshaller.marshal(form, writer);
         return writer.toString();
     }
 
+
+    @Description(description = "Model data from the Death xform for the Bioko island project.")
+    @XmlRootElement(name = "deathForm")
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = Form.LOG_NAME)
+    public static class Form implements Serializable{
+
+        public static final String LOG_NAME = "DeathForm";
+
+        private static final long serialVersionUID = 1L;
+
+        //core form fields
+        @XmlElement(name = "processed_by_mirth")
+        private boolean processedByMirth;
+
+        @XmlElement(name = "entity_uuid")
+        private String entityUuid;
+
+        @XmlElement(name = "entity_ext_id")
+        private String entityExtId;
+
+        @XmlElement(name = "field_worker_ext_id")
+        private String fieldWorkerExtId;
+
+        @XmlElement(name = "field_worker_uuid")
+        private String fieldWorkerUuid;
+
+        @XmlElement(name = "collection_date_time")
+        @XmlJavaTypeAdapter(CalendarAdapter.class)
+        private Calendar collectionDateTime;
+
+        //death form fields
+        @XmlElement(name = "individual_ext_id")
+        private String individualExtId;
+
+        @XmlElement(name = "individual_uuid")
+        private String individualUuid;
+
+        @XmlElement(name = "visit_ext_id")
+        private String visitExtId;
+
+        @XmlElement(name = "visit_uuid")
+        private String visitUuid;
+
+        @XmlElement(name = "date_of_death")
+        @XmlJavaTypeAdapter(CalendarAdapter.class)
+        private Calendar dateOfDeath;
+
+        @XmlElement(name = "place_of_death")
+        private String placeOfDeath;
+
+        @XmlElement(name = "cause_of_death")
+        private String causeOfDeath;
+
+        public String getIndividualUuid() {
+            return individualUuid;
+        }
+
+        public void setIndividualUuid(String individualUuid) {
+            this.individualUuid = individualUuid;
+        }
+
+        public String getVisitUuid() {
+            return visitUuid;
+        }
+
+        public void setVisitUuid(String visitUuid) {
+            this.visitUuid = visitUuid;
+        }
+
+        public String getEntityUuid() {
+            return entityUuid;
+        }
+
+        public void setEntityUuid(String entityUuid) {
+            this.entityUuid = entityUuid;
+        }
+
+        public String getEntityExtId() {
+            return entityExtId;
+        }
+
+        public void setEntityExtId(String entityExtId) {
+            this.entityExtId = entityExtId;
+        }
+
+        public String getFieldWorkerUuid() {
+            return fieldWorkerUuid;
+        }
+
+        public void setFieldWorkerUuid(String fieldWorkerUuid) {
+            this.fieldWorkerUuid = fieldWorkerUuid;
+        }
+
+        public boolean isProcessedByMirth() {
+            return processedByMirth;
+        }
+
+        public void setProcessedByMirth(boolean processedByMirth) {
+            this.processedByMirth = processedByMirth;
+        }
+
+        public String getFieldWorkerExtId() {
+            return fieldWorkerExtId;
+        }
+
+        public void setFieldWorkerExtId(String fieldWorkerExtId) {
+            this.fieldWorkerExtId = fieldWorkerExtId;
+        }
+
+        public Calendar getCollectionDateTime() {
+            return collectionDateTime;
+        }
+
+        public void setCollectionDateTime(Calendar collectionDateTime) {
+            this.collectionDateTime = collectionDateTime;
+        }
+
+        public String getIndividualExtId() {
+            return individualExtId;
+        }
+
+        public void setIndividualExtId(String individualExtId) {
+            this.individualExtId = individualExtId;
+        }
+
+        public String getVisitExtId() {
+            return visitExtId;
+        }
+
+        public void setVisitExtId(String visitExtId) {
+            this.visitExtId = visitExtId;
+        }
+
+        public Calendar getDateOfDeath() {
+            return dateOfDeath;
+        }
+
+        public void setDateOfDeath(Calendar dateOfDeath) {
+            this.dateOfDeath = dateOfDeath;
+        }
+
+        public String getPlaceOfDeath() {
+            return placeOfDeath;
+        }
+
+        public void setPlaceOfDeath(String placeOfDeath) {
+            this.placeOfDeath = placeOfDeath;
+        }
+
+        public String getCauseOfDeath() {
+            return causeOfDeath;
+        }
+
+        public void setCauseOfDeath(String causeOfDeath) {
+            this.causeOfDeath = causeOfDeath;
+        }
+    }
 }

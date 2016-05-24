@@ -9,11 +9,10 @@ import org.junit.runner.RunWith;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.PregnancyOutcome;
-import org.openhds.domain.model.bioko.PregnancyOutcomeCoreForm;
-import org.openhds.domain.model.bioko.PregnancyOutcomeOutcomesForm;
 import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.integration.AbstractResourceTest;
 import org.openhds.integration.util.WebContextLoader;
+import org.openhds.webservice.resources.bioko.PregnancyOutcomeFormResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
@@ -100,20 +99,20 @@ public class PregnancyOutcomeFormResourceTest extends AbstractResourceTest {
 
     @Test
     public void testUnmarshalCoreXml() throws Exception {
-        JAXBContext context = JAXBContext.newInstance(PregnancyOutcomeCoreForm.class);
+        JAXBContext context = JAXBContext.newInstance(PregnancyOutcomeFormResource.CoreForm.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
         unmarshaller.setAdapter(adapter);
         Object object = unmarshaller.unmarshal(new ByteArrayInputStream(OUTCOME_CORE_FORM_XML.getBytes(StandardCharsets.UTF_8)));
-        PregnancyOutcomeCoreForm form = (PregnancyOutcomeCoreForm) object;
+        PregnancyOutcomeFormResource.CoreForm form = (PregnancyOutcomeFormResource.CoreForm) object;
     }
 
     @Test
     public void testUnmarshalChildXml() throws Exception {
-        JAXBContext context = JAXBContext.newInstance(PregnancyOutcomeOutcomesForm.class);
+        JAXBContext context = JAXBContext.newInstance(PregnancyOutcomeFormResource.OutcomesForm.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
         unmarshaller.setAdapter(adapter);
         Object object = unmarshaller.unmarshal(new ByteArrayInputStream(OUTCOME_CHILD_FORM_XML.getBytes(StandardCharsets.UTF_8)));
-        PregnancyOutcomeOutcomesForm form = (PregnancyOutcomeOutcomesForm) object;
+        PregnancyOutcomeFormResource.OutcomesForm form = (PregnancyOutcomeFormResource.OutcomesForm) object;
     }
 
     @Test

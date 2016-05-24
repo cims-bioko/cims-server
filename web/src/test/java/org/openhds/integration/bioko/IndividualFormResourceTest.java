@@ -8,11 +8,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.*;
-import org.openhds.domain.model.bioko.IndividualForm;
 import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.errorhandling.constants.ErrorConstants;
 import org.openhds.integration.AbstractResourceTest;
 import org.openhds.integration.util.WebContextLoader;
+import org.openhds.webservice.resources.bioko.IndividualFormResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
@@ -199,11 +199,11 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
 
     @Test
     public void testUnmarshalXml() throws Exception {
-        JAXBContext context = JAXBContext.newInstance(IndividualForm.class);
+        JAXBContext context = JAXBContext.newInstance(IndividualFormResource.Form.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
         unmarshaller.setAdapter(adapter);
         Object object = unmarshaller.unmarshal(new ByteArrayInputStream(HEAD_OF_HOUSEHOLD_FORM_XML.getBytes(StandardCharsets.UTF_8)));
-        IndividualForm individualForm = (IndividualForm) object;
+        IndividualFormResource.Form form = (IndividualFormResource.Form) object;
     }
 
     @Test
@@ -225,7 +225,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
 
         verifyEntityCrud("12345678901234935890123456789012", "existing_id", "Individual2", "2");
 
-        ErrorLog error = genericDao.findByProperty(ErrorLog.class, "entityType", "IndividualForm");
+        ErrorLog error = genericDao.findByProperty(ErrorLog.class, "entityType", IndividualFormResource.Form.LOG_NAME);
         assertNotNull(error);
         assertEquals(ErrorConstants.DUPLICATE_EXTID, error.getResolutionStatus());
     }
@@ -240,7 +240,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
-        ErrorLog error = genericDao.findByProperty(ErrorLog.class, "entityType", "IndividualForm");
+        ErrorLog error = genericDao.findByProperty(ErrorLog.class, "entityType", IndividualFormResource.Form.LOG_NAME);
         assertNull("no error should exist after processing first form", error);
 
         verifyEntityCrud("12345678901234935890123456789012", "existing_id", "Individual2", "2");
@@ -261,7 +261,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().mimeType(MediaType.APPLICATION_XML));
 
-        error = genericDao.findByProperty(ErrorLog.class, "entityType", "IndividualForm");
+        error = genericDao.findByProperty(ErrorLog.class, "entityType", IndividualFormResource.Form.LOG_NAME);
         assertNull("no error should exist after processing second form", error);
 
         verifyEntityCrud("1234567890133335890123456789012", "existing_id", "Individual2", "2");
