@@ -45,16 +45,26 @@
 	            <h:outputText value="#{msg.locationLongitude}:"/>
 	            <h:outputText />
 	            <h:outputText value="#{locationCrud.item.longitude}" />
-	                 
+
 	            <h:outputText value="#{msg.locationAccuracy}:"/>
 	            <h:outputText />
 	            <h:outputText value="#{locationCrud.item.accuracy}" />
-	                  
+
 	            <h:outputText value="#{msg.locationAltitude}:"/>
 	            <h:outputText />
 	            <h:outputText value="#{locationCrud.item.altitude}" />
-	           
-              	<h:outputText value="#{msg.fieldWorkerId}:"/>
+
+				<c:if test="#{not empty locationCrud.item.longitude}">
+					<h:outputLink
+							value="https://www.google.com/maps/place/#{locationCrud.item.latitude},#{locationCrud.item.longitude}/#{locationCrud.item.latitude},#{locationCrud.item.longitude},20z/data=!3m1!1e3"
+							target="_blank">
+						<h:outputText value="#{msg.locationViewOnMap}" />
+					</h:outputLink>
+					<h:outputText />
+					<h:outputText />
+				</c:if>
+
+	            <h:outputText value="#{msg.fieldWorkerId}:"/>
               	<h:outputText />
               	<h:outputText value="#{locationCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" />            	
               	
