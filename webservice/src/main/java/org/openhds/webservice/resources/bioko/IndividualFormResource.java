@@ -19,7 +19,6 @@ import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.errorhandling.constants.ErrorConstants;
 import org.openhds.errorhandling.service.ErrorHandlingService;
-import org.openhds.webservice.FieldBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,12 +72,6 @@ public class IndividualFormResource extends AbstractFormResource {
 
     @Autowired
     private SocialGroupService socialGroupService;
-
-    @Autowired
-    private FieldBuilder fieldBuilder;
-
-    @Autowired
-    private ErrorHandlingService errorService;
 
     @Autowired
     private CalendarAdapter adapter;
