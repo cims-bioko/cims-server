@@ -19,7 +19,7 @@
 		<ui:param name="crud" value="#{individualCrud}" />
         <h1>#{msg.individualEdit}</h1>
         <h:messages id="errors" globalOnly="true" />
-        <h:form id="form">
+        <h:form id="individualForm">
              <h:panelGrid columns="4">
                      	
                 <h:outputText value="#{msg.individualId}:"/>
@@ -73,8 +73,8 @@
                 <h:message for="fieldWorker" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
             </h:panelGrid>
             <script>
-                document.getElementById('form:firstName').focus();
-                document.getElementById('form:extId').focus();
+                document.getElementById('individualForm:firstName').focus();
+                document.getElementById('individualForm:extId').focus();
             </script>
             <br />
  			<h:commandButton action="#{individualCrud.edit}" value="#{msg.lblSave}">
