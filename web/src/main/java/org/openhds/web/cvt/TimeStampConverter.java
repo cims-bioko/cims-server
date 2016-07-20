@@ -13,12 +13,11 @@ public class TimeStampConverter implements Converter {
     private Format formatter;
 
     public TimeStampConverter(String dateFormat) {
-        formatter = new SimpleDateFormat(dateFormat + " HH:mm:ss");
+        formatter = new SimpleDateFormat(dateFormat);
     }
     
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        // TODO Auto-generated method stub
         return null;
     }
 
