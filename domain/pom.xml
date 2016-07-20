@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.openhds</groupId>
         <artifactId>openhds</artifactId>
-        <version>2.5-SNAPSHOT</version>
+        <version>2.5</version>
     </parent>
 
     <artifactId>domain</artifactId>
