@@ -24,7 +24,7 @@ import java.util.Set;
 		"information about the User such as first and last name, description, and " +
 		"the chosen username and password.")
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @NamedQuery(name = "User.findByUsername", query = "from User u where u.username = ?1")
 public class User implements Serializable, UuidIdentifiable {
 

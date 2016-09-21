@@ -6,7 +6,7 @@
     <role uuid="ROLE1" name="ADMINISTRATOR" description="Administrator of OpenHDS" deleted="false" />
     <role_privileges role_uuid="ROLE1" privilege_uuid="PRIVILEGE1" />
 
-    <user uuid="User 1" firstName="OpenHDS" lastName="Administrator" fullName="Administrator"
+    <users uuid="User 1" firstName="OpenHDS" lastName="Administrator" fullName="Administrator"
           description="Administrator User" username="admin" password="test" lastLoginTime="0" deleted="false" />
     <user_roles user_uuid="User 1" role_uuid="ROLE1" />)
 
