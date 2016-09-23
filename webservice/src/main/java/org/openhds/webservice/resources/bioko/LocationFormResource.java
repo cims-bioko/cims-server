@@ -198,8 +198,8 @@ public class LocationFormResource extends AbstractFormResource{
         location.setSectorName(form.getSectorName());
         location.setLocationName(form.getLocationName());
         location.setLocationType(nullTypeToUrb(form.getLocationType()));
-        location.setBuildingNumber(digitsOnly(form.getBuildingNumber()));
-        location.setFloorNumber(digitsOnly(form.getFloorNumber()));
+        location.setBuildingNumber(form.getBuildingNumber());
+        location.setFloorNumber(form.getFloorNumber());
         location.setDescription(form.getDescription());
         location.setLongitude(form.getLongitude());
         location.setLatitude(form.getLatitude());
@@ -207,13 +207,6 @@ public class LocationFormResource extends AbstractFormResource{
 
     private static String nullTypeToUrb(String locationType) {
         return null == locationType || "null".equals(locationType) ? "URB" : locationType;
-    }
-
-    private static String digitsOnly(String dirtyNumber) {
-        if (null == dirtyNumber || "null".equals(dirtyNumber)) {
-            return null;
-        }
-        return dirtyNumber.replaceAll("\\D+","");
     }
 
     private LocationHierarchy createSector(Form form) throws ConstraintViolations {
@@ -311,10 +304,10 @@ public class LocationFormResource extends AbstractFormResource{
         private String sectorName;
 
         @XmlElement(name = "location_building_number")
-        private String buildingNumber;
+        private Integer buildingNumber;
 
         @XmlElement(name = "location_floor_number")
-        private String floorNumber;
+        private Integer floorNumber;
 
         @XmlElement(name = "description")
         private String description;
@@ -389,19 +382,19 @@ public class LocationFormResource extends AbstractFormResource{
             this.description = description;
         }
 
-        public String getBuildingNumber() {
+        public Integer getBuildingNumber() {
             return buildingNumber;
         }
 
-        public void setBuildingNumber(String buildingNumber) {
+        public void setBuildingNumber(Integer buildingNumber) {
             this.buildingNumber = buildingNumber;
         }
 
-        public String getFloorNumber() {
+        public Integer getFloorNumber() {
             return floorNumber;
         }
 
-        public void setFloorNumber(String floorNumber) {
+        public void setFloorNumber(Integer floorNumber) {
             this.floorNumber = floorNumber;
         }
 

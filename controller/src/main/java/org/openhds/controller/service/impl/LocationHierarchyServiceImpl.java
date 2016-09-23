@@ -47,15 +47,9 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
         }
 
         for (Location location: locations) {
-            int temp = 0;
-            try {
-                temp = Integer.parseInt(location.getBuildingNumber());
-            } catch (NumberFormatException e) {
-
-            }
-
-            if (temp > max) {
-                max = temp;
+            Integer building = location.getBuildingNumber();
+            if (building != null) {
+                max = Math.max(max, building);
             }
         }
 

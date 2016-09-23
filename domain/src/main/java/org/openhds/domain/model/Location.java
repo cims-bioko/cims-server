@@ -77,10 +77,10 @@ public class Location
 
     // Extensions for bioko island project
     @Description(description = "The number of this building within a sector")
-    private String buildingNumber;
+    private Integer buildingNumber;
 
     @Description(description = "The floor number within the building this location is associated with")
-    private String floorNumber;
+    private Integer floorNumber;
 
     @Description(description = "The name of the Region that contains this location")
     private String regionName;
@@ -232,13 +232,13 @@ public class Location
         this.mapAreaName = mapAreaName;
     }
 
-    public String getBuildingNumber() { return buildingNumber; }
+    public Integer getBuildingNumber() { return buildingNumber; }
 
-    public void setBuildingNumber(String buildingNumber) { this.buildingNumber = buildingNumber; }
+    public void setBuildingNumber(Integer buildingNumber) { this.buildingNumber = buildingNumber; }
 
-    public String getFloorNumber() { return floorNumber; }
+    public Integer getFloorNumber() { return floorNumber; }
 
-    public void setFloorNumber(String floorNumber) { this.floorNumber = floorNumber; }
+    public void setFloorNumber(Integer floorNumber) { this.floorNumber = floorNumber; }
 
     public String getRegionName() { return regionName; }
 
