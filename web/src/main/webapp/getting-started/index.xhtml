@@ -22,9 +22,6 @@
                 
                 	<h:panelGrid columns="1">
 	                	<legend>Documentation</legend>
-						<h:outputLink value="#{request.contextPath}/getting-started/database-configuration.pdf">
-			   		    	<h:outputText value="#{msg.gettingStartedConfigureDatabase}" />
-			   		    </h:outputLink>
 						<h:outputLink value="#{request.contextPath}/getting-started/location-level-configuration.pdf">
 			   		    	<h:outputText value="#{msg.gettingStartedConfigureLocationLevels}" />
 			   		    </h:outputLink>
@@ -44,10 +41,7 @@
                 	<br />
                 	   
                 	<h:panelGrid columns="1">
-                		<legend>#{msg.gettingStartedSteps}</legend>           
-						<h:outputLink value="#{request.contextPath}/database-config">
-			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnDatabase}" />
-			   		    </h:outputLink>
+                		<legend>#{msg.gettingStartedSteps}</legend>
 	                	<h:outputLink value="#{request.contextPath}/location-levels">
 			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnLocationLevelsConfig}" />
 			   		    </h:outputLink>

@@ -192,11 +192,6 @@
 		<view-id>/migration/detail.faces</view-id>
 	</url-mapping>
 
-	<url-mapping id="databaseConfiguration" >
-		<pattern value="/database-config/" />
-		<view-id>/database-config/setup.faces</view-id>
-	</url-mapping>
-
 	<url-mapping id="locationLevelsConfiguration" >
 		<pattern value="/location-levels/" />
 		<view-id>/location-levels/setup.faces</view-id>
