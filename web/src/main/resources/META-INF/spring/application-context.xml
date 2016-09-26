@@ -669,16 +669,6 @@
 		<property name="visitGenerator" ref="visitIdGenerator" />
 	</bean>
 
-	<bean id="databaseConfig" class="org.openhds.web.beans.DatabaseConfigBean">
-		<property name="dbDriver" value="${dbDriver}" />
-		<property name="dbUrl" value="${dbUrl}" />
-		<property name="dbUsername" value="${dbUser}" />
-		<property name="dbPassword" value="${dbPass}" />
-		<property name="dbDialect" value="${hibernateDialect}" />
-		<property name="jsfService" ref="jsfService" />
-		<property name="showSql" value="${hibernateShowSql}" />
-	</bean>
-
 	<bean id="locationLevelConfig" class="org.openhds.web.beans.LocationLevelConfigBean">
 		<property name="jsfService" ref="jsfService" />
 		<property name="level1">
