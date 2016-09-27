@@ -908,13 +908,4 @@
 		</property>
 	</bean>
 
-	<beans profile="migratedb">
-		<bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate">
-			<property name="locations" value="classpath:/db/migrations" />
-			<property name="dataSource" ref="dataSource" />
-			<property name="baselineOnMigrate" value="true" />
-			<property name="baselineVersion" value="2" />
-		</bean>
-	</beans>
-
 </beans>
