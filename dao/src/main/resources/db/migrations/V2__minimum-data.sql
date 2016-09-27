@@ -1,4 +1,5 @@
--- MySQL required data set import script for version 0.9.0
+-- required data set import script for version 0.9.0
+
 -- Defined core privileges
 INSERT INTO privilege VALUES ('PRIVILEGE1', 'CREATE_ENTITY');
 INSERT INTO privilege VALUES ('PRIVILEGE2', 'EDIT_ENTITY');
@@ -45,5 +46,5 @@ INSERT INTO fieldworker (uuid, extid, firstname, lastname, passwordHash, deleted
 -- Unknown Individual: This should always be pre-populated
 INSERT INTO individual(uuid,extId,firstName,middleName,lastName,gender,dob,mother_uuid,father_uuid,insertBy_uuid,insertDate,status,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,age,ageUnits,phoneNumber,otherPhoneNumber,languagePreference,pointOfContactName,pointOfContactPhoneNumber,dip,memberStatus) VALUES('Unknown Individual','UNK','Unknown',NULL,'UNKNOWN','MALE', '1900-12-19 15:07:43', NULL, NULL,'User 1','2009-12-19 15:07:43','PENDING',NULL,NULL,NULL,false,'UnknownFieldWorker',0,null,null,null,null,null,null,0,null);
 
-INSERT INTO `whitelist` (uuid, address) VALUES ('LOCALHOST1', '127.0.0.1');
-INSERT INTO `whitelist` (uuid, address) VALUES ('LOCALHOST2', 'localhost');
+INSERT INTO whitelist (uuid, address) VALUES ('LOCALHOST1', '127.0.0.1');
+INSERT INTO whitelist (uuid, address) VALUES ('LOCALHOST2', 'localhost');
