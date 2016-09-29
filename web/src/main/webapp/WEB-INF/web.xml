@@ -97,7 +97,6 @@
 		<url-pattern>/loginProcess</url-pattern>
 		<url-pattern>/api/rest/*</url-pattern>
 		<url-pattern>/module/dsl/*</url-pattern>
-		<url-pattern>/webservice/dhisGenerator/*</url-pattern>
 	</filter-mapping>
     
      <!-- Enables Spring Security -->

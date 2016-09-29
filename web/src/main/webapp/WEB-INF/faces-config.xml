@@ -83,11 +83,6 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>dhisDocument_create</from-outcome>
-			<to-view-id>/dhis-document/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>fieldworker_list</from-outcome>
 			<to-view-id>/fieldworker/create.xhtml</to-view-id>
 			<redirect />
@@ -105,11 +100,6 @@
 		<navigation-case>
 			<from-outcome>fieldworker_detail</from-outcome>
 			<to-view-id>/fieldworker/detail.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>generateDHISDoc</from-outcome>
-			<to-view-id>/webservice/dhisGenerator</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
