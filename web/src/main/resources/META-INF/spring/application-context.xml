@@ -88,8 +88,6 @@
 			access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:intercept-url pattern="/**"
 			access="ROLE_AUTHENTICATED" />
-		<security:intercept-url pattern="/webservice/ddiGenerator"
-			access="ROLE_AUTHENTICATED" />
 		<security:logout logout-url="/logoutProcess"
 			success-handler-ref="logoutSuccessHandler" />
 	</security:http>
