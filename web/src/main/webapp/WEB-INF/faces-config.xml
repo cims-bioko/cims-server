@@ -238,26 +238,6 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>note_create</from-outcome>
-			<to-view-id>/note/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>note_edit</from-outcome>
-			<to-view-id>/note/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>note_list</from-outcome>
-			<to-view-id>/note/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>note_detail</from-outcome>
-			<to-view-id>/note/detail.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>outmigration_list</from-outcome>
 			<to-view-id>/outmigration/create.xhtml</to-view-id>
 			<redirect />
