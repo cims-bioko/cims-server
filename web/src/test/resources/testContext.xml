@@ -30,9 +30,6 @@
         <property name="entityValidationService" ref="entityValidator" />
     </bean>
 
-    <!-- This bean is here to override the locationLevelsSetter that otherwise loads location levels -->
-    <bean id="locationLevelsSetter" class="org.openhds.dao.service.impl.LocationLevelsSetterImpl"/>
-
     <!-- Independent database configuration for test context -->
     <bean id="databaseConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

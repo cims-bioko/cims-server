@@ -88,11 +88,6 @@
 			        </h:commandLink>
 			        <c:if test="#{navController.showConfiguration}" >
 		        	<ul>
-			   		    <li>
-			   		    	<h:outputLink value="#{request.contextPath}/location-levels">
-			   		    		<h:outputText value="#{msg.locationLevelsName}" />
-			   		    	</h:outputLink>
-			   		    </li>
 			   		    <li><h:commandLink value="#{msg.navBarRoleManagement}" action="#{roleCrud.createSetup}" /></li>
 			   		    <li><h:commandLink value="#{msg.navBarUserManagement}" action="#{userCrud.createSetup}" /></li>
 			    	</ul>

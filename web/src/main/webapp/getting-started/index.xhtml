@@ -22,9 +22,6 @@
                 	   
                 	<h:panelGrid columns="1">
                 		<legend>#{msg.gettingStartedSteps}</legend>
-	                	<h:outputLink value="#{request.contextPath}/location-levels">
-			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnLocationLevelsConfig}" />
-			   		    </h:outputLink>
 	                	<h:commandLink styleClass="welcome-link" value="#{msg.mnLocationHierarchy}" action="#{locationHierarchyCrud.createSetup}">
 	                		<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
 	                	</h:commandLink>

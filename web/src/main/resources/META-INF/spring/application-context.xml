@@ -552,54 +552,6 @@
 		<property name="genericDao" ref="genericDao" />
 	</bean>
 
-	<bean id="locationLevelConfig" class="org.openhds.web.beans.LocationLevelConfigBean">
-		<property name="jsfService" ref="jsfService" />
-		<property name="level1">
-			<value>${locationHierarchyLevel1}</value>
-		</property>
-		<property name="level2">
-			<value>${locationHierarchyLevel2}</value>
-		</property>
-		<property name="level3">
-			<value>${locationHierarchyLevel3}</value>
-		</property>
-		<property name="level4">
-			<value>${locationHierarchyLevel4}</value>
-		</property>
-		<property name="level5">
-			<value>${locationHierarchyLevel5}</value>
-		</property>
-		<property name="level6">
-			<value>${locationHierarchyLevel6}</value>
-		</property>
-		<property name="level7">
-			<value>${locationHierarchyLevel7}</value>
-		</property>
-		<property name="level8">
-			<value>${locationHierarchyLevel8}</value>
-		</property>
-		<property name="level9">
-			<value>${locationHierarchyLevel9}</value>
-		</property>
-	</bean>
-
-	<bean id="locationLevelsSetter" class="org.openhds.dao.service.impl.LocationLevelsSetterImpl">
-		<property name="genericDao" ref="genericDao" />
-		<property name="locationLevels">
-			<props>
-				<prop key="1">${locationHierarchyLevel1}</prop>
-				<prop key="2">${locationHierarchyLevel2}</prop>
-				<prop key="3">${locationHierarchyLevel3}</prop>
-				<prop key="4">${locationHierarchyLevel4}</prop>
-				<prop key="5">${locationHierarchyLevel5}</prop>
-				<prop key="6">${locationHierarchyLevel6}</prop>
-				<prop key="7">${locationHierarchyLevel7}</prop>
-				<prop key="8">${locationHierarchyLevel8}</prop>
-				<prop key="9">${locationHierarchyLevel9}</prop>
-			</props>
-		</property>
-	</bean>
-
 	<bean id="siteProperties"
 		class="org.openhds.domain.service.impl.SitePropertiesServiceImpl">
 		<property name="locale">

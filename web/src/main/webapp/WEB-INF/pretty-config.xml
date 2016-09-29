@@ -142,9 +142,4 @@
 		<view-id>/migration/detail.faces</view-id>
 	</url-mapping>
 
-	<url-mapping id="locationLevelsConfiguration" >
-		<pattern value="/location-levels/" />
-		<view-id>/location-levels/setup.faces</view-id>
-	</url-mapping>
-
 </pretty-config>
