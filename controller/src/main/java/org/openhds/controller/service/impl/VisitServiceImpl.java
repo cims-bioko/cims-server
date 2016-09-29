@@ -9,11 +9,7 @@ import org.openhds.controller.idgeneration.VisitGenerator;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.VisitService;
 import org.openhds.dao.service.GenericDao;
-import org.openhds.dao.service.GenericDao.ValueProperty;
 import org.openhds.domain.annotations.Authorized;
-import org.openhds.domain.model.ClassExtension;
-import org.openhds.domain.model.EntityType;
-import org.openhds.domain.model.Extension;
 import org.openhds.domain.model.Round;
 import org.openhds.domain.model.Visit;
 import org.openhds.domain.service.SitePropertiesService;
@@ -86,65 +82,6 @@ public class VisitServiceImpl implements VisitService {
     public Visit findVisitByUuid(String uuid) {
         Visit visit = genericDao.findByProperty(Visit.class, "uuid", uuid);
         return visit;
-    }
-
-
-    /**
-     * The following extension methods are called from the Crud in retrieving the associated extensions, grouped by
-     * entity
-     */
-    public Visit initializeExtensions(Visit entityItem) {
-        List<ClassExtension> list = genericDao.findListByProperty(ClassExtension.class, "roundNumber",
-                entityItem.getRoundNumber());
-
-        for (ClassExtension ce : list) {
-            Extension extension = new Extension();
-            extension.setEntity(entityItem);
-            extension.setClassExtension(ce);
-            entityItem.getExtensions().add(extension);
-        }
-        return entityItem;
-    }
-
-    public Visit addExtensions(Visit entityItem, EntityType name) {
-
-        List<ClassExtension> list = getExtensionsByEntityClassAndRoundNumber(name, entityItem.getRoundNumber());
-
-        for (ClassExtension ce : list) {
-            Extension extension = new Extension();
-            extension.setEntity(entityItem);
-            extension.setClassExtension(ce);
-            entityItem.getExtensions().add(extension);
-        }
-        return entityItem;
-    }
-
-    public List<ClassExtension> getExtensionsByEntityClassAndRoundNumber(EntityType entityType, int roundNum) {
-
-        final EntityType entityName = entityType;
-        final int visitRoundNum = roundNum;
-
-        ValueProperty roundNumber = new ValueProperty() {
-            public String getPropertyName() {
-                return "roundNumber";
-            }
-
-            public Object getValue() {
-                return visitRoundNum;
-            }
-        };
-
-        ValueProperty indivType = new ValueProperty() {
-            public String getPropertyName() {
-                return "entityClass";
-            }
-
-            public Object getValue() {
-                return entityName;
-            }
-        };
-
-        return genericDao.findListByMultiProperty(ClassExtension.class, roundNumber, indivType);
     }
 
     @Transactional

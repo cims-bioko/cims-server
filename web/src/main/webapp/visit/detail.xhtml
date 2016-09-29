@@ -21,26 +21,6 @@
 			</ui:define>
 			<ui:define name="display">
 		
-				<style>
-					.extensions {
-						border-collapse:collapse;
-						border-color:#888;
-						table-layout:fixed;
-					}
-								
-					.extensions th {
-						background-color:#B9D264;
-						font-weight:bold;
-						font-size:.9em;
-						overflow:hidden;
-					}
-					
-					.extensions input {
-						width:100%;
-						border:0;
-					}
-				</style>
-		
 				<h:outputText value="#{navController.breadcrumbTrail}" />
 		
 	        	<h1>#{msg.visitDetail}</h1>
@@ -81,87 +61,7 @@
 		    			<img class="clickable" onclick="O$('popupWindowForDataStatus').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
 						<h:outputText value="#{visitCrud.item.status}" />	
 	            	</h:panelGrid>
-	            
-            		<h:panelGroup rendered="#{fn:length(visitCrud.item.extensions) > 0}">
-             			<h3>#{msg.visitExtensionTitle}</h3>
-               			<h:panelGroup rendered="#{fn:length(visitCrud.visitExtensions) > 0}">
-                    	<h4>#{msg.navBarVisit}</h4>		
-							<h:dataTable value="#{visitCrud.visitExtensions}" var="extension" >					
-								<h:column>
-		                        	<h:outputText id="extName" value="#{extension.classExtension.name}:" />
-	                      		</h:column>	
-	                      		<h:column>
-                      				<h:outputText id="extValue" value="#{extension.extensionValue}" converter="#{defaultConverter}" />
-			                	</h:column>
-							</h:dataTable>		
-						</h:panelGroup>
-					
-						<h:panelGroup rendered="#{fn:length(visitCrud.locationExtensions) > 0}">
-                    	<h4>#{msg.navBarLocation}</h4>		
-							<h:dataTable value="#{visitCrud.locationExtensions}" var="extension" >					
-								<h:column>
-		                        	<h:outputText id="extName" value="#{extension.classExtension.name}:" />
-	                      		</h:column>	
-	                      		<h:column>
-                      				<h:outputText id="extValue" value="#{extension.extensionValue}" converter="#{defaultConverter}" />	
-			                	</h:column>
-							</h:dataTable>		
-						</h:panelGroup>
-					
-						<h:panelGroup rendered="#{fn:length(visitCrud.individualExtensions) > 0}">
-                    	<h4>#{msg.navBarIndividual}</h4>		
-							<table width="50%" border="1" cellspacing="0" cellpadding="0" class="extensions">
-                    			<tr>
-                    				<th width="5%">#{msg.visitExtensionNumber}</th>
-									<th width="15%">#{msg.individualId}</th>
-									<th width="15%">#{msg.visitExtensionName}</th>
-									<th width="15%">#{msg.visitExtensionValue}</th>
-								</tr>
-								<c:forEach var="extension" items="#{visitCrud.individualExtensions}" varStatus="status" 
-									begin="0" end="#{fn:length(visitCrud.individualExtensions) - 1}" step="1">
-									<tr>
-										<td style="text-align:center;">
-											#{status.index lt 9 ? '0' : ''}#{status.index + 1}
-										</td>
-										<td><h:outputText value="#{extension.entityExtId}" converter="#{defaultConverter}" /></td>
-										<td>
-											<h:outputText value="#{extension.classExtension.name}" converter="#{defaultConverter}" />
-										</td>
-										<td>
-	                      					<h:outputText value="#{extension.extensionValue}" converter="#{defaultConverter}" />	
-										</td>
-									</tr>
-								</c:forEach>        	
-	                    	</table>
-						</h:panelGroup>
-					
-						<h:panelGroup rendered="#{fn:length(visitCrud.socialGroupExtensions) > 0}">
-                    	<h4>#{msg.navBarSocialGroup}</h4>		
-							<table width="50%" border="1" cellspacing="0" cellpadding="0" class="extensions">
-                    			<tr>
-                    				<th width="5%">#{msg.visitExtensionNumber}</th>
-									<th width="15%">#{msg.socialGroupId}</th>
-									<th width="15%">#{msg.visitExtensionName}</th>
-									<th width="15%">#{msg.visitExtensionValue}</th>
-								</tr>
-								<c:forEach var="extension" items="#{visitCrud.socialGroupExtensions}" varStatus="status" 
-									begin="0" end="#{fn:length(visitCrud.socialGroupExtensions) - 1}" step="1">
-									<tr>
-										<td style="text-align:center;">
-											#{status.index lt 9 ? '0' : ''}#{status.index + 1}
-										</td>
-										<td><h:outputText value="#{extension.entityExtId}" converter="#{defaultConverter}" /></td>
-										<td>
-											<h:outputText value="#{extension.classExtension.name}" converter="#{defaultConverter}" />
-										</td>
-										<td>
-	                      					<h:outputText value="#{extension.extensionValue}" converter="#{defaultConverter}" />	
-										</td>
-									</tr>
-								</c:forEach>        	
-	                    	</table>
-						</h:panelGroup>
-					</h:panelGroup>
+
 	           		<br />	         
 	            	<h:commandButton action="#{visitCrud.editSetup}" value="#{msg.lblEdit}">
 	                	<f:setPropertyActionListener target="#{jsfService.itemId}" value="#{visitCrud.item.uuid}" />

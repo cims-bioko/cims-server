@@ -189,12 +189,6 @@
 		<constructor-arg value="java.lang.String" />
 	</bean>
 
-	<bean id="extensionConverter" class="org.openhds.web.cvt.EntityConverterImpl">
-		<constructor-arg ref="extensionDao" />
-		<constructor-arg value="org.openhds.domain.model.ClassExtension" />
-		<constructor-arg value="java.lang.String" />
-	</bean>
-
 	<bean id="fieldWorkerConverter" class="org.openhds.web.cvt.EntityConverterImpl">
 		<constructor-arg ref="fieldWorkerDao" />
 		<constructor-arg value="org.openhds.domain.model.FieldWorker" />
@@ -353,15 +347,6 @@
 		<property name="service" ref="deathService" />
 	</bean>
 
-	<bean id="extensionCrud" parent="baseCrud"
-		class="org.openhds.web.crud.impl.ExtensionCrudImpl">
-		<constructor-arg value="org.openhds.domain.model.ClassExtension" />
-		<property name="dao" ref="extensionDao" />
-		<property name="converter" ref="extensionConverter" />
-		<property name="service" ref="extensionService" />
-		<property name="entityValidator" ref="entityValidator" />
-	</bean>
-
 	<bean id="fieldWorkerCrud" parent="baseCrud"
 		class="org.openhds.web.crud.impl.FieldWorkerCrudImpl">
 		<constructor-arg value="org.openhds.domain.model.FieldWorker" />
@@ -516,7 +501,6 @@
 		<property name="dao" ref="visitDao" />
 		<property name="converter" ref="visitConverter" />
 		<property name="service" ref="visitService"></property>
-		<property name="extensionService" ref="extensionService"></property>
 		<property name="siteProperties" ref="siteProperties"></property>
 	</bean>
 

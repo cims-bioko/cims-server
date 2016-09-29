@@ -106,16 +106,7 @@
 		    </bean>
 	    </property>
     </bean>
-    
-    <bean id="extensionService" parent="baseServiceTransactionBean">
-    	<property name="target">
-		    <bean class="org.openhds.controller.service.impl.ExtensionServiceImpl">
-		        <constructor-arg ref="genericDao" />
-		        <constructor-arg ref="siteProperties" />
-		    </bean>
-	    </property>
-    </bean>
-    		
+
 	<bean id="fieldWorkerService" parent="baseServiceBean">
 	 	<property name="target">
 	 		<bean class="org.openhds.controller.service.impl.FieldWorkerServiceImpl">
@@ -124,7 +115,7 @@
 		    </bean>
 		</property>
     </bean>
-    
+
     <bean id="individualMergeService" parent="baseServiceTransactionBean">
     	<property name="target">
 		    <bean class="org.openhds.controller.service.impl.IndividualMergeServiceImpl">

@@ -55,10 +55,6 @@ public class Visit
     @Description(description = "Round number for the visit.")
     private Integer roundNumber;
 
-    @OneToMany(mappedBy = "entity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Description(description = "The assigned extension and their values specific for this entity.")
-    private List<Extension> extensions = new ArrayList<>();
-
     public String getExtId() {
         return extId;
     }
@@ -90,14 +86,6 @@ public class Visit
 
     public void setRoundNumber(Integer roundNum) {
         roundNumber = roundNum;
-    }
-
-    public List<Extension> getExtensions() {
-        return extensions;
-    }
-
-    public void setExtensions(List<Extension> list) {
-        extensions = list;
     }
 
     public static Visit makeStub(String uuid) {

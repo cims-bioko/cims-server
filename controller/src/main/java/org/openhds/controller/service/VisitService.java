@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.annotations.Authorized;
-import org.openhds.domain.model.ClassExtension;
 import org.openhds.domain.model.EntityType;
 import org.openhds.domain.model.PrivilegeConstants;
 import org.openhds.domain.model.Visit;
@@ -28,15 +27,6 @@ public interface VisitService {
 
     @Authorized({ PrivilegeConstants.VIEW_ENTITY })
     Visit findVisitByUuid(String uuid);
-
-    @Authorized({ PrivilegeConstants.CREATE_ENTITY })
-    Visit initializeExtensions(Visit entityItem);
-
-    @Authorized({ PrivilegeConstants.CREATE_ENTITY })
-    Visit addExtensions(Visit entityItem, EntityType name);
-
-    @Authorized({ PrivilegeConstants.CREATE_ENTITY })
-    List<ClassExtension> getExtensionsByEntityClassAndRoundNumber(EntityType entityType, int roundNum);
 
     @Authorized({ PrivilegeConstants.VIEW_ENTITY })
     void validateGeneralVisit(Visit visit) throws ConstraintViolations;
