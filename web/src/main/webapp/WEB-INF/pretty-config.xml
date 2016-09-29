@@ -2,12 +2,6 @@
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
                xsi:schemaLocation="http://ocpsoft.com/prettyfaces/3.1.0
                                    http://ocpsoft.com/xml/ns/prettyfaces/ocpsoft-pretty-faces-3.1.0.xsd">
-	
-	<url-mapping id="adultvpmDetail">
-		<pattern value="/amendment/adultvpm/details/#{itemId}" />
-		<view-id>/adultvpm/detail.faces</view-id>
-		<action onPostback="false">#{adultVPMCrud.detailSetup}</action>
-	</url-mapping>
 
 	<url-mapping id="locationDetail" >
 		<pattern value="/amendment/location/details/#{itemId}" />
@@ -33,22 +27,10 @@
 		<action onPostback="false">#{membershipCrud.detailSetup}</action>
 	</url-mapping>
 
-	<url-mapping id="neonatalvpmDetail" >
-		<pattern value="/amendment/neonatalvpm/details/#{itemId}" />
-		<view-id>/neonatalvpm/detail.faces</view-id>
-		<action onPostback="false">#{neonatalVPMCrud.detailSetup}</action>
-	</url-mapping>
-
 	<url-mapping id="outmigrationDetail" >
 		<pattern value="/amendment/outmigration/details/#{itemId}" />
 		<view-id>/outmigration/detail.faces</view-id>
 		<action onPostback="false">#{outMigrationCrud.detailSetup}</action>
-	</url-mapping>
-
-	<url-mapping id="postneonatalvpmDetail" >
-		<pattern value="/amendment/postneonatalvpm/details/#{itemId}" />
-		<view-id>/postneonatalvpm/detail.faces</view-id>
-		<action onPostback="false">#{postneonatalVPMCrud.detailSetup}</action>
 	</url-mapping>
 
 	<url-mapping id="pregnancyobservationDetail" >
@@ -117,11 +99,6 @@
 	<!-- redirected back to the details page. At the time of writing, there didn't appear to be any -->
 	<!-- other way around this problem -->
 
-	<url-mapping id="adultvpmEdit" >
-		<pattern value="/amendment/adultvpm/details/#{itemId: adultVPMCrud.item.uuid}" />
-		<view-id>/adultvpm/detail.faces</view-id>
-	</url-mapping>
-
 	<url-mapping id="deathEdit" >
 		<pattern value="/amendment/death/details/#{itemId: deathCrud.item.uuid}" />
 		<view-id>/death/detail.faces</view-id>
@@ -140,16 +117,6 @@
 	<url-mapping id="membershipEdit" >
 		<pattern value="/amendment/membership/details/#{itemId : membershipCrud.item.uuid}" />
 		<view-id>/membership/detail.faces</view-id>
-	</url-mapping>
-
-	<url-mapping id="neonatalvpmEdit" >
-		<pattern value="/amendment/neonatalvpm/details/#{itemId: neonatalVPMCrud.item.uuid}" />
-		<view-id>/neonatalvpm/detail.faces</view-id>
-	</url-mapping>
-
-	<url-mapping id="postneonatalvpmEdit" >
-		<pattern value="/amendment/postneonatalvpm/details/#{itemId: postneonatalVPMCrud.item.uuid}" />
-		<view-id>/postneonatalvpm/detail.faces</view-id>
 	</url-mapping>
 
 	<url-mapping id="pregnancyoutcomeEdit" >

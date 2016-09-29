@@ -31,7 +31,6 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="annotatedClasses">
 			<list>
-				<value>org.openhds.domain.model.AdultVPM</value>
 				<value>org.openhds.domain.model.AsyncTask</value>
 				<value>org.openhds.domain.model.AuditableCollectedEntity</value>
 				<value>org.openhds.domain.model.AuditableEntity</value>
@@ -47,11 +46,9 @@
 				<value>org.openhds.domain.model.LocationHierarchyLevel</value>
 				<value>org.openhds.domain.model.Membership</value>
 				<value>org.openhds.domain.model.MigrationType</value>
-				<value>org.openhds.domain.model.NeoNatalVPM</value>
 				<value>org.openhds.domain.model.Note</value>
 				<value>org.openhds.domain.model.Outcome</value>
 				<value>org.openhds.domain.model.OutMigration</value>
-				<value>org.openhds.domain.model.PostNeoNatalVPM</value>
 				<value>org.openhds.domain.model.PregnancyObservation</value>
 				<value>org.openhds.domain.model.PregnancyOutcome</value>
 				<value>org.openhds.domain.model.Privilege</value>
@@ -137,10 +134,6 @@
 		<constructor-arg value="org.openhds.domain.model.User" />
 	</bean>
 
-	<bean id="adultVPMDao" parent="baseDao">
-		<constructor-arg value="org.openhds.domain.model.AdultVPM" />
-	</bean>
-
 	<bean id="deathDao" parent="baseDao">
 		<constructor-arg value="org.openhds.domain.model.Death" />
 	</bean>
@@ -186,20 +179,12 @@
 		<constructor-arg value="org.openhds.domain.model.Membership" />
 	</bean>
 
-	<bean id="neoNatalVPMDao" parent="baseDao">
-		<constructor-arg value="org.openhds.domain.model.NeoNatalVPM" />
-	</bean>
-
 	<bean id="noteDao" parent="baseDao">
 		<constructor-arg value="org.openhds.domain.model.Note" />
 	</bean>
 
 	<bean id="outMigrationDao" parent="baseDao">
 		<constructor-arg value="org.openhds.domain.model.OutMigration" />
-	</bean>
-
-	<bean id="postNeoNatalVPMDao" parent="baseDao">
-		<constructor-arg value="org.openhds.domain.model.PostNeoNatalVPM" />
 	</bean>
 
 	<bean id="pregnancyDao" parent="baseDao">
