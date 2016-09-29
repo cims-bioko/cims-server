@@ -203,16 +203,10 @@
             <version>3.0</version>
         </dependency>
         <dependency>
-            <groupId>net.sf.jasperreports</groupId>
-            <artifactId>jasperreports</artifactId>
-            <version>4.0.1</version>
-            <type>jar</type>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.0.12</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.openhds</groupId>
@@ -227,11 +221,6 @@
         <dependency>
             <groupId>org.openhds</groupId>
             <artifactId>controller</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openhds</groupId>
-            <artifactId>report</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

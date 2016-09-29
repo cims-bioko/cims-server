@@ -34,7 +34,6 @@
 	<import resource="classpath*:/META-INF/spring/daoApplicationContext.xml" />
 	<import resource="classpath*:/META-INF/spring/controllerSecurityContext.xml" />
     <import resource="classpath*:/META-INF/spring/errorhandlingApplicationContext.xml" />
-    <import resource="classpath*:/META-INF/spring/reportApplicationContext.xml" />
 	<import resource="classpath:/META-INF/spring/taskContext.xml" />
 
 	<bean id="authSuccessHandler" parent="baseTransactionBean">
@@ -187,12 +186,6 @@
 	<bean id="deathConverter" class="org.openhds.web.cvt.EntityConverterImpl">
 		<constructor-arg ref="deathDao" />
 		<constructor-arg value="org.openhds.domain.model.Death" />
-		<constructor-arg value="java.lang.String" />
-	</bean>
-
-	<bean id="demRatesConverter" class="org.openhds.web.cvt.EntityConverterImpl">
-		<constructor-arg ref="demRatesDao" />
-		<constructor-arg value="org.openhds.domain.model.DemRates" />
 		<constructor-arg value="java.lang.String" />
 	</bean>
 
@@ -358,14 +351,6 @@
 		<property name="converter" ref="deathConverter" />
 		<property name="entityValidator" ref="entityValidator" />
 		<property name="service" ref="deathService" />
-	</bean>
-
-	<bean id="demRatesCrud" parent="baseCrud"
-		class="org.openhds.web.crud.impl.DemRatesCrudImpl">
-		<constructor-arg value="org.openhds.domain.model.DemRates" />
-		<property name="dao" ref="demRatesDao" />
-		<property name="converter" ref="demRatesConverter" />
-		<property name="demRatesService" ref="demRatesService" />
 	</bean>
 
 	<bean id="extensionCrud" parent="baseCrud"

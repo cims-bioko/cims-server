@@ -10,7 +10,6 @@ public class NavigationMenuBean {
     boolean showHome;
 	boolean showAmendments;
 	boolean showUtilities;
-	boolean showReports;
 	boolean showDevelopers;
 	boolean showUpdate;
 	boolean showBaseline;
@@ -76,13 +75,6 @@ public class NavigationMenuBean {
 				}
 				// the page to be viewed is of the same group, so add it to the trail
 				addItemToTrail(item);
-			}
-			
-			// we are viewing the Reports
-			else if (showReports) {
-				// since the Rates is the only viewable form in the Reports section,
-				// simply adding it to the trail is sufficient enough... for now
-				addItemToTrail("Demographic Rates");
 			}
 		}
 		
@@ -172,7 +164,6 @@ public class NavigationMenuBean {
 		showHome = false;
 		showAmendments = false;
 		showUtilities = false;
-		showReports = false;
 		showDevelopers = false;
 		showBaseline = false;
 		showUpdate = false;
@@ -222,16 +213,6 @@ public class NavigationMenuBean {
 		this.clear();
 		this.showUtilities = showUtilities;
 		trail.add("Utilities");
-	}
-	
-	public boolean isShowReports() {
-		return showReports;
-	}
-	
-	public void setShowReports(boolean showReports) {
-		this.clear();
-		this.showReports = showReports;
-		trail.add("Reports");
 	}
 	
 	public boolean isShowDevelopers() {

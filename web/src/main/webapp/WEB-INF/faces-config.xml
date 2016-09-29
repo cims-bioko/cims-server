@@ -14,11 +14,6 @@
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
-			<from-outcome>demreports</from-outcome>
-			<to-view-id>/demographic.report</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>demowelcome</from-outcome>
 			<to-view-id>/demowelcome.xhtml</to-view-id>
 			<redirect />
@@ -95,26 +90,6 @@
 		<navigation-case>
 			<from-outcome>deathForHOH_flow</from-outcome>
 			<to-view-id>/deathForHOH.flow</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>demrates_list</from-outcome>
-			<to-view-id>/demrates/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>demrates_create</from-outcome>
-			<to-view-id>/demrates/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>demrates_edit</from-outcome>
-			<to-view-id>/demrates/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>demrates_detail</from-outcome>
-			<to-view-id>/demrates/detail.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
