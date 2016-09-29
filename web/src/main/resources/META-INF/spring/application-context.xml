@@ -552,27 +552,6 @@
 		<property name="genericDao" ref="genericDao" />
 	</bean>
 
-	<bean id="validationRoutineBean" class="org.openhds.web.beans.ValidationRoutineBean">
-		<property name="individualService" ref="individualService" />
-		<property name="locationService" ref="locationHierarchyService" />
-		<property name="socialgroupService" ref="socialGroupService" />
-		<property name="relationshipService" ref="relationshipService" />
-		<property name="membershipService" ref="membershipService" />
-		<property name="pregnancyService" ref="pregnancyService" />
-		<property name="visitService" ref="visitService" />
-		<property name="deathService" ref="deathService" />
-		<property name="inmigrationService" ref="inMigrationService" />
-		<property name="outmigrationService" ref="outMigrationService" />
-		<property name="residencyService" ref="residencyService" />
-		<property name="genericDao" ref="genericDao" />
-		<property name="entityValidator" ref="entityValidator" />
-		<property name="properties" ref="siteProperties" />
-		<property name="indivGenerator" ref="individualIdGenerator" />
-		<property name="locGenerator" ref="locationIdGenerator" />
-		<property name="sgGenerator" ref="socialGroupIdGenerator" />
-		<property name="visitGenerator" ref="visitIdGenerator" />
-	</bean>
-
 	<bean id="locationLevelConfig" class="org.openhds.web.beans.LocationLevelConfigBean">
 		<property name="jsfService" ref="jsfService" />
 		<property name="level1">

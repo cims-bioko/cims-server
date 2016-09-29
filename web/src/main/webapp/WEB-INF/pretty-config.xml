@@ -82,12 +82,6 @@
 		<action onPostback="false">#{inMigrationCrud.editSetup}</action>
 	</url-mapping>
 
-	<url-mapping id="validationRoutine" >
-		<pattern value="/validationRoutine" />
-		<view-id>/validation/validate.faces</view-id>
-		<action onPostback="false">#{validationRoutineBean.setup}</action>
-	</url-mapping>
-
 	<!-- These URL mappings only serve the purpose of redirecting back to a URL mappings above -->
 	<!-- This is a workaround so that when an entity that is being edited is saved, it gets properly -->
 	<!-- redirected back to the details page. At the time of writing, there didn't appear to be any -->

@@ -96,7 +96,6 @@
 		<url-pattern>*.autocomplete</url-pattern>
 		<url-pattern>/loginProcess</url-pattern>
 		<url-pattern>/api/rest/*</url-pattern>
-		<url-pattern>/validationRoutine</url-pattern>
 		<url-pattern>/module/dsl/*</url-pattern>
 		<url-pattern>/webservice/dhisGenerator/*</url-pattern>
 	</filter-mapping>
