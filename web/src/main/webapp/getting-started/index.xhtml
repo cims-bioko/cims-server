@@ -25,9 +25,6 @@
 	                	<h:outputLink value="#{request.contextPath}/location-levels">
 			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnLocationLevelsConfig}" />
 			   		    </h:outputLink>
-	                	<h:outputLink value="#{request.contextPath}/codes-config">
-			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnCodesConfig}" />
-			   		    </h:outputLink>
 	                	<h:commandLink styleClass="welcome-link" value="#{msg.mnLocationHierarchy}" action="#{locationHierarchyCrud.createSetup}">
 	                		<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
 	                	</h:commandLink>

@@ -147,9 +147,4 @@
 		<view-id>/location-levels/setup.faces</view-id>
 	</url-mapping>
 
-	<url-mapping id="codesConfiguration" >
-		<pattern value="/codes-config/" />
-		<view-id>/codes-config/setup.faces</view-id>
-	</url-mapping>
-		
 </pretty-config>
