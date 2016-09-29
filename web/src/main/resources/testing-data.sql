@@ -38,11 +38,6 @@ INSERT INTO `socialgroup` (uuid, extId, deleted, insertdate, groupName, collecte
 INSERT INTO `socialgroup` (uuid, extId, deleted, insertdate, groupName, collectedby_uuid, insertby_uuid, grouphead_uuid,groupType,status) VALUES ('SocialGroup3','MBI00000300',false,'2012-04-17','Ross','FieldWorker1','User 1','Indiv 3','FAM','P');
 INSERT INTO `socialgroup` (uuid, extId, deleted, insertdate, groupName, collectedby_uuid, insertby_uuid, grouphead_uuid,groupType,status) VALUES ('SocialGroup4','MBI00000400',false,'2012-04-17','Bash','FieldWorker1','User 1','Indiv 8','FAM','P');
 
-INSERT INTO `whitelist` (uuid, address) VALUES ('LOCALHOST1', '127.0.0.1');
-INSERT INTO `whitelist` (uuid, address) VALUES ('LOCALHOST2', '10.0.2.10');
-INSERT INTO `whitelist` (uuid, address) VALUES ('LOCALHOST3', '10.0.2.14');
-INSERT INTO `whitelist` (uuid, address) VALUES ('LOCALHOST4', '141.114.156.167');
-
 INSERT INTO `inmigration` (uuid,deleted,insertDate,recordedDate,voidDate,voidReason,status,origin,reason,migType,insertBy_uuid,voidBy_uuid,collectedBy_uuid,individual_uuid,residency_uuid,visit_uuid,unknownIndividual) VALUES ('Inmigration1',false,'2012-04-17','2011-01-05',NULL,NULL,'P','origin','reason','INTERNAL_INMIGRATION','User 1',NULL,'FieldWorker1','Indiv 5','Residency6','Visit1',false);
 INSERT INTO `outmigration`(uuid,deleted,insertDate,voidDate,voidReason,status,destination,reason,recordedDate,insertBy_uuid,voidBy_uuid,collectedBy_uuid,individual_uuid,residency_uuid,visit_uuid) VALUES ('Outmigration1',false,'2012-04-17',NULL,NULL,'P','destination','reason','1997-05-05','User 1',NULL,'FieldWorker1','Indiv 5','Residency6','Visit1');
 

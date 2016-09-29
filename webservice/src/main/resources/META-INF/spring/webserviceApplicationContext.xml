@@ -12,15 +12,6 @@
     <context:annotation-config />
     <context:component-scan base-package="org.openhds.webservice" />
 
-    <bean id="whitelistInterceptor"
-          class="org.openhds.webservice.WhitelistAuthenticationInteceptor">
-        <constructor-arg ref="whitelistService" />
-    </bean>
-
-    <mvc:interceptors>
-        <bean class="org.openhds.webservice.WhitelistAuthenticationInteceptor" />
-    </mvc:interceptors>
-
     <bean
             class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="asyncRequestTimeout">

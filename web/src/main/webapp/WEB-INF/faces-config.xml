@@ -496,27 +496,7 @@
 			<from-outcome>user_edit</from-outcome>
 			<to-view-id>/user/edit.xhtml</to-view-id>
 			<redirect />		
-		</navigation-case>	
-		<navigation-case>
-			<from-outcome>whitelist_list</from-outcome>
-			<to-view-id>/whitelist/create.xhtml</to-view-id>
-			<redirect />
 		</navigation-case>
-		<navigation-case>
-			<from-outcome>whitelist_create</from-outcome>
-			<to-view-id>/whitelist/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>	
-		<navigation-case>
-			<from-outcome>whitelist_detail</from-outcome>
-			<to-view-id>/whitelist/detail.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>whitelist_edit</from-outcome>
-			<to-view-id>/whitelist/edit.xhtml</to-view-id>
-			<redirect />		
-		</navigation-case>	
 	</navigation-rule>
 
 </faces-config>

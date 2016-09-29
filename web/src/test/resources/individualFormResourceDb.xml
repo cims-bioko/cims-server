@@ -43,8 +43,4 @@
     <residency uuid="Residency" location_uuid="HOUSEHOLDLOCATION" individual_uuid="Individual2" startDate="1999-12-19"
                startType="StartType" endType="NA" collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
 
-    <whitelist uuid="LOCALHOST1" address="127.0.0.1" />
-    <whitelist uuid="LOCALHOST2" address="10.0.2.10" />
-    <whitelist uuid="LOCALHOST3" address="10.0.2.14" />
-    <whitelist uuid="LOCALHOST4" address="141.114.156.167" />
 </dataset>

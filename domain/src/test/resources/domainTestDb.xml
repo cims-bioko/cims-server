@@ -24,8 +24,4 @@
         groupHead_uuid="Individual2" groupType="COH" insertDate="2000-12-19" deleted="false"
         collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
 
-    <whitelist uuid="LOCALHOST1" address="127.0.0.1" />
-    <whitelist uuid="LOCALHOST2" address="10.0.2.10" />
-    <whitelist uuid="LOCALHOST3" address="10.0.2.14" />
-    <whitelist uuid="LOCALHOST4" address="141.114.156.167" />
 </dataset>
