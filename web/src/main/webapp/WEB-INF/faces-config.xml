@@ -418,16 +418,6 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>vaccination_create</from-outcome>
-			<to-view-id>/vaccination/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>	
-		<navigation-case>
-			<from-outcome>vaccination_edit</from-outcome>
-			<to-view-id>/vaccination/edit.xhtml</to-view-id>
-			<redirect />		
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>visit_list</from-outcome>
 			<to-view-id>/visit/create.xhtml</to-view-id>
 			<redirect />

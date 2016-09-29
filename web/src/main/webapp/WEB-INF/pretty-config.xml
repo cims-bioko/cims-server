@@ -58,12 +58,6 @@
 		<action onPostback="false">#{socialGroupCrud.detailSetup}</action>
 	</url-mapping>
 
-	<url-mapping id="vaccinationDetail" >
-		<pattern value="/amendment/vaccination/details/#{itemId}" />
-		<view-id>/vaccination/detail.faces</view-id>
-		<action onPostback="false">#{vaccinationCrud.detailSetup}</action>
-	</url-mapping>
-
 	<url-mapping id="visitDetail" >
 		<pattern value="/amendment/visit/details/#{itemId}" />
 		<view-id>/visit/detail.faces</view-id>
@@ -137,11 +131,6 @@
 	<url-mapping id="socialgroupEdit" >
 		<pattern value="/amendment/socialgroup/details/#{itemId: socialGroupCrud.item.uuid}" />
 		<view-id>/socialgroup/detail.faces</view-id>
-	</url-mapping>
-
-	<url-mapping id="vaccinationEdit" >
-		<pattern value="/amendment/vaccination/details/#{itemId: vaccinationCrud.item.uuid}" />
-		<view-id>/vaccination/detail.faces</view-id>
 	</url-mapping>
 
 	<url-mapping id="visitEdit" >

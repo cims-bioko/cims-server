@@ -31,8 +31,4 @@
 		<attributes>
 		</attributes>
 	</entity>
-	<entity name="Vaccination">
-		<attributes>
-		</attributes>
-	</entity>
 </config>
