@@ -293,26 +293,6 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>round_create</from-outcome>
-			<to-view-id>/round/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>round_list</from-outcome>
-			<to-view-id>/round/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>round_edit</from-outcome>
-			<to-view-id>/round/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>round_detail</from-outcome>
-			<to-view-id>/round/detail.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>socialgroup_list</from-outcome>
 			<to-view-id>/socialgroup/create.xhtml</to-view-id>
 			<redirect />

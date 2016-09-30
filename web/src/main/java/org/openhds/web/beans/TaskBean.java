@@ -17,8 +17,7 @@ public class TaskBean {
     private AsyncTaskService asyncTaskService;
     private TaskScheduler scheduler;
     private ScheduledFuture scheduledTask;
-    
-    private Integer roundNumber = 1;
+
     private String cronSchedule = "0 0 * * * ?";
 
     public TaskBean(TaskExecutor taskExecutor, AsyncTaskService asyncTaskService, TaskScheduler scheduler) {
@@ -75,14 +74,6 @@ public class TaskBean {
 
     public List<AsyncTask> getTasks() {
         return asyncTaskService.findAllAsyncTask();
-    }
-
-    public Integer getRoundNumber() {
-        return roundNumber;
-    }
-
-    public void setRoundNumber(Integer roundNumber) {
-        this.roundNumber = roundNumber;
     }
 
     public String getCronSchedule() {
