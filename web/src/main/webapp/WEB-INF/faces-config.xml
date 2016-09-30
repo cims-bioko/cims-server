@@ -113,11 +113,6 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>individualmerge_create</from-outcome>
-			<to-view-id>/individualmerge/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>inmigration_create</from-outcome>
 			<to-view-id>/migration/create.xhtml</to-view-id>
 			<redirect />

@@ -116,17 +116,6 @@
 		</property>
     </bean>
 
-    <bean id="individualMergeService" parent="baseServiceTransactionBean">
-    	<property name="target">
-		    <bean class="org.openhds.controller.service.impl.IndividualMergeServiceImpl">
-		        <constructor-arg ref="entityService" />
-		        <constructor-arg ref="genericDao" />
-		        <constructor-arg ref="membershipService" />
-		        <constructor-arg ref="inMigrationService" />
-		    </bean>
-	    </property>
-    </bean>
-     
     <bean id="individualService" parent="baseServiceTransactionBean">
     	<property name="target">
     		<bean class="org.openhds.controller.service.impl.IndividualServiceImpl">
