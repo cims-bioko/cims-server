@@ -22,7 +22,6 @@
 			        <c:if test="#{navController.showUtilities}" >
 		        	<ul>
 		        		<li><h:commandLink value="Tasks" action="task" /></li>
-			            <li><h:commandLink value="#{msg.navBarFieldWorkers}" action="#{fieldWorkerCrud.createSetup}" /></li>
 			    	</ul>
 			    	</c:if>
 			    </li>
@@ -36,6 +35,7 @@
 		        	<ul>
 			   		    <li><h:commandLink value="#{msg.navBarRoleManagement}" action="#{roleCrud.createSetup}" /></li>
 			   		    <li><h:commandLink value="#{msg.navBarUserManagement}" action="#{userCrud.createSetup}" /></li>
+						<li><h:commandLink value="#{msg.navBarFieldWorkers}" action="#{fieldWorkerCrud.createSetup}" /></li>
 			    	</ul>
 			    	</c:if>
 			    </li>
