@@ -65,7 +65,6 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     String searchString;
     List<SelectItem> searchableFieldsList;
     Boolean isSearch = false;
-    Boolean isFlow = false;
 
 	// used to convert an entity from a string to object, or
     // object to a string
@@ -182,8 +181,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 
     public String createSetup() {
         reset(false, true);
-        showListing = !isFlow;
-        //showListing=false;
+        showListing = true;
         entityItem = newInstance();
         navMenuBean.setNextItem(entityClass.getSimpleName());
         navMenuBean.addCrumb(entityClass.getSimpleName() + " Create");
