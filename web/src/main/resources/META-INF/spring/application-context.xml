@@ -101,10 +101,6 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="calendarConverter" class="org.openhds.web.cvt.CalendarConverter">
-		<property name="dateFormat" value="#{siteProperties.dateFormat}" />
-	</bean>
-
 	<bean id="timestampConverter" class="org.openhds.web.cvt.TimeStampConverter">
 		<constructor-arg value="#{siteProperties.dateFormat}" />
 	</bean>
