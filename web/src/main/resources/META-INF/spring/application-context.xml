@@ -512,16 +512,6 @@
 		<property name="genericDao" ref="genericDao" />
 	</bean>
 
-	<bean id="deathHOHBean" class="org.openhds.web.beans.DeathHOHBean"
-		scope="session">
-		<property name="socialGroupService" ref="socialGroupService" />
-		<property name="deathService" ref="deathService" />
-		<property name="membershipService" ref="membershipService" />
-		<property name="webFlowService" ref="webFlowService" />
-		<property name="entityService" ref="entityService" />
-		<property name="genericDao" ref="genericDao" />
-	</bean>
-
 	<bean id="siteProperties"
 		class="org.openhds.domain.service.impl.SitePropertiesServiceImpl">
 		<property name="locale">

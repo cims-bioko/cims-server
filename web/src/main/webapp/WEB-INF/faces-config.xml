@@ -78,11 +78,6 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>deathForHOH_flow</from-outcome>
-			<to-view-id>/deathForHOH.flow</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>fieldworker_list</from-outcome>
 			<to-view-id>/fieldworker/create.xhtml</to-view-id>
 			<redirect />
