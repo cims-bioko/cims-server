@@ -19,21 +19,6 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>death_list</from-outcome>
-			<to-view-id>/death/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>death_create</from-outcome>
-			<to-view-id>/death/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>death_edit</from-outcome>
-			<to-view-id>/death/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>fieldworker_list</from-outcome>
 			<to-view-id>/fieldworker/create.xhtml</to-view-id>
 			<redirect />
@@ -54,140 +39,10 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>individual_create</from-outcome>
-			<to-view-id>/individual/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>individual_edit</from-outcome>
-			<to-view-id>/individual/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>inmigration_create</from-outcome>
-			<to-view-id>/migration/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>migration_create</from-outcome>
-			<to-view-id>/migration/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>inmigration_list</from-outcome>
-			<to-view-id>/migration/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>inmigration_edit</from-outcome>
-			<to-view-id>/migration/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>internal_inmigration</from-outcome>
-			<to-view-id>/migration/migration.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>location_list</from-outcome>
-			<to-view-id>/location/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>location_create</from-outcome>
-			<to-view-id>/location/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>location_edit</from-outcome>
-			<to-view-id>/location/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>logoutLnk</from-outcome>
 			<to-view-id>/logoutProcess</to-view-id>
-			<redirect />	
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>pregnancyobservation_list</from-outcome>
-			<to-view-id>/pregnancyobservation/create.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
-		<navigation-case>
-			<from-outcome>pregnancyobservation_create</from-outcome>
-			<to-view-id>/pregnancyobservation/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>pregnancyobservation_edit</from-outcome>
-			<to-view-id>/pregnancyobservation/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>membership_list</from-outcome>
-			<to-view-id>/membership/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>membership_create</from-outcome>
-			<to-view-id>/membership/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>membership_edit</from-outcome>
-			<to-view-id>/membership/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>outmigration_list</from-outcome>
-			<to-view-id>/outmigration/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>outmigration_create</from-outcome>
-			<to-view-id>/outmigration/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>outmigration_edit</from-outcome>
-			<to-view-id>/outmigration/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>relationship_list</from-outcome>
-			<to-view-id>/relationship/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>relationship_create</from-outcome>
-			<to-view-id>/relationship/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>relationship_edit</from-outcome>
-			<to-view-id>/relationship/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>residency_list</from-outcome>
-			<to-view-id>/residency/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>residency_create</from-outcome>
-			<to-view-id>/residency/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>residency_edit</from-outcome>
-			<to-view-id>/residency/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-        <navigation-case>
-            <from-outcome>residency_delete_failure</from-outcome>
-            <to-view-id>/residency/delete-failure.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
 		<navigation-case>
 			<from-outcome>role_list</from-outcome>
 			<to-view-id>/role/create.xhtml</to-view-id>
@@ -213,41 +68,11 @@
 			<to-view-id>/role/assignroles.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
-		<navigation-case>
-			<from-outcome>socialgroup_list</from-outcome>
-			<to-view-id>/socialgroup/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>socialgroup_create</from-outcome>
-			<to-view-id>/socialgroup/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>socialgroup_edit</from-outcome>
-			<to-view-id>/socialgroup/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
         <navigation-case>
             <from-outcome>task</from-outcome>
             <to-view-id>/task/index.xhtml</to-view-id>
             <redirect />
         </navigation-case>
-		<navigation-case>
-			<from-outcome>visit_list</from-outcome>
-			<to-view-id>/visit/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>visit_create</from-outcome>
-			<to-view-id>/visit/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>	
-		<navigation-case>
-			<from-outcome>visit_edit</from-outcome>
-			<to-view-id>/visit/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
 		<navigation-case>
 			<from-outcome>user_list</from-outcome>
 			<to-view-id>/user/create.xhtml</to-view-id>
@@ -257,7 +82,7 @@
 			<from-outcome>user_create</from-outcome>
 			<to-view-id>/user/create.xhtml</to-view-id>
 			<redirect />
-		</navigation-case>	
+		</navigation-case>
 		<navigation-case>
 			<from-outcome>user_detail</from-outcome>
 			<to-view-id>/user/detail.xhtml</to-view-id>
@@ -266,7 +91,7 @@
 		<navigation-case>
 			<from-outcome>user_edit</from-outcome>
 			<to-view-id>/user/edit.xhtml</to-view-id>
-			<redirect />		
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 
