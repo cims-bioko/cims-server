@@ -21,13 +21,6 @@
                     </h:commandLink>
                 </li>
             </sec:ifAllGranted>
-	    	<sec:ifAllGranted roles="ACCESS_UPDATE">
-		    	<li>
-		    		<h:commandLink action="#{facesNavigation.redirect('update_flow')}" value="#{msg.navBarUpdate}" >
-		    			<f:setPropertyActionListener target="#{navController.showUpdate}" value="true" /> 
-		            </h:commandLink>
-		    	</li>
-	    	</sec:ifAllGranted>
 	        <sec:ifAllGranted roles="ACCESS_AMENDMENT_FORMS">
 		        <li>
 		            <h:commandLink value="#{msg.navBarAmendments}" action="demowelcome" >

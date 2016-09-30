@@ -25,14 +25,11 @@
 		<set name="inMigrationCrud.item.unknownIndividual" value="externalContext.getRequestParameterMap().get('external') == null and migrationType != 'external'" />
 
 		<evaluate expression="inMigrationCrud.item.isUnknownIndividual() ? inMigrationCrud.item.setMigTypeInternal() : inMigrationCrud.item.setMigTypeExternal()" />
-
-		<!-- A flag indicating whether this flow is being used as a sub flow during the update process -->
-		<set name="flowScope.updating" value="updating" />
 		
 		<!-- A flag indicating whether to show the navigation menu -->
 		<!-- During the update process, the menu should be hidden -->
 		<!-- Otherwise it is ok to show the navigation menu -->
-		<set name="flowScope.showNavMenu" value="updating == null" />
+		<set name="flowScope.showNavMenu" value="true" />
 		
 		<set name="flowScope.migrationType" value="inMigrationCrud.item.isUnknownIndividual() ? 'Internal with Unknown Id' : 'External'" />
 		

@@ -38,7 +38,7 @@
 
         <!-- Navigation menu should be shown if pregnancy outcome is being -->
         <!-- used outside the update form. Otherwise, the nav menu should be hidden -->
-        <set name="flowScope.showNavMenu" value="updating == null" />
+        <set name="flowScope.showNavMenu" value="true" />
 
         <!-- Flag to disable a subset of fields on the individual create form -->
         <set name="flowScope.pregnancyOutcome" value="true" />
@@ -190,10 +190,6 @@
 
         <transition on="cancel" to="logout" />
     </view-state>
-    
-    <decision-state id="isComingFromUpdate">
-        <if test="flowScope.updating" then="confirmLogout" else="logout" />
-    </decision-state>
 
     <!-- Determine whether to show the confirm form -->
         <!-- Currently, confirm will only be shown if the user has clicked -->

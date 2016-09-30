@@ -303,11 +303,6 @@
             <redirect />
         </navigation-case>
 		<navigation-case>
-			<from-outcome>update_flow</from-outcome>
-			<to-view-id>/update.flow</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>visit_list</from-outcome>
 			<to-view-id>/visit/create.xhtml</to-view-id>
 			<redirect />

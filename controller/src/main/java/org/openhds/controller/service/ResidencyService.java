@@ -54,7 +54,7 @@ public interface ResidencyService {
 	 * @param location The location to look for residencies at
 	 * @return a list of individuals who have a current residency at the location
 	 */
-	@Authorized({PrivilegeConstants.VIEW_ENTITY, PrivilegeConstants.ACCESS_UPDATE})
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	List<Individual> getIndividualsByLocation(Location location);
 	
 	/**

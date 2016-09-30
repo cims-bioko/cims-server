@@ -11,7 +11,6 @@ public class NavigationMenuBean {
 	boolean showAmendments;
 	boolean showUtilities;
 	boolean showDevelopers;
-	boolean showUpdate;
 	boolean showConfiguration;
 	boolean showGettingStarted;
 	
@@ -164,7 +163,6 @@ public class NavigationMenuBean {
 		showAmendments = false;
 		showUtilities = false;
 		showDevelopers = false;
-		showUpdate = false;
 		showConfiguration = false;
 		showGettingStarted = false;
 	}
@@ -221,16 +219,6 @@ public class NavigationMenuBean {
 		this.clear();
 		this.showDevelopers = showDevelopers;
 		trail.add("Developers");
-	}
-	
-	public boolean isShowUpdate() {
-		return showUpdate;
-	}
-
-	public void setShowUpdate(boolean showUpdate) {
-		this.clear();
-		this.showUpdate = showUpdate;
-		trail.add("Update");
 	}
 
 	public String getNextItem() {

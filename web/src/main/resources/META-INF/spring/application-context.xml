@@ -453,15 +453,6 @@
 	</bean>
 
 	<!-- Beans -->
-	<bean id="updateBean" class="org.openhds.web.beans.UpdateBean"
-		scope="session">
-		<property name="residencyService" ref="residencyService" />
-		<property name="properties" ref="siteProperties" />
-		<property name="genericDao" ref="genericDao" />
-		<property name="webFlowService" ref="webFlowService" />
-		<property name="jsfService" ref="jsfService" />
-	</bean>
-
 	<bean id="taskBean" class="org.openhds.web.beans.TaskBean" init-method="scheduleAllTasks">
 		<constructor-arg ref="openhdsTaskExecutor" />
 		<constructor-arg ref="asyncTaskServiceImpl" />
