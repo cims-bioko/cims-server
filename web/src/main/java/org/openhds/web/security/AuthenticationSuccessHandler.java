@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 	
-	private static final String WELCOME_PAGE = "/demowelcome.faces";
+	private static final String WELCOME_PAGE = "/welcome.faces";
 	private final UserDao userDao;
 	
 	public AuthenticationSuccessHandler(UserDao userDao) {

@@ -14,13 +14,9 @@
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
-			<from-outcome>demowelcome</from-outcome>
-			<to-view-id>/demowelcome.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>welcome</from-outcome>
-			<to-view-id>/welcome</to-view-id>
+			<to-view-id>/welcome.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>death_list</from-outcome>

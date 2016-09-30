@@ -10,7 +10,7 @@
     <h:form>
 		<ul id="menu1" class="menu">
 	    	<li>
-	        	<h:commandLink action="demowelcome" value="#{msg.navBarHome}" >
+	        	<h:commandLink action="welcome" value="#{msg.navBarHome}" >
 	        		<f:setPropertyActionListener target="#{navController.showHome}" value="true" /> 
 	            </h:commandLink>
 	        </li>
@@ -23,7 +23,7 @@
             </sec:ifAllGranted>
 	        <sec:ifAllGranted roles="ACCESS_AMENDMENT_FORMS">
 		        <li>
-		            <h:commandLink value="#{msg.navBarAmendments}" action="demowelcome" >
+		            <h:commandLink value="#{msg.navBarAmendments}" action="welcome" >
 		            	<f:setPropertyActionListener target="#{navController.showAmendments}" value="true" /> 
 		            </h:commandLink>
 		            <c:if test="#{navController.showAmendments}" >
@@ -47,7 +47,7 @@
 	    	</sec:ifAllGranted>
 	    	<sec:ifAllGranted roles="ACESSS_UTILITY_ROUTINES">
 			    <li>
-			        <h:commandLink value="#{msg.navBarUtilityRoutine}" action="demowelcome" >
+			        <h:commandLink value="#{msg.navBarUtilityRoutine}" action="welcome" >
 			        	<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
 			        </h:commandLink>
 			        <c:if test="#{navController.showUtilities}" >
@@ -60,7 +60,7 @@
 		    </sec:ifAllGranted>
 		    <sec:ifAllGranted roles="ACESSS_CONFIGURATION">
 			    <li>
-			        <h:commandLink value="#{msg.navBarConfiguration}" action="demowelcome">
+			        <h:commandLink value="#{msg.navBarConfiguration}" action="welcome">
 			        	<f:setPropertyActionListener target="#{navController.showConfiguration}" value="true" /> 
 			        </h:commandLink>
 			        <c:if test="#{navController.showConfiguration}" >

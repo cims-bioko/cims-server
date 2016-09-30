@@ -130,7 +130,7 @@
 	</filter-mapping>
     
     <welcome-file-list>
-        <welcome-file>/demowelcome.faces</welcome-file>
+        <welcome-file>/welcome.faces</welcome-file>
     </welcome-file-list>
 
 </web-app>
