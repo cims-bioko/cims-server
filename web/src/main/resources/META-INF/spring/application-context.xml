@@ -124,7 +124,6 @@
 		<constructor-arg value="java.lang.String" />
 	</bean>
 
-	<bean id="facesNavigation" class="org.openhds.web.ui.FacesNavigation" />
 	<bean id="navController" class="org.openhds.web.ui.NavigationMenuBean" />
 	<bean id="jsfService" class="org.openhds.web.service.impl.JsfServiceImpl" />
 
