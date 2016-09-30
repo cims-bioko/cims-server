@@ -63,7 +63,7 @@ public class VisitServiceImpl implements VisitService {
     }
 
     /**
-     * Retrieves all Visit extId's that contain the term provided. Used in performing autocomplete.
+     * Retrieves all Visit extId's that contain the term provided.
      */
     public List<String> getVisitExtIds(String term) {
         List<String> ids = new ArrayList<>();

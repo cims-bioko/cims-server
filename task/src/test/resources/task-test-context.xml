@@ -21,7 +21,6 @@
     <bean id="siteProperties" class="org.openhds.domain.service.impl.SitePropertiesServiceImpl">
         <property name="locale"><value>${locale}</value></property>
         <property name="dateFormat"><value>${dateFormat}</value></property>
-        <property name="autocomplete"><value>${autocomplete}</value></property>
         <property name="unknownIdentifier"><value>${unknownIdentifier}</value></property>
         <property name="inmigrationCode"><value>${inmigration}</value></property>
         <property name="outmigrationCode"><value>${outmigration}</value></property>

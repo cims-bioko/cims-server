@@ -18,19 +18,7 @@
 
  		<script type="text/javascript" src="#{request.contextPath}/resources/scripts/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="#{request.contextPath}/resources/scripts/ui/jquery-ui-1.8.5.custom.min.js"></script>
-
-		<script>
-			$(function() {
-				<c:if test="#{siteProperties.autocomplete}">
-					$(".visit").autocomplete({source:"#{request.contextPath}/visit.autocomplete"});
-					$(".collectedBy").autocomplete({source:"#{request.contextPath}/collectedBy.autocomplete"});
-					$(".location").autocomplete({source:"#{request.contextPath}/location.autocomplete"});
-					$(".locationName").autocomplete({source:"#{request.contextPath}/locationName.autocomplete"});
-					$(".socialGroup").autocomplete({source:"#{request.contextPath}/socialGroup.autocomplete"});
-					$(".individual").autocomplete({source:"#{request.contextPath}/individual.autocomplete"});
-				</c:if>
-			});
-		</script>
+		
     </h:head>
 
     <body>

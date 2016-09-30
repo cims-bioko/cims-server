@@ -350,9 +350,6 @@
 		<property name="dateFormat">
 			<value>${dateFormat}</value>
 		</property>
-		<property name="autocomplete">
-			<value>${autocomplete}</value>
-		</property>
 		<property name="unknownIdentifier">
 			<value>${unknownIdentifier}</value>
 		</property>

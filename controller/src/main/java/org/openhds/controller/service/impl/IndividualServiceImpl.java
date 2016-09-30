@@ -110,8 +110,7 @@ public class IndividualServiceImpl implements IndividualService {
     }
 
     /**
-     * Retrieves all Individual extId's that contain the term provided. Used in
-     * performing autocomplete.
+     * Retrieves all Individual extId's that contain the term provided.
      */
     public List<String> getIndividualExtIds(String term) {
         List<String> ids = new ArrayList<>();

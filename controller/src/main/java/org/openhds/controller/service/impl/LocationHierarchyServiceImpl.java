@@ -348,7 +348,6 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 
 	/**
 	 * Retrieves all Location extId's which contain the term provided.
-	 * Used in performing autocomplete.
 	 */
 	public List<String> getLocationExtIds(String term) {
 		List<String> ids = new ArrayList<>();
@@ -361,7 +360,6 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 
 	/**
 	 * Retrieves all Location ids within the hierarchy that contain the term provided.
-	 * Used in performing autocomplete.
 	 */
 	public List<String> getLocationNames(String term) {
 		List<String> names = new ArrayList<>();

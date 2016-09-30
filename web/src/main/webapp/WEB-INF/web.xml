@@ -72,16 +72,6 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.faces</url-pattern>
     </servlet-mapping>
-        
-    <servlet>
-		<servlet-name>autocomplete</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-	</servlet>
-	
-	<servlet-mapping>
-		<servlet-name>autocomplete</servlet-name>
-		<url-pattern>*.autocomplete</url-pattern>
-	</servlet-mapping>
 
 	<filter>
 		<filter-name>hibernateFilter</filter-name>

@@ -47,7 +47,6 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
     
     /**
      * Retrieves all Field Worker extId's that contain the term provided.
-     * Used in performing autocomplete.
      */
     public List<String> getFieldWorkerExtIds(String term) {
         List<String> ids = new ArrayList<>();

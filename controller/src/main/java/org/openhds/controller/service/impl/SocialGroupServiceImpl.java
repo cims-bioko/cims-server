@@ -63,8 +63,7 @@ public class SocialGroupServiceImpl implements SocialGroupService {
     }
 
     /**
-     * Retrieves all Social Group extId's that contain the term provided. Used
-     * in performing autocomplete.
+     * Retrieves all Social Group extId's that contain the term provided.
      */
     public List<String> getSocialGroupExtIds(String term) {
         List<String> ids = new ArrayList<>();

@@ -34,7 +34,6 @@ public class SitePropertiesServiceImpl implements SitePropertiesService {
 	int minimumAgeOfHouseholdHead;
 	int minimumAgeOfMarriage;
 	int minimumAgeOfPregnancy;
-	boolean autocomplete;
 	boolean valueExtensionsForMembershipCodesEnabled;
 	
 	public String getLocale() {
@@ -60,15 +59,7 @@ public class SitePropertiesServiceImpl implements SitePropertiesService {
 	public void setEarliestEnumerationDate(String earliestEnumerationDate) {
 		this.earliestEnumerationDate = earliestEnumerationDate;
 	}
-	
-    public boolean isAutocomplete() {
-		return autocomplete;
-	}
 
-	public void setAutocomplete(boolean autocomplete) {
-		this.autocomplete = autocomplete;
-	}
-					
     public String getSpecialStudyLocation() {
 		return specialStudyLocation;
 	}
