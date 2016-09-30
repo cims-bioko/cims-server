@@ -163,26 +163,6 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>locationhierarchy_list</from-outcome>
-			<to-view-id>/locationhierarchy/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>locationhierarchy_create</from-outcome>
-			<to-view-id>/locationhierarchy/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>locationhierarchy_edit</from-outcome>
-			<to-view-id>/locationhierarchy/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>locationhierarchy_detail</from-outcome>
-			<to-view-id>/locationhierarchy/detail.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>	
-		<navigation-case>
 			<from-outcome>logoutLnk</from-outcome>
 			<to-view-id>/logoutProcess</to-view-id>
 			<redirect />	

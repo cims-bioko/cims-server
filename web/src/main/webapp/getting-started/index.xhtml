@@ -22,9 +22,6 @@
                 	   
                 	<h:panelGrid columns="1">
                 		<legend>#{msg.gettingStartedSteps}</legend>
-	                	<h:commandLink styleClass="welcome-link" value="#{msg.mnLocationHierarchy}" action="#{locationHierarchyCrud.createSetup}">
-	                		<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
-	                	</h:commandLink>
 	                	<h:commandLink styleClass="welcome-link" value="#{msg.mnFieldWorkers}" action="#{fieldWorkerCrud.createSetup}">
 	                		<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
 	                	</h:commandLink>
