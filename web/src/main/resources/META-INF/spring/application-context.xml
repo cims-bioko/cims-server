@@ -149,8 +149,6 @@
 		<property name="entityService" ref="entityService" />
 		<property name="genericDao" ref="genericDao" />
 		<property name="navMenuBean" ref="navController" />
-		<property name="properties" ref="siteProperties" />
-		<property name="entityValidationService" ref="entityValidator" />
 	</bean>
 
 	<bean id="fieldWorkerCrud" parent="baseCrud"

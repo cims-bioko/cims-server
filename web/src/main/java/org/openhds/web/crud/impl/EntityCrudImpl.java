@@ -17,12 +17,10 @@ import javax.faces.model.SelectItem;
 import org.openhds.controller.exception.AuthorizationException;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
-import org.openhds.controller.service.EntityValidationService;
 import org.openhds.dao.service.Dao;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.constraint.Searchable;
 import org.openhds.domain.model.AuditableCollectedEntity;
-import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.web.crud.EntityCrud;
 import org.openhds.web.service.JsfService;
 import org.openhds.web.ui.NavigationMenuBean;
@@ -58,12 +56,8 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     PagingState filteredPager;
     protected Dao<T, PK> dao;
     GenericDao genericDao;
-    SitePropertiesService properties;
     
 	List<T> pagedItems;
-    List<T> entitiesByProperty;
-    List<T> entitiesByExample;
-    List<T> allEntities;
     HashMap<T, Class<?>> searchableFieldsMap = new HashMap<>();
     NavigationMenuBean navMenuBean;
     
@@ -92,8 +86,6 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 	 * Service that provides the business logic for creating, editing and deleting entities
 	 */
 	protected EntityService entityService;
-	
-	protected EntityValidationService entityValidationService;
 
     public EntityCrudImpl(Class<T> entityClass) {
         if (entityClass == null) {
@@ -423,44 +415,9 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 		List<T> list = genericDao.findListByProperty(entityClass, searchPropertyName, item, true);
 		return list;
 	}
-    
-	public List<T> getEntitiesByProperty() {
-		return entitiesByProperty;
-	}
 
-	public void setEntitiesByProperty(List<T> entitiesByProperty) {
-		this.entitiesByProperty = entitiesByProperty;
-		
-	}
-
-	public List<T> getEntitiesByExample() {
-		return entitiesByExample;
-	}
-
-	public void setEntitiesByExample(List<T> entitiesByExample) {
-		this.entitiesByExample = entitiesByExample;
-	}    
-    
-    public List<T> getEntitiesByProperty(String propertyName, Object value) {
-        entitiesByProperty = dao.findListByProperty(propertyName, value, true);
-        return entitiesByProperty;
-    }
-
-    public List<T> getEntitiesByExample(T exampleInstance,String... excludeProperty) {
-        entitiesByExample = dao.findByExample(exampleInstance,excludeProperty);
-        return entitiesByExample;
-    }
-        
     public SelectItem[] getSelectItems() {
         return jsfService.getSelectItems(dao.findAll(true));
-    }
-    
-    /*
-     * Return SelectItem for a subset of enitities depending on the value of a
-     * property being searched on
-     */
-    public SelectItem[] getSelectItemsByProperty(String propertyName, Object value) {
-        return jsfService.getSelectItems(dao.findListByProperty(propertyName, value, true));
     }
 
     public void setConverter(Converter converter) {
@@ -477,72 +434,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 
     public void performAudit(T entityItem) {
     }
-    
-	/**
-	 * Save and commit the entity
-	 * @return true if commit succeeded, false otherwise
-	 */
-    public boolean commit() {
-		// wrapped in a try catch in case commit fails
-		try {
-			entityService.create(entityItem);
-		} catch(Exception e) {
-			return false;
-		}
-		
-		return true;
-	}
-	
-	public boolean save() {
-			try {
-				entityService.save(entityItem);
-			} catch (Exception e) {
-				return false;
-			}
-			
-			return true;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public <S> boolean validateEntity(S entity) {
-		try {
-			entityValidationService.validateEntity(entity);
-		} catch (ConstraintViolations e) {
-			return false;
-		}
-		
-		return true;
-	}
 
-	
-	/**
-	 * Initialize the crud and backing bean
-	 * This should be called when a flow is started
-	 * @return
-	 */
-	public boolean initFlow(boolean isFlow) {
-		this.isFlow = isFlow;
-		this.createSetup();	
-		return true;
-	}
-
-	/**
-	 * Configure the backing bean to be viewed by the user
-	 * @param id The id of the pregnancy outcome to retrieve from the db
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
- 	public boolean editByUuid(String id) {
-		try {
-			entityItem = (T) entityService.read(entityItem.getClass(), id);
-			showListing = false;
-		} catch (AuthorizationException e) {
-			return false;
-		}
-		
-		return true;
-	}
-	
 	public List<T> getFilteredPagedItems() {
 		if (entityFilter == null) {
 			// filter not setup so can't filter entities
@@ -578,6 +470,9 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 		this.searchString = searchString;
 	}
 
+	/*
+	 * Used in EL expressions for search box.
+	 */
 	@SuppressWarnings("unchecked")
 	public List<SelectItem> getSearchableFieldsList() {
 		searchableFieldsList = new ArrayList<>();
@@ -592,20 +487,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 		}    	
 		return searchableFieldsList;
 	}
-	
-	public void setSearchableFieldsList(List<SelectItem> searchableFieldsList) {
-		this.searchableFieldsList = searchableFieldsList;
-	}
 
-	public List<T> getAllEntities() {
-		allEntities = dao.findAll(true);
-		return allEntities;
-	}
-
-	public void setAllEntities(List<T> allEntities) {
-		this.allEntities = allEntities;
-	}
-	
 	public GenericDao getGenericDao() {
 		return genericDao;
 	}
@@ -613,38 +495,22 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 	public void setGenericDao(GenericDao genericDao) {
 		this.genericDao = genericDao;
 	}
-	
+
+	/*
+	 * Used in EL expressions for expanders in menu.
+	 */
 	public boolean isShowListing() {
 		return showListing;
 	}
 
+	/*
+	 * Used in EL expressions to toggle expanders in menu.
+	 */
 	public void setShowListing(boolean showListing) {
 		this.showListing = showListing;
-	}
-	
-	public NavigationMenuBean getNavMenuBean() {
-		return navMenuBean;
 	}
 
 	public void setNavMenuBean(NavigationMenuBean navMenuBean) {
 		this.navMenuBean = navMenuBean;
-	}
-	
-	public SitePropertiesService getProperties() {
-		return properties;
-	}
-
-	public void setProperties(SitePropertiesService properties) {
-		this.properties = properties;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public EntityValidationService getEntityValidationService() {
-		return entityValidationService;
-	}
-
-	@SuppressWarnings("unchecked")
-	public void setEntityValidationService(EntityValidationService entityValidationService) {
-		this.entityValidationService = entityValidationService;
 	}
 }
