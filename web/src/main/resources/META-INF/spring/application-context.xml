@@ -276,7 +276,6 @@
 	<bean id="facesNavigation" class="org.openhds.web.ui.FacesNavigation" />
 	<bean id="navController" class="org.openhds.web.ui.NavigationMenuBean" />
 	<bean id="jsfService" class="org.openhds.web.service.impl.JsfServiceImpl" />
-	<bean id="webFlowService" class="org.openhds.web.service.impl.WebFlowServiceImpl" />
 
 	<bean id="entityService" parent="baseTransactionBean">
 		<property name="target">
@@ -306,7 +305,6 @@
 
 	<bean id="baseCrud" scope="session" abstract="true">
 		<property name="jsfService" ref="jsfService" />
-		<property name="webFlowService" ref="webFlowService" />
 		<property name="entityService" ref="entityService" />
 		<property name="genericDao" ref="genericDao" />
 		<property name="navMenuBean" ref="navController" />

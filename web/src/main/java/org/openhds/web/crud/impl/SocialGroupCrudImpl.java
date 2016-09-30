@@ -7,7 +7,6 @@ import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.SocialGroupService;
-import org.springframework.binding.message.MessageContext;
 
 import static org.hibernate.Hibernate.initialize;
 
@@ -78,12 +77,11 @@ public class SocialGroupCrudImpl extends EntityCrudImpl<SocialGroup, String> {
     }
 	
     @Override
-    public boolean commit(MessageContext messageContext) {
+    public boolean commit() {
     	try {
     		socialGroupService.createSocialGroup(entityItem);
     		return true;
     	} catch(ConstraintViolations e) {
-    		webFlowService.createMessage(messageContext, e.getMessage());
     	}
     	
     	return false;
@@ -99,11 +97,10 @@ public class SocialGroupCrudImpl extends EntityCrudImpl<SocialGroup, String> {
         return outcomePrefix + "_create";
     }
         
-    public boolean validateSocialGroup(MessageContext messageContext) {
+    public boolean validateSocialGroup() {
     	try {
     		socialGroupService.evaluateSocialGroup(entityItem);
 		} catch (ConstraintViolations e) {
-			webFlowService.createMessage(messageContext, e.getMessage());
 			return false;
 		}    	
 		

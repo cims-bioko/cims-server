@@ -22,7 +22,6 @@
     <bean id="baseCrud" class="org.openhds.web.crud.impl.EntityCrudImpl"
           abstract="true" >
         <property name="jsfService" ref="jsfService" />
-        <property name="webFlowService" ref="webFlowService" />
         <property name="entityService" ref="entityService" />
         <property name="genericDao" ref="genericDao" />
         <property name="navMenuBean" ref="navController" />

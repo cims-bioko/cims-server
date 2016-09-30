@@ -10,7 +10,6 @@ import org.openhds.controller.service.EntityValidationService;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Membership;
 import org.openhds.controller.service.MembershipService;
-import org.springframework.binding.message.MessageContext;
 
 import static org.hibernate.Hibernate.initialize;
 
@@ -57,13 +56,12 @@ public class MembershipCrudImpl extends EntityCrudImpl<Membership, String> {
     }
     
     @Override
-    public boolean commit(MessageContext messageContext) {
+    public boolean commit() {
     	try {
     		entityItem.setEndType(properties.getNotApplicableCode());
     		service.evaluateMembershipBeforeCreate(entityItem);
-    		return super.commit(messageContext);
+    		return super.commit();
     	} catch(ConstraintViolations e) {
-    		webFlowService.createMessage(messageContext, e.getMessage());
     	}	
     	return false;
     }
@@ -85,11 +83,10 @@ public class MembershipCrudImpl extends EntityCrudImpl<Membership, String> {
         return "pretty:membershipEdit";
     }
     
-    public boolean validateMembership(MessageContext messageContext) {
+    public boolean validateMembership() {
     	try {
 			service.evaluateMembershipBeforeCreate(entityItem);
 		} catch (ConstraintViolations e) {
-			webFlowService.createMessage(messageContext, e.getMessage());
 			return false;
 		}    	
 		

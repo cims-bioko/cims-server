@@ -8,7 +8,6 @@ import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Location;
 import org.openhds.controller.service.IndividualService;
-import org.springframework.binding.message.MessageContext;
 
 public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
 
@@ -78,21 +77,19 @@ public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
 	}
 
     @Override
-    public boolean commit(MessageContext messageContext) {
+    public boolean commit() {
         try {
             service.createIndividual(entityItem);
             return true;
         } catch (ConstraintViolations e) {
-            webFlowService.createMessage(messageContext, e.getMessage());
         }
         return false;
     }
 
-    public boolean validateIndividual(MessageContext messageContext) {
+    public boolean validateIndividual() {
         try {
             service.evaluateIndividual(entityItem);
         } catch (ConstraintViolations e) {
-            webFlowService.createMessage(messageContext, e.getMessage());
             return false;
         }
 

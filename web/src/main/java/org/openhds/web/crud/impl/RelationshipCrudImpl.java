@@ -10,7 +10,6 @@ import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Relationship;
 import org.openhds.controller.service.RelationshipService;
-import org.springframework.binding.message.MessageContext;
 
 import static org.hibernate.Hibernate.initialize;
 
@@ -56,14 +55,13 @@ public class RelationshipCrudImpl extends EntityCrudImpl<Relationship, String> {
     }
 	
     @Override
-    public boolean commit(MessageContext messageContext) {
+    public boolean commit() {
     	
     	try {
     		entityItem.setEndType(properties.getNotApplicableCode());
     		service.evaluateRelationship(entityItem);
-    		return super.commit(messageContext);
+    		return super.commit();
     	} catch(ConstraintViolations e) {
-    		webFlowService.createMessage(messageContext, e.getMessage());
     	}	
     	return false;
     }

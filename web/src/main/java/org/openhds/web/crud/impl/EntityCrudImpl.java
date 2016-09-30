@@ -25,12 +25,10 @@ import org.openhds.domain.model.AuditableCollectedEntity;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.web.crud.EntityCrud;
 import org.openhds.web.service.JsfService;
-import org.openhds.web.service.WebFlowService;
 import org.openhds.web.ui.NavigationMenuBean;
 import org.openhds.web.ui.PagingState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.binding.message.MessageContext;
 
 /**
  * Generic implementation of the EntityCrud interface
@@ -81,7 +79,6 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
    
     // helper service
     public JsfService jsfService;
-    public WebFlowService webFlowService;
    
 	protected EntityFilter<T> entityFilter;
 	
@@ -113,14 +110,6 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 	public void setJsfService(JsfService jsfService) {
         this.jsfService = jsfService;
     }
-	
-	public WebFlowService getWebFlowService() {
-		return webFlowService;
-	}
-
-	public void setWebFlowService(WebFlowService webFlowService) {
-		this.webFlowService = webFlowService;
-	}
 
     public void setDao(Dao<T, PK> dao) {
         this.dao = dao;
@@ -493,45 +482,23 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     
 	/**
 	 * Save and commit the entity
-	 * @param messageContext used to relay messages back to the facelet
 	 * @return true if commit succeeded, false otherwise
 	 */
-    public boolean commit(MessageContext messageContext) {
+    public boolean commit() {
 		// wrapped in a try catch in case commit fails
 		try {
 			entityService.create(entityItem);
-		} catch(ConstraintViolations e) {
-			// these exceptions are thrown by the service layer
-			for(String msg : e.getViolations()) {
-				webFlowService.createMessage(messageContext, msg);
-			}
-			return false;
-		} catch(SQLException e) {
-			// hibernate commit fails
-			webFlowService.createMessage(messageContext, "There was an error committing the transaction. Please try again");
-			return false;			
 		} catch(Exception e) {
-			webFlowService.createMessage(messageContext, "An unexpected error has occurred");
 			return false;
 		}
 		
 		return true;
 	}
 	
-	public boolean save(MessageContext messageContext) {
+	public boolean save() {
 			try {
 				entityService.save(entityItem);
-			} catch(ConstraintViolations e) {
-				// these exceptions are thrown by the service layer
-				for(String msg : e.getViolations()) {
-					webFlowService.createMessage(messageContext, msg);
-				}
-				return false;
-			} catch (SQLException e) {
-				webFlowService.createMessage(messageContext, "There was an error saving the transaction. Please try again");
-				return false;
 			} catch (Exception e) {
-				webFlowService.createMessage(messageContext, "An unexpected error has occurred");
 				return false;
 			}
 			
@@ -539,13 +506,10 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <S> boolean validateEntity(S entity, MessageContext messageContext) {
+	public <S> boolean validateEntity(S entity) {
 		try {
 			entityValidationService.validateEntity(entity);
 		} catch (ConstraintViolations e) {
-			for(String msg : e.getViolations()) {
-				webFlowService.createMessage(messageContext, msg);
-			}
 			return false;
 		}
 		
@@ -570,12 +534,11 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
- 	public boolean editByUuid(String id, MessageContext messageContext) {
+ 	public boolean editByUuid(String id) {
 		try {
 			entityItem = (T) entityService.read(entityItem.getClass(), id);
 			showListing = false;
 		} catch (AuthorizationException e) {
-			webFlowService.createMessage(messageContext, e.getMessage());
 			return false;
 		}
 		

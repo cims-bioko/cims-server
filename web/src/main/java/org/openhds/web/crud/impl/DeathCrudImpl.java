@@ -12,7 +12,6 @@ import org.openhds.controller.exception.AuthorizationException;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Death;
 import org.openhds.controller.service.DeathService;
-import org.springframework.binding.message.MessageContext;
 
 public class DeathCrudImpl extends EntityCrudImpl<Death, String> {
 	
@@ -63,14 +62,13 @@ public class DeathCrudImpl extends EntityCrudImpl<Death, String> {
     }
     
     @Override
-    public boolean commit(MessageContext messageContext) {
+    public boolean commit() {
     	try {
     		service.evaluateDeath(entityItem);
     		service.createDeath(entityItem);
-    		return super.commit(messageContext);
+    		return super.commit();
     		
     	} catch(Exception e) {
-    		webFlowService.createMessage(messageContext, e.getMessage());
     	}    	
     	return false;
     }

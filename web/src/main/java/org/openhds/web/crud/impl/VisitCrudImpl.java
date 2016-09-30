@@ -13,7 +13,6 @@ import org.openhds.domain.model.EntityType;
 import org.openhds.domain.model.Visit;
 import org.openhds.controller.service.VisitService;
 import org.openhds.domain.service.SitePropertiesService;
-import org.springframework.binding.message.MessageContext;
 
 import static org.hibernate.Hibernate.initialize;
 
@@ -80,12 +79,11 @@ public class VisitCrudImpl extends EntityCrudImpl<Visit, String> {
     }
     
     @Override
-    public boolean commit(MessageContext messageContext) {
+    public boolean commit() {
         try {
             service.createVisit(entityItem);
             return true;
         } catch (ConstraintViolations e) {
-            webFlowService.createMessage(messageContext, e.getMessage());
         } 
 
         return false;

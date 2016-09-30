@@ -7,7 +7,6 @@ import org.openhds.domain.model.Location;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.domain.util.UUIDGenerator;
-import org.springframework.binding.message.MessageContext;
 
 import java.util.UUID;
 
@@ -70,12 +69,11 @@ public class LocationCrudImpl extends EntityCrudImpl<Location, String> {
     }
     
     @Override
-    public boolean commit(MessageContext messageContext) {
+    public boolean commit() {
         try {
             service.createLocation(entityItem);
             return true;
         } catch (ConstraintViolations e) {
-            webFlowService.createMessage(messageContext, e.getMessage());
         }
         return false;
     }
