@@ -503,21 +503,6 @@
 		<property name="properties" ref="siteProperties" />
 	</bean>
 
-	<bean id="individualHistoryBean" class="org.openhds.web.beans.IndividualHistoryBean"
-		scope="session">
-		<property name="genericDao" ref="genericDao" />
-		<property name="membershipService" ref="membershipService" />
-		<property name="individualService" ref="individualService" />
-		<property name="relationshipService" ref="relationshipService" />
-		<property name="socialGroupService" ref="socialGroupService" />
-		<property name="residencyService" ref="residencyService" />
-		<property name="inMigrationService" ref="inMigrationService" />
-		<property name="outMigrationService" ref="outMigrationService" />
-		<property name="pregnancyService" ref="pregnancyService" />
-		<property name="deathService" ref="deathService" />
-		<property name="webFlowService" ref="webFlowService" />
-	</bean>
-
 	<bean id="modifyHOHBean" class="org.openhds.web.beans.ModifyHOHBean"
 		scope="session">
 		<property name="socialGroupService" ref="socialGroupService" />

@@ -108,11 +108,6 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>individualHistory_flow</from-outcome>
-			<to-view-id>/individualHistory.flow</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>individual_create</from-outcome>
 			<to-view-id>/individual/create.xhtml</to-view-id>
 			<redirect />
