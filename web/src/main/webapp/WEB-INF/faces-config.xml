@@ -54,11 +54,6 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>gettingStarted</from-outcome>
-			<to-view-id>/getting-started/index.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>individual_create</from-outcome>
 			<to-view-id>/individual/create.xhtml</to-view-id>
 			<redirect />

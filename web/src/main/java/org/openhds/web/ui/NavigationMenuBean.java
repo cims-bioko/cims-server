@@ -12,7 +12,6 @@ public class NavigationMenuBean {
 	boolean showUtilities;
 	boolean showDevelopers;
 	boolean showConfiguration;
-	boolean showGettingStarted;
 	
 	String nextItem;
 	String currentItem;
@@ -164,7 +163,6 @@ public class NavigationMenuBean {
 		showUtilities = false;
 		showDevelopers = false;
 		showConfiguration = false;
-		showGettingStarted = false;
 	}
 	
 	public ArrayList<String> getTrail() {
@@ -183,12 +181,6 @@ public class NavigationMenuBean {
 		this.clear();
 		this.showHome = showHome;
 		trail.add("Home");	
-	}
-	
-	public void setShowGettingStarted(boolean showGettingStarted) {
-		this.clear();
-		this.showGettingStarted = showGettingStarted;
-		trail.add("Getting Started");	
 	}
 	
 	public boolean isShowAmendments() {
