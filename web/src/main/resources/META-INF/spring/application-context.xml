@@ -105,43 +105,6 @@
 		<constructor-arg value="#{siteProperties.dateFormat}" />
 	</bean>
 
-	<!-- jsf validators -->
-	<bean id="checkMinimumEnumerationDate"
-		class="org.openhds.web.vld.CheckMinimumEnumerationStartDateValidator" />
-
-	<bean id="dateValidator" class="org.openhds.web.vld.DateValidator" />
-
-	<!-- Autocomplete converters -->
-	<bean id="fieldWorkerExtIdConverter" class="org.openhds.web.cvt.EntityPropertyConverterImpl">
-		<constructor-arg ref="fieldWorkerDao" />
-		<constructor-arg value="org.openhds.domain.model.FieldWorker" />
-		<constructor-arg value="extId" />
-	</bean>
-
-	<bean id="individualExtIdConverter" class="org.openhds.web.cvt.EntityPropertyConverterImpl">
-		<constructor-arg ref="individualDao" />
-		<constructor-arg value="org.openhds.domain.model.Individual" />
-		<constructor-arg value="extId" />
-	</bean>
-
-	<bean id="locationExtIdConverter" class="org.openhds.web.cvt.EntityPropertyConverterImpl">
-		<constructor-arg ref="locationDao" />
-		<constructor-arg value="org.openhds.domain.model.Location" />
-		<constructor-arg value="extId" />
-	</bean>
-
-	<bean id="socialGroupExtIdConverter" class="org.openhds.web.cvt.EntityPropertyConverterImpl">
-		<constructor-arg ref="socialGroupDao" />
-		<constructor-arg value="org.openhds.domain.model.SocialGroup" />
-		<constructor-arg value="extId" />
-	</bean>
-
-	<bean id="visitExtIdConverter" class="org.openhds.web.cvt.EntityPropertyConverterImpl">
-		<constructor-arg ref="visitDao" />
-		<constructor-arg value="org.openhds.domain.model.Visit" />
-		<constructor-arg value="extId" />
-	</bean>
-
 	<!-- Entity Converters -->
 	<bean id="fieldWorkerConverter" class="org.openhds.web.cvt.EntityConverterImpl">
 		<constructor-arg ref="fieldWorkerDao" />
@@ -154,7 +117,6 @@
 		<constructor-arg value="org.openhds.domain.model.Role" />
 		<constructor-arg value="java.lang.String" />
 	</bean>
-
 
 	<bean id="userConverter" class="org.openhds.web.cvt.EntityConverterImpl">
 		<constructor-arg ref="userDao" />
