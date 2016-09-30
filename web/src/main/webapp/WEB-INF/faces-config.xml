@@ -32,36 +32,6 @@
 			<to-view-id>/death/create.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
-        <navigation-case>
-			<from-outcome>attribute_create</from-outcome>
-			<to-view-id>/attribute/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-        <navigation-case>
-			<from-outcome>attribute_detail</from-outcome>
-			<to-view-id>/attribute/detail.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-        <navigation-case>
-			<from-outcome>attribute_edit</from-outcome>
-			<to-view-id>/attribute/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-        <navigation-case>
-			<from-outcome>entityattribute_create</from-outcome>
-			<to-view-id>/entityattribute/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-        <navigation-case>
-			<from-outcome>entityattribute_detail</from-outcome>
-			<to-view-id>/entityattribute/detail.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-        <navigation-case>
-			<from-outcome>entityattribute_edit</from-outcome>
-			<to-view-id>/entityattribute/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
 		<navigation-case>
 			<from-outcome>death_edit</from-outcome>
 			<to-view-id>/death/edit.xhtml</to-view-id>
