@@ -21,16 +21,6 @@
 		<navigation-case>
 			<from-outcome>welcome</from-outcome>
 			<to-view-id>/welcome</to-view-id>
-		</navigation-case>	
-		<navigation-case>
-			<from-outcome>baseline</from-outcome>
-			<to-view-id>/baseline/baseline.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>baseline_flow</from-outcome>
-			<to-view-id>/baseline.flow</to-view-id>
-			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>death_list</from-outcome>

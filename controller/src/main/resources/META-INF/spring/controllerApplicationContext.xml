@@ -85,16 +85,6 @@
             </bean>
         </property>
     </bean>
-	
-	<bean id="baselineService" parent="baseServiceTransactionBean">
-    	<property name="target">
-		    <bean class="org.openhds.controller.service.impl.BaselineServiceImpl">
-		        <constructor-arg ref="membershipService" />
-		        <constructor-arg ref="entityService" />
-		        <constructor-arg ref="siteProperties" />
-		    </bean>
-	    </property>
-    </bean>
 
 	<bean id="deathService" parent="baseServiceTransactionBean">
     	<property name="target">

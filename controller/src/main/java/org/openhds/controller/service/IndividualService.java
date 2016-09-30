@@ -19,7 +19,7 @@ public interface IndividualService {
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
 	String generateIdWithBound(Individual entityItem, int count) throws ConstraintViolations;
 	
-	@Authorized({PrivilegeConstants.ACCESS_BASELINE, PrivilegeConstants.ACCESS_UPDATE, PrivilegeConstants.CREATE_ENTITY, PrivilegeConstants.EDIT_ENTITY})
+	@Authorized({PrivilegeConstants.ACCESS_UPDATE, PrivilegeConstants.CREATE_ENTITY, PrivilegeConstants.EDIT_ENTITY})
 	String getLatestEvent(Individual individual);
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})

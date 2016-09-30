@@ -20,14 +20,7 @@
     
     	<h:outputText value="#{navController.breadcrumbTrail}" />	
 
-        <c:choose>
-            <c:when test="#{flowScope.baselineAddSG == true}">
-                <h1>#{msg.socialGroupHead}</h1>
-            </c:when>
-            <c:otherwise>
-                <h1>#{msg.individualCreate}</h1>
-            </c:otherwise>
-        </c:choose>
+        <h1>#{msg.individualCreate}</h1>
 
         <h:messages id="errors" globalOnly="true" />
         <h:form id="individualForm">
@@ -95,10 +88,8 @@
                 <h:commandButton id ="create" action="#{individualCrud.create}" value="#{msg.lblCreate}"/>
             </c:if>
             <c:if test="#{flowScope != null}">
-                <h:commandButton rendered="#{flowScope.newIndiv}" id ="createIndividual" action="addChild" value="#{msg.lblCreate}"/>
-                <h:commandButton rendered="#{flowScope.baselineAddSG == true}" id ="addIndividual" action="addPerson" value="#{msg.lblCreate}"/>
+                <h:commandButton rendered="#{flowScope.newIndiv}" id ="addChild" action="addChild" value="#{msg.lblCreate}"/>
                 <h:commandButton rendered="#{flowScope.editing}" id ="editIndividual" action="saveChild" value="Save Changes"/>
-                <h:commandButton rendered="#{flowScope.baselineAddIndiv == true}" id ="addMember" action="addMember" value="#{msg.lblCreate}"/>
                 <h:commandButton rendered="#{flowScope.regIndivToSg}" id="createIndividual" action="createIndividual" value="#{msg.lblCreate}"/>
                 <h:commandButton value="Cancel" immediate="true" action="cancel" />
             </c:if>

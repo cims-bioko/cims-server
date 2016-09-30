@@ -468,17 +468,6 @@
 		<constructor-arg ref="taskScheduler" />
 	</bean>
 
-	<bean id="baselineFlowBean" class="org.openhds.web.beans.BaselineFlowBean"
-		scope="session">
-		<property name="residencyService" ref="residencyService" />
-		<property name="baselineService" ref="baselineService" />
-		<property name="webFlowService" ref="webFlowService" />
-		<property name="individualService" ref="individualService" />
-		<property name="genericDao" ref="genericDao" />
-		<property name="socialGroupGenerator" ref="socialGroupIdGenerator" />
-		<property name="properties" ref="siteProperties" />
-	</bean>
-
 	<bean id="siteProperties"
 		class="org.openhds.domain.service.impl.SitePropertiesServiceImpl">
 		<property name="locale">

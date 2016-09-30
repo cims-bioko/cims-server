@@ -19,7 +19,6 @@ public class PrivilegeConstants {
 	public final static String VIEW_ENTITY = "VIEW_ENTITY";
 	
 	// baseline and update
-	public final static String ACCESS_BASELINE = "ACCESS_BASELINE";
 	public final static String ACCESS_UPDATE = "ACCESS_UPDATE";
 	
 	public final static String CREATE_USER = "CREATE_USER";

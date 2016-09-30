@@ -12,7 +12,6 @@ public class NavigationMenuBean {
 	boolean showUtilities;
 	boolean showDevelopers;
 	boolean showUpdate;
-	boolean showBaseline;
 	boolean showConfiguration;
 	boolean showGettingStarted;
 	
@@ -165,7 +164,6 @@ public class NavigationMenuBean {
 		showAmendments = false;
 		showUtilities = false;
 		showDevelopers = false;
-		showBaseline = false;
 		showUpdate = false;
 		showConfiguration = false;
 		showGettingStarted = false;
@@ -235,16 +233,6 @@ public class NavigationMenuBean {
 		trail.add("Update");
 	}
 
-	public boolean isShowBaseline() {
-		return showBaseline;
-	}
-
-	public void setShowBaseline(boolean showBaseline) {
-		this.clear();
-		this.showBaseline = showBaseline;
-		trail.add("Baseline");
-	}
-	
 	public String getNextItem() {
 		return nextItem;
 	}
