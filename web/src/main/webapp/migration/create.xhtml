@@ -21,8 +21,6 @@
         
         <h:form id="inmigration">
 	     	<h:commandButton id="internalBtn" value="#{msg.inmigrationInternalType}" action="#{inMigrationCrud.startInternal}" />
-	     	<h:commandButton id="internalNoIdBtn" value="#{msg.inmigrationInternalUnknownId}" action="internalWithNoId" />
-	     	<h:commandButton id="externalBtn" value="#{msg.inmigrationExternalType}" action="external" />
 	     	<c:if test="#{flowScope != null}">
 	     		<h:commandButton value="#{msg.lblCancel}" action="cancel" />
 	     	</c:if>

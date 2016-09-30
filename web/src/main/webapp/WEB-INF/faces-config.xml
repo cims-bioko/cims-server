@@ -94,16 +94,6 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>internalWithNoId</from-outcome>
-			<to-view-id>/inmigration.flow</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>external</from-outcome>
-			<to-view-id>/inmigration.flow?external=true</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>location_list</from-outcome>
 			<to-view-id>/location/create.xhtml</to-view-id>
 			<redirect />
