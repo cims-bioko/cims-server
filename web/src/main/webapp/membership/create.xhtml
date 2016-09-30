@@ -35,7 +35,7 @@
 		
 		       		<h:outputText value="#{msg.socialGroupId}:"/>
 		       		<h:outputText />
-		        	<h:inputText styleClass="socialGroup" autocomplete="off" id="socialGrp" value="#{membershipCrud.item.socialGroup}" converter="#{socialGroupExtIdConverter}" disabled="#{flowScope.updatingBaseline or flowScope.modifyHOH}" />
+		        	<h:inputText styleClass="socialGroup" autocomplete="off" id="socialGrp" value="#{membershipCrud.item.socialGroup}" converter="#{socialGroupExtIdConverter}" disabled="#{flowScope.updatingBaseline}" />
 		            <h:message for="socialGrp" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
                     <h:outputText/>

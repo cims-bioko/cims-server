@@ -193,11 +193,6 @@
 			<redirect />	
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>modifyHOH_flow</from-outcome>
-			<to-view-id>/modifyHOH.flow</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>pregnancyobservation_list</from-outcome>
 			<to-view-id>/pregnancyobservation/create.xhtml</to-view-id>
 			<redirect />

@@ -503,15 +503,6 @@
 		<property name="properties" ref="siteProperties" />
 	</bean>
 
-	<bean id="modifyHOHBean" class="org.openhds.web.beans.ModifyHOHBean"
-		scope="session">
-		<property name="socialGroupService" ref="socialGroupService" />
-		<property name="membershipService" ref="membershipService" />
-		<property name="webFlowService" ref="webFlowService" />
-		<property name="entityService" ref="entityService" />
-		<property name="genericDao" ref="genericDao" />
-	</bean>
-
 	<bean id="siteProperties"
 		class="org.openhds.domain.service.impl.SitePropertiesServiceImpl">
 		<property name="locale">

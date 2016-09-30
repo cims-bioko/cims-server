@@ -36,7 +36,6 @@
 		<webflow:flow-location path="/baseline-flow.xml" id="baseline" />
 		<webflow:flow-location path="/inmigration-flow.xml" id="inmigration" />
 		<webflow:flow-location path="/pregnancy-flow.xml" id="pregnancy-outcome" />
-		<webflow:flow-location path="/modifyHOH-flow.xml" id="modifyHOH" />
 	</webflow:flow-registry>
 	
 	<!-- Configures the Spring Web Flow JSF integration -->
