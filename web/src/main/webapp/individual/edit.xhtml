@@ -59,17 +59,17 @@
 				
 				<h:outputText value="#{msg.individualMotherId} (Use #{siteProperties.unknownIdentifier} for Unknown)"/>
                 <h:outputText />
-                <h:inputText styleClass="individual" autocomplete="off" id="mother" disabled="#{flowScope.pregnancyOutcome}" value="#{individualCrud.item.mother}" title = "#{msg.tipIndivExtId}" converter="#{individualExtIdConverter}" />
+                <h:inputText styleClass="individual" autocomplete="off" id="mother" value="#{individualCrud.item.mother}" title = "#{msg.tipIndivExtId}" converter="#{individualExtIdConverter}" />
                 <h:message for="mother" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
                 <h:outputText value="#{msg.individualFatherId} (Use #{siteProperties.unknownIdentifier} for Unknown)"/>
                 <h:outputText />
-                <h:inputText styleClass="individual" autocomplete="off" id="father" disabled="#{flowScope.pregnancyOutcome}" value="#{individualCrud.item.father}" title = "#{msg.tipIndivExtId}" converter="#{individualExtIdConverter}" />
+                <h:inputText styleClass="individual" autocomplete="off" id="father" value="#{individualCrud.item.father}" title = "#{msg.tipIndivExtId}" converter="#{individualExtIdConverter}" />
                 <h:message for="father" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
                 <h:outputText value="#{msg.fieldWorkerId}:"/>
                 <h:outputText />
-                <h:inputText styleClass="collectedBy" autocomplete="off" id="fieldWorker" disabled="#{flowScope.updating or flowScope.pregnancyOutcome}" value="#{individualCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}"/>
+                <h:inputText styleClass="collectedBy" autocomplete="off" id="fieldWorker" value="#{individualCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}"/>
                 <h:message for="fieldWorker" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
             </h:panelGrid>
             <script>

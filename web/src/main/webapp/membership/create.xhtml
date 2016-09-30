@@ -30,7 +30,7 @@
 	        	<h:panelGrid columns="4">
 		            <h:outputText value="#{msg.individualId}:"/>
 		            <h:outputText />
-		            <h:inputText styleClass="individual" autocomplete="off" id="indiv" value="#{membershipCrud.item.individual}" disabled="#{flowScope.updatingBaseline != null or flowScope.pregnancyOutcome or flowScope.updating}" converter="#{individualExtIdConverter}" />
+		            <h:inputText styleClass="individual" autocomplete="off" id="indiv" value="#{membershipCrud.item.individual}" converter="#{individualExtIdConverter}" />
 		            <h:message for="indiv" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 		
 		       		<h:outputText value="#{msg.socialGroupId}:"/>
@@ -50,7 +50,7 @@
 		   
 		            <h:outputText value="#{msg.membershipStartDate} (#{siteProperties.dateFormat})" />
 		            <h:outputText />
-		            <o:dateChooser id="startDate" value="#{membershipCrud.startDate}" pattern="#{siteProperties.dateFormat}" disabled="#{flowScope.updatingBaseline or flowScope.pregnancyOutcome}"/>
+		            <o:dateChooser id="startDate" value="#{membershipCrud.startDate}" pattern="#{siteProperties.dateFormat}"/>
 		            <h:message for="startDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
 			        <h:outputText value="#{msg.membershipStartType}:"/>
@@ -70,7 +70,7 @@
 		
 		            <h:outputText value="#{msg.fieldWorkerId}:"/>
 		            <h:outputText />
-		            <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" value="#{membershipCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" disabled="#{flowScope.updatingBaseline or flowScope.updating or flowScope.pregnancyOutcome}" />
+		            <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" value="#{membershipCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" />
 		            <h:message for="collectedBy" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 	            </h:panelGrid>
 	            <script type="text/javascript">

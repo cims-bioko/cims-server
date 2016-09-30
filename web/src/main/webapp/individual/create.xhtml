@@ -29,7 +29,7 @@
             	<c:if test="#{individualIdGenerator.generated == false}" >
                 	<h:outputText value="#{msg.individualId}:" />
                 	<h:outputText />
-                 	<h:inputText id="extId" value="#{individualCrud.item.extId}" converter="#{defaultConverter}" disabled="#{flowScope.pregnancyOutcome}" />
+                 	<h:inputText id="extId" value="#{individualCrud.item.extId}" converter="#{defaultConverter}" />
 					<h:message for="extId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
                 </c:if>
                 
@@ -65,17 +65,17 @@
 					
                 <h:outputText value="#{msg.individualMotherId} (Use #{siteProperties.unknownIdentifier} for Unknown)" />
                 <h:outputText />
-                <h:inputText styleClass="individual" autocomplete="off" id="mother" disabled="#{flowScope.pregnancyOutcome}" value="#{individualCrud.item.mother}" converter="#{individualExtIdConverter}" />
+                <h:inputText styleClass="individual" autocomplete="off" id="mother" value="#{individualCrud.item.mother}" converter="#{individualExtIdConverter}" />
                 <h:message for="mother" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
                 <h:outputText value="#{msg.individualFatherId} (Use #{siteProperties.unknownIdentifier} for Unknown)"/>
                 <h:outputText />
-                <h:inputText styleClass="individual" autocomplete="off" id="father" disabled="#{flowScope.pregnancyOutcome}" value="#{individualCrud.item.father}" converter="#{individualExtIdConverter}" />
+                <h:inputText styleClass="individual" autocomplete="off" id="father" value="#{individualCrud.item.father}" converter="#{individualExtIdConverter}" />
                 <h:message for="father" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
                 <h:outputText value="#{msg.fieldWorkerId}:"/>
                 <h:outputText />
-                <h:inputText styleClass="collectedBy" autocomplete="off" id="fieldWorker" disabled="#{flowScope.updating or flowScope.pregnancyOutcome}" value="#{individualCrud.item.collectedBy}" title="#{msg.tipFWExtId}" converter="#{fieldWorkerExtIdConverter}"/>
+                <h:inputText styleClass="collectedBy" autocomplete="off" id="fieldWorker" value="#{individualCrud.item.collectedBy}" title="#{msg.tipFWExtId}" converter="#{fieldWorkerExtIdConverter}"/>
                 <h:message for="fieldWorker" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
             </h:panelGrid>
             <script>

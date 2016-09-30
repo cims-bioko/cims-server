@@ -39,13 +39,6 @@
 		<action onPostback="false">#{pregnancyObservationCrud.detailSetup}</action>
 	</url-mapping>
 
-	<url-mapping id="pregnancyoutcomeDetail" >
-
-		<pattern value="/amendment/pregnancy-outcome/details/#{itemId}" />
-		<view-id>/pregnancy-outcome/detail.faces</view-id>
-		<action onPostback="false">#{pregnancyOutcomeCrud.detailSetup}</action>
-	</url-mapping>
-
 	<url-mapping id="relationshipDetail" >
 		<pattern value="/amendment/relationship/details/#{itemId}" />
 		<view-id>/relationship/detail.faces</view-id>
@@ -105,11 +98,6 @@
 	<url-mapping id="membershipEdit" >
 		<pattern value="/amendment/membership/details/#{itemId : membershipCrud.item.uuid}" />
 		<view-id>/membership/detail.faces</view-id>
-	</url-mapping>
-
-	<url-mapping id="pregnancyoutcomeEdit" >
-		<pattern value="/amendment/pregnancyoutcome/details/#{itemId: pregnancyOutcomeCrud.item.uuid}" />
-		<view-id>/pregnancy-outcome/detail.faces</view-id>
 	</url-mapping>
 
 	<url-mapping id="pregnancyobservationEdit" >

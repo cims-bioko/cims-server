@@ -382,16 +382,6 @@
 		<property name="service" ref="outMigrationService" />
 	</bean>
 
-	<bean id="pregnancyOutcomeCrud" parent="baseCrud"
-		class="org.openhds.web.crud.impl.PregnancyOutcomeCrudImpl">
-		<constructor-arg value="org.openhds.domain.model.PregnancyOutcome" />
-		<property name="dao" ref="pregnancyDao" />
-		<property name="converter" ref="pregnancyConverter" />
-		<property name="entityService" ref="entityService" />
-		<property name="service" ref="pregnancyService" />
-		<property name="sgService" ref="socialGroupService" />
-	</bean>
-
 	<bean id="pregnancyObservationCrud" parent="baseCrud"
 		class="org.openhds.web.crud.impl.PregnancyObservationCrudImpl">
 		<constructor-arg value="org.openhds.domain.model.PregnancyObservation" />
