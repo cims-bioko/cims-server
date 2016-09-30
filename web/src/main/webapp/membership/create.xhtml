@@ -30,7 +30,7 @@
 	        	<h:panelGrid columns="4">
 		            <h:outputText value="#{msg.individualId}:"/>
 		            <h:outputText />
-		            <h:inputText styleClass="individual" autocomplete="off" id="indiv" value="#{membershipCrud.item.individual}" disabled="#{flowScope.updatingBaseline != null or flowScope.pregnancyOutcome or flowScope.updating or flowScope.regIndivToSg}" converter="#{individualExtIdConverter}" />
+		            <h:inputText styleClass="individual" autocomplete="off" id="indiv" value="#{membershipCrud.item.individual}" disabled="#{flowScope.updatingBaseline != null or flowScope.pregnancyOutcome or flowScope.updating}" converter="#{individualExtIdConverter}" />
 		            <h:message for="indiv" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 		
 		       		<h:outputText value="#{msg.socialGroupId}:"/>
@@ -70,7 +70,7 @@
 		
 		            <h:outputText value="#{msg.fieldWorkerId}:"/>
 		            <h:outputText />
-		            <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" value="#{membershipCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" disabled="#{flowScope.updatingBaseline or flowScope.updating or flowScope.pregnancyOutcome or flowScope.regIndivToSg}" />
+		            <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" value="#{membershipCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" disabled="#{flowScope.updatingBaseline or flowScope.updating or flowScope.pregnancyOutcome}" />
 		            <h:message for="collectedBy" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 	            </h:panelGrid>
 	            <script type="text/javascript">

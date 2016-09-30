@@ -184,11 +184,6 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>regIndivToSg_flow</from-outcome>
-			<to-view-id>/regIndivToSg.flow</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>relationship_list</from-outcome>
 			<to-view-id>/relationship/create.xhtml</to-view-id>
 			<redirect />

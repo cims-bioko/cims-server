@@ -90,7 +90,6 @@
             <c:if test="#{flowScope != null}">
                 <h:commandButton rendered="#{flowScope.newIndiv}" id ="addChild" action="addChild" value="#{msg.lblCreate}"/>
                 <h:commandButton rendered="#{flowScope.editing}" id ="editIndividual" action="saveChild" value="Save Changes"/>
-                <h:commandButton rendered="#{flowScope.regIndivToSg}" id="createIndividual" action="createIndividual" value="#{msg.lblCreate}"/>
                 <h:commandButton value="Cancel" immediate="true" action="cancel" />
             </c:if>
         </h:form>
