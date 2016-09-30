@@ -95,8 +95,6 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 	
 	protected EntityValidationService entityValidationService;
 
-	private String navigateTo;
-	
     public EntityCrudImpl(Class<T> entityClass) {
         if (entityClass == null) {
             throw new IllegalArgumentException("entity class type required for crud");
