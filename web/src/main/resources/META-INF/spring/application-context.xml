@@ -312,98 +312,11 @@
 		<property name="entityValidationService" ref="entityValidator" />
 	</bean>
 
-	<bean id="deathCrud" parent="baseCrud"
-		class="org.openhds.web.crud.impl.DeathCrudImpl">
-		<constructor-arg value="org.openhds.domain.model.Death" />
-		<property name="dao" ref="deathDao" />
-		<property name="converter" ref="deathConverter" />
-		<property name="entityValidator" ref="entityValidator" />
-		<property name="service" ref="deathService" />
-	</bean>
-
 	<bean id="fieldWorkerCrud" parent="baseCrud"
 		class="org.openhds.web.crud.impl.FieldWorkerCrudImpl">
 		<constructor-arg value="org.openhds.domain.model.FieldWorker" />
 		<property name="dao" ref="fieldWorkerDao" />
 		<property name="converter" ref="fieldWorkerConverter" />
-	</bean>
-
-	<bean id="individualCrud" parent="baseCrud"
-		class="org.openhds.web.crud.impl.IndividualCrudImpl">
-		<constructor-arg value="org.openhds.domain.model.Individual" />
-		<property name="dao" ref="individualDao" />
-		<property name="converter" ref="individualConverter" />
-		<property name="entityValidator" ref="entityValidator" />
-		<property name="service" ref="individualService"></property>
-	</bean>
-
-	<bean id="inMigrationCrud" parent="baseCrud"
-		class="org.openhds.web.crud.impl.InMigrationCrudImpl">
-		<constructor-arg value="org.openhds.domain.model.InMigration" />
-		<property name="dao" ref="inMigrationDao" />
-		<property name="converter" ref="inMigrationConverter" />
-		<property name="service" ref="inMigrationService" />
-	</bean>
-
-	<bean id="locationCrud" parent="baseCrud"
-		class="org.openhds.web.crud.impl.LocationCrudImpl">
-		<constructor-arg value="org.openhds.domain.model.Location" />
-		<property name="dao" ref="locationDao" />
-		<property name="converter" ref="locationConverter" />
-		<property name="siteProperties" ref="siteProperties" />
-		<property name="service" ref="locationHierarchyService" />
-	</bean>
-
-	<bean id="locationHierarchyCrud" parent="baseCrud"
-		class="org.openhds.web.crud.impl.LocationHierarchyCrudImpl">
-		<constructor-arg value="org.openhds.domain.model.LocationHierarchy" />
-		<property name="dao" ref="locationHierarchyDao" />
-		<property name="converter" ref="locationHierarchyConverter" />
-		<property name="service" ref="locationHierarchyService" />
-	</bean>
-
-	<bean id="membershipCrud" parent="baseCrud"
-		class="org.openhds.web.crud.impl.MembershipCrudImpl">
-		<constructor-arg value="org.openhds.domain.model.Membership" />
-		<property name="dao" ref="membershipDao" />
-		<property name="converter" ref="membershipConverter" />
-		<property name="entityValidator" ref="entityValidator" />
-		<property name="service" ref="membershipService" />
-	</bean>
-
-	<bean id="outMigrationCrud" parent="baseCrud"
-		class="org.openhds.web.crud.impl.OutMigrationCrudImpl">
-		<constructor-arg value="org.openhds.domain.model.OutMigration" />
-		<property name="dao" ref="outMigrationDao" />
-		<property name="converter" ref="outMigrationConverter" />
-		<property name="entityService" ref="entityService" />
-		<property name="service" ref="outMigrationService" />
-	</bean>
-
-	<bean id="pregnancyObservationCrud" parent="baseCrud"
-		class="org.openhds.web.crud.impl.PregnancyObservationCrudImpl">
-		<constructor-arg value="org.openhds.domain.model.PregnancyObservation" />
-		<property name="dao" ref="pregnancyObservationDao" />
-		<property name="converter" ref="pregnancyObservationConverter" />
-		<property name="entityValidator" ref="entityValidator" />
-		<property name="service" ref="pregnancyService" />
-	</bean>
-
-	<bean id="relationshipCrud" parent="baseCrud"
-		class="org.openhds.web.crud.impl.RelationshipCrudImpl">
-		<constructor-arg value="org.openhds.domain.model.Relationship" />
-		<property name="dao" ref="relationshipDao" />
-		<property name="converter" ref="relationshipConverter" />
-		<property name="entityValidator" ref="entityValidator" />
-		<property name="service" ref="relationshipService"></property>
-	</bean>
-
-	<bean id="residencyCrud" parent="baseCrud"
-		class="org.openhds.web.crud.impl.ResidencyCrudImpl">
-		<constructor-arg value="org.openhds.domain.model.Residency" />
-		<property name="dao" ref="residencyDao" />
-		<property name="converter" ref="residencyConverter" />
-		<property name="residencyService" ref="residencyService" />
 	</bean>
 
 	<bean id="roleCrud" parent="baseCrud"
@@ -414,30 +327,12 @@
 		<property name="service" ref="roleService" />
 	</bean>
 
-	<bean id="socialGroupCrud" parent="baseCrud"
-		class="org.openhds.web.crud.impl.SocialGroupCrudImpl">
-		<constructor-arg value="org.openhds.domain.model.SocialGroup" />
-		<property name="dao" ref="socialGroupDao" />
-		<property name="converter" ref="socialGroupConverter" />
-		<property name="socialGroupService" ref="socialGroupService" />
-		<property name="individualService" ref="individualService" />
-	</bean>
-
 	<bean id="userCrud" parent="baseCrud"
 		class="org.openhds.web.crud.impl.UserCrudImpl">
 		<constructor-arg value="org.openhds.domain.model.User" />
 		<property name="dao" ref="userDao" />
 		<property name="converter" ref="userConverter" />
 		<property name="service" ref="userService" />
-	</bean>
-
-	<bean id="visitCrud" parent="baseCrud"
-		class="org.openhds.web.crud.impl.VisitCrudImpl">
-		<constructor-arg value="org.openhds.domain.model.Visit" />
-		<property name="dao" ref="visitDao" />
-		<property name="converter" ref="visitConverter" />
-		<property name="service" ref="visitService"></property>
-		<property name="siteProperties" ref="siteProperties"></property>
 	</bean>
 
 	<!-- Beans -->

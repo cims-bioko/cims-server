@@ -14,29 +14,6 @@
 	        		<f:setPropertyActionListener target="#{navController.showHome}" value="true" /> 
 	            </h:commandLink>
 	        </li>
-	        <sec:ifAllGranted roles="ACCESS_AMENDMENT_FORMS">
-		        <li>
-		            <h:commandLink value="#{msg.navBarAmendments}" action="welcome" >
-		            	<f:setPropertyActionListener target="#{navController.showAmendments}" value="true" /> 
-		            </h:commandLink>
-		            <c:if test="#{navController.showAmendments}" >
-			        <ul>
-			        	<li><h:commandLink value="#{msg.navBarIndividual}" action="#{individualCrud.createSetup}" /></li>
-				        <li><h:commandLink value="#{msg.navBarDeath}" action="#{deathCrud.createSetup}" /></li>
-				       
-				       <li><h:commandLink value="#{msg.navBarLocation}" action="#{locationCrud.createSetup}" /></li>
-				      	<li><h:commandLink value="#{msg.navBarMembership}" action="#{membershipCrud.createSetup}" /></li>
-				        <li><h:commandLink value="#{msg.navBarMigIntoLoc}" action="#{inMigrationCrud.createSetup}" /></li>
-				        <li><h:commandLink value="#{msg.navBarOutMigration}" action="#{outMigrationCrud.createSetup}" /></li>
-				        <li><h:commandLink value="#{msg.navBarPregnancyObservation}" action="#{pregnancyObservationCrud.createSetup}" /></li>
-				        <li><h:commandLink value="#{msg.navBarRelationship}" action="#{relationshipCrud.createSetup}" /></li>
-				       <li><h:commandLink value="#{msg.navBarResidency}" action="#{residencyCrud.createSetup}" /></li>
-				       	<li><h:commandLink value="#{msg.navBarSocialGroup}" action="#{socialGroupCrud.createSetup}" /></li>
-				        <li><h:commandLink value="#{msg.navBarVisit}" action="#{visitCrud.createSetup}" /></li>             
-			    	</ul>
-			    	</c:if>
-		    	</li>
-	    	</sec:ifAllGranted>
 	    	<sec:ifAllGranted roles="ACESSS_UTILITY_ROUTINES">
 			    <li>
 			        <h:commandLink value="#{msg.navBarUtilityRoutine}" action="welcome" >

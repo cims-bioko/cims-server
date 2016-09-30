@@ -8,7 +8,6 @@ public class NavigationMenuBean {
     ArrayList<String> trail = new ArrayList<>();
 	
     boolean showHome;
-	boolean showAmendments;
 	boolean showUtilities;
 	boolean showDevelopers;
 	boolean showConfiguration;
@@ -39,10 +38,7 @@ public class NavigationMenuBean {
 		
 		// if the item is not currently in the trail
 		if (!trail.contains(item)) {
-			
-			// we are viewing the Amendment forms
-			if (showAmendments || showConfiguration) {
-				
+			if (showConfiguration) {
 				// the page to be viewed is of a different group
 				if (!nextItem.equals(currentItem)) {
 					
@@ -51,8 +47,6 @@ public class NavigationMenuBean {
 						!currentItem.equals("InMigration"))
 						trail.clear();
 
-					if (showAmendments)
-						addItemToTrail("Amendments");
 					if (showConfiguration)
 						addItemToTrail("Configuration");
 					currentItem = nextItem;
@@ -159,7 +153,6 @@ public class NavigationMenuBean {
 	public void clear() {
 		trail.clear();
 		showHome = false;
-		showAmendments = false;
 		showUtilities = false;
 		showDevelopers = false;
 		showConfiguration = false;
@@ -181,16 +174,6 @@ public class NavigationMenuBean {
 		this.clear();
 		this.showHome = showHome;
 		trail.add("Home");	
-	}
-	
-	public boolean isShowAmendments() {
-		return showAmendments;
-	}
-	
-	public void setShowAmendments(boolean showAmendments) {
-		this.clear();
-		this.showAmendments = showAmendments;
-		trail.add("Amendments");
 	}
 	
 	public boolean isShowUtilities() {

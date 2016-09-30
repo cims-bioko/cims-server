@@ -110,24 +110,7 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    
-    <context-param>
-		<param-name>com.ocpsoft.pretty.BASE_PACKAGES</param-name>
-		<param-value>none</param-value>
-	</context-param>
-	
-	<filter>
-	   <filter-name>Pretty Filter</filter-name>
-	   <filter-class>com.ocpsoft.pretty.PrettyFilter</filter-class>
-	</filter>
-	
-	<filter-mapping> 
-	   <filter-name>Pretty Filter</filter-name> 
-	   <url-pattern>/*</url-pattern> 
-	   <dispatcher>FORWARD</dispatcher> 
-	   <dispatcher>REQUEST</dispatcher> 
-	   <dispatcher>ERROR</dispatcher>
-	</filter-mapping>
+
     
     <welcome-file-list>
         <welcome-file>/welcome.faces</welcome-file>
