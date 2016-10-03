@@ -13,10 +13,6 @@
     <packaging>war</packaging>
     <name>OpenHDS Web Application</name>
 
-    <properties>
-        <org.springframework.swf.version>2.4.2.RELEASE</org.springframework.swf.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>
