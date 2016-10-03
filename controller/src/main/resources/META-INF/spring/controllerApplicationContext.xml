@@ -2,16 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:lang="http://www.springframework.org/schema/lang"
-	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-3.2.xsd
-        http://www.springframework.org/schema/lang
-        http://www.springframework.org/schema/lang/spring-lang-3.2.xsd
-        http://www.springframework.org/schema/security
-        http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd">
         
     <import resource="classpath*:/META-INF/spring/domainApplicationContext.xml" />
     <import resource="classpath*:/META-INF/spring/daoApplicationContext.xml" />
@@ -239,33 +233,6 @@
 		    <ref bean="visitServiceImpl"/>
 	    </property>
     </bean>
-	
-	<!-- ID GENERATOR BEANS --> 
-
-		<!--
-    <bean id="locationIdGenerator" class="org.openhds.controller.idgeneration.LocationGenerator" parent="idGenerator">
-    	<property name="generated"><value>${openhds.locationIdUseGenerator}</value></property>
-    </bean>
-    
-    <bean id="locationHierarchyIdGenerator" class="org.openhds.controller.idgeneration.LocationHierarchyGenerator" parent="idGenerator"/>
-   
-    <bean id="individualIdGenerator" class="org.openhds.controller.idgeneration.IndividualGenerator" parent="idGenerator" >
-    	<property name="generated"><value>${openhds.individualIdUseGenerator}</value></property>
-    </bean>
-    
-    <bean id="socialGroupIdGenerator" class="org.openhds.controller.idgeneration.SocialGroupGenerator" parent="idGenerator">
-		<property name="generated"><value>${openhds.sgIdUseGenerator}</value></property>
-    </bean>
-    
-    <bean id="visitIdGenerator" class="org.openhds.controller.idgeneration.VisitGenerator" parent="idGenerator">
-    	<property name="generated"><value>${openhds.visitIdUseGenerator}</value></property>
-    </bean>
-    
-    <bean id="fieldWorkerIdGenerator" class="org.openhds.controller.idgeneration.FieldWorkerGenerator" parent="idGenerator" >
-    	<property name="generated"><value>${openhds.fwIdUseGenerator}</value></property>
-    </bean> -->
-    
-    <!-- ID SCHEME BEANS -->
 
 	<!-- Supported fields are LOCATION_NAME, LOCATION_HIERARCHY_ID -->
     <bean id="locationIdScheme" class="org.openhds.controller.idgeneration.IdScheme">
@@ -309,8 +276,6 @@
     	<property name="fields">
     		<map>
 				<entry key="LOCATION_PREFIX"><value>${openhds.locationIdLength}</value></entry>
-				<!-- <entry key="INDIVIDUAL_MNAME"><value>${openhds.individualMiddleNameLength}</value></entry>
-				<entry key="INDIVIDUAL_LNAME"><value>${openhds.individualLastNameLength}</value></entry> -->
     		</map>
     	</property>
     </bean>
