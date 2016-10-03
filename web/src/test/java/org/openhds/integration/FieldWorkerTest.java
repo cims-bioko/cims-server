@@ -1,29 +1,36 @@
 package org.openhds.integration;
 
 import org.hibernate.SessionFactory;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhds.controller.service.CurrentUser;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.FieldWorker;
-import org.openhds.web.crud.impl.FieldWorkerCrudImpl;
+import org.openhds.integration.util.WebContextLoader;
+import org.openhds.web.crud.EntityCrud;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-@ContextConfiguration("/testContext.xml")
+@ContextConfiguration(locations = {"/httpScopes.xml", "/testContext.xml"})
 public class FieldWorkerTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
     @Qualifier("fieldWorkerCrud")
-    FieldWorkerCrudImpl fieldWorkerCrud;
+    EntityCrud<FieldWorker, String> fieldWorkerCrud;
 
     @Autowired
     SessionFactory sessionFactory;
@@ -34,6 +41,26 @@ public class FieldWorkerTest extends AbstractTransactionalJUnit4SpringContextTes
     @Autowired
     @Qualifier("currentUser")
     CurrentUser currentUser;
+
+    MockHttpSession session;
+    MockHttpServletRequest request;
+
+    @Before
+    public void startRequest() {
+        session = new MockHttpSession();
+        request = new MockHttpServletRequest();
+        request.setSession(session);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+    }
+
+    @After
+    public void endRequest() {
+        ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).requestCompleted();
+        RequestContextHolder.resetRequestAttributes();
+        request = null;
+        session.clearAttributes();
+        session = null;
+    }
 
     @Test
     public void testFieldWorkerCreate() {

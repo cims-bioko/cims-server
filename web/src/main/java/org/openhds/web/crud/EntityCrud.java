@@ -72,6 +72,10 @@ public interface EntityCrud<T, PK extends Serializable> {
 
     String prev();
 
+    String firstPage();
+
+    String lastPage();
+
     /**
      * Get the current entity item
      * Used mostly inside the JSF pages when binding a component to a value
@@ -92,6 +96,20 @@ public interface EntityCrud<T, PK extends Serializable> {
     void setItem(T entityItem);
 
     void performAudit(T entityItem);
+
+    String getSearchString();
+
+    void setSearchString(String searchString);
+
+    String getPropertyName();
+
+    void setPropertyName(String propertyName);
+
+    List<SelectItem> getSearchableFieldsList();
+
+    void setShowListing(boolean show);
+
+    boolean isShowListing();
     
     String search();
     

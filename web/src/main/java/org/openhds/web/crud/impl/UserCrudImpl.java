@@ -6,11 +6,12 @@ import java.util.Set;
 import javax.faces.model.SelectItem;
 import org.openhds.domain.model.Role;
 import org.openhds.domain.model.User;
+import org.openhds.web.crud.UserCrud;
 import org.openhds.web.service.UserService;
 
 import static org.hibernate.Hibernate.initialize;
 
-public class UserCrudImpl extends EntityCrudImpl<User, String> {
+public class UserCrudImpl extends EntityCrudImpl<User, String> implements UserCrud {
 
 	UserService service;
 	String retypedPassword;
@@ -71,6 +72,7 @@ public class UserCrudImpl extends EntityCrudImpl<User, String> {
     /**
      * Retrieves the available roles to be displayed as checkboxes on the UI.
      */
+    @Override
     public List<SelectItem> getRoleSelectItems() {
     	List<SelectItem> rolesSelectItems = new ArrayList<>();
     	List<Role> roles = service.getRoles();
@@ -82,6 +84,7 @@ public class UserCrudImpl extends EntityCrudImpl<User, String> {
     	return rolesSelectItems;
     }
        
+	@Override
 	public String getRetypedPassword() {
 		return retypedPassword;
 	}
@@ -101,6 +104,7 @@ public class UserCrudImpl extends EntityCrudImpl<User, String> {
 	/**
 	 * Get all roles of which the entityItem belongs to.
 	 */
+	@Override
 	public List<String> getRoles() {
 		Set<Role> roles = entityItem.getRoles();
 		List<String> list = new ArrayList<>();

@@ -9,8 +9,9 @@ import org.openhds.domain.model.Privilege;
 import org.openhds.domain.model.Role;
 import org.openhds.domain.model.User;
 import org.openhds.controller.service.RoleService;
+import org.openhds.web.crud.RoleCrud;
 
-public class RoleCrudImpl extends EntityCrudImpl<Role, String> {
+public class RoleCrudImpl extends EntityCrudImpl<Role, String> implements RoleCrud {
 
 	RoleService service;
 	List<String> privileges;
@@ -150,6 +151,7 @@ public class RoleCrudImpl extends EntityCrudImpl<Role, String> {
 	/**
 	 * Get all privileges of which the entityItem belongs to.
 	 */
+    @Override
     public List<String> getPrivileges() {
     	Set<Privilege> privileges = entityItem.getPrivileges();
 		List<String> list = new ArrayList<>();
@@ -162,6 +164,7 @@ public class RoleCrudImpl extends EntityCrudImpl<Role, String> {
     /**
      * Retrieves the privileges to be displayed as checkboxes on the UI.
      */
+    @Override
     public List<SelectItem> getPrivilegeSelectItems() {
     	List<SelectItem> privilegesSelectItems = new ArrayList<>();
     	List<Privilege> privileges = service.getPrivileges();
