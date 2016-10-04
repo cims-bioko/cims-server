@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.openhds.controller.service.CurrentUser;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.FieldWorker;
-import org.openhds.integration.util.WebContextLoader;
 import org.openhds.web.crud.EntityCrud;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +21,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import static org.junit.Assert.assertNotNull;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional

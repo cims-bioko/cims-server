@@ -18,7 +18,6 @@ import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.errorhandling.constants.ErrorConstants;
-import org.openhds.errorhandling.service.ErrorHandlingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
