@@ -6,5 +6,4 @@ public interface ErrorServiceEndPoint {
 
     void logError(ErrorLog errorLog);
 
-    void updateError(ErrorLog errorLog);
 }

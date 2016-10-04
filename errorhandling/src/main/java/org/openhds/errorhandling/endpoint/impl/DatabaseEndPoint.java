@@ -17,9 +17,4 @@ public class DatabaseEndPoint implements ErrorServiceEndPoint {
         errorLogDAO.createErrorLog(errorLog);
     }
 
-    @Override
-    public void updateError(ErrorLog errorLog) {
-        errorLogDAO.updateErrorLog(errorLog);
-    }
-
 }
