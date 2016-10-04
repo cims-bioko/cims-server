@@ -3,7 +3,8 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
-				xmlns:sec="http://www.springframework.org/security/facelets/tags">
+                xmlns:sec="http://www.springframework.org/security/tags">
+
 	<h:head>
 	</h:head>
 
@@ -14,7 +15,7 @@
 	        		<f:setPropertyActionListener target="#{navController.showHome}" value="true" /> 
 	            </h:commandLink>
 	        </li>
-	    	<sec:ifAllGranted roles="ACESSS_UTILITY_ROUTINES">
+	    	<sec:authorize access="hasAuthority('ACESSS_UTILITY_ROUTINES')">
 			    <li>
 			        <h:commandLink value="#{msg.navBarUtilityRoutine}" action="welcome" >
 			        	<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
@@ -25,8 +26,8 @@
 			    	</ul>
 			    	</c:if>
 			    </li>
-		    </sec:ifAllGranted>
-		    <sec:ifAllGranted roles="ACESSS_CONFIGURATION">
+		    </sec:authorize>
+		    <sec:authorize access="hasAuthority('ACESSS_CONFIGURATION')">
 			    <li>
 			        <h:commandLink value="#{msg.navBarConfiguration}" action="welcome">
 			        	<f:setPropertyActionListener target="#{navController.showConfiguration}" value="true" /> 
@@ -39,7 +40,7 @@
 			    	</ul>
 			    	</c:if>
 			    </li>
-		    </sec:ifAllGranted>
+		    </sec:authorize>
 	    </ul>
     </h:form>
 </ui:composition>

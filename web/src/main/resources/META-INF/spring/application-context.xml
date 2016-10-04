@@ -62,36 +62,23 @@
 	</bean>
 
 	<!-- Configure Spring Security -->
-	<security:http auto-config="true">
+	<security:http auto-config="true" use-expressions="true">
 		<security:form-login
 			authentication-success-handler-ref="authSuccessHandler" login-page="/login.faces"
 			login-processing-url="/loginProcess" authentication-failure-url="/login.faces?login_error=1" />
-		<security:intercept-url pattern="/login.faces"
-			access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<security:intercept-url pattern="/resources/images/**"
-			access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<security:intercept-url pattern="/resources/css/main.css"
-			access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<security:intercept-url pattern="/resources/css/login.css"
-			access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<security:intercept-url pattern="/logout.faces"
-			access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<security:intercept-url pattern="/api/rest/**"
-			access="ROLE_AUTHENTICATED" />
-		<security:intercept-url pattern="/openFacesResources/**"
-			access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<security:intercept-url pattern="/primefaces_resource/**"
-			access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<security:intercept-url pattern="/javax.faces.resource/**"
-			access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<security:intercept-url pattern="/module/dsl/binding-def/**"
-			access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<security:intercept-url pattern="/module/dsl/validation"
-			access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<security:intercept-url pattern="/**"
-			access="ROLE_AUTHENTICATED" />
-		<security:logout logout-url="/logoutProcess"
-			success-handler-ref="logoutSuccessHandler" />
+		<security:intercept-url pattern="/login.faces" access="permitAll()" />
+		<security:intercept-url pattern="/resources/images/**" access="permitAll()" />
+		<security:intercept-url pattern="/resources/css/main.css" access="permitAll()" />
+		<security:intercept-url pattern="/resources/css/login.css" access="permitAll()" />
+		<security:intercept-url pattern="/logout.faces" access="permitAll()" />
+		<security:intercept-url pattern="/openFacesResources/**" access="permitAll()" />
+		<security:intercept-url pattern="/primefaces_resource/**" access="permitAll()" />
+		<security:intercept-url pattern="/javax.faces.resource/**" access="permitAll()" />
+		<security:intercept-url pattern="/module/dsl/binding-def/**" access="permitAll()" />
+		<security:intercept-url pattern="/module/dsl/validation" access="permitAll()" />
+		<security:intercept-url pattern="/**" access="isAuthenticated()" />
+		<security:intercept-url pattern="/api/rest/**" access="isAuthenticated()" />
+		<security:logout logout-url="/logoutProcess" success-handler-ref="logoutSuccessHandler" />
 	</security:http>
 
 	<bean id="timestampConverter" class="org.openhds.web.cvt.TimeStampConverter">
