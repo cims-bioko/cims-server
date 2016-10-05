@@ -1,8 +1,5 @@
 package org.openhds.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckEndDateNotBeforeStartDate;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
@@ -32,7 +29,6 @@ import java.util.List;
 @CheckEndDateNotBeforeStartDate(allowNull=true)
 @Table(name="residency")
 @XmlRootElement
-@JsonInclude(Include.NON_NULL)
 public class Residency extends AuditableCollectedEntity implements GenericStartEndDateConstraint, Serializable {
     private static final long serialVersionUID = -4666666231598767965L;
 

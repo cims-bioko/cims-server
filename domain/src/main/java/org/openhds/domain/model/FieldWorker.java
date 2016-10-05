@@ -1,7 +1,5 @@
 package org.openhds.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.Searchable;
@@ -21,7 +19,6 @@ import java.util.List;
         "are recorded.")
 @Entity
 @Table(name="fieldworker")
-@JsonInclude(Include.NON_NULL)
 public class FieldWorker extends AuditableEntity implements Serializable {
 
 

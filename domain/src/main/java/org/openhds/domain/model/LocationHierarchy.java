@@ -1,8 +1,5 @@
 package org.openhds.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.Searchable;
@@ -32,7 +29,6 @@ import java.util.List;
 @Entity
 @Table(name="locationhierarchy")
 @XmlRootElement
-@JsonInclude(Include.NON_NULL)
 public class LocationHierarchy implements UuidIdentifiable, Serializable {
 
     private static final long serialVersionUID = -5334850119671675888L;
