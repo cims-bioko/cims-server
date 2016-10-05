@@ -19,18 +19,4 @@
     <bean id="appContextAware" class="org.openhds.domain.constraint.AppContextAware" />
     <bean id="valueConstraintService" class="org.openhds.domain.service.impl.ValueConstraintServiceImpl" />
 
-    <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-        <property name="packagesToScan">
-            <array>
-                <value>org.openhds.domain.model</value>
-                <value>org.openhds.webservice</value>
-            </array>
-        </property>
-        <property name="adapters">
-            <array>
-                <ref bean="calendarAdapter" />
-            </array>
-        </property>
-    </bean>
-
 </beans>
