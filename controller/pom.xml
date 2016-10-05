@@ -9,9 +9,7 @@
         <version>2.6-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.openhds</groupId>
     <artifactId>controller</artifactId>
-    <packaging>jar</packaging>
     <name>OpenHDS Controller</name>
 
     <dependencies>

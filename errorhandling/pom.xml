@@ -8,7 +8,6 @@
         <version>2.6-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.openhds</groupId>
     <artifactId>errorhandling</artifactId>
     <name>OpenHDS Error Handling</name>
 

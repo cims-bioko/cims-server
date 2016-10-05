@@ -8,10 +8,8 @@
         <version>2.6-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.openhds</groupId>
     <artifactId>dao</artifactId>
     <name>OpenHDS DAO</name>
-    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>

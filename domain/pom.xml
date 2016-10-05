@@ -11,8 +11,6 @@
 
     <artifactId>domain</artifactId>
     <name>OpenHDS Domain</name>
-    <packaging>jar</packaging>
-    <url>http://maven.apache.org</url>
 
     <dependencies>
         <dependency>
