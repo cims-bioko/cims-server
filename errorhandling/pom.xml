@@ -14,8 +14,11 @@
     <dependencies>
         <dependency>
             <groupId>org.openhds</groupId>
+            <artifactId>domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openhds</groupId>
             <artifactId>controller</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -28,11 +31,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.openhds</groupId>
-            <artifactId>domain</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 

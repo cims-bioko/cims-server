@@ -16,22 +16,18 @@
 		<dependency>
 			<groupId>org.openhds</groupId>
 			<artifactId>domain</artifactId>
-			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openhds</groupId>
 			<artifactId>controller</artifactId>
-			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openhds</groupId>
 			<artifactId>task</artifactId>
-			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openhds</groupId>
 			<artifactId>errorhandling</artifactId>
-			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
