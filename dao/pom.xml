@@ -13,6 +13,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.openhds</groupId>
+            <artifactId>domain</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>aopalliance</groupId>
             <artifactId>aopalliance</artifactId>
         </dependency>
@@ -35,11 +40,6 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.openhds</groupId>
-            <artifactId>domain</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-dbcp</groupId>

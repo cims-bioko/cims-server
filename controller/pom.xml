@@ -14,6 +14,16 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.openhds</groupId>
+            <artifactId>domain</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openhds</groupId>
+            <artifactId>dao</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
         </dependency>
@@ -40,16 +50,6 @@
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.openhds</groupId>
-            <artifactId>domain</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openhds</groupId>
-            <artifactId>dao</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
