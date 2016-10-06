@@ -75,7 +75,6 @@
 		<security:intercept-url pattern="/resources/css/main.css" access="permitAll()" />
 		<security:intercept-url pattern="/resources/css/login.css" access="permitAll()" />
 		<security:intercept-url pattern="/logout.faces" access="permitAll()" />
-		<security:intercept-url pattern="/openFacesResources/**" access="permitAll()" />
 		<security:intercept-url pattern="/primefaces_resource/**" access="permitAll()" />
 		<security:intercept-url pattern="/javax.faces.resource/**" access="permitAll()" />
 		<security:intercept-url pattern="/module/dsl/binding-def/**" access="permitAll()" />

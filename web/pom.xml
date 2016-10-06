@@ -159,11 +159,6 @@
             <version>2.1.29-04</version>
         </dependency>
         <dependency>
-            <groupId>org.openfaces</groupId>
-            <artifactId>openfaces</artifactId>
-            <version>3.0</version>
-        </dependency>
-        <dependency>
             <groupId>jfree</groupId>
             <artifactId>jfreechart</artifactId>
             <version>1.0.12</version>
