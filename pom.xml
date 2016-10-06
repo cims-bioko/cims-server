@@ -10,13 +10,6 @@
     <name>OpenHDS Core</name>
     <version>2.6-SNAPSHOT</version>
 
-    <repositories>
-        <repository>
-            <id>repository.jboss.org</id>
-            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
-        </repository>
-    </repositories>
-
     <scm>
         <connection>scm:git:https://github.com/cims-bioko/openhds-server.git</connection>
         <developerConnection>scm:git:https://github.com/cims-bioko/openhds-server.git</developerConnection>
