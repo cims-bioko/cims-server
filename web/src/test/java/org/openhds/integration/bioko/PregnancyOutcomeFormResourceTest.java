@@ -22,7 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.springframework.test.web.server.MockMvc;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.JAXBContext;
@@ -33,13 +33,11 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * Created by motech on 4/16/15.
- */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @ContextConfiguration(loader = WebContextLoader.class, locations = { "/testContext.xml" })
@@ -102,7 +100,7 @@ public class PregnancyOutcomeFormResourceTest extends AbstractResourceTest {
         JAXBContext context = JAXBContext.newInstance(PregnancyOutcomeFormResource.CoreForm.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
         unmarshaller.setAdapter(adapter);
-        Object object = unmarshaller.unmarshal(new ByteArrayInputStream(OUTCOME_CORE_FORM_XML.getBytes(StandardCharsets.UTF_8)));
+        Object object = unmarshaller.unmarshal(new ByteArrayInputStream(OUTCOME_CORE_FORM_XML.getBytes()));
         PregnancyOutcomeFormResource.CoreForm form = (PregnancyOutcomeFormResource.CoreForm) object;
     }
 
@@ -111,7 +109,7 @@ public class PregnancyOutcomeFormResourceTest extends AbstractResourceTest {
         JAXBContext context = JAXBContext.newInstance(PregnancyOutcomeFormResource.OutcomesForm.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
         unmarshaller.setAdapter(adapter);
-        Object object = unmarshaller.unmarshal(new ByteArrayInputStream(OUTCOME_CHILD_FORM_XML.getBytes(StandardCharsets.UTF_8)));
+        Object object = unmarshaller.unmarshal(new ByteArrayInputStream(OUTCOME_CHILD_FORM_XML.getBytes()));
         PregnancyOutcomeFormResource.OutcomesForm form = (PregnancyOutcomeFormResource.OutcomesForm) object;
     }
 
@@ -120,9 +118,9 @@ public class PregnancyOutcomeFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/pregnancyOutcomeForm/core").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(OUTCOME_CORE_FORM_XML.getBytes()))
+                        .content(OUTCOME_CORE_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         verifyParentCrud("123123123123123123");
     }
@@ -139,16 +137,16 @@ public class PregnancyOutcomeFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/pregnancyOutcomeForm/core").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(OUTCOME_CORE_FORM_XML.getBytes()))
+                        .content(OUTCOME_CORE_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         mockMvc.perform(
                 post("/pregnancyOutcomeForm/outcomes").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(OUTCOME_CHILD_FORM_XML.getBytes()))
+                        .content(OUTCOME_CHILD_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         verifyEntityCrud("childUuid");
     }

@@ -20,14 +20,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.springframework.test.web.server.MockMvc;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
@@ -76,9 +76,9 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/pregnancyObservationForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(VALID_OBSERVATION_XML.getBytes()))
+                        .content(VALID_OBSERVATION_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         verifyPregnancyObservationCrud("PregnantIndividual");
 
@@ -112,9 +112,9 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/pregnancyObservationForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(INVALID_PREG_OBS_MALE_XML.getBytes()))
+                        .content(INVALID_PREG_OBS_MALE_XML))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
     }
 

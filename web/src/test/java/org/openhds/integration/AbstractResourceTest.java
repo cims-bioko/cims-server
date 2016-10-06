@@ -5,12 +5,12 @@ package org.openhds.integration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.web.FilterChainProxy;
-import org.springframework.test.web.server.MockMvc;
-import org.springframework.test.web.server.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 public abstract class AbstractResourceTest {
 
@@ -28,7 +28,7 @@ public abstract class AbstractResourceTest {
     }
 
     protected MockMvc buildMockMvc() {
-        return MockMvcBuilders.webApplicationContextSetup(webApplicationContext)
+        return MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .addFilter(springSecurityFilterChain).build();
     }
 

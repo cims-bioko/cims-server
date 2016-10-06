@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.springframework.test.web.server.MockMvc;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -29,9 +29,10 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
@@ -127,9 +128,9 @@ public class LocationFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/locationForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(LOCATION_FORM_XML.getBytes()))
+                        .content(LOCATION_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         verifyLocationCrud("M1000S57E09P1");
 
@@ -141,23 +142,23 @@ public class LocationFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/locationForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(LOCATION_FORM_XML.getBytes()))
+                        .content(LOCATION_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         mockMvc.perform(
                 post("/locationForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(DUPLICATE_LOCATION_FORM_XML.getBytes()))
+                        .content(DUPLICATE_LOCATION_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         mockMvc.perform(
                 post("/locationForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(DUPLICATE_LOCATION_FORM_XML_2.getBytes()))
+                        .content(DUPLICATE_LOCATION_FORM_XML_2))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         Location location = genericDao.findByProperty(Location.class, "extId", "M1000S57E09P1-d1");
         assertNotNull(location);
@@ -175,9 +176,9 @@ public class LocationFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/locationForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(LOCATION_FORM_XML.getBytes()))
+                        .content(LOCATION_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         Location original = genericDao.findByProperty(Location.class, "extId", "M1000S57E09P1", true);
         assertNotNull("location should exist after first form", original);
@@ -188,9 +189,9 @@ public class LocationFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/locationForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(DUPLICATE_LOCATION_FORM_XML.getBytes()))
+                        .content(DUPLICATE_LOCATION_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         Location duplicate = genericDao.findByProperty(Location.class, "extId", "M1000S57E09P1-d1");
         assertNull("no duplicate should exist after second form", duplicate);

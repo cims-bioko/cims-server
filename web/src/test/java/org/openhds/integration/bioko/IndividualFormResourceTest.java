@@ -22,7 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.springframework.test.web.server.MockMvc;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.JAXBContext;
@@ -33,9 +33,10 @@ import java.nio.charset.StandardCharsets;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
@@ -202,7 +203,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         JAXBContext context = JAXBContext.newInstance(IndividualFormResource.Form.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
         unmarshaller.setAdapter(adapter);
-        Object object = unmarshaller.unmarshal(new ByteArrayInputStream(HEAD_OF_HOUSEHOLD_FORM_XML.getBytes(StandardCharsets.UTF_8)));
+        Object object = unmarshaller.unmarshal(new ByteArrayInputStream(HEAD_OF_HOUSEHOLD_FORM_XML.getBytes()));
         IndividualFormResource.Form form = (IndividualFormResource.Form) object;
     }
 
@@ -212,16 +213,16 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(MEMBER_OF_HOUSEHOLD_FORM_XML.getBytes()))
+                        .content(MEMBER_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(DUPLICATE_EXTID_MEMBER_OF_HOUSEHOLD_FORM_XML.getBytes()))
+                        .content(DUPLICATE_EXTID_MEMBER_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         verifyEntityCrud("12345678901234935890123456789012", "existing_id", "Individual2", "2");
 
@@ -236,9 +237,9 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(MEMBER_OF_HOUSEHOLD_FORM_XML.getBytes()))
+                        .content(MEMBER_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         ErrorLog error = genericDao.findByProperty(ErrorLog.class, "entityType", IndividualFormResource.Form.LOG_NAME);
         assertNull("no error should exist after processing first form", error);
@@ -257,9 +258,9 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(DUPLICATE_EXTID_MEMBER_OF_HOUSEHOLD_FORM_XML.getBytes()))
+                        .content(DUPLICATE_EXTID_MEMBER_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         error = genericDao.findByProperty(ErrorLog.class, "entityType", IndividualFormResource.Form.LOG_NAME);
         assertNull("no error should exist after processing second form", error);
@@ -276,9 +277,9 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(HEAD_OF_HOUSEHOLD_FORM_XML.getBytes()))
+                        .content(HEAD_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         verifyEntityCrud("32145678901234935890123456789012", "newHouse_id", "32145678901234935890123456789012", "1");
     }
@@ -288,9 +289,9 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(MEMBER_OF_HOUSEHOLD_FORM_XML.getBytes()))
+                        .content(MEMBER_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         verifyEntityCrud("12345678901234935890123456789012", "existing_id", "Individual2", "2");
     }
@@ -300,16 +301,16 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(HEAD_OF_HOUSEHOLD_FORM_XML.getBytes()))
+                        .content(HEAD_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(HEAD_OF_HOUSEHOLD_FORM_XML.getBytes()))
+                        .content(HEAD_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         verifyEntityCrud("32145678901234935890123456789012", "newHouse_id", "32145678901234935890123456789012", "1");
     }
@@ -319,16 +320,16 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(MEMBER_OF_HOUSEHOLD_FORM_XML.getBytes()))
+                        .content(MEMBER_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(MEMBER_OF_HOUSEHOLD_FORM_XML.getBytes()))
+                        .content(MEMBER_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         verifyEntityCrud("12345678901234935890123456789012", "existing_id", "Individual2", "2");
     }
@@ -338,9 +339,9 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(INDIVIDUAL_FORM_INCOMPLETE.getBytes()))
+                        .content(INDIVIDUAL_FORM_INCOMPLETE))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
     }
 
     @Test
@@ -348,9 +349,9 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(MEMBER_OF_HOUSEHOLD_OUTDATED_EXTID_FORM_XML.getBytes()))
+                        .content(MEMBER_OF_HOUSEHOLD_OUTDATED_EXTID_FORM_XML))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         verifyEntityCrud("12345678901234935890123456789012", "existing_id", "Individual2", "2");
     }

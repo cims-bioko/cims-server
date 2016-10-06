@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.springframework.test.web.server.MockMvc;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.openhds.domain.model.Residency;
@@ -29,9 +29,10 @@ import org.openhds.domain.model.Residency;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
@@ -93,9 +94,9 @@ public class OutMigrationFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/outMigrationForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(OUTMIGRATION_FORM_XML_VALID.getBytes()))
+                        .content(OUTMIGRATION_FORM_XML_VALID))
                 .andExpect(status().isCreated())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         verifyOutMigrationCrud("individual1");
 
@@ -119,9 +120,9 @@ public class OutMigrationFormResourceTest extends AbstractResourceTest {
         mockMvc.perform(
                 post("/outMigrationForm").session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .body(OUTMIGRATION_FORM_XML_INVALID_DATE.getBytes()))
+                        .content(OUTMIGRATION_FORM_XML_INVALID_DATE))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().mimeType(MediaType.APPLICATION_XML));
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         verifyOutMigrationNotPersisted("individual2");
 
