@@ -208,24 +208,6 @@
 
     <build>
         <finalName>${project.parent.artifactId}</finalName>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <artifactId>maven-war-plugin</artifactId>
-                    <configuration>
-                        <nonFilteredFileExtensions>
-                            <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
-                        </nonFilteredFileExtensions>
-                        <webResources>
-                            <resource>
-                                <directory>src/main/webapp</directory>
-                                <filtering>true</filtering>
-                            </resource>
-                        </webResources>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
@@ -272,21 +254,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <excludes>
-                    <exclude>hibernate.cfg.xml</exclude>
-                </excludes>
-            </resource>
-        </resources>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <filtering>true</filtering>
-            </testResource>
-        </testResources>
     </build>
 
 </project>

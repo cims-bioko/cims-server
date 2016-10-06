@@ -365,12 +365,6 @@
                     </configuration>
                 </plugin>
                 <plugin>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <configuration>
-                        <escapeString>\</escapeString>
-                    </configuration>
-                </plugin>
-                <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <configuration>
                         <systemPropertyVariables>

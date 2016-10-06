@@ -7,14 +7,7 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-
     <context:component-scan base-package="org.openhds.domain" />
-
-    <bean id="appSettings" class="org.openhds.domain.model.AppSettings" scope="prototype">
-        <property name="versionNumber">
-            <value>${project.version}</value>
-        </property>
-    </bean>
 
     <bean id="appContextAware" class="org.openhds.domain.constraint.AppContextAware" />
     <bean id="valueConstraintService" class="org.openhds.domain.service.impl.ValueConstraintServiceImpl" />
