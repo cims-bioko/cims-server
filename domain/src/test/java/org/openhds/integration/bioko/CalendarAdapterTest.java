@@ -1,19 +1,20 @@
 package org.openhds.integration.bioko;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhds.domain.util.CalendarAdapter;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:domainTestContext.xml" })
@@ -61,7 +62,7 @@ public class CalendarAdapterTest {
 		try {
 			marshalledCalendar = calendarAdapter.marshal(dateTime);
 		} catch (Exception e) {
-			Assert.fail(e.getMessage());
+			fail(e.getMessage());
 		}
 		assertNotNull(marshalledCalendar);
 		assertEquals(MOCK_DATETIME, marshalledCalendar);
@@ -74,7 +75,7 @@ public class CalendarAdapterTest {
 		try {
 			unmarshalledCalendar = calendarAdapter.unmarshal(MOCK_DATETIME);
 		} catch (Exception e) {
-			Assert.fail(e.getMessage());
+			fail(e.getMessage());
 		}
 		assertNotNull(unmarshalledCalendar);
 		assertEquals(unmarshalledCalendar.getTime(), dateTime.getTime());
@@ -88,7 +89,7 @@ public class CalendarAdapterTest {
 		try {
 			marshalledCalendar = calendarAdapter.marshal(date);
 		} catch (Exception e) {
-			Assert.fail(e.getMessage());
+			fail(e.getMessage());
 		}
 		assertNotNull(marshalledCalendar);
 		assertEquals(MOCK_DATE, marshalledCalendar.substring(0, 10));
@@ -102,7 +103,7 @@ public class CalendarAdapterTest {
 		try {
 			unmarshalledCalendar = calendarAdapter.unmarshal(MOCK_DATE);
 		} catch (Exception e) {
-			Assert.fail(e.getMessage());
+			fail(e.getMessage());
 		}
 		assertNotNull(unmarshalledCalendar);
 		assertEquals(date.getTime(), unmarshalledCalendar.getTime());
