@@ -60,7 +60,7 @@ public class DuplicateLocationFormResource extends AbstractFormResource {
         @XmlEnumValue("merge")MERGE,
         @XmlEnumValue("gps-only")GPS_ONLY,
         @XmlEnumValue("not-found")NOT_FOUND,
-        @XmlEnumValue("remove")REMOVE;
+        @XmlEnumValue("remove")REMOVE
     }
 
     @XmlRootElement(name = "duplicateLocationForm")
