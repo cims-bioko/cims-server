@@ -15,20 +15,19 @@ import org.openhds.domain.model.User;
  * and would throw an exception. This class will guarantee only 1 lookup for request will occur, which avoids
  * the issue of Hibernate Flushing during non-completed transaction. In addition, it should also help with performance
  * although this has not been an issue yet.
- * 
- * @author Dave Roberge
  *
+ * @author Dave Roberge
  */
 public class UserCache {
 
-	private User user; // logged in user
+    private User user; // logged in user
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public User getUser() {
+        return user;
+    }
 
 }

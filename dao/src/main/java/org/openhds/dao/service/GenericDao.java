@@ -2,10 +2,12 @@ package org.openhds.dao.service;
 
 import java.util.List;
 import java.util.Map;
+
 import org.hibernate.Session;
 import org.hibernate.metadata.ClassMetadata;
 
-/** Interface for GenericDaoImpl.
+/**
+ * Interface for GenericDaoImpl.
  */
 public interface GenericDao {
 
@@ -53,9 +55,9 @@ public interface GenericDao {
     /**
      * Find an entry of some type from the database. Does not exclude "deleted" entries.
      *
-     * @param entityType The class of the entry we're looking for (e.g. SocialGroup.class)
+     * @param entityType   The class of the entry we're looking for (e.g. SocialGroup.class)
      * @param propertyName The column name to filter by (e.g. "extId")
-     * @param value The value to match in this column (e.g. an extId)
+     * @param value        The value to match in this column (e.g. an extId)
      * @return an object of the class type passed
      */
     <T> T findByProperty(Class<T> entityType, String propertyName, Object value);
@@ -63,9 +65,9 @@ public interface GenericDao {
     /**
      * Find an entry of some type from the database.
      *
-     * @param entityType The class of the entry we're looking for (e.g. SocialGroup.class)
-     * @param propertyName The column name to filter by (e.g. "extId")
-     * @param value The value to match in this column (e.g. an extId)
+     * @param entityType    The class of the entry we're looking for (e.g. SocialGroup.class)
+     * @param propertyName  The column name to filter by (e.g. "extId")
+     * @param value         The value to match in this column (e.g. an extId)
      * @param filterDeleted True to only return entries which haven't been marked deleted
      * @return an object of the class type passed
      */
@@ -92,7 +94,7 @@ public interface GenericDao {
 
     <T> List<T> findByExample(Class<T> entityType, T exampleInstance, String... excludeProperty);
 
-    <T> Map<String,ClassMetadata> getClassMetaData();
+    <T> Map<String, ClassMetadata> getClassMetaData();
 
     Session getSession();
 

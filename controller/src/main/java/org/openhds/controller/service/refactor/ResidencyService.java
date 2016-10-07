@@ -10,6 +10,7 @@ import java.util.List;
 public interface ResidencyService extends EntityService<Residency> {
 
     boolean hasOpenResidency(Individual individual);
+
     List<Residency> getResidenciesByLocation(Location location);
 
 }

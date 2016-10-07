@@ -21,51 +21,51 @@ import org.openhds.domain.constraint.CheckInteger;
 import org.openhds.domain.constraint.Searchable;
 import org.openhds.domain.util.CalendarAdapter;
 
-@Description(description="A Pregnancy Outcome represents the results of the " +
-		"pregnancy. It contains information about the Visit that is associated, " +
-		"the date of the outcome, and who the parents are. One Pregnancy Outcome " +
-		"can have multiple Outcomes. ")
+@Description(description = "A Pregnancy Outcome represents the results of the " +
+        "pregnancy. It contains information about the Visit that is associated, " +
+        "the date of the outcome, and who the parents are. One Pregnancy Outcome " +
+        "can have multiple Outcomes. ")
 @Entity
-@Table(name="pregnancyoutcome")
+@Table(name = "pregnancyoutcome")
 @XmlRootElement(name = "pregnancyoutcome")
 public class PregnancyOutcome extends AuditableCollectedEntity implements Serializable {
 
     private static final long serialVersionUID = -8901037436653805795L;
-        
+
     @ManyToOne(cascade = CascadeType.MERGE)
-    @Description(description="Visit that is associated with the pregnancy outcome, identified by the external id.")
+    @Description(description = "Visit that is associated with the pregnancy outcome, identified by the external id.")
     private Visit visit;
-   
+
     @CheckInteger
-    @Description(description="Total number of children born, including live and still births.")
+    @Description(description = "Total number of children born, including live and still births.")
     private Integer childEverBorn = 0;
-   
+
     @CheckInteger
-    @Description(description="Total number of live births.")
+    @Description(description = "Total number of live births.")
     private Integer numberOfLiveBirths = 0;
-   
+
     @Temporal(javax.persistence.TemporalType.DATE)
     @Past
-    @Description(description="Date of the pregnancy outcome.")
+    @Description(description = "Date of the pregnancy outcome.")
     private Calendar outcomeDate;
-   
+
     @Searchable
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = org.openhds.domain.model.Individual.class)
     @CheckIndividualGenderFemale(allowNull = false)
     @CheckIndividualNotUnknown
     @CheckEntityNotVoided
-    @Description(description="Mother of the pregnancy outcome.")
+    @Description(description = "Mother of the pregnancy outcome.")
     private Individual mother;
 
     @Searchable
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = org.openhds.domain.model.Individual.class)
     @CheckIndividualGenderMale(allowNull = false)
     @CheckEntityNotVoided
-    @Description(description="Father of the pregnancy outcome.")
+    @Description(description = "Father of the pregnancy outcome.")
     private Individual father;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pregnancyOutcome")
-    @Description(description="List of all outcomes for the pregnancy.")
+    @Description(description = "List of all outcomes for the pregnancy.")
     private List<Outcome> outcomes = new ArrayList<>();
 
     public Integer getChildEverBorn() {
@@ -108,8 +108,8 @@ public class PregnancyOutcome extends AuditableCollectedEntity implements Serial
         this.father = father;
     }
 
-    @XmlElement(name="outcome")
-    @XmlElementWrapper(name="outcomes")
+    @XmlElement(name = "outcome")
+    @XmlElementWrapper(name = "outcomes")
     public List<Outcome> getOutcomes() {
         return outcomes;
     }
@@ -118,7 +118,7 @@ public class PregnancyOutcome extends AuditableCollectedEntity implements Serial
         this.outcomes = outcomes;
     }
 
-    @XmlJavaTypeAdapter(value=CalendarAdapter.class) 
+    @XmlJavaTypeAdapter(value = CalendarAdapter.class)
     public Calendar getOutcomeDate() {
         return outcomeDate;
     }
@@ -130,22 +130,22 @@ public class PregnancyOutcome extends AuditableCollectedEntity implements Serial
     /**
      * Helper method to add an outcome to a pregnancy.
      *
-     * @param type the type of outcome
+     * @param type  the type of outcome
      * @param child the child for the outcome (only for live births)
      */
     public Outcome addOutcome(String type, Individual child) {
         Outcome outcome = new Outcome();
         outcome.setType(type);
         outcome.setChild(child);
-        
+
         return addOutcome(outcome);
     }
-    
+
     /**
      * Add an outcome to this pregnancy outcome
-     * This method will increase the count for the number of child for this pregnancy, 
+     * This method will increase the count for the number of child for this pregnancy,
      * as well as increase the count for the number of live births if the outcome is of type live birth
-     * 
+     *
      * @param outcome the outcome to add to the pregnancy
      * @return the outcome added to the pregnancy oucome
      */
@@ -153,13 +153,13 @@ public class PregnancyOutcome extends AuditableCollectedEntity implements Serial
         outcomes.add(outcome);
         childEverBorn++;
 
-        return outcome;    	
+        return outcome;
     }
-    
+
     public Outcome addLiveBirthOutcome(Outcome outcome) {
-    	addOutcome(outcome);
+        addOutcome(outcome);
         numberOfLiveBirths++;
-        
+
         return outcome;
     }
 }

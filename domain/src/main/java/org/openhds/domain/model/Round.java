@@ -19,77 +19,77 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
-@Description(description="A Round represents a range of dates in which Visits " +
-		"can take place.")
+@Description(description = "A Round represents a range of dates in which Visits " +
+        "can take place.")
 @Entity
 @CheckEndDateNotBeforeStartDate
-@Table(name="round")
+@Table(name = "round")
 public class Round implements Serializable, GenericStartEndDateConstraint {
 
-	private static final long serialVersionUID = 1022315305801238563L;
+    private static final long serialVersionUID = 1022315305801238563L;
 
-	@Id
+    @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "org.openhds.domain.util.UUIDGenerator")
-    @Column(length=32)
-	String uuid;
-	
-	@CheckInteger(min=1)
-	@Description(description="Round number for the study.")
-	Integer roundNumber;
-	
-	@Temporal(javax.persistence.TemporalType.DATE)
-	@Description(description="Start date of the round.")
-	Calendar startDate;
-	
-	@Temporal(javax.persistence.TemporalType.DATE)
-	@Description(description="End date of the round.")
-	Calendar endDate;
-	
-	@Description(description="Remarks about the round.")
-	String remarks;
+    @Column(length = 32)
+    String uuid;
 
-	public String getUuid() {
-		return uuid;
-	}
+    @CheckInteger(min = 1)
+    @Description(description = "Round number for the study.")
+    Integer roundNumber;
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @Description(description = "Start date of the round.")
+    Calendar startDate;
 
-	public Integer getRoundNumber() {
-		return roundNumber;
-	}
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @Description(description = "End date of the round.")
+    Calendar endDate;
 
-	public void setRoundNumber(Integer roundNumber) {
-		this.roundNumber = roundNumber;
-	}
+    @Description(description = "Remarks about the round.")
+    String remarks;
 
-	@XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
-	public Calendar getStartDate() {
-		return startDate;
-	}
+    public String getUuid() {
+        return uuid;
+    }
 
-	public void setStartDate(Calendar startDate) {
-		this.startDate = startDate;
-	}
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-	@XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
-	public Calendar getEndDate() {
-		return endDate;
-	}
+    public Integer getRoundNumber() {
+        return roundNumber;
+    }
 
-	public void setEndDate(Calendar endDate) {
-		this.endDate = endDate;
-	}
+    public void setRoundNumber(Integer roundNumber) {
+        this.roundNumber = roundNumber;
+    }
 
-	public String getRemarks() {
-		return remarks;
-	}
+    @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
+    public Calendar getStartDate() {
+        return startDate;
+    }
 
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
-	}
+    public void setStartDate(Calendar startDate) {
+        this.startDate = startDate;
+    }
+
+    @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
+    public Calendar getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Calendar endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
 
     @XmlRootElement
     public static class Rounds {

@@ -1,8 +1,6 @@
 package org.openhds.controller.service.refactor;
 
 
-
-
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.FieldWorker;
 

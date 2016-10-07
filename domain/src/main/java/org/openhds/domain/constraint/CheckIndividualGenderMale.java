@@ -4,6 +4,7 @@ import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -12,17 +13,17 @@ import javax.validation.Payload;
 
 import org.openhds.domain.constraint.impl.CheckIndividualGenderMaleImpl;
 
-@Target( { METHOD, FIELD, ANNOTATION_TYPE})
+@Target({METHOD, FIELD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
 @Constraint(validatedBy = CheckIndividualGenderMaleImpl.class)
 @Documented
 public @interface CheckIndividualGenderMale {
 
-	String message() default "The gender specified must be Male.";
-	
-	Class<?>[] groups() default{};
-	
-	Class<? extends Payload>[] payload() default {};
-		
-	boolean allowNull() default false;
+    String message() default "The gender specified must be Male.";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+
+    boolean allowNull() default false;
 }

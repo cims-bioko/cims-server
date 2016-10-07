@@ -75,7 +75,7 @@ public class DeathFormResource extends AbstractFormResource {
         FieldWorker fieldWorker = fieldWorkerService.getByUuid(form.getFieldWorkerUuid());
         if (null == fieldWorker) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_UUID +" : " + form.getFieldWorkerUuid());
+            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_UUID + " : " + form.getFieldWorkerUuid());
             String errorDataPayload = createDTOPayload(form);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, Form.LOG_NAME,
                     fieldWorker, ConstraintViolations.INVALID_FIELD_WORKER_UUID, cv.getViolations());
@@ -87,7 +87,7 @@ public class DeathFormResource extends AbstractFormResource {
         Visit visit = visitService.findVisitByUuid(form.getVisitUuid());
         if (null == visit) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_VISIT_UUID +" : " + form.getVisitUuid());
+            cv.addViolations(ConstraintViolations.INVALID_VISIT_UUID + " : " + form.getVisitUuid());
             String errorDataPayload = createDTOPayload(form);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, Form.LOG_NAME,
                     fieldWorker, ConstraintViolations.INVALID_VISIT_UUID, cv.getViolations());
@@ -99,7 +99,7 @@ public class DeathFormResource extends AbstractFormResource {
         Individual individual = individualService.getByUuid(form.getIndividualUuid());
         if (null == individual) {
             ConstraintViolations cv = new ConstraintViolations();
-            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_UUID +" : " + form.getIndividualUuid());
+            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_UUID + " : " + form.getIndividualUuid());
             String errorDataPayload = createDTOPayload(form);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, errorDataPayload, null, Form.LOG_NAME,
                     fieldWorker, ConstraintViolations.INVALID_INDIVIDUAL_UUID, cv.getViolations());
@@ -132,7 +132,7 @@ public class DeathFormResource extends AbstractFormResource {
     @XmlRootElement(name = "deathForm")
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = Form.LOG_NAME)
-    public static class Form implements Serializable{
+    public static class Form implements Serializable {
 
         public static final String LOG_NAME = "DeathForm";
 

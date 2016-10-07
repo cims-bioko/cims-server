@@ -27,13 +27,12 @@ public class LocationCrudHelper extends AbstractEntityCrudHelperImpl<Location> {
     protected void preCreateSanityChecks(Location location) throws ConstraintViolations {
 
 
-
     }
 
     @Override
     protected void cascadeReferences(Location location) throws ConstraintViolations {
 
-        if(null == location.getExtId()){
+        if (null == location.getExtId()) {
             locationGenerator.generateId(location);
         }
 
@@ -61,7 +60,7 @@ public class LocationCrudHelper extends AbstractEntityCrudHelperImpl<Location> {
 
     @Override
     public Location getByUuid(String id) {
-        return genericDao.findByProperty(Location.class,"uuid",id);
+        return genericDao.findByProperty(Location.class, "uuid", id);
     }
 
 }

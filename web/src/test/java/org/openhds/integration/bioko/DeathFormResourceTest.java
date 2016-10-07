@@ -31,10 +31,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-@ContextConfiguration(loader = WebContextLoader.class, locations = { "/testContext.xml" })
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+@ContextConfiguration(loader = WebContextLoader.class, locations = {"/testContext.xml"})
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
-        DbUnitTestExecutionListener.class })
+        DbUnitTestExecutionListener.class})
 @DatabaseSetup(value = "/formResourceTestDb.xml", type = DatabaseOperation.REFRESH)
 public class DeathFormResourceTest extends AbstractResourceTest {
 
@@ -112,7 +112,7 @@ public class DeathFormResourceTest extends AbstractResourceTest {
 
     }
 
-    public void verifyDeathCrud (String individualExtId) throws Exception {
+    public void verifyDeathCrud(String individualExtId) throws Exception {
 
         Individual deceasedIndividual = genericDao.findByProperty(Individual.class, "extId", individualExtId);
         assertNotNull(deceasedIndividual);

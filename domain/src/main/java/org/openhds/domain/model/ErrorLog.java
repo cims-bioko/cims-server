@@ -22,14 +22,14 @@ public class ErrorLog implements Serializable {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "org.openhds.domain.util.UUIDGenerator")
-    @Column(length=32)
+    @Column(length = 32)
     private String uuid;
 
     @Temporal(javax.persistence.TemporalType.DATE)
-    @Description(description="Date of insertion.")
+    @Description(description = "Date of insertion.")
     private Calendar insertDate;
 
-    @Column(length=65535)
+    @Column(length = 65535)
     private String dataPayload;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = org.openhds.domain.model.Error.class)
@@ -37,11 +37,11 @@ public class ErrorLog implements Serializable {
     private List<Error> errors;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity=FieldWorker.class)
-    @Description(description="The field worker who collected the data, identified by external id.")
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = FieldWorker.class)
+    @Description(description = "The field worker who collected the data, identified by external id.")
     private FieldWorker fieldWorker;
 
-    @Description(description="Indicator for signaling some data to be deleted.")
+    @Description(description = "Indicator for signaling some data to be deleted.")
     protected boolean deleted = false;
 
     private String assignedTo;

@@ -49,7 +49,7 @@ public class DeathCrudHelper extends AbstractEntityCrudHelperImpl<Death> {
             residency.setEndType(sitePropertiesService.getDeathCode());
         }
 
-        Long ageAtDeath = (endDate.getTimeInMillis() - death.getIndividual().getDob().getTimeInMillis())/MILLISECONDS_IN_DAY;
+        Long ageAtDeath = (endDate.getTimeInMillis() - death.getIndividual().getDob().getTimeInMillis()) / MILLISECONDS_IN_DAY;
         death.setAgeAtDeath(ageAtDeath);
 
         //Gets the individual's memberships if any
@@ -105,6 +105,6 @@ public class DeathCrudHelper extends AbstractEntityCrudHelperImpl<Death> {
 
     @Override
     public Death getByUuid(String id) {
-        return genericDao.findByProperty(Death.class,"uuid",id);
+        return genericDao.findByProperty(Death.class, "uuid", id);
     }
 }

@@ -15,7 +15,7 @@ public class TimeStampConverter implements Converter {
     public TimeStampConverter(String dateFormat) {
         formatter = new SimpleDateFormat(dateFormat);
     }
-    
+
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         return null;
@@ -23,7 +23,7 @@ public class TimeStampConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        return formatter.format(((Calendar)value).getTime());
+        return formatter.format(((Calendar) value).getTime());
     }
 
 }

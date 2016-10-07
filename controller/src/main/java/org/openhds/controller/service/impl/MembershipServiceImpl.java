@@ -84,7 +84,7 @@ public class MembershipServiceImpl extends EntityServiceRefactoredImpl implement
      * Event.
      */
     public boolean checkEndEventTypeForMembershipOnEdit(Membership persistedItem,
-            Membership entityItem) {
+                                                        Membership entityItem) {
 
         return !(entityItem.getEndType().equals(siteProperties.getDeathCode())
                 && !individualService.getLatestEvent(persistedItem.getIndividual()).equals("Death")
@@ -110,7 +110,7 @@ public class MembershipServiceImpl extends EntityServiceRefactoredImpl implement
     /**
      * Helper method for creating a membership. NOTE: This is only being used by
      * the pregnancy outcome web service method
-     * 
+     *
      * @param startDate
      * @param individual
      * @param sg
@@ -119,7 +119,7 @@ public class MembershipServiceImpl extends EntityServiceRefactoredImpl implement
      * @return
      */
     public Membership createMembershipForPregnancyOutcome(Calendar startDate,
-            Individual individual, SocialGroup sg, FieldWorker fw, String relationToGroupHead) {
+                                                          Individual individual, SocialGroup sg, FieldWorker fw, String relationToGroupHead) {
         Membership membership = new Membership();
         membership.setStartDate(startDate);
         membership.setIndividual(individual);
@@ -152,10 +152,9 @@ public class MembershipServiceImpl extends EntityServiceRefactoredImpl implement
 
     /**
      * Determine whether the Individual is the head of the Social Group.
-     * 
+     *
      * @param individual
      * @param socialGroup
-     * 
      * @return true is the Individual is the head of the Social Group
      */
     private boolean individualIsHeadOfSocialGroup(Individual individual, SocialGroup socialGroup) {
@@ -185,14 +184,14 @@ public class MembershipServiceImpl extends EntityServiceRefactoredImpl implement
         create(membership);
 
     }
-    
+
     @Override
     @Authorized("VIEW_ENTITY")
     public List<Membership> getAllMembershipsInRange(Membership start, int size) {
-        Object startProp = start == null? null : start.getUuid();
+        Object startProp = start == null ? null : start.getUuid();
         return genericDao.findPaged(Membership.class, "id", startProp, size);
     }
-    
+
     @Override
     @Authorized("VIEW_ENTITY")
     public long getTotalMembershipCount() {

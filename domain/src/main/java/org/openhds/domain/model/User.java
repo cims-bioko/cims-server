@@ -19,62 +19,63 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@Description(description="A User in the system. Users contain a group of Roles which " +
-		"define the actions they can take within OpenHDS. It contains descriptive " +
-		"information about the User such as first and last name, description, and " +
-		"the chosen username and password.")
+@Description(description = "A User in the system. Users contain a group of Roles which " +
+        "define the actions they can take within OpenHDS. It contains descriptive " +
+        "information about the User such as first and last name, description, and " +
+        "the chosen username and password.")
 @Entity
 @Table(name = "users")
 @NamedQuery(name = "User.findByUsername", query = "from User u where u.username = ?1")
 public class User implements Serializable, UuidIdentifiable {
 
     static final long serialVersionUID = 23L;
-    
+
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "org.openhds.domain.util.UUIDGenerator")
-    @Column(length=32)
+    @Column(length = 32)
     String uuid;
 
     @CheckFieldNotBlank
     @Searchable
-    @Description(description="User's first name")
+    @Description(description = "User's first name")
     String firstName;
-    
+
     @CheckFieldNotBlank
     @Searchable
-    @Description(description="User's last name")
+    @Description(description = "User's last name")
     String lastName;
-    
-    @Description(description="User's full name")
+
+    @Description(description = "User's full name")
     String fullName;
-    
-    @Description(description="Description of the user.")
+
+    @Description(description = "Description of the user.")
     String description;
-    
+
     @CheckFieldNotBlank
-    @Description(description="The name used for logging into the system.")
+    @Description(description = "The name used for logging into the system.")
     String username;
-    
+
     @CheckFieldNotBlank
-    @Description(description="Password associated with the username.")
+    @Description(description = "Password associated with the username.")
     String password;
-    
-    @ManyToMany(fetch=FetchType.LAZY)
-    @JoinTable(name="user_roles", joinColumns = {@JoinColumn(name="user_uuid")}, inverseJoinColumns = @JoinColumn(name="role_uuid"))
-    @Description(description="Set of roles applied to the user.")
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles", joinColumns = {@JoinColumn(name = "user_uuid")}, inverseJoinColumns = @JoinColumn(name = "role_uuid"))
+    @Description(description = "Set of roles applied to the user.")
     Set<Role> roles = new HashSet<>();
-    
-	@Description(description="Indicator for signaling some data to be deleted.")
+
+    @Description(description = "Indicator for signaling some data to be deleted.")
     boolean deleted = false;
-    
-	// this is used for seamless integration with special study
+
+    // this is used for seamless integration with special study
     String sessionId;
 
     // this is used for seamless integration with special study
     long lastLoginTime;
 
-    public User() { }
+    public User() {
+    }
 
     public User(String username, String password) {
         setUsername(username);
@@ -108,7 +109,7 @@ public class User implements Serializable, UuidIdentifiable {
     }
 
     public String getFullName() {
-        return firstName+" "+lastName;
+        return firstName + " " + lastName;
     }
 
     public void setFullName(String fullName) {
@@ -147,27 +148,27 @@ public class User implements Serializable, UuidIdentifiable {
         this.roles = roles;
     }
 
-	public String getSessionId() {
-		return sessionId;
-	}
+    public String getSessionId() {
+        return sessionId;
+    }
 
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
-	}
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
-	public long getLastLoginTime() {
-		return lastLoginTime;
-	}
+    public long getLastLoginTime() {
+        return lastLoginTime;
+    }
 
-	public void setLastLoginTime(long lastLoginTime) {
-		this.lastLoginTime = lastLoginTime;
-	}
-	
-	public boolean isDeleted() {
-		return deleted;
-	}
+    public void setLastLoginTime(long lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
 
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
-	}
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }

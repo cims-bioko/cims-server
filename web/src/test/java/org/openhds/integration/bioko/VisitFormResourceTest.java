@@ -33,10 +33,10 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-@ContextConfiguration(loader = WebContextLoader.class, locations = { "/testContext.xml" })
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+@ContextConfiguration(loader = WebContextLoader.class, locations = {"/testContext.xml"})
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
-        DbUnitTestExecutionListener.class })
+        DbUnitTestExecutionListener.class})
 @DatabaseSetup(value = "/formResourceTestDb.xml", type = DatabaseOperation.REFRESH)
 public class VisitFormResourceTest extends AbstractResourceTest {
 
@@ -92,7 +92,7 @@ public class VisitFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
-        verifyVisitCrud("1234567890aa", "testLocation1" , "FWEK1D");
+        verifyVisitCrud("1234567890aa", "testLocation1", "FWEK1D");
     }
 
     @Test

@@ -3,284 +3,284 @@ package org.openhds.domain.service.impl;
 import org.openhds.domain.service.SitePropertiesService;
 
 public class SitePropertiesServiceImpl implements SitePropertiesService {
-     
-	String locale;
-	String dateFormat;
-	String earliestEnumerationDate;
-	String specialStudyLocation;
-	String unknownIdentifier;
-	String inmigrationCode;
-	String outmigrationCode;
-	String birthCode;
-	String deathCode;
-	String enumerationCode;
-	String marriageCode;
-	String miscarriageCode;
-	String notApplicableCode;
-	String liveBirthCode;
-	String stillBirthCode;
-	String abortionCode;
-	String maleCode;
-	String femaleCode;
-	String dataStatusWarningCode;
-	String dataStatusValidCode;
-	String dataStatusFatalCode;
-	String dataStatusVoidCode;
-	String dataStatusPendingCode;
-	String dataStatusClosedCode;
-	String yesResponse;
-	String noResponse;	
-	int minimumAgeOfParents;
-	int minimumAgeOfHouseholdHead;
-	int minimumAgeOfMarriage;
-	int minimumAgeOfPregnancy;
-	boolean valueExtensionsForMembershipCodesEnabled;
-	
-	public String getLocale() {
-		return locale;
-	}
 
-	public void setLocale(String locale) {
-		this.locale = locale;
-	}
-   
-	public String getDateFormat() {
-		return dateFormat;
-	}
+    String locale;
+    String dateFormat;
+    String earliestEnumerationDate;
+    String specialStudyLocation;
+    String unknownIdentifier;
+    String inmigrationCode;
+    String outmigrationCode;
+    String birthCode;
+    String deathCode;
+    String enumerationCode;
+    String marriageCode;
+    String miscarriageCode;
+    String notApplicableCode;
+    String liveBirthCode;
+    String stillBirthCode;
+    String abortionCode;
+    String maleCode;
+    String femaleCode;
+    String dataStatusWarningCode;
+    String dataStatusValidCode;
+    String dataStatusFatalCode;
+    String dataStatusVoidCode;
+    String dataStatusPendingCode;
+    String dataStatusClosedCode;
+    String yesResponse;
+    String noResponse;
+    int minimumAgeOfParents;
+    int minimumAgeOfHouseholdHead;
+    int minimumAgeOfMarriage;
+    int minimumAgeOfPregnancy;
+    boolean valueExtensionsForMembershipCodesEnabled;
 
-	public void setDateFormat(String dateFormat) {
-		this.dateFormat = dateFormat;
-	}
-	
-	public String getEarliestEnumerationDate() {
-		return earliestEnumerationDate;
-	}
+    public String getLocale() {
+        return locale;
+    }
 
-	public void setEarliestEnumerationDate(String earliestEnumerationDate) {
-		this.earliestEnumerationDate = earliestEnumerationDate;
-	}
+    public void setLocale(String locale) {
+        this.locale = locale;
+    }
+
+    public String getDateFormat() {
+        return dateFormat;
+    }
+
+    public void setDateFormat(String dateFormat) {
+        this.dateFormat = dateFormat;
+    }
+
+    public String getEarliestEnumerationDate() {
+        return earliestEnumerationDate;
+    }
+
+    public void setEarliestEnumerationDate(String earliestEnumerationDate) {
+        this.earliestEnumerationDate = earliestEnumerationDate;
+    }
 
     public String getSpecialStudyLocation() {
-		return specialStudyLocation;
-	}
+        return specialStudyLocation;
+    }
 
-	public void setSpecialStudyLocation(String specialStudyLocation) {
-		this.specialStudyLocation = specialStudyLocation;
-	}
-	
-	public boolean isValueExtensionsForMembershipCodesEnabled() {
-		return valueExtensionsForMembershipCodesEnabled;
-	}
+    public void setSpecialStudyLocation(String specialStudyLocation) {
+        this.specialStudyLocation = specialStudyLocation;
+    }
 
-	public void setValueExtensionsForMembershipCodesEnabled(boolean valueExtensionsForMembershipCodesEnabled) {
-		this.valueExtensionsForMembershipCodesEnabled = valueExtensionsForMembershipCodesEnabled;
-	}
-								
-	public String getUnknownIdentifier() {
-		return unknownIdentifier;
-	}
+    public boolean isValueExtensionsForMembershipCodesEnabled() {
+        return valueExtensionsForMembershipCodesEnabled;
+    }
 
-	public void setUnknownIdentifier(String unknownIdentifier) {
-		this.unknownIdentifier = unknownIdentifier;
-	}
-	
-	public String getInmigrationCode() {
-		return inmigrationCode;
-	}
+    public void setValueExtensionsForMembershipCodesEnabled(boolean valueExtensionsForMembershipCodesEnabled) {
+        this.valueExtensionsForMembershipCodesEnabled = valueExtensionsForMembershipCodesEnabled;
+    }
 
-	public void setInmigrationCode(String inmigrationCode) {
-		this.inmigrationCode = inmigrationCode;
-	}
+    public String getUnknownIdentifier() {
+        return unknownIdentifier;
+    }
 
-	public String getOutmigrationCode() {
-		return outmigrationCode;
-	}
+    public void setUnknownIdentifier(String unknownIdentifier) {
+        this.unknownIdentifier = unknownIdentifier;
+    }
 
-	public void setOutmigrationCode(String outmigrationCode) {
-		this.outmigrationCode = outmigrationCode;
-	}
+    public String getInmigrationCode() {
+        return inmigrationCode;
+    }
 
-	public String getBirthCode() {
-		return birthCode;
-	}
+    public void setInmigrationCode(String inmigrationCode) {
+        this.inmigrationCode = inmigrationCode;
+    }
 
-	public void setBirthCode(String birthCode) {
-		this.birthCode = birthCode;
-	}
+    public String getOutmigrationCode() {
+        return outmigrationCode;
+    }
 
-	public String getDeathCode() {
-		return deathCode;
-	}
+    public void setOutmigrationCode(String outmigrationCode) {
+        this.outmigrationCode = outmigrationCode;
+    }
 
-	public void setDeathCode(String deathCode) {
-		this.deathCode = deathCode;
-	}
+    public String getBirthCode() {
+        return birthCode;
+    }
 
-	public String getEnumerationCode() {
-		return enumerationCode;
-	}
+    public void setBirthCode(String birthCode) {
+        this.birthCode = birthCode;
+    }
 
-	public void setEnumerationCode(String enumerationCode) {
-		this.enumerationCode = enumerationCode;
-	}
+    public String getDeathCode() {
+        return deathCode;
+    }
 
-	public String getMarriageCode() {
-		return marriageCode;
-	}
+    public void setDeathCode(String deathCode) {
+        this.deathCode = deathCode;
+    }
 
-	public void setMarriageCode(String marriageCode) {
-		this.marriageCode = marriageCode;
-	}
+    public String getEnumerationCode() {
+        return enumerationCode;
+    }
 
-	public String getNotApplicableCode() {
-		return notApplicableCode;
-	}
+    public void setEnumerationCode(String enumerationCode) {
+        this.enumerationCode = enumerationCode;
+    }
 
-	public void setNotApplicableCode(String notApplicableCode) {
-		this.notApplicableCode = notApplicableCode;
-	}
-	
-	public String getLiveBirthCode() {
-		return liveBirthCode;
-	}
+    public String getMarriageCode() {
+        return marriageCode;
+    }
 
-	public void setLiveBirthCode(String liveBirthCode) {
-		this.liveBirthCode = liveBirthCode;
-	}
+    public void setMarriageCode(String marriageCode) {
+        this.marriageCode = marriageCode;
+    }
 
-	public String getStillBirthCode() {
-		return stillBirthCode;
-	}
+    public String getNotApplicableCode() {
+        return notApplicableCode;
+    }
 
-	public void setStillBirthCode(String stillBirthCode) {
-		this.stillBirthCode = stillBirthCode;
-	}
+    public void setNotApplicableCode(String notApplicableCode) {
+        this.notApplicableCode = notApplicableCode;
+    }
 
-	public String getMiscarriageCode() {
-		return miscarriageCode;
-	}
+    public String getLiveBirthCode() {
+        return liveBirthCode;
+    }
 
-	public void setMiscarriageCode(String miscarriageCode) {
-		this.miscarriageCode = miscarriageCode;
-	}
+    public void setLiveBirthCode(String liveBirthCode) {
+        this.liveBirthCode = liveBirthCode;
+    }
 
-	public String getAbortionCode() {
-		return abortionCode;
-	}
+    public String getStillBirthCode() {
+        return stillBirthCode;
+    }
 
-	public void setAbortionCode(String abortionCode) {
-		this.abortionCode = abortionCode;
-	}
-	
-	public String getDataStatusWarningCode() {
-		return dataStatusWarningCode;
-	}
+    public void setStillBirthCode(String stillBirthCode) {
+        this.stillBirthCode = stillBirthCode;
+    }
 
-	public void setDataStatusWarningCode(String dataStatusWarningCode) {
-		this.dataStatusWarningCode = dataStatusWarningCode;
-	}
+    public String getMiscarriageCode() {
+        return miscarriageCode;
+    }
 
-	public String getDataStatusValidCode() {
-		return dataStatusValidCode;
-	}
+    public void setMiscarriageCode(String miscarriageCode) {
+        this.miscarriageCode = miscarriageCode;
+    }
 
-	public void setDataStatusValidCode(String dataStatusValidCode) {
-		this.dataStatusValidCode = dataStatusValidCode;
-	}
+    public String getAbortionCode() {
+        return abortionCode;
+    }
 
-	public String getDataStatusFatalCode() {
-		return dataStatusFatalCode;
-	}
+    public void setAbortionCode(String abortionCode) {
+        this.abortionCode = abortionCode;
+    }
 
-	public void setDataStatusFatalCode(String dataStatusFatalCode) {
-		this.dataStatusFatalCode = dataStatusFatalCode;
-	}
+    public String getDataStatusWarningCode() {
+        return dataStatusWarningCode;
+    }
 
-	public String getDataStatusVoidCode() {
-		return dataStatusVoidCode;
-	}
+    public void setDataStatusWarningCode(String dataStatusWarningCode) {
+        this.dataStatusWarningCode = dataStatusWarningCode;
+    }
 
-	public void setDataStatusVoidCode(String dataStatusVoidCode) {
-		this.dataStatusVoidCode = dataStatusVoidCode;
-	}
-	
-	public String getDataStatusPendingCode() {
-		return dataStatusPendingCode;
-	}
+    public String getDataStatusValidCode() {
+        return dataStatusValidCode;
+    }
 
-	public void setDataStatusPendingCode(String dataStatusPendingCode) {
-		this.dataStatusPendingCode = dataStatusPendingCode;
-	}
+    public void setDataStatusValidCode(String dataStatusValidCode) {
+        this.dataStatusValidCode = dataStatusValidCode;
+    }
 
-	public String getDataStatusClosedCode() {
-		return dataStatusClosedCode;
-	}
+    public String getDataStatusFatalCode() {
+        return dataStatusFatalCode;
+    }
 
-	public void setDataStatusClosedCode(String dataStatusClosedCode) {
-		this.dataStatusClosedCode = dataStatusClosedCode;
-	}
-	
-	public int getMinimumAgeOfParents() {
-		return minimumAgeOfParents;
-	}
+    public void setDataStatusFatalCode(String dataStatusFatalCode) {
+        this.dataStatusFatalCode = dataStatusFatalCode;
+    }
 
-	public void setMinimumAgeOfParents(int minimumAgeOfParents) {
-		this.minimumAgeOfParents = minimumAgeOfParents;
-	}
-	
-	public int getMinimumAgeOfHouseholdHead() {
-		return minimumAgeOfHouseholdHead;
-	}
+    public String getDataStatusVoidCode() {
+        return dataStatusVoidCode;
+    }
 
-	public void setMinimumAgeOfHouseholdHead(int minimumAgeOfHouseholdHead) {
-		this.minimumAgeOfHouseholdHead = minimumAgeOfHouseholdHead;
-	}
-	
-	public int getMinimumAgeOfMarriage() {
-		return minimumAgeOfMarriage;
-	}
+    public void setDataStatusVoidCode(String dataStatusVoidCode) {
+        this.dataStatusVoidCode = dataStatusVoidCode;
+    }
 
-	public void setMinimumAgeOfMarriage(int minimumAgeOfMarriage) {
-		this.minimumAgeOfMarriage = minimumAgeOfMarriage;
-	}
-	
-	public int getMinimumAgeOfPregnancy() {
-		return minimumAgeOfPregnancy;
-	}
+    public String getDataStatusPendingCode() {
+        return dataStatusPendingCode;
+    }
 
-	public void setMinimumAgeOfPregnancy(int minimumAgeOfPregnancy) {
-		this.minimumAgeOfPregnancy = minimumAgeOfPregnancy;
-	}
+    public void setDataStatusPendingCode(String dataStatusPendingCode) {
+        this.dataStatusPendingCode = dataStatusPendingCode;
+    }
 
-	public String getYesResponse() {
-		return yesResponse;
-	}
+    public String getDataStatusClosedCode() {
+        return dataStatusClosedCode;
+    }
 
-	public void setYesResponse(String yesResponse) {
-		this.yesResponse = yesResponse;
-	}
+    public void setDataStatusClosedCode(String dataStatusClosedCode) {
+        this.dataStatusClosedCode = dataStatusClosedCode;
+    }
 
-	public String getNoResponse() {
-		return noResponse;
-	}
+    public int getMinimumAgeOfParents() {
+        return minimumAgeOfParents;
+    }
 
-	public void setNoResponse(String noResponse) {
-		this.noResponse = noResponse;
-	}
-	
-	public String getMaleCode() {
-		return maleCode;
-	}
-	
-	public void setMaleCode(String maleCode) {
-		this.maleCode = maleCode;
-	}
+    public void setMinimumAgeOfParents(int minimumAgeOfParents) {
+        this.minimumAgeOfParents = minimumAgeOfParents;
+    }
 
-	public void setFemaleCode(String femaleCode) {
-		this.femaleCode = femaleCode;
-	}
-	
-	public String getFemaleCode() {
-		return femaleCode;
-	}
+    public int getMinimumAgeOfHouseholdHead() {
+        return minimumAgeOfHouseholdHead;
+    }
+
+    public void setMinimumAgeOfHouseholdHead(int minimumAgeOfHouseholdHead) {
+        this.minimumAgeOfHouseholdHead = minimumAgeOfHouseholdHead;
+    }
+
+    public int getMinimumAgeOfMarriage() {
+        return minimumAgeOfMarriage;
+    }
+
+    public void setMinimumAgeOfMarriage(int minimumAgeOfMarriage) {
+        this.minimumAgeOfMarriage = minimumAgeOfMarriage;
+    }
+
+    public int getMinimumAgeOfPregnancy() {
+        return minimumAgeOfPregnancy;
+    }
+
+    public void setMinimumAgeOfPregnancy(int minimumAgeOfPregnancy) {
+        this.minimumAgeOfPregnancy = minimumAgeOfPregnancy;
+    }
+
+    public String getYesResponse() {
+        return yesResponse;
+    }
+
+    public void setYesResponse(String yesResponse) {
+        this.yesResponse = yesResponse;
+    }
+
+    public String getNoResponse() {
+        return noResponse;
+    }
+
+    public void setNoResponse(String noResponse) {
+        this.noResponse = noResponse;
+    }
+
+    public String getMaleCode() {
+        return maleCode;
+    }
+
+    public void setMaleCode(String maleCode) {
+        this.maleCode = maleCode;
+    }
+
+    public void setFemaleCode(String femaleCode) {
+        this.femaleCode = femaleCode;
+    }
+
+    public String getFemaleCode() {
+        return femaleCode;
+    }
 }

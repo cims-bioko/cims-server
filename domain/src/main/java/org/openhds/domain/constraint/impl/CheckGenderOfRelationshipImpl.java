@@ -10,17 +10,18 @@ import org.openhds.domain.service.impl.SitePropertiesServiceImpl;
 
 public class CheckGenderOfRelationshipImpl extends AppContextAware implements ConstraintValidator<CheckGenderOfRelationship, Relationship> {
 
-	public void initialize(CheckGenderOfRelationship arg0) {	}
+    public void initialize(CheckGenderOfRelationship arg0) {
+    }
 
-	public boolean isValid(Relationship relationship, ConstraintValidatorContext arg1) {
-		
-		SitePropertiesServiceImpl properties = (SitePropertiesServiceImpl)context.getBean("siteProperties");
+    public boolean isValid(Relationship relationship, ConstraintValidatorContext arg1) {
 
-		if (relationship.getIndividualA().getGender().equals(properties.getMaleCode()) && 
-			relationship.getIndividualB().getGender().equals(properties.getFemaleCode()))
-			return true;
-		return relationship.getIndividualA().getGender().equals(properties.getFemaleCode()) &&
-				relationship.getIndividualB().getGender().equals(properties.getMaleCode());
+        SitePropertiesServiceImpl properties = (SitePropertiesServiceImpl) context.getBean("siteProperties");
 
-	}
+        if (relationship.getIndividualA().getGender().equals(properties.getMaleCode()) &&
+                relationship.getIndividualB().getGender().equals(properties.getFemaleCode()))
+            return true;
+        return relationship.getIndividualA().getGender().equals(properties.getFemaleCode()) &&
+                relationship.getIndividualB().getGender().equals(properties.getMaleCode());
+
+    }
 }

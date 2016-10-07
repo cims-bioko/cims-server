@@ -36,10 +36,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-@ContextConfiguration(loader = WebContextLoader.class, locations = { "/testContext.xml" })
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+@ContextConfiguration(loader = WebContextLoader.class, locations = {"/testContext.xml"})
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
-        DbUnitTestExecutionListener.class })
+        DbUnitTestExecutionListener.class})
 @DatabaseSetup(value = "/formResourceTestDb.xml", type = DatabaseOperation.REFRESH)
 public class InMigrationFormResourceTest extends AbstractResourceTest {
 
@@ -60,7 +60,7 @@ public class InMigrationFormResourceTest extends AbstractResourceTest {
     private static final String INMIGRATION_FORM_XML_VALID =
             "<inMigrationForm>"
                     + "<processed_by_mirth>false</processed_by_mirth>"
-                    +"<collection_date_time>"
+                    + "<collection_date_time>"
                     + A_DATE
                     + "</collection_date_time>"
                     + "<individual_ext_id>individual1</individual_ext_id>"
@@ -106,12 +106,12 @@ public class InMigrationFormResourceTest extends AbstractResourceTest {
         Individual individual = individualService.getByExtId(individualExtId);
 
         Set<Residency> residencySet = individual.getAllResidencies();
-        assertEquals(2,residencySet.size());
+        assertEquals(2, residencySet.size());
 
         Residency currentResidency = individual.getCurrentResidency();
 
-        assertEquals("testLocation2",currentResidency.getLocation().getExtId());
-        assertEquals("NA",currentResidency.getEndType());
+        assertEquals("testLocation2", currentResidency.getLocation().getExtId());
+        assertEquals("NA", currentResidency.getEndType());
         assertNotNull(currentResidency.getStartDate());
         assertNotNull(currentResidency.getInsertDate());
 

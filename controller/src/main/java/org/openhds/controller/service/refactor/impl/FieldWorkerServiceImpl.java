@@ -81,24 +81,24 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
     @Override
     public void generatePasswordHash(FieldWorker fieldWorker) throws ConstraintViolations {
 
-        if(null == fieldWorker.getPassword() || null == fieldWorker.getConfirmPassword()){
+        if (null == fieldWorker.getPassword() || null == fieldWorker.getConfirmPassword()) {
             throw new ConstraintViolations("Password or Confirmation is null.");
         }
-        if(fieldWorker.getPassword().isEmpty() || fieldWorker.getConfirmPassword().isEmpty()){
+        if (fieldWorker.getPassword().isEmpty() || fieldWorker.getConfirmPassword().isEmpty()) {
             throw new ConstraintViolations("Password or Confirmation is empty.");
         }
-        if(!fieldWorker.getPassword().equals(fieldWorker.getConfirmPassword())){
+        if (!fieldWorker.getPassword().equals(fieldWorker.getConfirmPassword())) {
             throw new ConstraintViolations("Passwords do not match.");
         }
 
         // HASH THAT BABY
-        fieldWorker.setPasswordHash(BCrypt.hashpw(fieldWorker.getPassword(),BCrypt.gensalt(12)));
+        fieldWorker.setPasswordHash(BCrypt.hashpw(fieldWorker.getPassword(), BCrypt.gensalt(12)));
         fieldWorker.setPassword(null);
         fieldWorker.setConfirmPassword(null);
     }
 
 
-    private List<FieldWorker> getAllOrderedByIdPrefix(){
+    private List<FieldWorker> getAllOrderedByIdPrefix() {
         GenericDao.OrderProperty fieldWorkerIdPrefix = new GenericDao.OrderProperty() {
 
             public String getPropertyName() {
@@ -114,7 +114,7 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
     }
 
     @Override
-    public void generateIdPrefix(FieldWorker fieldWorker){
+    public void generateIdPrefix(FieldWorker fieldWorker) {
 
         List<FieldWorker> fieldWorkers = getAllOrderedByIdPrefix();
 
@@ -123,7 +123,7 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
             return;
         }
 
-        FieldWorker lastFieldWorker = fieldWorkers.get(fieldWorkers.size()-1);
+        FieldWorker lastFieldWorker = fieldWorkers.get(fieldWorkers.size() - 1);
         int newIdPrefix = lastFieldWorker.getIdPrefix() + 1;
         fieldWorker.setIdPrefix(newIdPrefix);
     }
@@ -136,7 +136,6 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
         }
         return fieldWorker;
     }
-
 
 
 }

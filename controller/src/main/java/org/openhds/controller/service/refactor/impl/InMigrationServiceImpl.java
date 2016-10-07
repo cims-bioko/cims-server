@@ -54,15 +54,15 @@ public class InMigrationServiceImpl implements InMigrationService {
         Individual individual = inMigration.getIndividual();
         Residency residency = inMigration.getResidency();
 
-        if(null == inMigration){
+        if (null == inMigration) {
             ConstraintViolations.addViolationIfNotNull(cv, "Null inMigration.");
             return false;
         }
-        if(null == individual){
+        if (null == individual) {
             ConstraintViolations.addViolationIfNotNull(cv, "InMigration references null Individual.");
             return false;
         }
-        if(null == residency){
+        if (null == residency) {
             ConstraintViolations.addViolationIfNotNull(cv, "InMigration references null Residency.");
             return false;
         }
@@ -71,7 +71,7 @@ public class InMigrationServiceImpl implements InMigrationService {
         //TODO: should these methods check to see if the required references are present? (i.e. an individual)
         boolean isDead = individualService.isDeceased(individual);
 
-        if(isDead){
+        if (isDead) {
             ConstraintViolations.addViolationIfNotNull(cv, "InMigration references dead individual.");
         }
 

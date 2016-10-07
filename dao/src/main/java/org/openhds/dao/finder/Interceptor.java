@@ -2,6 +2,7 @@ package org.openhds.dao.finder;
 
 import java.lang.reflect.Method;
 import java.util.List;
+
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.IntroductionInterceptor;
 
@@ -13,33 +14,33 @@ import org.springframework.aop.IntroductionInterceptor;
  */
 public class Interceptor implements IntroductionInterceptor {
 
-	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
 
-		FinderExecutor<?> executor = (FinderExecutor<?>) methodInvocation
-				.getThis();
+        FinderExecutor<?> executor = (FinderExecutor<?>) methodInvocation
+                .getThis();
 
-		Method finderMethod = methodInvocation.getMethod();
-		DynamicFinder finderAnnotation = methodInvocation.getMethod()
-				.getAnnotation(DynamicFinder.class);
+        Method finderMethod = methodInvocation.getMethod();
+        DynamicFinder finderAnnotation = methodInvocation.getMethod()
+                .getAnnotation(DynamicFinder.class);
 
-		if (finderAnnotation == null)
-			return methodInvocation.proceed();
+        if (finderAnnotation == null)
+            return methodInvocation.proceed();
 
-		if (finderMethod.getReturnType() == List.class) {
-			Object[] arguments = methodInvocation.getArguments();
-			return executor.executeFinder(methodInvocation.getMethod(),
-					arguments);
-		} else {
-			Object[] arguments = methodInvocation.getArguments();
-			return executor.iterateFinder(methodInvocation.getMethod(),
-					arguments);
-		}
+        if (finderMethod.getReturnType() == List.class) {
+            Object[] arguments = methodInvocation.getArguments();
+            return executor.executeFinder(methodInvocation.getMethod(),
+                    arguments);
+        } else {
+            Object[] arguments = methodInvocation.getArguments();
+            return executor.iterateFinder(methodInvocation.getMethod(),
+                    arguments);
+        }
 
-	}
+    }
 
-	@SuppressWarnings("unchecked")
-	public boolean implementsInterface(Class intf) {
-		return intf.isInterface()
-				&& FinderExecutor.class.isAssignableFrom(intf);
-	}
+    @SuppressWarnings("unchecked")
+    public boolean implementsInterface(Class intf) {
+        return intf.isInterface()
+                && FinderExecutor.class.isAssignableFrom(intf);
+    }
 }

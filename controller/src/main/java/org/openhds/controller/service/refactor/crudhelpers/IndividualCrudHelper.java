@@ -26,13 +26,12 @@ public class IndividualCrudHelper extends AbstractEntityCrudHelperImpl<Individua
     protected void preCreateSanityChecks(Individual individual) throws ConstraintViolations {
 
 
-
     }
 
     @Override
     protected void cascadeReferences(Individual individual) throws ConstraintViolations {
 
-        if(null == individual.getExtId()){
+        if (null == individual.getExtId()) {
             individualGenerator.generateId(individual);
         }
 
@@ -51,7 +50,7 @@ public class IndividualCrudHelper extends AbstractEntityCrudHelperImpl<Individua
 
     @Override
     public List<Individual> getAll() {
-        return genericDao.findAll(Individual.class,true);
+        return genericDao.findAll(Individual.class, true);
     }
 
     @Override
@@ -61,6 +60,6 @@ public class IndividualCrudHelper extends AbstractEntityCrudHelperImpl<Individua
 
     @Override
     public Individual getByUuid(String id) {
-        return genericDao.findByProperty(Individual.class,"uuid",id);
+        return genericDao.findByProperty(Individual.class, "uuid", id);
     }
 }

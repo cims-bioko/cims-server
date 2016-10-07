@@ -127,7 +127,6 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
         }
 
 
-
         return new ResponseEntity<>(outcomesForm, HttpStatus.CREATED);
     }
 
@@ -217,26 +216,26 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
         pregnancyOutcome.setOutcomeDate(coreForm.getDeliveryDate());
 
         FieldWorker fieldWorker = fieldWorkerService.getByUuid(coreForm.getFieldWorkerUuid());
-        if(null == fieldWorker) {
+        if (null == fieldWorker) {
             throw new ConstraintViolations("Could not find fieldworker with UUID: " + coreForm.getFieldWorkerUuid());
         }
         pregnancyOutcome.setCollectedBy(fieldWorker);
 
         Visit visit = visitService.findVisitByUuid(coreForm.getVisitUuid());
-        if(null == visit) {
+        if (null == visit) {
             throw new ConstraintViolations("Could not find visit with UUID: " + coreForm.getVisitUuid());
         }
         pregnancyOutcome.setVisit(visit);
 
         Individual father = individualService.getByUuid(coreForm.getFatherUuid());
-        if(null == father) {
+        if (null == father) {
             father = individualService.getUnknownIndividual();
         }
         pregnancyOutcome.setFather(father);
 
 
         Individual mother = individualService.getByUuid(coreForm.getMotherUuid());
-        if(null == mother) {
+        if (null == mother) {
             throw new ConstraintViolations("Could not find mother with UUID: " + coreForm.getMotherUuid());
         }
         pregnancyOutcome.setMother(mother);
@@ -392,7 +391,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
     @XmlRootElement(name = "pregnancyOutcomeOutcomesForm")
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = OutcomesForm.LOG_NAME)
-    public static class OutcomesForm implements Serializable{
+    public static class OutcomesForm implements Serializable {
 
         public static final String LOG_NAME = "PregnancyOutcomeOutcomesForm";
 

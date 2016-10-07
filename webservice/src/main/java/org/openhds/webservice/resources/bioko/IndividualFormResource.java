@@ -151,7 +151,7 @@ public class IndividualFormResource extends AbstractFormResource {
             }
 
             if (null == location) {
-                String errorMessage = "Location does not exist "+ form.getHouseholdUuid()+" / "+ form.getHouseholdExtId();
+                String errorMessage = "Location does not exist " + form.getHouseholdUuid() + " / " + form.getHouseholdExtId();
                 cv.addViolations(errorMessage);
                 logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME, ConstraintViolations.INVALID_LOCATION_UUID);
                 return requestError(errorMessage);
@@ -190,7 +190,7 @@ public class IndividualFormResource extends AbstractFormResource {
             updateIndividualExtId(individual, location);
 
             // log the modification
-            cv.addViolations("Individual ExtId updated from "+ form.getIndividualExtId()+" to "+individual.getExtId());
+            cv.addViolations("Individual ExtId updated from " + form.getIndividualExtId() + " to " + individual.getExtId());
             logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME, ErrorConstants.MODIFIED_EXTID);
 
             //household extId used later by social group, need to correct it here
@@ -200,7 +200,7 @@ public class IndividualFormResource extends AbstractFormResource {
         // log a warning if the individual extId clashes with an existing individual's extId
         if (0 != individualService.getExistingExtIdCount(individual.getExtId())) {
             // log the modification
-            cv.addViolations("Warning: Individual ExtId clashes with an existing Individual's extId : "+individual.getExtId());
+            cv.addViolations("Warning: Individual ExtId clashes with an existing Individual's extId : " + individual.getExtId());
             logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME, ErrorConstants.DUPLICATE_EXTID);
         }
 
@@ -278,7 +278,7 @@ public class IndividualFormResource extends AbstractFormResource {
         String individualSuffixSequence = individual.getExtId().substring(individual.getExtId().length() - 4);
 
         // M1000S57E02P1-001
-        individual.setExtId(location.getExtId()+individualSuffixSequence);
+        individual.setExtId(location.getExtId() + individualSuffixSequence);
 
     }
 
@@ -332,7 +332,6 @@ public class IndividualFormResource extends AbstractFormResource {
     }
 
 
-
     private SocialGroup findOrMakeSocialGroup(Form form, Location location, Individual head,
                                               Calendar insertTime, FieldWorker collectedBy) {
 
@@ -364,7 +363,7 @@ public class IndividualFormResource extends AbstractFormResource {
         return socialGroup;
     }
 
-    private Residency findOrMakeResidency(Individual individual, Location location,  Calendar collectionTime,
+    private Residency findOrMakeResidency(Individual individual, Location location, Calendar collectionTime,
                                           Calendar insertTime, FieldWorker collectedBy) {
 
         Residency residency = null;
@@ -401,7 +400,7 @@ public class IndividualFormResource extends AbstractFormResource {
         return residency;
     }
 
-    private Membership findOrMakeMembership(Individual individual, SocialGroup socialGroup,  FieldWorker collectedBy,
+    private Membership findOrMakeMembership(Individual individual, SocialGroup socialGroup, FieldWorker collectedBy,
                                             Calendar collectionTime, Calendar insertTime, Form form) {
 
         Membership membership = null;

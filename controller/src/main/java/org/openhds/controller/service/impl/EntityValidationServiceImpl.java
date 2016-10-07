@@ -24,15 +24,15 @@ public class EntityValidationServiceImpl<T> implements EntityValidationService<T
 
     public void setStatusPending(T entityItem) {
         if (entityItem instanceof AuditableCollectedEntity) {
-            ((AuditableCollectedEntity)entityItem).setStatus(siteProperties.getDataStatusPendingCode());
-            ((AuditableCollectedEntity)entityItem).setStatusMessage("");
+            ((AuditableCollectedEntity) entityItem).setStatus(siteProperties.getDataStatusPendingCode());
+            ((AuditableCollectedEntity) entityItem).setStatusMessage("");
         }
     }
 
     public void setStatusVoided(T entityItem) {
         if (entityItem instanceof AuditableCollectedEntity) {
-            ((AuditableCollectedEntity)entityItem).setStatus(siteProperties.getDataStatusVoidCode());
-            ((AuditableCollectedEntity)entityItem).setStatusMessage("");
+            ((AuditableCollectedEntity) entityItem).setStatus(siteProperties.getDataStatusVoidCode());
+            ((AuditableCollectedEntity) entityItem).setStatusMessage("");
         }
     }
 
@@ -58,7 +58,7 @@ public class EntityValidationServiceImpl<T> implements EntityValidationService<T
         Validator validator = getValidator();
         Set<ConstraintViolation<S>> constraintViolations = validator.validate(entity);
 
-        for(ConstraintViolation<S> constraint : constraintViolations) {
+        for (ConstraintViolation<S> constraint : constraintViolations) {
             violations.add(constraint.getMessage());
         }
         return violations;

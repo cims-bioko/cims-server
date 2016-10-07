@@ -8,16 +8,18 @@ import org.openhds.domain.constraint.impl.CheckValidRelationshipToGroupHeadImpl;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import java.lang.annotation.Target;
+
 import static java.lang.annotation.ElementType.TYPE;
 
-@Target( { TYPE, ANNOTATION_TYPE})
+@Target({TYPE, ANNOTATION_TYPE})
 @Retention(RUNTIME)
 @Constraint(validatedBy = CheckValidRelationshipToGroupHeadImpl.class)
 public @interface CheckValidRelationshipToGroupHead {
     String message() default "Invalid Relationship specified to the Group Head.";
 
-	Class<?>[] groups() default{};
+    Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 }

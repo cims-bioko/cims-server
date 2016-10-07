@@ -28,7 +28,7 @@ public class AsyncTask {
     private String taskName;
     private long totalCount;
     private String md5Hash;
-    
+
 
     public String getUuid() {
         return uuid;
@@ -65,7 +65,7 @@ public class AsyncTask {
     public void setTotalItems(long totalCount) {
         this.totalCount = totalCount;
     }
-    
+
     public long getTotalCount() {
         return totalCount;
     }

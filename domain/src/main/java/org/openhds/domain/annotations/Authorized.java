@@ -9,9 +9,8 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation used to mark methods that require certain privileges to access
- * 
- * @author Dave Roberge
  *
+ * @author Dave Roberge
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
@@ -19,7 +18,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Authorized {
 
-	String[] value() default {};
-	
-	boolean requireAll() default false;
+    String[] value() default {};
+
+    boolean requireAll() default false;
 }

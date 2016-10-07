@@ -36,7 +36,7 @@ public class IndividualServiceImpl implements IndividualService {
     private IdSchemeResource resource;
 
     public IndividualServiceImpl(GenericDao genericDao, IndividualGenerator generator,
-            SitePropertiesService properties, EntityService entityService, IdSchemeResource resource) {
+                                 SitePropertiesService properties, EntityService entityService, IdSchemeResource resource) {
         this.genericDao = genericDao;
         this.indivGen = generator;
         this.properties = properties;
@@ -254,7 +254,7 @@ public class IndividualServiceImpl implements IndividualService {
     @Override
     @Authorized("VIEW_ENTITY")
     public List<Individual> getAllIndividualsInRange(Individual start, int size) {
-        Object startProp = start == null? null: start.getUuid();
+        Object startProp = start == null ? null : start.getUuid();
         return genericDao.findPaged(Individual.class, "id", startProp, size);
     }
 }

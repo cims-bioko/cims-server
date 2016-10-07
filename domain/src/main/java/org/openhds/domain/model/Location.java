@@ -28,8 +28,7 @@ import java.util.List;
 @XmlRootElement
 public class Location
         extends AuditableCollectedEntity
-        implements Serializable
-{
+        implements Serializable {
 
     public final static long serialVersionUID = 169551578162260199L;
 
@@ -225,29 +224,53 @@ public class Location
         this.mapAreaName = mapAreaName;
     }
 
-    public Integer getBuildingNumber() { return buildingNumber; }
+    public Integer getBuildingNumber() {
+        return buildingNumber;
+    }
 
-    public void setBuildingNumber(Integer buildingNumber) { this.buildingNumber = buildingNumber; }
+    public void setBuildingNumber(Integer buildingNumber) {
+        this.buildingNumber = buildingNumber;
+    }
 
-    public Integer getFloorNumber() { return floorNumber; }
+    public Integer getFloorNumber() {
+        return floorNumber;
+    }
 
-    public void setFloorNumber(Integer floorNumber) { this.floorNumber = floorNumber; }
+    public void setFloorNumber(Integer floorNumber) {
+        this.floorNumber = floorNumber;
+    }
 
-    public String getRegionName() { return regionName; }
+    public String getRegionName() {
+        return regionName;
+    }
 
-    public void setRegionName(String regionName) { this.regionName = regionName; }
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
+    }
 
-    public String getProvinceName() { return provinceName; }
+    public String getProvinceName() {
+        return provinceName;
+    }
 
-    public void setProvinceName(String provinceName) { this.provinceName = provinceName; }
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
 
-    public String getSubDistrictName() { return subDistrictName; }
+    public String getSubDistrictName() {
+        return subDistrictName;
+    }
 
-    public void setSubDistrictName(String subDistrictName) { this.subDistrictName = subDistrictName; }
+    public void setSubDistrictName(String subDistrictName) {
+        this.subDistrictName = subDistrictName;
+    }
 
-    public String getDistrictName() { return districtName; }
+    public String getDistrictName() {
+        return districtName;
+    }
 
-    public void setDistrictName(String districtName) { this.districtName = districtName; }
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
 
     public static Location makeStub(String uuid, String extId) {
 

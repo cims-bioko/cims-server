@@ -10,18 +10,18 @@ import org.openhds.domain.service.impl.SitePropertiesServiceImpl;
 
 public class CheckIndividualNotUnknownImpl extends AppContextAware implements ConstraintValidator<CheckIndividualNotUnknown, Individual> {
 
-	private SitePropertiesServiceImpl properties;
-	
-	public void initialize(CheckIndividualNotUnknown constraintAnnotation) {
-		properties = (SitePropertiesServiceImpl)context.getBean("siteProperties");
-	}
+    private SitePropertiesServiceImpl properties;
 
-	public boolean isValid(Individual value, ConstraintValidatorContext context) {
-		if (value == null) {
-			return true;
-		}
+    public void initialize(CheckIndividualNotUnknown constraintAnnotation) {
+        properties = (SitePropertiesServiceImpl) context.getBean("siteProperties");
+    }
 
-		return !value.getExtId().equals(properties.getUnknownIdentifier());
+    public boolean isValid(Individual value, ConstraintValidatorContext context) {
+        if (value == null) {
+            return true;
+        }
 
-	}
+        return !value.getExtId().equals(properties.getUnknownIdentifier());
+
+    }
 }

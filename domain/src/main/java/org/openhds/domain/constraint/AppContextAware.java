@@ -10,14 +10,14 @@ import org.springframework.context.ApplicationContextAware;
  * context into the the constraints themselves.
  */
 public class AppContextAware implements ApplicationContextAware {
-	
-	static protected ApplicationContext context;
 
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		context = applicationContext;
-	}
-	
-	public static ApplicationContext getContext() {
-		return context;
-	}
+    static protected ApplicationContext context;
+
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        context = applicationContext;
+    }
+
+    public static ApplicationContext getContext() {
+        return context;
+    }
 }

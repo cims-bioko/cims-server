@@ -28,7 +28,7 @@ public class InMigrationCrudHelper extends AbstractEntityCrudHelperImpl<InMigrat
     protected void cascadeReferences(InMigration inMigration) throws ConstraintViolations {
 
         String currentResidencyEndType = inMigration.getIndividual().getCurrentResidency().getEndType();
-        if(null == currentResidencyEndType ||  sitePropertiesService.getNotApplicableCode().equals(currentResidencyEndType)){
+        if (null == currentResidencyEndType || sitePropertiesService.getNotApplicableCode().equals(currentResidencyEndType)) {
             currentResidencyEndType = sitePropertiesService.getInmigrationCode();
         }
 

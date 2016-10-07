@@ -85,8 +85,8 @@ public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> im
         genericDao.update(genericDao.merge(entity));
     }
 
-    public static void setEntityUuidIfNull(AuditableEntity entity){
-        if(null == entity.getUuid() || entity.getUuid().isEmpty() || entity.getUuid().equals("null")){
+    public static void setEntityUuidIfNull(AuditableEntity entity) {
+        if (null == entity.getUuid() || entity.getUuid().isEmpty() || entity.getUuid().equals("null")) {
             entity.setUuid(UUIDGenerator.generate());
         }
     }

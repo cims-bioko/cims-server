@@ -9,7 +9,8 @@ import org.openhds.domain.model.Death;
 
 public class CheckDeathDateGreaterThanBirthDateImpl implements ConstraintValidator<CheckDeathDateGreaterThanBirthDate, Death> {
 
-    public void initialize(CheckDeathDateGreaterThanBirthDate arg0) { }
+    public void initialize(CheckDeathDateGreaterThanBirthDate arg0) {
+    }
 
     public boolean isValid(Death arg0, ConstraintValidatorContext arg1) {
 

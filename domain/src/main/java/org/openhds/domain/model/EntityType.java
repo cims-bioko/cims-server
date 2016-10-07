@@ -1,5 +1,5 @@
 package org.openhds.domain.model;
 
 public enum EntityType {
-	LOCATION,INDIVIDUAL,SOCIALGROUP,VISIT
+    LOCATION, INDIVIDUAL, SOCIALGROUP, VISIT
 }

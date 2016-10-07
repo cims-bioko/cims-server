@@ -23,7 +23,6 @@ public class PregnancyObservationCrudHelper extends AbstractEntityCrudHelperImpl
     protected void preCreateSanityChecks(PregnancyObservation pregnancyObservation) throws ConstraintViolations {
 
 
-
     }
 
     @Override
@@ -43,7 +42,7 @@ public class PregnancyObservationCrudHelper extends AbstractEntityCrudHelperImpl
 
     @Override
     public List<PregnancyObservation> getAll() {
-        return genericDao.findAll(PregnancyObservation.class,true);
+        return genericDao.findAll(PregnancyObservation.class, true);
     }
 
     @Override
@@ -53,6 +52,6 @@ public class PregnancyObservationCrudHelper extends AbstractEntityCrudHelperImpl
 
     @Override
     public PregnancyObservation getByUuid(String id) {
-        return genericDao.findByProperty(PregnancyObservation.class,"uuid",id);
+        return genericDao.findByProperty(PregnancyObservation.class, "uuid", id);
     }
 }

@@ -44,14 +44,14 @@ public class Relationship extends AuditableCollectedEntity implements
     @Searchable
     @CheckEntityNotVoided
     @CheckIndividualNotUnknown
-    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @Description(description = "One of the individuals participating in the relationship, identified by external id.")
     Individual individualA;
 
     @Searchable
     @CheckEntityNotVoided
     @CheckIndividualNotUnknown
-    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @Description(description = "One of the individuals participating in the relationship, identified by external id.")
     Individual individualB;
 
@@ -123,7 +123,7 @@ public class Relationship extends AuditableCollectedEntity implements
     public void setaIsToB(String aIsToB) {
         this.aIsToB = aIsToB;
     }
-    
+
     @Override
     public boolean equals(Object other) {
         if (this == other) {

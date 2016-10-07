@@ -26,9 +26,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of the ResidencySerivce
- * 
- * @author Dave
  *
+ * @author Dave
  */
 public class ResidencyServiceImpl extends EntityServiceRefactoredImpl implements ResidencyService {
 
@@ -64,11 +63,11 @@ public class ResidencyServiceImpl extends EntityServiceRefactoredImpl implements
     public Residency evaluateResidency(Residency candidateResidency) throws ConstraintViolations {
         // Verify an Individual is associated with the Residency, otherwise the Residency would not make sense
         checkIndividualAssignedToResidency(candidateResidency);
-        
+
         Individual indiv = candidateResidency.getIndividual();
 
         checkIndividualEligibleForNewResdency(indiv);
-        
+
         Set<Residency> res = indiv.getAllResidencies();
 
         // integrity checks on previous residencies
@@ -77,7 +76,7 @@ public class ResidencyServiceImpl extends EntityServiceRefactoredImpl implements
             // this case happens when the user is editing a residency
             // no need to have these checks on the same residency
             if (previousResidency.getUuid().equals(candidateResidency.getUuid())
-            		|| previousResidency.isDeleted()) {
+                    || previousResidency.isDeleted()) {
                 continue;
             }
 
@@ -88,51 +87,52 @@ public class ResidencyServiceImpl extends EntityServiceRefactoredImpl implements
         return candidateResidency;
     }
 
-	private void checkIndividualEligibleForNewResdency(Individual indiv) throws ConstraintViolations {
-		if (hasOpenResidency(indiv)) {
-        	throw new ConstraintViolations("The individual already has an open residency. You must close the current residency for this Individual before " +
-        			"a new Residency can be created.");
+    private void checkIndividualEligibleForNewResdency(Individual indiv) throws ConstraintViolations {
+        if (hasOpenResidency(indiv)) {
+            throw new ConstraintViolations("The individual already has an open residency. You must close the current residency for this Individual before " +
+                    "a new Residency can be created.");
         }
-	}
+    }
 
-	private void checkIndividualAssignedToResidency(Residency candidateResidency) throws ConstraintViolations {
-		if (candidateResidency.getIndividual() == null) {
+    private void checkIndividualAssignedToResidency(Residency candidateResidency) throws ConstraintViolations {
+        if (candidateResidency.getIndividual() == null) {
             log.debug("An Individual was not supplied for the Residency");
             throw new ConstraintViolations("An Individual must be supplied to check if the Residency is valid.");
         }
-	}
+    }
 
-	private void checkStartDateConstraints(Residency candidateResidency, Residency previousResidency) throws ConstraintViolations {
-		// 2 residencies cannot have the same start date - this would not make sense
-		if (previousResidency.getStartDate().compareTo(candidateResidency.getStartDate()) == 0) {
-		    log.debug("A residency already exist with this start date for the Individual");
-		    throw new ConstraintViolations("Residency cannot have same start date as previous residency");
-		}
+    private void checkStartDateConstraints(Residency candidateResidency, Residency previousResidency) throws ConstraintViolations {
+        // 2 residencies cannot have the same start date - this would not make sense
+        if (previousResidency.getStartDate().compareTo(candidateResidency.getStartDate()) == 0) {
+            log.debug("A residency already exist with this start date for the Individual");
+            throw new ConstraintViolations("Residency cannot have same start date as previous residency");
+        }
 
-		// determine if the start date of this residency is interleaved between any other previous
-		// residencies for this individual
-		if (previousResidency.getStartDate().before(candidateResidency.getStartDate()) && previousResidency.getEndDate().after(candidateResidency.getStartDate())) {
-		    log.debug("Residency start date is interleaved with Residency with uuid: " + previousResidency.getUuid());
-		    throw new ConstraintViolations("Residency cannot have a start date that is interleaved with a previous residency.");
-		}
-	}
+        // determine if the start date of this residency is interleaved between any other previous
+        // residencies for this individual
+        if (previousResidency.getStartDate().before(candidateResidency.getStartDate()) && previousResidency.getEndDate().after(candidateResidency.getStartDate())) {
+            log.debug("Residency start date is interleaved with Residency with uuid: " + previousResidency.getUuid());
+            throw new ConstraintViolations("Residency cannot have a start date that is interleaved with a previous residency.");
+        }
+    }
 
-	private void checkEndDateConstraints(Residency candidateResidency, Residency previousResidency) throws ConstraintViolations {
-		if (candidateResidency.getEndDate() != null && previousResidency.getEndDate() != null) {
-		    // determine if end date of this residency is interleaved between any other previous
-		    // residencies for this individual
-		    if (candidateResidency.getEndDate().compareTo(previousResidency.getStartDate()) > 0 && candidateResidency.getEndDate().compareTo(previousResidency.getEndDate()) <= 0) {
-		        log.debug("Residency end date is interleaved with Residency with uuid: " + previousResidency.getUuid());
-		        throw new ConstraintViolations("Residency cannot have an end date that is interleaved with a previous residency.");
-		    }
+    private void checkEndDateConstraints(Residency candidateResidency, Residency previousResidency) throws ConstraintViolations {
+        if (candidateResidency.getEndDate() != null && previousResidency.getEndDate() != null) {
+            // determine if end date of this residency is interleaved between any other previous
+            // residencies for this individual
+            if (candidateResidency.getEndDate().compareTo(previousResidency.getStartDate()) > 0 && candidateResidency.getEndDate().compareTo(previousResidency.getEndDate()) <= 0) {
+                log.debug("Residency end date is interleaved with Residency with uuid: " + previousResidency.getUuid());
+                throw new ConstraintViolations("Residency cannot have an end date that is interleaved with a previous residency.");
+            }
 
-		    // determine if residency overlays a previous residency
-		    if (candidateResidency.getStartDate().compareTo(previousResidency.getStartDate()) <= 0 && candidateResidency.getEndDate().compareTo(previousResidency.getEndDate()) >= 0) {
-		        log.debug("Residency overlays residency with uuid: " + previousResidency.getUuid());
-		        throw new ConstraintViolations("Residency cannot overlay a previous residency.");
-		    }
-		}
-	}
+            // determine if residency overlays a previous residency
+            if (candidateResidency.getStartDate().compareTo(previousResidency.getStartDate()) <= 0 && candidateResidency.getEndDate().compareTo(previousResidency.getEndDate()) >= 0) {
+                log.debug("Residency overlays residency with uuid: " + previousResidency.getUuid());
+                throw new ConstraintViolations("Residency cannot overlay a previous residency.");
+            }
+        }
+    }
+
     /*
      * (non-Javadoc)
      * @see org.openhds.service.ResidencyService#getIndividualsByLocation(org.openhds.model.Location)
@@ -151,8 +151,8 @@ public class ResidencyServiceImpl extends EntityServiceRefactoredImpl implements
         Set<Individual> individuals = new TreeSet<>(new IndividualComparator());
 
         for (Residency residency : unendedResidencies) {
-        	if (!residency.getIndividual().isDeleted())
-        		individuals.add(residency.getIndividual());
+            if (!residency.getIndividual().isDeleted())
+                individuals.add(residency.getIndividual());
         }
 
         // for each individual determine if this is there current residency
@@ -181,8 +181,8 @@ public class ResidencyServiceImpl extends EntityServiceRefactoredImpl implements
         Set<Individual> individuals = new TreeSet<>(new IndividualComparator());
 
         for (Residency residency : unendedResidencies) {
-        	if (!residency.getIndividual().isDeleted())
-        		individuals.add(residency.getIndividual());
+            if (!residency.getIndividual().isDeleted())
+                individuals.add(residency.getIndividual());
         }
 
         // for each individual determine if this is there current residency
@@ -196,8 +196,8 @@ public class ResidencyServiceImpl extends EntityServiceRefactoredImpl implements
 
         return new ArrayList<>(individuals);
     }
-    
-    
+
+
     /*
      * (non-Javadoc)
      * @see org.openhds.service.ResidencyService#hasOpenResidency(org.openhds.model.Individual)
@@ -224,22 +224,22 @@ public class ResidencyServiceImpl extends EntityServiceRefactoredImpl implements
 
         return residency;
     }
-    
+
     public List<Residency> getAllResidencies(Individual individual) {
-    	List<Residency> list = genericDao.findListByProperty(Residency.class, "individual", individual, true);
-    	return list;
+        List<Residency> list = genericDao.findListByProperty(Residency.class, "individual", individual, true);
+        return list;
     }
-    
+
     @Override
     @Authorized("VIEW_ENTITY")
     public long getTotalResidencyCount() {
         return genericDao.getTotalCount(Residency.class);
     }
-    
+
     @Override
     @Authorized("VIEW_ENTITY")
     public List<Residency> getAllResidenciesInRange(Residency start, int size) {
-        Object startProp = start == null? null : start.getUuid();
+        Object startProp = start == null ? null : start.getUuid();
         List<Residency> list = genericDao.findPaged(Residency.class, "id", startProp, size);
         return list;
     }
@@ -248,7 +248,6 @@ public class ResidencyServiceImpl extends EntityServiceRefactoredImpl implements
      * Individual comparator to order individuals by extId ascending
      *
      * @author Dave
-     *
      */
     private class IndividualComparator implements Comparator<Individual> {
 

@@ -17,17 +17,18 @@ public class Error implements Serializable {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "org.openhds.domain.util.UUIDGenerator")
-    @Column(length=32)
+    @Column(length = 32)
     private String uuid;
 
     private static final long serialVersionUID = 1L;
 
     private String errorMessage;
 
-    @Description(description="Indicator for signaling some data to be deleted.")
+    @Description(description = "Indicator for signaling some data to be deleted.")
     protected boolean deleted = false;
 
-    public Error() { }
+    public Error() {
+    }
 
     @XmlTransient
     public boolean isDeleted() {
@@ -49,5 +50,5 @@ public class Error implements Serializable {
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
- 
+
 }

@@ -31,10 +31,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-@ContextConfiguration(loader = WebContextLoader.class, locations = { "/testContext.xml" })
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+@ContextConfiguration(loader = WebContextLoader.class, locations = {"/testContext.xml"})
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
-        DbUnitTestExecutionListener.class })
+        DbUnitTestExecutionListener.class})
 @DatabaseSetup(value = "/formResourceTestDb.xml", type = DatabaseOperation.REFRESH)
 public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
 
@@ -51,9 +51,9 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
 
     private static final String VALID_OBSERVATION_XML =
             "<pregnancyObservationForm>" +
-            "<recorded_date>"+ A_CURRENT_DATE +"</recorded_date>" +
-            "<collection_date_time>"+ A_CURRENT_DATE +"</collection_date_time>" +
-            "<visit_ext_id>pregObsVisit</visit_ext_id>" +
+                    "<recorded_date>" + A_CURRENT_DATE + "</recorded_date>" +
+                    "<collection_date_time>" + A_CURRENT_DATE + "</collection_date_time>" +
+                    "<visit_ext_id>pregObsVisit</visit_ext_id>" +
                     "<visit_uuid>PregObsVisit</visit_uuid>" +
                     "<individual_ext_id>pregnantIndividual</individual_ext_id>" +
                     "<individual_uuid>PregnantIndividual</individual_uuid>" +
@@ -61,8 +61,8 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
                     "<entity_uuid>PREG-OBS-UUID</entity_uuid>" +
                     "<field_worker_ext_id>UNK</field_worker_ext_id>" +
                     "<field_worker_uuid>UnknownFieldWorker</field_worker_uuid>" +
-                    "<expected_delivery_date>"+A_FUTURE_DATE+"</expected_delivery_date>" +
-            "</pregnancyObservationForm>";
+                    "<expected_delivery_date>" + A_FUTURE_DATE + "</expected_delivery_date>" +
+                    "</pregnancyObservationForm>";
 
     @Before
     public void setUp() throws Exception {
@@ -95,7 +95,7 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
 
     private static final String INVALID_PREG_OBS_MALE_XML =
             "<pregnancyObservationForm>" +
-                    "<recorded_date>"+ A_CURRENT_DATE +"</recorded_date>" +
+                    "<recorded_date>" + A_CURRENT_DATE + "</recorded_date>" +
                     "<visit_ext_id>pregObsVisit</visit_ext_id>" +
                     "<individual_ext_id>pregnantMale</individual_ext_id>" +
                     "<individual_uuid>PregnantMale</individual_uuid>" +
@@ -103,7 +103,7 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
                     "<entity_uuid>PREG-OBS-MALE</entity_uuid>" +
                     "<field_worker_ext_id>UNK</field_worker_ext_id>" +
                     "<field_worker_uuid>UnknownFieldWorker</field_worker_uuid>" +
-                    "<expected_delivery_date>"+A_FUTURE_DATE+"</expected_delivery_date>" +
+                    "<expected_delivery_date>" + A_FUTURE_DATE + "</expected_delivery_date>" +
                     "</pregnancyObservationForm>";
 
     @Test

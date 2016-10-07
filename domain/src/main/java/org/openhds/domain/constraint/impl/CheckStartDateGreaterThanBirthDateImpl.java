@@ -11,7 +11,8 @@ import org.openhds.domain.model.Membership;
 public class CheckStartDateGreaterThanBirthDateImpl
         implements ConstraintValidator<CheckStartDateGreaterThanBirthDate, Membership> {
 
-    public void initialize(CheckStartDateGreaterThanBirthDate checkStartDateGreaterThanBirthDate) {}
+    public void initialize(CheckStartDateGreaterThanBirthDate checkStartDateGreaterThanBirthDate) {
+    }
 
     public boolean isValid(Membership membership, ConstraintValidatorContext constraintValidatorContext) {
 

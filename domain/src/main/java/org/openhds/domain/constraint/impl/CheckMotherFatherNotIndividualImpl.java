@@ -8,11 +8,12 @@ import org.openhds.domain.model.Individual;
 
 public class CheckMotherFatherNotIndividualImpl implements ConstraintValidator<CheckMotherFatherNotIndividual, Individual> {
 
-	public void initialize(CheckMotherFatherNotIndividual arg0) {	}
+    public void initialize(CheckMotherFatherNotIndividual arg0) {
+    }
 
-	public boolean isValid(Individual individual, ConstraintValidatorContext arg1) {
+    public boolean isValid(Individual individual, ConstraintValidatorContext arg1) {
 
-		return !(individual.getMother().getExtId().equals(individual.getExtId()) ||
-				individual.getFather().getExtId().equals(individual.getExtId()));
-	}
+        return !(individual.getMother().getExtId().equals(individual.getExtId()) ||
+                individual.getFather().getExtId().equals(individual.getExtId()));
+    }
 }

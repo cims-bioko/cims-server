@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.List;
 
-@Description(description="The Location Hierarchy represents the overall structure " +
+@Description(description = "The Location Hierarchy represents the overall structure " +
         "of all Locations within the study area. The levels of the hierarchy are " +
         "specified in a configuration file which may set the levels as follows: " +
         "Region, District, Village. Each record in this hierarchy will have " +
@@ -27,33 +27,33 @@ import java.util.List;
         "Note that this is not to be confused with Location. The Location's name " +
         "field must reference a valid location name from this configured hierarchy.")
 @Entity
-@Table(name="locationhierarchy")
+@Table(name = "locationhierarchy")
 @XmlRootElement
 public class LocationHierarchy implements UuidIdentifiable, Serializable {
 
     private static final long serialVersionUID = -5334850119671675888L;
 
     @Id
-    @Column(length=32)
+    @Column(length = 32)
     String uuid;
 
     @CheckFieldNotBlank
     @NotNull
     @Searchable
-    @Description(description="External Id of the location hierarchy. This id is used internally.")
+    @Description(description = "External Id of the location hierarchy. This id is used internally.")
     String extId;
 
-    @Description(description="Parent location's name.")
+    @Description(description = "Parent location's name.")
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = LocationHierarchy.class, fetch = FetchType.LAZY)
     LocationHierarchy parent;
 
     @NotNull
     @CheckFieldNotBlank
     @Searchable
-    @Description(description="The name of this location hierarchy record.")
+    @Description(description = "The name of this location hierarchy record.")
     String name;
 
-    @Description(description="Level of the location hierarchy.")
+    @Description(description = "Level of the location hierarchy.")
     @ManyToOne
     LocationHierarchyLevel level;
 

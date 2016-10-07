@@ -14,37 +14,38 @@ import org.openhds.domain.model.FieldWorker;
 public class FieldWorkerServiceImpl implements FieldWorkerService {
 
     private GenericDao genericDao;
-	private Generator generator;
-	
-	public FieldWorkerServiceImpl() { }
-	
-	public FieldWorkerServiceImpl(GenericDao genericDao, Generator generator) {
-		this.genericDao = genericDao;
-		this.generator = generator;
-	}
+    private Generator generator;
+
+    public FieldWorkerServiceImpl() {
+    }
+
+    public FieldWorkerServiceImpl(GenericDao genericDao, Generator generator) {
+        this.genericDao = genericDao;
+        this.generator = generator;
+    }
 
     public FieldWorker getUnknownFieldWorker() {
         return genericDao.findByProperty(FieldWorker.class, "extId", "UNK");
     }
 
-	public FieldWorker evaluateFieldWorker(FieldWorker entityItem) throws ConstraintViolations { 	
-		
-		if (findFieldWorkerByExtId(entityItem.getExtId()) != null)
-			throw new ConstraintViolations("The Id specified already exists");	
-		
-		return generateId(entityItem);
+    public FieldWorker evaluateFieldWorker(FieldWorker entityItem) throws ConstraintViolations {
+
+        if (findFieldWorkerByExtId(entityItem.getExtId()) != null)
+            throw new ConstraintViolations("The Id specified already exists");
+
+        return generateId(entityItem);
 
     }
-		
-	public FieldWorker generateId(FieldWorker entityItem) throws ConstraintViolations {
-		
-		FieldWorkerGenerator fwGen = (FieldWorkerGenerator)generator;
-		
-		if (fwGen.generated)
-			entityItem.setExtId(generator.generateId(entityItem));
-		return entityItem;
-	}
-    
+
+    public FieldWorker generateId(FieldWorker entityItem) throws ConstraintViolations {
+
+        FieldWorkerGenerator fwGen = (FieldWorkerGenerator) generator;
+
+        if (fwGen.generated)
+            entityItem.setExtId(generator.generateId(entityItem));
+        return entityItem;
+    }
+
     /**
      * Retrieves all Field Worker extId's that contain the term provided.
      */
@@ -58,12 +59,12 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
         return ids;
     }
 
-	public FieldWorker findFieldWorkerByExtId(String fieldWorkerId) {
-		return genericDao.findByProperty(FieldWorker.class, "extId", fieldWorkerId, true);
-	}
+    public FieldWorker findFieldWorkerByExtId(String fieldWorkerId) {
+        return genericDao.findByProperty(FieldWorker.class, "extId", fieldWorkerId, true);
+    }
 
-	@Override
-	public List<FieldWorker> getAllFieldWorkers() {
-		return genericDao.findAll(FieldWorker.class, true);
-	}
+    @Override
+    public List<FieldWorker> getAllFieldWorkers() {
+        return genericDao.findAll(FieldWorker.class, true);
+    }
 }

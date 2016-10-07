@@ -2,22 +2,22 @@ package org.openhds.controller.util;
 
 public class OpenHDSResult {
 
-	private boolean success;
-	private String failureReason;
+    private boolean success;
+    private String failureReason;
 
-	public void setSuccess(boolean success) {
-		this.success = success;
-	}
-	
-	public boolean isSuccess() {
-		return success;
-	}
-	
-	public String getFailureReason() {
-		return failureReason;
-	}
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
 
-	public void setFailureReason(String failureReason) {
-		this.failureReason = failureReason;
-	}
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public String getFailureReason() {
+        return failureReason;
+    }
+
+    public void setFailureReason(String failureReason) {
+        this.failureReason = failureReason;
+    }
 }

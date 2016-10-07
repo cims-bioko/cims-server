@@ -34,7 +34,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/locationForm")
-public class LocationFormResource extends AbstractFormResource{
+public class LocationFormResource extends AbstractFormResource {
 
     private static final Logger logger = LoggerFactory.getLogger(LocationFormResource.class);
 
@@ -100,7 +100,7 @@ public class LocationFormResource extends AbstractFormResource{
         // collected by whom?
         FieldWorker collectedBy = fieldWorkerService.getByUuid(form.getFieldWorkerUuid());
         if (null == collectedBy) {
-            cv.addViolations("Field Worker does not exist : "+ form.getFieldWorkerUuid());
+            cv.addViolations("Field Worker does not exist : " + form.getFieldWorkerUuid());
             logError(cv, null, createDTOPayload(form), Form.LOG_NAME, ConstraintViolations.INVALID_FIELD_WORKER_UUID);
             return requestError(cv);
         }
@@ -123,7 +123,7 @@ public class LocationFormResource extends AbstractFormResource{
             }
 
             if (null == locationHierarchy) {
-                cv.addViolations("Location Hierarchy does not exist : "+ form.getHierarchyUuid() + " / "+ form.getHierarchyExtId());
+                cv.addViolations("Location Hierarchy does not exist : " + form.getHierarchyUuid() + " / " + form.getHierarchyExtId());
                 logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME, ConstraintViolations.INVALID_LOCATION_HIERARCHY_UUID);
                 return requestError(cv);
             }
@@ -138,7 +138,7 @@ public class LocationFormResource extends AbstractFormResource{
 
             modifyExtId(location, form);
             // log the modification
-            logMessage.add("Location persisted with Modified ExtId: Old = "+ form.getLocationExtId()+" New = "+location.getExtId());
+            logMessage.add("Location persisted with Modified ExtId: Old = " + form.getLocationExtId() + " New = " + location.getExtId());
             String payload = createDTOPayload(form);
             ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
                     Form.LOG_NAME, collectedBy,
@@ -177,17 +177,17 @@ public class LocationFormResource extends AbstractFormResource{
         String duplicateLocationSuffix = "-d";
         int sequenceNumber = 1;
         // -d                   // 1
-        while (null != locationService.getByExtId(currentExtId+duplicateLocationSuffix+sequenceNumber)) {
+        while (null != locationService.getByExtId(currentExtId + duplicateLocationSuffix + sequenceNumber)) {
             sequenceNumber++;
         }
 
-        duplicateLocationSuffix = duplicateLocationSuffix+sequenceNumber;
+        duplicateLocationSuffix = duplicateLocationSuffix + sequenceNumber;
 
-        return currentExtId+duplicateLocationSuffix;
+        return currentExtId + duplicateLocationSuffix;
 
     }
 
-    private void copyFormDataToLocation(Form form, Location location){
+    private void copyFormDataToLocation(Form form, Location location) {
 
         // fieldWorker, CollectedDateTime, and HierarchyLevel are set outside of this method
         location.setUuid(form.getUuid());

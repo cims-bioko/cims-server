@@ -37,34 +37,35 @@ public class ConstraintViolations extends Exception {
     public static final String INVALID_PREGNANCY_OUTCOME_CHILD = "Error Processing Pregnancy Outcome Child Form.";
 
     private static final long serialVersionUID = 4392790814928552607L;
-	private List<String> violations = new ArrayList<>();
-	
-	public ConstraintViolations() {}
-	
-	public ConstraintViolations(String msg, List<String> violations) {
-		super(msg);
-		this.violations = violations;
-	}
-	
-	public ConstraintViolations(String msg) {
-		super(msg);
-		violations.add(msg);
-	}
-	
-	public List<String> getViolations() {
-		return violations;
-	}
+    private List<String> violations = new ArrayList<>();
 
-	public void addViolations(String violation) {
-		violations.add(violation);
-	}
+    public ConstraintViolations() {
+    }
 
-	public boolean hasViolations() {
-		return violations != null && violations.size() > 0;
-	}
+    public ConstraintViolations(String msg, List<String> violations) {
+        super(msg);
+        this.violations = violations;
+    }
 
-    public static void addViolationIfNotNull(ConstraintViolations cv, String violation){
-        if(null!= cv){
+    public ConstraintViolations(String msg) {
+        super(msg);
+        violations.add(msg);
+    }
+
+    public List<String> getViolations() {
+        return violations;
+    }
+
+    public void addViolations(String violation) {
+        violations.add(violation);
+    }
+
+    public boolean hasViolations() {
+        return violations != null && violations.size() > 0;
+    }
+
+    public static void addViolationIfNotNull(ConstraintViolations cv, String violation) {
+        if (null != cv) {
             cv.addViolations(violation);
         }
     }

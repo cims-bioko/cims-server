@@ -14,65 +14,66 @@ import java.io.Serializable;
 /**
  * @author Dave Roberge
  */
-@Description(description="A Privilege represents the rights that are required in " +
-		"order to access service level methods.")
+@Description(description = "A Privilege represents the rights that are required in " +
+        "order to access service level methods.")
 @Entity
-@Table(name="privilege")
+@Table(name = "privilege")
 public class Privilege implements Serializable {
 
-	private static final long serialVersionUID = -5969044695942713833L;
-	
-	public Privilege() {}
-	
-	public Privilege(String privilege) {
-		this.privilege = privilege;
-	}
+    private static final long serialVersionUID = -5969044695942713833L;
+
+    public Privilege() {
+    }
+
+    public Privilege(String privilege) {
+        this.privilege = privilege;
+    }
 
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "org.openhds.domain.util.UUIDGenerator")
-    @Column(length=32)
+    @Column(length = 32)
     private String uuid;
-    
-    @Description(description="Name of the privilege.")
+
+    @Description(description = "Name of the privilege.")
     private String privilege;
 
-	public String getUuid() {
-		return uuid;
-	}
+    public String getUuid() {
+        return uuid;
+    }
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-	public String getPrivilege() {
-		return privilege;
-	}
+    public String getPrivilege() {
+        return privilege;
+    }
 
-	public void setPrivilege(String privilege) {
-		this.privilege = privilege;
-	}
+    public void setPrivilege(String privilege) {
+        this.privilege = privilege;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof Privilege)) {
-			return false;
-		}
-		
-		return privilege.equals(((Privilege) obj).privilege);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof Privilege)) {
+            return false;
+        }
 
-	@Override
-	public int hashCode() {
-		if (privilege == null) {
-			return super.hashCode();
-		}
-		
-		return privilege.hashCode();
-	}
+        return privilege.equals(((Privilege) obj).privilege);
+    }
 
-	@Override
-	public String toString() {
-		return privilege;
-	}
+    @Override
+    public int hashCode() {
+        if (privilege == null) {
+            return super.hashCode();
+        }
+
+        return privilege.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return privilege;
+    }
 }

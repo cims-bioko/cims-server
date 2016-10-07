@@ -21,13 +21,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-@Description(description="A Residency represents a home within the study area. " +
+@Description(description = "A Residency represents a home within the study area. " +
         "It contains information about the Individual who lives at the Residency " +
         "which is tied to a particular Location. It also contains information about " +
         "the date the Residency started and ended as well as the start and end types.")
 @Entity
-@CheckEndDateNotBeforeStartDate(allowNull=true)
-@Table(name="residency")
+@CheckEndDateNotBeforeStartDate(allowNull = true)
+@Table(name = "residency")
 @XmlRootElement
 public class Residency extends AuditableCollectedEntity implements GenericStartEndDateConstraint, Serializable {
     private static final long serialVersionUID = -4666666231598767965L;

@@ -20,13 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Component("visitServiceImpl")
 public class VisitServiceImpl implements VisitService {
 
-	@Autowired
+    @Autowired
     private GenericDao genericDao;
-	@Autowired
+    @Autowired
     private VisitGenerator generator;
-	@Autowired
+    @Autowired
     private EntityService entityService;
-	@Autowired
+    @Autowired
     private SitePropertiesService siteProperties;
 
     public Visit evaluateVisit(Visit entityItem) throws ConstraintViolations {
@@ -102,7 +102,7 @@ public class VisitServiceImpl implements VisitService {
     private void assignId(Visit visit) throws ConstraintViolations {
         String id = visit.getExtId() == null ? "" : visit.getExtId();
         if (id.trim().isEmpty() && generator.isGenerated()) {
-            generateId(visit); 
+            generateId(visit);
         }
     }
 
@@ -115,7 +115,7 @@ public class VisitServiceImpl implements VisitService {
     @Override
     @Authorized("VIEW_ENTITY")
     public List<Visit> getAllVisitsForRoundInRange(int round, Visit start, int pageSize) {
-        Object startProp = start == null? null : start.getUuid();
+        Object startProp = start == null ? null : start.getUuid();
         return genericDao.findPagedFilteredgt(Visit.class, "id", "roundNumber", round, startProp, pageSize);
     }
 

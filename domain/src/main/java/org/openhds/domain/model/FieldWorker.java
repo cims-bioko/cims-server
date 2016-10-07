@@ -13,12 +13,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.List;
 
-@Description(description="A Field Worker represents one who collects the data within " +
+@Description(description = "A Field Worker represents one who collects the data within " +
         "the study area. They can be identified by a uniquely generated " +
         "identifier which the system uses internally. Only the first and last names " +
         "are recorded.")
 @Entity
-@Table(name="fieldworker")
+@Table(name = "fieldworker")
 public class FieldWorker extends AuditableEntity implements Serializable {
 
 
@@ -27,39 +27,43 @@ public class FieldWorker extends AuditableEntity implements Serializable {
     @NotNull
     @CheckFieldNotBlank
     @Searchable
-    @Description(description="External Id of the field worker. This id is used internally.")
+    @Description(description = "External Id of the field worker. This id is used internally.")
     String extId;
 
     @CheckFieldNotBlank
     @Searchable
-    @Description(description="First name of the field worker.")
+    @Description(description = "First name of the field worker.")
     String firstName;
 
     @CheckFieldNotBlank
     @Searchable
-    @Description(description="Last name of the field worker.")
+    @Description(description = "Last name of the field worker.")
     String lastName;
 
-    @Description(description="Password entered for a new field worker.")
+    @Description(description = "Password entered for a new field worker.")
     @Transient
     String password;
 
-    @Description(description="Password re-entered for a new field worker.")
+    @Description(description = "Password re-entered for a new field worker.")
     @Transient
     String confirmPassword;
 
     @NotNull
     @CheckFieldNotBlank
-    @Description(description="Hashed version of a field worker's password.")
+    @Description(description = "Hashed version of a field worker's password.")
     String passwordHash;
 
-    @Description(description ="The ID prefix used in individual extId generation.")
+    @Description(description = "The ID prefix used in individual extId generation.")
     int idPrefix;
 
 
-    public int getIdPrefix() { return idPrefix; }
+    public int getIdPrefix() {
+        return idPrefix;
+    }
 
-    public void setIdPrefix(int idPrefix) { this.idPrefix = idPrefix; }
+    public void setIdPrefix(int idPrefix) {
+        this.idPrefix = idPrefix;
+    }
 
     public String getExtId() {
         return extId;

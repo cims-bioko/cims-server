@@ -14,10 +14,10 @@ import org.openhds.web.ui.PagingState;
 /**
  * Interface that represents the actions the user can take when using
  * the front end for a specific entity (i.e. Location)
- * 
+ * <p>
  * This interface acts as a controller between the front end and the back end
  *
- * @param <T> The type of entity
+ * @param <T>  The type of entity
  * @param <PK> The primary key type (i.e. java.lang.Long) for a given entity type
  */
 public interface EntityCrud<T, PK extends Serializable> {
@@ -28,45 +28,52 @@ public interface EntityCrud<T, PK extends Serializable> {
 
     /**
      * Action to direct user to the full list of entities for a given entity type
+     *
      * @return
      */
     String listSetup();
 
     /**
      * Action to direct user to the form to create a new entity
+     *
      * @return
      */
     String createSetup();
 
     /**
      * Action that is called when user creates a new entity
+     *
      * @return
      */
-    String create() ;
+    String create();
 
     /**
      * Action to direct user to the form displaying details for an entity
+     *
      * @return
      */
     String detailSetup();
 
     /**
      * Action to direct user to the edit form for an entity
+     *
      * @return
      */
     String editSetup();
 
     /**
      * Action that is called when user saves an entity from the edit entity form
+     *
      * @return
      */
     String edit();
 
     /**
      * Action that is called when user wants to delete an entity
+     *
      * @return
      */
-    String delete() ;
+    String delete();
 
     String next();
 
@@ -79,6 +86,7 @@ public interface EntityCrud<T, PK extends Serializable> {
     /**
      * Get the current entity item
      * Used mostly inside the JSF pages when binding a component to a value
+     *
      * @return
      */
     T getItem();
@@ -110,8 +118,8 @@ public interface EntityCrud<T, PK extends Serializable> {
     void setShowListing(boolean show);
 
     boolean isShowListing();
-    
+
     String search();
-    
+
     String clearSearch();
 }

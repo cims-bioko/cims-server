@@ -9,25 +9,25 @@ import javax.faces.model.SelectItem;
 
 public interface JsfService {
 
-	SelectItem[] getSelectItems(List<?> entities);
+    SelectItem[] getSelectItems(List<?> entities);
 
-	<T> List<T> arrayToList(T[] arr);
+    <T> List<T> arrayToList(T[] arr);
 
-	<T> Set<T> arrayToSet(T[] arr);
+    <T> Set<T> arrayToSet(T[] arr);
 
-	Object[] collectionToArray(Collection<?> c);
+    Object[] collectionToArray(Collection<?> c);
 
-	<T> List<T> setToList(Set<T> set);
+    <T> List<T> setToList(Set<T> set);
 
-	List<SelectItem> arrayToSelectItem(Object[] objectArray);
-	
-	String getReqParam(String name);
+    List<SelectItem> arrayToSelectItem(Object[] objectArray);
 
-	Object getObjViaReqParam(String reqParam, Converter converter, UIComponent component);
+    String getReqParam(String name);
 
-	void addError(String msg);
+    Object getObjViaReqParam(String reqParam, Converter converter, UIComponent component);
 
-	void addMessage(String msg);
-	
-	void addErrorForComponent(String msg, String componentId);
+    void addError(String msg);
+
+    void addMessage(String msg);
+
+    void addErrorForComponent(String msg, String componentId);
 }

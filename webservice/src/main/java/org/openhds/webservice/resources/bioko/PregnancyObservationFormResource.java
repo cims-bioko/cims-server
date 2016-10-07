@@ -57,7 +57,7 @@ public class PregnancyObservationFormResource extends AbstractFormResource {
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
     public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form)
-                                                                            throws JAXBException {
+            throws JAXBException {
 
         try {
             context = JAXBContext.newInstance(Form.class);
@@ -75,7 +75,7 @@ public class PregnancyObservationFormResource extends AbstractFormResource {
 
         FieldWorker fieldWorker = fieldWorkerService.getByUuid(form.getFieldWorkerUuid());
         if (null == fieldWorker) {
-            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_UUID + " : "+ form.getFieldWorkerUuid());
+            cv.addViolations(ConstraintViolations.INVALID_FIELD_WORKER_UUID + " : " + form.getFieldWorkerUuid());
             ErrorLog errorLog = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, createDTOPayload(form), null,
                     Form.LOG_NAME, null, ConstraintViolations.INVALID_FIELD_WORKER_UUID, cv.getViolations());
             errorService.logError(errorLog);
@@ -85,7 +85,7 @@ public class PregnancyObservationFormResource extends AbstractFormResource {
 
         Individual individual = individualService.getByUuid(form.getIndividualUuid());
         if (null == individual) {
-            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_UUID + " : "+ form.getIndividualUuid());
+            cv.addViolations(ConstraintViolations.INVALID_INDIVIDUAL_UUID + " : " + form.getIndividualUuid());
             ErrorLog errorLog = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, createDTOPayload(form), null,
                     Form.LOG_NAME, null, ConstraintViolations.INVALID_INDIVIDUAL_UUID, cv.getViolations());
             errorService.logError(errorLog);
@@ -95,7 +95,7 @@ public class PregnancyObservationFormResource extends AbstractFormResource {
 
         Visit visit = visitService.findVisitByUuid(form.getVisitUuid());
         if (null == visit) {
-            cv.addViolations(ConstraintViolations.INVALID_VISIT_UUID + " : "+ form.getVisitUuid());
+            cv.addViolations(ConstraintViolations.INVALID_VISIT_UUID + " : " + form.getVisitUuid());
             ErrorLog errorLog = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, createDTOPayload(form), null,
                     Form.LOG_NAME, null, ConstraintViolations.INVALID_VISIT_UUID, cv.getViolations());
             errorService.logError(errorLog);
@@ -129,7 +129,7 @@ public class PregnancyObservationFormResource extends AbstractFormResource {
     @XmlRootElement(name = "pregnancyObservationForm")
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = Form.LOG_NAME)
-    public static class Form implements Serializable{
+    public static class Form implements Serializable {
 
         public static final String LOG_NAME = "PregnancyObservationForm";
 

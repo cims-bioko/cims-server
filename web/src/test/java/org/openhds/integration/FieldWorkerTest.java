@@ -55,7 +55,7 @@ public class FieldWorkerTest extends AbstractTransactionalJUnit4SpringContextTes
 
     @After
     public void endRequest() {
-        ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).requestCompleted();
+        ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).requestCompleted();
         RequestContextHolder.resetRequestAttributes();
         request = null;
         session.clearAttributes();
@@ -65,7 +65,7 @@ public class FieldWorkerTest extends AbstractTransactionalJUnit4SpringContextTes
     @Test
     public void testFieldWorkerCreate() {
 
-        currentUser.setProxyUser("admin", "test", new String[] {"VIEW_ENTITY", "CREATE_ENTITY"});
+        currentUser.setProxyUser("admin", "test", new String[]{"VIEW_ENTITY", "CREATE_ENTITY"});
 
         FieldWorker worker = new FieldWorker();
         worker.setExtId("FWBD1");

@@ -1,7 +1,6 @@
 package org.openhds.integration;
 
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.web.FilterChainProxy;

@@ -40,17 +40,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-@ContextConfiguration(loader = WebContextLoader.class, locations = { "/testContext.xml" })
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+@ContextConfiguration(loader = WebContextLoader.class, locations = {"/testContext.xml"})
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
-        DbUnitTestExecutionListener.class })
+        DbUnitTestExecutionListener.class})
 @DatabaseSetup(value = "/formResourceTestDb.xml", type = DatabaseOperation.REFRESH)
 public class PregnancyOutcomeFormResourceTest extends AbstractResourceTest {
 
     private static final String A_DATE = "2000-01-01T00:00:00-05:00";
 
     private static final String OUTCOME_CORE_FORM_XML =
-                "<pregnancyOutcomeCoreForm>" +
+            "<pregnancyOutcomeCoreForm>" +
                     "    <pregnancy_outcome_uuid>123123123123123123</pregnancy_outcome_uuid>" +
                     "    <collection_date_time>2015-04-09 14:49:46</collection_date_time>" +
                     "    <field_worker_ext_id>FWEK1D</field_worker_ext_id>" +
@@ -64,20 +64,20 @@ public class PregnancyOutcomeFormResourceTest extends AbstractResourceTest {
                     "</pregnancyOutcomeCoreForm>";
 
     private static final String OUTCOME_CHILD_FORM_XML =
-            "<pregnancyOutcomeOutcomesForm>"+
-                "<pregnancy_outcome_uuid>123123123123123123</pregnancy_outcome_uuid>" +
-            "    <child_last_name>Last</child_last_name>" +
-            "    <outcome_type>LBR</outcome_type>" +
-            "    <child_gender>MALE</child_gender>" +
-            "    <collection_date_time>2015-04-09 14:49:46</collection_date_time>" +
-            "    <socialgroup_uuid>SocialGroup3</socialgroup_uuid>" +
-            "    <child_nationality>Other African Country</child_nationality>" +
-            "    <child_relationship_to_group_head>3</child_relationship_to_group_head>" +
-            "    <child_uuid>childUuid</child_uuid>" +
-            "    <child_middle_name>Middle</child_middle_name>" +
-            "    <processed_by_mirth>null</processed_by_mirth>" +
-            "    <child_first_name>First</child_first_name>" +
-            "</pregnancyOutcomeOutcomesForm>";
+            "<pregnancyOutcomeOutcomesForm>" +
+                    "<pregnancy_outcome_uuid>123123123123123123</pregnancy_outcome_uuid>" +
+                    "    <child_last_name>Last</child_last_name>" +
+                    "    <outcome_type>LBR</outcome_type>" +
+                    "    <child_gender>MALE</child_gender>" +
+                    "    <collection_date_time>2015-04-09 14:49:46</collection_date_time>" +
+                    "    <socialgroup_uuid>SocialGroup3</socialgroup_uuid>" +
+                    "    <child_nationality>Other African Country</child_nationality>" +
+                    "    <child_relationship_to_group_head>3</child_relationship_to_group_head>" +
+                    "    <child_uuid>childUuid</child_uuid>" +
+                    "    <child_middle_name>Middle</child_middle_name>" +
+                    "    <processed_by_mirth>null</processed_by_mirth>" +
+                    "    <child_first_name>First</child_first_name>" +
+                    "</pregnancyOutcomeOutcomesForm>";
 
     @Autowired
     private GenericDao genericDao;
@@ -150,7 +150,6 @@ public class PregnancyOutcomeFormResourceTest extends AbstractResourceTest {
 
         verifyEntityCrud("childUuid");
     }
-
 
 
     private void verifyEntityCrud(String childUuid) {

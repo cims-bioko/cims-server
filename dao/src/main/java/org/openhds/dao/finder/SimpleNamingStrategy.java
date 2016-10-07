@@ -1,6 +1,7 @@
 package org.openhds.dao.finder;
 
 import java.lang.reflect.Method;
+
 import org.openhds.dao.finder.NamingStrategy;
 
 /**
@@ -8,7 +9,7 @@ import org.openhds.dao.finder.NamingStrategy;
  * class and the method name of the invocation
  */
 public class SimpleNamingStrategy implements NamingStrategy {
-	public String queryNameFromMethod(Class<?> findTargetType, Method finderMethod) {
-		return findTargetType.getSimpleName() + "." + finderMethod.getName();
-	}
+    public String queryNameFromMethod(Class<?> findTargetType, Method finderMethod) {
+        return findTargetType.getSimpleName() + "." + finderMethod.getName();
+    }
 }

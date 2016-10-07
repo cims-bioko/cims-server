@@ -20,27 +20,27 @@ public abstract class AuditableEntity implements UuidIdentifiable, Serializable 
     private static final long serialVersionUID = -4703049354466276068L;
 
     @Id
-    @Column(length=32)
+    @Column(length = 32)
     String uuid;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @Description(description="The user that voided the data.")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Description(description = "The user that voided the data.")
     protected User voidBy;
 
-    @Description(description="Reason for voiding the data.")
+    @Description(description = "Reason for voiding the data.")
     protected String voidReason;
 
-    @Description(description="Indicator for signaling some data to be deleted.")
+    @Description(description = "Indicator for signaling some data to be deleted.")
     protected boolean deleted = false;
 
-    @Description(description="Date that the data was voided.")
+    @Description(description = "Date that the data was voided.")
     protected Calendar voidDate;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @Description(description="User who inserted the data.")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Description(description = "User who inserted the data.")
     protected User insertBy;
 
-    @Description(description="Date of insertion.")
+    @Description(description = "Date of insertion.")
     protected Calendar insertDate;
 
     @Override

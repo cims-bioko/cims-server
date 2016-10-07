@@ -55,7 +55,7 @@ public abstract class EntityServiceRefactoredImpl implements EntityServiceRefact
     public void save(AuditableEntity entityItem) throws ConstraintViolations {
         entityValidationService.setStatusPending(entityItem);
         entityValidationService.validateEntity(entityItem);
-        genericDao.update( genericDao.merge(entityItem) );
+        genericDao.update(genericDao.merge(entityItem));
     }
 
     public <T> T read(Class<T> entityType, String id) {

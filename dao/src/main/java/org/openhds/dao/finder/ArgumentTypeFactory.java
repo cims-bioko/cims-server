@@ -7,5 +7,5 @@ import org.hibernate.type.Type;
  * implementation
  */
 public interface ArgumentTypeFactory {
-	Type getArgumentType(Object arg);
+    Type getArgumentType(Object arg);
 }

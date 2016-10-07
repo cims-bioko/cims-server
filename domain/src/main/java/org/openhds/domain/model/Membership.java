@@ -17,118 +17,118 @@ import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.*;
 import org.openhds.domain.util.CalendarAdapter;
 
-@Description(description="A Membership represents an Individual's association with a " +
-		"particular Social Group. Memberships are identified by a uniquely generated " +
-		"identifier which the system uses internally. It contains information " +
-		"about the date the Membership started and ended, as well as the start and end types. " +
-		"It also contains the Individual's relationship to the head of the Social Group.")
+@Description(description = "A Membership represents an Individual's association with a " +
+        "particular Social Group. Memberships are identified by a uniquely generated " +
+        "identifier which the system uses internally. It contains information " +
+        "about the date the Membership started and ended, as well as the start and end types. " +
+        "It also contains the Individual's relationship to the head of the Social Group.")
 @Entity
-@CheckEndDateNotBeforeStartDate(allowNull=true)
+@CheckEndDateNotBeforeStartDate(allowNull = true)
 @CheckStartDateGreaterThanBirthDate
 @CheckEndDateAndEndEventType
-@Table(name="membership")
+@Table(name = "membership")
 @XmlRootElement(name = "membership")
 public class Membership extends AuditableCollectedEntity implements GenericEndDateEndEventConstraint, GenericStartEndDateConstraint, Serializable {
-	
-	private static final long serialVersionUID = 6200055042380700627L;
-		
-	@Searchable
+
+    private static final long serialVersionUID = 6200055042380700627L;
+
+    @Searchable
     @CheckEntityNotVoided
     @CheckIndividualNotUnknown
-	@ManyToOne(fetch = FetchType.LAZY)
-	@Description(description="Individual the membership is associated with, identified by external id.")
-	Individual individual;
-	
-	@Searchable
-	@ManyToOne(fetch = FetchType.LAZY)
-	@Description(description="The social group of the membership, identified by external id.")
-	SocialGroup socialGroup;
-	
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Description(description = "Individual the membership is associated with, identified by external id.")
+    Individual individual;
+
+    @Searchable
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Description(description = "The social group of the membership, identified by external id.")
+    SocialGroup socialGroup;
+
     @Temporal(javax.persistence.TemporalType.DATE)
-    @Description(description="Start date of the membership.")
-	Calendar startDate;
-    
+    @Description(description = "Start date of the membership.")
+    Calendar startDate;
+
     @CheckFieldNotBlank
-    @Description(description="Start type of the membership.")
-	String startType;
-	
+    @Description(description = "Start type of the membership.")
+    String startType;
+
     @Temporal(javax.persistence.TemporalType.DATE)
-    @Description(description="End date of the membership.")
-	Calendar endDate;
-    
-    @Description(description="End type of the membership.")
-	String endType;
-    
-    @ExtensionStringConstraint(constraint="membershipConstraint", message="Invalid Value for membership relation to head", allowNull=true)
-    @Description(description="Relationship type to the group head.")
+    @Description(description = "End date of the membership.")
+    Calendar endDate;
+
+    @Description(description = "End type of the membership.")
+    String endType;
+
+    @ExtensionStringConstraint(constraint = "membershipConstraint", message = "Invalid Value for membership relation to head", allowNull = true)
+    @Description(description = "Relationship type to the group head.")
     String bIsToA;
-	
-	public Individual getIndividual() {
-		return individual;
-	}
 
-	public void setIndividual(Individual individual) {
-		this.individual = individual;
-	}
+    public Individual getIndividual() {
+        return individual;
+    }
 
-	public SocialGroup getSocialGroup() {
-		return socialGroup;
-	}
+    public void setIndividual(Individual individual) {
+        this.individual = individual;
+    }
 
-	public void setSocialGroup(SocialGroup socialGroup) {
-		this.socialGroup = socialGroup;
-	}
+    public SocialGroup getSocialGroup() {
+        return socialGroup;
+    }
 
-    @XmlJavaTypeAdapter(value=CalendarAdapter.class) 
-	public Calendar getStartDate() {
-		return startDate;
-	}
+    public void setSocialGroup(SocialGroup socialGroup) {
+        this.socialGroup = socialGroup;
+    }
 
-	public void setStartDate(Calendar startDate) {
-		this.startDate = startDate;
-	}
+    @XmlJavaTypeAdapter(value = CalendarAdapter.class)
+    public Calendar getStartDate() {
+        return startDate;
+    }
 
-	public String getStartType() {
-		return startType;
-	}
+    public void setStartDate(Calendar startDate) {
+        this.startDate = startDate;
+    }
 
-	public void setStartType(String startType) {
-		this.startType = startType;
-	}
+    public String getStartType() {
+        return startType;
+    }
 
-    @XmlJavaTypeAdapter(value=CalendarAdapter.class) 
-	public Calendar getEndDate() {
-		return endDate;
-	}
+    public void setStartType(String startType) {
+        this.startType = startType;
+    }
 
-	public void setEndDate(Calendar endDate) {
-		this.endDate = endDate;
-	}
+    @XmlJavaTypeAdapter(value = CalendarAdapter.class)
+    public Calendar getEndDate() {
+        return endDate;
+    }
 
-	public String getEndType() {
-		return endType;
-	}
+    public void setEndDate(Calendar endDate) {
+        this.endDate = endDate;
+    }
 
-	public void setEndType(String endType) {
-		this.endType = endType;
-	}
-	
-	public String getbIsToA() {
-		return bIsToA;
-	}
+    public String getEndType() {
+        return endType;
+    }
 
-	public void setbIsToA(String bIsToA) {
-		this.bIsToA = bIsToA;
-	}
-	
-	public static Membership makeStub(String uuid, SocialGroup socialGroup, Individual individual, String bIsToA) {
-		Membership stub = new Membership();
+    public void setEndType(String endType) {
+        this.endType = endType;
+    }
+
+    public String getbIsToA() {
+        return bIsToA;
+    }
+
+    public void setbIsToA(String bIsToA) {
+        this.bIsToA = bIsToA;
+    }
+
+    public static Membership makeStub(String uuid, SocialGroup socialGroup, Individual individual, String bIsToA) {
+        Membership stub = new Membership();
         stub.setUuid(uuid);
-		stub.setSocialGroup(socialGroup);
-		stub.setIndividual(individual);
-		stub.setbIsToA(bIsToA);
-		return stub;
-	}
+        stub.setSocialGroup(socialGroup);
+        stub.setIndividual(individual);
+        stub.setbIsToA(bIsToA);
+        return stub;
+    }
 
     @Override
     public boolean equals(Object other) {

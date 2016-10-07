@@ -3,6 +3,7 @@ package org.openhds.errorhandling.dao;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
+
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
 import org.openhds.domain.model.ErrorLog;

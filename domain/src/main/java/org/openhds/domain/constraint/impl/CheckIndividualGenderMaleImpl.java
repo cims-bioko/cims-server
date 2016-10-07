@@ -10,24 +10,24 @@ import org.openhds.domain.service.impl.SitePropertiesServiceImpl;
 
 public class CheckIndividualGenderMaleImpl extends AppContextAware implements ConstraintValidator<CheckIndividualGenderMale, Individual> {
 
-	private SitePropertiesServiceImpl properties;
-	private boolean allowNull;
+    private SitePropertiesServiceImpl properties;
+    private boolean allowNull;
 
-	public void initialize(CheckIndividualGenderMale arg0) {
-		properties = (SitePropertiesServiceImpl)context.getBean("siteProperties");
-		this.allowNull = arg0.allowNull();
-	}
+    public void initialize(CheckIndividualGenderMale arg0) {
+        properties = (SitePropertiesServiceImpl) context.getBean("siteProperties");
+        this.allowNull = arg0.allowNull();
+    }
 
-	public boolean isValid(Individual arg0, ConstraintValidatorContext arg1) {		
-			
-		if (allowNull && arg0 == null) {
-			return true;
-		}
-		
-		if (arg0.getExtId().equals(properties.getUnknownIdentifier()))
-			return true;
+    public boolean isValid(Individual arg0, ConstraintValidatorContext arg1) {
 
-		return arg0.getGender().equals(properties.getMaleCode());
+        if (allowNull && arg0 == null) {
+            return true;
+        }
 
-	}
+        if (arg0.getExtId().equals(properties.getUnknownIdentifier()))
+            return true;
+
+        return arg0.getGender().equals(properties.getMaleCode());
+
+    }
 }

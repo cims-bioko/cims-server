@@ -17,8 +17,8 @@ package org.openhds.integration.util;
  */
 public class WebContextLoader extends GenericWebContextLoader {
 
-	public WebContextLoader() {
-		super("src/main/webapp", false);
-	}
+    public WebContextLoader() {
+        super("src/main/webapp", false);
+    }
 
 }

@@ -11,7 +11,7 @@ import org.openhds.domain.model.ErrorLog;
 public class ErrorLogUtil {
 
     public static ErrorLog generateErrorLog(String assignedTo, String dataPayload, Calendar dateOfResolution,
-            String entityType, FieldWorker fieldWorker, String resolutionStatus, List<String> errors) {
+                                            String entityType, FieldWorker fieldWorker, String resolutionStatus, List<String> errors) {
         ErrorLog errorLog = new ErrorLog();
 
         errorLog.setAssignedTo(assignedTo);

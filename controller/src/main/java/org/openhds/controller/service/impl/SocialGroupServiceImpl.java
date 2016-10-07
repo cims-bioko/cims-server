@@ -26,7 +26,7 @@ public class SocialGroupServiceImpl implements SocialGroupService {
     private SocialGroupGenerator generator;
 
     public SocialGroupServiceImpl(GenericDao genericDao, IndividualService individualService,
-            EntityService service, SocialGroupGenerator generator) {
+                                  EntityService service, SocialGroupGenerator generator) {
         this.genericDao = genericDao;
         this.individualService = individualService;
         this.service = service;
@@ -135,7 +135,7 @@ public class SocialGroupServiceImpl implements SocialGroupService {
 
     @Transactional(rollbackFor = Exception.class)
     public void modifySocialGroupHead(SocialGroup group, Individual selectedSuccessor,
-            List<Membership> memberships) throws Exception {
+                                      List<Membership> memberships) throws Exception {
 
         group.setGroupHead(selectedSuccessor);
 
@@ -196,7 +196,7 @@ public class SocialGroupServiceImpl implements SocialGroupService {
     @Override
     @Authorized("VIEW_ENTITY")
     public List<SocialGroup> getAllSocialGroupsInRange(SocialGroup start, int pageSize) {
-        Object startProp = start == null? null : start.getUuid();
+        Object startProp = start == null ? null : start.getUuid();
         return genericDao.findPaged(SocialGroup.class, "id", startProp, pageSize);
     }
 
