@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <JarScanner scanClassPath="false" scanBootstrapClassPath="false">
+        <JarScanFilter
+                defaultPluggabilityScan="false"
+                defaultTldScan="false"
+                tldScan="jstl-*.jar,jsf-impl-*.jar,spring-webmvc-*.jar,spring-security-taglibs-*.jar" />
+    </JarScanner>
+</Context>
