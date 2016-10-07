@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.openhds.domain.service.ValueConstraintService;
 import org.springframework.core.io.ClassPathResource;
 
-public class ValueConstraintServiceImpl {
+public class ValueConstraintServiceImpl implements ValueConstraintService {
 
     private Document doc;
 
@@ -31,10 +32,8 @@ public class ValueConstraintServiceImpl {
         return ele != null;
     }
 
-    private Element findConstraintByName(String constraintName) {
-        List list = doc.getRootElement().getChildren();
-        for (int i = 0; i < list.size(); i++) {
-            Element ele = (Element) list.get(i);
+    public Element findConstraintByName(String constraintName) {
+        for (Element ele : doc.getRootElement().getChildren()) {
             if (ele.getAttribute("id").getValue().equals(constraintName))
                 return ele;
         }
@@ -43,13 +42,11 @@ public class ValueConstraintServiceImpl {
 
     public boolean isValidConstraintValue(String constraintName, Object value) {
         // Get children of the root element whose "id" attribute is constraintName...
-        List list = doc.getRootElement().getChildren();
-        for (Object o : list) {
-            Element elt = (Element) o;
+        for (Element elt : doc.getRootElement().getChildren()) {
             if (elt.getAttribute("id").getValue().equals(constraintName)) {
                 // ...and return true if the value of some child matches the input
-                for (Object o2 : elt.getChildren()) {
-                    if (((Element) o2).getValue().toLowerCase().equals(value.toString().toLowerCase()))
+                for (Element o2 : elt.getChildren()) {
+                    if (o2.getValue().toLowerCase().equals(value.toString().toLowerCase()))
                         return true;
                 }
                 return false;
@@ -59,11 +56,8 @@ public class ValueConstraintServiceImpl {
     }
 
     public List<String> getAllConstraintNames() {
-
         List<String> output = new ArrayList<>();
-        List list = doc.getRootElement().getChildren();
-        for (int i = 0; i < list.size(); i++) {
-            Element ele = (Element) list.get(i);
+        for (Element ele : doc.getRootElement().getChildren()) {
             output.add(ele.getAttribute("id").getValue());
         }
         return output;
@@ -72,9 +66,7 @@ public class ValueConstraintServiceImpl {
     public Map<String, String> getMapForConstraint(String constraintName) {
         Map<String, String> keyValues = new TreeMap<>();
         Element constraint = findConstraintByName(constraintName);
-        List children = constraint.getChildren();
-        for (int i = 0; i < children.size(); i++) {
-            Element child = (Element) children.get(i);
+        for (Element child : constraint.getChildren()) {
             keyValues.put(child.getValue(), child.getAttributeValue("description"));
         }
         return keyValues;

@@ -5,16 +5,17 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.openhds.domain.constraint.AppContextAware;
 import org.openhds.domain.constraint.ExtensionStringConstraint;
+import org.openhds.domain.service.ValueConstraintService;
 import org.openhds.domain.service.impl.ValueConstraintServiceImpl;
 
 public class ExtensionStringConstraintImpl extends AppContextAware implements ConstraintValidator<ExtensionStringConstraint, String> {
 
     private String constraint;
     private boolean allowNull;
-    private ValueConstraintServiceImpl service;
+    private ValueConstraintService service;
 
     public void initialize(ExtensionStringConstraint arg0) {
-        service = (ValueConstraintServiceImpl) context.getBean("valueConstraintService");
+        service = (ValueConstraintService) context.getBean("valueConstraintService");
         this.constraint = arg0.constraint();
         this.allowNull = arg0.allowNull();
     }

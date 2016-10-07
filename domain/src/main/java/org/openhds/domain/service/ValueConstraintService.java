@@ -3,7 +3,7 @@ package org.openhds.domain.service;
 import java.util.List;
 import java.util.Map;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 public interface ValueConstraintService {
 
