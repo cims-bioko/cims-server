@@ -89,6 +89,7 @@ public class UserCrudImpl extends EntityCrudImpl<User, String> implements UserCr
 		return retypedPassword;
 	}
 
+	@Override
 	public void setRetypedPassword(String retypedPassword) {
 		this.retypedPassword = retypedPassword;
 	}
@@ -114,6 +115,7 @@ public class UserCrudImpl extends EntityCrudImpl<User, String> implements UserCr
 		return list;
 	}
 
+	@Override
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
 	}

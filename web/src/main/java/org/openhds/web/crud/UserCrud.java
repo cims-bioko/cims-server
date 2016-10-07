@@ -11,5 +11,9 @@ public interface UserCrud extends EntityCrud<User, String> {
 
     String getRetypedPassword();
 
+    void setRetypedPassword(String retypedPassword);
+
     List<String> getRoles();
+
+    void setRoles(List<String> roles);
 }
