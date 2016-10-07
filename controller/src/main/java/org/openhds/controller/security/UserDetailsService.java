@@ -10,7 +10,7 @@ import org.openhds.domain.model.Privilege;
 import org.openhds.domain.model.Role;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -66,11 +66,11 @@ public class UserDetailsService implements org.springframework.security.core.use
 	 */
 	private Collection<GrantedAuthority> convertAuthorities(Set<Role> roles) {
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new GrantedAuthorityImpl(SPRING_ROLE));
+		authorities.add(new SimpleGrantedAuthority(SPRING_ROLE));
 
 		for(Role role : roles) {
 			for(Privilege privilege: role.getPrivileges()) {
-				authorities.add(new GrantedAuthorityImpl(privilege.getPrivilege()));
+				authorities.add(new SimpleGrantedAuthority(privilege.getPrivilege()));
 			}
 		}
 		

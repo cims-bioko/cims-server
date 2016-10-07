@@ -15,7 +15,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
@@ -37,7 +37,7 @@ public class CurrentUserImpl implements CurrentUser, BeanFactoryAware {
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
 		
 		for(String privilege : privileges) {
-			authorities.add(new GrantedAuthorityImpl(privilege));
+			authorities.add(new SimpleGrantedAuthority(privilege));
 		}
 		
 		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, password, authorities);
