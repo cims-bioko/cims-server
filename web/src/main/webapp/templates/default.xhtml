@@ -4,62 +4,64 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
-    <h:head>
-        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<h:head>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
 
-        <title><ui:insert name="title"/></title>
-        
-        <link type="text/css" href="#{request.contextPath}/resources/css/jquery.ui.all.css" rel="stylesheet" />
-        <link type="text/css" href="#{request.contextPath}/resources/css/demos.css" rel="stylesheet" />
-        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/default.css"/>
-        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/menuStyle.css"/>
-        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/jquery.ui.base.css"/>
+    <title><ui:insert name="title"/></title>
 
- 		<script type="text/javascript" src="#{request.contextPath}/resources/scripts/jquery-1.4.2.min.js"></script>
-        <script type="text/javascript" src="#{request.contextPath}/resources/scripts/ui/jquery-ui-1.8.5.custom.min.js"></script>
-		
-    </h:head>
+    <link type="text/css" href="#{request.contextPath}/resources/css/jquery.ui.all.css" rel="stylesheet"/>
+    <link type="text/css" href="#{request.contextPath}/resources/css/demos.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/default.css"/>
+    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/menuStyle.css"/>
+    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/jquery.ui.base.css"/>
 
-    <body>
-		<div id="navi">
-            <div id="headers">
-                <h:graphicImage id="n" style="width: 100%" value="/resources/images/logo2.jpg"  title="Openhds logo"/>
-            </div>
-            <!-- Include the logo composition -->
-            <ui:include src="/templates/logo.xhtml" />
+    <script type="text/javascript" src="#{request.contextPath}/resources/scripts/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript"
+            src="#{request.contextPath}/resources/scripts/ui/jquery-ui-1.8.5.custom.min.js"></script>
 
-            <c:if test="#{flowScope == null or flowScope.showNavMenu}">
-                <ui:include src="/snippets/menu.xhtml"/>
-            </c:if>
+</h:head>
+
+<body>
+<div id="navi">
+    <div id="headers">
+        <h:graphicImage id="n" style="width: 100%" value="/resources/images/logo2.jpg" title="Openhds logo"/>
+    </div>
+    <!-- Include the logo composition -->
+    <ui:include src="/templates/logo.xhtml"/>
+
+    <c:if test="#{flowScope == null or flowScope.showNavMenu}">
+        <ui:include src="/snippets/menu.xhtml"/>
+    </c:if>
+</div>
+
+<div id="content">
+    <c:if test="#{hideTabBar == null or hideTabBar != true}">
+        <ui:include src="/templates/tab-bar.xhtml"/>
+    </c:if>
+
+    <div id="center" class="boxcontent">
+        <div style="#{crud.showListing ? '' : 'display:none;'}">
+            <ui:insert name="listing"/>
         </div>
-
-        <div id="content">
-        	<c:if test="#{hideTabBar == null or hideTabBar != true}">
-				<ui:include src="/templates/tab-bar.xhtml" />
-			</c:if>
-            
-            <div id="center" class="boxcontent" >
-            	<div style="#{crud.showListing ? '' : 'display:none;'}">
-                	<ui:insert name="listing"/>
-               	</div>
-               	<div style="#{crud.showListing ? 'display:none;' : ''}">
-                	<ui:insert name="display" />
-                </div>
-            </div>
+        <div style="#{crud.showListing ? 'display:none;' : ''}">
+            <ui:insert name="display"/>
         </div>
+    </div>
+</div>
 
-		<div style="" />
+<div style=""/>
 
-        <span id="navi-scroll-block" style="float:left;clear:left;height:4em;">
-        	<!-- Acting as a spacer because the footer will overlay the content since its position is set to fixed -->
-        	<!-- This will provide the necessary space so that scrolling works properly -->
+<span id="navi-scroll-block" style="float:left;clear:left;height:4em;">
+    <!-- Acting as a spacer because the footer will overlay the content since its position is set to fixed -->
+    <!-- This will provide the necessary space so that scrolling works properly -->
         </span>
-        
-		<div id="footer" align="center">
-			#{msg.footerTop} #{appVersion.versionNumber}
-			<br />
-			#{msg.footerBottom} | <a href="#" title="License">#{msg.footerLicense}</a> | <a href="https://github.com/cims-bioko/cims-server/" title="Repository">#{msg.footerRepository}</a>
-		</div>
-    </body>
+
+<div id="footer" align="center">
+    #{msg.footerTop} #{appVersion.versionNumber}
+    <br/>
+    #{msg.footerBottom} | <a href="#" title="License">#{msg.footerLicense}</a> | <a
+        href="https://github.com/cims-bioko/cims-server/" title="Repository">#{msg.footerRepository}</a>
+</div>
+</body>
 
 </html>

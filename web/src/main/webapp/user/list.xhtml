@@ -6,8 +6,8 @@
     <h:form>
         <div style="text-align:right;">
             <div style="float:left;">
-                <h:commandButton immediate="true" action="#{userCrud.createSetup}" value="#{msg.lblAddNew}" id="button1" />
-
+                <h:commandButton immediate="true" action="#{userCrud.createSetup}" value="#{msg.lblAddNew}"
+                                 id="button1"/>
                 <!-- Paging -->
                 <ui:include src="/snippets/paging.xhtml">
                     <ui:param name="currentCrud" value="#{userCrud}"/>
@@ -21,27 +21,27 @@
         </ui:include>
 
         <div>
-            <h:outputText escape="false" value="#{msg.userEmpty}" rendered="#{userCrud.pager.totalCount == 0}" />
+            <h:outputText escape="false" value="#{msg.userEmpty}" rendered="#{userCrud.pager.totalCount == 0}"/>
             <h:panelGroup rendered="#{fn:length(userCrud.pagedItems) > 0}">
                 <h:dataTable value="#{userCrud.pagedItems}" var="user"
                              width="100%" columnClasses="center,center,center,width3">
                     <h:column headerClass="width1">
                         <f:facet name="header">
-                            <h:outputText value="#{msg.userFirstName}" />
+                            <h:outputText value="#{msg.userFirstName}"/>
                         </f:facet>
-                        <h:outputText value="#{user.firstName}" />
+                        <h:outputText value="#{user.firstName}"/>
                     </h:column>
                     <h:column headerClass="width1">
                         <f:facet name="header">
-                            <h:outputText value="#{msg.userLastName}" />
+                            <h:outputText value="#{msg.userLastName}"/>
                         </f:facet>
-                        <h:outputText value="#{user.lastName}" />
+                        <h:outputText value="#{user.lastName}"/>
                     </h:column>
                     <h:column headerClass="width1">
                         <f:facet name="header">
-                            <h:outputText value="#{msg.userUsername}" />
+                            <h:outputText value="#{msg.userUsername}"/>
                         </f:facet>
-                        <h:outputText value="#{user.username}" />
+                        <h:outputText value="#{user.username}"/>
                     </h:column>
                     <h:column headerClass="width3">
                         <f:facet name="header">

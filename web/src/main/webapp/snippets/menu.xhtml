@@ -5,42 +5,45 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:sec="http://www.springframework.org/security/tags">
 
-	<h:head>
-	</h:head>
+    <h:head>
+    </h:head>
 
     <h:form>
-		<ul id="menu1" class="menu">
-	    	<li>
-	        	<h:commandLink action="welcome" value="#{msg.navBarHome}" >
-	        		<f:setPropertyActionListener target="#{navController.showHome}" value="true" /> 
-	            </h:commandLink>
-	        </li>
-	    	<sec:authorize access="hasAuthority('ACESSS_UTILITY_ROUTINES')">
-			    <li>
-			        <h:commandLink value="#{msg.navBarUtilityRoutine}" action="welcome" >
-			        	<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
-			        </h:commandLink>
-			        <c:if test="#{navController.showUtilities}" >
-		        	<ul>
-		        		<li><h:commandLink value="Tasks" action="task" /></li>
-			    	</ul>
-			    	</c:if>
-			    </li>
-		    </sec:authorize>
-		    <sec:authorize access="hasAuthority('ACESSS_CONFIGURATION')">
-			    <li>
-			        <h:commandLink value="#{msg.navBarConfiguration}" action="welcome">
-			        	<f:setPropertyActionListener target="#{navController.showConfiguration}" value="true" /> 
-			        </h:commandLink>
-			        <c:if test="#{navController.showConfiguration}" >
-		        	<ul>
-			   		    <li><h:commandLink value="#{msg.navBarRoleManagement}" action="#{roleCrud.createSetup}" /></li>
-			   		    <li><h:commandLink value="#{msg.navBarUserManagement}" action="#{userCrud.createSetup}" /></li>
-						<li><h:commandLink value="#{msg.navBarFieldWorkers}" action="#{fieldWorkerCrud.createSetup}" /></li>
-			    	</ul>
-			    	</c:if>
-			    </li>
-		    </sec:authorize>
-	    </ul>
+        <ul id="menu1" class="menu">
+            <li>
+                <h:commandLink action="welcome" value="#{msg.navBarHome}">
+                    <f:setPropertyActionListener target="#{navController.showHome}" value="true"/>
+                </h:commandLink>
+            </li>
+            <sec:authorize access="hasAuthority('ACESSS_UTILITY_ROUTINES')">
+                <li>
+                    <h:commandLink value="#{msg.navBarUtilityRoutine}" action="welcome">
+                        <f:setPropertyActionListener target="#{navController.showUtilities}" value="true"/>
+                    </h:commandLink>
+                    <c:if test="#{navController.showUtilities}">
+                        <ul>
+                            <li><h:commandLink value="Tasks" action="task"/></li>
+                        </ul>
+                    </c:if>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasAuthority('ACESSS_CONFIGURATION')">
+                <li>
+                    <h:commandLink value="#{msg.navBarConfiguration}" action="welcome">
+                        <f:setPropertyActionListener target="#{navController.showConfiguration}" value="true"/>
+                    </h:commandLink>
+                    <c:if test="#{navController.showConfiguration}">
+                        <ul>
+                            <li><h:commandLink value="#{msg.navBarRoleManagement}" action="#{roleCrud.createSetup}"/>
+                            </li>
+                            <li><h:commandLink value="#{msg.navBarUserManagement}" action="#{userCrud.createSetup}"/>
+                            </li>
+                            <li><h:commandLink value="#{msg.navBarFieldWorkers}"
+                                               action="#{fieldWorkerCrud.createSetup}"/></li>
+                        </ul>
+                    </c:if>
+                </li>
+            </sec:authorize>
+        </ul>
     </h:form>
 </ui:composition>

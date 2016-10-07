@@ -2,43 +2,43 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
-        
-    <h:head>
-    	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/login.css"/>
-    </h:head>
-    
-   	<body> 	
-  		<div class="loginField" align="center">
-  	  		<div><img alt="" src="#{request.contextPath}/resources/images/logo-login.png"></img></div>
-  			<div style="margin-top:2%">
-			<form name="loginForm" action="${request.contextPath}/loginProcess" method="post">
-				<table>
-					<tr>
-						<td><h:outputText value="Username:" /></td>
-						<td>	
-							<c:if test="${not empty param.login_error}">
-								<c:set var="username" value="${sessionScope.SPRING_SECURITY_LAST_USERNAME}"/>
-							</c:if>
-							<input id="username" type="text" name="j_username" value="#{username}" />
-							<script>document.getElementById('username').focus();</script>
-						</td>
-					</tr>
-					<tr>
-						<td><h:outputText value="Password:" /></td>
-						<td><input type="password" name="j_password" /></td>
-					</tr>
-					<tr>
-						<td><input name="submit" type="submit" value="Login" /></td>
-					</tr>
-				</table>
-				<br />
-				<c:if test="${not empty param.login_error}">
-					<span class="loginMessage">Wrong username or password. Please try again.</span>
-				</c:if>
-			</form>
-			</div>
-			<br />
-            Version #{appVersion.versionNumber}
-	  </div>	
-	</body>
+
+<h:head>
+    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/login.css"/>
+</h:head>
+
+<body>
+<div class="loginField" align="center">
+    <div><img alt="" src="#{request.contextPath}/resources/images/logo-login.png"></img></div>
+    <div style="margin-top:2%">
+        <form name="loginForm" action="${request.contextPath}/loginProcess" method="post">
+            <table>
+                <tr>
+                    <td><h:outputText value="Username:"/></td>
+                    <td>
+                        <c:if test="${not empty param.login_error}">
+                            <c:set var="username" value="${sessionScope.SPRING_SECURITY_LAST_USERNAME}"/>
+                        </c:if>
+                        <input id="username" type="text" name="j_username" value="#{username}"/>
+                        <script>document.getElementById('username').focus();</script>
+                    </td>
+                </tr>
+                <tr>
+                    <td><h:outputText value="Password:"/></td>
+                    <td><input type="password" name="j_password"/></td>
+                </tr>
+                <tr>
+                    <td><input name="submit" type="submit" value="Login"/></td>
+                </tr>
+            </table>
+            <br/>
+            <c:if test="${not empty param.login_error}">
+                <span class="loginMessage">Wrong username or password. Please try again.</span>
+            </c:if>
+        </form>
+    </div>
+    <br/>
+    Version #{appVersion.versionNumber}
+</div>
+</body>
 </html>
