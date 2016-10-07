@@ -3,14 +3,14 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-       http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.2.xsd
-       http://www.springframework.org/schema/mvc
-       http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 
-    <context:annotation-config />
-    <context:component-scan base-package="org.openhds.webservice" />
+    <context:annotation-config/>
+    <context:component-scan base-package="org.openhds.webservice"/>
 
     <bean
             class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
@@ -20,7 +20,7 @@
         <property name="messageConverters">
             <array>
                 <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
-                <ref bean="marshallingXmlHttpMessageConverter" />
+                <ref bean="marshallingXmlHttpMessageConverter"/>
             </array>
         </property>
     </bean>
@@ -34,23 +34,23 @@
         </property>
         <property name="adapters">
             <array>
-                <ref bean="calendarAdapter" />
+                <ref bean="calendarAdapter"/>
             </array>
         </property>
     </bean>
 
     <bean id="marshallingXmlHttpMessageConverter"
           class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
-        <property name="marshaller" ref="jaxbMarshaller" />
-        <property name="unmarshaller" ref="jaxbMarshaller" />
+        <property name="marshaller" ref="jaxbMarshaller"/>
+        <property name="unmarshaller" ref="jaxbMarshaller"/>
     </bean>
 
-    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />
+    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager"/>
 
     <bean id="contentNegotiationManager"
           class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
-        <property name="favorPathExtension" value="false" />
-        <property name="favorParameter" value="true" />
+        <property name="favorPathExtension" value="false"/>
+        <property name="favorParameter" value="true"/>
     </bean>
 
 </beans>

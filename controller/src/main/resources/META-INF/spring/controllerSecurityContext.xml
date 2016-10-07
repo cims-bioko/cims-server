@@ -3,18 +3,18 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:security="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
         http://www.springframework.org/schema/security
         http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-    <import resource="classpath*:/META-INF/spring/controllerApplicationContext.xml" />
+    <import resource="classpath*:/META-INF/spring/controllerApplicationContext.xml"/>
 
     <security:authentication-manager>
-        <security:authentication-provider user-service-ref="userDetailsService" />
+        <security:authentication-provider user-service-ref="userDetailsService"/>
     </security:authentication-manager>
 
     <!-- allows for the @secured annotation -->
-    <security:global-method-security secured-annotations="enabled" />
+    <security:global-method-security secured-annotations="enabled"/>
 
     <!-- allow async tasks to inherit security context, make service method calls -->
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
