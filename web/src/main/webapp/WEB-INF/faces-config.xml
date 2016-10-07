@@ -1,93 +1,93 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<faces-config
-	xmlns="http://java.sun.com/xml/ns/javaee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
-	version="2.0">
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+               http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+              version="2.0">
 
-	<application>
-		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
-		<el-resolver>org.openhds.web.util.JsfCrudELResolver</el-resolver>
-		<el-resolver>org.openhds.web.util.ValueExtensionResolver</el-resolver>
-	</application>
-	
-	<navigation-rule>
-		<from-view-id>*</from-view-id>
-		<navigation-case>
-			<from-outcome>welcome</from-outcome>
-			<to-view-id>/welcome.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>fieldworker_list</from-outcome>
-			<to-view-id>/fieldworker/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>fieldworker_create</from-outcome>
-			<to-view-id>/fieldworker/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>fieldworker_edit</from-outcome>
-			<to-view-id>/fieldworker/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>fieldworker_detail</from-outcome>
-			<to-view-id>/fieldworker/detail.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>role_list</from-outcome>
-			<to-view-id>/role/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>role_create</from-outcome>
-			<to-view-id>/role/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>role_edit</from-outcome>
-			<to-view-id>/role/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>role_detail</from-outcome>
-			<to-view-id>/role/detail.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>role_assign</from-outcome>
-			<to-view-id>/role/assignroles.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
+    <application>
+        <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+        <el-resolver>org.openhds.web.util.JsfCrudELResolver</el-resolver>
+        <el-resolver>org.openhds.web.util.ValueExtensionResolver</el-resolver>
+    </application>
+
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>welcome</from-outcome>
+            <to-view-id>/welcome.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>fieldworker_list</from-outcome>
+            <to-view-id>/fieldworker/create.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>fieldworker_create</from-outcome>
+            <to-view-id>/fieldworker/create.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>fieldworker_edit</from-outcome>
+            <to-view-id>/fieldworker/edit.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>fieldworker_detail</from-outcome>
+            <to-view-id>/fieldworker/detail.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>role_list</from-outcome>
+            <to-view-id>/role/create.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>role_create</from-outcome>
+            <to-view-id>/role/create.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>role_edit</from-outcome>
+            <to-view-id>/role/edit.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>role_detail</from-outcome>
+            <to-view-id>/role/detail.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>role_assign</from-outcome>
+            <to-view-id>/role/assignroles.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
         <navigation-case>
             <from-outcome>task</from-outcome>
             <to-view-id>/task/index.xhtml</to-view-id>
-            <redirect />
+            <redirect/>
         </navigation-case>
-		<navigation-case>
-			<from-outcome>user_list</from-outcome>
-			<to-view-id>/user/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>user_create</from-outcome>
-			<to-view-id>/user/create.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>user_detail</from-outcome>
-			<to-view-id>/user/detail.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>user_edit</from-outcome>
-			<to-view-id>/user/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-	</navigation-rule>
+        <navigation-case>
+            <from-outcome>user_list</from-outcome>
+            <to-view-id>/user/create.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>user_create</from-outcome>
+            <to-view-id>/user/create.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>user_detail</from-outcome>
+            <to-view-id>/user/detail.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>user_edit</from-outcome>
+            <to-view-id>/user/edit.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
 
 </faces-config>
