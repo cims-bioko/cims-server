@@ -80,7 +80,7 @@
         </property>
     </bean>
 
-	<bean id="deathService" parent="baseServiceTransactionBean">
+	<bean id="deathService" parent="baseServiceTransactionBean" lazy-init="true">
     	<property name="target">
 		    <bean class="org.openhds.controller.service.impl.DeathServiceImpl">
 		        <constructor-arg ref="genericDao" />
@@ -93,14 +93,14 @@
 
 	<bean id="fieldWorkerService" parent="baseServiceBean">
 	 	<property name="target">
-	 		<bean class="org.openhds.controller.service.impl.FieldWorkerServiceImpl">
+	 		<bean class="org.openhds.controller.service.impl.FieldWorkerServiceImpl" lazy-init="true">
 		        <constructor-arg ref="genericDao" />
 		        <constructor-arg ref="fieldWorkerIdGenerator" />
 		    </bean>
 		</property>
     </bean>
 
-    <bean id="individualService" parent="baseServiceTransactionBean">
+    <bean id="individualService" parent="baseServiceTransactionBean" lazy-init="true">
     	<property name="target">
     		<bean class="org.openhds.controller.service.impl.IndividualServiceImpl">
 				<constructor-arg ref="genericDao" />
@@ -112,7 +112,7 @@
    		</property>
     </bean>
         
-    <bean id="inMigrationService" parent="baseServiceTransactionBean">
+    <bean id="inMigrationService" parent="baseServiceTransactionBean" lazy-init="true">
     	<property name="target">
 		    <bean class="org.openhds.controller.service.impl.InMigrationServiceImpl">
 		        <constructor-arg ref="residencyService" />
@@ -124,7 +124,7 @@
 	    </property>
     </bean>
     
-    <bean id="locationHierarchyService" parent="baseServiceBean">
+    <bean id="locationHierarchyService" parent="baseServiceBean" lazy-init="true">
     	<property name="target">
 		    <bean class="org.openhds.controller.service.impl.LocationHierarchyServiceImpl">		    
 		        <constructor-arg ref="genericDao" />
@@ -135,7 +135,7 @@
 	    </property>
     </bean>
     
-    <bean id="membershipService" parent="baseServiceBean">
+    <bean id="membershipService" parent="baseServiceBean" lazy-init="true">
     	<property name="target">
     		<bean class="org.openhds.controller.service.impl.MembershipServiceImpl">
 				<constructor-arg ref="genericDao" />
@@ -148,7 +148,7 @@
    		</property>
 	</bean>
     
-    <bean id="outMigrationService" parent="baseServiceTransactionBean">
+    <bean id="outMigrationService" parent="baseServiceTransactionBean" lazy-init="true">
     	<property name="target">
 		    <bean class="org.openhds.controller.service.impl.OutMigrationServiceImpl">
 		    	<constructor-arg ref="residencyService" />
@@ -163,7 +163,7 @@
 	    </property>
     </bean>  
     
-    <bean id="pregnancyService" parent="baseServiceTransactionBean">
+    <bean id="pregnancyService" parent="baseServiceTransactionBean" lazy-init="true">
     	<property name="target">
 		    <bean class="org.openhds.controller.service.impl.PregnancyServiceImpl">
 		        <constructor-arg ref="entityService" />
@@ -175,7 +175,7 @@
 	    </property>
     </bean>
     
-    <bean id="relationshipService" parent="baseServiceBean">
+    <bean id="relationshipService" parent="baseServiceBean" lazy-init="true">
     	<property name="target">
     		<bean class="org.openhds.controller.service.impl.RelationshipServiceImpl">
 		        <constructor-arg ref="genericDao" />
@@ -186,7 +186,7 @@
    		</property>
 	</bean>
   	
-    <bean id="residencyService" parent="baseServiceTransactionBean">
+    <bean id="residencyService" parent="baseServiceTransactionBean" lazy-init="true">
     	<property name="target">
 		    <bean class="org.openhds.controller.service.impl.ResidencyServiceImpl">
 		        <constructor-arg ref="genericDao" />
@@ -198,7 +198,7 @@
 	    </property>
     </bean>
     
-    <bean id="roleService" parent="baseServiceTransactionBean">
+    <bean id="roleService" parent="baseServiceTransactionBean" lazy-init="true">
 	    <property name="target">
 		    <bean class="org.openhds.controller.service.impl.RoleServiceImpl">
 		    	<constructor-arg ref="roleDao" />
@@ -208,7 +208,7 @@
 	    </property>
     </bean>
     
-    <bean id="roundService" parent="baseServiceBean">
+    <bean id="roundService" parent="baseServiceBean" lazy-init="true">
     	<property name="target">
 		    <bean class="org.openhds.controller.service.impl.RoundServiceImpl">
 		        <constructor-arg ref="genericDao" />
@@ -217,7 +217,7 @@
 	    </property>
     </bean>
      
-    <bean id="socialGroupService" parent="baseServiceTransactionBean">
+    <bean id="socialGroupService" parent="baseServiceTransactionBean" lazy-init="true">
    		<property name="target">
 		    <bean class="org.openhds.controller.service.impl.SocialGroupServiceImpl">
 		        <constructor-arg ref="genericDao" />
@@ -228,7 +228,7 @@
 	    </property>
     </bean>
      
-    <bean id="visitService" parent="baseServiceBean">
+    <bean id="visitService" parent="baseServiceBean" lazy-init="true">
     	<property name="target">
 		    <ref bean="visitServiceImpl"/>
 	    </property>
