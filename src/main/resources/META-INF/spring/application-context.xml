@@ -14,7 +14,7 @@
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <bean id="appVersion" class="org.openhds.web.AppVersion">
-        <constructor-arg value="/META-INF/maven/org.openhds/web/pom.properties"/>
+        <constructor-arg value="/META-INF/maven/org.openhds/openhds/pom.properties"/>
     </bean>
 
     <bean id="databaseConfigurer"
