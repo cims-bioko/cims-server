@@ -31,17 +31,11 @@
     </properties>
 
     <modules>
-        <module>domain</module>
         <module>web</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.openhds</groupId>
-                <artifactId>domain</artifactId>
-                <version>${project.version}</version>
-            </dependency>
             <dependency>
                 <groupId>aopalliance</groupId>
                 <artifactId>aopalliance</artifactId>
