@@ -32,7 +32,6 @@
 
     <modules>
         <module>domain</module>
-        <module>dao</module>
         <module>web</module>
     </modules>
 
@@ -41,11 +40,6 @@
             <dependency>
                 <groupId>org.openhds</groupId>
                 <artifactId>domain</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.openhds</groupId>
-                <artifactId>dao</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
