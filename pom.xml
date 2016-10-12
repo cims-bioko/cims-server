@@ -36,7 +36,6 @@
         <module>controller</module>
         <module>web</module>
         <module>task</module>
-        <module>errorhandling</module>
     </modules>
 
     <dependencyManagement>
@@ -59,11 +58,6 @@
             <dependency>
                 <groupId>org.openhds</groupId>
                 <artifactId>task</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.openhds</groupId>
-                <artifactId>errorhandling</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
