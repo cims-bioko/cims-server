@@ -10,13 +10,6 @@
     <name>OpenHDS</name>
     <version>2.6-SNAPSHOT</version>
 
-    <scm>
-        <connection>scm:git:https://github.com/cims-bioko/openhds-server.git</connection>
-        <developerConnection>scm:git:https://github.com/cims-bioko/openhds-server.git</developerConnection>
-        <url>https://github.com/cims-bioko/openhds-server.git</url>
-        <tag>HEAD</tag>
-    </scm>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>4.3.3.RELEASE</spring.version>
@@ -29,6 +22,12 @@
         <sqlite.version>3.6.11</sqlite.version>
         <flyway.version>4.0.3</flyway.version>
     </properties>
+
+    <scm>
+        <connection>scm:git:https://github.com/cims-bioko/openhds-server.git</connection>
+        <developerConnection>scm:git:https://github.com/cims-bioko/openhds-server.git</developerConnection>
+        <url>https://github.com/cims-bioko/openhds-server.git</url>
+    </scm>
 
     <dependencyManagement>
         <dependencies>
