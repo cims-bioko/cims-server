@@ -78,4 +78,16 @@ public class Application extends SpringBootServletInitializer {
             ctx.addListener(com.sun.faces.config.ConfigureListener.class);
         };
     }
+
+    @Bean
+    String appVersion() {
+        Package pkg = getClass().getPackage();
+        if (pkg != null) {
+            String pkgVersion = pkg.getImplementationVersion();
+            if (pkgVersion != null) {
+                return pkgVersion;
+            }
+        }
+        return "DEV";
+    }
 }
