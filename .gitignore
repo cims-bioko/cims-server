@@ -15,3 +15,5 @@
 log/
 target/
 
+# Spring Boot
+src/main/webapp/WEB-INF/cached-files/

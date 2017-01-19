@@ -12,8 +12,7 @@
     <context:annotation-config/>
     <context:component-scan base-package="org.openhds.webservice"/>
 
-    <bean
-            class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="asyncRequestTimeout">
             <value>36000000</value>
         </property>

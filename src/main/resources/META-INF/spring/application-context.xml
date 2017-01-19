@@ -13,15 +13,12 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <bean id="appVersion" class="org.openhds.web.AppVersion">
-        <constructor-arg value="/META-INF/maven/org.openhds/openhds/pom.properties"/>
-    </bean>
-
     <bean id="databaseConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
         <property name="locations">
             <list>
+                <value>classpath:/META-INF/build-info.properties</value>
                 <value>classpath:database.properties</value>
                 <value>classpath:location-levels.properties</value>
                 <value>classpath:codes.properties</value>
@@ -79,6 +76,7 @@
         <security:intercept-url pattern="/javax.faces.resource/**" access="permitAll()"/>
         <security:intercept-url pattern="/module/dsl/binding-def/**" access="permitAll()"/>
         <security:intercept-url pattern="/module/dsl/validation" access="permitAll()"/>
+        <security:intercept-url pattern="/favicon.ico" access="permitAll()"/>
         <security:intercept-url pattern="/**" access="isAuthenticated()"/>
         <security:intercept-url pattern="/api/rest/**" access="isAuthenticated()"/>
         <security:logout logout-url="/logoutProcess" success-handler-ref="logoutSuccessHandler"/>
