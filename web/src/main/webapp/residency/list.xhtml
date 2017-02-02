@@ -2,7 +2,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:sec="http://www.springframework.org/security/facelets/tags">
+                xmlns:sec="http://www.springframework.org/security/tags">
 	<h:form>
 		<div style="text-align:right;">
 			<div style="float:left;">
@@ -56,12 +56,12 @@
                               	<h:graphicImage style="border: 0;" title="details" value="/resources/icons/details.png" />
                           	 </h:outputLink>
                             <h:outputText value=" "/>
-                            <sec:ifAllGranted roles="DELETE_ENTITY">
+                            <sec:authorize ifAllGranted="DELETE_ENTITY">
                                 <h:commandLink action="#{residencyCrud.delete}">
                                     <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.png"/>
                                     <f:param name="itemId" value="#{item.uuid}"/>
                                 </h:commandLink>
-                            </sec:ifAllGranted>
+                            </sec:authorize>
 	                    </h:column>
 	                </h:dataTable>
 	            </h:panelGroup>

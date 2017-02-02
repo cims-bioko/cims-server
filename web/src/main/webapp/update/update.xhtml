@@ -3,7 +3,7 @@
 				xmlns:h="http://java.sun.com/jsf/html"
 			    xmlns:f="http://java.sun.com/jsf/core"
 			    xmlns:c="http://java.sun.com/jsp/jstl/core"
-			    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+			    xmlns:sec="http://www.springframework.org/security/tags">
 	
 	<ui:param name="hideTabBar" value="true" />		    
 	
@@ -81,12 +81,12 @@
                 /*position: fixed;*/
             }
         </style>
-		<sec:ifNotGranted roles="CREATE_ENTITY">
+		<sec:authorize ifNotGranted="CREATE_ENTITY">
 			<h1>#{msg.accessDenied}</h1>
 			<p>#{msg.accessDeniedException}</p>
-		</sec:ifNotGranted>
+		</sec:authorize>
         	
-       	<sec:ifAllGranted roles="ACCESS_UPDATE">
+       	<sec:authorize ifAllGranted="ACCESS_UPDATE">
 			<div style="position:relative">	
 			
 		  <h:outputText value="#{navController.breadcrumbTrail}" />
@@ -320,6 +320,6 @@
 			</script>
           </h:form>
           </div>
-		</sec:ifAllGranted>
+		</sec:authorize>
 	</ui:define>
 </ui:composition>

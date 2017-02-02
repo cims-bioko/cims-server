@@ -4,7 +4,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-                xmlns:sec="http://www.springframework.org/security/facelets/tags">
+                xmlns:sec="http://www.springframework.org/security/tags">
 	<h:form>
 		<div style="text-align:right;">
 			<div style="float:left;">
@@ -104,12 +104,12 @@
 			                    <f:param name="itemId" value="#{item.uuid}"/>
 			                </h:commandLink>
 			                <h:outputText value=" "/>
-                            <sec:ifAllGranted roles="DELETE_ENTITY">
+                            <sec:authorize ifAllGranted="DELETE_ENTITY">
                                 <h:commandLink  action="#{outMigrationCrud.delete}">
                                     <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.png"/>
                                     <f:param name="itemId" value="#{item.uuid}"/>
                                 </h:commandLink>
-                            </sec:ifAllGranted>
+                            </sec:authorize>
 	                    </h:column>  
 	                </h:dataTable>
 	            </h:panelGroup>

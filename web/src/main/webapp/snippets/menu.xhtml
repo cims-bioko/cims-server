@@ -3,7 +3,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
-				xmlns:sec="http://www.springframework.org/security/facelets/tags">
+				xmlns:sec="http://www.springframework.org/security/tags">
 	<h:head>
 	</h:head>
 
@@ -14,31 +14,31 @@
 	        		<f:setPropertyActionListener target="#{navController.showHome}" value="true" /> 
 	            </h:commandLink>
 	        </li>
-            <sec:ifAllGranted roles="ACESSS_CONFIGURATION">
+            <sec:authorize ifAllGranted="ACESSS_CONFIGURATION">
                 <li>
                     <h:commandLink action="gettingStarted" value="#{msg.navBarGettingStarted}" >
                         <f:setPropertyActionListener target="#{navController.showGettingStarted}" value="true" />
                     </h:commandLink>
                 </li>
-            </sec:ifAllGranted>
-	        <sec:ifAllGranted roles="ACCESS_BASELINE">
+            </sec:authorize>
+	        <sec:authorize ifAllGranted="ACCESS_BASELINE">
 		   		<li>
 		   			<h:commandLink action="#{facesNavigation.redirect('baseline_flow')}" value="#{msg.navBarBaseline}" >
-		    			<f:setPropertyActionListener target="#{navController.showBaseline}" value="true" /> 
+		    			<f:setPropertyActionListener target="#{navController.showBaseline}" value="true" />
 		            </h:commandLink>
 		    	</li>
-	    	</sec:ifAllGranted>
-	    	<sec:ifAllGranted roles="ACCESS_UPDATE">
+	    	</sec:authorize>
+	    	<sec:authorize ifAllGranted="ACCESS_UPDATE">
 		    	<li>
 		    		<h:commandLink action="#{facesNavigation.redirect('update_flow')}" value="#{msg.navBarUpdate}" >
-		    			<f:setPropertyActionListener target="#{navController.showUpdate}" value="true" /> 
+		    			<f:setPropertyActionListener target="#{navController.showUpdate}" value="true" />
 		            </h:commandLink>
 		    	</li>
-	    	</sec:ifAllGranted>
-	        <sec:ifAllGranted roles="ACCESS_AMENDMENT_FORMS">
+	    	</sec:authorize>
+	        <sec:authorize ifAllGranted="ACCESS_AMENDMENT_FORMS">
 		        <li>
 		            <h:commandLink value="#{msg.navBarAmendments}" action="demowelcome" >
-		            	<f:setPropertyActionListener target="#{navController.showAmendments}" value="true" /> 
+		            	<f:setPropertyActionListener target="#{navController.showAmendments}" value="true" />
 		            </h:commandLink>
 		            <c:if test="#{navController.showAmendments}" >
 			        <ul>
@@ -47,7 +47,7 @@
 			        	<!-- <li><h:commandLink value="#{msg.navBarNeonatalVPM}" action="#{neonatalVPMCrud.createSetup}" /></li> -->
 			        	<!-- <li><h:commandLink value="#{msg.navBarPostNeonatalVPM}" action="#{postneonatalVPMCrud.createSetup}" /></li> -->
 				        <li><h:commandLink value="#{msg.navBarDeath}" action="#{deathCrud.createSetup}" /></li>
-				       
+
 				       <li><h:commandLink value="#{msg.navBarLocation}" action="#{locationCrud.createSetup}" /></li>
 				      	<li><h:commandLink value="#{msg.navBarMembership}" action="#{membershipCrud.createSetup}" /></li>
 				        <li><h:commandLink value="#{msg.navBarMigIntoLoc}" action="#{inMigrationCrud.createSetup}" /></li>
@@ -58,15 +58,15 @@
 				       <li><h:commandLink value="#{msg.navBarResidency}" action="#{residencyCrud.createSetup}" /></li>
 				       	<li><h:commandLink value="#{msg.navBarSocialGroup}" action="#{socialGroupCrud.createSetup}" /></li>
 				      	<!-- <li><h:commandLink value="#{msg.navBarVaccination}" action="#{vaccinationCrud.createSetup}" /></li> -->
-				        <li><h:commandLink value="#{msg.navBarVisit}" action="#{visitCrud.createSetup}" /></li>             
+				        <li><h:commandLink value="#{msg.navBarVisit}" action="#{visitCrud.createSetup}" /></li>
 			    	</ul>
 			    	</c:if>
 		    	</li>
-	    	</sec:ifAllGranted>
-			<sec:ifAllGranted roles="ACCESS_REPORTS">
+	    	</sec:authorize>
+			<sec:authorize ifAllGranted="ACCESS_REPORTS">
 		    	<li>
 		        	<h:commandLink value="#{msg.navBarReports}" action="demowelcome" >
-		        		<f:setPropertyActionListener target="#{navController.showReports}" value="true" /> 
+		        		<f:setPropertyActionListener target="#{navController.showReports}" value="true" />
 		            </h:commandLink>
 		        	<c:if test="#{navController.showReports}" >
 		        	<ul>
@@ -78,11 +78,11 @@
 			        </ul>
 			        </c:if>
 		    	</li>
-	    	</sec:ifAllGranted>
-	    	<sec:ifAllGranted roles="ACESSS_UTILITY_ROUTINES">
+	    	</sec:authorize>
+	    	<sec:authorize ifAllGranted="ACESSS_UTILITY_ROUTINES">
 			    <li>
 			        <h:commandLink value="#{msg.navBarUtilityRoutine}" action="demowelcome" >
-			        	<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
+			        	<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" />
 			        </h:commandLink>
 			        <c:if test="#{navController.showUtilities}" >
 		        	<ul>
@@ -106,11 +106,11 @@
 			    	</ul>
 			    	</c:if>
 			    </li>
-		    </sec:ifAllGranted>
-		    <sec:ifAllGranted roles="ACESSS_CONFIGURATION">
+		    </sec:authorize>
+		    <sec:authorize ifAllGranted="ACESSS_CONFIGURATION">
 			    <li>
 			        <h:commandLink value="#{msg.navBarConfiguration}" action="demowelcome">
-			        	<f:setPropertyActionListener target="#{navController.showConfiguration}" value="true" /> 
+			        	<f:setPropertyActionListener target="#{navController.showConfiguration}" value="true" />
 			        </h:commandLink>
 			        <c:if test="#{navController.showConfiguration}" >
 		        	<ul>
@@ -130,12 +130,12 @@
 			   		    	</h:outputLink>
 			   		    </li>
 			   		    <li><h:commandLink value="#{msg.navBarRoleManagement}" action="#{roleCrud.createSetup}" /></li>
-			   		    <li><h:commandLink value="#{msg.navBarUserManagement}" action="#{userCrud.createSetup}" /></li>  
+			   		    <li><h:commandLink value="#{msg.navBarUserManagement}" action="#{userCrud.createSetup}" /></li>
 			   		    <li><h:commandLink value="#{msg.navBarWhitelistManagement}" action="#{whitelistCrud.createSetup}" /></li>
 			    	</ul>
 			    	</c:if>
 			    </li>
-		    </sec:ifAllGranted>
+		    </sec:authorize>
 	    </ul>
     </h:form>
 </ui:composition>

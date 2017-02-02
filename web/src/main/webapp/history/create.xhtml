@@ -5,7 +5,7 @@
 				xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 				xmlns:ui="http://java.sun.com/jsf/facelets"
 				xmlns:c="http://java.sun.com/jsp/jstl/core"
-				xmlns:sec="http://www.springframework.org/security/facelets/tags">
+				xmlns:sec="http://www.springframework.org/security/tags">
 	<ui:define name="title">OpenHDS - History</ui:define>
 	
 	<ui:param name="hideTabBar" value="true" />
@@ -50,12 +50,12 @@
 		 }
 	</style>
 	
-    	<sec:ifNotGranted roles="VIEW_ENTITY">
+    	<sec:authorize ifNotGranted="VIEW_ENTITY">
     		<h1>#{msg.accessDenied}</h1>
     		<p>#{msg.accessDeniedException}</p>
-    	</sec:ifNotGranted>
+    	</sec:authorize>
     	
-    	<sec:ifAllGranted roles="VIEW_ENTITY">
+    	<sec:authorize ifAllGranted="VIEW_ENTITY">
     	
     		<h:outputText value="#{navController.breadcrumbTrail}" />
 
@@ -427,6 +427,6 @@
 				</h:panelGroup>
 			</div>
 	        </h:form>
-        </sec:ifAllGranted>
+        </sec:authorize>
 	</ui:define>
 </ui:composition>
