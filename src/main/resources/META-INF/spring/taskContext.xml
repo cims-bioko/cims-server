@@ -14,8 +14,9 @@
         http://www.springframework.org/schema/task/spring-task.xsd">
 
     <context:annotation-config />
+
     <context:component-scan base-package="org.openhds.task" />
-    <context:component-scan base-package="org.openhds.dao" />
+
     <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler" />
     <task:executor id="taskExecutor" pool-size="1" queue-capacity="25" />
     <task:scheduler id="taskScheduler" pool-size="1"/>

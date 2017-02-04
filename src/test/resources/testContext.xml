@@ -7,7 +7,8 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <import resource="classpath*:/META-INF/spring/application-context.xml"/>
+    <import resource="classpath:/META-INF/spring/application-context.xml"/>
+    <import resource="classpath:/META-INF/spring/webserviceApplicationContext.xml" />
 
     <!-- This bean is here to override the session scoped baseCrud from the application-context -->
     <bean id="baseCrud" class="org.openhds.web.crud.impl.EntityCrudImpl"

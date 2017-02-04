@@ -38,6 +38,7 @@
     <import resource="classpath*:/META-INF/spring/controllerSecurityContext.xml"/>
     <import resource="classpath*:/META-INF/spring/errorhandlingApplicationContext.xml"/>
     <import resource="classpath:/META-INF/spring/taskContext.xml"/>
+    <import resource="classpath:/META-INF/spring/webApplicationContext.xml"/>
 
     <bean id="authSuccessHandler" parent="baseTransactionBean">
         <property name="target">
@@ -54,9 +55,6 @@
             </bean>
         </property>
     </bean>
-
-    <!-- annotation-driven configuration -->
-    <context:component-scan base-package="org.openhds"/>
 
     <bean id="prefLocale" class="org.openhds.web.util.Locale">
         <property name="locale" value="#{siteProperties.locale}"/>

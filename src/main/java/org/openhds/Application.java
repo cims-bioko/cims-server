@@ -41,18 +41,9 @@ public class Application extends SpringBootServletInitializer {
     }
 
     @Bean
-    ServletRegistrationBean webappServletRegistration() {
-        ServletRegistrationBean reg = new ServletRegistrationBean();
-        reg.setServlet(new DispatcherServlet());
-        reg.addInitParameter("contextConfigLocation", "classpath:/META-INF/spring/webApplicationContext.xml");
-        reg.setLoadOnStartup(1);
-        reg.addUrlMappings("/");
-        return reg;
-    }
-
-    @Bean
     ServletRegistrationBean apiServletRegistration() {
         ServletRegistrationBean reg = new ServletRegistrationBean();
+        reg.setName("webServices");
         reg.setServlet(new DispatcherServlet());
         reg.addInitParameter("contextConfigLocation", "classpath:/META-INF/spring/webserviceApplicationContext.xml");
         reg.setLoadOnStartup(1);

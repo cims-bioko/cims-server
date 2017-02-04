@@ -7,9 +7,6 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <import resource="classpath*:/META-INF/spring/domainApplicationContext.xml"/>
-    <import resource="classpath*:/META-INF/spring/daoApplicationContext.xml"/>
-
     <context:component-scan base-package="org.openhds.controller"/>
 
     <context:property-placeholder location="classpath*:site-config.properties" ignore-unresolvable="true"/>
@@ -44,8 +41,6 @@
     <bean id="authorizationAdvice" class="org.openhds.controller.aop.AuthorizationAdvice">
         <property name="currentUser" ref="currentUser"/>
     </bean>
-
-    <context:component-scan base-package="org.openhds"/>
 
     <!-- security configuration -->
     <bean id="userDetailsService" parent="baseTransactionBean">
