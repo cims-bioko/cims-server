@@ -7,9 +7,9 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="org.openhds.domain" />
+    <context:component-scan base-package="com.github.cimsbioko.server.domain" />
 
-    <bean id="appContextAware" class="org.openhds.domain.constraint.AppContextAware" />
-    <bean id="valueConstraintService" class="org.openhds.domain.service.impl.ValueConstraintServiceImpl" />
+    <bean id="appContextAware" class="com.github.cimsbioko.server.domain.constraint.AppContextAware" />
+    <bean id="valueConstraintService" class="com.github.cimsbioko.server.domain.service.impl.ValueConstraintServiceImpl" />
 
 </beans>

@@ -11,7 +11,7 @@
 
     <context:annotation-config/>
 
-    <context:component-scan base-package="org.openhds.webservice"/>
+    <context:component-scan base-package="com.github.cimsbioko.server.webservice"/>
 
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="asyncRequestTimeout">
@@ -28,8 +28,8 @@
     <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
         <property name="packagesToScan">
             <array>
-                <value>org.openhds.domain.model</value>
-                <value>org.openhds.webservice</value>
+                <value>com.github.cimsbioko.server.domain.model</value>
+                <value>com.github.cimsbioko.server.webservice</value>
             </array>
         </property>
         <property name="adapters">

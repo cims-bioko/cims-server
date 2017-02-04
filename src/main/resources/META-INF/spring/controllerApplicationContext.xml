@@ -7,7 +7,7 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="org.openhds.controller"/>
+    <context:component-scan base-package="com.github.cimsbioko.server.controller"/>
 
     <context:property-placeholder location="classpath:site-config.properties" ignore-unresolvable="true"/>
 
@@ -30,22 +30,22 @@
     </bean>
 
     <!-- Request scoped bean to serve as a cache for the current logged in user -->
-    <bean id="userCache" class="org.openhds.controller.util.UserCache" scope="request"/>
+    <bean id="userCache" class="com.github.cimsbioko.server.controller.util.UserCache" scope="request"/>
 
     <!-- Simple bean to get current logged in user -->
-    <bean id="currentUser" class="org.openhds.controller.service.impl.CurrentUserImpl">
+    <bean id="currentUser" class="com.github.cimsbioko.server.controller.service.impl.CurrentUserImpl">
         <property name="userDao" ref="userDao"/>
     </bean>
 
     <!-- Authorization Advice to determine if logged in User has privilege to access method within service -->
-    <bean id="authorizationAdvice" class="org.openhds.controller.aop.AuthorizationAdvice">
+    <bean id="authorizationAdvice" class="com.github.cimsbioko.server.controller.aop.AuthorizationAdvice">
         <property name="currentUser" ref="currentUser"/>
     </bean>
 
     <!-- security configuration -->
     <bean id="userDetailsService" parent="baseTransactionBean">
         <property name="target">
-            <bean class="org.openhds.controller.security.UserDetailsService">
+            <bean class="com.github.cimsbioko.server.controller.security.UserDetailsService">
                 <property name="userDao" ref="userDao"/>
             </bean>
         </property>
@@ -71,14 +71,14 @@
 
     <bean id="cacheResponseWriter" parent="baseServiceBean">
         <property name="target">
-            <bean class="org.openhds.controller.util.CacheResponseWriter">
+            <bean class="com.github.cimsbioko.server.controller.util.CacheResponseWriter">
             </bean>
         </property>
     </bean>
 
     <bean id="deathService" parent="baseServiceTransactionBean" lazy-init="true">
         <property name="target">
-            <bean class="org.openhds.controller.service.impl.DeathServiceImpl">
+            <bean class="com.github.cimsbioko.server.controller.service.impl.DeathServiceImpl">
                 <constructor-arg ref="genericDao"/>
                 <constructor-arg ref="individualService"/>
                 <constructor-arg ref="entityService"/>
@@ -89,7 +89,7 @@
 
     <bean id="fieldWorkerService" parent="baseServiceBean">
         <property name="target">
-            <bean class="org.openhds.controller.service.impl.FieldWorkerServiceImpl" lazy-init="true">
+            <bean class="com.github.cimsbioko.server.controller.service.impl.FieldWorkerServiceImpl" lazy-init="true">
                 <constructor-arg ref="genericDao"/>
                 <constructor-arg ref="fieldWorkerIdGenerator"/>
             </bean>
@@ -98,7 +98,7 @@
 
     <bean id="individualService" parent="baseServiceTransactionBean" lazy-init="true">
         <property name="target">
-            <bean class="org.openhds.controller.service.impl.IndividualServiceImpl">
+            <bean class="com.github.cimsbioko.server.controller.service.impl.IndividualServiceImpl">
                 <constructor-arg ref="genericDao"/>
                 <constructor-arg ref="individualIdGenerator"/>
                 <constructor-arg ref="siteProperties"/>
@@ -110,7 +110,7 @@
 
     <bean id="inMigrationService" parent="baseServiceTransactionBean" lazy-init="true">
         <property name="target">
-            <bean class="org.openhds.controller.service.impl.InMigrationServiceImpl">
+            <bean class="com.github.cimsbioko.server.controller.service.impl.InMigrationServiceImpl">
                 <constructor-arg ref="residencyService"/>
                 <constructor-arg ref="entityService"/>
                 <constructor-arg ref="individualService"/>
@@ -122,7 +122,7 @@
 
     <bean id="locationHierarchyService" parent="baseServiceBean" lazy-init="true">
         <property name="target">
-            <bean class="org.openhds.controller.service.impl.LocationHierarchyServiceImpl">
+            <bean class="com.github.cimsbioko.server.controller.service.impl.LocationHierarchyServiceImpl">
                 <constructor-arg ref="genericDao"/>
                 <constructor-arg ref="entityService"/>
                 <constructor-arg ref="locationIdGenerator"/>
@@ -133,7 +133,7 @@
 
     <bean id="membershipService" parent="baseServiceBean" lazy-init="true">
         <property name="target">
-            <bean class="org.openhds.controller.service.impl.MembershipServiceImpl">
+            <bean class="com.github.cimsbioko.server.controller.service.impl.MembershipServiceImpl">
                 <constructor-arg ref="genericDao"/>
                 <constructor-arg ref="individualService"/>
                 <constructor-arg ref="siteProperties"/>
@@ -146,7 +146,7 @@
 
     <bean id="outMigrationService" parent="baseServiceTransactionBean" lazy-init="true">
         <property name="target">
-            <bean class="org.openhds.controller.service.impl.OutMigrationServiceImpl">
+            <bean class="com.github.cimsbioko.server.controller.service.impl.OutMigrationServiceImpl">
                 <constructor-arg ref="residencyService"/>
                 <constructor-arg ref="individualService"/>
                 <constructor-arg ref="membershipService"/>
@@ -161,7 +161,7 @@
 
     <bean id="pregnancyService" parent="baseServiceTransactionBean" lazy-init="true">
         <property name="target">
-            <bean class="org.openhds.controller.service.impl.PregnancyServiceImpl">
+            <bean class="com.github.cimsbioko.server.controller.service.impl.PregnancyServiceImpl">
                 <constructor-arg ref="entityService"/>
                 <constructor-arg ref="individualService"/>
                 <constructor-arg ref="genericDao"/>
@@ -173,7 +173,7 @@
 
     <bean id="relationshipService" parent="baseServiceBean" lazy-init="true">
         <property name="target">
-            <bean class="org.openhds.controller.service.impl.RelationshipServiceImpl">
+            <bean class="com.github.cimsbioko.server.controller.service.impl.RelationshipServiceImpl">
                 <constructor-arg ref="genericDao"/>
                 <constructor-arg ref="entityService"/>
                 <constructor-arg ref="individualService"/>
@@ -184,7 +184,7 @@
 
     <bean id="residencyService" parent="baseServiceTransactionBean" lazy-init="true">
         <property name="target">
-            <bean class="org.openhds.controller.service.impl.ResidencyServiceImpl">
+            <bean class="com.github.cimsbioko.server.controller.service.impl.ResidencyServiceImpl">
                 <constructor-arg ref="genericDao"/>
                 <constructor-arg ref="siteProperties"/>
                 <constructor-arg ref="currentUser"/>
@@ -196,7 +196,7 @@
 
     <bean id="roleService" parent="baseServiceTransactionBean" lazy-init="true">
         <property name="target">
-            <bean class="org.openhds.controller.service.impl.RoleServiceImpl">
+            <bean class="com.github.cimsbioko.server.controller.service.impl.RoleServiceImpl">
                 <constructor-arg ref="roleDao"/>
                 <constructor-arg ref="genericDao"/>
                 <constructor-arg ref="entityService"/>
@@ -206,7 +206,7 @@
 
     <bean id="roundService" parent="baseServiceBean" lazy-init="true">
         <property name="target">
-            <bean class="org.openhds.controller.service.impl.RoundServiceImpl">
+            <bean class="com.github.cimsbioko.server.controller.service.impl.RoundServiceImpl">
                 <constructor-arg ref="genericDao"/>
                 <constructor-arg ref="entityService"/>
             </bean>
@@ -215,7 +215,7 @@
 
     <bean id="socialGroupService" parent="baseServiceTransactionBean" lazy-init="true">
         <property name="target">
-            <bean class="org.openhds.controller.service.impl.SocialGroupServiceImpl">
+            <bean class="com.github.cimsbioko.server.controller.service.impl.SocialGroupServiceImpl">
                 <constructor-arg ref="genericDao"/>
                 <constructor-arg ref="individualService"/>
                 <constructor-arg ref="entityService"/>
@@ -231,7 +231,7 @@
     </bean>
 
     <!-- Supported fields are LOCATION_NAME, LOCATION_HIERARCHY_ID -->
-    <bean id="locationIdScheme" class="org.openhds.controller.idgeneration.IdScheme">
+    <bean id="locationIdScheme" class="com.github.cimsbioko.server.controller.idgeneration.IdScheme">
         <property name="name" value="Location"/>
         <property name="prefix">
             <value>${openhds.locationPrefix}</value>
@@ -259,7 +259,7 @@
 
     <!-- Supported fields are CHILD_LOC_NAME -->
     <!-- If CHILD_LOC_NAME is used, CHILD_LOC_NAME_FIRST and CHILD_LOC_NAME_LAST must be as well -->
-    <bean id="locationHierarchyIdScheme" class="org.openhds.controller.idgeneration.IdScheme">
+    <bean id="locationHierarchyIdScheme" class="com.github.cimsbioko.server.controller.idgeneration.IdScheme">
         <property name="name" value="LocationHierarchy"/>
         <property name="prefix">
             <value>${openhds.locationHPrefix}</value>
@@ -289,7 +289,7 @@
     </bean>
 
     <!-- Supported fields are INDIVIDUAL_FNAME, INDIVIDUAL_MNAME, INDIVIDUAL_LNAME -->
-    <bean id="individualIdScheme" class="org.openhds.controller.idgeneration.IdScheme">
+    <bean id="individualIdScheme" class="com.github.cimsbioko.server.controller.idgeneration.IdScheme">
         <property name="name" value="Individual"/>
         <property name="prefix">
             <value>${openhds.individualPrefix}</value>
@@ -313,7 +313,7 @@
     </bean>
 
     <!-- Supported fields are SOCIALGROUP_NAME -->
-    <bean id="socialGroupIdScheme" class="org.openhds.controller.idgeneration.IdScheme">
+    <bean id="socialGroupIdScheme" class="com.github.cimsbioko.server.controller.idgeneration.IdScheme">
         <property name="name" value="SocialGroup"/>
         <property name="prefix">
             <value>${openhds.sgPrefix}</value>
@@ -337,7 +337,7 @@
     </bean>
 
     <!-- Supported fields are VISIT_LOCID, VISIT_ROUND -->
-    <bean id="visitIdScheme" class="org.openhds.controller.idgeneration.IdScheme">
+    <bean id="visitIdScheme" class="com.github.cimsbioko.server.controller.idgeneration.IdScheme">
         <property name="name" value="Visit"/>
         <property name="prefix">
             <value>${openhds.visitPrefix}</value>
@@ -364,7 +364,7 @@
     </bean>
 
     <!-- Supported fields are FIELDWORKER_FNAME, FIELDWORKER_LNAME -->
-    <bean id="fieldWorkerIdScheme" class="org.openhds.controller.idgeneration.IdScheme">
+    <bean id="fieldWorkerIdScheme" class="com.github.cimsbioko.server.controller.idgeneration.IdScheme">
         <property name="name" value="FieldWorker"/>
         <property name="prefix">
             <value>${openhds.fwPrefix}</value>

@@ -10,7 +10,7 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="org.openhds.dao" />
+    <context:component-scan base-package="com.github.cimsbioko.server.dao" />
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
           destroy-method="close">
@@ -27,32 +27,32 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="annotatedClasses">
             <list>
-                <value>org.openhds.domain.model.AsyncTask</value>
-                <value>org.openhds.domain.model.AuditableCollectedEntity</value>
-                <value>org.openhds.domain.model.AuditableEntity</value>
-                <value>org.openhds.domain.model.Death</value>
-                <value>org.openhds.domain.model.FieldWorker</value>
-                <value>org.openhds.domain.model.Individual</value>
-                <value>org.openhds.domain.model.InMigration</value>
-                <value>org.openhds.domain.model.Location</value>
-                <value>org.openhds.domain.model.LocationHierarchy</value>
-                <value>org.openhds.domain.model.LocationHierarchyLevel</value>
-                <value>org.openhds.domain.model.Membership</value>
-                <value>org.openhds.domain.model.MigrationType</value>
-                <value>org.openhds.domain.model.Outcome</value>
-                <value>org.openhds.domain.model.OutMigration</value>
-                <value>org.openhds.domain.model.PregnancyObservation</value>
-                <value>org.openhds.domain.model.PregnancyOutcome</value>
-                <value>org.openhds.domain.model.Privilege</value>
-                <value>org.openhds.domain.model.Relationship</value>
-                <value>org.openhds.domain.model.Residency</value>
-                <value>org.openhds.domain.model.Role</value>
-                <value>org.openhds.domain.model.Round</value>
-                <value>org.openhds.domain.model.SocialGroup</value>
-                <value>org.openhds.domain.model.User</value>
-                <value>org.openhds.domain.model.Visit</value>
-                <value>org.openhds.domain.model.ErrorLog</value>
-                <value>org.openhds.domain.model.Error</value>
+                <value>com.github.cimsbioko.server.domain.model.AsyncTask</value>
+                <value>com.github.cimsbioko.server.domain.model.AuditableCollectedEntity</value>
+                <value>com.github.cimsbioko.server.domain.model.AuditableEntity</value>
+                <value>com.github.cimsbioko.server.domain.model.Death</value>
+                <value>com.github.cimsbioko.server.domain.model.FieldWorker</value>
+                <value>com.github.cimsbioko.server.domain.model.Individual</value>
+                <value>com.github.cimsbioko.server.domain.model.InMigration</value>
+                <value>com.github.cimsbioko.server.domain.model.Location</value>
+                <value>com.github.cimsbioko.server.domain.model.LocationHierarchy</value>
+                <value>com.github.cimsbioko.server.domain.model.LocationHierarchyLevel</value>
+                <value>com.github.cimsbioko.server.domain.model.Membership</value>
+                <value>com.github.cimsbioko.server.domain.model.MigrationType</value>
+                <value>com.github.cimsbioko.server.domain.model.Outcome</value>
+                <value>com.github.cimsbioko.server.domain.model.OutMigration</value>
+                <value>com.github.cimsbioko.server.domain.model.PregnancyObservation</value>
+                <value>com.github.cimsbioko.server.domain.model.PregnancyOutcome</value>
+                <value>com.github.cimsbioko.server.domain.model.Privilege</value>
+                <value>com.github.cimsbioko.server.domain.model.Relationship</value>
+                <value>com.github.cimsbioko.server.domain.model.Residency</value>
+                <value>com.github.cimsbioko.server.domain.model.Role</value>
+                <value>com.github.cimsbioko.server.domain.model.Round</value>
+                <value>com.github.cimsbioko.server.domain.model.SocialGroup</value>
+                <value>com.github.cimsbioko.server.domain.model.User</value>
+                <value>com.github.cimsbioko.server.domain.model.Visit</value>
+                <value>com.github.cimsbioko.server.domain.model.ErrorLog</value>
+                <value>com.github.cimsbioko.server.domain.model.Error</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -78,21 +78,21 @@
 
     <!-- Introduction Advisor that looks for a DynamicFinder annotation on methods -->
     <!-- Refer to http://www.ibm.com/developerworks/java/library/j-genericdao.htm -->
-    <bean id="dynamicFinderAdvisor" class="org.openhds.dao.finder.Advisor"/>
+    <bean id="dynamicFinderAdvisor" class="com.github.cimsbioko.server.dao.finder.Advisor"/>
 
     <tx:annotation-driven/>
 
     <!-- dao configuration -->
 
     <!-- All entity DAOs should inhert from this bean -->
-    <bean id="baseDao" class="org.openhds.dao.service.impl.BaseDaoImpl"
+    <bean id="baseDao" class="com.github.cimsbioko.server.dao.service.impl.BaseDaoImpl"
           abstract="true">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="namingStrategy">
-            <bean class="org.openhds.dao.finder.AnnotationNamingStrategy"/>
+            <bean class="com.github.cimsbioko.server.dao.finder.AnnotationNamingStrategy"/>
         </property>
         <property name="argumentTypeFactory">
-            <bean class="org.openhds.dao.finder.SimpleArgumentTypeFactory"/>
+            <bean class="com.github.cimsbioko.server.dao.finder.SimpleArgumentTypeFactory"/>
         </property>
     </bean>
 
@@ -112,94 +112,94 @@
     <!-- The UserDao interface makes use of the DynamicFinder annotation so
         must inherit from dynamicDao bean -->
     <bean id="userDao" parent="dynamicDao">
-        <property name="proxyInterfaces" value="org.openhds.dao.service.UserDao"/>
+        <property name="proxyInterfaces" value="com.github.cimsbioko.server.dao.service.UserDao"/>
         <property name="target">
             <bean parent="baseDao">
-                <constructor-arg value="org.openhds.domain.model.User"/>
+                <constructor-arg value="com.github.cimsbioko.server.domain.model.User"/>
             </bean>
         </property>
     </bean>
 
     <bean id="openhdsUserDao" parent="baseDao">
-        <constructor-arg value="org.openhds.domain.model.User"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.User"/>
     </bean>
 
     <bean id="deathDao" parent="baseDao">
-        <constructor-arg value="org.openhds.domain.model.Death"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.Death"/>
     </bean>
 
     <bean id="fieldWorkerDao" parent="baseDao"
-          class="org.openhds.dao.service.impl.FieldWorkerDaoImpl">
-        <constructor-arg value="org.openhds.domain.model.FieldWorker"/>
+          class="com.github.cimsbioko.server.dao.service.impl.FieldWorkerDaoImpl">
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.FieldWorker"/>
         <property name="properties" ref="siteProperties"/>
     </bean>
 
     <bean id="individualDao" parent="baseDao"
-          class="org.openhds.dao.service.impl.IndividualDaoImpl">
-        <constructor-arg value="org.openhds.domain.model.Individual"/>
+          class="com.github.cimsbioko.server.dao.service.impl.IndividualDaoImpl">
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.Individual"/>
         <property name="properties" ref="siteProperties"/>
     </bean>
 
     <bean id="inMigrationDao" parent="baseDao">
-        <constructor-arg value="org.openhds.domain.model.InMigration"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.InMigration"/>
     </bean>
 
     <bean id="locationDao" parent="baseDao">
-        <constructor-arg value="org.openhds.domain.model.Location"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.Location"/>
     </bean>
 
     <bean id="locationHierarchyDao" parent="baseDao"
-          class="org.openhds.dao.service.impl.LocationHierarchyDaoImpl">
-        <constructor-arg value="org.openhds.domain.model.LocationHierarchy"/>
+          class="com.github.cimsbioko.server.dao.service.impl.LocationHierarchyDaoImpl">
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.LocationHierarchy"/>
     </bean>
 
     <bean id="locationHierarchyLevelDao" parent="baseDao">
-        <constructor-arg value="org.openhds.domain.model.LocationHierarchyLevel"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.LocationHierarchyLevel"/>
     </bean>
 
     <bean id="membershipDao" parent="baseDao">
-        <constructor-arg value="org.openhds.domain.model.Membership"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.Membership"/>
     </bean>
 
     <bean id="outMigrationDao" parent="baseDao">
-        <constructor-arg value="org.openhds.domain.model.OutMigration"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.OutMigration"/>
     </bean>
 
     <bean id="pregnancyDao" parent="baseDao">
-        <constructor-arg value="org.openhds.domain.model.PregnancyOutcome"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.PregnancyOutcome"/>
     </bean>
 
     <bean id="pregnancyObservationDao" parent="baseDao">
-        <constructor-arg value="org.openhds.domain.model.PregnancyObservation"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.PregnancyObservation"/>
     </bean>
 
     <bean id="relationshipDao" parent="baseDao">
-        <constructor-arg value="org.openhds.domain.model.Relationship"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.Relationship"/>
     </bean>
 
     <bean id="residencyDao" parent="baseDao">
-        <constructor-arg value="org.openhds.domain.model.Residency"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.Residency"/>
     </bean>
 
     <bean id="roleDao" parent="baseDao"
-          class="org.openhds.dao.service.impl.RoleDaoImpl">
-        <constructor-arg value="org.openhds.domain.model.Role"/>
+          class="com.github.cimsbioko.server.dao.service.impl.RoleDaoImpl">
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.Role"/>
     </bean>
 
     <bean id="roundDao" parent="baseDao">
-        <constructor-arg value="org.openhds.domain.model.Round"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.Round"/>
     </bean>
 
     <bean id="socialGroupDao" parent="baseDao">
-        <constructor-arg value="org.openhds.domain.model.SocialGroup"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.SocialGroup"/>
     </bean>
 
     <bean id="taskDao" parent="baseDao">
-        <constructor-arg value="org.openhds.domain.model.AsyncTask"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.AsyncTask"/>
     </bean>
 
     <bean id="visitDao" parent="baseDao">
-        <constructor-arg value="org.openhds.domain.model.Visit"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.Visit"/>
     </bean>
 
     <bean id="flywayTemplate" class="org.flywaydb.core.Flyway" abstract="true">

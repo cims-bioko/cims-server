@@ -20,19 +20,19 @@
 
     <tx:annotation-driven />
 
-    <bean id="source" class="org.openhds.task.sqlite.DSSource">
+    <bean id="source" class="com.github.cimsbioko.server.task.sqlite.DSSource">
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="target" class="org.openhds.task.sqlite.SqliteTarget" init-method="loadDriver" />
+    <bean id="target" class="com.github.cimsbioko.server.task.sqlite.SqliteTarget" init-method="loadDriver" />
 
-    <bean id="mapperFactory" class="org.openhds.task.sqlite.SqliteMapperFactory">
+    <bean id="mapperFactory" class="com.github.cimsbioko.server.task.sqlite.SqliteMapperFactory">
         <constructor-arg>
-            <bean class="org.openhds.task.sqlite.DBTypeExtractor"/>
+            <bean class="com.github.cimsbioko.server.task.sqlite.DBTypeExtractor"/>
         </constructor-arg>
     </bean>
 
-    <bean id="exporter" class="org.openhds.task.sqlite.Exporter">
+    <bean id="exporter" class="com.github.cimsbioko.server.task.sqlite.Exporter">
         <constructor-arg ref="source" />
         <constructor-arg ref="target" />
         <constructor-arg ref="mapperFactory"/>

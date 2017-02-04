@@ -42,7 +42,7 @@
 
     <bean id="authSuccessHandler" parent="baseTransactionBean">
         <property name="target">
-            <bean class="org.openhds.web.security.AuthenticationSuccessHandler">
+            <bean class="com.github.cimsbioko.server.web.security.AuthenticationSuccessHandler">
                 <constructor-arg ref="userDao"/>
             </bean>
         </property>
@@ -50,13 +50,13 @@
 
     <bean id="logoutSuccessHandler" parent="baseTransactionBean">
         <property name="target">
-            <bean class="org.openhds.web.security.LogoutSuccessHandler">
+            <bean class="com.github.cimsbioko.server.web.security.LogoutSuccessHandler">
                 <constructor-arg ref="userDao"/>
             </bean>
         </property>
     </bean>
 
-    <bean id="prefLocale" class="org.openhds.web.util.Locale">
+    <bean id="prefLocale" class="com.github.cimsbioko.server.web.util.Locale">
         <property name="locale" value="#{siteProperties.locale}"/>
     </bean>
 
@@ -80,34 +80,34 @@
         <security:logout logout-url="/logoutProcess" success-handler-ref="logoutSuccessHandler"/>
     </security:http>
 
-    <bean id="timestampConverter" class="org.openhds.web.cvt.TimeStampConverter">
+    <bean id="timestampConverter" class="com.github.cimsbioko.server.web.cvt.TimeStampConverter">
         <constructor-arg value="#{siteProperties.dateFormat}"/>
     </bean>
 
     <!-- Entity Converters -->
-    <bean id="fieldWorkerConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+    <bean id="fieldWorkerConverter" class="com.github.cimsbioko.server.web.cvt.EntityConverterImpl">
         <constructor-arg ref="fieldWorkerDao"/>
-        <constructor-arg value="org.openhds.domain.model.FieldWorker"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.FieldWorker"/>
         <constructor-arg value="java.lang.String"/>
     </bean>
 
-    <bean id="roleConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+    <bean id="roleConverter" class="com.github.cimsbioko.server.web.cvt.EntityConverterImpl">
         <constructor-arg ref="roleDao"/>
-        <constructor-arg value="org.openhds.domain.model.Role"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.Role"/>
         <constructor-arg value="java.lang.String"/>
     </bean>
 
-    <bean id="userConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+    <bean id="userConverter" class="com.github.cimsbioko.server.web.cvt.EntityConverterImpl">
         <constructor-arg ref="userDao"/>
-        <constructor-arg value="org.openhds.domain.model.User"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.User"/>
         <constructor-arg value="java.lang.String"/>
     </bean>
 
-    <bean id="jsfService" class="org.openhds.web.service.impl.JsfServiceImpl"/>
+    <bean id="jsfService" class="com.github.cimsbioko.server.web.service.impl.JsfServiceImpl"/>
 
     <bean id="entityService" parent="baseTransactionBean">
         <property name="target">
-            <bean class="org.openhds.controller.service.impl.EntityServiceImpl">
+            <bean class="com.github.cimsbioko.server.controller.service.impl.EntityServiceImpl">
                 <constructor-arg ref="genericDao"/>
                 <constructor-arg ref="currentUser"/>
                 <constructor-arg ref="calendarUtil"/>
@@ -118,20 +118,20 @@
     </bean>
 
     <bean id="entityValidator"
-          class="org.openhds.web.service.impl.EntityValidationServiceJsfImpl">
+          class="com.github.cimsbioko.server.web.service.impl.EntityValidationServiceJsfImpl">
         <constructor-arg ref="siteProperties"/>
         <constructor-arg ref="jsfService"/>
     </bean>
 
     <bean id="userService" parent="baseServiceBean">
         <property name="target">
-            <bean class="org.openhds.web.service.impl.UserServiceImpl">
+            <bean class="com.github.cimsbioko.server.web.service.impl.UserServiceImpl">
                 <constructor-arg name="genericDao" ref="genericDao"/>
             </bean>
         </property>
     </bean>
 
-    <bean id="navController" class="org.openhds.web.ui.NavigationMenuBean" scope="session">
+    <bean id="navController" class="com.github.cimsbioko.server.web.ui.NavigationMenuBean" scope="session">
         <aop:scoped-proxy/>
     </bean>
 
@@ -142,38 +142,38 @@
         <property name="navMenuBean" ref="navController"/>
     </bean>
 
-    <bean id="fieldWorkerCrud" scope="session" parent="baseCrud" class="org.openhds.web.crud.impl.FieldWorkerCrudImpl">
+    <bean id="fieldWorkerCrud" scope="session" parent="baseCrud" class="com.github.cimsbioko.server.web.crud.impl.FieldWorkerCrudImpl">
         <aop:scoped-proxy proxy-target-class="false"/>
-        <constructor-arg value="org.openhds.domain.model.FieldWorker"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.FieldWorker"/>
         <property name="dao" ref="fieldWorkerDao"/>
         <property name="converter" ref="fieldWorkerConverter"/>
     </bean>
 
-    <bean id="roleCrud" scope="session" parent="baseCrud" class="org.openhds.web.crud.impl.RoleCrudImpl">
+    <bean id="roleCrud" scope="session" parent="baseCrud" class="com.github.cimsbioko.server.web.crud.impl.RoleCrudImpl">
         <aop:scoped-proxy proxy-target-class="false"/>
-        <constructor-arg value="org.openhds.domain.model.Role"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.Role"/>
         <property name="dao" ref="roleDao"/>
         <property name="converter" ref="roleConverter"/>
         <property name="service" ref="roleService"/>
     </bean>
 
-    <bean id="userCrud" scope="session" parent="baseCrud" class="org.openhds.web.crud.impl.UserCrudImpl">
+    <bean id="userCrud" scope="session" parent="baseCrud" class="com.github.cimsbioko.server.web.crud.impl.UserCrudImpl">
         <aop:scoped-proxy proxy-target-class="false"/>
-        <constructor-arg value="org.openhds.domain.model.User"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.User"/>
         <property name="dao" ref="userDao"/>
         <property name="converter" ref="userConverter"/>
         <property name="service" ref="userService"/>
     </bean>
 
     <!-- Beans -->
-    <bean id="taskBean" class="org.openhds.web.beans.TaskBean" init-method="scheduleAllTasks">
+    <bean id="taskBean" class="com.github.cimsbioko.server.web.beans.TaskBean" init-method="scheduleAllTasks">
         <constructor-arg ref="openhdsTaskExecutor"/>
         <constructor-arg ref="asyncTaskServiceImpl"/>
         <constructor-arg ref="taskScheduler"/>
     </bean>
 
     <bean id="siteProperties"
-          class="org.openhds.domain.service.impl.SitePropertiesServiceImpl">
+          class="com.github.cimsbioko.server.domain.service.impl.SitePropertiesServiceImpl">
         <property name="locale">
             <value>${locale}</value>
         </property>

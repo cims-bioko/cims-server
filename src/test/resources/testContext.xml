@@ -11,7 +11,7 @@
     <import resource="classpath:/META-INF/spring/webserviceApplicationContext.xml" />
 
     <!-- This bean is here to override the session scoped baseCrud from the application-context -->
-    <bean id="baseCrud" class="org.openhds.web.crud.impl.EntityCrudImpl"
+    <bean id="baseCrud" class="com.github.cimsbioko.server.web.crud.impl.EntityCrudImpl"
           abstract="true">
         <property name="jsfService" ref="jsfService"/>
         <property name="entityService" ref="entityService"/>
@@ -34,7 +34,7 @@
     </bean>
 
     <!-- JsfService is mocked for tests -->
-    <bean id="jsfService" class="org.openhds.integration.util.JsfServiceMock"/>
+    <bean id="jsfService" class="com.github.cimsbioko.server.integration.util.JsfServiceMock"/>
 
     <!-- Independent data source for test context -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">

@@ -29,9 +29,9 @@
     </properties>
 
     <scm>
-        <connection>scm:git:https://github.com/cims-bioko/openhds-server.git</connection>
-        <developerConnection>scm:git:https://github.com/cims-bioko/openhds-server.git</developerConnection>
-        <url>https://github.com/cims-bioko/openhds-server.git</url>
+        <connection>scm:git:https://github.com/cims-bioko/cims-server.git</connection>
+        <developerConnection>scm:git:https://github.com/cims-bioko/cims-server.git</developerConnection>
+        <url>https://github.com/cims-bioko/cims-server.git</url>
     </scm>
 
     <dependencies>

@@ -9,11 +9,11 @@
 
     <context:annotation-config />
 
-    <context:component-scan base-package="org.openhds.errorhandling" />
+    <context:component-scan base-package="com.github.cimsbioko.server.errorhandling" />
 
     <bean id="errorLogDAO" parent="baseTransactionBean">
         <property name="target">
-            <bean class="org.openhds.errorhandling.dao.ErrorLogDAOImpl">
+            <bean class="com.github.cimsbioko.server.errorhandling.dao.ErrorLogDAOImpl">
                 <constructor-arg ref="entityService"/>
             </bean>
         </property>

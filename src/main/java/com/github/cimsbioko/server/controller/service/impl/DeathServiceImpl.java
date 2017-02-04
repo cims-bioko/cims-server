@@ -1,0 +1,202 @@
+package com.github.cimsbioko.server.controller.service.impl;
+
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+
+import com.github.cimsbioko.server.controller.service.DeathService;
+import com.github.cimsbioko.server.controller.service.EntityService;
+import com.github.cimsbioko.server.controller.service.IndividualService;
+import com.github.cimsbioko.server.dao.service.GenericDao;
+import com.github.cimsbioko.server.domain.model.Death;
+import com.github.cimsbioko.server.domain.model.Membership;
+import com.github.cimsbioko.server.domain.model.Relationship;
+import com.github.cimsbioko.server.domain.model.Residency;
+import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
+import com.github.cimsbioko.server.domain.model.Individual;
+import com.github.cimsbioko.server.domain.model.SocialGroup;
+import com.github.cimsbioko.server.domain.service.SitePropertiesService;
+import org.springframework.transaction.annotation.Transactional;
+
+public class DeathServiceImpl implements DeathService {
+
+    private static final int MILLISECONDS_IN_DAY = 86400000;
+    private EntityService entityService;
+    private GenericDao genericDao;
+    private IndividualService individualService;
+    private SitePropertiesService siteProperties;
+
+    public DeathServiceImpl(GenericDao genericDao, IndividualService individualService, EntityService entityService, SitePropertiesService siteProperties) {
+        this.genericDao = genericDao;
+        this.individualService = individualService;
+        this.entityService = entityService;
+        this.siteProperties = siteProperties;
+    }
+
+    public Death evaluateDeath(Death entityItem) throws ConstraintViolations {
+
+        if (!checkDuplicateIndividual(entityItem.getIndividual()))
+            throw new ConstraintViolations("The Individual Id specified already exists.");
+        if (!checkHeadOfSocialGroup(entityItem.getIndividual()))
+            throw new ConstraintViolations("The Individual specified is a Head of a Social Group. If you wish to create a Death event for this Individual, go to the Utility Menu and create a new Death event.");
+
+        return entityItem;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Death createDeath(Death entityItem) throws ConstraintViolations, SQLException {
+        Calendar endDate = entityItem.getDeathDate();
+
+        if (entityItem.getIndividual().getCurrentResidency() != null) {
+            Residency residency = entityItem.getIndividual().getCurrentResidency();
+            residency.setEndDate(endDate);
+            residency.setEndType(siteProperties.getDeathCode());
+            entityService.save(residency);
+        }
+
+        Long ageAtDeath = (endDate.getTimeInMillis() - entityItem.getIndividual().getDob().getTimeInMillis()) / MILLISECONDS_IN_DAY;
+        entityItem.setAgeAtDeath(ageAtDeath);
+
+        //Gets the individual's memberships if any
+        // Iterates through memberships and sets endType(DEATH) and endDate
+        if (!entityItem.getIndividual().getAllMemberships().isEmpty()) {
+            Set<Membership> memberships = entityItem.getIndividual().getAllMemberships();
+            for (Membership mem : memberships) {
+                if (null == mem.getEndType() || mem.getEndType().equals(siteProperties.getNotApplicableCode())) {
+                    mem.setEndDate(endDate);
+                    mem.setEndType(siteProperties.getDeathCode());
+                    entityService.save(mem);
+                }
+            }
+        }
+
+        //Gets the individual's relationships if any
+        // Iterates through the relationships and sets endType(DEATH) and endDate
+        if (!entityItem.getIndividual().getAllRelationships1().isEmpty()) {
+            Set<Relationship> relationships = entityItem.getIndividual().getAllRelationships1();
+            for (Relationship rel : relationships) {
+                if (null == rel.getEndType() || rel.getEndType().equals(siteProperties.getNotApplicableCode())) {
+                    rel.setEndDate(endDate);
+                    rel.setEndType(siteProperties.getDeathCode());
+                    entityService.save(rel);
+                }
+            }
+        }
+
+        if (!entityItem.getIndividual().getAllRelationships2().isEmpty()) {
+            Set<Relationship> relationships = entityItem.getIndividual().getAllRelationships2();
+            for (Relationship rel : relationships) {
+                if (null == rel.getEndType() || rel.getEndType().equals(siteProperties.getNotApplicableCode())) {
+                    rel.setEndDate(endDate);
+                    rel.setEndType(siteProperties.getDeathCode());
+                    entityService.save(rel);
+                }
+            }
+        }
+
+        entityService.create(entityItem);
+
+        return entityItem;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteDeath(Death entityItem) {
+
+        if (entityItem.getIndividual().getCurrentResidency() != null && entityItem.getIndividual().getCurrentResidency().getEndType().equals(siteProperties.getDeathCode())) {
+            entityItem.getIndividual().getCurrentResidency().setEndDate(null);
+            entityItem.getIndividual().getCurrentResidency().setEndType(siteProperties.getNotApplicableCode());
+        }
+
+        if (!entityItem.getIndividual().getAllMemberships().isEmpty()) {
+            Set<Membership> memberships = entityItem.getIndividual().getAllMemberships();
+            for (Membership mem : memberships) {
+                if (mem.getEndType().equals(siteProperties.getDeathCode())) {
+                    mem.setEndDate(null);
+                    mem.setEndType(siteProperties.getNotApplicableCode());
+                }
+            }
+        }
+
+        if (!entityItem.getIndividual().getAllRelationships1().isEmpty()) {
+            Set<Relationship> relationships = entityItem.getIndividual().getAllRelationships1();
+            for (Relationship rel : relationships) {
+                if (!individualService.getLatestEvent(rel.getIndividualB()).equals("Death") && rel.getEndType().equals(siteProperties.getDeathCode())) {
+                    rel.setEndDate(null);
+                    rel.setEndType(siteProperties.getNotApplicableCode());
+                }
+            }
+        }
+
+        if (!entityItem.getIndividual().getAllRelationships2().isEmpty()) {
+            Set<Relationship> relationships = entityItem.getIndividual().getAllRelationships2();
+            for (Relationship rel : relationships) {
+                if (!individualService.getLatestEvent(rel.getIndividualA()).equals("Death") && rel.getEndType().equals(siteProperties.getDeathCode())) {
+                    rel.setEndDate(null);
+                    rel.setEndType(siteProperties.getNotApplicableCode());
+                }
+            }
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void createDeathAndSetNewHead(Death death, List<SocialGroup> groups, List<Individual> successors, HashMap<Integer, List<Membership>> memberships) throws Exception {
+
+        // Create the death event for the Group Head
+        entityService.create(createDeath(death));
+
+        // Set the successor as the new Group Head
+        for (int i = 0; i < groups.size(); i++) {
+            groups.get(i).setGroupHead(successors.get(i));
+            entityService.save(groups.get(i));
+        }
+
+        // Remove all Memberships from all Social Groups
+        for (SocialGroup item : groups) {
+
+            Set<Membership> mems = item.getMemberships();
+
+            for (Membership mem : mems) {
+                mem.setDeleted(true);
+                entityService.save(mem);
+            }
+        }
+
+        // Create new Memberships
+        for (List<Membership> list : memberships.values()) {
+            for (Membership mem : list) {
+                entityService.create(mem);
+            }
+        }
+
+    }
+
+    /**
+     * Check for duplicate Individuals entered
+     */
+    public boolean checkDuplicateIndividual(Individual indiv) {
+
+        List<Death> list = genericDao.findListByProperty(Death.class, "individual", indiv);
+
+        for (Death item : list) {
+            if (!item.isDeleted())
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * Checks if the Individual is the head of any Social Group
+     */
+    public boolean checkHeadOfSocialGroup(Individual indiv) {
+
+        List<SocialGroup> list = genericDao.findListByProperty(SocialGroup.class, "groupHead", indiv);
+
+        return list.size() == 0;
+    }
+
+    public List<Death> getDeathsByIndividual(Individual individual) {
+        return genericDao.findListByProperty(Death.class, "individual", individual, true);
+    }
+}
