@@ -13,8 +13,10 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.orm.hibernate4.support.OpenSessionInViewFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
-
 import javax.faces.webapp.FacesServlet;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 @Configuration
 @EnableAutoConfiguration
@@ -72,11 +74,17 @@ public class Application extends SpringBootServletInitializer {
 
     @Bean
     String appVersion() {
-        Package pkg = getClass().getPackage();
-        if (pkg != null) {
-            String pkgVersion = pkg.getImplementationVersion();
-            if (pkgVersion != null) {
-                return pkgVersion;
+        InputStream infoStream = getClass().getResourceAsStream("/META-INF/build-info.properties");
+        if (infoStream != null) {
+            Properties buildInfo = new Properties();
+            try {
+                buildInfo.load(infoStream);
+            } catch (IOException e) {
+                /* ignore */
+            }
+            String buildVersion = buildInfo.getProperty("build.version");
+            if (buildVersion != null) {
+                return buildVersion;
             }
         }
         return "DEV";
