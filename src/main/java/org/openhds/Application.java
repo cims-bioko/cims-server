@@ -65,6 +65,7 @@ public class Application extends SpringBootServletInitializer {
             ctx.setInitParameter("facelets.RECREATE_VALUE_EXPRESSION_ON_BUILD_BEFORE_RESTORE", "false");
             ctx.setInitParameter("javax.faces.STATE_SAVING_METHOD", "client");
             ctx.setInitParameter("javax.faces.FACELETS_LIBRARIES", "/WEB-INF/springsecurity.taglib.xml");
+            ctx.setInitParameter("com.sun.faces.forceLoadConfiguration", "true");
             ctx.addListener(com.sun.faces.config.ConfigureListener.class);
         };
     }
