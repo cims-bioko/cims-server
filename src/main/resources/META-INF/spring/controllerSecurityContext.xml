@@ -7,7 +7,7 @@
         http://www.springframework.org/schema/security
         http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-    <import resource="classpath*:/META-INF/spring/controllerApplicationContext.xml"/>
+    <import resource="classpath:/META-INF/spring/controllerApplicationContext.xml"/>
 
     <security:authentication-manager>
         <security:authentication-provider user-service-ref="userDetailsService"/>

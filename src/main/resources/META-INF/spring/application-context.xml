@@ -33,10 +33,10 @@
         </property>
     </bean>
 
-    <import resource="classpath*:/META-INF/spring/domainApplicationContext.xml"/>
-    <import resource="classpath*:/META-INF/spring/daoApplicationContext.xml"/>
-    <import resource="classpath*:/META-INF/spring/controllerSecurityContext.xml"/>
-    <import resource="classpath*:/META-INF/spring/errorhandlingApplicationContext.xml"/>
+    <import resource="classpath:/META-INF/spring/domainApplicationContext.xml"/>
+    <import resource="classpath:/META-INF/spring/daoApplicationContext.xml"/>
+    <import resource="classpath:/META-INF/spring/controllerSecurityContext.xml"/>
+    <import resource="classpath:/META-INF/spring/errorhandlingApplicationContext.xml"/>
     <import resource="classpath:/META-INF/spring/taskContext.xml"/>
     <import resource="classpath:/META-INF/spring/webApplicationContext.xml"/>
 

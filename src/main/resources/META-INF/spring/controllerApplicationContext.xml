@@ -9,7 +9,7 @@
 
     <context:component-scan base-package="org.openhds.controller"/>
 
-    <context:property-placeholder location="classpath*:site-config.properties" ignore-unresolvable="true"/>
+    <context:property-placeholder location="classpath:site-config.properties" ignore-unresolvable="true"/>
 
     <!-- Used by the baseTransactionBean to determine when to insert the Transactional Advice -->
     <!-- In this case it will be when the Transactional annotation is found -->
