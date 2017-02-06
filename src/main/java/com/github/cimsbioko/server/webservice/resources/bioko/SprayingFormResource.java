@@ -49,7 +49,7 @@ public class SprayingFormResource extends AbstractFormResource {
         @XmlEnumValue("2")REFUSED,
         @XmlEnumValue("3")CLOSED,
         @XmlEnumValue("4")UNINHABITED,
-        @XmlEnumValue("5")DESTROYED;
+        @XmlEnumValue("5")DESTROYED
     }
 
     @XmlRootElement(name = "sprayingForm")
