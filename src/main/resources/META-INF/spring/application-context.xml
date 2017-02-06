@@ -3,12 +3,15 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:security="http://www.springframework.org/schema/security"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/security
         http://www.springframework.org/schema/security/spring-security.xsd
         http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop.xsd">
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
 
     <bean id="databaseConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -30,12 +33,16 @@
         </property>
     </bean>
 
-    <import resource="classpath:/META-INF/spring/domainApplicationContext.xml"/>
     <import resource="classpath:/META-INF/spring/daoApplicationContext.xml"/>
     <import resource="classpath:/META-INF/spring/controllerSecurityContext.xml"/>
     <import resource="classpath:/META-INF/spring/errorhandlingApplicationContext.xml"/>
     <import resource="classpath:/META-INF/spring/taskContext.xml"/>
     <import resource="classpath:/META-INF/spring/webApplicationContext.xml"/>
+
+    <context:component-scan base-package="com.github.cimsbioko.server.domain" />
+
+    <bean id="appContextAware" class="com.github.cimsbioko.server.domain.constraint.AppContextAware" />
+    <bean id="valueConstraintService" class="com.github.cimsbioko.server.domain.service.impl.ValueConstraintServiceImpl" />
 
     <bean id="authSuccessHandler" parent="baseTransactionBean">
         <property name="target">
