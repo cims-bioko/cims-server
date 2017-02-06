@@ -5,6 +5,8 @@
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/security
@@ -14,7 +16,11 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd">
 
     <bean id="databaseConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -39,7 +45,6 @@
     <import resource="classpath:/META-INF/spring/daoApplicationContext.xml"/>
     <import resource="classpath:/META-INF/spring/controllerSecurityContext.xml"/>
     <import resource="classpath:/META-INF/spring/errorhandlingApplicationContext.xml"/>
-    <import resource="classpath:/META-INF/spring/taskContext.xml"/>
 
     <context:component-scan base-package="com.github.cimsbioko.server.domain" />
 
@@ -129,6 +134,33 @@
             </bean>
         </property>
     </bean>
+
+    <!-- task -->
+    <context:component-scan base-package="com.github.cimsbioko.server.task" />
+
+    <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler" />
+    <task:executor id="taskExecutor" pool-size="1" queue-capacity="25" />
+    <task:scheduler id="taskScheduler" pool-size="1"/>
+
+    <bean id="source" class="com.github.cimsbioko.server.task.sqlite.DSSource">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <bean id="target" class="com.github.cimsbioko.server.task.sqlite.SqliteTarget" init-method="loadDriver" />
+
+    <bean id="mapperFactory" class="com.github.cimsbioko.server.task.sqlite.SqliteMapperFactory">
+        <constructor-arg>
+            <bean class="com.github.cimsbioko.server.task.sqlite.DBTypeExtractor"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="exporter" class="com.github.cimsbioko.server.task.sqlite.Exporter">
+        <constructor-arg ref="source" />
+        <constructor-arg ref="target" />
+        <constructor-arg ref="mapperFactory"/>
+    </bean>
+
+    <util:properties id="exportQueries" location="classpath:export-queries.properties"/>
 
     <bean id="entityValidator"
           class="com.github.cimsbioko.server.web.service.impl.EntityValidationServiceJsfImpl">
