@@ -44,7 +44,6 @@
 
     <import resource="classpath:/META-INF/spring/daoApplicationContext.xml"/>
     <import resource="classpath:/META-INF/spring/controllerSecurityContext.xml"/>
-    <import resource="classpath:/META-INF/spring/errorhandlingApplicationContext.xml"/>
 
     <context:component-scan base-package="com.github.cimsbioko.server.domain" />
 
@@ -161,6 +160,17 @@
     </bean>
 
     <util:properties id="exportQueries" location="classpath:export-queries.properties"/>
+
+    <!-- errorhandling (the module, not the aspect - confusing? yes.) -->
+    <context:component-scan base-package="com.github.cimsbioko.server.errorhandling" />
+
+    <bean id="errorLogDAO" parent="baseTransactionBean">
+        <property name="target">
+            <bean class="com.github.cimsbioko.server.errorhandling.dao.ErrorLogDAOImpl">
+                <constructor-arg ref="entityService"/>
+            </bean>
+        </property>
+    </bean>
 
     <bean id="entityValidator"
           class="com.github.cimsbioko.server.web.service.impl.EntityValidationServiceJsfImpl">
