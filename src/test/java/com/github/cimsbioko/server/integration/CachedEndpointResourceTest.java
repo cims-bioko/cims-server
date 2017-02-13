@@ -93,8 +93,8 @@ public class CachedEndpointResourceTest {
 
     private MockHttpSession getMockHttpSession(String username, String password) throws Exception {
         return (MockHttpSession) mockMvc.perform(post("/loginProcess")
-                .param("j_username", username)
-                .param("j_password", password)
+                .param("username", username)
+                .param("password", password)
         ).andReturn()
                 .getRequest()
                 .getSession();

@@ -22,7 +22,7 @@ public abstract class AbstractResourceTest {
     protected MockHttpSession getMockHttpSession(String username, String password, MockMvc mockMvc) throws Exception {
         return (MockHttpSession) mockMvc
                 .perform(
-                        post("/loginProcess").param("j_username", username).param("j_password",
+                        post("/loginProcess").param("username", username).param("password",
                                 password)).andReturn().getRequest().getSession();
     }
 
