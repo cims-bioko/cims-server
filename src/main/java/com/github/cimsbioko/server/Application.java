@@ -12,12 +12,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.orm.hibernate4.support.OpenSessionInViewFilter;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.annotation.Resource;
 import javax.faces.webapp.FacesServlet;
+import javax.servlet.MultipartConfigElement;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -95,6 +98,7 @@ public class Application extends SpringBootServletInitializer {
             reg.addInitParameter("contextConfigLocation", "classpath:/META-INF/spring/webserviceApplicationContext.xml");
             reg.setLoadOnStartup(1);
             reg.addUrlMappings("/api/rest/*");
+            reg.setMultipartConfig(new MultipartConfigElement(""));
             return reg;
         }
 
@@ -116,6 +120,11 @@ public class Application extends SpringBootServletInitializer {
                 ctx.setInitParameter("com.sun.faces.forceLoadConfiguration", "true");
                 ctx.addListener(com.sun.faces.config.ConfigureListener.class);
             };
+        }
+
+        @Bean
+        public MultipartResolver multipartResolver() {
+            return new StandardServletMultipartResolver();
         }
     }
 }

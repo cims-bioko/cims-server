@@ -260,8 +260,8 @@
         <security:intercept-url pattern="/resources/css/login.css" access="permitAll()"/>
         <security:intercept-url pattern="/logout.faces" access="permitAll()"/>
         <security:intercept-url pattern="/favicon.ico" access="permitAll()"/>
+        <security:intercept-url pattern="/api/rest/**" access="permitAll()"/>
         <security:intercept-url pattern="/**" access="isAuthenticated()"/>
-        <security:intercept-url pattern="/api/rest/**" access="isAuthenticated()"/>
         <security:logout logout-url="/logoutProcess" success-handler-ref="logoutSuccessHandler"/>
     </security:http>
 
