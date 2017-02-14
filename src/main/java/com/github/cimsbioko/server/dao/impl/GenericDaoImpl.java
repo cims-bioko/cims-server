@@ -27,7 +27,6 @@ import java.util.Map;
  *
  * @author dave
  */
-@Transactional
 @Repository("genericDao")
 public class GenericDaoImpl implements GenericDao {
 
