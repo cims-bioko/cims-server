@@ -133,14 +133,6 @@ public class GenericDaoImpl implements GenericDao {
         return criteria;
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessFact;
-    }
-
-    public void setSessionFactory(SessionFactory sessFact) {
-        this.sessFact = sessFact;
-    }
-
     @SuppressWarnings("unchecked")
     public <T> T findUniqueByPropertyWithOrder(Class<T> entityType, String propertyName, Object value,
                                                String orderByCol, boolean ascending) {
