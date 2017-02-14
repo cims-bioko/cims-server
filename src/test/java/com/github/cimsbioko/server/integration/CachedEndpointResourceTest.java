@@ -1,7 +1,7 @@
 package com.github.cimsbioko.server.integration;
 
 import com.github.cimsbioko.server.integration.util.WebContextLoader;
-import com.github.cimsbioko.server.webapi.CacheFileResource;
+import com.github.cimsbioko.server.webapi.MobileDatabaseResource;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
@@ -80,14 +80,14 @@ public class CachedEndpointResourceTest {
     @Test
     public void testGetCachedDB() throws Exception {
         mockMvc.perform(get("/mobiledb/cached").session(session)
-                .accept(parseMediaType(CacheFileResource.SQLITE_MIME_TYPE)))
+                .accept(parseMediaType(MobileDatabaseResource.SQLITE_MIME_TYPE)))
                 .andExpect(status().isOk());
     }
 
     @Test(expected = AssertionError.class)
     public void testGetCachedDBWithoutSession() throws Exception {
         mockMvc.perform(get("/mobiledb/cached")
-                .accept(parseMediaType(CacheFileResource.SQLITE_MIME_TYPE)))
+                .accept(parseMediaType(MobileDatabaseResource.SQLITE_MIME_TYPE)))
                 .andExpect(status().isOk());
     }
 

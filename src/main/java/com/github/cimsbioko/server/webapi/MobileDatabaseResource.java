@@ -36,11 +36,11 @@ import static com.github.cimsbioko.server.task.service.AsyncTaskService.MOBILEDB
  * <li>perform a full-download is syncing is not possible</li>
  */
 @Controller
-public class CacheFileResource implements ServletContextAware {
+public class MobileDatabaseResource implements ServletContextAware {
 
     public static final String SQLITE_MIME_TYPE = "application/x-sqlite3";
 
-    private static Logger log = LoggerFactory.getLogger(CacheFileResource.class);
+    private static Logger log = LoggerFactory.getLogger(MobileDatabaseResource.class);
 
     private ServletContext ctx;
 
