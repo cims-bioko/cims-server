@@ -1,31 +1,23 @@
 package com.github.cimsbioko.server.dao.service.impl;
 
 import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
-import com.github.cimsbioko.server.dao.finder.ArgumentTypeFactory;
-import com.github.cimsbioko.server.dao.finder.FinderExecutor;
-import com.github.cimsbioko.server.dao.finder.NamingStrategy;
 import com.github.cimsbioko.server.dao.service.Dao;
 import com.github.cimsbioko.server.domain.model.FieldWorker;
 import com.github.cimsbioko.server.domain.model.LocationHierarchy;
 import com.github.cimsbioko.server.domain.model.User;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.type.Type;
 import com.github.cimsbioko.server.domain.model.AuditableEntity;
 
 @SuppressWarnings("unchecked")
-public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK>, FinderExecutor<T> {
+public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK> {
 
     /**
      * Model object type
@@ -35,8 +27,6 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK>, Find
      * Hibernate session factory configured in applicationContext
      */
     SessionFactory sessFact;
-    NamingStrategy namingStrategy;
-    ArgumentTypeFactory argumentTypeFactory;
 
     public BaseDaoImpl(Class<T> entityType) {
         if (entityType == null) {
@@ -155,67 +145,6 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK>, Find
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
-    /**
-     * Looks at the name of the invoked class and method and matches these to the name
-     * of the Hibernate query
-     */
-    public List<T> executeFinder(Method method, final Object[] queryArgs) {
-        final Query namedQuery = prepareQuery(method, queryArgs);
-        return (List<T>) namedQuery.list();
-    }
-
-    public Iterator<T> iterateFinder(Method method, final Object[] queryArgs) {
-        final Query namedQuery = prepareQuery(method, queryArgs);
-        return (Iterator<T>) namedQuery.iterate();
-    }
-
-    private Query prepareQuery(Method method, Object[] queryArgs) {
-        final String queryName = getNamingStrategy().queryNameFromMethod(
-                entityType, method);
-        final Query namedQuery = getSession().getNamedQuery(queryName);
-        String[] namedParameters = namedQuery.getNamedParameters();
-        if (namedParameters.length == 0) {
-            setPositionalParams(queryArgs, namedQuery);
-        } else {
-            setNamedParams(namedParameters, queryArgs, namedQuery);
-        }
-        return namedQuery;
-    }
-
-    private void setPositionalParams(Object[] queryArgs, Query namedQuery) {
-        if (queryArgs != null) {
-            for (int i = 0; i < queryArgs.length; i++) {
-                Object arg = queryArgs[i];
-                Type argType = getArgumentTypeFactory().getArgumentType(arg);
-                if (argType != null) {
-                    namedQuery.setParameter(i, arg, argType);
-                } else {
-                    namedQuery.setParameter(i, arg);
-                }
-            }
-        }
-    }
-
-    private void setNamedParams(String[] namedParameters, Object[] queryArgs,
-                                Query namedQuery) {
-        if (queryArgs != null) {
-            for (int i = 0; i < queryArgs.length; i++) {
-                Object arg = queryArgs[i];
-                Type argType = getArgumentTypeFactory().getArgumentType(arg);
-                if (argType != null) {
-                    namedQuery.setParameter(namedParameters[i], arg, argType);
-                } else {
-                    if (arg instanceof Collection) {
-                        namedQuery.setParameterList(namedParameters[i],
-                                (Collection) arg);
-                    } else {
-                        namedQuery.setParameter(namedParameters[i], arg);
-                    }
-                }
-            }
-        }
-    }
-
     public List<T> findListByProperty(String propertyName, Object value, boolean filterDeleted) {
         Criteria criteria = getSession().createCriteria(entityType).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).
                 add(Restrictions.eq(propertyName, value));
@@ -273,19 +202,4 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK>, Find
         return sessFact.getCurrentSession();
     }
 
-    public NamingStrategy getNamingStrategy() {
-        return namingStrategy;
-    }
-
-    public void setNamingStrategy(NamingStrategy namingStrategy) {
-        this.namingStrategy = namingStrategy;
-    }
-
-    public ArgumentTypeFactory getArgumentTypeFactory() {
-        return argumentTypeFactory;
-    }
-
-    public void setArgumentTypeFactory(ArgumentTypeFactory argumentTypeFactory) {
-        this.argumentTypeFactory = argumentTypeFactory;
-    }
 }

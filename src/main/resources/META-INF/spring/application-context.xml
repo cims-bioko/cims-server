@@ -112,10 +112,6 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <!-- Introduction Advisor that looks for a DynamicFinder annotation on methods -->
-    <!-- Refer to http://www.ibm.com/developerworks/java/library/j-genericdao.htm -->
-    <bean id="dynamicFinderAdvisor" class="com.github.cimsbioko.server.dao.finder.Advisor"/>
-
     <tx:annotation-driven/>
 
     <!-- dao configuration -->
@@ -124,39 +120,10 @@
     <bean id="baseDao" class="com.github.cimsbioko.server.dao.service.impl.BaseDaoImpl"
           abstract="true">
         <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="namingStrategy">
-            <bean class="com.github.cimsbioko.server.dao.finder.AnnotationNamingStrategy"/>
-        </property>
-        <property name="argumentTypeFactory">
-            <bean class="com.github.cimsbioko.server.dao.finder.SimpleArgumentTypeFactory"/>
-        </property>
     </bean>
 
-
-    <!-- A proxy that contains an introduction advisor -->
-    <!-- Any bean that uses the DynamicFinder annotation should use this bean
-        as its parent -->
-    <bean id="dynamicDao" class="org.springframework.aop.framework.ProxyFactoryBean"
-          abstract="true">
-        <property name="interceptorNames">
-            <list>
-                <value>dynamicFinderAdvisor</value>
-            </list>
-        </property>
-    </bean>
-
-    <!-- The UserDao interface makes use of the DynamicFinder annotation so
-        must inherit from dynamicDao bean -->
-    <bean id="userDao" parent="dynamicDao">
-        <property name="proxyInterfaces" value="com.github.cimsbioko.server.dao.service.UserDao"/>
-        <property name="target">
-            <bean parent="baseDao">
-                <constructor-arg value="com.github.cimsbioko.server.domain.model.User"/>
-            </bean>
-        </property>
-    </bean>
-
-    <bean id="openhdsUserDao" parent="baseDao">
+    <bean id="userDao" parent="baseDao"
+          class="com.github.cimsbioko.server.dao.service.impl.UserDaoImpl">
         <constructor-arg value="com.github.cimsbioko.server.domain.model.User"/>
     </bean>
 

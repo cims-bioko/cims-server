@@ -25,7 +25,6 @@ import java.util.Set;
         "the chosen username and password.")
 @Entity
 @Table(name = "users")
-@NamedQuery(name = "User.findByUsername", query = "from User u where u.username = ?1")
 public class User implements Serializable, UuidIdentifiable {
 
     static final long serialVersionUID = 23L;
