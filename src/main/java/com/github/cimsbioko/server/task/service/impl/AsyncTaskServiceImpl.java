@@ -2,7 +2,7 @@ package com.github.cimsbioko.server.task.service.impl;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import com.github.cimsbioko.server.dao.service.Dao;
+import com.github.cimsbioko.server.dao.Dao;
 import com.github.cimsbioko.server.domain.model.AsyncTask;
 import com.github.cimsbioko.server.task.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;

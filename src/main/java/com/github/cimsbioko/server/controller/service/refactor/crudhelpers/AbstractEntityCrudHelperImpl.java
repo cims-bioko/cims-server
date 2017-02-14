@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.controller.service.refactor.crudhelpers;
 
-import com.github.cimsbioko.server.dao.service.GenericDao;
+import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.util.UUIDGenerator;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.controller.service.CurrentUser;

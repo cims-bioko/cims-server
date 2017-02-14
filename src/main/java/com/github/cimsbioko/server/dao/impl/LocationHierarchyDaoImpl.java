@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.dao.service.impl;
+package com.github.cimsbioko.server.dao.impl;
 
 import com.github.cimsbioko.server.domain.model.LocationHierarchy;
 import org.hibernate.Criteria;

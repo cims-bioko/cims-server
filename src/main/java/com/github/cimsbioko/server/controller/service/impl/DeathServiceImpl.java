@@ -9,7 +9,7 @@ import java.util.Set;
 import com.github.cimsbioko.server.controller.service.DeathService;
 import com.github.cimsbioko.server.controller.service.EntityService;
 import com.github.cimsbioko.server.controller.service.IndividualService;
-import com.github.cimsbioko.server.dao.service.GenericDao;
+import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.Death;
 import com.github.cimsbioko.server.domain.model.Membership;
 import com.github.cimsbioko.server.domain.model.Relationship;

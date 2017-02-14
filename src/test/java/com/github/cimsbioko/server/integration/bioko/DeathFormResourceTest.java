@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.integration.bioko;
 
-import com.github.cimsbioko.server.dao.service.GenericDao;
+import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.Death;
 import com.github.cimsbioko.server.domain.model.Individual;
 import com.github.cimsbioko.server.domain.model.Membership;

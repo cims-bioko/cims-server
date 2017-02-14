@@ -1,8 +1,8 @@
-package com.github.cimsbioko.server.dao.service.impl;
+package com.github.cimsbioko.server.dao.impl;
 
 import java.util.List;
 
-import com.github.cimsbioko.server.dao.service.RoleDao;
+import com.github.cimsbioko.server.dao.RoleDao;
 import com.github.cimsbioko.server.domain.model.Role;
 import com.github.cimsbioko.server.domain.model.User;
 import org.hibernate.Criteria;

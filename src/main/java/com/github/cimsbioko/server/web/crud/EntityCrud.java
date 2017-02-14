@@ -9,7 +9,7 @@ import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 
 import com.github.cimsbioko.server.web.ui.PagingState;
-import com.github.cimsbioko.server.dao.service.Dao;
+import com.github.cimsbioko.server.dao.Dao;
 
 /**
  * Interface that represents the actions the user can take when using

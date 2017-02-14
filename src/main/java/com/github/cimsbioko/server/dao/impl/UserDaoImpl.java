@@ -1,6 +1,6 @@
-package com.github.cimsbioko.server.dao.service.impl;
+package com.github.cimsbioko.server.dao.impl;
 
-import com.github.cimsbioko.server.dao.service.UserDao;
+import com.github.cimsbioko.server.dao.UserDao;
 import com.github.cimsbioko.server.domain.model.User;
 import org.hibernate.criterion.Restrictions;
 

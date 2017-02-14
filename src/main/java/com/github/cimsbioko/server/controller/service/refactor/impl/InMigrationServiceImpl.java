@@ -4,7 +4,7 @@ import com.github.cimsbioko.server.controller.service.refactor.InMigrationServic
 import com.github.cimsbioko.server.controller.service.refactor.IndividualService;
 import com.github.cimsbioko.server.controller.service.refactor.ResidencyService;
 import com.github.cimsbioko.server.controller.service.refactor.crudhelpers.EntityCrudHelper;
-import com.github.cimsbioko.server.dao.service.GenericDao;
+import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.InMigration;
 import com.github.cimsbioko.server.domain.model.Residency;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;

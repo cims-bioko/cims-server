@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.integration.bioko;
 
-import com.github.cimsbioko.server.dao.service.GenericDao;
+import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.Location;
 import com.github.cimsbioko.server.integration.AbstractResourceTest;
 import com.github.cimsbioko.server.integration.util.WebContextLoader;

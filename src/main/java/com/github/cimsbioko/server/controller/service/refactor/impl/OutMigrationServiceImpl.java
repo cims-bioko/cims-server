@@ -1,7 +1,7 @@
 package com.github.cimsbioko.server.controller.service.refactor.impl;
 
 import com.github.cimsbioko.server.controller.service.refactor.ResidencyService;
-import com.github.cimsbioko.server.dao.service.GenericDao;
+import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 
 

@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.dao.service.impl;
+package com.github.cimsbioko.server.dao.impl;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;

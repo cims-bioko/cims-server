@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.github.cimsbioko.server.controller.service.*;
-import com.github.cimsbioko.server.dao.service.GenericDao;
+import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.Membership;
 import com.github.cimsbioko.server.domain.model.OutMigration;
 import com.github.cimsbioko.server.domain.model.Residency;

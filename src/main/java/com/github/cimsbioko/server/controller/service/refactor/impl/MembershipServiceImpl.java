@@ -1,7 +1,7 @@
 package com.github.cimsbioko.server.controller.service.refactor.impl;
 
 import com.github.cimsbioko.server.controller.service.refactor.crudhelpers.EntityCrudHelper;
-import com.github.cimsbioko.server.dao.service.GenericDao;
+import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.Membership;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 

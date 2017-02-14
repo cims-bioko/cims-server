@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.dao.service;
+package com.github.cimsbioko.server.dao;
 
 import java.util.List;
 import java.util.Map;

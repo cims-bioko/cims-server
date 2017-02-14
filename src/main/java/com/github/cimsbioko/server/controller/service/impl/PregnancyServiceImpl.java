@@ -8,7 +8,7 @@ import java.util.List;
 import com.github.cimsbioko.server.controller.service.EntityService;
 import com.github.cimsbioko.server.controller.service.IndividualService;
 import com.github.cimsbioko.server.controller.service.PregnancyService;
-import com.github.cimsbioko.server.dao.service.GenericDao;
+import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.Outcome;
 import com.github.cimsbioko.server.domain.model.PregnancyOutcome;
 import com.github.cimsbioko.server.domain.model.Residency;

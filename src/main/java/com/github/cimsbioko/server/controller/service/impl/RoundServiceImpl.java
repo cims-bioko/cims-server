@@ -3,7 +3,7 @@ package com.github.cimsbioko.server.controller.service.impl;
 import java.util.List;
 
 import com.github.cimsbioko.server.controller.service.EntityService;
-import com.github.cimsbioko.server.dao.service.GenericDao;
+import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.Round;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.controller.service.RoundService;

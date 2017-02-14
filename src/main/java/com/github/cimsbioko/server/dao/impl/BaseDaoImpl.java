@@ -1,9 +1,9 @@
-package com.github.cimsbioko.server.dao.service.impl;
+package com.github.cimsbioko.server.dao.impl;
 
 import java.io.Serializable;
 import java.util.List;
 
-import com.github.cimsbioko.server.dao.service.Dao;
+import com.github.cimsbioko.server.dao.Dao;
 import com.github.cimsbioko.server.domain.model.FieldWorker;
 import com.github.cimsbioko.server.domain.model.LocationHierarchy;
 import com.github.cimsbioko.server.domain.model.User;

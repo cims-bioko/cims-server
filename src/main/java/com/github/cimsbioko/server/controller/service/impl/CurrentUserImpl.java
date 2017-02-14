@@ -7,7 +7,7 @@ import java.util.Set;
 
 import com.github.cimsbioko.server.controller.service.CurrentUser;
 import com.github.cimsbioko.server.controller.util.UserCache;
-import com.github.cimsbioko.server.dao.service.Dao;
+import com.github.cimsbioko.server.dao.Dao;
 import com.github.cimsbioko.server.domain.model.Privilege;
 import com.github.cimsbioko.server.domain.model.User;
 import org.springframework.beans.BeansException;

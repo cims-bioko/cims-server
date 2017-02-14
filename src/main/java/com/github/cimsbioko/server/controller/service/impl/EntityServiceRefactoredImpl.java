@@ -2,7 +2,7 @@ package com.github.cimsbioko.server.controller.service.impl;
 
 import com.github.cimsbioko.server.controller.service.EntityServiceRefactored;
 import com.github.cimsbioko.server.controller.service.refactor.crudhelpers.AbstractEntityCrudHelperImpl;
-import com.github.cimsbioko.server.dao.service.GenericDao;
+import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.controller.service.CurrentUser;
 import com.github.cimsbioko.server.controller.service.EntityValidationService;

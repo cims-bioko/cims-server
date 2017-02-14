@@ -6,7 +6,7 @@ import java.util.List;
 import com.github.cimsbioko.server.controller.idgeneration.FieldWorkerGenerator;
 import com.github.cimsbioko.server.controller.idgeneration.Generator;
 import com.github.cimsbioko.server.controller.service.FieldWorkerService;
-import com.github.cimsbioko.server.dao.service.GenericDao;
+import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.FieldWorker;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 

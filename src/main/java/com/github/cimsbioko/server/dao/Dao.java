@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.dao.service;
+package com.github.cimsbioko.server.dao;
 
 import java.io.Serializable;
 import java.util.List;

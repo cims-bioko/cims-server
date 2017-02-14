@@ -2,7 +2,7 @@ package com.github.cimsbioko.server.web.service.impl;
 
 import java.util.List;
 
-import com.github.cimsbioko.server.dao.service.GenericDao;
+import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.Role;
 import com.github.cimsbioko.server.domain.model.User;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;

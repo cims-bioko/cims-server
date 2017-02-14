@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import com.github.cimsbioko.server.dao.service.UserDao;
+import com.github.cimsbioko.server.dao.UserDao;
 import com.github.cimsbioko.server.domain.model.Privilege;
 import com.github.cimsbioko.server.domain.model.Role;
 import org.springframework.dao.DataAccessException;

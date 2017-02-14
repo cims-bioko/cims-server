@@ -16,8 +16,8 @@ import javax.faces.model.SelectItem;
 
 import com.github.cimsbioko.server.controller.exception.AuthorizationException;
 import com.github.cimsbioko.server.controller.service.EntityService;
-import com.github.cimsbioko.server.dao.service.Dao;
-import com.github.cimsbioko.server.dao.service.GenericDao;
+import com.github.cimsbioko.server.dao.Dao;
+import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.constraint.Searchable;
 import com.github.cimsbioko.server.web.crud.EntityCrud;
 import com.github.cimsbioko.server.web.service.JsfService;

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.github.cimsbioko.server.domain.model.User;
-import com.github.cimsbioko.server.dao.service.UserDao;
+import com.github.cimsbioko.server.dao.UserDao;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.transaction.annotation.Transactional;

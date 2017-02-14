@@ -7,7 +7,7 @@ import java.util.Date;
 
 import com.github.cimsbioko.server.controller.service.EntityService;
 import com.github.cimsbioko.server.controller.service.refactor.crudhelpers.AbstractEntityCrudHelperImpl;
-import com.github.cimsbioko.server.dao.service.GenericDao;
+import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.User;
 import com.github.cimsbioko.server.domain.util.CalendarUtil;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;

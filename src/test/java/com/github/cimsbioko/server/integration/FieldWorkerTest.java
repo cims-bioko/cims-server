@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.integration;
 
-import com.github.cimsbioko.server.dao.service.GenericDao;
+import com.github.cimsbioko.server.dao.GenericDao;
 import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
