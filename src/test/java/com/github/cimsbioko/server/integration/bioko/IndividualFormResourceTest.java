@@ -6,7 +6,7 @@ import com.github.cimsbioko.server.domain.util.CalendarAdapter;
 import com.github.cimsbioko.server.errorhandling.constants.ErrorConstants;
 import com.github.cimsbioko.server.integration.AbstractResourceTest;
 import com.github.cimsbioko.server.integration.util.WebContextLoader;
-import com.github.cimsbioko.server.webservice.resources.bioko.IndividualFormResource;
+import com.github.cimsbioko.server.webapi.IndividualFormResource;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;

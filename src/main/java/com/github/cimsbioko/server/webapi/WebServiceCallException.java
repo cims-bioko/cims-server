@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.webservice;
+package com.github.cimsbioko.server.webapi;
 
 import java.io.Serializable;
 import java.util.ArrayList;

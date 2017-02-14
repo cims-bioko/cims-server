@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.webservice.resources;
+package com.github.cimsbioko.server.webapi;
 
 import com.github.cimsbioko.server.controller.service.RoundService;
 import com.github.cimsbioko.server.domain.model.Round;

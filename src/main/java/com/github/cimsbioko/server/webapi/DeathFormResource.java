@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.webservice.resources.bioko;
+package com.github.cimsbioko.server.webapi;
 
 import com.github.cimsbioko.server.controller.service.refactor.DeathService;
 import com.github.cimsbioko.server.controller.service.refactor.FieldWorkerService;

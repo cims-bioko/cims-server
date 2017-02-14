@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.webservice.resources;
+package com.github.cimsbioko.server.webapi;
 
 public class Headers {
     public static final String IF_NONE_MATCH = "If-None-Match";

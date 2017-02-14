@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.webservice.resources;
+package com.github.cimsbioko.server.webapi;
 
 import com.github.batkinson.jrsync.Metadata;
 

@@ -1,7 +1,7 @@
 package com.github.cimsbioko.server.integration;
 
 import com.github.cimsbioko.server.integration.util.WebContextLoader;
-import com.github.cimsbioko.server.webservice.resources.CacheFileResource;
+import com.github.cimsbioko.server.webapi.CacheFileResource;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;

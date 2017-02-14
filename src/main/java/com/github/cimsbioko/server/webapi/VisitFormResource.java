@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.webservice.resources.bioko;
+package com.github.cimsbioko.server.webapi;
 
 import com.github.cimsbioko.server.controller.service.VisitService;
 import com.github.cimsbioko.server.controller.service.refactor.FieldWorkerService;

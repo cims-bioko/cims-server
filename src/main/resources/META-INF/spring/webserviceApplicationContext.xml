@@ -11,7 +11,7 @@
 
     <context:annotation-config/>
 
-    <context:component-scan base-package="com.github.cimsbioko.server.webservice"/>
+    <context:component-scan base-package="com.github.cimsbioko.server.webapi"/>
 
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="asyncRequestTimeout">
@@ -29,7 +29,7 @@
         <property name="packagesToScan">
             <array>
                 <value>com.github.cimsbioko.server.domain.model</value>
-                <value>com.github.cimsbioko.server.webservice</value>
+                <value>com.github.cimsbioko.server.webapi</value>
             </array>
         </property>
         <property name="adapters">

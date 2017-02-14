@@ -1,10 +1,9 @@
-package com.github.cimsbioko.server.webservice.resources.bioko;
+package com.github.cimsbioko.server.webapi;
 
 import com.github.cimsbioko.server.domain.model.FieldWorker;
 import com.github.cimsbioko.server.errorhandling.constants.ErrorConstants;
 import com.github.cimsbioko.server.errorhandling.service.ErrorHandlingService;
 import com.github.cimsbioko.server.errorhandling.util.ErrorLogUtil;
-import com.github.cimsbioko.server.webservice.WebServiceCallException;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.model.ErrorLog;
 import org.springframework.beans.factory.annotation.Autowired;
