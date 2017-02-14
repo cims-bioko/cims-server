@@ -1,12 +1,12 @@
 package com.github.cimsbioko.server.controller.idgeneration;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class IdScheme implements Comparable<IdScheme> {
 
     String name;
     String prefix;
-    HashMap<String, Integer> fields;
+    Map<String, Integer> fields;
     boolean checkDigit;
     int incrementBound;
     int length;
@@ -34,11 +34,11 @@ public class IdScheme implements Comparable<IdScheme> {
         this.prefix = prefix;
     }
 
-    public HashMap<String, Integer> getFields() {
+    public Map<String, Integer> getFields() {
         return fields;
     }
 
-    public void setFields(HashMap<String, Integer> fields) {
+    public void setFields(Map<String, Integer> fields) {
         this.fields = fields;
     }
 

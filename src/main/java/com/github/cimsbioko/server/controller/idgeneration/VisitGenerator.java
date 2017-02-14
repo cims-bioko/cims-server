@@ -1,14 +1,14 @@
 package com.github.cimsbioko.server.controller.idgeneration;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-
-import com.github.cimsbioko.server.domain.model.Visit;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
+import com.github.cimsbioko.server.domain.model.Visit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author Brian
@@ -28,7 +28,7 @@ public class VisitGenerator extends Generator<Visit> {
         StringBuilder sb = new StringBuilder();
 
         IdScheme scheme = getIdScheme();
-        HashMap<String, Integer> fields = scheme.getFields();
+        Map<String, Integer> fields = scheme.getFields();
         Iterator<String> itr = fields.keySet().iterator();
 
         sb.append(scheme.getPrefix().toUpperCase());
