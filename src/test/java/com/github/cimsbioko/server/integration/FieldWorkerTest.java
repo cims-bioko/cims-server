@@ -1,6 +1,7 @@
 package com.github.cimsbioko.server.integration;
 
 import com.github.cimsbioko.server.dao.GenericDao;
+import com.github.cimsbioko.server.integration.util.WebContextLoader;
 import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
@@ -25,7 +26,7 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-@ContextConfiguration(locations = {"/httpScopes.xml", "/testContext.xml"})
+@ContextConfiguration(loader = WebContextLoader.class, locations = {"/httpScopes.xml", "/testContext.xml"})
 public class FieldWorkerTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
