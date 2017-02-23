@@ -4,23 +4,16 @@ import com.github.batkinson.jrsync.Metadata;
 import com.github.cimsbioko.server.task.service.AsyncTaskService;
 import com.github.cimsbioko.server.task.support.FileResolver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.context.support.ServletContextResource;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 
 import static com.github.cimsbioko.server.task.service.AsyncTaskService.MOBILEDB_TASK_NAME;
-import static org.springframework.http.MediaType.parseMediaType;
 
 
 /**
@@ -47,7 +40,7 @@ public class MobileDatabaseResource {
     public String mobileDB(WebRequest request) throws ServletException, IOException {
 
         String contentHash = asyncTaskService.getContentHash(MOBILEDB_TASK_NAME);
-        File cacheFile = fileResolver.getFileForTask(MOBILEDB_TASK_NAME);
+        File cacheFile = fileResolver.resolveMobileDBFile();
         File metadataFile = new File(cacheFile.getParentFile(), cacheFile.getName() + "." + Metadata.FILE_EXT);
         String accept = request.getHeader(Headers.ACCEPT);
 

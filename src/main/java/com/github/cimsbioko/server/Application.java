@@ -1,5 +1,6 @@
 package com.github.cimsbioko.server;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -12,8 +13,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.orm.hibernate4.support.OpenSessionInViewFilter;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import javax.annotation.Resource;
 import javax.faces.webapp.FacesServlet;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -23,53 +28,22 @@ import java.util.Properties;
 @ImportResource("classpath:/META-INF/spring/application-context.xml")
 public class Application extends SpringBootServletInitializer {
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+    @Value("${app.data.dir}")
+    File dataDir;
 
     @Bean
-    ServletRegistrationBean jsfServletRegistration() {
-        ServletRegistrationBean reg = new ServletRegistrationBean();
-        reg.setServlet(new FacesServlet());
-        reg.setLoadOnStartup(1);
-        reg.addUrlMappings("*.faces");
-        return reg;
+    File dataDir() {
+        dataDir.mkdirs();
+        return dataDir;
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(Application.class);
-    }
-
-    @Bean
-    ServletRegistrationBean apiServletRegistration() {
-        ServletRegistrationBean reg = new ServletRegistrationBean();
-        reg.setName("webServices");
-        reg.setServlet(new DispatcherServlet());
-        reg.addInitParameter("contextConfigLocation", "classpath:/META-INF/spring/webserviceApplicationContext.xml");
-        reg.setLoadOnStartup(1);
-        reg.addUrlMappings("/api/rest/*");
-        return reg;
-    }
-
-    @Bean
-    FilterRegistrationBean transactionFilterRegistration() {
-        FilterRegistrationBean reg = new FilterRegistrationBean();
-        reg.setFilter(new OpenSessionInViewFilter());
-        reg.addUrlPatterns("*.faces", "/loginProcess", "/api/rest/*");
-        return reg;
-    }
-
-    @Bean
-    ServletContextInitializer configureServletContext() {
-        return ctx -> {
-            ctx.setInitParameter("javax.faces.FACELETS_SKIP_COMMENTS", "true");
-            ctx.setInitParameter("facelets.RECREATE_VALUE_EXPRESSION_ON_BUILD_BEFORE_RESTORE", "false");
-            ctx.setInitParameter("javax.faces.STATE_SAVING_METHOD", "client");
-            ctx.setInitParameter("javax.faces.FACELETS_LIBRARIES", "/WEB-INF/springsecurity.taglib.xml");
-            ctx.setInitParameter("com.sun.faces.forceLoadConfiguration", "true");
-            ctx.addListener(com.sun.faces.config.ConfigureListener.class);
-        };
     }
 
     @Bean
@@ -88,5 +62,58 @@ public class Application extends SpringBootServletInitializer {
             }
         }
         return "DEV";
+    }
+
+    @Configuration
+    public static class WebConfig extends WebMvcConfigurerAdapter {
+
+        @Resource
+        File dataDir;
+
+        @Bean
+        ServletRegistrationBean jsfServletRegistration() {
+            ServletRegistrationBean reg = new ServletRegistrationBean();
+            reg.setServlet(new FacesServlet());
+            reg.setLoadOnStartup(1);
+            reg.addUrlMappings("*.faces");
+            return reg;
+        }
+
+        @Override
+        public void addResourceHandlers(ResourceHandlerRegistry registry) {
+            registry.addResourceHandler("/WEB-INF/cached-files/**")
+                    .addResourceLocations(dataDir.toURI().toString());
+        }
+
+        @Bean
+        ServletRegistrationBean apiServletRegistration() {
+            ServletRegistrationBean reg = new ServletRegistrationBean();
+            reg.setName("webServices");
+            reg.setServlet(new DispatcherServlet());
+            reg.addInitParameter("contextConfigLocation", "classpath:/META-INF/spring/webserviceApplicationContext.xml");
+            reg.setLoadOnStartup(1);
+            reg.addUrlMappings("/api/rest/*");
+            return reg;
+        }
+
+        @Bean
+        FilterRegistrationBean transactionFilterRegistration() {
+            FilterRegistrationBean reg = new FilterRegistrationBean();
+            reg.setFilter(new OpenSessionInViewFilter());
+            reg.addUrlPatterns("*.faces", "/loginProcess", "/api/rest/*");
+            return reg;
+        }
+
+        @Bean
+        ServletContextInitializer configureServletContext() {
+            return ctx -> {
+                ctx.setInitParameter("javax.faces.FACELETS_SKIP_COMMENTS", "true");
+                ctx.setInitParameter("facelets.RECREATE_VALUE_EXPRESSION_ON_BUILD_BEFORE_RESTORE", "false");
+                ctx.setInitParameter("javax.faces.STATE_SAVING_METHOD", "client");
+                ctx.setInitParameter("javax.faces.FACELETS_LIBRARIES", "/WEB-INF/springsecurity.taglib.xml");
+                ctx.setInitParameter("com.sun.faces.forceLoadConfiguration", "true");
+                ctx.addListener(com.sun.faces.config.ConfigureListener.class);
+            };
+        }
     }
 }

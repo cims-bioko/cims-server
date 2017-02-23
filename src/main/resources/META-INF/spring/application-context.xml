@@ -228,8 +228,6 @@
 
     <mvc:annotation-driven />
 
-    <mvc:resources mapping="/WEB-INF/cached-files/**" location="/WEB-INF/cached-files/" />
-
     <bean id="authSuccessHandler" parent="baseTransactionBean">
         <property name="target">
             <bean class="com.github.cimsbioko.server.web.security.AuthenticationSuccessHandler">

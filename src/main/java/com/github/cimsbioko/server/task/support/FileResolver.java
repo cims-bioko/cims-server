@@ -6,5 +6,4 @@ public interface FileResolver {
 
     File resolveMobileDBFile();
 
-    File getFileForTask(String taskName);
 }
