@@ -10,6 +10,10 @@
     <import resource="classpath:/META-INF/spring/application-context.xml"/>
     <import resource="classpath:/META-INF/spring/webserviceApplicationContext.xml" />
 
+    <bean id="dataDir" class="java.io.File">
+        <constructor-arg value="#{systemProperties['java.io.tmpdir']}/cims-server-test"/>
+    </bean>
+
     <!-- This bean is here to override the session scoped baseCrud from the application-context -->
     <bean id="baseCrud" class="com.github.cimsbioko.server.web.crud.impl.EntityCrudImpl"
           abstract="true">

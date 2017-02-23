@@ -69,7 +69,9 @@ public class CachedEndpointResourceTest {
     }
 
     private void createTestFiles() throws Exception {
-        fileResolver.resolveMobileDBFile().createNewFile();
+        File dbFile = fileResolver.resolveMobileDBFile();
+        dbFile.getParentFile().mkdirs();
+        dbFile.createNewFile();
     }
 
     @After
