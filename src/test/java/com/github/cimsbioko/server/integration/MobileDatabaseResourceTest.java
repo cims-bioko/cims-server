@@ -41,8 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class})
 @DatabaseSetup(value = "/formResourceTestDb.xml", type = DatabaseOperation.REFRESH)
-public class CachedEndpointResourceTest {
-
+public class MobileDatabaseResourceTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -101,6 +100,4 @@ public class CachedEndpointResourceTest {
                 .getRequest()
                 .getSession();
     }
-
-
 }
