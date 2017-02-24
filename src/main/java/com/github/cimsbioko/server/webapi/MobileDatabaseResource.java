@@ -17,13 +17,12 @@ import static com.github.cimsbioko.server.task.service.AsyncTaskService.MOBILEDB
 
 
 /**
- * Shared controller for all pre-generated cache files for tablet
- * synchronization. It uses content negotiation and awareness of sync metadata
- * to help tablets optimize bandwidth consumption:
+ * Endpoint for tablet database synchronization. It uses content negotiation and awareness of sync metadata to help
+ * tablets optimize bandwidth consumption:
  * <p>
  * <li>skip syncing when its local content is identical</li>
- * <li>use a zsync to efficiently synchronize with existing content</li>
- * <li>perform a full-download is syncing is not possible</li>
+ * <li>use zsync to efficiently synchronize with existing content</li>
+ * <li>perform a full-download if zsync is not possible</li>
  */
 @Controller
 public class MobileDatabaseResource {
