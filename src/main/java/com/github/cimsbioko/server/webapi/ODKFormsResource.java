@@ -33,14 +33,14 @@ public class ODKFormsResource {
                 "<majorMinorVersion>1</majorMinorVersion>\n" +
                 "<version>1</version>\n" +
                 "<hash>md5:a293aeb1c461aa8ca5991cbaab089932</hash>" +
-                "<downloadUrl>" + buildFullRequestUrl(req) + "/test</downloadUrl>\n" +
+                "<downloadUrl>" + buildFullRequestUrl(req) + "/test/1</downloadUrl>\n" +
                 "</xform>\n" +
                 "</xforms>");
     }
 
-    @GetMapping(path = "/forms/{formId}", produces = {"text/xml"})
+    @GetMapping(path = "/forms/{formId}/{formVersion}", produces = {"text/xml"})
     @ResponseBody
-    public void form(@PathVariable String formId, HttpServletRequest req, HttpServletResponse rsp) throws IOException {
+    public void form(@PathVariable String formId, @PathVariable String formVersion, HttpServletResponse rsp) throws IOException {
         rsp.setContentType("text/xml;charset=UTF-8");
         rsp.setHeader("X-OpenRosa-Version", "1.0");
         rsp.setIntHeader("X-OpenRosa-Accept-Content-Length", 10485760);
@@ -53,7 +53,7 @@ public class ODKFormsResource {
                 "    <h:title>Test</h:title>\n" +
                 "    <model>\n" +
                 "      <instance>\n" +
-                "        <data id=\"" + formId + "\" version=\"1\">\n" +
+                "        <data id=\"" + formId + "\" version=\"" + formVersion + "\">\n" +
                 "          <meta>\n" +
                 "            <instanceID/>\n" +
                 "          </meta>\n" +
