@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.webservice.xforms;
+package com.github.cimsbioko.server.webapi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +15,9 @@ import java.io.IOException;
 import static org.springframework.security.web.util.UrlUtils.buildFullRequestUrl;
 
 @Controller
-public class FormController {
+public class ODKFormsResource {
 
-    private static Logger log = LoggerFactory.getLogger(FormController.class);
+    private static Logger log = LoggerFactory.getLogger(ODKFormsResource.class);
 
     @GetMapping(path = "/forms", produces = {"text/xml"})
     @ResponseBody
