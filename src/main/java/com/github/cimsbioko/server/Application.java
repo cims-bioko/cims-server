@@ -67,6 +67,8 @@ public class Application extends SpringBootServletInitializer {
     @Configuration
     public static class WebConfig extends WebMvcConfigurerAdapter {
 
+        public static final String CACHED_FILES_PATH = "/WEB-INF/cached-files";
+
         @Resource
         File dataDir;
 
@@ -81,7 +83,7 @@ public class Application extends SpringBootServletInitializer {
 
         @Override
         public void addResourceHandlers(ResourceHandlerRegistry registry) {
-            registry.addResourceHandler("/WEB-INF/cached-files/**")
+            registry.addResourceHandler(CACHED_FILES_PATH + "/**")
                     .addResourceLocations(dataDir.toURI().toString());
         }
 

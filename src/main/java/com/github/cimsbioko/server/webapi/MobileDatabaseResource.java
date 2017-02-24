@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import java.io.File;
 import java.io.IOException;
 
+import static com.github.cimsbioko.server.Application.WebConfig.CACHED_FILES_PATH;
 import static com.github.cimsbioko.server.task.service.AsyncTaskService.MOBILEDB_TASK_NAME;
 
 
@@ -49,8 +50,8 @@ public class MobileDatabaseResource {
         }
 
         if (accept != null && accept.contains(Metadata.MIME_TYPE) && metadataFile.exists()) {
-            return "forward:/WEB-INF/cached-files/cims-tablet.db.jrsmd";
+            return "forward:" + CACHED_FILES_PATH + "/" + metadataFile.getName();
         }
-        return "forward:/WEB-INF/cached-files/cims-tablet.db";
+        return "forward:" + CACHED_FILES_PATH + "/" + cacheFile.getName();
     }
 }
