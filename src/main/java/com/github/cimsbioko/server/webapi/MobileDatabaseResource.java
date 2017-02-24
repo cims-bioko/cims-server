@@ -28,6 +28,7 @@ import static com.github.cimsbioko.server.task.service.AsyncTaskService.MOBILEDB
 @Controller
 public class MobileDatabaseResource {
 
+    public static final String MOBILEDB_PATH = "/mobiledb/cached";
     public static final String SQLITE_MIME_TYPE = "application/x-sqlite3";
 
     @Autowired
@@ -36,7 +37,7 @@ public class MobileDatabaseResource {
     @Autowired
     private AsyncTaskService asyncTaskService;
 
-    @RequestMapping(value = "/mobiledb/cached", method = RequestMethod.GET, produces = {SQLITE_MIME_TYPE, Metadata.MIME_TYPE})
+    @RequestMapping(value = MOBILEDB_PATH, method = RequestMethod.GET, produces = {SQLITE_MIME_TYPE, Metadata.MIME_TYPE})
     public String mobileDB(WebRequest request) throws ServletException, IOException {
 
         String contentHash = asyncTaskService.getContentHash(MOBILEDB_TASK_NAME);

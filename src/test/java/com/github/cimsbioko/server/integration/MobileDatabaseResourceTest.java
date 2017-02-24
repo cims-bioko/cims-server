@@ -29,6 +29,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.File;
 
+import static com.github.cimsbioko.server.webapi.MobileDatabaseResource.MOBILEDB_PATH;
 import static org.springframework.http.MediaType.parseMediaType;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -80,14 +81,14 @@ public class MobileDatabaseResourceTest {
 
     @Test
     public void testGetCachedDB() throws Exception {
-        mockMvc.perform(get("/mobiledb/cached").session(session)
+        mockMvc.perform(get(MOBILEDB_PATH).session(session)
                 .accept(parseMediaType(MobileDatabaseResource.SQLITE_MIME_TYPE)))
                 .andExpect(status().isOk());
     }
 
     @Test(expected = AssertionError.class)
     public void testGetCachedDBWithoutSession() throws Exception {
-        mockMvc.perform(get("/mobiledb/cached")
+        mockMvc.perform(get(MOBILEDB_PATH)
                 .accept(parseMediaType(MobileDatabaseResource.SQLITE_MIME_TYPE)))
                 .andExpect(status().isOk());
     }
