@@ -1,5 +1,10 @@
 package com.github.cimsbioko.server.webapi;
 
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.Namespace;
+import org.jdom2.input.SAXBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -7,11 +12,20 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.io.IOException;
-
+import static com.github.cimsbioko.server.Application.WebConfig.FORMS_PATH;
+import static org.apache.commons.codec.binary.Hex.encodeHexString;
 import static org.springframework.security.web.util.UrlUtils.buildFullRequestUrl;
 
 @Controller
@@ -19,58 +33,100 @@ public class ODKFormsResource {
 
     private static Logger log = LoggerFactory.getLogger(ODKFormsResource.class);
 
+    @Resource
+    File formsDir;
+
     @GetMapping(path = "/forms", produces = {"text/xml"})
     @ResponseBody
     public void formList(HttpServletRequest req, HttpServletResponse rsp) throws IOException {
         rsp.setContentType("text/xml;charset=UTF-8");
-        rsp.setHeader("X-OpenRosa-Version", "1.0");
-        rsp.setIntHeader("X-OpenRosa-Accept-Content-Length", 10485760);
-        rsp.getWriter().write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
-                "<xforms xmlns=\"http://openrosa.org/xforms/xformsList\">\n" +
-                "<xform>\n" +
-                "<formID>test</formID>\n" +
-                "<name>Test</name>\n" +
-                "<majorMinorVersion>1</majorMinorVersion>\n" +
-                "<version>1</version>\n" +
-                "<hash>md5:a293aeb1c461aa8ca5991cbaab089932</hash>" +
-                "<downloadUrl>" + buildFullRequestUrl(req) + "/test/1</downloadUrl>\n" +
-                "</xform>\n" +
-                "</xforms>");
+        addOpenRosaHeaders(rsp);
+        Writer writer = rsp.getWriter();
+        writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                "<xforms xmlns=\"http://openrosa.org/xforms/xformsList\">\n");
+        for (FormDef form : formScan()) {
+            writer.write(form.toString(buildFullRequestUrl(req)));
+        }
+        writer.write("</xforms>");
     }
 
-    @GetMapping(path = "/forms/{formId}/{formVersion}", produces = {"text/xml"})
-    @ResponseBody
-    public void form(@PathVariable String formId, @PathVariable String formVersion, HttpServletResponse rsp) throws IOException {
+    private class FormDef {
+
+        String id, name, version, hash, path;
+
+        FormDef(String name, String id, String version, String hash, String path) {
+            this.id = id;
+            this.name = name;
+            this.version = version;
+            this.hash = hash;
+            this.path = path;
+        }
+
+        public String toString(String baseUrl) {
+            return "<xform>\n" +
+                    "<formID>" + id + "</formID>\n" +
+                    "<name>" + name + "</name>\n" +
+                    "<majorMinorVersion>" + version + "</majorMinorVersion>\n" +
+                    "<version>" + version + "</version>\n" +
+                    "<hash>md5:" + hash + "</hash>" +
+                    "<downloadUrl>" + baseUrl + "/" + path + "</downloadUrl>\n" +
+                    "</xform>\n";
+        }
+    }
+
+    private List<FormDef> formScan() throws IOException {
+        List<FormDef> results = new ArrayList<>();
+        if (formsDir.exists()) {
+            Path formsPath = formsDir.toPath();
+            Files.walk(formsPath)
+                    .filter(path -> {
+                        Path rel = formsPath.relativize(path);
+                        File f = path.toFile();
+                        return f.exists()
+                                && rel.getNameCount() == 3
+                                && rel.getName(0).toString().matches("\\w+")
+                                && rel.getName(1).toString().matches("\\d+")
+                                && rel.getName(2).toString().matches("\\w+[.]xml");
+                    })
+                    .forEach(path -> {
+                        try {
+                            FormDef formDef = loadFormDef(formsPath, path);
+                            results.add(formDef);
+                        } catch (FileNotFoundException e) {
+                            log.warn("form not found for path '{}'", path);
+                        } catch (NoSuchAlgorithmException e) {
+                            log.warn("hash failed due to missing algorithm", path);
+                        } catch (IOException e) {
+                            log.warn("io failure loading definition for path '{}'", path);
+                        } catch (JDOMException e) {
+                            log.warn("failed to parse form definition for path '{}'", path);
+                        }
+                    });
+        }
+        return results;
+    }
+
+    private FormDef loadFormDef(Path formsPath, Path formPath) throws IOException, NoSuchAlgorithmException, JDOMException {
+        Path rel = formsPath.relativize(formPath);
+        String id = rel.getName(0).toString(), version = rel.getName(1).toString(), fileName = rel.getName(2).toString();
+        String title, hash;
+        try (DigestInputStream digestIn = new DigestInputStream(new FileInputStream(formPath.toFile()), MessageDigest.getInstance("MD5"))) {
+            SAXBuilder sb = new SAXBuilder();
+            Document formDoc = sb.build(digestIn);
+            Namespace xhtmlNs = Namespace.getNamespace("http://www.w3.org/1999/xhtml");
+            Element html = formDoc.getRootElement(),
+                    head = html.getChild("head", xhtmlNs);
+            title = head.getChildText("title", xhtmlNs);
+            hash = encodeHexString(digestIn.getMessageDigest().digest());
+        }
+        return new FormDef(title, id, version, hash, id + "/" + version + "/" + fileName);
+    }
+
+    @GetMapping(path = "/forms/{formId:\\w+}/{formVersion:\\d+}/{fileName:\\w+[.]xml}", produces = {"text/xml"})
+    public String form(@PathVariable String formId, @PathVariable String formVersion, @PathVariable String fileName, HttpServletResponse rsp) throws IOException {
         rsp.setContentType("text/xml;charset=UTF-8");
-        rsp.setHeader("X-OpenRosa-Version", "1.0");
-        rsp.setIntHeader("X-OpenRosa-Accept-Content-Length", 10485760);
-        rsp.getWriter().write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<h:html \n" +
-                "   xmlns=\"http://www.w3.org/2002/xforms\"\n" +
-                "   xmlns:h=\"http://www.w3.org/1999/xhtml\"\n" +
-                "   xmlns:jr=\"http://openrosa.org/javarosa\">\n" +
-                "  <h:head>\n" +
-                "    <h:title>Test</h:title>\n" +
-                "    <model>\n" +
-                "      <instance>\n" +
-                "        <data id=\"" + formId + "\" version=\"" + formVersion + "\">\n" +
-                "          <meta>\n" +
-                "            <instanceID/>\n" +
-                "          </meta>\n" +
-                "          <now/>\n" +
-                "        </data>\n" +
-                "      </instance>\n" +
-                "      <bind nodeset=\"/data/meta/instanceID\" type=\"string\" readonly=\"true()\" calculate=\"concat('uuid:', uuid())\"/>\n" +
-                "      <bind nodeset=\"/data/now\" type=\"dateTime\" readonly=\"true\"/>\n" +
-                "    </model>\n" +
-                "  </h:head>\n" +
-                "  <h:body>\n" +
-                "    <group appearance=\"field-list\">\n" +
-                "      <input ref=\"/data/meta/instanceID\" />\n" +
-                "      <input ref=\"/data/now\"/>\n" +
-                "    </group>\n" +
-                "  </h:body>\n" +
-                "</h:html>\n");
+        addOpenRosaHeaders(rsp);
+        return "forward:" + FORMS_PATH + "/" + formId + "/" + formVersion + "/" + fileName;
     }
 
     @PostMapping("/submission")
@@ -78,8 +134,12 @@ public class ODKFormsResource {
                        @RequestParam("deviceID") String deviceId, HttpServletResponse rsp) throws IOException {
         String formContent = new String(StreamUtils.copyToByteArray(formFile.getInputStream()), "UTF-8");
         log.info("received submission from device '{}': {}", deviceId, formContent);
+        addOpenRosaHeaders(rsp);
+        rsp.setStatus(HttpServletResponse.SC_CREATED);
+    }
+
+    private void addOpenRosaHeaders(HttpServletResponse rsp) {
         rsp.setHeader("X-OpenRosa-Version", "1.0");
         rsp.setIntHeader("X-OpenRosa-Accept-Content-Length", 10485760);
-        rsp.setStatus(HttpServletResponse.SC_CREATED);
     }
 }

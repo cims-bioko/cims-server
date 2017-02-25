@@ -34,10 +34,19 @@ public class Application extends SpringBootServletInitializer {
     @Value("${app.data.dir}")
     File dataDir;
 
+    @Value("${app.forms.dir}")
+    File formsDir;
+
     @Bean
     File dataDir() {
         dataDir.mkdirs();
         return dataDir;
+    }
+
+    @Bean
+    File formsDir() {
+        formsDir.mkdirs();
+        return formsDir;
     }
 
     public static void main(String[] args) {
@@ -71,9 +80,13 @@ public class Application extends SpringBootServletInitializer {
     public static class WebConfig extends WebMvcConfigurerAdapter {
 
         public static final String CACHED_FILES_PATH = "/WEB-INF/cached-files";
+        public static final String FORMS_PATH = "/WEB-INF/forms";
 
         @Resource
         File dataDir;
+
+        @Resource
+        File formsDir;
 
         @Bean
         ServletRegistrationBean jsfServletRegistration() {
@@ -88,6 +101,8 @@ public class Application extends SpringBootServletInitializer {
         public void addResourceHandlers(ResourceHandlerRegistry registry) {
             registry.addResourceHandler(CACHED_FILES_PATH + "/**")
                     .addResourceLocations(dataDir.toURI().toString());
+            registry.addResourceHandler(FORMS_PATH + "/**")
+                    .addResourceLocations(formsDir.toURI().toString());
         }
 
         @Bean
