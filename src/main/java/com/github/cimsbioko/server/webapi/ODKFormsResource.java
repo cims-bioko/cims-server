@@ -1,12 +1,16 @@
 package com.github.cimsbioko.server.webapi;
 
+import com.github.cimsbioko.server.dao.FormSubmissionDao;
+import com.github.cimsbioko.server.domain.model.FormSubmission;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +30,7 @@ import java.util.List;
 
 import static com.github.cimsbioko.server.Application.WebConfig.FORMS_PATH;
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
+import static org.json.XML.toJSONObject;
 import static org.springframework.security.web.util.UrlUtils.buildFullRequestUrl;
 
 @Controller
@@ -58,12 +63,21 @@ public class ODKFormsResource {
         return "forward:" + FORMS_PATH + "/" + formId + "/" + formVersion + "/" + fileName;
     }
 
+    @Autowired
+    private FormSubmissionDao submitDao;
+
     @PostMapping("/submission")
     public void handle(@RequestParam("xml_submission_file") MultipartFile formFile,
                        @RequestParam("deviceID") String deviceId, HttpServletResponse rsp) throws IOException {
         String formContent = new String(StreamUtils.copyToByteArray(formFile.getInputStream()), "UTF-8");
-        log.info("received submission from device '{}': {}", deviceId, formContent);
+        JSONObject jsonContent = toJSONObject(formContent);
+        log.info("received submission from device '{}': {}\n{}", deviceId, formContent, jsonContent);
         addOpenRosaHeaders(rsp);
+        String instanceName = jsonContent.names().getString(0);
+        JSONObject instance = jsonContent.getJSONObject(instanceName), meta = instance.getJSONObject("meta");
+        FormSubmission submission = new FormSubmission(meta.getString("instanceID"), formContent, jsonContent.toString(),
+                instance.getString("id"), instance.get("version").toString(), deviceId, null);
+        submitDao.save(submission);
         rsp.setStatus(HttpServletResponse.SC_CREATED);
     }
 
