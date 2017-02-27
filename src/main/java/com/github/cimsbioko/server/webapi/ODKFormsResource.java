@@ -44,17 +44,42 @@ public class ODKFormsResource {
         Writer writer = rsp.getWriter();
         writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
                 "<xforms xmlns=\"http://openrosa.org/xforms/xformsList\">\n");
-        for (FormDef form : formScan()) {
+        for (OpenRosaFormDef form : formScan()) {
             writer.write(form.toString(buildFullRequestUrl(req)));
         }
         writer.write("</xforms>");
     }
 
-    private class FormDef {
+    @GetMapping(path = "/forms/{formId:\\w+}/{formVersion:\\d+}/{fileName:\\w+[.]xml}", produces = {"text/xml"})
+    public String form(@PathVariable String formId, @PathVariable String formVersion, @PathVariable String fileName,
+                       HttpServletResponse rsp) throws IOException {
+        rsp.setContentType("text/xml;charset=UTF-8");
+        addOpenRosaHeaders(rsp);
+        return "forward:" + FORMS_PATH + "/" + formId + "/" + formVersion + "/" + fileName;
+    }
+
+    @PostMapping("/submission")
+    public void handle(@RequestParam("xml_submission_file") MultipartFile formFile,
+                       @RequestParam("deviceID") String deviceId, HttpServletResponse rsp) throws IOException {
+        String formContent = new String(StreamUtils.copyToByteArray(formFile.getInputStream()), "UTF-8");
+        log.info("received submission from device '{}': {}", deviceId, formContent);
+        addOpenRosaHeaders(rsp);
+        rsp.setStatus(HttpServletResponse.SC_CREATED);
+    }
+
+    private void addOpenRosaHeaders(HttpServletResponse rsp) {
+        rsp.setHeader("X-OpenRosa-Version", "1.0");
+        rsp.setIntHeader("X-OpenRosa-Accept-Content-Length", 10485760);
+    }
+
+    /**
+     * Represents all of the required information for a form definition from the OpenRosa form list API.
+     */
+    private class OpenRosaFormDef {
 
         String id, name, version, hash, path;
 
-        FormDef(String name, String id, String version, String hash, String path) {
+        OpenRosaFormDef(String name, String id, String version, String hash, String path) {
             this.id = id;
             this.name = name;
             this.version = version;
@@ -74,8 +99,11 @@ public class ODKFormsResource {
         }
     }
 
-    private List<FormDef> formScan() throws IOException {
-        List<FormDef> results = new ArrayList<>();
+    /**
+     * Scans the application form directory and returns the list of detected (valid) form definitions found.
+     */
+    private List<OpenRosaFormDef> formScan() throws IOException {
+        List<OpenRosaFormDef> results = new ArrayList<>();
         if (formsDir.exists()) {
             Path formsPath = formsDir.toPath();
             Files.walk(formsPath)
@@ -90,7 +118,7 @@ public class ODKFormsResource {
                     })
                     .forEach(path -> {
                         try {
-                            FormDef formDef = loadFormDef(formsPath, path);
+                            OpenRosaFormDef formDef = loadFormDef(formsPath, path);
                             results.add(formDef);
                         } catch (FileNotFoundException e) {
                             log.warn("form not found for path '{}'", path);
@@ -106,40 +134,26 @@ public class ODKFormsResource {
         return results;
     }
 
-    private FormDef loadFormDef(Path formsPath, Path formPath) throws IOException, NoSuchAlgorithmException, JDOMException {
+    /**
+     * Loads a {@link OpenRosaFormDef} object from a form from its path within the application's forms directory.
+     */
+    private OpenRosaFormDef loadFormDef(Path formsPath, Path formPath)
+            throws IOException, NoSuchAlgorithmException, JDOMException {
         Path rel = formsPath.relativize(formPath);
-        String id = rel.getName(0).toString(), version = rel.getName(1).toString(), fileName = rel.getName(2).toString();
+        String id = rel.getName(0).toString(),
+                version = rel.getName(1).toString(),
+                fileName = rel.getName(2).toString();
         String title, hash;
-        try (DigestInputStream digestIn = new DigestInputStream(new FileInputStream(formPath.toFile()), MessageDigest.getInstance("MD5"))) {
+        try (DigestInputStream digestIn =
+                     new DigestInputStream(new FileInputStream(formPath.toFile()), MessageDigest.getInstance("MD5"))) {
             SAXBuilder sb = new SAXBuilder();
             Document formDoc = sb.build(digestIn);
             Namespace xhtmlNs = Namespace.getNamespace("http://www.w3.org/1999/xhtml");
             Element html = formDoc.getRootElement(),
                     head = html.getChild("head", xhtmlNs);
             title = head.getChildText("title", xhtmlNs);
-            hash = encodeHexString(digestIn.getMessageDigest().digest());
+            hash = encodeHexString(digestIn.getMessageDigest().digest()); // assumes doc build reads entire file content
         }
-        return new FormDef(title, id, version, hash, id + "/" + version + "/" + fileName);
-    }
-
-    @GetMapping(path = "/forms/{formId:\\w+}/{formVersion:\\d+}/{fileName:\\w+[.]xml}", produces = {"text/xml"})
-    public String form(@PathVariable String formId, @PathVariable String formVersion, @PathVariable String fileName, HttpServletResponse rsp) throws IOException {
-        rsp.setContentType("text/xml;charset=UTF-8");
-        addOpenRosaHeaders(rsp);
-        return "forward:" + FORMS_PATH + "/" + formId + "/" + formVersion + "/" + fileName;
-    }
-
-    @PostMapping("/submission")
-    public void handle(@RequestParam("xml_submission_file") MultipartFile formFile,
-                       @RequestParam("deviceID") String deviceId, HttpServletResponse rsp) throws IOException {
-        String formContent = new String(StreamUtils.copyToByteArray(formFile.getInputStream()), "UTF-8");
-        log.info("received submission from device '{}': {}", deviceId, formContent);
-        addOpenRosaHeaders(rsp);
-        rsp.setStatus(HttpServletResponse.SC_CREATED);
-    }
-
-    private void addOpenRosaHeaders(HttpServletResponse rsp) {
-        rsp.setHeader("X-OpenRosa-Version", "1.0");
-        rsp.setIntHeader("X-OpenRosa-Accept-Content-Length", 10485760);
+        return new OpenRosaFormDef(title, id, version, hash, id + "/" + version + "/" + fileName);
     }
 }
