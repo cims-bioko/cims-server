@@ -123,7 +123,7 @@ public class ODKFormsResource {
                         } catch (FileNotFoundException e) {
                             log.warn("form not found for path '{}'", path);
                         } catch (NoSuchAlgorithmException e) {
-                            log.warn("hash failed due to missing algorithm", path);
+                            log.warn("hash failed due to missing algorithm");
                         } catch (IOException e) {
                             log.warn("io failure loading definition for path '{}'", path);
                         } catch (JDOMException e) {
