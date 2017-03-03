@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,9 +76,10 @@ public class ODKFormsResource {
         addOpenRosaHeaders(rsp);
         String instanceName = jsonContent.names().getString(0);
         JSONObject instance = jsonContent.getJSONObject(instanceName), meta = instance.getJSONObject("meta");
+        Timestamp collected = Timestamp.valueOf(instance.getString("collectionDateTime"));
         FormSubmission submission = new FormSubmission(meta.getString("instanceID"), formContent, jsonContent.toString(),
                 instance.getString("id"), instance.get("version").toString(), instance.getString("cims-binding"),
-                deviceId, null);
+                deviceId, collected, null);
         submitDao.save(submission);
         rsp.setStatus(HttpServletResponse.SC_CREATED);
     }

@@ -19,19 +19,16 @@ public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements
 
     private JdbcTemplate sql;
 
-    private RowMapper<FormSubmission> mapper = new RowMapper<FormSubmission>() {
-        @Override
-        public FormSubmission mapRow(ResultSet rs, int rowNum) throws SQLException {
-            String instanceId = rs.getString("instanceId"),
-                    xml = rs.getString("as_xml"),
-                    json = rs.getString("as_json"),
-                    formId = rs.getString("form_id"),
-                    formVersion = rs.getString("form_version"),
-                    formBinding = rs.getString("form_binding"),
-                    deviceId = rs.getString("from_device");
-            Timestamp submitDate = rs.getTimestamp("submitted");
-            return new FormSubmission(instanceId, xml, json, formId, formVersion, formBinding, deviceId, submitDate);
-        }
+    private RowMapper<FormSubmission> mapper = (rs, rowNum) -> {
+        String instanceId = rs.getString("instanceId"),
+                xml = rs.getString("as_xml"),
+                json = rs.getString("as_json"),
+                formId = rs.getString("form_id"),
+                formVersion = rs.getString("form_version"),
+                formBinding = rs.getString("form_binding"),
+                deviceId = rs.getString("from_device");
+        Timestamp collected = rs.getTimestamp("collected"), submitted = rs.getTimestamp("submitted");
+        return new FormSubmission(instanceId, xml, json, formId, formVersion, formBinding, deviceId, collected, submitted);
     };
 
     @Autowired
@@ -43,8 +40,10 @@ public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements
     @Override
     public void save(FormSubmission fs) {
         sql.update("insert into form_submission " +
-                        "(instanceId, as_xml, as_json, form_id, form_version, form_binding, from_device) values (?,cast(? as xml),cast(? as jsonb),?,?,?,?)",
-                fs.getInstanceId(), fs.getXml(), fs.getJson(), fs.getFormId(), fs.getFormVersion(), fs.getFormBinding(), fs.getDeviceId());
+                        "(instanceId, as_xml, as_json, form_id, form_version, form_binding, from_device, collected)" +
+                        " values (?,cast(? as xml),cast(? as jsonb),?,?,?,?,?)",
+                fs.getInstanceId(), fs.getXml(), fs.getJson(), fs.getFormId(), fs.getFormVersion(), fs.getFormBinding(),
+                fs.getDeviceId(), fs.getCollected());
     }
 
     @Override
@@ -52,7 +51,7 @@ public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements
         sql.update("delete from form_submission where instanceId = ?", instanceId);
     }
 
-    private static final String baseQuery = "select instanceId, as_xml, as_json, form_id, form_version, form_binding, from_device, submitted" +
+    private static final String baseQuery = "select instanceId, as_xml, as_json, form_id, form_version, form_binding, from_device, collected, submitted" +
             " from form_submission";
 
     @Override

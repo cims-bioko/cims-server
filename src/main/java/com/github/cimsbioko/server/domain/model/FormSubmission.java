@@ -11,9 +11,10 @@ public class FormSubmission {
     private String formVersion;
     private String formBinding;
     private String deviceId;
-    private Timestamp submitted;
+    private Timestamp collected, submitted;
 
-    public FormSubmission(String instanceId, String xml, String json, String formId, String formVersion, String formBinding, String deviceId, Timestamp submitted) {
+    public FormSubmission(String instanceId, String xml, String json, String formId, String formVersion,
+                          String formBinding, String deviceId, Timestamp collected, Timestamp submitted) {
         this.instanceId = instanceId;
         this.xml = xml;
         this.json = json;
@@ -21,6 +22,7 @@ public class FormSubmission {
         this.formVersion = formVersion;
         this.formBinding = formBinding;
         this.deviceId = deviceId;
+        this.collected = collected;
         this.submitted = submitted;
     }
 
@@ -50,6 +52,10 @@ public class FormSubmission {
 
     public String getDeviceId() {
         return deviceId;
+    }
+
+    public Timestamp getCollected() {
+        return collected;
     }
 
     public Timestamp getSubmitted() {
