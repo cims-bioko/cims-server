@@ -1,6 +1,7 @@
 package com.github.cimsbioko.server.domain.util;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -45,27 +46,25 @@ public class CalendarAdapter extends XmlAdapter<String, Calendar> {
     public Calendar unmarshal(String v) throws Exception {
 
         if (null == calendarUtil) {
-
             try {
-                DateFormat formatter = new SimpleDateFormat(SQL_DATETIME_FORMAT);
-                formatter.setLenient(false);
-                Date date = formatter.parse(v);
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(date);
-                return cal;
+                return parseDateWithFormat(v, SQL_DATETIME_FORMAT);
             } catch (Exception e) {
                 try {
-                    DateFormat formatter = new SimpleDateFormat(SQL_DATE_FORMAT);
-                    formatter.setLenient(false);
-                    Date date = formatter.parse(v);
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(date);
-                    return cal;
+                    return parseDateWithFormat(v, SQL_DATE_FORMAT);
                 } catch (Exception f) {
                     return null;
                 }
             }
         }
         return calendarUtil.parseDate(v);
+    }
+
+    private Calendar parseDateWithFormat(String dateString, String format) throws ParseException {
+        DateFormat formatter = new SimpleDateFormat(format);
+        formatter.setLenient(false);
+        Date date = formatter.parse(dateString);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal;
     }
 }
