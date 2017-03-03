@@ -20,8 +20,6 @@ public class AbstractFormResource {
     @Autowired
     private ErrorHandlingService errorService;
 
-    private Marshaller marshaller;
-
     protected ResponseEntity<WebServiceCallException> requestError(String message) {
         WebServiceCallException error = new WebServiceCallException();
         error.getErrors().add(message);
