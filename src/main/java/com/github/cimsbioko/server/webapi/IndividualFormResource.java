@@ -75,7 +75,7 @@ public class IndividualFormResource extends AbstractFormResource {
     @Autowired
     private CalendarAdapter adapter;
 
-    private Marshaller marshaller = null;
+    private Marshaller marshaller = null; // FIXME: *not thread safe!!!*
 
     // This individual form should cause several CRUDS:
     // location, individual, socialGroup, residency, membership, relationship

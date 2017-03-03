@@ -52,7 +52,7 @@ public class PregnancyObservationFormResource extends AbstractFormResource {
     private ErrorHandlingService errorService;
 
     private JAXBContext context = null;
-    private Marshaller marshaller = null;
+    private Marshaller marshaller = null; // FIXME: *not thread safe!!!*
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional

@@ -66,7 +66,7 @@ public class InMigrationFormResource extends AbstractFormResource {
     private CalendarAdapter adapter;
 
     private JAXBContext context = null;
-    private Marshaller marshaller = null;
+    private Marshaller marshaller = null; // FIXME: *not thread safe!!!*
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
