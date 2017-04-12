@@ -8,7 +8,6 @@
        xmlns:util="http://www.springframework.org/schema/util"
        xmlns:task="http://www.springframework.org/schema/task"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:lang="http://www.springframework.org/schema/lang"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/security
@@ -24,9 +23,7 @@
         http://www.springframework.org/schema/task
         http://www.springframework.org/schema/task/spring-task.xsd
         http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx.xsd
-        http://www.springframework.org/schema/lang
-        http://www.springframework.org/schema/lang/spring-lang.xsd">
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <bean id="databaseConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -799,12 +796,6 @@
         <constructor-arg ref="asyncTaskServiceImpl"/>
         <constructor-arg ref="taskScheduler"/>
     </bean>
-
-    <lang:std id="formProcessor"
-              script-source="classpath:/process-forms.js"
-              script-interfaces="com.github.cimsbioko.server.task.forms.FormProcessor">
-        <lang:property name="formService" ref="formSubmissionServiceImpl" />
-    </lang:std>
 
     <bean id="siteProperties"
           class="com.github.cimsbioko.server.domain.service.impl.SitePropertiesServiceImpl">

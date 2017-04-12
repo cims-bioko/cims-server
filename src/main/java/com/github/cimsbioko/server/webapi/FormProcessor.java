@@ -1,7 +1,6 @@
-package com.github.cimsbioko.server.task.forms;
+package com.github.cimsbioko.server.webapi;
 
 import com.github.cimsbioko.server.controller.service.FormSubmissionService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public interface FormProcessor {
     void setFormService(FormSubmissionService formService);
