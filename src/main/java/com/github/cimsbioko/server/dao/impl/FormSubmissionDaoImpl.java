@@ -6,15 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
-@Component
+@Repository
 public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements FormSubmissionDao {
 
     private JdbcTemplate sql;
@@ -63,4 +61,18 @@ public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements
     public List<FormSubmission> findByForm(String formId, String formVersion) {
         return sql.query(baseQuery + " where form_id = ? and form_version = ?", mapper, formId, formVersion);
     }
+
+    @Override
+    public List<FormSubmission> findUnprocessed(int batchSize) {
+        return sql.query(baseQuery + " where processed is null order by collected asc limit ?", mapper, batchSize);
+    }
+
+    @Override
+    public void markProcessed(FormSubmission submission) {
+        String instanceId = submission.getInstanceId();
+        if (instanceId == null)
+            throw new IllegalArgumentException("submission must have an instance id");
+        sql.update("update form_submission set processed = now() where instanceId = ?", instanceId);
+    }
+
 }

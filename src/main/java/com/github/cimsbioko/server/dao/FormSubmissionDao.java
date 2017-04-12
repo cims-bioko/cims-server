@@ -5,9 +5,10 @@ import com.github.cimsbioko.server.domain.model.FormSubmission;
 import java.util.List;
 
 public interface FormSubmissionDao {
-
     void save(FormSubmission submission);
     void delete(String uuid);
     FormSubmission findById(String uuid);
     List<FormSubmission> findByForm(String formId, String formVersion);
+    List<FormSubmission> findUnprocessed(int batchSize);
+    void markProcessed(FormSubmission submission);
 }
