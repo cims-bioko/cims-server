@@ -4,6 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:lang="http://www.springframework.org/schema/lang"
        xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
@@ -13,7 +14,9 @@
         http://www.springframework.org/schema/lang
         http://www.springframework.org/schema/lang/spring-lang.xsd
         http://www.springframework.org/schema/task
-        http://www.springframework.org/schema/task/spring-task.xsd">
+        http://www.springframework.org/schema/task/spring-task.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <context:annotation-config/>
 
@@ -58,6 +61,8 @@
         <property name="favorPathExtension" value="false"/>
         <property name="favorParameter" value="true"/>
     </bean>
+
+    <tx:annotation-driven />
 
     <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler" />
 
