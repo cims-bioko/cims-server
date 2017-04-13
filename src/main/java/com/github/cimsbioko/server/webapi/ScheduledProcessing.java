@@ -18,6 +18,9 @@ public class ScheduledProcessing {
 
     @Scheduled(cron = "*/30 * * * * *")
     public void processForms() {
-        log.info("processed {} forms", processor.processForms());
+        long start = System.currentTimeMillis();
+        int formCount = processor.processForms();
+        long end = System.currentTimeMillis();
+        log.info("processed {} forms in {}ms", formCount, end - start);
     }
 }

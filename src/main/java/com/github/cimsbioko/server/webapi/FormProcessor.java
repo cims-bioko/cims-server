@@ -1,8 +1,7 @@
 package com.github.cimsbioko.server.webapi;
 
-import com.github.cimsbioko.server.controller.service.FormSubmissionService;
+import org.springframework.context.ApplicationContextAware;
 
-public interface FormProcessor {
-    void setFormService(FormSubmissionService formService);
+public interface FormProcessor extends ApplicationContextAware {
     int processForms();
 }

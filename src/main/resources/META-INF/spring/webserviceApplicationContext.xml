@@ -68,8 +68,6 @@
 
     <lang:std id="formProcessor"
               script-source="classpath:/process-forms.js"
-              script-interfaces="com.github.cimsbioko.server.webapi.FormProcessor">
-        <lang:property name="formService" ref="formSubmissionServiceImpl" />
-    </lang:std>
+              script-interfaces="com.github.cimsbioko.server.webapi.FormProcessor" />
 
 </beans>
