@@ -97,7 +97,22 @@ with (imports) {
                 }
                 return result;
             }
-        }
+        },
+        death: {
+            endpoint: DeathFormResource.class,
+            mapData: function(data) {
+                return {
+                    deathForm: {
+                        field_worker_uuid: data.fieldWorkerUuid,
+                        individual_uuid: data.individualUuid,
+                        visit_uuid: data.visitUuid,
+                        date_of_death: data.dateOfDeath,
+                        place_of_death: data.placeOfDeath,
+                        cause_of_death: data.causeOfDeath
+                    }
+                };
+            }
+        },
     };
 
     /**
