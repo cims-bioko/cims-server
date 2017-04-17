@@ -130,7 +130,6 @@ with (imports) {
         if (binding) {
             var formXml = toXml(binding.mapData(data)), formObj = toForm(formXml);
             print('processing form ' + meta.instanceID + ' with binding ' + bindingName);
-            print(formXml);
             getBean(binding.endpoint).processForm(formObj);
         }
     }
