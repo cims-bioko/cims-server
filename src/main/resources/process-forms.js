@@ -113,6 +113,40 @@ with (imports) {
                 };
             }
         },
+        individual: {
+            endpoint: IndividualFormResource.class,
+            mapData: function(data) {
+                return {
+                    individualForm: {
+                        entity_uuid: data.entityUuid,
+                        field_worker_uuid: data.fieldWorkerUuid,
+                        collection_date_time: data.collectionDateTime,
+                        household_ext_id: data.householdExtId,
+                        household_uuid: data.householdUuid,
+                        membership_uuid: data.membershipUuid,
+                        relationship_uuid: data.relationshipUuid,
+                        socialgroup_uuid: data.socialgroupUuid,
+                        individual_ext_id: data.individualExtId,
+                        individual_first_name: data.individualFirstName,
+                        individual_last_name: data.individualLastName,
+                        individual_other_names: data.individualOtherNames,
+                        individual_age: data.individualAge,
+                        individual_age_units: data.individualAgeUnits,
+                        individual_date_of_birth: data.individualDateOfBirth,
+                        individual_gender: data.individualGender,
+                        individual_relationship_to_head_of_household: data.individualRelationshipToHeadOfHousehold,
+                        individual_phone_number: data.individualPhoneNumber,
+                        individual_other_phone_number: data.individualOtherPhoneNumber,
+                        individual_language_preference: data.individualLanguagePreference,
+                        individual_point_of_contact_name: data.individualPointOfContactName,
+                        individual_point_of_contact_phone_number: data.individualPointOfContactPhoneNumber,
+                        individual_dip: data.individualDip,
+                        individual_member_status: data.individualMemberStatus,
+                        individual_nationality: data.individualNationality
+                    }
+                }
+            }
+        }
     };
 
     /**

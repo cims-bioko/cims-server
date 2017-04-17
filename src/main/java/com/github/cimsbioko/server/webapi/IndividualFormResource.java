@@ -520,15 +520,6 @@ public class IndividualFormResource extends AbstractFormResource {
         @XmlElement(name = "entity_uuid")
         private String uuid;
 
-        @XmlElement(name = "entity_ext_id")
-        private String entityExtId;
-
-        @XmlElement(name = "processed_by_mirth")
-        private boolean processedByMirth;
-
-        @XmlElement(name = "field_worker_ext_id")
-        private String fieldWorkerExtId;
-
         @XmlElement(name = "field_worker_uuid")
         private String fieldWorkerUuid;
 
@@ -604,15 +595,6 @@ public class IndividualFormResource extends AbstractFormResource {
         @XmlElement(name = "individual_nationality")
         private String individualNationality;
 
-
-        public String getEntityExtId() {
-            return entityExtId;
-        }
-
-        public void setEntityExtId(String entityExtId) {
-            this.entityExtId = entityExtId;
-        }
-
         public String getMembershipUuid() {
             return membershipUuid;
         }
@@ -641,10 +623,6 @@ public class IndividualFormResource extends AbstractFormResource {
             return fieldWorkerUuid;
         }
 
-        public void setFieldWorkerUuid(String fieldWorkerUuid) {
-            this.fieldWorkerUuid = fieldWorkerUuid;
-        }
-
         public String getHouseholdUuid() {
             return householdUuid;
         }
@@ -652,7 +630,6 @@ public class IndividualFormResource extends AbstractFormResource {
         public void setHouseholdUuid(String householdUuid) {
             this.householdUuid = householdUuid;
         }
-
 
         public String getUuid() {
             return uuid;
@@ -662,28 +639,8 @@ public class IndividualFormResource extends AbstractFormResource {
             this.uuid = uuid;
         }
 
-        public boolean isProcessedByMirth() {
-            return processedByMirth;
-        }
-
-        public void setProcessedByMirth(boolean processedByMirth) {
-            this.processedByMirth = processedByMirth;
-        }
-
-        public String getFieldWorkerExtId() {
-            return fieldWorkerExtId;
-        }
-
-        public void setFieldWorkerExtId(String fieldWorkerExtId) {
-            this.fieldWorkerExtId = fieldWorkerExtId;
-        }
-
         public Calendar getCollectionDateTime() {
             return collectionDateTime;
-        }
-
-        public void setCollectionDateTime(Calendar collectionDateTime) {
-            this.collectionDateTime = collectionDateTime;
         }
 
         public String getHouseholdExtId() {
@@ -698,64 +655,32 @@ public class IndividualFormResource extends AbstractFormResource {
             return individualExtId;
         }
 
-        public void setIndividualExtId(String individualExtId) {
-            this.individualExtId = individualExtId;
-        }
-
         public String getIndividualFirstName() {
             return individualFirstName;
-        }
-
-        public void setIndividualFirstName(String individualFirstName) {
-            this.individualFirstName = individualFirstName;
         }
 
         public String getIndividualLastName() {
             return individualLastName;
         }
 
-        public void setIndividualLastName(String individualLastName) {
-            this.individualLastName = individualLastName;
-        }
-
         public String getIndividualOtherNames() {
             return individualOtherNames;
-        }
-
-        public void setIndividualOtherNames(String individualOtherNames) {
-            this.individualOtherNames = individualOtherNames;
         }
 
         public int getIndividualAge() {
             return individualAge;
         }
 
-        public void setIndividualAge(int individualAge) {
-            this.individualAge = individualAge;
-        }
-
         public String getIndividualAgeUnits() {
             return individualAgeUnits;
-        }
-
-        public void setIndividualAgeUnits(String individualAgeUnits) {
-            this.individualAgeUnits = individualAgeUnits;
         }
 
         public Calendar getIndividualDateOfBirth() {
             return individualDateOfBirth;
         }
 
-        public void setIndividualDateOfBirth(Calendar individualDateOfBirth) {
-            this.individualDateOfBirth = individualDateOfBirth;
-        }
-
         public String getIndividualGender() {
             return individualGender;
-        }
-
-        public void setIndividualGender(String individualGender) {
-            this.individualGender = individualGender;
         }
 
         public String getIndividualRelationshipToHeadOfHousehold() {
@@ -771,64 +696,32 @@ public class IndividualFormResource extends AbstractFormResource {
             return individualPhoneNumber;
         }
 
-        public void setIndividualPhoneNumber(String individualPhoneNumber) {
-            this.individualPhoneNumber = individualPhoneNumber;
-        }
-
         public String getIndividualOtherPhoneNumber() {
             return individualOtherPhoneNumber;
-        }
-
-        public void setIndividualOtherPhoneNumber(String individualOtherPhoneNumber) {
-            this.individualOtherPhoneNumber = individualOtherPhoneNumber;
         }
 
         public String getIndividualLanguagePreference() {
             return individualLanguagePreference;
         }
 
-        public void setIndividualLanguagePreference(String individualLanguagePreference) {
-            this.individualLanguagePreference = individualLanguagePreference;
-        }
-
         public String getIndividualPointOfContactName() {
             return individualPointOfContactName;
-        }
-
-        public void setIndividualPointOfContactName(String individualPointOfContactName) {
-            this.individualPointOfContactName = individualPointOfContactName;
         }
 
         public String getIndividualPointOfContactPhoneNumber() {
             return individualPointOfContactPhoneNumber;
         }
 
-        public void setIndividualPointOfContactPhoneNumber(String individualPointOfContactPhoneNumber) {
-            this.individualPointOfContactPhoneNumber = individualPointOfContactPhoneNumber;
-        }
-
         public int getIndividualDip() {
             return individualDip;
-        }
-
-        public void setIndividualDip(int individualDip) {
-            this.individualDip = individualDip;
         }
 
         public String getIndividualMemberStatus() {
             return individualMemberStatus;
         }
 
-        public void setIndividualMemberStatus(String individualMemberStatus) {
-            this.individualMemberStatus = individualMemberStatus;
-        }
-
         public String getIndividualNationality() {
             return individualNationality;
-        }
-
-        public void setIndividualNationality(String individualNationality) {
-            this.individualNationality = individualNationality;
         }
     }
 }
