@@ -72,9 +72,9 @@ with (imports) {
                     }
                 };
                 if (data.location) {
-                    var form = result.locationForm, gps = data.location.split(' ');
-                    form.latitude = gps[0];
-                    form.longitude = gps[1];
+                    var form = result.locationForm, gps = toGPS(data.location);
+                    form.latitude = gps.latitude;
+                    form.longitude = gps.longitude;
                 }
                 return result;
             }
@@ -90,10 +90,10 @@ with (imports) {
                     }
                 };
                 if (data.globalPosition) {
-                    var form = result.duplicateLocationForm, gps = data.globalPosition.split(' ');
-                    form.global_position_lat = gps[0];
-                    form.global_position_lng = gps[1];
-                    form.global_position_acc = gps[3];
+                    var form = result.duplicateLocationForm, gps = toGPS(data.globalPosition);
+                    form.global_position_lat = gps.latitude;
+                    form.global_position_lng = gps.longitude;
+                    form.global_position_acc = gps.accuracy;
                 }
                 return result;
             }
@@ -176,5 +176,18 @@ with (imports) {
                 case '"': return '&quot;';
             }
         });
+    }
+
+    /**
+     * Converts ODK gps string values into objects.
+     */
+    function toGPS(gpsString) {
+        var gps = gpsString.split(' ');
+        return {
+            latitude: gps[0],
+            longitude: gps[1],
+            altitude: gps[2],
+            accuracy: gps[3]
+        };
     }
 }
