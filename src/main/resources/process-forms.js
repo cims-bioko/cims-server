@@ -141,12 +141,18 @@ with (imports) {
     function process(submission) {
         var form = JSON.parse(submission.json),
             data = form.data, meta = data.meta,
-            bindingName = submission.getFormBinding(), binding = bindings[bindingName];
-        if (binding) {
-            var formXml = toXml(binding.mapData(data)), formObj = toForm(formXml);
-            print('processing form ' + meta.instanceID + ' with binding ' + bindingName);
-            getBean(binding.endpoint).processForm(formObj);
+            possibleBindings = [submission.getFormBinding(), submission.getFormId()],
+            instanceId = submission.getInstanceId();
+        for (var b=0; b<possibleBindings.length; b++) {
+            var bindingName = possibleBindings[b], binding = bindings[bindingName];
+            if (binding) {
+                var formXml = toXml(binding.mapData(data)), formObj = toForm(formXml);
+                print('processing form ' + instanceId + ' with binding ' + bindingName);
+                getBean(binding.endpoint).processForm(formObj);
+                return;
+            }
         }
+        print('not processing form ' + instanceId + ', no binding found');
     }
 
     /**
