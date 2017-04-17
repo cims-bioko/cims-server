@@ -155,11 +155,26 @@ with (imports) {
                 if (typeof(value) === 'object') {
                     result += toXml(value);
                 } else {
-                    result += '' + value;
+                    result += escapeXml('' + value);
                 }
                 result += '</' + field + '>';
             }
         }
         return result;
+    }
+
+    /**
+     * Escapes a string value so it can be safely inserted into an XML document.
+     */
+    function escapeXml(unsafe) {
+        return unsafe.replace(/[<>&'"]/g, function (c) {
+            switch (c) {
+                case '<': return '&lt;';
+                case '>': return '&gt;';
+                case '&': return '&amp;';
+                case '\'': return '&apos;';
+                case '"': return '&quot;';
+            }
+        });
     }
 }
