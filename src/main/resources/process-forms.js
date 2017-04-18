@@ -144,7 +144,69 @@ with (imports) {
                         individual_member_status: data.individualMemberStatus,
                         individual_nationality: data.individualNationality
                     }
-                }
+                };
+            }
+        },
+        in_migration: {
+            endpoint: InMigrationFormResource.class,
+            mapData: function(data) {
+                return {
+                    inMigrationForm: {
+                        field_worker_uuid: data.fieldWorkerUuid,
+                        visit_uuid: data.visitUuid,
+                        location_uuid: data.locationUuid,
+                        individual_uuid: data.individualUuid,
+                        migration_type: data.migrationType,
+                        migration_date: data.migrationDate,
+                        migration_origin: data.migrationOrigin,
+                        migration_reason: data.migrationReason
+                    }
+                };
+            }
+        },
+        visit: {
+            endpoint: VisitFormResource.class,
+            mapData: function(data) {
+                return {
+                    visitForm: {
+                        entity_uuid: data.entityUuid,
+                        field_worker_uuid: data.fieldWorkerUuid,
+                        visit_ext_id: data.visitExtId,
+                        visit_uuid: data.visitUuid,
+                        location_ext_id: data.locationExtId,
+                        location_uuid: data.locationUuid,
+                        visit_date: data.visitDate
+                    }
+                };
+            }
+        },
+        out_migration: {
+            endpoint: OutMigrationFormResource.class,
+            mapData: function(data) {
+                return {
+                    outMigrationForm: {
+                        field_worker_uuid: data.fieldWorkerUuid,
+                        individual_uuid: data.individualUuid,
+                        visit_uuid: data.visitUuid,
+                        out_migration_date: data.outMigrationDate,
+                        out_migration_name_of_destination: data.outMigrationNameOfDestination,
+                        out_migration_reason: data.outMigrationReason
+                    }
+                };
+            }
+        },
+        pregnancy_observation: {
+            endpoint: PregnancyObservationFormResource.class,
+            mapData: function(data) {
+                return {
+                    pregnancyObservationForm: {
+                        field_worker_uuid: data.fieldWorkerUuid,
+                        individual_uuid: data.individualUuid,
+                        visit_uuid: data.visitUuid,
+                        expected_delivery_date: data.expectedDeliveryDate,
+                        recorded_date: data.recordedDate
+                    }
+                };
             }
         }
     };

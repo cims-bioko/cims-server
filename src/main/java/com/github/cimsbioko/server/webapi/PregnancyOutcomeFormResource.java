@@ -65,7 +65,6 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
     @Autowired
     private SitePropertiesService siteProperties;
 
-
     @RequestMapping(value = "/core", method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
     public ResponseEntity<? extends Serializable> processCoreForm(@RequestBody CoreForm coreForm) throws JAXBException {
@@ -125,7 +124,6 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
             errorService.logError(error);
             return requestError(cv.getMessage());
         }
-
 
         return new ResponseEntity<>(outcomesForm, HttpStatus.CREATED);
     }
@@ -266,18 +264,8 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
         @XmlElement(name = "pregnancy_outcome_uuid")
         private String pregnancyOutcomeUuid;
 
-        @XmlElement(name = "processed_by_mirth")
-        private boolean processedByMirth;
-
-        @XmlElement(name = "field_worker_ext_id")
-        private String fieldWorkerExtId;
-
         @XmlElement(name = "field_worker_uuid")
         private String fieldWorkerUuid;
-
-        @XmlElement(name = "collection_date_time")
-        @XmlJavaTypeAdapter(CalendarAdapter.class)
-        private Calendar collectionDateTime;
 
         @XmlElement(name = "visit_uuid")
         private String visitUuid;
@@ -288,12 +276,6 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
         @XmlElement(name = "father_uuid")
         private String fatherUuid;
 
-        @XmlElement(name = "socialgroup_uuid")
-        private String socialGroupUuid;
-
-        @XmlElement(name = "number_of_outcomes")
-        private String numberOfOutcomes;
-
         @XmlElement(name = "delivery_date")
         @XmlJavaTypeAdapter(CalendarAdapter.class)
         private Calendar deliveryDate;
@@ -302,91 +284,27 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
             return pregnancyOutcomeUuid;
         }
 
-        public void setPregnancyOutcomeUuid(String pregnancyOutcomeUuid) {
-            this.pregnancyOutcomeUuid = pregnancyOutcomeUuid;
-        }
-
-        public boolean isProcessedByMirth() {
-            return processedByMirth;
-        }
-
-        public void setProcessedByMirth(boolean processedByMirth) {
-            this.processedByMirth = processedByMirth;
-        }
-
-        public String getFieldWorkerExtId() {
-            return fieldWorkerExtId;
-        }
-
-        public void setFieldWorkerExtId(String fieldWorkerExtId) {
-            this.fieldWorkerExtId = fieldWorkerExtId;
-        }
-
         public String getFieldWorkerUuid() {
             return fieldWorkerUuid;
-        }
-
-        public void setFieldWorkerUuid(String fieldWorkerUuid) {
-            this.fieldWorkerUuid = fieldWorkerUuid;
-        }
-
-        public Calendar getCollectionDateTime() {
-            return collectionDateTime;
-        }
-
-        public void setCollectionDateTime(Calendar collectionDateTime) {
-            this.collectionDateTime = collectionDateTime;
         }
 
         public String getVisitUuid() {
             return visitUuid;
         }
 
-        public void setVisitUuid(String visitUuid) {
-            this.visitUuid = visitUuid;
-        }
-
         public String getMotherUuid() {
             return motherUuid;
-        }
-
-        public void setMotherUuid(String motherUuid) {
-            this.motherUuid = motherUuid;
         }
 
         public String getFatherUuid() {
             return fatherUuid;
         }
 
-        public void setFatherUuid(String fatherUuid) {
-            this.fatherUuid = fatherUuid;
-        }
-
-        public String getSocialGroupUuid() {
-            return socialGroupUuid;
-        }
-
-        public void setSocialGroupUuid(String socialGroupUuid) {
-            this.socialGroupUuid = socialGroupUuid;
-        }
-
-        public String getNumberOfOutcomes() {
-            return numberOfOutcomes;
-        }
-
-        public void setNumberOfOutcomes(String numberOfOutcomes) {
-            this.numberOfOutcomes = numberOfOutcomes;
-        }
-
         public Calendar getDeliveryDate() {
             return deliveryDate;
         }
 
-        public void setDeliveryDate(Calendar deliveryDate) {
-            this.deliveryDate = deliveryDate;
-        }
     }
-
 
     @XmlRootElement(name = "pregnancyOutcomeOutcomesForm")
     @XmlAccessorType(XmlAccessType.FIELD)
@@ -401,9 +319,6 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
         @XmlElement(name = "collection_date_time")
         @XmlJavaTypeAdapter(CalendarAdapter.class)
         private Calendar collectionDateTime;
-
-        @XmlElement(name = "processed_by_mirth")
-        private boolean processedByMirth;
 
         @XmlElement(name = "socialgroup_uuid")
         private String socialGroupUuid;
@@ -436,96 +351,45 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
             return socialGroupUuid;
         }
 
-        public void setSocialGroupUuid(String socialGroupUuid) {
-            this.socialGroupUuid = socialGroupUuid;
-        }
-
         public String getPregnancyOutcomeUuid() {
             return pregnancyOutcomeUuid;
-        }
-
-        public void setPregnancyOutcomeUuid(String pregnancyOutcomeUuid) {
-            this.pregnancyOutcomeUuid = pregnancyOutcomeUuid;
         }
 
         public Calendar getCollectionDateTime() {
             return collectionDateTime;
         }
 
-        public void setCollectionDateTime(Calendar collectionDateTime) {
-            this.collectionDateTime = collectionDateTime;
-        }
-
-        public boolean isProcessedByMirth() {
-            return processedByMirth;
-        }
-
-        public void setProcessedByMirth(boolean processedByMirth) {
-            this.processedByMirth = processedByMirth;
-        }
-
         public String getOutcomeType() {
             return outcomeType;
-        }
-
-        public void setOutcomeType(String outcomeType) {
-            this.outcomeType = outcomeType;
         }
 
         public String getChildUuid() {
             return childUuid;
         }
 
-        public void setChildUuid(String childUuid) {
-            this.childUuid = childUuid;
-        }
-
         public String getChildFirstName() {
             return childFirstName;
-        }
-
-        public void setChildFirstName(String childFirstName) {
-            this.childFirstName = childFirstName;
         }
 
         public String getChildMiddleName() {
             return childMiddleName;
         }
 
-        public void setChildMiddleName(String childMiddleName) {
-            this.childMiddleName = childMiddleName;
-        }
-
         public String getChildLastName() {
             return childLastName;
-        }
-
-        public void setChildLastName(String childLastName) {
-            this.childLastName = childLastName;
         }
 
         public String getChildGender() {
             return childGender;
         }
 
-        public void setChildGender(String childGender) {
-            this.childGender = childGender;
-        }
-
         public String getChildRelationshipToGroupHead() {
             return childRelationshipToGroupHead;
-        }
-
-        public void setChildRelationshipToGroupHead(String childRelationshipToGroupHead) {
-            this.childRelationshipToGroupHead = childRelationshipToGroupHead;
         }
 
         public String getChildNationality() {
             return childNationality;
         }
 
-        public void setChildNationality(String childNationality) {
-            this.childNationality = childNationality;
-        }
     }
 }

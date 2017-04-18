@@ -155,24 +155,11 @@ public class VisitFormResource extends AbstractFormResource {
         private static final long serialVersionUID = 6052940190094850124L;
 
         //core form fields
-        @XmlElement(name = "processed_by_mirth")
-        private boolean processedByMirth;
-
         @XmlElement(name = "entity_uuid")
         private String uuid;
 
-        @XmlElement(name = "entity_ext_id")
-        private String entityExtId;
-
-        @XmlElement(name = "field_worker_ext_id")
-        private String fieldworkerExtId;
-
         @XmlElement(name = "field_worker_uuid")
         private String fieldWorkerUuid;
-
-        @XmlElement(name = "collection_date_time")
-        @XmlJavaTypeAdapter(CalendarAdapter.class)
-        private Calendar collectionDateTime;
 
         //visit form fields
         @XmlElement(name = "visit_ext_id")
@@ -195,16 +182,8 @@ public class VisitFormResource extends AbstractFormResource {
             return visitUuid;
         }
 
-        public void setVisitUuid(String visitUuid) {
-            this.visitUuid = visitUuid;
-        }
-
         public String getLocationUuid() {
             return locationUuid;
-        }
-
-        public void setLocationUuid(String locationUuid) {
-            this.locationUuid = locationUuid;
         }
 
         public String getUuid() {
@@ -215,68 +194,20 @@ public class VisitFormResource extends AbstractFormResource {
             this.uuid = uuid;
         }
 
-        public String getEntityExtId() {
-            return entityExtId;
-        }
-
-        public void setEntityExtId(String entityExtId) {
-            this.entityExtId = entityExtId;
-        }
-
         public String getFieldWorkerUuid() {
             return fieldWorkerUuid;
-        }
-
-        public void setFieldWorkerUuid(String fieldWorkerUuid) {
-            this.fieldWorkerUuid = fieldWorkerUuid;
-        }
-
-        public Calendar getCollectionDateTime() {
-            return collectionDateTime;
-        }
-
-        public void setCollectionDateTime(Calendar collectionDateTime) {
-            this.collectionDateTime = collectionDateTime;
-        }
-
-        public boolean isProcessedByMirth() {
-            return processedByMirth;
-        }
-
-        public void setProcessedByMirth(boolean processedByMirth) {
-            this.processedByMirth = processedByMirth;
         }
 
         public String getVisitExtId() {
             return visitExtId;
         }
 
-        public void setVisitExtId(String visitExtId) {
-            this.visitExtId = visitExtId;
-        }
-
-        public String getFieldworkerExtId() {
-            return fieldworkerExtId;
-        }
-
-        public void setFieldworkerExtId(String fieldworkerExtId) {
-            this.fieldworkerExtId = fieldworkerExtId;
-        }
-
         public String getLocationExtId() {
             return locationExtId;
         }
 
-        public void setLocationExtId(String locationExtId) {
-            this.locationExtId = locationExtId;
-        }
-
         public Calendar getVisitDate() {
             return visitDate;
-        }
-
-        public void setVisitDate(Calendar visitDate) {
-            this.visitDate = visitDate;
         }
 
     }
