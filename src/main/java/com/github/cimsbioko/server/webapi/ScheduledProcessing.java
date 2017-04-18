@@ -17,6 +17,7 @@ public class ScheduledProcessing {
     }
 
     @Scheduled(cron = "*/30 * * * * *")
+    @RunAsUser("data-import")
     public void processForms() {
         long start = System.currentTimeMillis();
         int formCount = processor.processForms();
