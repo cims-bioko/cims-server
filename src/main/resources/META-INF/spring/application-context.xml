@@ -381,13 +381,8 @@
         <property name="transactionAttributeSource" ref="txAttrSource"/>
     </bean>
 
-    <!-- Request scoped bean to serve as a cache for the current logged in user -->
-    <bean id="userCache" class="com.github.cimsbioko.server.controller.util.UserCache" scope="request"/>
-
     <!-- Simple bean to get current logged in user -->
-    <bean id="currentUser" class="com.github.cimsbioko.server.controller.service.impl.CurrentUserImpl">
-        <property name="userDao" ref="userDao"/>
-    </bean>
+    <bean id="currentUser" class="com.github.cimsbioko.server.controller.service.impl.CurrentUserImpl" />
 
     <!-- Authorization Advice to determine if logged in User has privilege to access method within service -->
     <bean id="authorizationAdvice" class="com.github.cimsbioko.server.controller.aop.AuthorizationAdvice">
