@@ -64,10 +64,14 @@
 
     <tx:annotation-driven />
 
-    <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler" />
-
     <lang:std id="formProcessor"
               script-source="classpath:/process-forms.js"
               script-interfaces="com.github.cimsbioko.server.webapi.FormProcessor" />
+
+    <!-- disabled since testContext.xml imports multiple bean async bean post-processors into the same context -->
+    <beans profile="!test">
+        <!-- required in child context for tasks to refer to web endpoints -->
+        <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler" />
+    </beans>
 
 </beans>

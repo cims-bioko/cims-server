@@ -15,6 +15,7 @@ import com.github.cimsbioko.server.domain.model.Residency;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -41,6 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class})
 @DatabaseSetup(value = "/formResourceTestDb.xml", type = DatabaseOperation.REFRESH)
+@ActiveProfiles("test")
 public class InMigrationFormResourceTest extends AbstractResourceTest {
 
     @Autowired
