@@ -242,13 +242,20 @@ with (imports) {
         for (var b=0; b<possibleBindings.length; b++) {
             var bindingName = possibleBindings[b], binding = bindings[bindingName];
             if (binding) {
-                var formXml = toXml(binding.mapData(data)), formObj = toForm(formXml);
                 print('processing form ' + instanceId + ' with binding ' + bindingName);
-                getBean(binding.endpoint).processForm(formObj);
+                (binding.process || defaultProcess)(binding, data);
                 return;
             }
         }
         print('not processing form ' + instanceId + ', no binding found');
+    }
+
+    /**
+     * The default form processing method, used unless a specific one is specified by the binding.
+     */
+    function defaultProcess(binding, data) {
+        var formXml = toXml(binding.mapData(data)), formObj = toForm(formXml);
+        getBean(binding.endpoint).processForm(formObj);
     }
 
     /**
