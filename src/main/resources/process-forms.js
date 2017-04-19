@@ -236,9 +236,9 @@ with (imports) {
      */
     function process(submission) {
         var form = JSON.parse(submission.json),
-            data = form.data, meta = data.meta,
             possibleBindings = [submission.getFormBinding(), submission.getFormId()],
-            instanceId = submission.getInstanceId();
+            instanceId = submission.getInstanceId(),
+            data = form.data;
         for (var b=0; b<possibleBindings.length; b++) {
             var bindingName = possibleBindings[b], binding = bindings[bindingName];
             if (binding) {
