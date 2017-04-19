@@ -1,5 +1,5 @@
 /**
- * The core form processing logic. The following script describes how submitted
+ * The core form processing logic. The following script defines how submitted
  * forms will be processed by the server.
  */
 
