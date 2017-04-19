@@ -208,6 +208,59 @@ with (imports) {
                     }
                 };
             }
+        },
+        pregnancy_outcome: {
+            endpoint: PregnancyOutcomeFormResource.class,
+            mapCoreData: function(data) {
+                return {
+                    pregnancyOutcomeCoreForm: {
+                        pregnancy_outcome_uuid: data.pregnancyOutcomeUuid,
+                        field_worker_uuid: data.fieldWorkerUuid,
+                        visit_uuid: data.visitUuid,
+                        mother_uuid: data.motherUuid,
+                        father_uuid: data.fatherUuid,
+                        delivery_date: data.deliveryDate
+                    }
+                };
+            },
+            mapOutcomeData: function(outcome) {
+                return {
+                    pregnancyOutcomeOutcomesForm: {
+                        pregnancy_outcome_uuid: outcome.pregnancyOutcomeUuid,
+                        collection_date_time: outcome.collectionDateTime,
+                        socialgroup_uuid: outcome.socialgroupUuid,
+                        outcome_type: outcome.outcomeType,
+                        child_uuid: outcome.childUuid,
+                        child_first_name: outcome.childFirstName,
+                        child_middle_name: outcome.childMiddleName,
+                        child_last_name: outcome.childLastName,
+                        child_gender: outcome.childGender,
+                        child_relationship_to_group_head: outcome.childRelationshipToGroupHead,
+                        child_nationality: outcome.childNationality
+                    }
+                };
+            },
+            process: function(binding, data) {
+
+                var endpoint = getBean(binding.endpoint);
+
+                function processCore(d) {
+                    print('processing core');
+                    endpoint.processCoreForm(mapForm(binding.mapCoreData, d));
+                }
+
+                function processOutcomes(outcomes) {
+                    if (outcomes) {
+                        print('processing ' + outcomes.length + ' outcomes');
+                        for (var o=0; o<outcomes.length; o++) {
+                            endpoint.processOutcomesForm(mapForm(binding.mapOutcomeData, outcomes[o]));
+                        }
+                    }
+                }
+
+                processCore(data);
+                processOutcomes(data.outcomes);
+            }
         }
     };
 
