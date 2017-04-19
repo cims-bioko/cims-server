@@ -251,11 +251,17 @@ with (imports) {
     }
 
     /**
+     * Generic form mapping function.
+     */
+    function mapForm(mapFn, data) {
+        return toForm(toXml(mapFn(data)));
+    }
+
+    /**
      * The default form processing method, used unless a specific one is specified by the binding.
      */
     function defaultProcess(binding, data) {
-        var formXml = toXml(binding.mapData(data)), formObj = toForm(formXml);
-        getBean(binding.endpoint).processForm(formObj);
+        getBean(binding.endpoint).processForm(mapForm(binding.mapData, data));
     }
 
     /**
