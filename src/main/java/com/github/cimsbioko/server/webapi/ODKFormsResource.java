@@ -67,6 +67,12 @@ public class ODKFormsResource {
     @Autowired
     private FormSubmissionDao submitDao;
 
+    @RequestMapping(value = "/submission", method = RequestMethod.HEAD)
+    public void handleHead(HttpServletResponse rsp) {
+        addOpenRosaHeaders(rsp);
+        rsp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+    }
+
     @PostMapping("/submission")
     public void handle(@RequestParam("xml_submission_file") MultipartFile formFile,
                        @RequestParam("deviceID") String deviceId, HttpServletResponse rsp) throws IOException {
