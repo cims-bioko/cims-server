@@ -309,14 +309,13 @@ with (imports) {
      * Processes a single form submission.
      */
     function process(submission) {
-        var form = JSON.parse(submission.json),
-            possibleBindingNames = unique([submission.getFormBinding(), submission.getFormId()]),
-            instanceId = submission.getInstanceId(),
-            data = form.data;
+        var instanceId = submission.getInstanceId(),
+            possibleBindingNames = unique([submission.getFormBinding(), submission.getFormId()]);
         for (var bn=0; bn<possibleBindingNames.length; bn++) {
             var bindingName = possibleBindingNames[bn], binding = bindings[bindingName];
             if (binding) {
                 log.info('processing {} (binding: {})', instanceId, bindingName);
+                var form = JSON.parse(submission.json), data = form.data;
                 (binding.process || defaultProcess)(binding, data);
                 return;
             }
