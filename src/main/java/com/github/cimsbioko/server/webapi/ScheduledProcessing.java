@@ -22,6 +22,8 @@ public class ScheduledProcessing {
         long start = System.currentTimeMillis();
         int formCount = processor.processForms();
         long end = System.currentTimeMillis();
-        log.info("processed {} forms in {}ms", formCount, end - start);
+        if (formCount > 0) {
+            log.info("processed {} forms in {}ms", formCount, end - start);
+        }
     }
 }
