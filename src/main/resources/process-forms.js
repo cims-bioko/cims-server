@@ -12,7 +12,7 @@ var imports = new JavaImporter(
 
 with (imports) {
 
-    var appCtx, jaxb, formService;
+    var appCtx, log, jaxb, formService;
 
     /**
      * Convenience function for looking up application objects.
@@ -28,6 +28,13 @@ with (imports) {
         appCtx = ctx;
         formService = getBean(FormSubmissionService.class);
         jaxb = getBean('jaxbMarshaller');
+    }
+
+    /**
+     * Called by server. Allows us to send messages to server logs.
+     */
+    function setLogger(logger) {
+        log = logger;
     }
 
     /**
