@@ -58,9 +58,9 @@
         <property name="unmarshaller" ref="jaxbMarshaller"/>
     </bean>
 
-    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager"/>
+    <mvc:annotation-driven content-negotiation-manager="mvcContentNegotiationManager"/>
 
-    <bean id="contentNegotiationManager"
+    <bean id="mvcContentNegotiationManager"
           class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
         <property name="favorPathExtension" value="false"/>
         <property name="favorParameter" value="true"/>
