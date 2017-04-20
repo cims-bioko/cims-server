@@ -10,6 +10,8 @@
     <import resource="classpath:/META-INF/spring/application-context.xml"/>
     <import resource="classpath:/META-INF/spring/webserviceApplicationContext.xml" />
 
+    <bean class="com.github.cimsbioko.server.SecurityConfiguration" />
+
     <bean id="dataDir" class="java.io.File">
         <constructor-arg value="#{systemProperties['java.io.tmpdir']}/cims-server-test"/>
     </bean>

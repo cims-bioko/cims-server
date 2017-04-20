@@ -248,23 +248,6 @@
         <property name="locale" value="#{siteProperties.locale}"/>
     </bean>
 
-    <!-- Configure Spring Security -->
-    <security:http auto-config="true" use-expressions="true" disable-url-rewriting="true">
-        <security:headers disabled="true" />
-        <security:csrf disabled="true"/>
-        <security:form-login authentication-success-handler-ref="authSuccessHandler" login-page="/login.faces"
-                login-processing-url="/loginProcess" authentication-failure-url="/login.faces?login_error=1"/>
-        <security:intercept-url pattern="/login.faces" access="permitAll()"/>
-        <security:intercept-url pattern="/resources/images/**" access="permitAll()"/>
-        <security:intercept-url pattern="/resources/css/main.css" access="permitAll()"/>
-        <security:intercept-url pattern="/resources/css/login.css" access="permitAll()"/>
-        <security:intercept-url pattern="/logout.faces" access="permitAll()"/>
-        <security:intercept-url pattern="/favicon.ico" access="permitAll()"/>
-        <security:intercept-url pattern="/api/rest/**" access="permitAll()"/>
-        <security:intercept-url pattern="/**" access="isAuthenticated()"/>
-        <security:logout logout-url="/logoutProcess" success-handler-ref="logoutSuccessHandler"/>
-    </security:http>
-
     <bean id="timestampConverter" class="com.github.cimsbioko.server.web.cvt.TimeStampConverter">
         <constructor-arg value="#{siteProperties.dateFormat}"/>
     </bean>

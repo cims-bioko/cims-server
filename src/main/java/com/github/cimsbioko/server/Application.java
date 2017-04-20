@@ -10,6 +10,7 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.orm.hibernate4.support.OpenSessionInViewFilter;
 import org.springframework.web.multipart.MultipartResolver;
@@ -29,6 +30,7 @@ import java.util.Properties;
 @Configuration
 @EnableAutoConfiguration
 @ImportResource("classpath:/META-INF/spring/application-context.xml")
+@Import(SecurityConfiguration.class)
 public class Application extends SpringBootServletInitializer {
 
     @Value("${app.data.dir}")
