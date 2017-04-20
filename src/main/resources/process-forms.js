@@ -295,11 +295,22 @@ with (imports) {
     }
 
     /**
+     * Deduplicates a list while maintaining initial ordering.
+     */
+    function unique(list) {
+        return list.filter(
+            function(element, index, array) {
+                return array.indexOf(element) === index;
+            }
+        );
+    }
+
+    /**
      * Processes a single form submission.
      */
     function process(submission) {
         var form = JSON.parse(submission.json),
-            possibleBindings = [submission.getFormBinding(), submission.getFormId()],
+            possibleBindings = unique([submission.getFormBinding(), submission.getFormId()]),
             instanceId = submission.getInstanceId(),
             data = form.data;
         for (var b=0; b<possibleBindings.length; b++) {
