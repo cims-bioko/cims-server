@@ -22,7 +22,7 @@ with (imports) {
     }
 
     /**
-     * Called by the server upon initialization.
+     * Called by server. Allows us to lookup and interact with application services.
      */
     function setApplicationContext(ctx) {
         appCtx = ctx;
