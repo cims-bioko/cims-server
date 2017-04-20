@@ -16,7 +16,7 @@ public class ScheduledProcessing {
         this.processor = processor;
     }
 
-    @Scheduled(cron = "*/30 * * * * *")
+    @Scheduled(fixedDelay = 30000)
     @RunAsUser("data-import")
     public void processForms() {
         long start = System.currentTimeMillis();
