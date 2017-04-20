@@ -252,14 +252,15 @@ with (imports) {
                 var endpoint = getBean(binding.endpoint);
 
                 function processCore(d) {
-                    print('processing core');
+                    log.debug('processing core form');
                     endpoint.processCoreForm(mapForm(binding.mapCoreData, d));
                 }
 
                 function processOutcomes(outcomes) {
                     if (outcomes) {
-                        print('processing ' + outcomes.length + ' outcomes');
+                        log.debug('processing {} outcome forms', outcomes.length);
                         for (var o=0; o<outcomes.length; o++) {
+                            log.debug('processing outcome form {}', (o+1).toFixed())
                             endpoint.processOutcomesForm(mapForm(binding.mapOutcomeData, outcomes[o]));
                         }
                     }
@@ -280,14 +281,16 @@ with (imports) {
             var submission = forms[f];
             try {
                 process(submission);
-            } catch (error) {
-                error.printStackTrace();
+            } catch (e) {
+                log.error("failed to process submission", e);
                 failures += 1;
             }
             formService.markProcessed(submission);
             processed += 1;
         }
-        print('processing completed with ' + failures + ' failures');
+        if (failures > 0) {
+            log.warn('processing completed with {} failures', failures.toFixed());
+        }
         return processed;
     }
 
@@ -302,12 +305,12 @@ with (imports) {
         for (var b=0; b<possibleBindings.length; b++) {
             var bindingName = possibleBindings[b], binding = bindings[bindingName];
             if (binding) {
-                print('processing form ' + instanceId + ' with binding ' + bindingName);
+                log.info('processing {} (binding: {})', instanceId, bindingName);
                 (binding.process || defaultProcess)(binding, data);
                 return;
             }
         }
-        print('not processing form ' + instanceId + ', no binding found');
+        log.warn('processing {} (binding: none), tried [{}]', instanceId, possibleBindings.join());
     }
 
     /**
