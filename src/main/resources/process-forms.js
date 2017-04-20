@@ -310,18 +310,18 @@ with (imports) {
      */
     function process(submission) {
         var form = JSON.parse(submission.json),
-            possibleBindings = unique([submission.getFormBinding(), submission.getFormId()]),
+            possibleBindingNames = unique([submission.getFormBinding(), submission.getFormId()]),
             instanceId = submission.getInstanceId(),
             data = form.data;
-        for (var b=0; b<possibleBindings.length; b++) {
-            var bindingName = possibleBindings[b], binding = bindings[bindingName];
+        for (var bn=0; bn<possibleBindingNames.length; bn++) {
+            var bindingName = possibleBindingNames[bn], binding = bindings[bindingName];
             if (binding) {
                 log.info('processing {} (binding: {})', instanceId, bindingName);
                 (binding.process || defaultProcess)(binding, data);
                 return;
             }
         }
-        log.warn('processing {} (binding: none), tried [{}]', instanceId, possibleBindings.join());
+        log.warn('processing {} (binding: none), tried [{}]', instanceId, possibleBindingNames.join());
     }
 
     /**
