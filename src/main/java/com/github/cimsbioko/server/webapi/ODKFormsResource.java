@@ -91,20 +91,22 @@ public class ODKFormsResource {
 
     @PostMapping("/submission")
     public void handle(@RequestParam("deviceID") String deviceId,
-                       @RequestParam("xml_submission_file") MultipartFile formFile,
+                       @RequestParam("xml_submission_file") MultipartFile xmlFile,
                        MultipartHttpServletRequest req, HttpServletResponse rsp) throws IOException {
 
-        // Convert original form submission data into JSON
-        String formContent = new String(StreamUtils.copyToByteArray(formFile.getInputStream()), "UTF-8");
-        JSONObject jsonContent = toJSONObject(formContent);
+        log.info("received submission from device '{}'", deviceId);
 
-        log.info("received submission from device '{}': {}\n{}", deviceId, formContent, jsonContent);
+        String xml = new String(StreamUtils.copyToByteArray(xmlFile.getInputStream()), "UTF-8");
+        log.debug("submitted form:\n{}", xml);
+
+        JSONObject jsonObj = toJSONObject(xml);
+        log.debug("converted json:\n{}", jsonObj);
 
         addOpenRosaHeaders(rsp);
 
         // Extract interesting values from form content
-        String instanceName = jsonContent.names().getString(0);
-        JSONObject instance = jsonContent.getJSONObject(instanceName);
+        String instanceName = jsonObj.names().getString(0);
+        JSONObject instance = jsonObj.getJSONObject(instanceName);
 
         // Get metadata section, or create one
         JSONObject meta;
@@ -162,7 +164,7 @@ public class ODKFormsResource {
         }
 
         // Create a database record for the submission
-        FormSubmission submission = new FormSubmission(instanceId, formContent, jsonContent.toString(),
+        FormSubmission submission = new FormSubmission(instanceId, xml, jsonObj.toString(),
                 id, version, binding, deviceId, collected, null);
         submitDao.save(submission);
 
