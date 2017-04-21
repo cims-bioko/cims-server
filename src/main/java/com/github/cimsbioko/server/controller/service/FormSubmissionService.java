@@ -11,5 +11,5 @@ public interface FormSubmissionService {
     List<FormSubmission> getUnprocessed(int batchSize);
 
     @Transactional
-    void markProcessed(FormSubmission submission);
+    void markProcessed(FormSubmission submission, Boolean processedOk);
 }

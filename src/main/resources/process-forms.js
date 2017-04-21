@@ -12,7 +12,7 @@ var imports = new JavaImporter(
 
 with (imports) {
 
-    var appCtx, log, jaxb, formService;
+    var appCtx, log, jaxb, formService, batchSize = 300;
 
     /**
      * Convenience function for looking up application objects.
@@ -277,22 +277,22 @@ with (imports) {
      * This processing entry point is called periodically by the server (every 30s).
      */
     function processForms() {
-        var batchSize = 300, forms = formService.getUnprocessed(batchSize), processed = 0, failures = 0;
+        var forms = formService.getUnprocessed(batchSize), failures = 0;
         for (var f = 0; f < forms.length; f++) {
-            var submission = forms[f];
+            var submission = forms[f], processedOk = false;
             try {
                 process(submission);
+                processedOk = true;
             } catch (e) {
                 log.error("failed to process submission", e);
-                failures += 1;
+                failures++;
             }
-            formService.markProcessed(submission);
-            processed += 1;
+            formService.markProcessed(submission, processedOk);
         }
         if (failures > 0) {
             log.warn('processing completed with {} failures', failures.toFixed());
         }
-        return processed;
+        return f;
     }
 
     /**

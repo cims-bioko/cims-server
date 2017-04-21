@@ -22,8 +22,8 @@ public class FormSubmissionServiceImpl implements FormSubmissionService {
     }
 
     @Override
-    public void markProcessed(FormSubmission submission) {
-        formDao.markProcessed(submission);
+    public void markProcessed(FormSubmission submission, Boolean processedOk) {
+        formDao.markProcessed(submission, processedOk);
     }
 
 }

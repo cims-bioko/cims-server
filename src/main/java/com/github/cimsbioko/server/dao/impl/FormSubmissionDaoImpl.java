@@ -68,11 +68,11 @@ public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements
     }
 
     @Override
-    public void markProcessed(FormSubmission submission) {
+    public void markProcessed(FormSubmission submission, Boolean processedOk) {
         String instanceId = submission.getInstanceId();
         if (instanceId == null)
             throw new IllegalArgumentException("submission must have an instance id");
-        sql.update("update form_submission set processed = now() where instanceId = ?", instanceId);
+        sql.update("update form_submission set processed = now(), processed_ok = ? where instanceId = ?", processedOk, instanceId);
     }
 
 }
