@@ -247,7 +247,7 @@ with (imports) {
                     }
                 };
             },
-            process: function(binding, data) {
+            process: function(binding, form) {
 
                 var endpoint = getBean(binding.endpoint);
 
@@ -266,6 +266,7 @@ with (imports) {
                     }
                 }
 
+                var data = form.data;
                 processCore(data);
                 processOutcomes(data.outcomes);
             }
@@ -315,12 +316,12 @@ with (imports) {
             var bindingName = possibleBindingNames[bn], binding = bindings[bindingName];
             if (binding) {
                 log.info('processing {} (binding: {})', instanceId, bindingName);
-                var form = JSON.parse(submission.json), data = form.data;
-                (binding.process || defaultProcess)(binding, data);
+                var form = JSON.parse(submission.json);
+                (binding.process || defaultProcess)(binding, form);
                 return;
             }
         }
-        log.warn('processing {} (binding: none), tried [{}]', instanceId, possibleBindingNames.join());
+        log.info('processing {} (binding: none), tried [{}]', instanceId, possibleBindingNames.join());
     }
 
     /**
@@ -333,8 +334,8 @@ with (imports) {
     /**
      * The default form processing method, used unless a specific one is specified by the binding.
      */
-    function defaultProcess(binding, data) {
-        getBean(binding.endpoint).processForm(mapForm(binding.mapData, data));
+    function defaultProcess(binding, form) {
+        getBean(binding.endpoint).processForm(mapForm(binding.mapData, form.data));
     }
 
     /**
