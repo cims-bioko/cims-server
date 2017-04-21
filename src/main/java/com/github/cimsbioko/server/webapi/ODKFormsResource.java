@@ -7,6 +7,7 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -26,10 +28,14 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static com.github.cimsbioko.server.Application.WebConfig.FORMS_PATH;
+import static java.time.Instant.now;
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
 import static org.json.XML.toJSONObject;
 import static org.springframework.security.web.util.UrlUtils.buildFullRequestUrl;
@@ -39,8 +45,18 @@ public class ODKFormsResource {
 
     private static Logger log = LoggerFactory.getLogger(ODKFormsResource.class);
 
+    private static final String INSTANCE_ID = "instanceID";
+    private static final String COLLECTION_DATE_TIME = "collectionDateTime";
+    private static final String META = "meta";
+    private static final String ID = "id";
+    private static final String VERSION = "version";
+    private static final String CIMS_BINDING = "cims-binding";
+
     @Resource
-    File formsDir;
+    private File formsDir;
+
+    @Resource
+    private File submissionsDir;
 
     @GetMapping(path = "/forms", produces = {"text/xml"})
     @ResponseBody
@@ -74,20 +90,87 @@ public class ODKFormsResource {
     }
 
     @PostMapping("/submission")
-    public void handle(@RequestParam("xml_submission_file") MultipartFile formFile,
-                       @RequestParam("deviceID") String deviceId, HttpServletResponse rsp) throws IOException {
+    public void handle(@RequestParam("deviceID") String deviceId,
+                       @RequestParam("xml_submission_file") MultipartFile formFile,
+                       MultipartHttpServletRequest req, HttpServletResponse rsp) throws IOException {
+
+        // Convert original form submission data into JSON
         String formContent = new String(StreamUtils.copyToByteArray(formFile.getInputStream()), "UTF-8");
         JSONObject jsonContent = toJSONObject(formContent);
+
         log.info("received submission from device '{}': {}\n{}", deviceId, formContent, jsonContent);
+
         addOpenRosaHeaders(rsp);
+
+        // Extract interesting values from form content
         String instanceName = jsonContent.names().getString(0);
-        JSONObject instance = jsonContent.getJSONObject(instanceName), meta = instance.getJSONObject("meta");
-        Timestamp collected = Timestamp.valueOf(instance.getString("collectionDateTime"));
-        FormSubmission submission = new FormSubmission(meta.getString("instanceID"), formContent, jsonContent.toString(),
-                instance.getString("id"), instance.get("version").toString(), instance.getString("cims-binding"),
-                deviceId, collected, null);
+        JSONObject instance = jsonContent.getJSONObject(instanceName);
+
+        // Get metadata section, or create one
+        JSONObject meta;
+        try {
+            meta = instance.getJSONObject(META);
+        } catch (JSONException je) {
+            meta = new JSONObject();
+            instance.put(META, meta);
+        }
+
+        // Get collected time or add it
+        Timestamp collected;
+        try {
+            collected = Timestamp.valueOf(instance.getString(COLLECTION_DATE_TIME));
+        } catch (JSONException je) {
+            collected = Timestamp.from(now());
+            String formatted = new SimpleDateFormat("yyyy-MM-dd").format(collected);
+            instance.put(COLLECTION_DATE_TIME, formatted);
+        }
+
+        // Get or add instance id
+        String instanceId;
+        try {
+            instanceId = meta.getString(INSTANCE_ID);
+        } catch (JSONException je) {
+            instanceId = generateInstanceId();
+            meta.put(INSTANCE_ID, instanceId);
+        }
+
+        // Create directory to store submission
+        File instanceDir = new File(submissionsDir, instanceId);
+        instanceDir.mkdirs();
+
+        // Save uploaded files to the submission directory
+        for (Map.Entry<String, List<MultipartFile>> fileEntry : req.getMultiFileMap().entrySet()) {
+            List<MultipartFile> files = fileEntry.getValue();
+            if (files.size() == 1) {
+                MultipartFile file = files.get(0);
+                File dest = new File(instanceDir, file.getOriginalFilename());
+                file.transferTo(dest);
+            } else {
+                log.warn("skipped multipart entry {}, had {} files", fileEntry.getKey(), files.size());
+            }
+        }
+
+        // Get required instance values
+        String id = instance.getString(ID), version = instance.get(VERSION).toString();
+
+        // Get CIMS-specific binding or fall back on form id
+        String binding;
+        try {
+            binding = instance.getString(CIMS_BINDING);
+        } catch (JSONException je) {
+            binding = id;
+        }
+
+        // Create a database record for the submission
+        FormSubmission submission = new FormSubmission(instanceId, formContent, jsonContent.toString(),
+                id, version, binding, deviceId, collected, null);
         submitDao.save(submission);
+
         rsp.setStatus(HttpServletResponse.SC_CREATED);
+    }
+
+    private String generateInstanceId() {
+        return String.format("uuid:%s", UUID.randomUUID());
     }
 
     private void addOpenRosaHeaders(HttpServletResponse rsp) {

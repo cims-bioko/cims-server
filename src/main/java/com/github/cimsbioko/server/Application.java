@@ -39,6 +39,9 @@ public class Application extends SpringBootServletInitializer {
     @Value("${app.forms.dir}")
     File formsDir;
 
+    @Value("${app.submissions.dir}")
+    File submissionsDir;
+
     @Bean
     File dataDir() {
         dataDir.mkdirs();
@@ -49,6 +52,12 @@ public class Application extends SpringBootServletInitializer {
     File formsDir() {
         formsDir.mkdirs();
         return formsDir;
+    }
+
+    @Bean
+    File submissionsDir() {
+        submissionsDir.mkdirs();
+        return submissionsDir;
     }
 
     public static void main(String[] args) {
