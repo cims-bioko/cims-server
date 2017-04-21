@@ -1,5 +1,7 @@
 package com.github.cimsbioko.server.webapi;
 
+import com.github.cimsbioko.server.controller.exception.ExistingSubmissionException;
+import com.github.cimsbioko.server.controller.service.FormSubmissionService;
 import com.github.cimsbioko.server.dao.FormSubmissionDao;
 import com.github.cimsbioko.server.domain.model.FormSubmission;
 import org.jdom2.Document;
@@ -13,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -51,6 +52,10 @@ public class ODKFormsResource {
     private static final String ID = "id";
     private static final String VERSION = "version";
     private static final String CIMS_BINDING = "cims-binding";
+    private static final String XML_SUBMISSION_FILE = "xml_submission_file";
+    private static final String DEVICE_ID = "deviceID";
+    private static final String DATE_PATTERN = "yyyy-MM-dd";
+    private static final String UTF_8 = "UTF-8";
 
     @Resource
     private File formsDir;
@@ -81,7 +86,7 @@ public class ODKFormsResource {
     }
 
     @Autowired
-    private FormSubmissionDao submitDao;
+    private FormSubmissionService submissionService;
 
     @RequestMapping(value = "/submission", method = RequestMethod.HEAD)
     public void handleHead(HttpServletResponse rsp) {
@@ -90,13 +95,13 @@ public class ODKFormsResource {
     }
 
     @PostMapping("/submission")
-    public void handle(@RequestParam("deviceID") String deviceId,
-                       @RequestParam("xml_submission_file") MultipartFile xmlFile,
+    public void handle(@RequestParam(DEVICE_ID) String deviceId,
+                       @RequestParam(XML_SUBMISSION_FILE) MultipartFile xmlFile,
                        MultipartHttpServletRequest req, HttpServletResponse rsp) throws IOException {
 
         log.info("received submission from device '{}'", deviceId);
 
-        String xml = new String(StreamUtils.copyToByteArray(xmlFile.getInputStream()), "UTF-8");
+        String xml = new String(xmlFile.getBytes(), UTF_8);
         log.debug("submitted form:\n{}", xml);
 
         JSONObject jsonObj = toJSONObject(xml);
@@ -123,33 +128,8 @@ public class ODKFormsResource {
             collected = Timestamp.valueOf(instance.getString(COLLECTION_DATE_TIME));
         } catch (JSONException je) {
             collected = Timestamp.from(now());
-            String formatted = new SimpleDateFormat("yyyy-MM-dd").format(collected);
+            String formatted = new SimpleDateFormat(DATE_PATTERN).format(collected);
             instance.put(COLLECTION_DATE_TIME, formatted);
-        }
-
-        // Get or add instance id
-        String instanceId;
-        try {
-            instanceId = meta.getString(INSTANCE_ID);
-        } catch (JSONException je) {
-            instanceId = generateInstanceId();
-            meta.put(INSTANCE_ID, instanceId);
-        }
-
-        // Create directory to store submission
-        File instanceDir = new File(submissionsDir, instanceId);
-        instanceDir.mkdirs();
-
-        // Save uploaded files to the submission directory
-        for (Map.Entry<String, List<MultipartFile>> fileEntry : req.getMultiFileMap().entrySet()) {
-            List<MultipartFile> files = fileEntry.getValue();
-            if (files.size() == 1) {
-                MultipartFile file = files.get(0);
-                File dest = new File(instanceDir, file.getOriginalFilename());
-                file.transferTo(dest);
-            } else {
-                log.warn("skipped multipart entry {}, had {} files", fileEntry.getKey(), files.size());
-            }
         }
 
         // Get required instance values
@@ -163,10 +143,46 @@ public class ODKFormsResource {
             binding = id;
         }
 
+        // Get or add instance id
+        String instanceId;
+        try {
+            instanceId = meta.getString(INSTANCE_ID);
+        } catch (JSONException je) {
+            instanceId = generateInstanceId();
+            meta.put(INSTANCE_ID, instanceId);
+        }
+
         // Create a database record for the submission
-        FormSubmission submission = new FormSubmission(instanceId, xml, jsonObj.toString(),
-                id, version, binding, deviceId, collected, null);
-        submitDao.save(submission);
+        boolean isDuplicateSubmission = false;
+        try {
+            FormSubmission submission = new FormSubmission(instanceId, xml, jsonObj.toString(), id, version, binding,
+                    deviceId, collected, null);
+            submissionService.recordSubmission(submission);
+        } catch (ExistingSubmissionException e) {
+            log.debug("duplicate submission, only uploading attachments");
+            isDuplicateSubmission = true;
+        }
+
+        // Create directory to store submission
+        File instanceDir = new File(submissionsDir, instanceId);
+        instanceDir.mkdirs();
+
+        // Save uploaded files to the submission directory
+        for (Map.Entry<String, List<MultipartFile>> fileEntry : req.getMultiFileMap().entrySet()) {
+            if (isDuplicateSubmission && XML_SUBMISSION_FILE.equalsIgnoreCase(fileEntry.getKey())) {
+                log.debug("skipping multipart file {}", XML_SUBMISSION_FILE);
+                continue; // Don't allow updating the original form instance
+            } else {
+                List<MultipartFile> files = fileEntry.getValue();
+                if (files.size() == 1) {
+                    MultipartFile file = files.get(0);
+                    File dest = new File(instanceDir, file.getOriginalFilename());
+                    file.transferTo(dest);
+                } else {
+                    log.warn("skipped multipart entry {}, had {} files", fileEntry.getKey(), files.size());
+                }
+            }
+        }
 
         rsp.setStatus(HttpServletResponse.SC_CREATED);
     }
