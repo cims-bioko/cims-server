@@ -94,9 +94,9 @@ public class ODKFormsResource {
     }
 
     @PostMapping("/submission")
-    public void handle(@RequestParam(DEVICE_ID) String deviceId,
-                       @RequestParam(XML_SUBMISSION_FILE) MultipartFile xmlFile,
-                       MultipartHttpServletRequest req, HttpServletResponse rsp) throws IOException {
+    public void handleSubmission(@RequestParam(DEVICE_ID) String deviceId,
+                                 @RequestParam(XML_SUBMISSION_FILE) MultipartFile xmlFile,
+                                 MultipartHttpServletRequest req, HttpServletResponse rsp) throws IOException {
 
         log.info("received submission from device '{}'", deviceId);
 
