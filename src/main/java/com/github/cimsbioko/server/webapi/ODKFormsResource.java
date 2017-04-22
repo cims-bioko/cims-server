@@ -163,7 +163,7 @@ public class ODKFormsResource {
         }
 
         // Create directory to store submission
-        File instanceDir = new File(submissionsDir, instanceId);
+        File instanceDir = new File(submissionsDir, schemeSubPath(instanceId));
         instanceDir.mkdirs();
 
         // Save uploaded files to the submission directory
@@ -188,6 +188,10 @@ public class ODKFormsResource {
 
     private String generateInstanceId() {
         return String.format("uuid:%s", UUID.randomUUID());
+    }
+
+    private String schemeSubPath(String instanceId) {
+        return instanceId.replaceFirst(":", "/");
     }
 
     private void addOpenRosaHeaders(HttpServletResponse rsp) {
