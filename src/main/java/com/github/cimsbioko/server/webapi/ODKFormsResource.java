@@ -82,7 +82,7 @@ public class ODKFormsResource {
                        HttpServletResponse rsp) throws IOException {
         rsp.setContentType("text/xml;charset=UTF-8");
         addOpenRosaHeaders(rsp);
-        return "forward:" + FORMS_PATH + "/" + formId + "/" + formVersion + "/" + fileName;
+        return String.format("forward:%s/%s/%s/%s", FORMS_PATH, formId, formVersion, fileName);
     }
 
     @Autowired
