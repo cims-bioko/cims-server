@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static com.github.cimsbioko.server.Application.WebConfig.FORMS_PATH;
+import static com.github.cimsbioko.server.Application.WebConfig.SUBMISSIONS_PATH;
 import static java.time.Instant.now;
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
 import static org.json.XML.toJSONObject;
@@ -91,6 +92,12 @@ public class ODKFormsResource {
     public void handleHead(HttpServletResponse rsp) {
         addOpenRosaHeaders(rsp);
         rsp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+    }
+
+    @GetMapping(value = "/submission/{idScheme:\\w+}:{instanceId}/{fileName}.{extension}")
+    public String getSubmissionFile(@PathVariable String idScheme, @PathVariable String instanceId,
+                                    @PathVariable String fileName, @PathVariable String extension) throws UnsupportedEncodingException {
+        return String.format("forward:%s/%s/%s/%s.%s", SUBMISSIONS_PATH, idScheme, instanceId, fileName, extension);
     }
 
     @PostMapping("/submission")

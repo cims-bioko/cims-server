@@ -92,12 +92,16 @@ public class Application extends SpringBootServletInitializer {
 
         public static final String CACHED_FILES_PATH = "/WEB-INF/cached-files";
         public static final String FORMS_PATH = "/WEB-INF/forms";
+        public static final String SUBMISSIONS_PATH = "/WEB-INF/submissions";
 
         @Resource
         File dataDir;
 
         @Resource
         File formsDir;
+
+        @Resource
+        File submissionsDir;
 
         @Bean
         ServletRegistrationBean jsfServletRegistration() {
@@ -114,6 +118,8 @@ public class Application extends SpringBootServletInitializer {
                     .addResourceLocations(dataDir.toURI().toString());
             registry.addResourceHandler(FORMS_PATH + "/**")
                     .addResourceLocations(formsDir.toURI().toString());
+            registry.addResourceHandler(SUBMISSIONS_PATH + "/**")
+                    .addResourceLocations(submissionsDir.toURI().toString());
         }
 
         @Bean
