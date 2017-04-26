@@ -2,6 +2,7 @@ package com.github.cimsbioko.server.webapi;
 
 import com.github.cimsbioko.server.controller.exception.ExistingSubmissionException;
 import com.github.cimsbioko.server.controller.service.FormSubmissionService;
+import com.github.cimsbioko.server.dao.FormSubmissionDao;
 import com.github.cimsbioko.server.domain.model.FormSubmission;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -13,6 +14,11 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +45,9 @@ import static com.github.cimsbioko.server.Application.WebConfig.SUBMISSIONS_PATH
 import static java.time.Instant.now;
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
 import static org.json.XML.toJSONObject;
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_XML;
 import static org.springframework.security.web.util.UrlUtils.buildFullRequestUrl;
 
 @Controller
@@ -63,6 +72,13 @@ public class ODKFormsResource {
     @Resource
     private File submissionsDir;
 
+    @Autowired
+    private FormSubmissionService submissionService;
+
+    @Autowired
+    private FormSubmissionDao submissionDao;
+
+
     @GetMapping(path = "/forms", produces = {"text/xml"})
     @ResponseBody
     public void formList(HttpServletRequest req, HttpServletResponse rsp) throws IOException {
@@ -85,13 +101,39 @@ public class ODKFormsResource {
         return String.format("forward:%s/%s/%s/%s", FORMS_PATH, formId, formVersion, fileName);
     }
 
-    @Autowired
-    private FormSubmissionService submissionService;
-
     @RequestMapping(value = "/submission", method = RequestMethod.HEAD)
     public void handleHead(HttpServletResponse rsp) {
         addOpenRosaHeaders(rsp);
         rsp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+    }
+
+    @GetMapping(value = "/submission/{instanceId}", produces = "application/xml")
+    @ResponseBody
+    public ResponseEntity<?> getXMLInstance(@PathVariable String instanceId)
+            throws IOException {
+        return getInstanceEntity(APPLICATION_XML, instanceId);
+    }
+
+    @GetMapping(value = "/submission/{instanceId}", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<?> getJSONInstance(@PathVariable String instanceId)
+            throws IOException {
+        return getInstanceEntity(APPLICATION_JSON, instanceId);
+    }
+
+    private ResponseEntity<?> getInstanceEntity(MediaType type, String instanceId)
+            throws IOException {
+        try {
+            FormSubmission submission = submissionDao.findById(instanceId);
+            String contentString = APPLICATION_JSON.equals(type) ? submission.getJson() : submission.getXml();
+            org.springframework.core.io.Resource contents = new ByteArrayResource(contentString.getBytes());
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(type);
+            headers.setContentLength(contents.contentLength());
+            return new ResponseEntity<>(contents, headers, OK);
+        } catch (DataAccessException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping(value = "/submission/{idScheme:\\w+}:{instanceId}/{fileName}.{extension}")
