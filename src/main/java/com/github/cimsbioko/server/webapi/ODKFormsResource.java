@@ -79,7 +79,7 @@ public class ODKFormsResource {
     private FormSubmissionDao submissionDao;
 
 
-    @GetMapping(path = "/forms", produces = {"text/xml"})
+    @GetMapping(path = "/forms", produces = "text/xml")
     @ResponseBody
     public void formList(HttpServletRequest req, HttpServletResponse rsp) throws IOException {
         rsp.setContentType("text/xml;charset=UTF-8");
@@ -93,7 +93,7 @@ public class ODKFormsResource {
         writer.write("</xforms>");
     }
 
-    @GetMapping(path = "/forms/{formId:\\w+}/{formVersion:\\d+}/{fileName:\\w+[.]xml}", produces = {"text/xml"})
+    @GetMapping(path = "/forms/{formId:\\w+}/{formVersion:\\d+}/{fileName:\\w+[.]xml}", produces = "text/xml")
     public String form(@PathVariable String formId, @PathVariable String formVersion, @PathVariable String fileName,
                        HttpServletResponse rsp) throws IOException {
         rsp.setContentType("text/xml;charset=UTF-8");
