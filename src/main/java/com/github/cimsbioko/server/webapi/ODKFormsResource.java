@@ -142,6 +142,12 @@ public class ODKFormsResource {
         return String.format("forward:%s/%s/%s/%s.%s", SUBMISSIONS_PATH, idScheme, instanceId, fileName, extension);
     }
 
+    @GetMapping(value = "/recentSubmissions", produces = "application/json")
+    @ResponseBody
+    public List<FormSubmission> recentSubmissions() {
+        return submissionDao.findRecent(25);
+    }
+
     @PostMapping("/submission")
     public void handleSubmission(@RequestParam(DEVICE_ID) String deviceId,
                                  @RequestParam(XML_SUBMISSION_FILE) MultipartFile xmlFile,

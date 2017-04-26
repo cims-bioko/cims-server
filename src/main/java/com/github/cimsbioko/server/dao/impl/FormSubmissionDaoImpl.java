@@ -68,6 +68,11 @@ public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements
     }
 
     @Override
+    public List<FormSubmission> findRecent(int limit) {
+        return sql.query(baseQuery + " order by submitted desc limit ?", mapper, limit);
+    }
+
+    @Override
     public void markProcessed(FormSubmission submission, Boolean processedOk) {
         String instanceId = submission.getInstanceId();
         if (instanceId == null)
