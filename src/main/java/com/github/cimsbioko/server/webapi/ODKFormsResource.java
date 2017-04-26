@@ -142,10 +142,15 @@ public class ODKFormsResource {
         return String.format("forward:%s/%s/%s/%s.%s", SUBMISSIONS_PATH, idScheme, instanceId, fileName, extension);
     }
 
-    @GetMapping(value = "/recentSubmissions", produces = "application/json")
+    @GetMapping(value = "/submissions/recent", produces = "application/json")
     @ResponseBody
-    public List<FormSubmission> recentSubmissions() {
-        return submissionDao.findRecent(25);
+    public List<FormSubmission> recentSubmissions(
+            @RequestParam(value = "formId", required = false) String form,
+            @RequestParam(value = "version", required = false) String version,
+            @RequestParam(value = "formBinding", required = false) String binding,
+            @RequestParam(value = "deviceId", required = false) String device,
+            @RequestParam(value = "limit", required = false) Integer limit) {
+        return submissionDao.findRecent(form, version, binding, device, limit);
     }
 
     @PostMapping("/submission")

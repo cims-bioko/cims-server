@@ -10,6 +10,6 @@ public interface FormSubmissionDao {
     FormSubmission findById(String uuid);
     List<FormSubmission> findByForm(String formId, String formVersion);
     List<FormSubmission> findUnprocessed(int batchSize);
-    List<FormSubmission> findRecent(int limit);
+    List<FormSubmission> findRecent(String form, String version, String binding, String device, Integer limit);
     void markProcessed(FormSubmission submission, Boolean processedOk);
 }

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -68,8 +70,29 @@ public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements
     }
 
     @Override
-    public List<FormSubmission> findRecent(int limit) {
-        return sql.query(baseQuery + " order by submitted desc limit ?", mapper, limit);
+    public List<FormSubmission> findRecent(String form, String version, String binding, String device, Integer limit) {
+        StringBuffer where = new StringBuffer();
+        Collection<Object> args = new ArrayList<>();
+        if (form != null) {
+            where.append(" form_id = ?");
+            args.add(form);
+        }
+        if (version != null) {
+            where.append(" form_version = ?");
+            args.add(version);
+        }
+        if (binding != null) {
+            where.append("form_binding = ?");
+            args.add(binding);
+        }
+        if (device != null) {
+            where.append("from_device = ?");
+            args.add(device);
+        }
+        String whereClause = where.length() > 0 ? " where " + where : "";
+        int limitArg = limit != null && limit > 0 && limit < 100 ? limit : 100;
+        args.add(limitArg);
+        return sql.query(baseQuery + whereClause + " order by submitted desc limit ?", mapper, args.toArray());
     }
 
     @Override
