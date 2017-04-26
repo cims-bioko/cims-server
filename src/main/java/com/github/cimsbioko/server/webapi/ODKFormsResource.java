@@ -102,7 +102,7 @@ public class ODKFormsResource {
     }
 
     @RequestMapping(value = "/submission", method = RequestMethod.HEAD)
-    public void handleHead(HttpServletResponse rsp) {
+    public void preAuthentication(HttpServletResponse rsp) {
         addOpenRosaHeaders(rsp);
         rsp.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
