@@ -1,16 +1,22 @@
 package com.github.cimsbioko.server.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.sql.Timestamp;
 
 public class FormSubmission {
 
     private String instanceId;
-    private String xml;
-    private String json;
     private String formId;
     private String formVersion;
     private String formBinding;
     private String deviceId;
+
+    @JsonIgnore
+    private String xml, json;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     private Timestamp collected, submitted;
 
     public FormSubmission(String instanceId, String xml, String json, String formId, String formVersion,
