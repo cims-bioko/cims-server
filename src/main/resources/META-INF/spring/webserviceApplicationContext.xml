@@ -34,6 +34,7 @@
             <array>
                 <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
                 <ref bean="marshallingXmlHttpMessageConverter"/>
+                <ref bean="jsonHttpMessageConverter"/>
             </array>
         </property>
     </bean>
@@ -57,6 +58,9 @@
         <property name="marshaller" ref="jaxbMarshaller"/>
         <property name="unmarshaller" ref="jaxbMarshaller"/>
     </bean>
+
+    <bean id="jsonHttpMessageConverter"
+          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
 
     <mvc:annotation-driven content-negotiation-manager="mvcContentNegotiationManager"/>
 
