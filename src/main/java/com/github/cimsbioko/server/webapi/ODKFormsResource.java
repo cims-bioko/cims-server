@@ -9,6 +9,7 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.XMLOutputter;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -77,6 +78,37 @@ public class ODKFormsResource {
 
     @Autowired
     private FormSubmissionDao submissionDao;
+
+
+    @PutMapping(path = "/forms", consumes = "application/xml")
+    @ResponseBody
+    public ResponseEntity<?> installForm(HttpServletRequest req) throws JDOMException, IOException {
+
+        SAXBuilder builder = new SAXBuilder();
+        Document formDoc = builder.build(req.getInputStream());
+        Namespace xformsNs = Namespace.getNamespace("http://www.w3.org/2002/xforms"),
+                xhtmlNs = Namespace.getNamespace("http://www.w3.org/1999/xhtml");
+
+        Element firstInstance = formDoc.getRootElement()
+                .getChild("head", xhtmlNs)
+                .getChild("model", xformsNs)
+                .getChild("instance", xformsNs)
+                .getChildren().get(0);
+
+        String id = firstInstance.getAttributeValue("id"),
+                version = firstInstance.getAttributeValue("version");
+
+        XMLOutputter outputter = new XMLOutputter();
+        String formPath = String.format("%1$s/%2$s/%1$s.xml", id, version);
+        log.info("storing form at {}", formPath);
+
+        File formFile = new File(formsDir, formPath);
+        formFile.getParentFile().mkdirs();
+        try (FileWriter writer = new FileWriter(formFile)) {
+            outputter.output(formDoc, writer);
+            return ResponseEntity.noContent().build();
+        }
+    }
 
 
     @GetMapping(path = "/forms", produces = "text/xml")
