@@ -21,6 +21,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -131,6 +132,16 @@ public class ODKFormsResource {
         rsp.setContentType("text/xml;charset=UTF-8");
         addOpenRosaHeaders(rsp);
         return String.format("forward:%s/%s/%s/%s", FORMS_PATH, formId, formVersion, fileName);
+    }
+
+    @DeleteMapping("/forms/{formId:\\w+}/{formVersion:\\d+}")
+    public ResponseEntity<?> deleteForm(@PathVariable String formId, @PathVariable String formVersion) throws IOException {
+        String formPath = String.format("%s/%s", formId, formVersion);
+        File formDir = new File(formsDir, formPath);
+        if (formDir.exists() && FileSystemUtils.deleteRecursively(formDir)) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @RequestMapping(value = "/submission", method = RequestMethod.HEAD)
