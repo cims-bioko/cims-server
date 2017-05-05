@@ -17,7 +17,7 @@ public class ScheduledProcessing {
     }
 
     @Scheduled(fixedDelay = 30000)
-    @RunAsUser("data-import")
+    @RunAsUser("system")
     public void processForms() {
         long start = System.currentTimeMillis();
         int formCount = processor.processForms();

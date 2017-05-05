@@ -7,3 +7,7 @@ create index as_json_idx on form_submission using gin(as_json);
 create index collected_idx on form_submission(collected);
 create index processed_idx on form_submission(processed);
 create index processed_ok_idx on form_submission(processed_ok);
+
+-- Introduce a utility user for system tasks, like form processing.
+insert into users (uuid, firstName, lastName, fullName, description, username, password, lastLoginTime, deleted) values ('system-uuid', 'System', 'User', 'System User', 'Internal user for system-directed tasks', 'system', md5(random()::text), 0, false);
+insert into user_roles (user_uuid, role_uuid) values ('system-uuid', 'ROLE1');
