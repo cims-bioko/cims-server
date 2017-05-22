@@ -6,6 +6,8 @@ import com.github.cimsbioko.server.domain.model.FieldWorker;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.springframework.util.StringUtils.isEmpty;
+
 public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
 
     @Autowired
@@ -36,6 +38,18 @@ public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
             fieldWorkerService.isEligibleForCreation(entityItem, new ConstraintViolations());
             return super.create();
         } catch (ConstraintViolations | AuthorizationException e) {
+            jsfService.addError(e.getMessage());
+        }
+        return null;
+    }
+
+    public String edit() {
+        try {
+            if (!isEmpty(entityItem.getPassword())) {
+                fieldWorkerService.generatePasswordHash(entityItem);
+            }
+            return super.edit();
+        } catch (ConstraintViolations e) {
             jsfService.addError(e.getMessage());
         }
         return null;

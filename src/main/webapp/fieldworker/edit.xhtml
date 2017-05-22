@@ -39,6 +39,16 @@
                 <h:inputText id="lastname" value="#{fieldWorkerCrud.item.lastName}" title="FieldWorker Surname"
                              converter="#{defaultConverter}"/>
                 <h:message for="lastname" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                <h:outputText value="#{msg.fieldWorkerPassword}:"/>
+                <h:inputSecret id="password" value="#{fieldWorkerCrud.item.password}" converter="#{defaultConverter}"/>
+                <h:message for="password" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                <h:outputText value="#{msg.fieldWorkerConfirmPassword}:"/>
+                <h:inputSecret id="confirmPassword" value="#{fieldWorkerCrud.item.confirmPassword}"
+                               converter="#{defaultConverter}"/>
+                <h:message for="confirmPassword" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
             </h:panelGrid>
             <script type="application/javascript">
                 document.getElementById('form:name').focus();
