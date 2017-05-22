@@ -6,6 +6,8 @@ import org.openhds.domain.model.FieldWorker;
 import org.openhds.controller.service.refactor.FieldWorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.springframework.util.StringUtils.isEmpty;
+
 public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
 
     @Autowired
@@ -39,6 +41,18 @@ public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
     	catch(ConstraintViolations | AuthorizationException e) {
     		jsfService.addError(e.getMessage());
     	}
+        return null;
+    }
+
+    public String edit() {
+        try {
+            if (!isEmpty(entityItem.getPassword())) {
+                fieldWorkerService.generatePasswordHash(entityItem);
+            }
+            return super.edit();
+        } catch (ConstraintViolations e) {
+            jsfService.addError(e.getMessage());
+        }
         return null;
     }
 
