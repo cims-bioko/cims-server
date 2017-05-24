@@ -57,6 +57,15 @@ public class ODKFormsResource {
 
     private static Logger log = LoggerFactory.getLogger(ODKFormsResource.class);
 
+    private static final String HEAD = "head";
+    private static final String MODEL = "model";
+    private static final String INSTANCE = "instance";
+    private static final String MANIFEST = "manifest";
+    private static final String MEDIA_FILE = "mediaFile";
+    private static final String FILENAME = "filename";
+    private static final String HASH = "hash";
+    private static final String DOWNLOAD_URL = "downloadUrl";
+    private static final String MEDIA_MANIFEST = ".media-manifest";
     private static final String INSTANCE_ID = "instanceID";
     private static final String COLLECTION_DATE_TIME = "collectionDateTime";
     private static final String META = "meta";
@@ -94,13 +103,13 @@ public class ODKFormsResource {
                 xhtmlNs = Namespace.getNamespace("http://www.w3.org/1999/xhtml");
 
         Element firstInstance = formDoc.getRootElement()
-                .getChild("head", xhtmlNs)
-                .getChild("model", xformsNs)
-                .getChild("instance", xformsNs)
+                .getChild(HEAD, xhtmlNs)
+                .getChild(MODEL, xformsNs)
+                .getChild(INSTANCE, xformsNs)
                 .getChildren().get(0);
 
-        String id = firstInstance.getAttributeValue("id"),
-                version = firstInstance.getAttributeValue("version");
+        String id = firstInstance.getAttributeValue(ID),
+                version = firstInstance.getAttributeValue(VERSION);
 
         XMLOutputter outputter = new XMLOutputter();
         String formPath = String.format("%1$s/%2$s/%1$s.xml", id, version);
@@ -115,7 +124,7 @@ public class ODKFormsResource {
 
         Document manifestDoc = new Document();
         Namespace manifestNs = Namespace.getNamespace("http://openrosa.org/xforms/xformsManifest");
-        Element manifestElem = new Element("manifest", manifestNs);
+        Element manifestElem = new Element(MANIFEST, manifestNs);
         manifestDoc.setRootElement(manifestElem);
 
         for (Map.Entry<String, List<MultipartFile>> fileEntry : req.getMultiFileMap().entrySet()) {
@@ -124,7 +133,7 @@ public class ODKFormsResource {
             } else {
                 for (MultipartFile file : fileEntry.getValue()) {
 
-                    Element mediaFileElem = new Element("mediaFile", manifestNs);
+                    Element mediaFileElem = new Element(MEDIA_FILE, manifestNs);
                     manifestElem.addContent(mediaFileElem);
 
                     String fileName = file.getOriginalFilename();
@@ -132,15 +141,15 @@ public class ODKFormsResource {
                     File dest = new File(formDir, fileName);
                     file.transferTo(dest);
 
-                    Element fileNameElem = new Element("filename", manifestNs);
+                    Element fileNameElem = new Element(FILENAME, manifestNs);
                     fileNameElem.setText(fileName);
                     mediaFileElem.addContent(fileNameElem);
 
-                    Element hashElem = new Element("hash", manifestNs);
+                    Element hashElem = new Element(HASH, manifestNs);
                     hashElem.setText(getFileHash(dest));
                     mediaFileElem.addContent(hashElem);
 
-                    Element downloadUrlElem = new Element("downloadUrl", manifestNs);
+                    Element downloadUrlElem = new Element(DOWNLOAD_URL, manifestNs);
                     String downloadUrl = String.format("%s/%s/%s/%s", buildFullRequestUrl(req), id, version, fileName);
                     downloadUrlElem.setText(downloadUrl);
                     mediaFileElem.addContent(downloadUrlElem);
@@ -148,7 +157,7 @@ public class ODKFormsResource {
             }
         }
 
-        File manifestFile = new File(formDir, ".media-manifest");
+        File manifestFile = new File(formDir, MEDIA_MANIFEST);
         try (FileWriter writer = new FileWriter(manifestFile)) {
             outputter.output(manifestDoc, writer);
         }
