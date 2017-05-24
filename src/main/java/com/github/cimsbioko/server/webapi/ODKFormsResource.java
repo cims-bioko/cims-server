@@ -198,8 +198,8 @@ public class ODKFormsResource {
 
     @GetMapping(path = "/forms/{formId:\\w+}/{formVersion:\\d+}/{fileName:[a-zA-Z0-9-_ ]+[.]\\w+}")
     public ResponseEntity<InputStreamResource> formFile(@PathVariable String formId, @PathVariable String formVersion,
-                                                    @PathVariable String fileName,
-                                                    HttpServletResponse rsp) throws IOException {
+                                                        @PathVariable String fileName,
+                                                        HttpServletResponse rsp) throws IOException {
         addOpenRosaHeaders(rsp);
         String formPath = String.format("%s/%s/%s/%s", formsDir, formId, formVersion, fileName);
         org.springframework.core.io.Resource formResource = new FileSystemResource(formPath);
@@ -295,7 +295,7 @@ public class ODKFormsResource {
 
     @GetMapping(value = "/submission/{idScheme:\\w+}:{instanceId}/{fileName}.{extension}")
     public ResponseEntity<InputStreamResource> getSubmissionFile(@PathVariable String idScheme, @PathVariable String instanceId,
-                                    @PathVariable String fileName, @PathVariable String extension) throws IOException {
+                                                                 @PathVariable String fileName, @PathVariable String extension) throws IOException {
         String submissionPath = String.format("%s/%s/%s/%s.%s", submissionsDir, idScheme, instanceId, fileName, extension);
         org.springframework.core.io.Resource submissionResource = new FileSystemResource(submissionPath);
         return ResponseEntity
