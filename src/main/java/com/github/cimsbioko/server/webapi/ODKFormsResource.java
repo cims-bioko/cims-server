@@ -111,6 +111,11 @@ public class ODKFormsResource {
         String id = firstInstance.getAttributeValue(ID),
                 version = firstInstance.getAttributeValue(VERSION);
 
+        if (version == null) {
+            version = "1";
+            firstInstance.setAttribute(VERSION, version);
+        }
+
         XMLOutputter outputter = new XMLOutputter();
         String formPath = String.format("%1$s/%2$s/%1$s.xml", id, version);
         log.info("storing form at {}", formPath);
