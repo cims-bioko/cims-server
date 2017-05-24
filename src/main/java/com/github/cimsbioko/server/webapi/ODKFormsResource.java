@@ -44,8 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.github.cimsbioko.server.Application.WebConfig.FORMS_PATH;
-import static com.github.cimsbioko.server.Application.WebConfig.SUBMISSIONS_PATH;
 import static java.time.Instant.now;
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
 import static org.json.XML.toJSONObject;

@@ -91,8 +91,6 @@ public class Application extends SpringBootServletInitializer {
     public static class WebConfig extends WebMvcConfigurerAdapter {
 
         public static final String CACHED_FILES_PATH = "/WEB-INF/cached-files";
-        public static final String FORMS_PATH = "/WEB-INF/forms";
-        public static final String SUBMISSIONS_PATH = "/WEB-INF/submissions";
 
         @Resource
         File dataDir;
@@ -116,10 +114,6 @@ public class Application extends SpringBootServletInitializer {
         public void addResourceHandlers(ResourceHandlerRegistry registry) {
             registry.addResourceHandler(CACHED_FILES_PATH + "/**")
                     .addResourceLocations(dataDir.toURI().toString());
-            registry.addResourceHandler(FORMS_PATH + "/**")
-                    .addResourceLocations(formsDir.toURI().toString());
-            registry.addResourceHandler(SUBMISSIONS_PATH + "/**")
-                    .addResourceLocations(submissionsDir.toURI().toString());
         }
 
         @Bean
