@@ -8,8 +8,11 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
+import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
+import org.jdom2.xpath.XPathExpression;
+import org.jdom2.xpath.XPathFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -48,9 +51,7 @@ import static java.time.Instant.now;
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
 import static org.json.XML.toJSONObject;
 import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
-import static org.springframework.http.MediaType.APPLICATION_XML;
+import static org.springframework.http.MediaType.*;
 import static org.springframework.security.web.util.UrlUtils.buildFullRequestUrl;
 
 @Controller
@@ -154,11 +155,6 @@ public class ODKFormsResource {
                     Element hashElem = new Element(HASH, manifestNs);
                     hashElem.setText(getFileHash(dest));
                     mediaFileElem.addContent(hashElem);
-
-                    Element downloadUrlElem = new Element(DOWNLOAD_URL, manifestNs);
-                    String downloadUrl = String.format("%s/%s/%s/%s", buildFullRequestUrl(req), id, version, fileName);
-                    downloadUrlElem.setText(downloadUrl);
-                    mediaFileElem.addContent(downloadUrlElem);
                 }
             }
         }
@@ -216,16 +212,40 @@ public class ODKFormsResource {
 
     @GetMapping(path = "/forms/{formId:\\w+}/{formVersion:\\d+}/manifest", produces = "text/xml")
     public ResponseEntity<InputStreamResource> form(@PathVariable String formId, @PathVariable String formVersion,
-                                                    HttpServletResponse rsp)
-            throws IOException {
-        addOpenRosaHeaders(rsp);
+                                                    HttpServletRequest req, HttpServletResponse rsp)
+            throws IOException, JDOMException {
+
         String manifestPath = String.format("%s/%s/%s/%s", formsDir, formId, formVersion, MEDIA_MANIFEST);
+
+        SAXBuilder builder = new SAXBuilder();
         org.springframework.core.io.Resource manifestResource = new FileSystemResource(manifestPath);
+        Document manifestDoc = builder.build(manifestResource.getInputStream());
+
+        String formBaseUrl = buildFullRequestUrl(req).replaceFirst("manifest$", "");
+
+        // need to define a prefix for namespace for xpath to work
+        Namespace nsWithPrefix = Namespace.getNamespace("mf", "http://openrosa.org/xforms/xformsManifest");
+        Namespace nsNoPrefix = Namespace.getNamespace("http://openrosa.org/xforms/xformsManifest");
+
+        // replace
+        XPathFactory xpathFactory = XPathFactory.instance();
+        XPathExpression<Element> xpathExpression = xpathFactory.compile("//mf:" + MEDIA_FILE, Filters.element(), null, nsWithPrefix);
+        List<Element> files = xpathExpression.evaluate(manifestDoc);
+        for (Element file : files) {
+            Element filenameElem = file.getChild(FILENAME, nsNoPrefix), downloadUrlElem = new Element(DOWNLOAD_URL, nsNoPrefix);
+            downloadUrlElem.setText(formBaseUrl + filenameElem.getText());
+            file.addContent(downloadUrlElem);
+        }
+
+        XMLOutputter outputter = new XMLOutputter();
+        byte[] body = outputter.outputString(manifestDoc).getBytes();
+
+        addOpenRosaHeaders(rsp);
         return ResponseEntity
                 .ok()
-                .contentLength(manifestResource.contentLength())
                 .contentType(MediaType.TEXT_XML)
-                .body(new InputStreamResource(manifestResource.getInputStream()));
+                .contentLength(body.length)
+                .body(new InputStreamResource(new ByteArrayInputStream(body)));
     }
 
     @DeleteMapping("/forms/{formId:\\w+}/{formVersion:\\d+}")
