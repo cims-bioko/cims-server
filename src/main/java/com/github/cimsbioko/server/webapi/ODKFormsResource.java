@@ -64,6 +64,7 @@ public class ODKFormsResource {
     private static final String VERSION = "version";
     private static final String CIMS_BINDING = "cims-binding";
     private static final String XML_SUBMISSION_FILE = "xml_submission_file";
+    private static final String XML_FORM_FILE = "xml_form_file";
     private static final String DEVICE_ID = "deviceID";
     private static final String DATE_PATTERN = "yyyy-MM-dd";
     private static final String UTF_8 = "UTF-8";
@@ -81,12 +82,14 @@ public class ODKFormsResource {
     private FormSubmissionDao submissionDao;
 
 
-    @PutMapping(path = "/forms", consumes = "application/xml")
+    @PostMapping(path = "/forms")
     @ResponseBody
-    public ResponseEntity<?> installForm(HttpServletRequest req) throws JDOMException, IOException {
+    public ResponseEntity<?> installForm(@RequestParam(XML_FORM_FILE) MultipartFile formXml,
+                                         MultipartHttpServletRequest req)
+            throws JDOMException, IOException, NoSuchAlgorithmException {
 
         SAXBuilder builder = new SAXBuilder();
-        Document formDoc = builder.build(req.getInputStream());
+        Document formDoc = builder.build(formXml.getInputStream());
         Namespace xformsNs = Namespace.getNamespace("http://www.w3.org/2002/xforms"),
                 xhtmlNs = Namespace.getNamespace("http://www.w3.org/1999/xhtml");
 
@@ -104,11 +107,53 @@ public class ODKFormsResource {
         log.info("storing form at {}", formPath);
 
         File formFile = new File(formsDir, formPath);
-        formFile.getParentFile().mkdirs();
+        File formDir = formFile.getParentFile();
+        formDir.mkdirs();
         try (FileWriter writer = new FileWriter(formFile)) {
             outputter.output(formDoc, writer);
-            return ResponseEntity.noContent().build();
         }
+
+        Document manifestDoc = new Document();
+        Namespace manifestNs = Namespace.getNamespace("http://openrosa.org/xforms/xformsManifest");
+        Element manifestElem = new Element("manifest", manifestNs);
+        manifestDoc.setRootElement(manifestElem);
+
+        for (Map.Entry<String, List<MultipartFile>> fileEntry : req.getMultiFileMap().entrySet()) {
+            if (XML_FORM_FILE.equalsIgnoreCase(fileEntry.getKey())) {
+                log.debug("skipping form file {}", XML_FORM_FILE);
+            } else {
+                for (MultipartFile file : fileEntry.getValue()) {
+
+                    Element mediaFileElem = new Element("mediaFile", manifestNs);
+                    manifestElem.addContent(mediaFileElem);
+
+                    String fileName = file.getOriginalFilename();
+
+                    File dest = new File(formDir, fileName);
+                    file.transferTo(dest);
+
+                    Element fileNameElem = new Element("filename", manifestNs);
+                    fileNameElem.setText(fileName);
+                    mediaFileElem.addContent(fileNameElem);
+
+                    Element hashElem = new Element("hash", manifestNs);
+                    hashElem.setText(getFileHash(dest));
+                    mediaFileElem.addContent(hashElem);
+
+                    Element downloadUrlElem = new Element("downloadUrl", manifestNs);
+                    String downloadUrl = String.format("%s/%s/%s/%s", buildFullRequestUrl(req), id, version, fileName);
+                    downloadUrlElem.setText(downloadUrl);
+                    mediaFileElem.addContent(downloadUrlElem);
+                }
+            }
+        }
+
+        File manifestFile = new File(formDir, ".media-manifest");
+        try (FileWriter writer = new FileWriter(manifestFile)) {
+            outputter.output(manifestDoc, writer);
+        }
+
+        return ResponseEntity.noContent().build();
     }
 
 
@@ -362,6 +407,16 @@ public class ODKFormsResource {
                     });
         }
         return results;
+    }
+
+    private String getFileHash(File toHash) throws NoSuchAlgorithmException, IOException {
+        try (DigestInputStream in = new DigestInputStream(new FileInputStream(toHash), MessageDigest.getInstance("MD5"))) {
+            byte[] buf = new byte[8096];
+            while (in.read(buf) >= 0) {
+                // reading only to compute hash
+            }
+            return "md5:" + encodeHexString(in.getMessageDigest().digest());
+        }
     }
 
     /**
