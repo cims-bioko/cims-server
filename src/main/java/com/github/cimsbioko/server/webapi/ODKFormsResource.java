@@ -365,14 +365,15 @@ public class ODKFormsResource {
      */
     private class OpenRosaFormDef {
 
-        String id, name, version, hash, path;
+        String id, name, version, hash, path, manifestPath;
 
-        OpenRosaFormDef(String name, String id, String version, String hash, String path) {
+        OpenRosaFormDef(String name, String id, String version, String hash, String path, String manifestPath) {
             this.id = id;
             this.name = name;
             this.version = version;
             this.hash = hash;
             this.path = path;
+            this.manifestPath = manifestPath;
         }
 
         public String toString(String baseUrl) {
@@ -383,6 +384,7 @@ public class ODKFormsResource {
                     "<version>" + version + "</version>\n" +
                     "<hash>md5:" + hash + "</hash>" +
                     "<downloadUrl>" + baseUrl + "/" + path + "</downloadUrl>\n" +
+                    (manifestPath != null ? "<manifestUrl>" + baseUrl + "/" + manifestPath + "</manifestUrl>" : "") +
                     "</xform>\n";
         }
     }
@@ -452,6 +454,8 @@ public class ODKFormsResource {
             title = head.getChildText("title", xhtmlNs);
             hash = encodeHexString(digestIn.getMessageDigest().digest()); // assumes doc build reads entire file content
         }
-        return new OpenRosaFormDef(title, id, version, hash, id + "/" + version + "/" + fileName);
+        boolean manifestExists = formPath.resolveSibling(MEDIA_MANIFEST).toFile().exists();
+        return new OpenRosaFormDef(title, id, version, hash,
+                id + "/" + version + "/" + fileName, manifestExists? id + "/" + version + "/" + MANIFEST : null);
     }
 }
