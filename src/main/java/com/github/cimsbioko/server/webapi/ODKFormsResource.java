@@ -318,7 +318,6 @@ public class ODKFormsResource {
         for (Map.Entry<String, List<MultipartFile>> fileEntry : req.getMultiFileMap().entrySet()) {
             if (isDuplicateSubmission && XML_SUBMISSION_FILE.equalsIgnoreCase(fileEntry.getKey())) {
                 log.debug("skipping multipart file {}", XML_SUBMISSION_FILE);
-                continue; // Don't allow updating the original form instance
             } else {
                 List<MultipartFile> files = fileEntry.getValue();
                 if (files.size() == 1) {
