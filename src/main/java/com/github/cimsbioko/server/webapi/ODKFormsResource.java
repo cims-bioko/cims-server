@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -49,6 +51,7 @@ import static org.apache.commons.codec.binary.Hex.encodeHexString;
 import static org.json.XML.toJSONObject;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 import static org.springframework.http.MediaType.APPLICATION_XML;
 import static org.springframework.security.web.util.UrlUtils.buildFullRequestUrl;
 
@@ -65,7 +68,7 @@ public class ODKFormsResource {
     private static final String FILENAME = "filename";
     private static final String HASH = "hash";
     private static final String DOWNLOAD_URL = "downloadUrl";
-    private static final String MEDIA_MANIFEST = ".media-manifest";
+    private static final String MEDIA_MANIFEST = ".media-manifest.xml";
     private static final String INSTANCE_ID = "instanceID";
     private static final String COLLECTION_DATE_TIME = "collectionDateTime";
     private static final String META = "meta";
@@ -186,11 +189,45 @@ public class ODKFormsResource {
     }
 
     @GetMapping(path = "/forms/{formId:\\w+}/{formVersion:\\d+}/{fileName:\\w+[.]xml}", produces = "text/xml")
-    public String form(@PathVariable String formId, @PathVariable String formVersion, @PathVariable String fileName,
-                       HttpServletResponse rsp) throws IOException {
-        rsp.setContentType("text/xml;charset=UTF-8");
+    public ResponseEntity<InputStreamResource> form(@PathVariable String formId, @PathVariable String formVersion,
+                                                    @PathVariable String fileName,
+                                                    HttpServletResponse rsp) throws IOException {
         addOpenRosaHeaders(rsp);
-        return String.format("forward:%s/%s/%s/%s", FORMS_PATH, formId, formVersion, fileName);
+        String formPath = String.format("%s/%s/%s/%s", formsDir, formId, formVersion, fileName);
+        org.springframework.core.io.Resource formResource = new FileSystemResource(formPath);
+        return ResponseEntity
+                .ok()
+                .contentLength(formResource.contentLength())
+                .contentType(MediaType.TEXT_XML)
+                .body(new InputStreamResource(formResource.getInputStream()));
+    }
+
+    @GetMapping(path = "/forms/{formId:\\w+}/{formVersion:\\d+}/{fileName:[a-zA-Z0-9-_ ]+[.]\\w+}")
+    public ResponseEntity<InputStreamResource> formFile(@PathVariable String formId, @PathVariable String formVersion,
+                                                    @PathVariable String fileName,
+                                                    HttpServletResponse rsp) throws IOException {
+        addOpenRosaHeaders(rsp);
+        String formPath = String.format("%s/%s/%s/%s", formsDir, formId, formVersion, fileName);
+        org.springframework.core.io.Resource formResource = new FileSystemResource(formPath);
+        return ResponseEntity
+                .ok()
+                .contentLength(formResource.contentLength())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(new InputStreamResource(formResource.getInputStream()));
+    }
+
+    @GetMapping(path = "/forms/{formId:\\w+}/{formVersion:\\d+}/manifest", produces = "text/xml")
+    public ResponseEntity<InputStreamResource> form(@PathVariable String formId, @PathVariable String formVersion,
+                                                    HttpServletResponse rsp)
+            throws IOException {
+        addOpenRosaHeaders(rsp);
+        String manifestPath = String.format("%s/%s/%s/%s", formsDir, formId, formVersion, MEDIA_MANIFEST);
+        org.springframework.core.io.Resource manifestResource = new FileSystemResource(manifestPath);
+        return ResponseEntity
+                .ok()
+                .contentLength(manifestResource.contentLength())
+                .contentType(MediaType.TEXT_XML)
+                .body(new InputStreamResource(manifestResource.getInputStream()));
     }
 
     @DeleteMapping("/forms/{formId:\\w+}/{formVersion:\\d+}")
@@ -239,9 +276,15 @@ public class ODKFormsResource {
     }
 
     @GetMapping(value = "/submission/{idScheme:\\w+}:{instanceId}/{fileName}.{extension}")
-    public String getSubmissionFile(@PathVariable String idScheme, @PathVariable String instanceId,
-                                    @PathVariable String fileName, @PathVariable String extension) throws UnsupportedEncodingException {
-        return String.format("forward:%s/%s/%s/%s.%s", SUBMISSIONS_PATH, idScheme, instanceId, fileName, extension);
+    public ResponseEntity<InputStreamResource> getSubmissionFile(@PathVariable String idScheme, @PathVariable String instanceId,
+                                    @PathVariable String fileName, @PathVariable String extension) throws IOException {
+        String submissionPath = String.format("%s/%s/%s/%s.%s", submissionsDir, idScheme, instanceId, fileName, extension);
+        org.springframework.core.io.Resource submissionResource = new FileSystemResource(submissionPath);
+        return ResponseEntity
+                .ok()
+                .contentLength(submissionResource.contentLength())
+                .contentType(APPLICATION_OCTET_STREAM)
+                .body(new InputStreamResource(submissionResource.getInputStream()));
     }
 
     @GetMapping(value = "/submissions/recent", produces = "application/json")
@@ -456,6 +499,6 @@ public class ODKFormsResource {
         }
         boolean manifestExists = formPath.resolveSibling(MEDIA_MANIFEST).toFile().exists();
         return new OpenRosaFormDef(title, id, version, hash,
-                id + "/" + version + "/" + fileName, manifestExists? id + "/" + version + "/" + MANIFEST : null);
+                id + "/" + version + "/" + fileName, manifestExists ? id + "/" + version + "/" + MANIFEST : null);
     }
 }
