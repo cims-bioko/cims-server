@@ -182,7 +182,8 @@ public class ODKFormsResource {
         writer.write("</xforms>");
     }
 
-    @GetMapping(path = "/forms/{formId:\\w+}/{formVersion:\\d+}/{fileName:\\w+[.]xml}", produces = "text/xml")
+    @GetMapping(path = {"/forms/{formId:\\w+}/{formVersion:\\d+}/{fileName:\\w+[.]xml}",
+            "/formList/{formId:\\w+}/{formVersion:\\d+}/{fileName:\\w+[.]xml}"}, produces = "text/xml")
     public ResponseEntity<InputStreamResource> form(@PathVariable String formId, @PathVariable String formVersion,
                                                     @PathVariable String fileName,
                                                     HttpServletResponse rsp) throws IOException {
@@ -196,7 +197,8 @@ public class ODKFormsResource {
                 .body(new InputStreamResource(formResource.getInputStream()));
     }
 
-    @GetMapping(path = "/forms/{formId:\\w+}/{formVersion:\\d+}/{fileName:[a-zA-Z0-9-_ ]+[.]\\w+}")
+    @GetMapping(path = {"/forms/{formId:\\w+}/{formVersion:\\d+}/{fileName:[a-zA-Z0-9-_ ]+[.]\\w+}",
+            "/formList/{formId:\\w+}/{formVersion:\\d+}/{fileName:[a-zA-Z0-9-_ ]+[.]\\w+}"})
     public ResponseEntity<InputStreamResource> formFile(@PathVariable String formId, @PathVariable String formVersion,
                                                         @PathVariable String fileName,
                                                         HttpServletResponse rsp) throws IOException {
@@ -210,7 +212,8 @@ public class ODKFormsResource {
                 .body(new InputStreamResource(formResource.getInputStream()));
     }
 
-    @GetMapping(path = "/forms/{formId:\\w+}/{formVersion:\\d+}/manifest", produces = "text/xml")
+    @GetMapping(path = {"/forms/{formId:\\w+}/{formVersion:\\d+}/manifest",
+            "/formList/{formId:\\w+}/{formVersion:\\d+}/manifest"}, produces = "text/xml")
     public ResponseEntity<InputStreamResource> form(@PathVariable String formId, @PathVariable String formVersion,
                                                     HttpServletRequest req, HttpServletResponse rsp)
             throws IOException, JDOMException {
