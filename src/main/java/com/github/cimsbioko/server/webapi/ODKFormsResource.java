@@ -168,7 +168,7 @@ public class ODKFormsResource {
     }
 
 
-    @GetMapping(path = "/forms", produces = "text/xml")
+    @GetMapping(path = {"/forms", "formList"}, produces = "text/xml")
     @ResponseBody
     public void formList(HttpServletRequest req, HttpServletResponse rsp) throws IOException {
         rsp.setContentType("text/xml;charset=UTF-8");
