@@ -71,28 +71,40 @@ public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements
 
     @Override
     public List<FormSubmission> findRecent(String form, String version, String binding, String device, Integer limit) {
-        StringBuffer where = new StringBuffer();
+        return find(form, version, binding, device, null, limit, true);
+    }
+
+    @Override
+    public List<FormSubmission> find(String form, String version, String binding, String device, Timestamp submittedSince, Integer limit, boolean sortDesc) {
+        StringBuffer where = new StringBuffer("1=1");
         Collection<Object> args = new ArrayList<>();
         if (form != null) {
-            where.append(" form_id = ?");
+            where.append(" and form_id = ?");
             args.add(form);
         }
         if (version != null) {
-            where.append(" form_version = ?");
+            where.append(" and form_version = ?");
             args.add(version);
         }
         if (binding != null) {
-            where.append("form_binding = ?");
+            where.append(" and form_binding = ?");
             args.add(binding);
         }
         if (device != null) {
-            where.append("from_device = ?");
+            where.append(" and from_device = ?");
             args.add(device);
         }
+        if (submittedSince != null) {
+            where.append(" and submitted ");
+            where.append(sortDesc ? " < " : " > ");
+            where.append("?");
+            args.add(submittedSince);
+        }
         String whereClause = where.length() > 0 ? " where " + where : "";
+        String orderClause = " order by submitted " + (sortDesc ? "desc" : "") + " limit ?";
         int limitArg = limit != null && limit > 0 && limit < 100 ? limit : 100;
         args.add(limitArg);
-        return sql.query(baseQuery + whereClause + " order by submitted desc limit ?", mapper, args.toArray());
+        return sql.query(baseQuery + whereClause + orderClause, mapper, args.toArray());
     }
 
     @Override

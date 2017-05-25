@@ -53,6 +53,7 @@ import static org.json.XML.toJSONObject;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.security.web.util.UrlUtils.buildFullRequestUrl;
+import static org.springframework.util.StringUtils.isEmpty;
 
 @Controller
 public class ODKFormsResource {
@@ -318,6 +319,42 @@ public class ODKFormsResource {
             @RequestParam(value = "limit", required = false) Integer limit) {
         return submissionDao.findRecent(form, version, binding, device, limit);
     }
+
+    @GetMapping(path = "/view/submissionList")
+    public ResponseEntity<InputStreamResource> submissionList(@RequestParam("formId") String form,
+                                                              @RequestParam(value = "cursor", required = false) String cursor,
+                                                              @RequestParam(value = "numEntries", required = false) Integer limit) {
+        Timestamp lastSeen = null;
+        if (!isEmpty(cursor)) {
+            lastSeen = Timestamp.valueOf(cursor);
+        }
+        String contents = getSubmissionIdList(submissionDao.find(form, null, null, null, lastSeen, limit, false), cursor);
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.TEXT_XML)
+                .body(new InputStreamResource(new ByteArrayInputStream(contents.getBytes())));
+    }
+
+    private String getSubmissionIdList(List<FormSubmission> submissions, String cursor) {
+        StringBuffer b = new StringBuffer("<idChunk xmlns=\"http://opendatakit.org/submissions\"><idList>");
+        for (FormSubmission s : submissions) {
+            b.append("<id>");
+            b.append(s.getInstanceId());
+            b.append("</id>");
+        }
+        b.append("</idList>");
+        b.append("<resumptionCursor>");
+        if (submissions.size() > 0) {
+            FormSubmission lastSubmission = submissions.get(submissions.size() - 1);
+            b.append(lastSubmission.getSubmitted());
+        } else {
+            b.append(cursor);
+        }
+        b.append("</resumptionCursor>");
+        b.append("</idChunk>");
+        return b.toString();
+    }
+
 
     @PostMapping("/submission")
     public void handleSubmission(@RequestParam(DEVICE_ID) String deviceId,
