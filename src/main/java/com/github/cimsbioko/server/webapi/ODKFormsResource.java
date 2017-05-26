@@ -10,6 +10,7 @@ import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
@@ -41,11 +42,11 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.time.Instant.now;
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
@@ -58,6 +59,7 @@ import static org.springframework.util.StringUtils.isEmpty;
 @Controller
 public class ODKFormsResource {
 
+    public static final String SUBMISSION_DATE = "submissionDate";
     private static Logger log = LoggerFactory.getLogger(ODKFormsResource.class);
 
     private static final String HEAD = "head";
@@ -183,21 +185,6 @@ public class ODKFormsResource {
         writer.write("</xforms>");
     }
 
-    @GetMapping(path = {"/forms/{formId:\\w+}/{formVersion:\\d+}/{fileName:\\w+[.]xml}",
-            "/formList/{formId:\\w+}/{formVersion:\\d+}/{fileName:\\w+[.]xml}"}, produces = "text/xml")
-    public ResponseEntity<InputStreamResource> form(@PathVariable String formId, @PathVariable String formVersion,
-                                                    @PathVariable String fileName,
-                                                    HttpServletResponse rsp) throws IOException {
-        addOpenRosaHeaders(rsp);
-        String formPath = String.format("%s/%s/%s/%s", formsDir, formId, formVersion, fileName);
-        org.springframework.core.io.Resource formResource = new FileSystemResource(formPath);
-        return ResponseEntity
-                .ok()
-                .contentLength(formResource.contentLength())
-                .contentType(MediaType.TEXT_XML)
-                .body(new InputStreamResource(formResource.getInputStream()));
-    }
-
     @GetMapping(path = {"/forms/{formId:\\w+}/{formVersion:\\d+}/{fileName:[a-zA-Z0-9-_ ]+[.]\\w+}",
             "/formList/{formId:\\w+}/{formVersion:\\d+}/{fileName:[a-zA-Z0-9-_ ]+[.]\\w+}"})
     public ResponseEntity<InputStreamResource> formFile(@PathVariable String formId, @PathVariable String formVersion,
@@ -209,7 +196,7 @@ public class ODKFormsResource {
         return ResponseEntity
                 .ok()
                 .contentLength(formResource.contentLength())
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentType(fileName.endsWith("xml") ? MediaType.TEXT_XML : MediaType.APPLICATION_OCTET_STREAM)
                 .body(new InputStreamResource(formResource.getInputStream()));
     }
 
@@ -355,6 +342,63 @@ public class ODKFormsResource {
         return b.toString();
     }
 
+    @GetMapping("/view/downloadSubmission")
+    public ResponseEntity<?> downloadSubmission(@RequestParam("formId") String submissionKey) throws JDOMException, IOException {
+        String[] info = getInfoFromSubmissionKey(submissionKey);
+        if (info == null) {
+            return ResponseEntity.notFound().build();
+        }
+        String contents = getSubmissionDownload(submissionDao.findById(info[1]));
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.TEXT_XML)
+                .body(new InputStreamResource(new ByteArrayInputStream(contents.getBytes())));
+    }
+
+    private String formatISO8601(Timestamp t) {
+        if (t != null) {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+            df.setTimeZone(TimeZone.getTimeZone("UTC"));
+            return df.format(new Date());
+        }
+        return "";
+    }
+
+    private String getSubmissionDownload(FormSubmission submission) throws JDOMException, IOException {
+        StringBuffer b = new StringBuffer("<submission xmlns=\"http://opendatakit.org/submissions\" " +
+                "xmlns:orx=\"http://openrosa.org/xforms\" >" +
+                "<data>");
+        SAXBuilder builder = new SAXBuilder();
+        Document doc = builder.build(new StringReader(submission.getXml()));
+        Element root = doc.getRootElement();
+        if (root.getAttribute(ID) == null) {
+            root.setAttribute(ID, submission.getFormId());
+        }
+        if (root.getAttribute(INSTANCE_ID) == null) {
+            root.setAttribute(INSTANCE_ID, submission.getInstanceId());
+        }
+        if (root.getAttribute(VERSION) == null) {
+            root.setAttribute(VERSION, submission.getFormVersion());
+        }
+        if (root.getAttribute(SUBMISSION_DATE) == null) {
+            root.setAttribute(SUBMISSION_DATE, formatISO8601(submission.getSubmitted()));
+        }
+        b.append(new XMLOutputter(Format.getRawFormat().setOmitDeclaration(true)).outputString(doc));
+        b.append("</data>");
+        // handle media files next...
+        b.append("</submission>");
+        return b.toString();
+    }
+
+    private static Pattern SUBMIT_KEY_PATTERN = Pattern.compile("/([^\\[]+)\\[@key=([^\\]]+)\\]$");
+
+    private String[] getInfoFromSubmissionKey(String key) {
+        Matcher m = SUBMIT_KEY_PATTERN.matcher(key);
+        if (m.find()) {
+            return new String[]{m.group(1), m.group(2)};
+        }
+        return null;
+    }
 
     @PostMapping("/submission")
     public void handleSubmission(@RequestParam(DEVICE_ID) String deviceId,
