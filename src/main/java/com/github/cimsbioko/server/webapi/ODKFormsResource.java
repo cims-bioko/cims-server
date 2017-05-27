@@ -287,13 +287,21 @@ public class ODKFormsResource {
     @GetMapping(value = "/submission/{idScheme:\\w+}:{instanceId}/{fileName}.{extension}")
     public ResponseEntity<InputStreamResource> getSubmissionFile(@PathVariable String idScheme, @PathVariable String instanceId,
                                                                  @PathVariable String fileName, @PathVariable String extension) throws IOException {
-        String submissionPath = String.format("%s/%s/%s/%s.%s", submissionsDir, idScheme, instanceId, fileName, extension);
+        String submissionPath = String.format("%s/%s.%s", getSubmissionPath(idScheme, instanceId), fileName, extension);
         org.springframework.core.io.Resource submissionResource = new FileSystemResource(submissionPath);
         return ResponseEntity
                 .ok()
                 .contentLength(submissionResource.contentLength())
                 .contentType(APPLICATION_OCTET_STREAM)
                 .body(new InputStreamResource(submissionResource.getInputStream()));
+    }
+
+    private File getSubmissionDir(String instanceId) {
+        return new File(submissionsDir, schemeSubPath(instanceId));
+    }
+
+    private String getSubmissionPath(String idScheme, String id) {
+        return String.format("%s/%s/%s", submissionsDir, idScheme, id);
     }
 
     @GetMapping(value = "/submissions/recent", produces = "application/json")
@@ -343,12 +351,15 @@ public class ODKFormsResource {
     }
 
     @GetMapping("/view/downloadSubmission")
-    public ResponseEntity<?> downloadSubmission(@RequestParam("formId") String submissionKey) throws JDOMException, IOException {
+    public ResponseEntity<?> downloadSubmission(@RequestParam("formId") String submissionKey, HttpServletRequest req)
+            throws JDOMException, IOException {
         String[] info = getInfoFromSubmissionKey(submissionKey);
         if (info == null) {
             return ResponseEntity.notFound().build();
         }
-        String contents = getSubmissionDownload(submissionDao.findById(info[1]));
+        String submissionBaseUrl = String.format("%s/submission",
+                buildFullRequestUrl(req).split("/view/downloadSubmission")[0]);
+        String contents = getSubmissionDescriptor(submissionDao.findById(info[1]), submissionBaseUrl);
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.TEXT_XML)
@@ -364,18 +375,20 @@ public class ODKFormsResource {
         return "";
     }
 
-    private String getSubmissionDownload(FormSubmission submission) throws JDOMException, IOException {
+    private String getSubmissionDescriptor(FormSubmission submission, String submissionBaseUrl)
+            throws JDOMException, IOException {
         StringBuffer b = new StringBuffer("<submission xmlns=\"http://opendatakit.org/submissions\" " +
                 "xmlns:orx=\"http://openrosa.org/xforms\" >" +
                 "<data>");
         SAXBuilder builder = new SAXBuilder();
         Document doc = builder.build(new StringReader(submission.getXml()));
         Element root = doc.getRootElement();
+        String instanceId = submission.getInstanceId();
         if (root.getAttribute(ID) == null) {
             root.setAttribute(ID, submission.getFormId());
         }
         if (root.getAttribute(INSTANCE_ID) == null) {
-            root.setAttribute(INSTANCE_ID, submission.getInstanceId());
+            root.setAttribute(INSTANCE_ID, instanceId);
         }
         if (root.getAttribute(VERSION) == null) {
             root.setAttribute(VERSION, submission.getFormVersion());
@@ -385,7 +398,33 @@ public class ODKFormsResource {
         }
         b.append(new XMLOutputter(Format.getRawFormat().setOmitDeclaration(true)).outputString(doc));
         b.append("</data>");
-        // handle media files next...
+        File submissionDir = getSubmissionDir(instanceId);
+        if (submissionDir.exists()) {
+            log.debug("scanning {} for media files", submissionDir);
+            Files.walk(submissionDir.toPath())
+                    .filter(path -> !(path.toFile().isDirectory() || path.toString().endsWith(".xml")))
+                    .forEach(path -> {
+                        try {
+                            b.append("<mediaFile>");
+                            b.append("<fileName>");
+                            b.append(path.getFileName());
+                            b.append("</fileName>");
+                            b.append("<hash>");
+                            b.append("md5:");
+                            b.append(getFileHash(path.toFile()));
+                            b.append("</hash>");
+                            String downloadUrl = String.format("%s/%s/%s",
+                                    submissionBaseUrl, instanceId, path.getFileName());
+                            b.append("<downloadUrl>");
+                            b.append(downloadUrl);
+                            b.append("</downloadUrl>");
+                            b.append("</mediaFile>");
+                            log.info("media file {}", path);
+                        } catch (Exception e) {
+                            log.error("failed to handle media file: " + path, e);
+                        }
+                    });
+        }
         b.append("</submission>");
         return b.toString();
     }
@@ -470,7 +509,7 @@ public class ODKFormsResource {
         }
 
         // Create directory to store submission
-        File instanceDir = new File(submissionsDir, schemeSubPath(instanceId));
+        File instanceDir = getSubmissionDir(instanceId);
         instanceDir.mkdirs();
 
         // Save uploaded files to the submission directory
