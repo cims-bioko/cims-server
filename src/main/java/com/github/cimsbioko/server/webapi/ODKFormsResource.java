@@ -196,7 +196,7 @@ public class ODKFormsResource {
         return ResponseEntity
                 .ok()
                 .contentLength(formResource.contentLength())
-                .contentType(fileName.endsWith("xml") ? MediaType.TEXT_XML : MediaType.APPLICATION_OCTET_STREAM)
+                .contentType(fileName.endsWith(".xml") ? MediaType.TEXT_XML : MediaType.APPLICATION_OCTET_STREAM)
                 .body(new InputStreamResource(formResource.getInputStream()));
     }
 
