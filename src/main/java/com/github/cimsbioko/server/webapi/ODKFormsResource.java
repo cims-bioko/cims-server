@@ -36,6 +36,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.DigestInputStream;
@@ -78,7 +80,7 @@ public class ODKFormsResource {
     private static final String VERSION = "version";
     private static final String CIMS_BINDING = "cims-binding";
     private static final String XML_SUBMISSION_FILE = "xml_submission_file";
-    private static final String XML_FORM_FILE = "xml_form_file";
+    private static final String FORM_DEF_FILE = "form_def_file";
     private static final String DEVICE_ID = "deviceID";
     private static final String DATE_PATTERN = "yyyy-MM-dd";
     private static final String UTF_8 = "UTF-8";
@@ -95,12 +97,19 @@ public class ODKFormsResource {
     @Autowired
     private FormSubmissionDao submissionDao;
 
+    @RequestMapping(value = {"/upload", "/forms", "/formUpload"}, method = RequestMethod.HEAD)
+    public void configPush(HttpServletRequest req, HttpServletResponse rsp) {
+        addOpenRosaHeaders(rsp);
+        rsp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        String uploadUrl = buildFullRequestUrl(req).replaceFirst("/\\w+$", "") + "/formUpload";
+        rsp.setHeader("Location", uploadUrl);
+    }
 
-    @PostMapping(path = "/forms")
+    @PostMapping(path = {"/forms", "/formUpload"})
     @ResponseBody
-    public ResponseEntity<?> installForm(@RequestParam(XML_FORM_FILE) MultipartFile formXml,
+    public ResponseEntity<?> installForm(@RequestParam(FORM_DEF_FILE) MultipartFile formXml,
                                          MultipartHttpServletRequest req)
-            throws JDOMException, IOException, NoSuchAlgorithmException {
+            throws JDOMException, IOException, NoSuchAlgorithmException, URISyntaxException {
 
         SAXBuilder builder = new SAXBuilder();
         Document formDoc = builder.build(formXml.getInputStream());
@@ -138,8 +147,8 @@ public class ODKFormsResource {
         manifestDoc.setRootElement(manifestElem);
 
         for (Map.Entry<String, List<MultipartFile>> fileEntry : req.getMultiFileMap().entrySet()) {
-            if (XML_FORM_FILE.equalsIgnoreCase(fileEntry.getKey())) {
-                log.debug("skipping form file {}", XML_FORM_FILE);
+            if (FORM_DEF_FILE.equalsIgnoreCase(fileEntry.getKey())) {
+                log.debug("skipping form file {}", FORM_DEF_FILE);
             } else {
                 for (MultipartFile file : fileEntry.getValue()) {
 
@@ -167,9 +176,14 @@ public class ODKFormsResource {
             outputter.output(manifestDoc, writer);
         }
 
-        return ResponseEntity.noContent().build();
+        URI formUrl = new URI(buildFullRequestUrl(req).replaceFirst("/\\w+$", "") + "/formUpload");
+        return ResponseEntity
+                .created(formUrl)
+                .contentType(MediaType.TEXT_XML)
+                .body(new InputStreamReader(new ByteArrayInputStream(OR_SUCCESS_MSG)));
     }
 
+    private static byte[] OR_SUCCESS_MSG = "<OpenRosaResponse xmlns=\"http://openrosa.org/http/response\"><message>Successful upload.</message></OpenRosaResponse>".getBytes();
 
     @GetMapping(path = {"/forms", "formList"}, produces = "text/xml")
     @ResponseBody
@@ -249,9 +263,10 @@ public class ODKFormsResource {
         return ResponseEntity.notFound().build();
     }
 
-    @RequestMapping(value = "/submission", method = RequestMethod.HEAD)
-    public void preAuthentication(HttpServletResponse rsp) {
+    @RequestMapping(value = {"/submission"}, method = RequestMethod.HEAD)
+    public void submissionPreAuth(HttpServletRequest req, HttpServletResponse rsp) {
         addOpenRosaHeaders(rsp);
+        rsp.setHeader("Location", buildFullRequestUrl(req).replaceFirst("/\\w+$", "") + "/submission");
         rsp.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
@@ -440,9 +455,9 @@ public class ODKFormsResource {
     }
 
     @PostMapping("/submission")
-    public void handleSubmission(@RequestParam(DEVICE_ID) String deviceId,
-                                 @RequestParam(XML_SUBMISSION_FILE) MultipartFile xmlFile,
-                                 MultipartHttpServletRequest req, HttpServletResponse rsp) throws IOException {
+    public ResponseEntity<?> handleSubmission(@RequestParam(value = DEVICE_ID, defaultValue = "unknown") String deviceId,
+                                              @RequestParam(XML_SUBMISSION_FILE) MultipartFile xmlFile,
+                                              MultipartHttpServletRequest req, HttpServletResponse rsp) throws IOException, URISyntaxException {
 
         log.info("received submission from device '{}'", deviceId);
 
@@ -498,11 +513,11 @@ public class ODKFormsResource {
         }
 
         // Create a database record for the submission
+        FormSubmission submission = new FormSubmission(instanceId, xml, jsonObj.toString(), id, version, binding,
+                deviceId, collected, null);
         boolean isDuplicateSubmission = false;
         try {
-            FormSubmission submission = new FormSubmission(instanceId, xml, jsonObj.toString(), id, version, binding,
-                    deviceId, collected, null);
-            submissionService.recordSubmission(submission);
+            submission = submissionService.recordSubmission(submission);
         } catch (ExistingSubmissionException e) {
             log.debug("duplicate submission, only uploading attachments");
             isDuplicateSubmission = true;
@@ -528,7 +543,20 @@ public class ODKFormsResource {
             }
         }
 
-        rsp.setStatus(HttpServletResponse.SC_CREATED);
+        URI submissionUri = new URI(buildFullRequestUrl(req) + "/" + instanceId);
+
+        return ResponseEntity
+                .created(submissionUri)
+                .contentType(MediaType.TEXT_XML)
+                .body(new InputStreamResource(new ByteArrayInputStream(getSubmissionResult(submission).getBytes())));
+    }
+
+    private String getSubmissionResult(FormSubmission fs) {
+        return String.format("<OpenRosaResponse xmlns=\"http://openrosa.org/http/response\">" +
+                "<message>full submission upload was successful!</message>" +
+                "<submissionMetadata xmlns=\"http://www.opendatakit.org/xforms\"" +
+                "id=\"%s\" instanceID=\"%s\" version=\"%s\" submissionDate=\"%s\"/>" +
+                "</OpenRosaResponse>", fs.getFormId(), fs.getInstanceId(), fs.getFormVersion(), formatISO8601(fs.getSubmitted()));
     }
 
     private String generateInstanceId() {
