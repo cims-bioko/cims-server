@@ -59,7 +59,6 @@ import static org.springframework.util.StringUtils.isEmpty;
 @Controller
 public class ODKFormsResource {
 
-    public static final String SUBMISSION_DATE = "submissionDate";
     private static Logger log = LoggerFactory.getLogger(ODKFormsResource.class);
 
     private static final String HEAD = "head";
@@ -73,6 +72,7 @@ public class ODKFormsResource {
     private static final String MEDIA_MANIFEST = ".media-manifest.xml";
     private static final String INSTANCE_ID = "instanceID";
     private static final String COLLECTION_DATE_TIME = "collectionDateTime";
+    private static final String SUBMISSION_DATE = "submissionDate";
     private static final String META = "meta";
     private static final String ID = "id";
     private static final String VERSION = "version";
