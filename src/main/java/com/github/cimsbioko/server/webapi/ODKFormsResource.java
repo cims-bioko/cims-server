@@ -82,6 +82,10 @@ public class ODKFormsResource {
     private static final String DEVICE_ID = "deviceID";
     private static final String DATE_PATTERN = "yyyy-MM-dd";
     private static final String ODK_SUBMIT_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
+    private static final String TITLE = "title";
+    private static final String MD5_SCHEME = "md5:";
+    private static final String MD5 = "MD5";
+
 
     @Resource
     private File formsDir;
@@ -428,7 +432,7 @@ public class ODKFormsResource {
                             b.append(path.getFileName());
                             b.append("</fileName>");
                             b.append("<hash>");
-                            b.append("md5:");
+                            b.append(MD5_SCHEME);
                             b.append(getFileHash(path.toFile()));
                             b.append("</hash>");
                             String downloadUrl = String.format("%s/%s/%s",
@@ -618,7 +622,7 @@ public class ODKFormsResource {
                     "<name>" + name + "</name>\n" +
                     "<majorMinorVersion>" + version + "</majorMinorVersion>\n" +
                     "<version>" + version + "</version>\n" +
-                    "<hash>md5:" + hash + "</hash>" +
+                    "<hash>" + MD5_SCHEME + hash + "</hash>" +
                     "<downloadUrl>" + baseUrl + "/" + path + "</downloadUrl>\n" +
                     (manifestPath != null ? "<manifestUrl>" + baseUrl + "/" + manifestPath + "</manifestUrl>" : "") +
                     "</xform>\n";
@@ -661,12 +665,12 @@ public class ODKFormsResource {
     }
 
     private String getFileHash(File toHash) throws NoSuchAlgorithmException, IOException {
-        try (DigestInputStream in = new DigestInputStream(new FileInputStream(toHash), MessageDigest.getInstance("MD5"))) {
+        try (DigestInputStream in = new DigestInputStream(new FileInputStream(toHash), MessageDigest.getInstance(MD5))) {
             byte[] buf = new byte[8096];
             while (in.read(buf) >= 0) {
                 // reading only to compute hash
             }
-            return "md5:" + encodeHexString(in.getMessageDigest().digest());
+            return MD5_SCHEME + encodeHexString(in.getMessageDigest().digest());
         }
     }
 
@@ -681,13 +685,13 @@ public class ODKFormsResource {
                 fileName = rel.getName(2).toString();
         String title, hash;
         try (DigestInputStream digestIn =
-                     new DigestInputStream(new FileInputStream(formPath.toFile()), MessageDigest.getInstance("MD5"))) {
+                     new DigestInputStream(new FileInputStream(formPath.toFile()), MessageDigest.getInstance(MD5))) {
             SAXBuilder sb = new SAXBuilder();
             Document formDoc = sb.build(digestIn);
             Namespace xhtmlNs = Namespace.getNamespace("http://www.w3.org/1999/xhtml");
             Element html = formDoc.getRootElement(),
-                    head = html.getChild("head", xhtmlNs);
-            title = head.getChildText("title", xhtmlNs);
+                    head = html.getChild(HEAD, xhtmlNs);
+            title = head.getChildText(TITLE, xhtmlNs);
             hash = encodeHexString(digestIn.getMessageDigest().digest()); // assumes doc build reads entire file content
         }
         boolean manifestExists = formPath.resolveSibling(MEDIA_MANIFEST).toFile().exists();
