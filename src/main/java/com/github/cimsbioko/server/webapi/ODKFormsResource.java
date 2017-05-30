@@ -14,8 +14,6 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +42,7 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -83,7 +81,7 @@ public class ODKFormsResource {
     private static final String FORM_DEF_FILE = "form_def_file";
     private static final String DEVICE_ID = "deviceID";
     private static final String DATE_PATTERN = "yyyy-MM-dd";
-    private static final String UTF_8 = "UTF-8";
+    private static final String ODK_SUBMIT_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
 
     @Resource
     private File formsDir;
@@ -381,13 +379,18 @@ public class ODKFormsResource {
                 .body(new InputStreamResource(new ByteArrayInputStream(contents.getBytes())));
     }
 
-    private String formatISO8601(Timestamp t) {
+    private String formatODKSubmitDate(Timestamp t) {
         if (t != null) {
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
-            df.setTimeZone(TimeZone.getTimeZone("UTC"));
-            return df.format(new Date());
+            return new SimpleDateFormat(ODK_SUBMIT_DATE_PATTERN).format(t);
         }
         return "";
+    }
+
+    private Timestamp parseODKSubmitDate(String s) throws ParseException {
+        if (s != null) {
+            return new Timestamp(new SimpleDateFormat(ODK_SUBMIT_DATE_PATTERN).parse(s).getTime());
+        }
+        return null;
     }
 
     private String getSubmissionDescriptor(FormSubmission submission, String submissionBaseUrl)
@@ -409,7 +412,7 @@ public class ODKFormsResource {
             root.setAttribute(VERSION, submission.getFormVersion());
         }
         if (root.getAttribute(SUBMISSION_DATE) == null) {
-            root.setAttribute(SUBMISSION_DATE, formatISO8601(submission.getSubmitted()));
+            root.setAttribute(SUBMISSION_DATE, formatODKSubmitDate(submission.getSubmitted()));
         }
         b.append(new XMLOutputter(Format.getRawFormat().setOmitDeclaration(true)).outputString(doc));
         b.append("</data>");
@@ -457,64 +460,85 @@ public class ODKFormsResource {
     @PostMapping("/submission")
     public ResponseEntity<?> handleSubmission(@RequestParam(value = DEVICE_ID, defaultValue = "unknown") String deviceId,
                                               @RequestParam(XML_SUBMISSION_FILE) MultipartFile xmlFile,
-                                              MultipartHttpServletRequest req, HttpServletResponse rsp) throws IOException, URISyntaxException {
+                                              MultipartHttpServletRequest req, HttpServletResponse rsp) throws IOException, URISyntaxException, JDOMException {
 
         log.info("received submission from device '{}'", deviceId);
 
-        String xml = new String(xmlFile.getBytes(), UTF_8);
-        log.debug("submitted form:\n{}", xml);
+        SAXBuilder builder = new SAXBuilder();
+        XMLOutputter xmlout = new XMLOutputter();
 
-        JSONObject jsonObj = toJSONObject(xml);
-        log.debug("converted json:\n{}", jsonObj);
+        Document xmlDoc = builder.build(xmlFile.getInputStream());
 
-        addOpenRosaHeaders(rsp);
-
-        // Extract interesting values from form content
-        String instanceName = jsonObj.names().getString(0);
-        JSONObject instance = jsonObj.getJSONObject(instanceName);
-
-        // Get metadata section, or create one
-        JSONObject meta;
-        try {
-            meta = instance.getJSONObject(META);
-        } catch (JSONException je) {
-            meta = new JSONObject();
-            instance.put(META, meta);
+        if (log.isDebugEnabled()) {
+            log.debug("submitted form:\n{}", xmlout.outputString(xmlDoc));
         }
 
-        // Get collected time or add it
+        // retrieve or add meta element if it doesn't exist
+        Element rootElem = xmlDoc.getRootElement();
+        Element metaElem = rootElem.getChild(META);
+        if (metaElem == null) {
+            metaElem = new Element(META);
+            rootElem.addContent(metaElem);
+        }
+
+        // retrieve or add collection date/time if it doesn't exist
         Timestamp collected;
-        try {
-            collected = Timestamp.valueOf(instance.getString(COLLECTION_DATE_TIME));
-        } catch (JSONException je) {
+        Element collectionTimeElem = rootElem.getChild(COLLECTION_DATE_TIME);
+        if (collectionTimeElem == null) {
             collected = Timestamp.from(now());
-            String formatted = new SimpleDateFormat(DATE_PATTERN).format(collected);
-            instance.put(COLLECTION_DATE_TIME, formatted);
+            collectionTimeElem = new Element(COLLECTION_DATE_TIME);
+            collectionTimeElem.setText(new SimpleDateFormat(DATE_PATTERN).format(collected));
+            rootElem.addContent(collectionTimeElem);
+        } else {
+            collected = Timestamp.valueOf(collectionTimeElem.getText());
+        }
+
+        // retrieve or add instance id
+        String instanceId = rootElem.getAttributeValue(INSTANCE_ID);
+        if (instanceId == null) {
+            Element instanceIdElem = metaElem.getChild(INSTANCE_ID);
+            if (instanceIdElem == null) {
+                instanceId = generateInstanceId();
+                instanceIdElem = new Element(INSTANCE_ID);
+                instanceIdElem.setText(instanceId);
+                metaElem.addContent(instanceIdElem);
+            } else {
+                instanceId = instanceIdElem.getText();
+            }
         }
 
         // Get required instance values
-        String id = instance.getString(ID), version = instance.get(VERSION).toString();
+        String id = rootElem.getAttributeValue(ID), version = rootElem.getAttributeValue(VERSION);
+
+        if (version == null) {
+            version = "1";
+            rootElem.setAttribute(VERSION, version);
+        }
 
         // Get CIMS-specific binding or fall back on form id
-        String binding;
-        try {
-            binding = instance.getString(CIMS_BINDING);
-        } catch (JSONException je) {
+        String binding = rootElem.getAttributeValue(CIMS_BINDING);
+        if (binding == null) {
             binding = id;
         }
 
-        // Get or add instance id
-        String instanceId;
+        // Get submission date if supplied
+        Timestamp submitted = null;
         try {
-            instanceId = meta.getString(INSTANCE_ID);
-        } catch (JSONException je) {
-            instanceId = generateInstanceId();
-            meta.put(INSTANCE_ID, instanceId);
+            submitted = parseODKSubmitDate(rootElem.getAttributeValue(SUBMISSION_DATE));
+        } catch (ParseException e) {
+            log.warn("failed to parse submission date", e);
         }
 
+        String augmentedXml = xmlout.outputString(xmlDoc);
+
+        String json = toJSONObject(augmentedXml).toString();
+        log.debug("converted json:\n{}", json);
+
+        addOpenRosaHeaders(rsp);
+
         // Create a database record for the submission
-        FormSubmission submission = new FormSubmission(instanceId, xml, jsonObj.toString(), id, version, binding,
-                deviceId, collected, null);
+        FormSubmission submission = new FormSubmission(instanceId, augmentedXml, json, id, version, binding,
+                deviceId, collected, submitted);
         boolean isDuplicateSubmission = false;
         try {
             submission = submissionService.recordSubmission(submission);
@@ -556,7 +580,7 @@ public class ODKFormsResource {
                 "<message>full submission upload was successful!</message>" +
                 "<submissionMetadata xmlns=\"http://www.opendatakit.org/xforms\"" +
                 "id=\"%s\" instanceID=\"%s\" version=\"%s\" submissionDate=\"%s\"/>" +
-                "</OpenRosaResponse>", fs.getFormId(), fs.getInstanceId(), fs.getFormVersion(), formatISO8601(fs.getSubmitted()));
+                "</OpenRosaResponse>", fs.getFormId(), fs.getInstanceId(), fs.getFormVersion(), formatODKSubmitDate(fs.getSubmitted()));
     }
 
     private String generateInstanceId() {

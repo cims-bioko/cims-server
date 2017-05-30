@@ -40,10 +40,10 @@ public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements
     @Override
     public void save(FormSubmission fs) {
         sql.update("insert into form_submission " +
-                        "(instanceId, as_xml, as_json, form_id, form_version, form_binding, from_device, collected)" +
-                        " values (?,cast(? as xml),cast(? as jsonb),?,?,?,?,?)",
+                        "(instanceId, as_xml, as_json, form_id, form_version, form_binding, from_device, submitted, collected)" +
+                        " values (?,cast(? as xml),cast(? as jsonb),?,?,?,?,coalesce(?,current_timestamp),?)",
                 fs.getInstanceId(), fs.getXml(), fs.getJson(), fs.getFormId(), fs.getFormVersion(), fs.getFormBinding(),
-                fs.getDeviceId(), fs.getCollected());
+                fs.getDeviceId(), fs.getSubmitted(), fs.getCollected());
     }
 
     @Override
