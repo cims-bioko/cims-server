@@ -29,6 +29,7 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -44,7 +45,10 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -104,8 +108,16 @@ public class ODKFormsResource {
     public void configPush(HttpServletRequest req, HttpServletResponse rsp) {
         addOpenRosaHeaders(rsp);
         rsp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-        String uploadUrl = buildFullRequestUrl(req).replaceFirst("/\\w+$", "") + "/formUpload";
-        rsp.setHeader("Location", uploadUrl);
+        rsp.setHeader("Location", contextRelativeUrl(req, "formUpload"));
+    }
+
+    private String contextRelativeUrl(HttpServletRequest req, String... pathSegments) {
+        return UriComponentsBuilder
+                .fromHttpUrl(buildFullRequestUrl(req))
+                .replacePath(req.getContextPath() + req.getServletPath())
+                .pathSegment(pathSegments)
+                .query(null)
+                .toUriString();
     }
 
     @PostMapping(path = {"/forms", "/formUpload"})
@@ -179,7 +191,8 @@ public class ODKFormsResource {
             outputter.output(manifestDoc, writer);
         }
 
-        URI formUrl = new URI(buildFullRequestUrl(req).replaceFirst("/\\w+$", "") + "/formUpload");
+        URI formUrl = new URI(contextRelativeUrl(req, "formUpload"));
+
         return ResponseEntity
                 .created(formUrl)
                 .contentType(MediaType.TEXT_XML)
@@ -269,7 +282,7 @@ public class ODKFormsResource {
     @RequestMapping(value = {"/submission"}, method = RequestMethod.HEAD)
     public void submissionPreAuth(HttpServletRequest req, HttpServletResponse rsp) {
         addOpenRosaHeaders(rsp);
-        rsp.setHeader("Location", buildFullRequestUrl(req).replaceFirst("/\\w+$", "") + "/submission");
+        rsp.setHeader("Location", contextRelativeUrl(req, "submission"));
         rsp.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
@@ -572,7 +585,7 @@ public class ODKFormsResource {
             }
         }
 
-        URI submissionUri = new URI(buildFullRequestUrl(req) + "/" + instanceId);
+        URI submissionUri = new URI(contextRelativeUrl(req, "submission"));
 
         return ResponseEntity
                 .created(submissionUri)
