@@ -85,6 +85,7 @@ public class ODKFormsResource {
     private static final String TITLE = "title";
     private static final String MD5_SCHEME = "md5:";
     private static final String MD5 = "MD5";
+    private static final String DEFAULT_VERSION = "1";
 
 
     @Resource
@@ -128,7 +129,7 @@ public class ODKFormsResource {
                 version = firstInstance.getAttributeValue(VERSION);
 
         if (version == null) {
-            version = "1";
+            version = DEFAULT_VERSION;
             firstInstance.setAttribute(VERSION, version);
         }
 
@@ -515,7 +516,7 @@ public class ODKFormsResource {
         String id = rootElem.getAttributeValue(ID), version = rootElem.getAttributeValue(VERSION);
 
         if (version == null) {
-            version = "1";
+            version = DEFAULT_VERSION;
             rootElem.setAttribute(VERSION, version);
         }
 
