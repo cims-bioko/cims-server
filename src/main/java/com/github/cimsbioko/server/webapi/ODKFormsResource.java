@@ -363,7 +363,7 @@ public class ODKFormsResource {
     }
 
     private String getSubmissionIdList(List<FormSubmission> submissions, String cursor) {
-        StringBuffer b = new StringBuffer("<idChunk xmlns=\"http://opendatakit.org/submissions\"><idList>");
+        StringBuilder b = new StringBuilder("<idChunk xmlns=\"http://opendatakit.org/submissions\"><idList>");
         for (FormSubmission s : submissions) {
             b.append("<id>");
             b.append(s.getInstanceId());
@@ -414,7 +414,7 @@ public class ODKFormsResource {
 
     private String getSubmissionDescriptor(FormSubmission submission, String submissionBaseUrl)
             throws JDOMException, IOException {
-        StringBuffer b = new StringBuffer("<submission xmlns=\"http://opendatakit.org/submissions\" " +
+        StringBuilder b = new StringBuilder("<submission xmlns=\"http://opendatakit.org/submissions\" " +
                 "xmlns:orx=\"http://openrosa.org/xforms\" >" +
                 "<data>");
         SAXBuilder builder = new SAXBuilder();
