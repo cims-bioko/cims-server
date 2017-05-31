@@ -90,6 +90,7 @@ public class ODKFormsResource {
     private static final String MD5_SCHEME = "md5:";
     private static final String MD5 = "MD5";
     private static final String DEFAULT_VERSION = "1";
+    private static final String LOCATION = "Location";
 
 
     @Resource
@@ -108,7 +109,7 @@ public class ODKFormsResource {
     public void configPush(HttpServletRequest req, HttpServletResponse rsp) {
         addOpenRosaHeaders(rsp);
         rsp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-        rsp.setHeader("Location", contextRelativeUrl(req, "formUpload"));
+        rsp.setHeader(LOCATION, contextRelativeUrl(req, "formUpload"));
     }
 
     private String contextRelativeUrl(HttpServletRequest req, String... pathSegments) {
@@ -282,7 +283,7 @@ public class ODKFormsResource {
     @RequestMapping(value = {"/submission"}, method = RequestMethod.HEAD)
     public void submissionPreAuth(HttpServletRequest req, HttpServletResponse rsp) {
         addOpenRosaHeaders(rsp);
-        rsp.setHeader("Location", contextRelativeUrl(req, "submission"));
+        rsp.setHeader(LOCATION, contextRelativeUrl(req, "submission"));
         rsp.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
