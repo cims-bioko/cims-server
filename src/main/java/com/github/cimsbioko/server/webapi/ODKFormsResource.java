@@ -84,7 +84,7 @@ public class ODKFormsResource {
     private static final String XML_SUBMISSION_FILE = "xml_submission_file";
     private static final String FORM_DEF_FILE = "form_def_file";
     private static final String DEVICE_ID = "deviceID";
-    private static final String DATE_PATTERN = "yyyy-MM-dd";
+    private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     private static final String ODK_SUBMIT_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
     private static final String TITLE = "title";
     private static final String MD5_SCHEME = "md5:";
@@ -506,7 +506,7 @@ public class ODKFormsResource {
         if (collectionTimeElem == null) {
             collected = Timestamp.from(now());
             collectionTimeElem = new Element(COLLECTION_DATE_TIME);
-            collectionTimeElem.setText(new SimpleDateFormat(DATE_PATTERN).format(collected));
+            collectionTimeElem.setText(new SimpleDateFormat(DATE_TIME_PATTERN).format(collected));
             rootElem.addContent(collectionTimeElem);
         } else {
             collected = Timestamp.valueOf(collectionTimeElem.getText());
