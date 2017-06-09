@@ -494,18 +494,24 @@ public class ODKFormsResource {
 
         // retrieve or add meta element if it doesn't exist
         Element rootElem = xmlDoc.getRootElement();
-        Element metaElem = rootElem.getChild(META);
+
+        Namespace rootNs = rootElem.getNamespace(),
+                metaNs = Namespace.getNamespace("jr", "http://openrosa.org/xforms");
+
+        Element metaElem = getChild(rootElem, META, rootNs, metaNs);
         if (metaElem == null) {
-            metaElem = new Element(META);
+            metaElem = new Element(META, metaNs);
             rootElem.addContent(metaElem);
         }
 
+        Namespace metaElemNs = metaElem.getNamespace();
+
         // retrieve or add collection date/time if it doesn't exist
         Timestamp collected;
-        Element collectionTimeElem = rootElem.getChild(COLLECTION_DATE_TIME);
+        Element collectionTimeElem = rootElem.getChild(COLLECTION_DATE_TIME, rootNs);
         if (collectionTimeElem == null) {
             collected = Timestamp.from(now());
-            collectionTimeElem = new Element(COLLECTION_DATE_TIME);
+            collectionTimeElem = new Element(COLLECTION_DATE_TIME, rootNs);
             collectionTimeElem.setText(new SimpleDateFormat(DATE_TIME_PATTERN).format(collected));
             rootElem.addContent(collectionTimeElem);
         } else {
@@ -515,10 +521,10 @@ public class ODKFormsResource {
         // retrieve or add instance id
         String instanceId = rootElem.getAttributeValue(INSTANCE_ID);
         if (instanceId == null) {
-            Element instanceIdElem = metaElem.getChild(INSTANCE_ID);
+            Element instanceIdElem = metaElem.getChild(INSTANCE_ID, metaElemNs);
             if (instanceIdElem == null) {
                 instanceId = generateInstanceId();
-                instanceIdElem = new Element(INSTANCE_ID);
+                instanceIdElem = new Element(INSTANCE_ID, metaElemNs);
                 instanceIdElem.setText(instanceId);
                 metaElem.addContent(instanceIdElem);
             } else {
@@ -592,6 +598,16 @@ public class ODKFormsResource {
                 .created(submissionUri)
                 .contentType(MediaType.TEXT_XML)
                 .body(new InputStreamResource(new ByteArrayInputStream(getSubmissionResult(submission).getBytes())));
+    }
+
+    private Element getChild(Element parent, String cname, Namespace... nses) {
+        for (Namespace ns : nses) {
+            Element child = parent.getChild(cname, ns);
+            if (child != null) {
+                return child;
+            }
+        }
+        return null;
     }
 
     private String getSubmissionResult(FormSubmission fs) {
