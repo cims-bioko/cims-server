@@ -254,6 +254,35 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+               <groupId>io.fabric8</groupId>
+               <artifactId>docker-maven-plugin</artifactId>
+               <version>0.21.0</version>
+               <extensions>true</extensions>
+               <configuration>
+                  <images>
+                     <image>
+                        <name>${project.artifactId}:${project.version}</name>
+                        <alias>${project.name}</alias>
+                        <build>
+                           <from>frolvlad/alpine-oraclejdk8:slim</from>
+                           <assembly>
+                              <descriptorRef>artifact</descriptorRef>
+                           </assembly>
+                           <cmd>java -jar maven/${project.artifactId}-${project.version}.${project.packaging}</cmd>
+                        </build>
+                     </image>
+                  </images>
+               </configuration>
+               <executions>
+                  <execution>
+                     <id>build-docker-image</id>
+                     <goals>
+                        <goal>build</goal>
+                     </goals>
+                  </execution>
+               </executions>
+            </plugin>
         </plugins>
     </build>
 
