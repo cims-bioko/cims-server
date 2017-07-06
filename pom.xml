@@ -265,7 +265,7 @@
                         <name>${project.artifactId}:${project.version}</name>
                         <alias>${project.name}</alias>
                         <build>
-                           <from>frolvlad/alpine-oraclejdk8:slim</from>
+                           <from>frolvlad/alpine-oraclejdk8:cleaned</from>
                            <assembly>
                               <descriptorRef>artifact</descriptorRef>
                            </assembly>
