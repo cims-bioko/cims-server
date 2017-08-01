@@ -7,7 +7,9 @@ import org.openhds.task.support.FileResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.ServletContextAware;
@@ -16,6 +18,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -39,6 +43,7 @@ import static org.openhds.task.service.AsyncTaskService.MOBILEDB_TASK_NAME;
 public class CacheFileResource implements ServletContextAware {
 
     public static final String SQLITE_MIME_TYPE = "application/x-sqlite3";
+    public static final String MOBILEDB_FILENAME = "openhds.db";
 
     private static Logger log = LoggerFactory.getLogger(CacheFileResource.class);
 
@@ -126,5 +131,29 @@ public class CacheFileResource implements ServletContextAware {
     @RequestMapping(value = "/mobiledb/cached", method = RequestMethod.GET, produces = {SQLITE_MIME_TYPE, Metadata.MIME_TYPE})
     public void mobileDB(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         serviceTask(MOBILEDB_TASK_NAME, request, response, SQLITE_MIME_TYPE);
+    }
+
+    @RequestMapping(value = "/mobiledb/export", method = RequestMethod.GET)
+    public void browserExport(HttpServletResponse response) throws IOException {
+
+        File dbFile = fileResolver.getFileForTask(MOBILEDB_TASK_NAME);
+        FileSystemResource dbFileRes = new FileSystemResource(dbFile);
+
+        if (!dbFileRes.isReadable()) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND,
+                    "unable to find mobiledb file. it may not be generated yet");
+        } else {
+            response.setContentType("application/zip");
+            response.setHeader("Content-Disposition", "attachment; filename=" + MOBILEDB_FILENAME + ".zip");
+            try (ZipOutputStream zOut = new ZipOutputStream(response.getOutputStream())) {
+                ZipEntry e = new ZipEntry(MOBILEDB_FILENAME);
+                e.setSize(dbFileRes.contentLength());
+                e.setTime(System.currentTimeMillis());
+                zOut.putNextEntry(e);
+                StreamUtils.copy(dbFileRes.getInputStream(), zOut);
+                zOut.closeEntry();
+                zOut.finish();
+            }
+        }
     }
 }

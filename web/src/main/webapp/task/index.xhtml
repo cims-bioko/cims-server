@@ -72,7 +72,9 @@
                     <h:outputText value="MD5 Hash" />
                 </f:facet>
 
-                <h:outputText value="#{task.md5Hash}" />
+                <h:outputLink value="#{request.contextPath}/api/rest/mobiledb/export">
+                    <h:outputText value="#{task.md5Hash}"/>
+                </h:outputLink>
             </h:column>
         </h:dataTable>
     </ui:define>
