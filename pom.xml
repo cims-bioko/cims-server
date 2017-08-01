@@ -8,7 +8,7 @@
     <artifactId>openhds</artifactId>
     <packaging>pom</packaging>
     <name>OpenHDS Core</name>
-    <version>2.5.2</version>
+    <version>2.6</version>
 
     <repositories>
         <repository>
