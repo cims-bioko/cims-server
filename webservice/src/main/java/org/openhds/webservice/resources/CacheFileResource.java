@@ -141,7 +141,7 @@ public class CacheFileResource implements ServletContextAware {
 
         if (!dbFileRes.isReadable()) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND,
-                    "unable to find mobiledb file. it may not be generated yet");
+                    "Unable to find mobiledb file. Try generating it from the tasks menu.");
         } else {
             response.setContentType("application/zip");
             response.setHeader("Content-Disposition", "attachment; filename=" + MOBILEDB_FILENAME + ".zip");
