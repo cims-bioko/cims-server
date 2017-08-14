@@ -21,7 +21,12 @@
 		
             <h:outputText styleClass="error" value="#{locationCrud.item.statusMessage}" />
 
-        	<h:panelGrid columns="3">     
+            <h:panelGrid columns="3">
+
+           		<h:outputText value="#{msg.uuid}:"/>
+           		<h:outputText />
+           		<h:outputText value="#{locationCrud.item.uuid}" />
+
            		<h:outputText value="#{msg.locationId}:"/>
            		<h:outputText />
                	<h:outputText value="#{locationCrud.item.extId}" />
