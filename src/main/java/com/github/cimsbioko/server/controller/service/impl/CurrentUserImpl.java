@@ -9,10 +9,15 @@ import com.github.cimsbioko.server.controller.service.CurrentUser;
 import com.github.cimsbioko.server.domain.model.Privilege;
 import com.github.cimsbioko.server.domain.model.User;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import static java.util.Collections.EMPTY_SET;
+import static java.util.Collections.unmodifiableSet;
 
 /**
  * Simple bean that provides access to the current logged in user
@@ -30,29 +35,46 @@ public class CurrentUserImpl implements CurrentUser {
             authorities.add(new SimpleGrantedAuthority(privilege));
         }
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, password, authorities);
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        getSecurityContext().setAuthentication(auth);
     }
 
     public User getCurrentUser() {
-        return getExtendedUser().getDomainUser();
+        return isAuthenticated()? getExtendedUser().getDomainUser() : null;
     }
 
     public Set<Privilege> getCurrentUserPrivileges() {
-        return getExtendedUser().getAllPrivileges();
+        return isAuthenticated()? getExtendedUser().getAllPrivileges() : unmodifiableSet(EMPTY_SET);
     }
 
     /**
      * @return the user name of the current logged in user
      */
     public String getName() {
-        return getSpringSecurityUser().getUsername();
+        return isAuthenticated()? getSpringSecurityUser().getUsername() : null;
     }
 
     private ExtendedUser getExtendedUser() {
         return (ExtendedUser) getSpringSecurityUser();
     }
 
+    private SecurityContext getSecurityContext() {
+        return SecurityContextHolder.getContext();
+    }
+
+    private Authentication getAuthentication() {
+        return getSecurityContext().getAuthentication();
+    }
+
+    private boolean isAuthenticated() {
+        return getAuthentication() != null;
+    }
+
     private UserDetails getSpringSecurityUser() {
-        return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return isAuthenticated() ? (UserDetails) getAuthentication().getPrincipal() : null;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }

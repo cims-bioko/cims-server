@@ -4,26 +4,35 @@ import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import com.github.cimsbioko.server.controller.service.CurrentUser;
 import com.github.cimsbioko.server.domain.model.AsyncTask;
 import com.github.cimsbioko.server.task.service.AsyncTaskService;
 import com.github.cimsbioko.server.task.support.TaskExecutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 
 public class TaskBean {
 
+    private static final Logger log = LoggerFactory.getLogger(TaskBean.class);
+
     private static final String TASK_VIEW = "task";
     private TaskExecutor taskExecutor;
     private AsyncTaskService asyncTaskService;
     private TaskScheduler scheduler;
+    private CurrentUser currentUser;
+
     private ScheduledFuture scheduledTask;
 
     private String cronSchedule = "0 0 * * * ?";
 
-    public TaskBean(TaskExecutor taskExecutor, AsyncTaskService asyncTaskService, TaskScheduler scheduler) {
+    public TaskBean(TaskExecutor taskExecutor, AsyncTaskService asyncTaskService, TaskScheduler scheduler,
+                    CurrentUser currentUser) {
         this.taskExecutor = taskExecutor;
         this.asyncTaskService = asyncTaskService;
         this.scheduler = scheduler;
+        this.currentUser = currentUser;
     }
 
     public String startMobileDBTask() {
@@ -50,6 +59,7 @@ public class TaskBean {
     public String scheduleAllTasks() {
         cancelScheduled();
         scheduledTask = scheduler.schedule(new StartTasksExecutor(), new CronTrigger(cronSchedule));
+        log.info("user {} scheduled tasks for schedule {}", currentUser, cronSchedule);
         return TASK_VIEW;
     }
 
@@ -69,6 +79,7 @@ public class TaskBean {
 
     public String cancelScheduledTasks() {
         cancelScheduled();
+        log.info("user {} disabled scheduled tasks", currentUser);
         return TASK_VIEW;
     }
 

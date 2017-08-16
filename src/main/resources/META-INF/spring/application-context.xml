@@ -773,6 +773,7 @@
         <constructor-arg ref="openhdsTaskExecutor"/>
         <constructor-arg ref="asyncTaskServiceImpl"/>
         <constructor-arg ref="taskScheduler"/>
+        <constructor-arg ref="currentUser"/>
     </bean>
 
     <bean id="siteProperties"
