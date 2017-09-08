@@ -31,7 +31,6 @@
         <property name="locations">
             <list>
                 <value>classpath:/META-INF/build-info.properties</value>
-                <value>classpath:database.properties</value>
                 <value>classpath:location-levels.properties</value>
                 <value>classpath:codes.properties</value>
                 <!-- linux-specific local configuration -->
@@ -47,16 +46,6 @@
 
     <!-- dao -->
     <context:component-scan base-package="com.github.cimsbioko.server.dao" />
-
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-          destroy-method="close">
-        <property name="driverClassName" value="${dbDriver}"/>
-        <property name="url" value="${dbUrl}"/>
-        <property name="username" value="${dbUser}"/>
-        <property name="password" value="${dbPass}"/>
-        <property name="validationQuery" value="SELECT 1"/>
-        <property name="testOnBorrow" value="true"/>
-    </bean>
 
     <bean id="sessionFactory"
           class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" depends-on="flyway">
@@ -93,13 +82,13 @@
         </property>
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.show_sql">${hibernateShowSql}</prop>
-                <prop key="hibernate.hbm2ddl.auto">${hibernateExport}</prop>
+                <prop key="hibernate.show_sql">${app.hibernate.showSql}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${app.hibernate.export}</prop>
                 <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory
                 </prop>
                 <prop key="hibernate.jdbc.use_streams_for_binary"></prop>
                 <prop key="hibernate.jdbc.batch_size">0</prop>
-                <prop key="hibernate.dialect">${hibernateDialect}</prop>
+                <prop key="hibernate.dialect">${app.hibernate.dialect}</prop>
                 <prop key="javax.persistence.validation.mode">NONE</prop>
             </props>
         </property>

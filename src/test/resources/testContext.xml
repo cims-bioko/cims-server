@@ -32,8 +32,8 @@
         <property name="locations">
             <list>
                 <value>classpath:location-levels.properties</value>
+                <value>classpath:application-test.properties</value>
                 <value>classpath:codes.properties</value>
-                <value>classpath:test-database.properties</value>
                 <value>classpath:test-site-config.properties</value>
             </list>
         </property>
@@ -44,10 +44,10 @@
 
     <!-- Independent data source for test context -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="DriverClassName" value="org.h2.Driver"/>
-        <property name="Url" value="jdbc:h2:mem:openhds"/>
-        <property name="Username" value="sa"/>
-        <property name="Password" value=""/>
+        <property name="DriverClassName" value="${spring.datasource.driver-class-name}"/>
+        <property name="Url" value="${spring.datasource.url}"/>
+        <property name="Username" value="${spring.datasource.username}"/>
+        <property name="Password" value="${spring.datasource.password}"/>
     </bean>
 
     <mvc:annotation-driven/>
