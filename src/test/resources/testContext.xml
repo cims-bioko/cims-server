@@ -31,7 +31,6 @@
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
         <property name="locations">
             <list>
-                <value>classpath:location-levels.properties</value>
                 <value>classpath:application-test.properties</value>
                 <value>classpath:codes.properties</value>
                 <value>classpath:test-site-config.properties</value>

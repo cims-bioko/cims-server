@@ -31,7 +31,6 @@
         <property name="locations">
             <list>
                 <value>classpath:/META-INF/build-info.properties</value>
-                <value>classpath:location-levels.properties</value>
                 <value>classpath:codes.properties</value>
                 <!-- linux-specific local configuration -->
                 <value>file:/etc/openhds/*.properties</value>
