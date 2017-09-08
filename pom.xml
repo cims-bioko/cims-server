@@ -265,7 +265,7 @@
                         <name>${project.artifactId}:${project.version}</name>
                         <alias>${project.name}</alias>
                         <build>
-                           <from>frolvlad/alpine-oraclejdk8:cleaned</from>
+                           <from>cimsbioko/oracle-java8-awsrds-ssl</from>
                            <assembly>
                               <descriptorRef>artifact</descriptorRef>
                            </assembly>
