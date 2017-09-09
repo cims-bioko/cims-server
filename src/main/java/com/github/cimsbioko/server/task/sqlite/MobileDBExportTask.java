@@ -82,7 +82,7 @@ public class MobileDBExportTask implements SyncFileTask {
             File dest = context.getDestinationFile();
             File scratch = new File(dest.getParentFile(), dest.getName() + ".tmp");
             File metaDest = new File(dest.getParentFile(), dest.getName() + ".jrsmd");
-            File metaScratch = new File(metaDest.getParentFile(), metaDest.getName() + ".tmp");
+            File metaScratch = new File(dest.getParentFile(), metaDest.getName() + ".tmp");
 
             // Export each of the queries as a table in the target database file
             exporter.scriptTarget(preDdl.getInputStream(), scratch);
