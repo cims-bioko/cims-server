@@ -25,6 +25,7 @@
         <sqlite-jdbc.version>3.6.11</sqlite-jdbc.version>
         <flyway.version>4.0.3</flyway.version>
         <jsf.version>2.1.29-04</jsf.version>
+        <jarFilename>${project.build.finalName}.${project.packaging}</jarFilename>
     </properties>
 
     <scm>
@@ -263,13 +264,13 @@
                   <images>
                      <image>
                         <name>${project.artifactId}:${project.version}</name>
-                        <alias>${project.name}</alias>
+                        <alias>${project.artifactId}</alias>
                         <build>
-                           <from>cimsbioko/oracle-java8-awsrds-ssl</from>
+                           <dockerFileDir>app</dockerFileDir>
                            <assembly>
+                              <name>app</name>
                               <descriptorRef>artifact</descriptorRef>
                            </assembly>
-                           <cmd>java -jar maven/${project.artifactId}-${project.version}.${project.packaging}</cmd>
                         </build>
                      </image>
                   </images>
