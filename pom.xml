@@ -263,7 +263,7 @@
                <configuration>
                   <images>
                      <image>
-                        <name>${project.artifactId}:${project.version}</name>
+                        <name>cimsbioko/${project.artifactId}:${project.version}</name>
                         <alias>${project.artifactId}</alias>
                         <build>
                            <dockerFileDir>app</dockerFileDir>
