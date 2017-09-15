@@ -282,6 +282,7 @@
 
     <bean id="source" class="com.github.cimsbioko.server.task.sqlite.DSSource">
         <constructor-arg ref="dataSource"/>
+        <constructor-arg value="${app.export.fetchsize}"/>
     </bean>
 
     <bean id="target" class="com.github.cimsbioko.server.task.sqlite.SqliteTarget" init-method="loadDriver" />

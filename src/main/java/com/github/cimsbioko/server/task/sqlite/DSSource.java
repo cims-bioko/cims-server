@@ -12,9 +12,15 @@ import javax.sql.DataSource;
 public class DSSource implements Source {
 
     private DataSource ds;
+    private int fetchSize;
 
     public DSSource(DataSource ds) {
+        this(ds, 0);
+    }
+
+    public DSSource(DataSource ds, int fetchSize) {
         this.ds = ds;
+        this.fetchSize = fetchSize;
     }
 
     @Override
@@ -24,6 +30,8 @@ public class DSSource implements Source {
 
     @Override
     public Statement createStatement(Connection c) throws SQLException {
-        return c.createStatement();
+        Statement stmt = c.createStatement();
+        stmt.setFetchSize(fetchSize);
+        return stmt;
     }
 }
