@@ -509,7 +509,7 @@ public class ODKFormsResource {
         // retrieve or add collection date/time if it doesn't exist
         Timestamp collected;
         Element collectionTimeElem = rootElem.getChild(COLLECTION_DATE_TIME, rootNs);
-        if (collectionTimeElem == null) {
+        if (collectionTimeElem == null || collectionTimeElem.getText().isEmpty()) {
             collected = Timestamp.from(now());
             collectionTimeElem = new Element(COLLECTION_DATE_TIME, rootNs);
             collectionTimeElem.setText(new SimpleDateFormat(DATE_TIME_PATTERN).format(collected));
