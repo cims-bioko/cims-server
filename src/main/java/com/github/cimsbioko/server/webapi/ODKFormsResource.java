@@ -522,7 +522,7 @@ public class ODKFormsResource {
         String instanceId = rootElem.getAttributeValue(INSTANCE_ID);
         if (instanceId == null) {
             Element instanceIdElem = metaElem.getChild(INSTANCE_ID, metaElemNs);
-            if (instanceIdElem == null) {
+            if (instanceIdElem == null || instanceIdElem.getText().isEmpty()) {
                 instanceId = generateInstanceId();
                 instanceIdElem = new Element(INSTANCE_ID, metaElemNs);
                 instanceIdElem.setText(instanceId);
