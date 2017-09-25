@@ -80,7 +80,7 @@ public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements
 
     @Override
     public List<FormSubmission> find(String form, String version, String binding, String device, Timestamp submittedSince, Integer limit, boolean sortDesc) {
-        StringBuffer where = new StringBuffer("1=1");
+        StringBuilder where = new StringBuilder("1=1");
         Collection<Object> args = new ArrayList<>();
         if (form != null) {
             where.append(" and form_id = ?");
