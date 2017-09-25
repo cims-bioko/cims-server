@@ -479,7 +479,8 @@ public class ODKFormsResource {
     @PostMapping("/submission")
     public ResponseEntity<?> handleSubmission(@RequestParam(value = DEVICE_ID, defaultValue = "unknown") String deviceId,
                                               @RequestParam(XML_SUBMISSION_FILE) MultipartFile xmlFile,
-                                              MultipartHttpServletRequest req, HttpServletResponse rsp) throws IOException, URISyntaxException, JDOMException {
+                                              MultipartHttpServletRequest req, HttpServletResponse rsp)
+            throws IOException, URISyntaxException, JDOMException {
 
         log.info("received submission from device '{}'", deviceId);
 
@@ -546,10 +547,14 @@ public class ODKFormsResource {
             binding = id;
         }
 
-        // Get submission date if supplied
-        Timestamp submitted = null;
+        /*
+           Get submission date if supplied. Its presence implies previously submitted/processed (briefcase upload).
+           We can not infer whether the processing failed or succeeded because this CIMS concept is not present in
+           ODK briefcase.
+         */
+        Timestamp submitted = null, processed = null;
         try {
-            submitted = parseODKSubmitDate(rootElem.getAttributeValue(SUBMISSION_DATE));
+            processed = submitted = parseODKSubmitDate(rootElem.getAttributeValue(SUBMISSION_DATE));
         } catch (ParseException e) {
             log.warn("failed to parse submission date", e);
         }
@@ -563,7 +568,7 @@ public class ODKFormsResource {
 
         // Create a database record for the submission
         FormSubmission submission = new FormSubmission(instanceId, augmentedXml, json, id, version, binding,
-                deviceId, collected, submitted);
+                deviceId, collected, submitted, processed, null);
         boolean isDuplicateSubmission = false;
         try {
             submission = submissionService.recordSubmission(submission);

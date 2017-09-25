@@ -17,6 +17,10 @@ import java.util.List;
 @Repository
 public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements FormSubmissionDao {
 
+    private static final String COLUMNS = "instanceId, as_xml, as_json, form_id, form_version, form_binding," +
+            " from_device, collected, submitted, processed, processed_ok";
+    private static final String BASE_QUERY = "select " + COLUMNS + " from form_submission";
+
     private JdbcTemplate sql;
 
     private RowMapper<FormSubmission> mapper = (rs, rowNum) -> {
@@ -27,8 +31,12 @@ public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements
                 formVersion = rs.getString("form_version"),
                 formBinding = rs.getString("form_binding"),
                 deviceId = rs.getString("from_device");
-        Timestamp collected = rs.getTimestamp("collected"), submitted = rs.getTimestamp("submitted");
-        return new FormSubmission(instanceId, xml, json, formId, formVersion, formBinding, deviceId, collected, submitted);
+        Timestamp collected = rs.getTimestamp("collected"),
+                submitted = rs.getTimestamp("submitted"),
+                processed = rs.getTimestamp("processed");
+        Boolean processedOk = (Boolean) rs.getObject("processed_ok");
+        return new FormSubmission(instanceId, xml, json, formId, formVersion, formBinding, deviceId, collected,
+                submitted, processed, processedOk);
     };
 
     @Autowired
@@ -39,11 +47,10 @@ public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements
 
     @Override
     public void save(FormSubmission fs) {
-        sql.update("insert into form_submission " +
-                        "(instanceId, as_xml, as_json, form_id, form_version, form_binding, from_device, submitted, collected)" +
-                        " values (?,cast(? as xml),cast(? as jsonb),?,?,?,?,coalesce(?,current_timestamp),?)",
+        sql.update("insert into form_submission (" + COLUMNS +
+                        ") values (?,cast(? as xml),cast(? as jsonb),?,?,?,?,?,coalesce(?,current_timestamp),?,?)",
                 fs.getInstanceId(), fs.getXml(), fs.getJson(), fs.getFormId(), fs.getFormVersion(), fs.getFormBinding(),
-                fs.getDeviceId(), fs.getSubmitted(), fs.getCollected());
+                fs.getDeviceId(), fs.getCollected(), fs.getSubmitted(), fs.getProcessed(), fs.getProcessedOk());
     }
 
     @Override
@@ -51,22 +58,19 @@ public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements
         sql.update("delete from form_submission where instanceId = ?", instanceId);
     }
 
-    private static final String baseQuery = "select instanceId, as_xml, as_json, form_id, form_version, form_binding, from_device, collected, submitted" +
-            " from form_submission";
-
     @Override
     public FormSubmission findById(String instanceId) {
-        return sql.queryForObject(baseQuery + " where instanceId = ?", new Object[]{instanceId}, mapper);
+        return sql.queryForObject(BASE_QUERY + " where instanceId = ?", new Object[]{instanceId}, mapper);
     }
 
     @Override
     public List<FormSubmission> findByForm(String formId, String formVersion) {
-        return sql.query(baseQuery + " where form_id = ? and form_version = ?", mapper, formId, formVersion);
+        return sql.query(BASE_QUERY + " where form_id = ? and form_version = ?", mapper, formId, formVersion);
     }
 
     @Override
     public List<FormSubmission> findUnprocessed(int batchSize) {
-        return sql.query(baseQuery + " where processed is null order by collected asc limit ?", mapper, batchSize);
+        return sql.query(BASE_QUERY + " where processed is null order by collected asc limit ?", mapper, batchSize);
     }
 
     @Override
@@ -104,7 +108,7 @@ public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements
         String orderClause = " order by submitted " + (sortDesc ? "desc" : "") + " limit ?";
         int limitArg = limit != null && limit > 0 && limit < 100 ? limit : 100;
         args.add(limitArg);
-        return sql.query(baseQuery + whereClause + orderClause, mapper, args.toArray());
+        return sql.query(BASE_QUERY + whereClause + orderClause, mapper, args.toArray());
     }
 
     @Override

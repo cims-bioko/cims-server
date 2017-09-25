@@ -2,6 +2,7 @@ package com.github.cimsbioko.server.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.sql.Timestamp;
 
@@ -17,10 +18,14 @@ public class FormSubmission {
     private String xml, json;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-    private Timestamp collected, submitted;
+    private Timestamp collected, submitted, processed;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Boolean processedOk;
 
     public FormSubmission(String instanceId, String xml, String json, String formId, String formVersion,
-                          String formBinding, String deviceId, Timestamp collected, Timestamp submitted) {
+                          String formBinding, String deviceId, Timestamp collected, Timestamp submitted, Timestamp processed,
+                          Boolean processedOk) {
         this.instanceId = instanceId;
         this.xml = xml;
         this.json = json;
@@ -30,6 +35,8 @@ public class FormSubmission {
         this.deviceId = deviceId;
         this.collected = collected;
         this.submitted = submitted;
+        this.processed = processed;
+        this.processedOk = processedOk;
     }
 
     public String getInstanceId() {
@@ -66,5 +73,13 @@ public class FormSubmission {
 
     public Timestamp getSubmitted() {
         return submitted;
+    }
+
+    public Timestamp getProcessed() {
+        return processed;
+    }
+
+    public Boolean getProcessedOk() {
+        return processedOk;
     }
 }
