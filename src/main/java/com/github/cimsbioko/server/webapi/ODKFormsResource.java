@@ -52,6 +52,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.github.cimsbioko.server.webapi.ODKFormsResource.ODK_API_PATH;
 import static java.time.Instant.now;
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
 import static org.json.XML.toJSONObject;
@@ -61,8 +62,10 @@ import static org.springframework.security.web.util.UrlUtils.buildFullRequestUrl
 import static org.springframework.util.StringUtils.isEmpty;
 
 @Controller
-@RequestMapping("/odk")
+@RequestMapping(ODK_API_PATH)
 public class ODKFormsResource {
+
+    public static final String ODK_API_PATH = "/odk";
 
     private static Logger log = LoggerFactory.getLogger(ODKFormsResource.class);
 
@@ -116,7 +119,7 @@ public class ODKFormsResource {
     private String contextRelativeUrl(HttpServletRequest req, String... pathSegments) {
         return UriComponentsBuilder
                 .fromHttpUrl(buildFullRequestUrl(req))
-                .replacePath(req.getContextPath() + req.getServletPath())
+                .replacePath(req.getContextPath() + req.getServletPath() + ODK_API_PATH)
                 .pathSegment(pathSegments)
                 .query(null)
                 .toUriString();
