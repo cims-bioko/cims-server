@@ -16,9 +16,13 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 
+import static com.github.cimsbioko.server.webapi.SprayingFormResource.SPRAYING_FORM_PATH;
+
 @Controller
-@RequestMapping("/sprayingForm")
+@RequestMapping(SPRAYING_FORM_PATH)
 public class SprayingFormResource extends AbstractFormResource {
+
+    public static final String SPRAYING_FORM_PATH = "/rest/sprayingForm";
 
     @Autowired
     private LocationService locationService;

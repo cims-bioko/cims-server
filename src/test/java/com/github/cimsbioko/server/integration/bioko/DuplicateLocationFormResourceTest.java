@@ -23,6 +23,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.github.cimsbioko.server.webapi.DuplicateLocationFormResource.DUPLICATE_LOCATION_FORM_PATH;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -55,7 +56,7 @@ public class DuplicateLocationFormResourceTest extends AbstractResourceTest {
     public void testRemoveAction() throws Exception {
 
         mockMvc.perform(
-                post("/duplicateLocationForm")
+                post(DUPLICATE_LOCATION_FORM_PATH)
                         .session(session)
                         .accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
@@ -75,7 +76,7 @@ public class DuplicateLocationFormResourceTest extends AbstractResourceTest {
     @Test
     public void testGPSAction() throws Exception {
         mockMvc.perform(
-                post("/duplicateLocationForm")
+                post(DUPLICATE_LOCATION_FORM_PATH)
                         .session(session)
                         .accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)

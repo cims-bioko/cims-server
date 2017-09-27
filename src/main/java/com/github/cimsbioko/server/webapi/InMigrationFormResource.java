@@ -33,10 +33,14 @@ import java.io.StringWriter;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.github.cimsbioko.server.webapi.InMigrationFormResource.INMIGRATION_FORM_PATH;
+
 
 @Controller
-@RequestMapping("/inMigrationForm")
+@RequestMapping(INMIGRATION_FORM_PATH)
 public class InMigrationFormResource extends AbstractFormResource {
+
+    public static final String INMIGRATION_FORM_PATH = "/rest/inMigrationForm";
 
     @Autowired
     protected CurrentUser currentUser;

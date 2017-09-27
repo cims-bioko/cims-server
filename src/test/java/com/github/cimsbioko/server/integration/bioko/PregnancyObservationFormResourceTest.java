@@ -24,6 +24,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.github.cimsbioko.server.webapi.PregnancyObservationFormResource.PREGNANCY_OBSERVATION_FORM_PATH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -76,7 +77,7 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
     public void testPostPregnancyObservationFormXml() throws Exception {
 
         mockMvc.perform(
-                post("/pregnancyObservationForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(PREGNANCY_OBSERVATION_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(VALID_OBSERVATION_XML))
                 .andExpect(status().isCreated())
@@ -112,7 +113,7 @@ public class PregnancyObservationFormResourceTest extends AbstractResourceTest {
     public void testPostMalePregnancy() throws Exception {
 
         mockMvc.perform(
-                post("/pregnancyObservationForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(PREGNANCY_OBSERVATION_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(INVALID_PREG_OBS_MALE_XML))
                 .andExpect(status().isBadRequest())

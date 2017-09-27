@@ -123,7 +123,7 @@ public class Application extends SpringBootServletInitializer {
             reg.setServlet(new DispatcherServlet());
             reg.addInitParameter("contextConfigLocation", "classpath:/META-INF/spring/webserviceApplicationContext.xml");
             reg.setLoadOnStartup(1);
-            reg.addUrlMappings("/api/rest/*");
+            reg.addUrlMappings("/api/*");
             reg.setMultipartConfig(new MultipartConfigElement(""));
             return reg;
         }
@@ -132,7 +132,7 @@ public class Application extends SpringBootServletInitializer {
         FilterRegistrationBean transactionFilterRegistration() {
             FilterRegistrationBean reg = new FilterRegistrationBean();
             reg.setFilter(new OpenSessionInViewFilter());
-            reg.addUrlPatterns("*.faces", "/loginProcess", "/api/rest/*");
+            reg.addUrlPatterns("*.faces", "/loginProcess", "/api/*");
             return reg;
         }
 

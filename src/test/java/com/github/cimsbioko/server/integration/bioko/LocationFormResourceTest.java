@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.github.cimsbioko.server.webapi.LocationFormResource.LOCATION_FORM_PATH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -128,7 +129,7 @@ public class LocationFormResourceTest extends AbstractResourceTest {
     @Test
     public void testPostLocationFormXml() throws Exception {
         mockMvc.perform(
-                post("/locationForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(LOCATION_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(LOCATION_FORM_XML))
                 .andExpect(status().isCreated())
@@ -142,21 +143,21 @@ public class LocationFormResourceTest extends AbstractResourceTest {
     public void testPostLocationFormDuplicateExtId() throws Exception {
 
         mockMvc.perform(
-                post("/locationForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(LOCATION_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(LOCATION_FORM_XML))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         mockMvc.perform(
-                post("/locationForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(LOCATION_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(DUPLICATE_LOCATION_FORM_XML))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         mockMvc.perform(
-                post("/locationForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(LOCATION_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(DUPLICATE_LOCATION_FORM_XML_2))
                 .andExpect(status().isCreated())
@@ -176,7 +177,7 @@ public class LocationFormResourceTest extends AbstractResourceTest {
     public void testReusingExtIdCreatesNoDuplicate() throws Exception {
 
         mockMvc.perform(
-                post("/locationForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(LOCATION_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(LOCATION_FORM_XML))
                 .andExpect(status().isCreated())
@@ -189,7 +190,7 @@ public class LocationFormResourceTest extends AbstractResourceTest {
         assertNull("location should not exist after being marked deleted", original);
 
         mockMvc.perform(
-                post("/locationForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(LOCATION_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(DUPLICATE_LOCATION_FORM_XML))
                 .andExpect(status().isCreated())

@@ -31,10 +31,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.github.cimsbioko.server.webapi.LocationFormResource.LOCATION_FORM_PATH;
+
 
 @Controller
-@RequestMapping("/locationForm")
+@RequestMapping(LOCATION_FORM_PATH)
 public class LocationFormResource extends AbstractFormResource {
+
+    public static final String LOCATION_FORM_PATH = "/rest/locationForm";
 
     private static final Logger logger = LoggerFactory.getLogger(LocationFormResource.class);
 

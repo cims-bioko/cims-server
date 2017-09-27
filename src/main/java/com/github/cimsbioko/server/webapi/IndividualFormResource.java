@@ -41,9 +41,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.github.cimsbioko.server.webapi.IndividualFormResource.INDIVIDUAL_FORM_PATH;
+
 @Controller
-@RequestMapping("/individualForm")
+@RequestMapping(INDIVIDUAL_FORM_PATH)
 public class IndividualFormResource extends AbstractFormResource {
+
+    public static final String INDIVIDUAL_FORM_PATH = "/rest/individualForm";
+
     private static final Logger logger = LoggerFactory.getLogger(IndividualFormResource.class);
 
     // TODO: value codes can be configured by projects

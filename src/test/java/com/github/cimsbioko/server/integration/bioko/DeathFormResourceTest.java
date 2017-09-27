@@ -27,6 +27,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.github.cimsbioko.server.webapi.DeathFormResource.DEATH_FORM_PATH;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -97,7 +98,7 @@ public class DeathFormResourceTest extends AbstractResourceTest {
     @Test
     public void testPostDeathFormXmlNoIndividual() throws Exception {
         mockMvc.perform(
-                post("/deathForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(DEATH_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(DEATH_FORM_XML_INVALID))
                 .andExpect(status().isBadRequest())
@@ -107,7 +108,7 @@ public class DeathFormResourceTest extends AbstractResourceTest {
     @Test
     public void testPostDeathFormXml() throws Exception {
         mockMvc.perform(
-                post("/deathForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(DEATH_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(DEATH_FORM_XML_VALID))
                 .andExpect(status().isCreated())

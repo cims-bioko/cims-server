@@ -30,6 +30,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.ByteArrayInputStream;
 
+import static com.github.cimsbioko.server.webapi.IndividualFormResource.INDIVIDUAL_FORM_PATH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -212,14 +213,14 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
     public void testPostDuplicateExtId() throws Exception {
 
         mockMvc.perform(
-                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(INDIVIDUAL_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(MEMBER_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         mockMvc.perform(
-                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(INDIVIDUAL_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(DUPLICATE_EXTID_MEMBER_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
@@ -236,7 +237,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
     public void testReusingExtIdAllowed() throws Exception {
 
         mockMvc.perform(
-                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(INDIVIDUAL_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(MEMBER_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
@@ -257,7 +258,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
 
         // Attempt to create a new individual with the same extid
         mockMvc.perform(
-                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(INDIVIDUAL_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(DUPLICATE_EXTID_MEMBER_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
@@ -276,7 +277,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
     @Test
     public void testPostHeadOfHouseholdFormXml() throws Exception {
         mockMvc.perform(
-                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(INDIVIDUAL_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(HEAD_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
@@ -288,7 +289,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
     @Test
     public void testPostMemberOfHouseholdFormXml() throws Exception {
         mockMvc.perform(
-                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(INDIVIDUAL_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(MEMBER_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
@@ -300,14 +301,14 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
     @Test
     public void testRepeatPostHeadOfHouseholdFormXml() throws Exception {
         mockMvc.perform(
-                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(INDIVIDUAL_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(HEAD_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         mockMvc.perform(
-                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(INDIVIDUAL_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(HEAD_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
@@ -319,14 +320,14 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
     @Test
     public void testRepeatPostMemberOfHouseholdFormXml() throws Exception {
         mockMvc.perform(
-                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(INDIVIDUAL_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(MEMBER_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         mockMvc.perform(
-                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(INDIVIDUAL_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(MEMBER_OF_HOUSEHOLD_FORM_XML))
                 .andExpect(status().isCreated())
@@ -338,7 +339,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
     @Test
     public void testPostIncompleteIndividualFormXml() throws Exception {
         mockMvc.perform(
-                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(INDIVIDUAL_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(INDIVIDUAL_FORM_INCOMPLETE))
                 .andExpect(status().isBadRequest())
@@ -348,7 +349,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
     @Test
     public void testPostOutdatedIndividualExtIdFormXml() throws Exception {
         mockMvc.perform(
-                post("/individualForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(INDIVIDUAL_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(MEMBER_OF_HOUSEHOLD_OUTDATED_EXTID_FORM_XML))
                 .andExpect(status().isCreated())

@@ -28,9 +28,13 @@ import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.Calendar;
 
+import static com.github.cimsbioko.server.webapi.OutMigrationFormResource.OUTMIGRATION_FORM_PATH;
+
 @Controller
-@RequestMapping("/outMigrationForm")
+@RequestMapping(OUTMIGRATION_FORM_PATH)
 public class OutMigrationFormResource extends AbstractFormResource {
+
+    public static final String OUTMIGRATION_FORM_PATH = "/rest/outMigrationForm";
 
     @Autowired
     private OutMigrationService outMigrationService;

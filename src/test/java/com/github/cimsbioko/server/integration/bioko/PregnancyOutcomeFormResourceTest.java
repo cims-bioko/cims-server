@@ -31,6 +31,8 @@ import javax.xml.bind.Unmarshaller;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 
+import static com.github.cimsbioko.server.webapi.PregnancyOutcomeFormResource.CORE_FORM_PATH;
+import static com.github.cimsbioko.server.webapi.PregnancyOutcomeFormResource.OUTCOMES_FORM_PATH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -117,7 +119,7 @@ public class PregnancyOutcomeFormResourceTest extends AbstractResourceTest {
     @Test
     public void testPostPregnancyOutcomeParentForm() throws Exception {
         mockMvc.perform(
-                post("/pregnancyOutcomeForm/core").session(session).accept(MediaType.APPLICATION_XML)
+                post(CORE_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(OUTCOME_CORE_FORM_XML))
                 .andExpect(status().isCreated())
@@ -136,14 +138,14 @@ public class PregnancyOutcomeFormResourceTest extends AbstractResourceTest {
     @Test
     public void testPostPregnancyOutcomeForm() throws Exception {
         mockMvc.perform(
-                post("/pregnancyOutcomeForm/core").session(session).accept(MediaType.APPLICATION_XML)
+                post(CORE_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(OUTCOME_CORE_FORM_XML))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         mockMvc.perform(
-                post("/pregnancyOutcomeForm/outcomes").session(session).accept(MediaType.APPLICATION_XML)
+                post(OUTCOMES_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(OUTCOME_CHILD_FORM_XML))
                 .andExpect(status().isCreated())

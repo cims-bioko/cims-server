@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
+import static com.github.cimsbioko.server.webapi.InMigrationFormResource.INMIGRATION_FORM_PATH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -93,7 +94,7 @@ public class InMigrationFormResourceTest extends AbstractResourceTest {
     @Test
     public void testPostInMigrationFormXml() throws Exception {
         mockMvc.perform(
-                post("/inMigrationForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(INMIGRATION_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(INMIGRATION_FORM_XML_VALID))
                 .andExpect(status().isCreated())

@@ -1,6 +1,7 @@
 package com.github.cimsbioko.server.integration.bioko;
 
 
+import static com.github.cimsbioko.server.webapi.VisitFormResource.VISIT_FORM_PATH;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -88,7 +89,7 @@ public class VisitFormResourceTest extends AbstractResourceTest {
     @Test
     public void testPostVisitFormXml() throws Exception {
         mockMvc.perform(
-                post("/visitForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(VISIT_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(VISIT_FORM_XML))
                 .andExpect(status().isCreated())
@@ -100,7 +101,7 @@ public class VisitFormResourceTest extends AbstractResourceTest {
     @Test
     public void testPostVisitFormXmlOudatedLocationExtId() throws Exception {
         mockMvc.perform(
-                post("/visitForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(VISIT_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(VISIT_FORM_XML_OUTDATED_LOCATION_EXTID))
                 .andExpect(status().isCreated())

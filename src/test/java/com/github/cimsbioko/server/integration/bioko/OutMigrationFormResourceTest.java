@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import static com.github.cimsbioko.server.webapi.OutMigrationFormResource.OUTMIGRATION_FORM_PATH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -93,7 +94,7 @@ public class OutMigrationFormResourceTest extends AbstractResourceTest {
     @Test
     public void testPostOutMigrationFormXml() throws Exception {
         mockMvc.perform(
-                post("/outMigrationForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(OUTMIGRATION_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(OUTMIGRATION_FORM_XML_VALID))
                 .andExpect(status().isCreated())
@@ -119,7 +120,7 @@ public class OutMigrationFormResourceTest extends AbstractResourceTest {
     @Test
     public void testPostOutMigrationFormXmlInvalidDate() throws Exception {
         mockMvc.perform(
-                post("/outMigrationForm").session(session).accept(MediaType.APPLICATION_XML)
+                post(OUTMIGRATION_FORM_PATH).session(session).accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
                         .content(OUTMIGRATION_FORM_XML_INVALID_DATE))
                 .andExpect(status().isBadRequest())

@@ -23,6 +23,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.github.cimsbioko.server.webapi.SprayingFormResource.SPRAYING_FORM_PATH;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -54,7 +55,7 @@ public class SprayingFormResourceTest extends AbstractResourceTest {
     @Test
     public void testDestroyedEvaluation() throws Exception {
         mockMvc.perform(
-                post("/sprayingForm")
+                post(SPRAYING_FORM_PATH)
                         .session(session)
                         .accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
@@ -70,7 +71,7 @@ public class SprayingFormResourceTest extends AbstractResourceTest {
     @Test
     public void testNotDestroyedEvaluation() throws Exception {
         mockMvc.perform(
-                post("/sprayingForm")
+                post(SPRAYING_FORM_PATH)
                         .session(session)
                         .accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)

@@ -29,9 +29,13 @@ import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.Calendar;
 
+import static com.github.cimsbioko.server.webapi.PregnancyObservationFormResource.PREGNANCY_OBSERVATION_FORM_PATH;
+
 @Controller
-@RequestMapping("/pregnancyObservationForm")
+@RequestMapping(PREGNANCY_OBSERVATION_FORM_PATH)
 public class PregnancyObservationFormResource extends AbstractFormResource {
+
+    public static final String PREGNANCY_OBSERVATION_FORM_PATH = "/rest/pregnancyObservationForm";
 
     @Autowired
     private IndividualService individualService;

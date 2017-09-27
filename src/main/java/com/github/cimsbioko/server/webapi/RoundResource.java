@@ -8,9 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import static com.github.cimsbioko.server.webapi.RoundResource.ROUND_FORM_PATH;
+
 @Controller
-@RequestMapping("/rounds")
+@RequestMapping(ROUND_FORM_PATH)
 public class RoundResource {
+
+    public static final String ROUND_FORM_PATH = "/rest/rounds";
 
     private RoundService roundService;
 

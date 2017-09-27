@@ -16,9 +16,13 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 
+import static com.github.cimsbioko.server.webapi.DuplicateLocationFormResource.DUPLICATE_LOCATION_FORM_PATH;
+
 @Controller
-@RequestMapping("/duplicateLocationForm")
+@RequestMapping(DUPLICATE_LOCATION_FORM_PATH)
 public class DuplicateLocationFormResource extends AbstractFormResource {
+
+    public static final String DUPLICATE_LOCATION_FORM_PATH = "/rest/duplicateLocationForm";
 
     @Autowired
     private LocationService locationService;

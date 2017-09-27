@@ -33,9 +33,13 @@ import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.Calendar;
 
+import static com.github.cimsbioko.server.webapi.VisitFormResource.VISIT_FORM_PATH;
+
 @Controller
-@RequestMapping("/visitForm")
+@RequestMapping(VISIT_FORM_PATH)
 public class VisitFormResource extends AbstractFormResource {
+
+    public static final String VISIT_FORM_PATH = "/rest/visitForm";
 
     private static final Logger logger = LoggerFactory.getLogger(VisitFormResource.class);
 

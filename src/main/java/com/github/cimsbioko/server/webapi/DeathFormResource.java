@@ -29,9 +29,13 @@ import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.Calendar;
 
+import static com.github.cimsbioko.server.webapi.DeathFormResource.DEATH_FORM_PATH;
+
 @Controller
-@RequestMapping("/deathForm")
+@RequestMapping(DEATH_FORM_PATH)
 public class DeathFormResource extends AbstractFormResource {
+
+    public static final String DEATH_FORM_PATH = "/rest/deathForm";
 
     @Autowired
     private IndividualService individualService;

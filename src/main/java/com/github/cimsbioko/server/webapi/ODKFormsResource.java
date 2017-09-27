@@ -61,6 +61,7 @@ import static org.springframework.security.web.util.UrlUtils.buildFullRequestUrl
 import static org.springframework.util.StringUtils.isEmpty;
 
 @Controller
+@RequestMapping("/odk")
 public class ODKFormsResource {
 
     private static Logger log = LoggerFactory.getLogger(ODKFormsResource.class);

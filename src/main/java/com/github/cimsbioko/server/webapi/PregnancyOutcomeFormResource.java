@@ -34,10 +34,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.github.cimsbioko.server.webapi.PregnancyOutcomeFormResource.PREGNANCY_OUTCOME_PATH;
+
 
 @Controller
-@RequestMapping("/pregnancyOutcomeForm")
+@RequestMapping(PREGNANCY_OUTCOME_PATH)
 public class PregnancyOutcomeFormResource extends AbstractFormResource {
+
+    public static final String PREGNANCY_OUTCOME_PATH = "/rest/pregnancyOutcomeForm";
+    public static final String CORE_PATH = "/core";
+    public static final String OUTCOMES_PATH = "/outcomes";
+    public static final String CORE_FORM_PATH = PREGNANCY_OUTCOME_PATH + CORE_PATH;
+    public static final String OUTCOMES_FORM_PATH = PREGNANCY_OUTCOME_PATH + OUTCOMES_PATH;
 
     private static final String START_TYPE = "PregnancyOutcomeForm";
 
@@ -65,7 +73,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
     @Autowired
     private SitePropertiesService siteProperties;
 
-    @RequestMapping(value = "/core", method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
+    @RequestMapping(value = CORE_PATH, method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
     public ResponseEntity<? extends Serializable> processCoreForm(@RequestBody CoreForm coreForm) throws JAXBException {
 
@@ -97,7 +105,7 @@ public class PregnancyOutcomeFormResource extends AbstractFormResource {
         return new ResponseEntity<>(coreForm, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/outcomes", method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
+    @RequestMapping(value = OUTCOMES_PATH, method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
     public ResponseEntity<? extends Serializable> processOutcomesForm(@RequestBody OutcomesForm outcomesForm) throws JAXBException {
 
