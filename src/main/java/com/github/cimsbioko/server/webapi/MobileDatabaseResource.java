@@ -35,7 +35,7 @@ public class MobileDatabaseResource {
 
     public static final String MOBILEDB_PATH = "/rest/mobiledb/cached";
     public static final String SQLITE_MIME_TYPE = "application/x-sqlite3";
-    public static final String MOBILEDB_EXPORT_PATH = "/mobiledb/export";
+    public static final String MOBILEDB_EXPORT_PATH = "/rest/mobiledb/export";
     public static final String INSTALLABLE_FILENAME = "openhds.db";
 
     @Autowired
