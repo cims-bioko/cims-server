@@ -54,27 +54,18 @@
                 <value>com.github.cimsbioko.server.domain.model.AsyncTask</value>
                 <value>com.github.cimsbioko.server.domain.model.AuditableCollectedEntity</value>
                 <value>com.github.cimsbioko.server.domain.model.AuditableEntity</value>
-                <value>com.github.cimsbioko.server.domain.model.Death</value>
                 <value>com.github.cimsbioko.server.domain.model.FieldWorker</value>
                 <value>com.github.cimsbioko.server.domain.model.Individual</value>
-                <value>com.github.cimsbioko.server.domain.model.InMigration</value>
                 <value>com.github.cimsbioko.server.domain.model.Location</value>
                 <value>com.github.cimsbioko.server.domain.model.LocationHierarchy</value>
                 <value>com.github.cimsbioko.server.domain.model.LocationHierarchyLevel</value>
                 <value>com.github.cimsbioko.server.domain.model.Membership</value>
-                <value>com.github.cimsbioko.server.domain.model.MigrationType</value>
-                <value>com.github.cimsbioko.server.domain.model.Outcome</value>
-                <value>com.github.cimsbioko.server.domain.model.OutMigration</value>
-                <value>com.github.cimsbioko.server.domain.model.PregnancyObservation</value>
-                <value>com.github.cimsbioko.server.domain.model.PregnancyOutcome</value>
                 <value>com.github.cimsbioko.server.domain.model.Privilege</value>
                 <value>com.github.cimsbioko.server.domain.model.Relationship</value>
                 <value>com.github.cimsbioko.server.domain.model.Residency</value>
                 <value>com.github.cimsbioko.server.domain.model.Role</value>
-                <value>com.github.cimsbioko.server.domain.model.Round</value>
                 <value>com.github.cimsbioko.server.domain.model.SocialGroup</value>
                 <value>com.github.cimsbioko.server.domain.model.User</value>
-                <value>com.github.cimsbioko.server.domain.model.Visit</value>
                 <value>com.github.cimsbioko.server.domain.model.ErrorLog</value>
                 <value>com.github.cimsbioko.server.domain.model.Error</value>
             </list>
@@ -115,10 +106,6 @@
         <constructor-arg value="com.github.cimsbioko.server.domain.model.User"/>
     </bean>
 
-    <bean id="deathDao" parent="baseDao">
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.Death"/>
-    </bean>
-
     <bean id="fieldWorkerDao" parent="baseDao"
           class="com.github.cimsbioko.server.dao.impl.FieldWorkerDaoImpl">
         <constructor-arg value="com.github.cimsbioko.server.domain.model.FieldWorker"/>
@@ -129,10 +116,6 @@
           class="com.github.cimsbioko.server.dao.impl.IndividualDaoImpl">
         <constructor-arg value="com.github.cimsbioko.server.domain.model.Individual"/>
         <property name="properties" ref="siteProperties"/>
-    </bean>
-
-    <bean id="inMigrationDao" parent="baseDao">
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.InMigration"/>
     </bean>
 
     <bean id="locationDao" parent="baseDao">
@@ -152,18 +135,6 @@
         <constructor-arg value="com.github.cimsbioko.server.domain.model.Membership"/>
     </bean>
 
-    <bean id="outMigrationDao" parent="baseDao">
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.OutMigration"/>
-    </bean>
-
-    <bean id="pregnancyDao" parent="baseDao">
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.PregnancyOutcome"/>
-    </bean>
-
-    <bean id="pregnancyObservationDao" parent="baseDao">
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.PregnancyObservation"/>
-    </bean>
-
     <bean id="relationshipDao" parent="baseDao">
         <constructor-arg value="com.github.cimsbioko.server.domain.model.Relationship"/>
     </bean>
@@ -177,20 +148,12 @@
         <constructor-arg value="com.github.cimsbioko.server.domain.model.Role"/>
     </bean>
 
-    <bean id="roundDao" parent="baseDao">
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.Round"/>
-    </bean>
-
     <bean id="socialGroupDao" parent="baseDao">
         <constructor-arg value="com.github.cimsbioko.server.domain.model.SocialGroup"/>
     </bean>
 
     <bean id="taskDao" parent="baseDao">
         <constructor-arg value="com.github.cimsbioko.server.domain.model.AsyncTask"/>
-    </bean>
-
-    <bean id="visitDao" parent="baseDao">
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.Visit"/>
     </bean>
 
     <bean id="flywayTemplate" class="org.flywaydb.core.Flyway" abstract="true">
@@ -395,17 +358,6 @@
         </property>
     </bean>
 
-    <bean id="deathService" parent="baseServiceTransactionBean" lazy-init="true">
-        <property name="target">
-            <bean class="com.github.cimsbioko.server.controller.service.impl.DeathServiceImpl">
-                <constructor-arg ref="genericDao"/>
-                <constructor-arg ref="individualService"/>
-                <constructor-arg ref="entityService"/>
-                <constructor-arg ref="siteProperties"/>
-            </bean>
-        </property>
-    </bean>
-
     <bean id="fieldWorkerService" parent="baseServiceBean">
         <property name="target">
             <bean class="com.github.cimsbioko.server.controller.service.impl.FieldWorkerServiceImpl" lazy-init="true">
@@ -423,18 +375,6 @@
                 <constructor-arg ref="siteProperties"/>
                 <constructor-arg ref="entityService"/>
                 <constructor-arg ref="idSchemeResource"/>
-            </bean>
-        </property>
-    </bean>
-
-    <bean id="inMigrationService" parent="baseServiceTransactionBean" lazy-init="true">
-        <property name="target">
-            <bean class="com.github.cimsbioko.server.controller.service.impl.InMigrationServiceImpl">
-                <constructor-arg ref="residencyService"/>
-                <constructor-arg ref="entityService"/>
-                <constructor-arg ref="individualService"/>
-                <constructor-arg ref="genericDao"/>
-                <constructor-arg ref="siteProperties"/>
             </bean>
         </property>
     </bean>
@@ -459,33 +399,6 @@
                 <constructor-arg ref="entityValidator"/>
                 <constructor-arg ref="calendarUtil"/>
                 <constructor-arg ref="currentUser"/>
-            </bean>
-        </property>
-    </bean>
-
-    <bean id="outMigrationService" parent="baseServiceTransactionBean" lazy-init="true">
-        <property name="target">
-            <bean class="com.github.cimsbioko.server.controller.service.impl.OutMigrationServiceImpl">
-                <constructor-arg ref="residencyService"/>
-                <constructor-arg ref="individualService"/>
-                <constructor-arg ref="membershipService"/>
-                <constructor-arg ref="genericDao"/>
-                <constructor-arg ref="siteProperties"/>
-                <constructor-arg ref="entityValidator"/>
-                <constructor-arg ref="calendarUtil"/>
-                <constructor-arg ref="currentUser"/>
-            </bean>
-        </property>
-    </bean>
-
-    <bean id="pregnancyService" parent="baseServiceTransactionBean" lazy-init="true">
-        <property name="target">
-            <bean class="com.github.cimsbioko.server.controller.service.impl.PregnancyServiceImpl">
-                <constructor-arg ref="entityService"/>
-                <constructor-arg ref="individualService"/>
-                <constructor-arg ref="genericDao"/>
-                <constructor-arg ref="siteProperties"/>
-                <constructor-arg ref="calendarUtil"/>
             </bean>
         </property>
     </bean>
@@ -523,15 +436,6 @@
         </property>
     </bean>
 
-    <bean id="roundService" parent="baseServiceBean" lazy-init="true">
-        <property name="target">
-            <bean class="com.github.cimsbioko.server.controller.service.impl.RoundServiceImpl">
-                <constructor-arg ref="genericDao"/>
-                <constructor-arg ref="entityService"/>
-            </bean>
-        </property>
-    </bean>
-
     <bean id="socialGroupService" parent="baseServiceTransactionBean" lazy-init="true">
         <property name="target">
             <bean class="com.github.cimsbioko.server.controller.service.impl.SocialGroupServiceImpl">
@@ -540,12 +444,6 @@
                 <constructor-arg ref="entityService"/>
                 <constructor-arg ref="socialGroupIdGenerator"/>
             </bean>
-        </property>
-    </bean>
-
-    <bean id="visitService" parent="baseServiceBean" lazy-init="true">
-        <property name="target">
-            <ref bean="visitServiceImpl"/>
         </property>
     </bean>
 
@@ -650,33 +548,6 @@
             <map>
                 <entry key="SOCIALGROUP_NAME">
                     <value>${openhds.sgNameLength}</value>
-                </entry>
-            </map>
-        </property>
-    </bean>
-
-    <!-- Supported fields are VISIT_LOCID, VISIT_ROUND -->
-    <bean id="visitIdScheme" class="com.github.cimsbioko.server.controller.idgeneration.IdScheme">
-        <property name="name" value="Visit"/>
-        <property name="prefix">
-            <value>${openhds.visitPrefix}</value>
-        </property>
-        <property name="checkDigit">
-            <value>${openhds.visitCheckDigit}</value>
-        </property>
-        <property name="incrementBound">
-            <value>${openhds.visitIncrementBound}</value>
-        </property>
-        <property name="length">
-            <value>${openhds.visitIdLength}</value>
-        </property>
-        <property name="fields">
-            <map>
-                <entry key="VISIT_LOCID">
-                    <value>${openhds.visitLocationIdLength}</value>
-                </entry>
-                <entry key="VISIT_ROUND">
-                    <value>${openhds.visitRound}</value>
                 </entry>
             </map>
         </property>

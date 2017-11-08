@@ -60,13 +60,8 @@ INSERT INTO locationhierarchylevel(uuid,keyIdentifier,name) VALUES('HierarchyLev
 
 INSERT INTO location(uuid,extId,locationName,locationHierarchy_uuid,locationType,insertDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,insertBy_uuid,status) VALUES ('LOCATION1','NJA001','House 3','hierarchy_root','RUR','2000-12-19',NULL,NULL,false,'FieldWorker1','User 1','P')
 
-INSERT INTO round (uuid,roundNumber,startDate,endDate) VALUES('ROUND 1',1,'2010-06-30','2010-07-31')
-INSERT INTO visit(uuid,extId,visitDate,status,insertDate,collectedBy_uuid,visitLocation_uuid,deleted,roundNumber,insertBy_uuid) VALUES ('visit_uuid1', 'VLOCMBI11J', '2010-07-15', 'P', '2010-07-20',  'FieldWorker1', 'LOCATION1',false,1,'User 1')
-
-INSERT INTO death (uuid,deleted,insertDate,status,voidDate,voidReason,deathCause,deathDate,deathPlace,collectedBy_uuid,insertBy_uuid,voidBy_uuid,individual_uuid,visitDeath_uuid) VALUES ('death1',false,'2010-06-09','P',NULL,NULL,'Cause','2010-06-01','Place','FieldWorker1','User 1',NULL,'Individual4','visit_uuid1')
 INSERT INTO socialgroup(uuid, extId, deleted, insertdate, groupName, collectedby_uuid, insertby_uuid, grouphead_uuid,groupType,status) VALUES ('BasseyFamily', 'MBI1', false, '1979-12-19', 'Bassey Family', 'FieldWorker1', 'User 1', 'Individual2','FAM','P')
 
 INSERT INTO residency(uuid,location_uuid,individual_uuid,startDate,startType,endDate,endType,collectedBy_uuid,deleted,status,insertDate,insertBy_uuid) VALUES ('residency_uuid1','LOCATION1','Individual5','1965-12-19','ENU',NULL,NULL,'FieldWorker1',false,'P','1990-11-20','User 1')
 
-INSERT INTO inmigration(uuid,deleted,insertDate,recordedDate,voidDate,voidReason,status,origin,reason,migType,insertBy_uuid,voidBy_uuid,collectedBy_uuid,individual_uuid,residency_uuid,visit_uuid) VALUES ('Inmigration1',false,'2012-04-17','2011-01-05',NULL,NULL,'P',1,1,'INTERNAL_INMIGRATION','User 1',NULL,'FieldWorker1','Individual5','residency_uuid1','visit_uuid1')
 

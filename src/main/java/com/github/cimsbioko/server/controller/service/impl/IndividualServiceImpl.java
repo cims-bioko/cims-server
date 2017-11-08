@@ -15,14 +15,9 @@ import com.github.cimsbioko.server.controller.idgeneration.IdScheme;
 import com.github.cimsbioko.server.controller.idgeneration.IdSchemeResource;
 import com.github.cimsbioko.server.controller.idgeneration.IndividualGenerator;
 import com.github.cimsbioko.server.controller.service.IndividualService;
-import com.github.cimsbioko.server.domain.model.Death;
 import com.github.cimsbioko.server.domain.model.FieldWorker;
-import com.github.cimsbioko.server.domain.model.InMigration;
 import com.github.cimsbioko.server.domain.model.Individual;
 import com.github.cimsbioko.server.domain.model.Membership;
-import com.github.cimsbioko.server.domain.model.OutMigration;
-import com.github.cimsbioko.server.domain.model.PregnancyObservation;
-import com.github.cimsbioko.server.domain.model.PregnancyOutcome;
 import com.github.cimsbioko.server.domain.model.Relationship;
 import com.github.cimsbioko.server.domain.service.SitePropertiesService;
 import org.springframework.transaction.annotation.Transactional;
@@ -155,22 +150,6 @@ public class IndividualServiceImpl implements IndividualService {
             return "";
         }
 
-        // determine the latest event
-        // a Death event should in theory be the last of any events
-        Death death = genericDao.findByProperty(Death.class, "individual", individual, true);
-
-        if (death != null) {
-            return "Death";
-        }
-        // otherwise determine latest event
-        OutMigration om = genericDao.findUniqueByPropertyWithOrder(OutMigration.class,
-                "individual", individual, "recordedDate", false);
-        InMigration in = genericDao.findUniqueByPropertyWithOrder(InMigration.class, "individual",
-                individual, "recordedDate", false);
-        PregnancyOutcome po = genericDao.findUniqueByPropertyWithOrder(PregnancyOutcome.class,
-                "mother", individual, "outcomeDate", false);
-        PregnancyObservation pregObs = genericDao.findUniqueByPropertyWithOrder(
-                PregnancyObservation.class, "mother", individual, "recordedDate", false);
         Relationship relationship = genericDao.findUniqueByPropertyWithOrder(Relationship.class,
                 "individualA", individual, "startDate", false);
         Relationship relationship2 = genericDao.findUniqueByPropertyWithOrder(Relationship.class,
@@ -181,15 +160,6 @@ public class IndividualServiceImpl implements IndividualService {
         List<LastEvent> events = new ArrayList<>();
 
         events.add(new LastEvent("Enumeration/Baseline", individual.getDob()));
-        if (om != null)
-            events.add(new LastEvent("Out Migration", om.getRecordedDate()));
-        if (in != null)
-            events.add(new LastEvent("In Migration. Create membership for this individual", in
-                    .getRecordedDate()));
-        if (po != null)
-            events.add(new LastEvent("Pregnancy Outcome", po.getOutcomeDate()));
-        if (pregObs != null)
-            events.add(new LastEvent("Pregnancy Observation", pregObs.getRecordedDate()));
         if (relationship != null)
             events.add(new LastEvent("Relationship", relationship.getStartDate()));
         if (relationship2 != null)
@@ -208,16 +178,9 @@ public class IndividualServiceImpl implements IndividualService {
         LastEvent le = new LastEvent(null, null);
         if (!events.isEmpty() && events.size() > 1) {
             le = events.get(events.size() - 1);
-            LastEvent equallyLastEvent = events.get(events.size() - 2);
-            if ("In Migration. Create membership for this individual".equals(le.eventType)
-                    && "Membership".equals(equallyLastEvent.eventType)
-                    && le.eventDate == equallyLastEvent.eventDate) {  // FIXME: identity comparison, a defect?
-                le = equallyLastEvent;
-            }
-
-        } else if (events.size() == 1)
+        } else if (events.size() == 1) {
             le = events.get(0);
-        // events.clear();
+        }
 
         return le.eventType == null ? "" : le.eventType;
 

@@ -87,18 +87,6 @@
     <residency uuid="CurrentResidency" location_uuid="TestLocation1" individual_uuid="Individual2" startDate="1999-12-19"
                startType="StartType" endType="NA" collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
 
-    <visit uuid="MigrateVisit" extid="migrateVisit" visitDate="2012-02-27" status="P" insertDate="2012-03-01" collectedBy_uuid="UnknownFieldWorker"
-           visitLocation_uuid="LOCATION1" deleted="false" roundNumber="1" insertBy_uuid="User 1"/>
-
-    <visit uuid="TestVisit" extid="TestVisit" visitDate="2012-02-27" status="P" insertDate="2012-03-01" collectedBy_uuid="UnknownFieldWorker"
-           visitLocation_uuid="LOCATION1" deleted="false" roundNumber="1" insertBy_uuid="User 1"/>
-
-    <visit uuid="DeathVisit" extid="deathVisit" visitDate="2012-02-27" status="P" insertDate="2012-03-01" collectedBy_uuid="UnknownFieldWorker"
-           visitLocation_uuid="LOCATION1" deleted="false" roundNumber="1" insertBy_uuid="User 1"/>
-
-    <visit uuid="PregObsVisit" extid="pregObsVisit" visitDate="2012-02-27" status="P" insertDate="2012-03-01" collectedBy_uuid="UnknownFieldWorker"
-           visitLocation_uuid="TestLocation1" deleted="false" roundNumber="1" insertBy_uuid="User 1"/>
-
     <individual uuid="PregnantIndividual" extId="Mother-001" firstName="Pregnant" middleName="" lastName="Individual"
                 gender="Female" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
                 dobAspect="1" deleted="false" collectedBy_uuid="UnknownFieldWorker"

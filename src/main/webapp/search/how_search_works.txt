@@ -19,15 +19,9 @@ The entity should have its searchable fields annotated with @Searchable.
 Fields that are currently supported for searches are String and entities that have external ids.
 
 The forms/entities currently supported:
-Birth
-Death
 FieldWorker
-InMigration
 Individual
 Location
 LocationHierarchy
-OutMigration
 Relationship
 SocialGroup
-Visit
-

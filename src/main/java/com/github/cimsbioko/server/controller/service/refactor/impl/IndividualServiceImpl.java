@@ -2,7 +2,6 @@ package com.github.cimsbioko.server.controller.service.refactor.impl;
 
 import com.github.cimsbioko.server.controller.service.refactor.ResidencyService;
 import com.github.cimsbioko.server.dao.GenericDao;
-import com.github.cimsbioko.server.domain.model.Death;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.controller.service.refactor.IndividualService;
 import com.github.cimsbioko.server.controller.service.refactor.crudhelpers.EntityCrudHelper;
@@ -102,8 +101,7 @@ public class IndividualServiceImpl implements IndividualService {
     @Override
     public boolean isDeceased(Individual individual) {
         //TODO: refactor the "getLatestEvent" logic in the old IndividualService
-        return (null != genericDao.findByProperty(Death.class, "individual", individual, true));
-
+        return false;
     }
 
     @Override
