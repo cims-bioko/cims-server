@@ -12,6 +12,10 @@ import java.util.List;
 import static com.github.cimsbioko.server.webapi.RoundResource.ROUND_FORM_PATH;
 import static java.util.Arrays.asList;
 
+/**
+ * Rounds have been eliminated, but the endpoint remains since the mobile clients use it to confirm successful
+ * authentication.
+ */
 @Controller
 @RequestMapping(ROUND_FORM_PATH)
 public class RoundResource {
