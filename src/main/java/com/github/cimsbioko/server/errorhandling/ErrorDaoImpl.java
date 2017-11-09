@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.errorhandling.dao;
+package com.github.cimsbioko.server.errorhandling;
 
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -24,7 +24,7 @@ public class ErrorDaoImpl implements ErrorDao {
         this.entityService = entityService;
     }
 
-    public Error createError(Error error) {
+    public Error save(Error error) {
         try {
             Calendar insertDate = calendarUtil.convertDateToCalendar(new Date());
             error.setInsertDate(insertDate);

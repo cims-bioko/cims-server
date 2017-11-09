@@ -1,6 +1,6 @@
-package com.github.cimsbioko.server.errorhandling.constants;
+package com.github.cimsbioko.server.errorhandling;
 
-public class ErrorConstants {
+public class Constants {
 
     public static final String UNASSIGNED = "Unassigned";
     public static final String CONSTRAINT_VIOLATION = "Constraint Violation";

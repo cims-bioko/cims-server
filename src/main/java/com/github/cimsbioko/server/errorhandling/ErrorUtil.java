@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.errorhandling.util;
+package com.github.cimsbioko.server.errorhandling;
 
 import java.util.Calendar;
 import java.util.List;
@@ -10,8 +10,8 @@ public class ErrorUtil {
 
     public static final int MAX_MESSAGE_LENGTH = 255;
 
-    public static Error logError(String assignedTo, String dataPayload, Calendar dateOfResolution,
-                                 String entityType, FieldWorker fieldWorker, String resolutionStatus, List<String> errors) {
+    public static Error createError(String assignedTo, String dataPayload, Calendar dateOfResolution,
+                                    String entityType, FieldWorker fieldWorker, String resolutionStatus, List<String> errors) {
         Error error = new Error();
 
         error.setAssignedTo(assignedTo);

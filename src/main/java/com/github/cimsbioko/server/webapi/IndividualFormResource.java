@@ -17,7 +17,7 @@ import com.github.cimsbioko.server.domain.model.Membership;
 import com.github.cimsbioko.server.domain.model.Relationship;
 import com.github.cimsbioko.server.domain.model.Residency;
 import com.github.cimsbioko.server.domain.model.SocialGroup;
-import com.github.cimsbioko.server.errorhandling.constants.ErrorConstants;
+import com.github.cimsbioko.server.errorhandling.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -182,7 +182,7 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             individual = findOrMakeIndividual(form, collectedBy, insertTime, cv);
             if (cv.hasViolations()) {
-                logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME, ErrorConstants.CONSTRAINT_VIOLATION);
+                logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME, Constants.CONSTRAINT_VIOLATION);
                 return requestError(cv);
             }
         } catch (Exception e) {
@@ -196,7 +196,7 @@ public class IndividualFormResource extends AbstractFormResource {
 
             // log the modification
             cv.addViolations("Individual ExtId updated from " + form.getIndividualExtId() + " to " + individual.getExtId());
-            logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME, ErrorConstants.MODIFIED_EXTID);
+            logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME, Constants.MODIFIED_EXTID);
 
             //household extId used later by social group, need to correct it here
             form.setHouseholdExtId(location.getExtId());
@@ -206,7 +206,7 @@ public class IndividualFormResource extends AbstractFormResource {
         if (0 != individualService.getExistingExtIdCount(individual.getExtId())) {
             // log the modification
             cv.addViolations("Warning: Individual ExtId clashes with an existing Individual's extId : " + individual.getExtId());
-            logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME, ErrorConstants.DUPLICATE_EXTID);
+            logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME, Constants.DUPLICATE_EXTID);
         }
 
         // individual's residency at location
@@ -216,7 +216,7 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             createOrSaveIndividual(individual);
         } catch (ConstraintViolations e) {
-            logError(e, collectedBy, createDTOPayload(form), Form.LOG_NAME, ErrorConstants.CONSTRAINT_VIOLATION);
+            logError(e, collectedBy, createDTOPayload(form), Form.LOG_NAME, Constants.CONSTRAINT_VIOLATION);
             return requestError(e);
         } catch (SQLException e) {
             return serverError("SQL Error updating or saving individual: " + e.getMessage());
@@ -254,7 +254,7 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             createOrSaveSocialGroup(socialGroup);
         } catch (ConstraintViolations e) {
-            logError(e, collectedBy, createDTOPayload(form), Form.LOG_NAME, ErrorConstants.CONSTRAINT_VIOLATION);
+            logError(e, collectedBy, createDTOPayload(form), Form.LOG_NAME, Constants.CONSTRAINT_VIOLATION);
             return requestError(e);
         } catch (SQLException e) {
             return serverError("SQL Error updating or saving socialGroup: " + e.getMessage());
@@ -268,7 +268,7 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             entityService.create(membership);
         } catch (ConstraintViolations constraintViolations) {
-            logError(constraintViolations, collectedBy, createDTOPayload(form), Form.LOG_NAME, ErrorConstants.CONSTRAINT_VIOLATION);
+            logError(constraintViolations, collectedBy, createDTOPayload(form), Form.LOG_NAME, Constants.CONSTRAINT_VIOLATION);
             return serverError("ConstraintViolations saving membership: " + constraintViolations.getMessage());
         } catch (SQLException e) {
             return serverError("SQL Error updating or saving membership: " + e.getMessage());
