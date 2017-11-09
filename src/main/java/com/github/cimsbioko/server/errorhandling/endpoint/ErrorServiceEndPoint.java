@@ -1,9 +1,9 @@
 package com.github.cimsbioko.server.errorhandling.endpoint;
 
-import com.github.cimsbioko.server.domain.model.ErrorLog;
+import com.github.cimsbioko.server.domain.model.Error;
 
 public interface ErrorServiceEndPoint {
 
-    void logError(ErrorLog errorLog);
+    void logError(Error error);
 
 }

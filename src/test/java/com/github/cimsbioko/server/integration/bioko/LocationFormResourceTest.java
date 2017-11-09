@@ -10,7 +10,7 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import com.github.cimsbioko.server.domain.model.ErrorLog;
+import com.github.cimsbioko.server.domain.model.Error;
 import com.github.cimsbioko.server.domain.model.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -167,7 +167,7 @@ public class LocationFormResourceTest extends AbstractResourceTest {
         assertNotNull(location);
         Location location2 = genericDao.findByProperty(Location.class, "extId", "M1000S57E09P1-d2");
         assertNotNull(location2);
-        List<ErrorLog> loggedErrors = genericDao.findAll(ErrorLog.class, true);
+        List<Error> loggedErrors = genericDao.findAll(Error.class, true);
         assertNotNull(loggedErrors);
         assertEquals(2, loggedErrors.size());
 
@@ -200,7 +200,7 @@ public class LocationFormResourceTest extends AbstractResourceTest {
         assertNull("no duplicate should exist after second form", duplicate);
         Location second = genericDao.findByProperty(Location.class, "extId", "M1000S57E09P1", true);
         assertNotNull("location should exist after second form", second);
-        List<ErrorLog> loggedErrors = genericDao.findAll(ErrorLog.class, true);
+        List<Error> loggedErrors = genericDao.findAll(Error.class, true);
         assertNotNull(loggedErrors);
         assertEquals("no errors should have been created after both forms processed", 0, loggedErrors.size());
     }

@@ -2,6 +2,7 @@ package com.github.cimsbioko.server.integration.bioko;
 
 import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.*;
+import com.github.cimsbioko.server.domain.model.Error;
 import com.github.cimsbioko.server.domain.util.CalendarAdapter;
 import com.github.cimsbioko.server.errorhandling.constants.ErrorConstants;
 import com.github.cimsbioko.server.integration.AbstractResourceTest;
@@ -228,7 +229,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
 
         verifyEntityCrud("12345678901234935890123456789012", "existing_id", "Individual2", "2");
 
-        ErrorLog error = genericDao.findByProperty(ErrorLog.class, "entityType", IndividualFormResource.Form.LOG_NAME);
+        Error error = genericDao.findByProperty(Error.class, "entityType", IndividualFormResource.Form.LOG_NAME);
         assertNotNull(error);
         assertEquals(ErrorConstants.DUPLICATE_EXTID, error.getResolutionStatus());
     }
@@ -243,7 +244,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
-        ErrorLog error = genericDao.findByProperty(ErrorLog.class, "entityType", IndividualFormResource.Form.LOG_NAME);
+        Error error = genericDao.findByProperty(Error.class, "entityType", IndividualFormResource.Form.LOG_NAME);
         assertNull("no error should exist after processing first form", error);
 
         verifyEntityCrud("12345678901234935890123456789012", "existing_id", "Individual2", "2");
@@ -264,7 +265,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
-        error = genericDao.findByProperty(ErrorLog.class, "entityType", IndividualFormResource.Form.LOG_NAME);
+        error = genericDao.findByProperty(Error.class, "entityType", IndividualFormResource.Form.LOG_NAME);
         assertNull("no error should exist after processing second form", error);
 
         verifyEntityCrud("1234567890133335890123456789012", "existing_id", "Individual2", "2");

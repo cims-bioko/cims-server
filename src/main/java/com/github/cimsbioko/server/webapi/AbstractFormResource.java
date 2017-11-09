@@ -3,9 +3,9 @@ package com.github.cimsbioko.server.webapi;
 import com.github.cimsbioko.server.domain.model.FieldWorker;
 import com.github.cimsbioko.server.errorhandling.constants.ErrorConstants;
 import com.github.cimsbioko.server.errorhandling.service.ErrorHandlingService;
-import com.github.cimsbioko.server.errorhandling.util.ErrorLogUtil;
+import com.github.cimsbioko.server.errorhandling.util.ErrorUtil;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
-import com.github.cimsbioko.server.domain.model.ErrorLog;
+import com.github.cimsbioko.server.domain.model.Error;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +38,7 @@ public class AbstractFormResource {
 
     protected void logError(ConstraintViolations cv, FieldWorker fw, String payload, String simpleClassName, String errorConstant) {
 
-        ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null, simpleClassName,
+        Error error = ErrorUtil.logError(ErrorConstants.UNASSIGNED, payload, null, simpleClassName,
                 fw, errorConstant, cv.getViolations());
         errorService.logError(error);
 

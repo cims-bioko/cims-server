@@ -6,25 +6,25 @@ import java.util.Date;
 
 import com.github.cimsbioko.server.controller.service.EntityService;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
-import com.github.cimsbioko.server.domain.model.ErrorLog;
+import com.github.cimsbioko.server.domain.model.Error;
 import com.github.cimsbioko.server.domain.util.CalendarUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class ErrorLogDAOImpl implements ErrorLogDAO {
+public class ErrorDaoImpl implements ErrorDao {
 
-    private static final Logger logger = LoggerFactory.getLogger(ErrorLogDAOImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ErrorDaoImpl.class);
     private EntityService entityService;
 
     @Autowired
     private CalendarUtil calendarUtil;
 
-    public ErrorLogDAOImpl(EntityService entityService) {
+    public ErrorDaoImpl(EntityService entityService) {
         this.entityService = entityService;
     }
 
-    public ErrorLog createErrorLog(ErrorLog error) {
+    public Error createError(Error error) {
         try {
             Calendar insertDate = calendarUtil.convertDateToCalendar(new Date());
             error.setInsertDate(insertDate);

@@ -4,10 +4,11 @@ import com.github.cimsbioko.server.controller.service.LocationHierarchyService;
 import com.github.cimsbioko.server.controller.service.refactor.FieldWorkerService;
 import com.github.cimsbioko.server.controller.service.refactor.LocationService;
 import com.github.cimsbioko.server.domain.model.*;
+import com.github.cimsbioko.server.domain.model.Error;
 import com.github.cimsbioko.server.domain.util.CalendarAdapter;
 import com.github.cimsbioko.server.errorhandling.constants.ErrorConstants;
 import com.github.cimsbioko.server.errorhandling.service.ErrorHandlingService;
-import com.github.cimsbioko.server.errorhandling.util.ErrorLogUtil;
+import com.github.cimsbioko.server.errorhandling.util.ErrorUtil;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -144,7 +145,7 @@ public class LocationFormResource extends AbstractFormResource {
             // log the modification
             logMessage.add("Location persisted with Modified ExtId: Old = " + form.getLocationExtId() + " New = " + location.getExtId());
             String payload = createDTOPayload(form);
-            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, payload, null,
+            Error error = ErrorUtil.logError(ErrorConstants.UNASSIGNED, payload, null,
                     Form.LOG_NAME, collectedBy,
                     ErrorConstants.MODIFIED_EXTID, logMessage);
             errorService.logError(error);
