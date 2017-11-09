@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
  * An adapter for converting between String and Calendar types when posting
- * to a restful webservice. Jax-rs requires custom marshalling if the field
+ * to a restful web service. Jax-rs requires custom marshalling if the field
  * cannot be mapped.
  */
 @Component

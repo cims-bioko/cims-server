@@ -119,9 +119,9 @@ public class Application extends SpringBootServletInitializer {
         @Bean
         ServletRegistrationBean apiServletRegistration() {
             ServletRegistrationBean reg = new ServletRegistrationBean();
-            reg.setName("webServices");
+            reg.setName("webApis");
             reg.setServlet(new DispatcherServlet());
-            reg.addInitParameter("contextConfigLocation", "classpath:/META-INF/spring/webserviceApplicationContext.xml");
+            reg.addInitParameter("contextConfigLocation", "classpath:/META-INF/spring/webapi-application-context.xml");
             reg.setLoadOnStartup(1);
             reg.addUrlMappings("/api/*");
             reg.setMultipartConfig(new MultipartConfigElement(""));
