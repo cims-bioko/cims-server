@@ -1,0 +1,5 @@
+alter table location add column global_pos geometry(point, 4326);
+update location set global_pos=st_setsrid(st_point(longitude::numeric, latitude::numeric), 4326);
+create index on location using gist (global_pos);
+create or replace view v_location_sync as select l.uuid, l.extId, locationHierarchy_uuid as hierarchyUuid, lh.extId as hierarchyExtId, case locationName when 'null' then 'Unnamed' else locationName end as name, description, communityName, communityCode, localityName, mapAreaName, sectorName, buildingNumber, floorNumber, st_y(global_pos)::varchar as latitude, st_x(global_pos)::varchar as longitude from location l join locationhierarchy lh on l.locationHierarchy_uuid = lh.uuid where not l.deleted;
+alter table location drop column latitude, drop column longitude, drop column altitude, drop column accuracy;
