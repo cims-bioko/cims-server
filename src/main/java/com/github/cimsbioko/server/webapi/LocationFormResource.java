@@ -41,8 +41,6 @@ public class LocationFormResource extends AbstractFormResource {
 
     public static final String LOCATION_FORM_PATH = "/rest/locationForm";
 
-    private static final Logger logger = LoggerFactory.getLogger(LocationFormResource.class);
-
     @Autowired
     private FieldWorkerService fieldWorkerService;
 
