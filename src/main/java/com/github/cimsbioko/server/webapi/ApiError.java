@@ -9,15 +9,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 
 @XmlRootElement(name = "failure")
-public class WebServiceCallException implements Serializable {
+public class ApiError implements Serializable {
 
     private static final long serialVersionUID = -5429038867393148120L;
     private List<String> errors = new ArrayList<>();
 
-    public WebServiceCallException() {
+    public ApiError() {
     }
 
-    public WebServiceCallException(ConstraintViolations violations) {
+    public ApiError(ConstraintViolations violations) {
         for (String violation : violations.getViolations()) {
             errors.add(violation);
         }

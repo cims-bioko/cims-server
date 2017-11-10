@@ -19,20 +19,20 @@ public class AbstractFormResource {
     @Autowired
     private ErrorService errorService;
 
-    protected ResponseEntity<WebServiceCallException> requestError(String message) {
-        WebServiceCallException error = new WebServiceCallException();
+    protected ResponseEntity<ApiError> requestError(String message) {
+        ApiError error = new ApiError();
         error.getErrors().add(message);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    protected ResponseEntity<WebServiceCallException> serverError(String message) {
-        WebServiceCallException error = new WebServiceCallException();
+    protected ResponseEntity<ApiError> serverError(String message) {
+        ApiError error = new ApiError();
         error.getErrors().add(message);
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    protected ResponseEntity<WebServiceCallException> requestError(ConstraintViolations cv) {
-        return new ResponseEntity<>(new WebServiceCallException(cv),
+    protected ResponseEntity<ApiError> requestError(ConstraintViolations cv) {
+        return new ResponseEntity<>(new ApiError(cv),
                 HttpStatus.BAD_REQUEST);
     }
 
