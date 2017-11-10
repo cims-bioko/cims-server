@@ -2,16 +2,12 @@ package com.github.cimsbioko.server.domain.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Calendar;
 
 
 @Entity
+@Table(name = "asynctask")
 public class AsyncTask {
     @Id
     @GeneratedValue(generator = "system-uuid")
