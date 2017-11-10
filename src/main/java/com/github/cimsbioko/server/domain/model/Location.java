@@ -4,15 +4,12 @@ package com.github.cimsbioko.server.domain.model;
 import com.github.cimsbioko.server.domain.annotations.Description;
 import com.github.cimsbioko.server.domain.constraint.CheckFieldNotBlank;
 import com.github.cimsbioko.server.domain.constraint.Searchable;
+import com.vividsolutions.jts.geom.Point;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import com.github.cimsbioko.server.domain.constraint.ExtensionStringConstraint;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
@@ -51,17 +48,9 @@ public class Location
     @Description(description = "The type of Location.")
     private String locationType;
 
-    @Description(description = "The longitude for the Location")
-    private String longitude;
-
-    @Description(description = "The latitude for the Location")
-    private String latitude;
-
-    @Description(description = "How accurate are the longitude/latitude readings for the Location")
-    private String accuracy;
-
-    @Description(description = "The altitude for the Location")
-    private String altitude;
+    @Description(description = "the global position represented as longitude, latitude, altitude")
+    @Column(name = "global_pos")
+    private Point globalPos;
 
     @OneToMany(targetEntity = Residency.class)
     @JoinColumn(name = "location_uuid")
@@ -144,36 +133,12 @@ public class Location
         locationType = type;
     }
 
-    public String getLongitude() {
-        return longitude;
+    public Point getGlobalPos() {
+        return globalPos;
     }
 
-    public void setLongitude(String longi) {
-        longitude = longi;
-    }
-
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String lat) {
-        latitude = lat;
-    }
-
-    public String getAccuracy() {
-        return accuracy;
-    }
-
-    public void setAccuracy(String acc) {
-        accuracy = acc;
-    }
-
-    public String getAltitude() {
-        return altitude;
-    }
-
-    public void setAltitude(String alt) {
-        altitude = alt;
+    public void setGlobalPos(Point globalPos) {
+        this.globalPos = globalPos;
     }
 
     public List<Residency> getResidencies() {

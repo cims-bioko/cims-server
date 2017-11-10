@@ -6,6 +6,9 @@ import com.github.cimsbioko.server.errorhandling.ErrorService;
 import com.github.cimsbioko.server.errorhandling.ErrorUtil;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.model.Error;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,9 @@ public class AbstractFormResource {
 
     @Autowired
     private ErrorService errorService;
+
+    @Autowired
+    private GeometryFactory geometryFactory;
 
     protected ResponseEntity<ApiError> requestError(String message) {
         ApiError error = new ApiError();
@@ -50,4 +56,9 @@ public class AbstractFormResource {
         return inPast;
     }
 
+    protected Point makePoint(String longitude, String latitude) {
+        Double lng = Double.parseDouble(longitude), lat = Double.parseDouble(latitude);
+        Coordinate coord = new Coordinate(lng, lat);
+        return geometryFactory.createPoint(coord);
+    }
 }

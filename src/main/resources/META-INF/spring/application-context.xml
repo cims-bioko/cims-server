@@ -635,6 +635,13 @@
         <constructor-arg ref="currentUser"/>
     </bean>
 
+    <bean id="geometryFactory" class="com.vividsolutions.jts.geom.GeometryFactory">
+        <constructor-arg>
+            <bean class="com.vividsolutions.jts.geom.PrecisionModel"/>
+        </constructor-arg>
+        <constructor-arg type="int" value="${app.spatial.srid}" />
+    </bean>
+
     <bean id="siteProperties"
           class="com.github.cimsbioko.server.domain.service.impl.SitePropertiesServiceImpl">
         <property name="locale">

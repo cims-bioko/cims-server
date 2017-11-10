@@ -10,6 +10,9 @@ import com.github.cimsbioko.server.errorhandling.Constants;
 import com.github.cimsbioko.server.errorhandling.ErrorService;
 import com.github.cimsbioko.server.errorhandling.ErrorUtil;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -206,8 +209,9 @@ public class LocationFormResource extends AbstractFormResource {
         location.setBuildingNumber(form.getBuildingNumber());
         location.setFloorNumber(form.getFloorNumber());
         location.setDescription(form.getDescription());
-        location.setLongitude(form.getLongitude());
-        location.setLatitude(form.getLatitude());
+        if (form.getLatitude() != null && form.getLongitude() != null) {
+            location.setGlobalPos(makePoint(form.getLongitude(), form.getLatitude()));
+        }
     }
 
     private static String nullTypeToUrb(String locationType) {
