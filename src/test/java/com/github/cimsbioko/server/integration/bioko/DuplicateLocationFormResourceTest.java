@@ -54,7 +54,6 @@ public class DuplicateLocationFormResourceTest extends AbstractResourceTest {
 
     @Test
     public void testRemoveAction() throws Exception {
-
         mockMvc.perform(
                 post(DUPLICATE_LOCATION_FORM_PATH)
                         .session(session)
@@ -68,9 +67,7 @@ public class DuplicateLocationFormResourceTest extends AbstractResourceTest {
         assertNotNull(dbLoc);
         assertEquals(Boolean.TRUE, dbLoc.isDeleted());
         assertEquals("new_desc", dbLoc.getDescription());
-        assertNotEquals("new_lat", dbLoc.getLatitude());
-        assertNotEquals("new_lng", dbLoc.getLongitude());
-        assertNotEquals("new_acc", dbLoc.getAccuracy());
+        assertNull(dbLoc.getGlobalPos());
     }
 
     @Test
@@ -88,18 +85,17 @@ public class DuplicateLocationFormResourceTest extends AbstractResourceTest {
         assertNotNull(dbLoc);
         assertNotEquals(Boolean.TRUE, dbLoc.isDeleted());
         assertEquals("new_desc", dbLoc.getDescription());
-        assertEquals("new_lat", dbLoc.getLatitude());
-        assertEquals("new_lng", dbLoc.getLongitude());
-        assertEquals("new_acc", dbLoc.getAccuracy());
+        assertNotNull(dbLoc.getGlobalPos());
+        assertEquals(3.0, dbLoc.getGlobalPos().getCoordinate().y, 0.1);
+        assertEquals(8.0, dbLoc.getGlobalPos().getCoordinate().x, 0.1);
     }
 
     private String getTestForm(String action) {
         return "<duplicateLocationForm>" +
                 "<entity_uuid>TestLocation1</entity_uuid>" +
                 "<action>" + action + "</action>" +
-                "<global_position_lat>new_lat</global_position_lat>" +
-                "<global_position_lng>new_lng</global_position_lng>" +
-                "<global_position_acc>new_acc</global_position_acc>" +
+                "<global_position_lat>3.0</global_position_lat>" +
+                "<global_position_lng>8.0</global_position_lng>" +
                 "<description>new_desc</description>" +
                 "</duplicateLocationForm>";
     }

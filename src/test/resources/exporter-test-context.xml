@@ -7,12 +7,7 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="DriverClassName" value="org.h2.Driver" />
-        <property name="Url" value="jdbc:h2:mem:openhds" />
-        <property name="Username" value="sa" />
-        <property name="Password" value="" />
-    </bean>
+    <bean id="dataSource" class="com.github.cimsbioko.server.GeoDBTestDataSource" />
 
     <bean id="transactionManager" class=" org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>

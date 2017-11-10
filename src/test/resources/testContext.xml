@@ -42,12 +42,7 @@
     <bean id="jsfService" class="com.github.cimsbioko.server.integration.util.JsfServiceMock"/>
 
     <!-- Independent data source for test context -->
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="DriverClassName" value="${spring.datasource.driver-class-name}"/>
-        <property name="Url" value="${spring.datasource.url}"/>
-        <property name="Username" value="${spring.datasource.username}"/>
-        <property name="Password" value="${spring.datasource.password}"/>
-    </bean>
+    <bean id="dataSource" class="com.github.cimsbioko.server.GeoDBTestDataSource" />
 
     <mvc:annotation-driven/>
 
