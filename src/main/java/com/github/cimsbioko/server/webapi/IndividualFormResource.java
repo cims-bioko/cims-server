@@ -323,8 +323,6 @@ public class IndividualFormResource extends AbstractFormResource {
             dob = getDateInPast();
         }
         individual.setDob(dob);
-        individual.setAge(form.getIndividualAge());
-        individual.setAgeUnits(form.getIndividualAgeUnits());
         individual.setPhoneNumber(form.getIndividualPhoneNumber());
         individual.setOtherPhoneNumber(form.getIndividualOtherPhoneNumber());
         individual.setLanguagePreference(form.getIndividualLanguagePreference());
@@ -333,7 +331,6 @@ public class IndividualFormResource extends AbstractFormResource {
         individual.setDip(form.getIndividualDip());
         individual.setMemberStatus(form.getIndividualMemberStatus());
         individual.setNationality(form.getIndividualNationality());
-
     }
 
 
@@ -560,12 +557,6 @@ public class IndividualFormResource extends AbstractFormResource {
         @XmlElement(name = "individual_other_names")
         private String individualOtherNames;
 
-        @XmlElement(name = "individual_age")
-        private int individualAge;
-
-        @XmlElement(name = "individual_age_units")
-        private String individualAgeUnits;
-
         @XmlElement(name = "individual_date_of_birth")
         @XmlJavaTypeAdapter(CalendarAdapter.class)
         private Calendar individualDateOfBirth;
@@ -670,14 +661,6 @@ public class IndividualFormResource extends AbstractFormResource {
 
         public String getIndividualOtherNames() {
             return individualOtherNames;
-        }
-
-        public int getIndividualAge() {
-            return individualAge;
-        }
-
-        public String getIndividualAgeUnits() {
-            return individualAgeUnits;
         }
 
         public Calendar getIndividualDateOfBirth() {

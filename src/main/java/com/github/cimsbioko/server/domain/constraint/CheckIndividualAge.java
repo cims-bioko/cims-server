@@ -13,9 +13,9 @@ public abstract class CheckIndividualAge extends AppContextAware {
     /**
      * Validate that an individual is older then some required age
      */
-    public boolean isValid(Individual arg0, ConstraintValidatorContext arg1) {
+    public boolean isValid(Individual individual, ConstraintValidatorContext ctx) {
 
-        if (allowNull && arg0 == null)
+        if (allowNull && individual == null)
             return true;
         if (allowNull)
             return true;
@@ -23,7 +23,7 @@ public abstract class CheckIndividualAge extends AppContextAware {
         Calendar minAge = Calendar.getInstance();
         minAge.add(Calendar.YEAR, -(requiredAge));
 
-        return arg0.getDob().compareTo(minAge) < 0;
+        return individual.getDob().compareTo(minAge) < 0;
 
     }
 }

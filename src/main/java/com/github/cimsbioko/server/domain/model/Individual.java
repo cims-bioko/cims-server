@@ -92,10 +92,6 @@ public class Individual extends AuditableCollectedEntity implements Serializable
 
     //Project-specific fields
     @Column
-    private int age;
-    @Column
-    private String ageUnits;
-    @Column
     private String phoneNumber;
     @Column
     private String otherPhoneNumber;
@@ -232,23 +228,6 @@ public class Individual extends AuditableCollectedEntity implements Serializable
         residencyHeap.addAll(allResidencies);
 
         return residencyHeap.peek();
-    }
-
-    //Project-specific get/set
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAgeUnits(String ageUnits) {
-        this.ageUnits = ageUnits;
-    }
-
-    public String getAgeUnits() {
-        return ageUnits;
     }
 
     public void setPhoneNumber(String phoneNumber) {

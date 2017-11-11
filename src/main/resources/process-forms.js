@@ -122,8 +122,6 @@ with (imports) {
                         individual_first_name: data.individualFirstName,
                         individual_last_name: data.individualLastName,
                         individual_other_names: data.individualOtherNames,
-                        individual_age: data.individualAge,
-                        individual_age_units: data.individualAgeUnits,
                         individual_date_of_birth: data.individualDateOfBirth,
                         individual_gender: data.individualGender,
                         individual_relationship_to_head_of_household: data.individualRelationshipToHeadOfHousehold,
