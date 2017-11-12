@@ -31,7 +31,6 @@
         <property name="locations">
             <list>
                 <value>classpath:/META-INF/build-info.properties</value>
-                <value>classpath:codes.properties</value>
             </list>
         </property>
     </bean>
@@ -269,8 +268,6 @@
 
     <!-- controller -->
     <context:component-scan base-package="com.github.cimsbioko.server.controller"/>
-
-    <context:property-placeholder location="classpath:site-config.properties" ignore-unresolvable="true"/>
 
     <security:authentication-manager>
         <security:authentication-provider user-service-ref="userDetailsService"/>

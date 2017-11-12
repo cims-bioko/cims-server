@@ -31,8 +31,8 @@
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
         <property name="locations">
             <list>
+                <value>classpath:application.properties</value>
                 <value>classpath:application-test.properties</value>
-                <value>classpath:codes.properties</value>
             </list>
         </property>
     </bean>
