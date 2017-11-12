@@ -5,7 +5,6 @@ import com.github.cimsbioko.server.domain.service.SitePropertiesService;
 public class SitePropertiesServiceImpl implements SitePropertiesService {
 
     String locale;
-    String dateFormat;
     String earliestEnumerationDate;
     String specialStudyLocation;
     String unknownIdentifier;
@@ -42,14 +41,6 @@ public class SitePropertiesServiceImpl implements SitePropertiesService {
 
     public void setLocale(String locale) {
         this.locale = locale;
-    }
-
-    public String getDateFormat() {
-        return dateFormat;
-    }
-
-    public void setDateFormat(String dateFormat) {
-        this.dateFormat = dateFormat;
     }
 
     public String getEarliestEnumerationDate() {

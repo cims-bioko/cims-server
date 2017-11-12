@@ -32,7 +32,7 @@ public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> im
     @Transactional
     @Override
     public void delete(T entity) throws IllegalArgumentException {
-        Calendar voidDate = calendarUtil.convertDateToCalendar(new Date());
+        Calendar voidDate = calendarUtil.dateToCalendar(new Date());
         entity.setVoidDate(voidDate);
         entity.setVoidBy(currentUser.getCurrentUser());
         entity.setDeleted(true);
@@ -63,7 +63,7 @@ public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> im
         validateReferences(entity);
 
 
-        Calendar insertDate = calendarUtil.convertDateToCalendar(new Date());
+        Calendar insertDate = calendarUtil.dateToCalendar(new Date());
         entity.setInsertDate(insertDate);
 
         setEntityUuidIfNull(entity);

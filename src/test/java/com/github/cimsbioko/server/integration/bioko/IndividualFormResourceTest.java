@@ -50,14 +50,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 public class IndividualFormResourceTest extends AbstractResourceTest {
 
-    private static final String A_DATE = "2000-01-01T00:00:00-05:00";
     private static final String FORMATTED_DATE = "2013-06-13";
     private static final String FORMATTED_DATETIME = "2013-06-13 12:12:12";
 
     private static final String HEAD_OF_HOUSEHOLD_FORM_XML = "<individualForm>"
             + "<processed_by_mirth>false</processed_by_mirth>"
             + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>" + "<collection_date_time>"
-            + A_DATE
+            + FORMATTED_DATETIME
             + "</collection_date_time>"
             + "<field_worker_uuid>FWEK1D-UUID</field_worker_uuid>"
             + "<entity_uuid>32145678901234935890123456789012</entity_uuid>"
@@ -70,7 +69,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
             + "<individual_age>100</individual_age>"
             + "<individual_age_units>years</individual_age_units>"
             + "<individual_date_of_birth>"
-            + A_DATE
+            + FORMATTED_DATE
             + "</individual_date_of_birth>"
             + "<individual_gender>MALE</individual_gender>"
             + "<individual_relationship_to_head_of_household>1</individual_relationship_to_head_of_household>"
@@ -88,7 +87,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
     private static final String MEMBER_OF_HOUSEHOLD_FORM_XML = "<individualForm>"
             + "<processed_by_mirth>false</processed_by_mirth>"
             + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>" + "<collection_date_time>"
-            + A_DATE
+            + FORMATTED_DATETIME
             + "</collection_date_time>"
             + "<field_worker_uuid>FWEK1D-UUID</field_worker_uuid>"
             + "<entity_uuid>12345678901234935890123456789012</entity_uuid>"
@@ -101,7 +100,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
             + "<individual_age>100</individual_age>"
             + "<individual_age_units>years</individual_age_units>"
             + "<individual_date_of_birth>"
-            + A_DATE
+            + FORMATTED_DATE
             + "</individual_date_of_birth>"
             + "<individual_gender>FEMALE</individual_gender>"
             + "<individual_relationship_to_head_of_household>2</individual_relationship_to_head_of_household>"
@@ -119,7 +118,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
     private static final String DUPLICATE_EXTID_MEMBER_OF_HOUSEHOLD_FORM_XML = "<individualForm>"
             + "<processed_by_mirth>false</processed_by_mirth>"
             + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>" + "<collection_date_time>"
-            + A_DATE
+            + FORMATTED_DATETIME
             + "</collection_date_time>"
             + "<field_worker_uuid>FWEK1D-UUID</field_worker_uuid>"
             + "<entity_uuid>1234567890133335890123456789012</entity_uuid>"
@@ -132,7 +131,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
             + "<individual_age>100</individual_age>"
             + "<individual_age_units>years</individual_age_units>"
             + "<individual_date_of_birth>"
-            + A_DATE
+            + FORMATTED_DATE
             + "</individual_date_of_birth>"
             + "<individual_gender>FEMALE</individual_gender>"
             + "<individual_relationship_to_head_of_household>2</individual_relationship_to_head_of_household>"
@@ -156,7 +155,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
     private static final String MEMBER_OF_HOUSEHOLD_OUTDATED_EXTID_FORM_XML = "<individualForm>"
             + "<processed_by_mirth>false</processed_by_mirth>"
             + "<field_worker_ext_id>FWEK1D</field_worker_ext_id>" + "<collection_date_time>"
-            + A_DATE
+            + FORMATTED_DATETIME
             + "</collection_date_time>"
             + "<field_worker_uuid>FWEK1D-UUID</field_worker_uuid>"
             + "<entity_uuid>12345678901234935890123456789012</entity_uuid>"
@@ -169,7 +168,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
             + "<individual_age>66</individual_age>"
             + "<individual_age_units>years</individual_age_units>"
             + "<individual_date_of_birth>"
-            + A_DATE
+            + FORMATTED_DATE
             + "</individual_date_of_birth>"
             + "<individual_gender>FEMALE</individual_gender>"
             + "<individual_relationship_to_head_of_household>2</individual_relationship_to_head_of_household>"

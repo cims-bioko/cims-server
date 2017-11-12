@@ -199,7 +199,7 @@
     </bean>
 
     <bean id="timestampConverter" class="com.github.cimsbioko.server.web.cvt.TimeStampConverter">
-        <constructor-arg value="#{siteProperties.dateFormat}"/>
+        <constructor-arg value="${dateTimeFormat}"/>
     </bean>
 
     <!-- Entity Converters -->
@@ -646,9 +646,6 @@
           class="com.github.cimsbioko.server.domain.service.impl.SitePropertiesServiceImpl">
         <property name="locale">
             <value>${locale}</value>
-        </property>
-        <property name="dateFormat">
-            <value>${dateFormat}</value>
         </property>
         <property name="unknownIdentifier">
             <value>${unknownIdentifier}</value>

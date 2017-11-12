@@ -1,16 +1,13 @@
 package com.github.cimsbioko.server.integration.bioko;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import com.github.cimsbioko.server.domain.util.CalendarAdapter;
+import com.github.cimsbioko.server.domain.util.CalendarUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.junit.Assert.assertEquals;
@@ -18,47 +15,34 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:domainTestContext.xml"})
 public class CalendarAdapterTest {
 
     private CalendarAdapter calendarAdapter;
     private Calendar dateTime;
     private Calendar date;
+    private CalendarUtil util;
 
-    private static final String SQL_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    private static final String SQL_DATE_FORMAT = "yyyy-MM-dd";
     private static final String MOCK_DATETIME = "2000-06-13 12:12:12";
     private static final String MOCK_DATE = "2000-06-13";
 
     @Before
     public void setup() throws ParseException {
-
+        util = new CalendarUtil();
         calendarAdapter = new CalendarAdapter();
         date = getMockDate();
         dateTime = getMockDateTime();
     }
 
     private Calendar getMockDate() throws ParseException {
-
-        DateFormat formatter = new SimpleDateFormat(SQL_DATE_FORMAT);
-        Date date = formatter.parse(MOCK_DATE);
-        Calendar dateCal = Calendar.getInstance();
-        dateCal.setTime(date);
-        return dateCal;
+        return util.parseDate(MOCK_DATE);
     }
 
     private Calendar getMockDateTime() throws ParseException {
-
-        DateFormat formatter = new SimpleDateFormat(SQL_DATETIME_FORMAT);
-        Date date = formatter.parse(MOCK_DATETIME);
-        Calendar dateCal = Calendar.getInstance();
-        dateCal.setTime(date);
-        return dateCal;
+        return util.parseDateTime(MOCK_DATETIME);
     }
 
     @Test
     public void marshalDateTime() {
-
         String marshalledCalendar = null;
         try {
             marshalledCalendar = calendarAdapter.marshal(dateTime);
@@ -71,7 +55,6 @@ public class CalendarAdapterTest {
 
     @Test
     public void unmarshalDateTime() {
-
         Calendar unmarshalledCalendar = null;
         try {
             unmarshalledCalendar = calendarAdapter.unmarshal(MOCK_DATETIME);
@@ -80,12 +63,10 @@ public class CalendarAdapterTest {
         }
         assertNotNull(unmarshalledCalendar);
         assertEquals(unmarshalledCalendar.getTime(), dateTime.getTime());
-
     }
 
     @Test
     public void marshalDate() {
-
         String marshalledCalendar = null;
         try {
             marshalledCalendar = calendarAdapter.marshal(date);
@@ -94,12 +75,10 @@ public class CalendarAdapterTest {
         }
         assertNotNull(marshalledCalendar);
         assertEquals(MOCK_DATE, marshalledCalendar.substring(0, 10));
-
     }
 
     @Test
     public void unmarshalDate() {
-
         Calendar unmarshalledCalendar = null;
         try {
             unmarshalledCalendar = calendarAdapter.unmarshal(MOCK_DATE);
@@ -108,7 +87,5 @@ public class CalendarAdapterTest {
         }
         assertNotNull(unmarshalledCalendar);
         assertEquals(date.getTime(), unmarshalledCalendar.getTime());
-
     }
-
 }

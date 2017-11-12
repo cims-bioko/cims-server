@@ -49,7 +49,7 @@ public class IndividualFormResource extends AbstractFormResource {
 
     public static final String INDIVIDUAL_FORM_PATH = "/rest/individualForm";
 
-    private static final Logger logger = LoggerFactory.getLogger(IndividualFormResource.class);
+    private static final Logger log = LoggerFactory.getLogger(IndividualFormResource.class);
 
     // TODO: value codes can be configured by projects
     private static final String HEAD_OF_HOUSEHOLD_SELF = "1";
@@ -319,6 +319,7 @@ public class IndividualFormResource extends AbstractFormResource {
         individual.setGender(form.getIndividualGender());
 
         Calendar dob = form.getIndividualDateOfBirth();
+        log.debug("date of birth {}", dob);
         if (null == dob) {
             dob = getDateInPast();
         }

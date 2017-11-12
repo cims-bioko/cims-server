@@ -55,7 +55,7 @@ public class EntityServiceImpl implements EntityService {
 
 
             try {
-                Calendar insertDate = calendarUtil.convertDateToCalendar(new Date());
+                Calendar insertDate = calendarUtil.dateToCalendar(new Date());
                 ((AuditableEntity) entityItem).setInsertDate(insertDate);
             } catch (Exception e) {
                 System.out.println(e.toString());
@@ -87,7 +87,7 @@ public class EntityServiceImpl implements EntityService {
                 voidedByMethod = persistentObject.getClass().getMethod("setVoidBy", User.class);
                 voidedByMethod.invoke(persistentObject, currentUser.getCurrentUser());
 
-                Calendar voidDate = calendarUtil.convertDateToCalendar(new Date());
+                Calendar voidDate = calendarUtil.dateToCalendar(new Date());
                 voidedDateMethod = persistentObject.getClass().getMethod("setVoidDate", Calendar.class);
                 voidedDateMethod.invoke(persistentObject, voidDate);
 

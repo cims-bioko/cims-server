@@ -26,7 +26,7 @@ public class ErrorDaoImpl implements ErrorDao {
 
     public Error save(Error error) {
         try {
-            Calendar insertDate = calendarUtil.convertDateToCalendar(new Date());
+            Calendar insertDate = calendarUtil.dateToCalendar(new Date());
             error.setInsertDate(insertDate);
             entityService.create(error);
         } catch (IllegalArgumentException | SQLException | ConstraintViolations e) {

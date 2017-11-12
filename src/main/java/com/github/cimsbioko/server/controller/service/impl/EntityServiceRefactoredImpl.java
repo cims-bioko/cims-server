@@ -38,7 +38,7 @@ public abstract class EntityServiceRefactoredImpl implements EntityServiceRefact
             entityItem.setInsertBy(currentUser.getCurrentUser());
         }
 
-        Calendar insertDate = calendarUtil.convertDateToCalendar(new Date());
+        Calendar insertDate = calendarUtil.dateToCalendar(new Date());
         entityItem.setInsertDate(insertDate);
 
         AbstractEntityCrudHelperImpl.setEntityUuidIfNull(entityItem);
@@ -65,7 +65,7 @@ public abstract class EntityServiceRefactoredImpl implements EntityServiceRefact
     @Transactional
     public void delete(AuditableEntity entityItem) throws IllegalArgumentException {
 
-        Calendar voidDate = calendarUtil.convertDateToCalendar(new Date());
+        Calendar voidDate = calendarUtil.dateToCalendar(new Date());
         entityItem.setVoidDate(voidDate);
         entityItem.setVoidBy(currentUser.getCurrentUser());
         entityItem.setDeleted(true);
