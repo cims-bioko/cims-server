@@ -33,7 +33,6 @@
             <list>
                 <value>classpath:application-test.properties</value>
                 <value>classpath:codes.properties</value>
-                <value>classpath:test-site-config.properties</value>
             </list>
         </property>
     </bean>
