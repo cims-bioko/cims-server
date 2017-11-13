@@ -255,9 +255,6 @@ public class LocationFormResource extends AbstractFormResource {
         @XmlElement(name = "entity_ext_id")
         private String entityExtId;
 
-        @XmlElement(name = "processed_by_mirth")
-        private boolean processedByMirth;
-
         @XmlElement(name = "field_worker_ext_id")
         private String fieldWorkerExtId;
 
@@ -383,14 +380,6 @@ public class LocationFormResource extends AbstractFormResource {
 
         public void setFloorNumber(Integer floorNumber) {
             this.floorNumber = floorNumber;
-        }
-
-        public boolean isProcessedByMirth() {
-            return processedByMirth;
-        }
-
-        public void setProcessedByMirth(boolean processedByMirth) {
-            this.processedByMirth = processedByMirth;
         }
 
         public String getFieldWorkerExtId() {
