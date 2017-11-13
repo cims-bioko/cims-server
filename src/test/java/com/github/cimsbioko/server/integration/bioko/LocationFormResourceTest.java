@@ -211,8 +211,6 @@ public class LocationFormResourceTest extends AbstractResourceTest {
         assertNotNull(persistedLocation);
         assertEquals("newLocationName", persistedLocation.getLocationName());
         assertEquals("RUR", persistedLocation.getLocationType());
-        assertEquals("newCommunityName", persistedLocation.getCommunityName());
-        assertEquals("newMapAreaName", persistedLocation.getMapAreaName());
 
     }
 

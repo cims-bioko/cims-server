@@ -194,11 +194,6 @@ public class LocationFormResource extends AbstractFormResource {
 
         // fieldWorker, CollectedDateTime, and HierarchyLevel are set outside of this method
         location.setUuid(form.getUuid());
-        location.setCommunityName(form.getCommunityName());
-        location.setCommunityCode(form.getCommunityCode());
-        location.setLocalityName(form.getLocalityName());
-        location.setMapAreaName(form.getMapAreaName());
-        location.setSectorName(form.getSectorName());
         location.setLocationName(form.getLocationName());
         location.setLocationType(nullTypeToUrb(form.getLocationType()));
         location.setBuildingNumber(form.getBuildingNumber());
@@ -291,18 +286,6 @@ public class LocationFormResource extends AbstractFormResource {
 
         @XmlElement(name = "location_type")
         private String locationType;
-
-        @XmlElement(name = "community_name")
-        private String communityName;
-
-        @XmlElement(name = "community_code")
-        private String communityCode;
-
-        @XmlElement(name = "map_area_name")
-        private String mapAreaName;
-
-        @XmlElement(name = "locality_name")
-        private String localityName;
 
         @XmlElement(name = "sector_name")
         private String sectorName;
@@ -456,38 +439,6 @@ public class LocationFormResource extends AbstractFormResource {
 
         public void setLocationType(String locationType) {
             this.locationType = locationType;
-        }
-
-        public String getCommunityName() {
-            return communityName;
-        }
-
-        public void setCommunityName(String communityName) {
-            this.communityName = communityName;
-        }
-
-        public String getCommunityCode() {
-            return communityCode;
-        }
-
-        public void setCommunityCode(String communityCode) {
-            this.communityCode = communityCode;
-        }
-
-        public String getMapAreaName() {
-            return mapAreaName;
-        }
-
-        public void setMapAreaName(String mapAreaName) {
-            this.mapAreaName = mapAreaName;
-        }
-
-        public String getLocalityName() {
-            return localityName;
-        }
-
-        public void setLocalityName(String localityName) {
-            this.localityName = localityName;
         }
 
         public String getSectorName() {

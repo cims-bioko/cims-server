@@ -63,33 +63,6 @@ public class Location
     @Description(description = "The floor number within the building this location is associated with")
     private Integer floorNumber;
 
-    @Description(description = "The name of the Region that contains this location")
-    private String regionName;
-
-    @Description(description = "The name of the Province that contains this location")
-    private String provinceName;
-
-    @Description(description = "The name of the Sub District that contains this location")
-    private String subDistrictName;
-
-    @Description(description = "The name of the District that contains this location")
-    private String districtName;
-
-    @Description(description = "The name of the map sector that contains this location")
-    private String sectorName;
-
-    @Description(description = "The name of the locality (aka AREA) that contains this location")
-    private String localityName;
-
-    @Description(description = "The name of the community that contains this location")
-    private String communityName;
-
-    @Description(description = "Formatted code for the community that contains this location")
-    private String communityCode;
-
-    @Description(description = "The name of the map area - disregarding Locality - that contains this location")
-    private String mapAreaName;
-
     @Description(description = "A description of the observable features of a location")
     private String description;
 
@@ -149,46 +122,6 @@ public class Location
         residencies = list;
     }
 
-    public String getSectorName() {
-        return sectorName;
-    }
-
-    public void setSectorName(String sectorName) {
-        this.sectorName = sectorName;
-    }
-
-    public String getLocalityName() {
-        return localityName;
-    }
-
-    public void setLocalityName(String localityName) {
-        this.localityName = localityName;
-    }
-
-    public String getCommunityName() {
-        return communityName;
-    }
-
-    public void setCommunityName(String communityName) {
-        this.communityName = communityName;
-    }
-
-    public String getCommunityCode() {
-        return communityCode;
-    }
-
-    public void setCommunityCode(String communityCode) {
-        this.communityCode = communityCode;
-    }
-
-    public String getMapAreaName() {
-        return mapAreaName;
-    }
-
-    public void setMapAreaName(String mapAreaName) {
-        this.mapAreaName = mapAreaName;
-    }
-
     public Integer getBuildingNumber() {
         return buildingNumber;
     }
@@ -203,38 +136,6 @@ public class Location
 
     public void setFloorNumber(Integer floorNumber) {
         this.floorNumber = floorNumber;
-    }
-
-    public String getRegionName() {
-        return regionName;
-    }
-
-    public void setRegionName(String regionName) {
-        this.regionName = regionName;
-    }
-
-    public String getProvinceName() {
-        return provinceName;
-    }
-
-    public void setProvinceName(String provinceName) {
-        this.provinceName = provinceName;
-    }
-
-    public String getSubDistrictName() {
-        return subDistrictName;
-    }
-
-    public void setSubDistrictName(String subDistrictName) {
-        this.subDistrictName = subDistrictName;
-    }
-
-    public String getDistrictName() {
-        return districtName;
-    }
-
-    public void setDistrictName(String districtName) {
-        this.districtName = districtName;
     }
 
     public static Location makeStub(String uuid, String extId) {
