@@ -1,9 +1,8 @@
 package com.github.cimsbioko.server.webapi;
 
 import com.github.cimsbioko.server.domain.model.FieldWorker;
-import com.github.cimsbioko.server.errorhandling.Constants;
-import com.github.cimsbioko.server.errorhandling.ErrorService;
-import com.github.cimsbioko.server.errorhandling.ErrorUtil;
+import com.github.cimsbioko.server.controller.service.ErrorService;
+import com.github.cimsbioko.server.controller.util.ErrorUtil;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.model.Error;
 import com.vividsolutions.jts.geom.Coordinate;
@@ -44,7 +43,7 @@ public class AbstractFormResource {
 
     protected void logError(ConstraintViolations cv, FieldWorker fw, String payload, String simpleClassName, String errorConstant) {
 
-        Error error = ErrorUtil.createError(Constants.UNASSIGNED, payload, null, simpleClassName,
+        Error error = ErrorUtil.createError(ErrorConstants.UNASSIGNED, payload, null, simpleClassName,
                 fw, errorConstant, cv.getViolations());
         errorService.logError(error);
 

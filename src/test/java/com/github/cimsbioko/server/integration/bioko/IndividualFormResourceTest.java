@@ -4,7 +4,7 @@ import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.*;
 import com.github.cimsbioko.server.domain.model.Error;
 import com.github.cimsbioko.server.domain.util.CalendarAdapter;
-import com.github.cimsbioko.server.errorhandling.Constants;
+import com.github.cimsbioko.server.webapi.ErrorConstants;
 import com.github.cimsbioko.server.integration.AbstractResourceTest;
 import com.github.cimsbioko.server.integration.util.WebContextLoader;
 import com.github.cimsbioko.server.webapi.IndividualFormResource;
@@ -230,7 +230,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
 
         Error error = genericDao.findByProperty(Error.class, "entityType", IndividualFormResource.Form.LOG_NAME);
         assertNotNull(error);
-        assertEquals(Constants.DUPLICATE_EXTID, error.getResolutionStatus());
+        assertEquals(ErrorConstants.DUPLICATE_EXTID, error.getResolutionStatus());
     }
 
     @Test

@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.errorhandling;
+package com.github.cimsbioko.server.controller.util;
 
 import java.util.Calendar;
 import java.util.List;

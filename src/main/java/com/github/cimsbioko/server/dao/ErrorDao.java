@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.errorhandling;
+package com.github.cimsbioko.server.dao;
 
 import com.github.cimsbioko.server.domain.model.Error;
 

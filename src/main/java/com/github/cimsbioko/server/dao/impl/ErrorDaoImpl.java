@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.errorhandling;
+package com.github.cimsbioko.server.dao.impl;
 
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -6,6 +6,7 @@ import java.util.Date;
 
 import com.github.cimsbioko.server.controller.service.EntityService;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
+import com.github.cimsbioko.server.dao.ErrorDao;
 import com.github.cimsbioko.server.domain.model.Error;
 import com.github.cimsbioko.server.domain.util.CalendarUtil;
 import org.slf4j.Logger;

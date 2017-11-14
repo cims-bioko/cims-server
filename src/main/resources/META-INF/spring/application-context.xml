@@ -260,7 +260,7 @@
 
     <bean id="errorDao" parent="baseTransactionBean">
         <property name="target">
-            <bean class="com.github.cimsbioko.server.errorhandling.ErrorDaoImpl">
+            <bean class="com.github.cimsbioko.server.dao.impl.ErrorDaoImpl">
                 <constructor-arg ref="entityService"/>
             </bean>
         </property>

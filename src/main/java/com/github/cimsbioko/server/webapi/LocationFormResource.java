@@ -6,12 +6,9 @@ import com.github.cimsbioko.server.controller.service.refactor.LocationService;
 import com.github.cimsbioko.server.domain.model.*;
 import com.github.cimsbioko.server.domain.model.Error;
 import com.github.cimsbioko.server.domain.util.CalendarAdapter;
-import com.github.cimsbioko.server.errorhandling.Constants;
-import com.github.cimsbioko.server.errorhandling.ErrorService;
-import com.github.cimsbioko.server.errorhandling.ErrorUtil;
+import com.github.cimsbioko.server.controller.service.ErrorService;
+import com.github.cimsbioko.server.controller.util.ErrorUtil;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -143,9 +140,9 @@ public class LocationFormResource extends AbstractFormResource {
             // log the modification
             logMessage.add("Location persisted with Modified ExtId: Old = " + form.getLocationExtId() + " New = " + location.getExtId());
             String payload = createDTOPayload(form);
-            Error error = ErrorUtil.createError(Constants.UNASSIGNED, payload, null,
+            Error error = ErrorUtil.createError(ErrorConstants.UNASSIGNED, payload, null,
                     Form.LOG_NAME, collectedBy,
-                    Constants.MODIFIED_EXTID, logMessage);
+                    ErrorConstants.MODIFIED_EXTID, logMessage);
             errorService.logError(error);
         } else {
             location.setExtId(form.getLocationExtId());
@@ -159,7 +156,7 @@ public class LocationFormResource extends AbstractFormResource {
         try {
             locationService.create(location);
         } catch (ConstraintViolations e) {
-            logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME, Constants.CONSTRAINT_VIOLATION);
+            logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME, ErrorConstants.CONSTRAINT_VIOLATION);
             return requestError(e);
         } catch (Exception e) {
             return serverError("General Error creating location: " + e.getMessage());

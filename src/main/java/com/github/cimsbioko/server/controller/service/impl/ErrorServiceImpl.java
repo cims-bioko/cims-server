@@ -1,8 +1,8 @@
-package com.github.cimsbioko.server.errorhandling;
+package com.github.cimsbioko.server.controller.service.impl;
 
-import java.util.List;
-
+import com.github.cimsbioko.server.controller.service.ErrorService;
 import com.github.cimsbioko.server.controller.service.FieldWorkerService;
+import com.github.cimsbioko.server.dao.ErrorDao;
 import com.github.cimsbioko.server.domain.model.Error;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class ErrorServiceImpl implements ErrorService {
 
     @Autowired
-    private List<ErrorEndPoint> errorEndPoints;
+    private ErrorDao errorDao;
 
     @Autowired
     private FieldWorkerService fieldWorkerService;
@@ -22,9 +22,7 @@ public class ErrorServiceImpl implements ErrorService {
             error.setFieldWorker(fieldWorkerService.getUnknownFieldWorker());
         }
 
-        for (ErrorEndPoint errorEndPoint : errorEndPoints) {
-            errorEndPoint.logError(error);
-        }
+        errorDao.save(error);
 
         return error;
     }
