@@ -12,8 +12,6 @@ public interface AsyncTaskService {
 
     void startTask(String name);
 
-    void clearSession();
-
     void updateTaskProgress(String name, long itemsWritten);
 
     String getDescriptor(String name);

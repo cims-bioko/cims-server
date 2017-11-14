@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.task.service.impl;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import com.github.cimsbioko.server.dao.Dao;
 import com.github.cimsbioko.server.domain.model.AsyncTask;
@@ -74,13 +73,6 @@ public class AsyncTaskServiceImpl implements AsyncTaskService {
         task.setItemCount(itemsWritten);
         task.setFinished(Calendar.getInstance());
         task.setDescriptor(descriptorValue);
-    }
-
-    @Override
-    public void clearSession() {
-        Session session = sessionFactory.getCurrentSession();
-        session.flush();
-        session.clear();
     }
 
     @Override
