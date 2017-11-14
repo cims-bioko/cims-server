@@ -38,28 +38,28 @@
                     <h:outputText value="Task Name"/>
                 </f:facet>
 
-                <h:outputText value="#{task.taskName}"/>
+                <h:outputText value="#{task.name}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
                     <h:outputText value="Total Items Processed"/>
                 </f:facet>
 
-                <h:outputText value="#{task.totalCount}"/>
+                <h:outputText value="#{task.itemCount}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
                     <h:outputText value="Start Time Stamp"/>
                 </f:facet>
 
-                <h:outputText value="#{task.taskStartDate}" converter="#{timestampConverter}"/>
+                <h:outputText value="#{task.started}" converter="#{timestampConverter}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
                     <h:outputText value="End Time Stamp"/>
                 </f:facet>
 
-                <h:outputText value="#{task.taskEndDate}" converter="#{timestampConverter}"/>
+                <h:outputText value="#{task.finished}" converter="#{timestampConverter}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
@@ -67,7 +67,7 @@
                 </f:facet>
 
                <h:outputLink value="#{request.contextPath}/api/rest/mobiledb/export">
-                    <h:outputText value="#{task.md5Hash}"/>
+                    <h:outputText value="#{task.descriptor}"/>
                </h:outputLink>
             </h:column>
         </h:dataTable>

@@ -47,7 +47,7 @@ public class MobileDatabaseResource {
     @RequestMapping(value = MOBILEDB_PATH, method = RequestMethod.GET, produces = {SQLITE_MIME_TYPE, Metadata.MIME_TYPE})
     public String mobileDB(WebRequest request) throws ServletException, IOException {
 
-        String contentHash = asyncTaskService.getContentHash(MOBILEDB_TASK_NAME);
+        String contentHash = asyncTaskService.getDescriptor(MOBILEDB_TASK_NAME);
         File cacheFile = fileResolver.resolveMobileDBFile();
         File metadataFile = new File(cacheFile.getParentFile(), cacheFile.getName() + "." + Metadata.FILE_EXT);
         String accept = request.getHeader(Headers.ACCEPT);

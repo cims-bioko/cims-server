@@ -9,21 +9,19 @@ import java.util.Calendar;
 @Entity
 @Table(name = "asynctask")
 public class AsyncTask {
+
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "com.github.cimsbioko.server.domain.util.UUIDGenerator")
     @Column(length = 32)
     String uuid;
-
+    private String name;
+    private long itemCount;
+    private String descriptor;
     @Temporal(TemporalType.TIMESTAMP)
-    private Calendar taskStartDate;
-
+    private Calendar started;
     @Temporal(TemporalType.TIMESTAMP)
-    private Calendar taskEndDate;
-
-    private String taskName;
-    private long totalCount;
-    private String md5Hash;
+    private Calendar finished;
 
 
     public String getUuid() {
@@ -34,43 +32,44 @@ public class AsyncTask {
         this.uuid = uuid;
     }
 
-    public Calendar getTaskStartDate() {
-        return taskStartDate;
+    public String getName() {
+        return name;
     }
 
-    public void setTaskStartDate(Calendar taskStartDate) {
-        this.taskStartDate = taskStartDate;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Calendar getTaskEndDate() {
-        return taskEndDate;
+    public void setItemCount(long totalCount) {
+        this.itemCount = totalCount;
     }
 
-    public void setTaskEndDate(Calendar taskEndDate) {
-        this.taskEndDate = taskEndDate;
+    public long getItemCount() {
+        return itemCount;
     }
 
-    public String getTaskName() {
-        return taskName;
+    public String getDescriptor() {
+        return descriptor;
     }
 
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
+    public void setDescriptor(String descriptor) {
+        this.descriptor = descriptor;
     }
 
-    public void setTotalItems(long totalCount) {
-        this.totalCount = totalCount;
+    public Calendar getStarted() {
+        return started;
     }
 
-    public long getTotalCount() {
-        return totalCount;
+    public void setStarted(Calendar started) {
+        this.started = started;
     }
 
-    public String getMd5Hash() {
-        return md5Hash;
+    public Calendar getFinished() {
+        return finished;
     }
 
-    public void setMd5Hash(String md5Hash) {
-        this.md5Hash = md5Hash;
+    public void setFinished(Calendar finished) {
+        this.finished = finished;
     }
+
 }

@@ -8,17 +8,17 @@ public interface AsyncTaskService {
 
     String MOBILEDB_TASK_NAME = "Mobile DB Task";
 
-    boolean taskShouldRun(String taskName);
+    boolean taskShouldRun(String name);
 
-    void startTask(String taskName);
+    void startTask(String name);
 
     void clearSession();
 
-    void updateTaskProgress(String taskName, long itemsWritten);
+    void updateTaskProgress(String name, long itemsWritten);
 
-    String getContentHash(String taskName);
+    String getDescriptor(String name);
 
-    void finishTask(String taskName, long itemsWritten, String md5);
+    void finishTask(String name, long itemsWritten, String descriptorValue);
 
-    List<AsyncTask> findAllAsyncTask();
+    List<AsyncTask> findAll();
 }

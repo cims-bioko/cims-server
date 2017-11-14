@@ -84,7 +84,7 @@ public class TaskBean {
     }
 
     public List<AsyncTask> getTasks() {
-        return asyncTaskService.findAllAsyncTask();
+        return asyncTaskService.findAll();
     }
 
     public String getCronSchedule() {

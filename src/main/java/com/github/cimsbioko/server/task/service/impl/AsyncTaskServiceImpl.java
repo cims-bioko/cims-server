@@ -28,52 +28,52 @@ public class AsyncTaskServiceImpl implements AsyncTaskService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public boolean taskShouldRun(String taskName) {
-        return taskShouldRun(dao.findByProperty("taskName", taskName));
+    public boolean taskShouldRun(String name) {
+        return taskShouldRun(dao.findByProperty("name", name));
     }
 
     private boolean taskShouldRun(AsyncTask task) {
-        return task == null || task.getTaskEndDate() != null;
+        return task == null || task.getFinished() != null;
     }
 
     // REQUIRES_NEW allows status updates to be written during long tasks
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void startTask(String taskName) {
-        AsyncTask task = dao.findByProperty("taskName", taskName);
+    public void startTask(String name) {
+        AsyncTask task = dao.findByProperty("name", name);
         if (task == null) {
             task = new AsyncTask();
-            task.setTaskName(taskName);
+            task.setName(name);
         }
-        task.setTaskEndDate(null);
-        task.setTotalItems(0);
-        task.setTaskStartDate(Calendar.getInstance());
+        task.setFinished(null);
+        task.setItemCount(0);
+        task.setStarted(Calendar.getInstance());
         dao.saveOrUpdate(task);
     }
 
     // REQUIRES_NEW allows status updates to be written during long tasks
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void updateTaskProgress(String taskName, long itemsWritten) {
-        AsyncTask task = dao.findByProperty("taskName", taskName);
-        task.setTotalItems(itemsWritten);
+    public void updateTaskProgress(String name, long itemsWritten) {
+        AsyncTask task = dao.findByProperty("name", name);
+        task.setItemCount(itemsWritten);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public String getContentHash(String taskName) {
-        AsyncTask task = dao.findByProperty("taskName", taskName);
-        return task == null ? null : task.getMd5Hash();
+    public String getDescriptor(String name) {
+        AsyncTask task = dao.findByProperty("name", name);
+        return task == null ? null : task.getDescriptor();
     }
 
     // REQUIRES_NEW allows status updates to be written during long tasks
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void finishTask(String taskName, long itemsWritten, String md5) {
-        AsyncTask task = dao.findByProperty("taskName", taskName);
-        task.setTotalItems(itemsWritten);
-        task.setTaskEndDate(Calendar.getInstance());
-        task.setMd5Hash(md5);
+    public void finishTask(String name, long itemsWritten, String descriptorValue) {
+        AsyncTask task = dao.findByProperty("name", name);
+        task.setItemCount(itemsWritten);
+        task.setFinished(Calendar.getInstance());
+        task.setDescriptor(descriptorValue);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class AsyncTaskServiceImpl implements AsyncTaskService {
     }
 
     @Override
-    public List<AsyncTask> findAllAsyncTask() {
+    public List<AsyncTask> findAll() {
         return dao.findAll(false);
     }
 
