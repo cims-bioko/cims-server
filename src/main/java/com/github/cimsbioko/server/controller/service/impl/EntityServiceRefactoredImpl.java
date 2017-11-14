@@ -64,16 +64,9 @@ public abstract class EntityServiceRefactoredImpl implements EntityServiceRefact
 
     @Transactional
     public void delete(AuditableEntity entityItem) throws IllegalArgumentException {
-
-        Calendar voidDate = calendarUtil.dateToCalendar(new Date());
-        entityItem.setVoidDate(voidDate);
-        entityItem.setVoidBy(currentUser.getCurrentUser());
         entityItem.setDeleted(true);
-
         entityValidationService.setStatusVoided(entityItem);
-
         genericDao.update(entityItem);
-
     }
 
 }

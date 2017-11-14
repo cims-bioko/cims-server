@@ -23,18 +23,8 @@ public abstract class AuditableEntity implements UuidIdentifiable, Serializable 
     @Column(length = 32)
     String uuid;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @Description(description = "The user that voided the data.")
-    protected User voidBy;
-
-    @Description(description = "Reason for voiding the data.")
-    protected String voidReason;
-
     @Description(description = "Indicator for signaling some data to be deleted.")
     protected boolean deleted = false;
-
-    @Description(description = "Date that the data was voided.")
-    protected Calendar voidDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @Description(description = "User who inserted the data.")
@@ -53,22 +43,6 @@ public abstract class AuditableEntity implements UuidIdentifiable, Serializable 
         this.uuid = uuid;
     }
 
-    public User getVoidBy() {
-        return voidBy;
-    }
-
-    public void setVoidBy(User voidBy) {
-        this.voidBy = voidBy;
-    }
-
-    public String getVoidReason() {
-        return voidReason;
-    }
-
-    public void setVoidReason(String voidReason) {
-        this.voidReason = voidReason;
-    }
-
     @XmlTransient
     public boolean isDeleted() {
         return deleted;
@@ -76,14 +50,6 @@ public abstract class AuditableEntity implements UuidIdentifiable, Serializable 
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
-    }
-
-    public Calendar getVoidDate() {
-        return voidDate;
-    }
-
-    public void setVoidDate(Calendar voidDate) {
-        this.voidDate = voidDate;
     }
 
     public User getInsertBy() {

@@ -17,7 +17,6 @@ import java.util.Date;
 
 public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> implements EntityCrudHelper<T> {
 
-
     @Autowired
     protected GenericDao genericDao;
     @Autowired
@@ -32,13 +31,8 @@ public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> im
     @Transactional
     @Override
     public void delete(T entity) throws IllegalArgumentException {
-        Calendar voidDate = calendarUtil.dateToCalendar(new Date());
-        entity.setVoidDate(voidDate);
-        entity.setVoidBy(currentUser.getCurrentUser());
         entity.setDeleted(true);
-
         entityValidationService.setStatusVoided(entity);
-
         genericDao.update(entity);
     }
 
