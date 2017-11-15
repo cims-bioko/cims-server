@@ -186,10 +186,6 @@
         </property>
     </bean>
 
-    <bean id="prefLocale" class="com.github.cimsbioko.server.web.util.Locale">
-        <property name="locale" value="#{siteProperties.locale}"/>
-    </bean>
-
     <bean id="timestampConverter" class="com.github.cimsbioko.server.web.cvt.TimeStampConverter">
         <constructor-arg value="${dateTimeFormat}"/>
     </bean>
@@ -338,13 +334,6 @@
         </property>
     </bean>
 
-    <bean id="cacheResponseWriter" parent="baseServiceBean">
-        <property name="target">
-            <bean class="com.github.cimsbioko.server.controller.util.CacheResponseWriter">
-            </bean>
-        </property>
-    </bean>
-
     <bean id="fieldWorkerService" parent="baseServiceBean">
         <property name="target">
             <bean class="com.github.cimsbioko.server.controller.service.impl.FieldWorkerServiceImpl" lazy-init="true">
@@ -361,7 +350,6 @@
                 <constructor-arg ref="individualIdGenerator"/>
                 <constructor-arg ref="siteProperties"/>
                 <constructor-arg ref="entityService"/>
-                <constructor-arg ref="idSchemeResource"/>
             </bean>
         </property>
     </bean>
@@ -373,27 +361,6 @@
                 <constructor-arg ref="entityService"/>
                 <constructor-arg ref="locationIdGenerator"/>
                 <constructor-arg ref="locationHierarchyIdGenerator"/>
-            </bean>
-        </property>
-    </bean>
-
-    <bean id="membershipService" parent="baseServiceBean" lazy-init="true">
-        <property name="target">
-            <bean class="com.github.cimsbioko.server.controller.service.impl.MembershipServiceImpl">
-                <constructor-arg ref="genericDao"/>
-                <constructor-arg ref="individualService"/>
-                <constructor-arg ref="entityValidator"/>
-                <constructor-arg ref="calendarUtil"/>
-            </bean>
-        </property>
-    </bean>
-
-    <bean id="relationshipService" parent="baseServiceBean" lazy-init="true">
-        <property name="target">
-            <bean class="com.github.cimsbioko.server.controller.service.impl.RelationshipServiceImpl">
-                <constructor-arg ref="genericDao"/>
-                <constructor-arg ref="entityService"/>
-                <constructor-arg ref="individualService"/>
             </bean>
         </property>
     </bean>
@@ -421,8 +388,6 @@
     <bean id="socialGroupService" parent="baseServiceTransactionBean" lazy-init="true">
         <property name="target">
             <bean class="com.github.cimsbioko.server.controller.service.impl.SocialGroupServiceImpl">
-                <constructor-arg ref="genericDao"/>
-                <constructor-arg ref="individualService"/>
                 <constructor-arg ref="entityService"/>
                 <constructor-arg ref="socialGroupIdGenerator"/>
             </bean>
@@ -564,7 +529,6 @@
 
     <bean id="entityValidator"
           class="com.github.cimsbioko.server.web.service.impl.EntityValidationServiceJsfImpl">
-        <constructor-arg ref="siteProperties"/>
         <constructor-arg ref="jsfService"/>
     </bean>
 

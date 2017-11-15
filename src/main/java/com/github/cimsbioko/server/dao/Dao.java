@@ -42,8 +42,6 @@ public interface Dao<T, PK extends Serializable> {
      */
     void delete(T persistentObject);
 
-    void evict(T persistentObject);
-
     /**
      * Retrieve the total number of unique entities in the database
      */
@@ -71,13 +69,7 @@ public interface Dao<T, PK extends Serializable> {
      */
     List<T> findPaged(int maxResults, int firstResult);
 
-    List<T> findListByProperty(String propertyName, Object value, boolean filterDeleted);
-
-    List<T> findListByPropertyPaged(String propertyName, Object value, int firstResult, int maxResults);
-
     long getCountByProperty(String propertyName, Object value);
-
-    List<T> findByExample(T exampleInstance, String... excludeProperty);
 
     List<T> findListByPropertyPagedInsensitive(String propertyName,
                                                Object value, int pageIndex, int pageIncrement);

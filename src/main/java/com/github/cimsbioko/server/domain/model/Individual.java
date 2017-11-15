@@ -15,7 +15,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.*;
 
-
 @Description(description = "An Individual represents one who is a part of the study. Each Individual is identified by a uniquely generated external identifier which the system uses internally. Information about the Individual such as name, gender, date of birth, and parents are stored here. An Individual may be associated with many Residencies, Relationships, and Memberships.")
 @Entity
 @Table(name = "individual")
@@ -252,19 +251,4 @@ public class Individual extends AuditableCollectedEntity implements Serializable
         final String otherUuid = ((Individual) other).getUuid();
         return null != uuid && null != otherUuid && uuid.equals(otherUuid);
     }
-
-    @XmlRootElement
-    public static class Individuals {
-        private List<Individual> individuals;
-
-        @XmlElement(name = "individual")
-        public List<Individual> getIndividuals() {
-            return individuals;
-        }
-
-        public void setIndividuals(List<Individual> individuals) {
-            this.individuals = individuals;
-        }
-    }
-
 }

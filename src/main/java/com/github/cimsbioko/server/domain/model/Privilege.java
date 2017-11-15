@@ -10,10 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-
-/**
- * @author Dave Roberge
- */
 @Description(description = "A Privilege represents the rights that are required in " +
         "order to access service level methods.")
 @Entity

@@ -129,40 +129,4 @@ public class LocationGenerator extends Generator<Location> {
     public void setGenerated(boolean generated) {
         this.generated = generated;
     }
-
-    public void validateId(Location loc) throws ConstraintViolations {
-        IdScheme scheme = getIdScheme();
-
-        Map<String, Integer> fields = scheme.getFields();
-        Iterator<String> itr = fields.keySet().iterator();
-
-        if (validateIdLength(loc.getExtId(), scheme)) {
-
-            // test for proper prefix
-            if (!"".equals(scheme.getPrefix())) {
-                if (!loc.getExtId().substring(0, scheme.getPrefix().length()).equals(scheme.getPrefix()))
-                    throw new ConstraintViolations("The Location Id doesn't contain the correct prefix " +
-                            "as specified in the IdScheme. The Location Id must start with " + scheme.getPrefix());
-            }
-
-            while (itr.hasNext()) {
-                String key = itr.next();
-                Integer filter = fields.get(key);
-
-                if (filter != null) {
-
-                    if (key.equals(IdGeneratedFields.LOCATION_HIERARCHY_ID.toString())) {
-                        String locId = loc.getLocationHierarchy().getExtId();
-                        String sub = "";
-
-                        if (locId.length() >= filter)
-                            sub = locId.substring(0, filter);
-
-                        if (!loc.getExtId().contains(sub))
-                            throw new ConstraintViolations("The Location Id must contain " + sub);
-                    }
-                }
-            }
-        }
-    }
 }

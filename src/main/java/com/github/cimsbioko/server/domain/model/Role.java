@@ -13,9 +13,6 @@ import javax.persistence.Table;
 import com.github.cimsbioko.server.domain.constraint.Searchable;
 import com.github.cimsbioko.server.domain.annotations.Description;
 
-/**
- * @author Dave Roberge
- */
 @Description(description = "A Role represents the different actors who use the system. " +
         "A Role contains a group of Privileges. They are assigned to Users which define " +
         "the actions they can take within OpenHDS.")

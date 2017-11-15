@@ -6,27 +6,19 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Created by wolfe on 9/10/14.
- */
-
 @Component("MembershipCrudHelper")
 public class MembershipCrudHelper extends AbstractEntityCrudHelperImpl<Membership> {
 
-
     @Override
     protected void preCreateSanityChecks(Membership membership) throws ConstraintViolations {
-
     }
 
     @Override
     protected void cascadeReferences(Membership membership) throws ConstraintViolations {
-
     }
 
     @Override
     protected void validateReferences(Membership membership) throws ConstraintViolations {
-
     }
 
     @Override

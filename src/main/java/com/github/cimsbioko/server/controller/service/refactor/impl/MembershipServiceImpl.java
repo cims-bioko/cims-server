@@ -1,11 +1,10 @@
 package com.github.cimsbioko.server.controller.service.refactor.impl;
 
+import com.github.cimsbioko.server.controller.service.refactor.EntityService;
 import com.github.cimsbioko.server.controller.service.refactor.crudhelpers.EntityCrudHelper;
-import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.Membership;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 
-import com.github.cimsbioko.server.controller.service.refactor.MembershipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -13,14 +12,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class MembershipServiceImpl implements MembershipService {
+public class MembershipServiceImpl implements EntityService<Membership> {
 
     @Autowired
     @Qualifier("MembershipCrudHelper")
     private EntityCrudHelper<Membership> membershipCrudHelper;
-
-    @Autowired
-    private GenericDao genericDao;
 
     @Override
     public List<Membership> getAll() {

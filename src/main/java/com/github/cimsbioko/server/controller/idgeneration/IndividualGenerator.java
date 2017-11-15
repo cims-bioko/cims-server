@@ -117,44 +117,6 @@ public class IndividualGenerator extends Generator<Individual> {
         return result;
     }
 
-    /**
-     * Removes the last piece of the id, which is the bound. Used for custom generating
-     * a new id from an existing piece of an id.
-     */
-    public String filterBound(String string) {
-        IdScheme scheme = getIdScheme();
-        Integer incBound = scheme.getIncrementBound();
-        if (string.length() > incBound.toString().length())
-            return string.substring(0, string.length() - incBound.toString().length());
-        return "";
-    }
-
-    /**
-     * Increments the id by one according to the bound specified.
-     * This is important in custom building multiple id's that are created
-     * in a single transaction.
-     */
-    public String incrementId(String string) {
-        IdScheme scheme = getIdScheme();
-        Integer incBound = scheme.getIncrementBound();
-        int incBoundLength = incBound.toString().length();
-        String result = "";
-
-        String baseString = string.substring(0, string.length() - incBoundLength);
-        String partToIncrement = string.substring(string.length() - incBoundLength, string.length());
-        Integer partToIncrementInt = Integer.parseInt(partToIncrement);
-        partToIncrementInt++;
-        partToIncrement = partToIncrementInt.toString();
-
-        while (result.length() < incBoundLength) {
-            if (result.length() + partToIncrement.length() < incBoundLength)
-                result += "0";
-            if (result.length() + partToIncrement.length() == incBoundLength)
-                result = result.concat(partToIncrement.toString());
-        }
-        return baseString.concat(result);
-    }
-
     public IdScheme getIdScheme() {
         int index = Collections.binarySearch(resource.getIdScheme(), new IdScheme("Individual"));
         return resource.getIdScheme().get(index);

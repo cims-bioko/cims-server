@@ -125,22 +125,4 @@ public class SocialGroup
         final String otherUuid = ((SocialGroup) other).getUuid();
         return null != uuid && null != otherUuid && uuid.equals(otherUuid);
     }
-
-    @XmlRootElement
-    public static class SocialGroups {
-
-        private List<SocialGroup> socialGroups;
-
-        @XmlElement(name = "socialgroup")
-        public List<SocialGroup> getSocialGroups() {
-            return socialGroups;
-        }
-
-        public void setSocialGroups(List<SocialGroup> socialGroups) {
-            this.socialGroups = socialGroups;
-        }
-
-    }
-
-
 }

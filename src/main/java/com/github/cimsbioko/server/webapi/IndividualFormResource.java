@@ -53,10 +53,6 @@ public class IndividualFormResource extends AbstractFormResource {
     // TODO: value codes can be configured by projects
     private static final String HEAD_OF_HOUSEHOLD_SELF = "1";
     private static final String HOUSEHOLD_GROUP_TYPE = "COH";
-    private static final String START_TYPE = "Form";
-
-    //data model assumes that all newly created Memberships have an endType of "NA"
-    private static final String NOT_APPLICABLE_END_TYPE = "NA";
 
     @Autowired
     private FieldWorkerService fieldWorkerService;
@@ -95,8 +91,6 @@ public class IndividualFormResource extends AbstractFormResource {
         } catch (JAXBException e) {
             throw new RuntimeException("Could not create JAXB context and marshaller for OutMigrationFormResource");
         }
-
-        List<String> logMessage = new ArrayList<>();
 
         // Clean up "null" strings created by Mirth
         if ("null".equals(form.getIndividualRelationshipToHeadOfHousehold())) {
@@ -573,9 +567,6 @@ public class IndividualFormResource extends AbstractFormResource {
         @XmlElement(name = "individual_dip")
         private int individualDip;
 
-        @XmlElement(name = "individual_member_status")
-        private String individualMemberStatus;
-
         @XmlElement(name = "individual_nationality")
         private String individualNationality;
 
@@ -690,10 +681,6 @@ public class IndividualFormResource extends AbstractFormResource {
 
         public int getIndividualDip() {
             return individualDip;
-        }
-
-        public String getIndividualMemberStatus() {
-            return individualMemberStatus;
         }
 
         public String getIndividualNationality() {

@@ -1,49 +1,25 @@
 package com.github.cimsbioko.server.controller.service.refactor.impl;
 
-import com.github.cimsbioko.server.controller.service.refactor.ResidencyService;
 import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.controller.service.refactor.IndividualService;
 import com.github.cimsbioko.server.controller.service.refactor.crudhelpers.EntityCrudHelper;
 import com.github.cimsbioko.server.domain.model.Individual;
-import com.github.cimsbioko.server.domain.model.Location;
-import com.github.cimsbioko.server.domain.service.SitePropertiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
 import java.util.List;
 
 @Service
 public class IndividualServiceImpl implements IndividualService {
-
-    private static final String UNKNOWN_EXTID = "UNK";
-
-    @Autowired
-    private SitePropertiesService sitePropertiesService;
 
     @Autowired
     @Qualifier("IndividualCrudHelper")
     private EntityCrudHelper<Individual> individualCrudHelper;
 
     @Autowired
-    private ResidencyService residencyService;
-
-    @Autowired
     private GenericDao genericDao;
-
-    @Override
-    public String generateChildExtId(Individual mother) {
-        Location residencyLocation = mother.getCurrentResidency().getLocation();
-        int existingResidents = residencyService.getResidenciesByLocation(residencyLocation).size();
-        return sequencedExtId(mother.getExtId(), existingResidents + 1);
-    }
-
-    private String sequencedExtId(String extId, int sequenceNumber) {
-        String newExtId = extId.substring(0, extId.length() - 3);
-        return newExtId + String.format("%03d", sequenceNumber);
-    }
 
     @Override
     public int getExistingExtIdCount(String extId) {
@@ -103,17 +79,4 @@ public class IndividualServiceImpl implements IndividualService {
         //TODO: refactor the "getLatestEvent" logic in the old IndividualService
         return false;
     }
-
-    @Override
-    public Individual getUnknownIndividual() throws ConstraintViolations {
-        Individual individual = getByExtId(UNKNOWN_EXTID);
-        return individual;
-    }
-
-    protected static Calendar getDateInPast() {
-        Calendar inPast = Calendar.getInstance();
-        inPast.set(1900, Calendar.JANUARY, 1);
-        return inPast;
-    }
-
 }

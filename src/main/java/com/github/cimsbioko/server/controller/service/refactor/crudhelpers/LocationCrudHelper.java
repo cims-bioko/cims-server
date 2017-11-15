@@ -9,13 +9,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Created by wolfe on 9/19/14.
- */
-
 @Component("LocationCrudHelper")
 public class LocationCrudHelper extends AbstractEntityCrudHelperImpl<Location> {
-
 
     @Autowired
     LocationService locationService;
@@ -25,27 +20,21 @@ public class LocationCrudHelper extends AbstractEntityCrudHelperImpl<Location> {
 
     @Override
     protected void preCreateSanityChecks(Location location) throws ConstraintViolations {
-
-
     }
 
     @Override
     protected void cascadeReferences(Location location) throws ConstraintViolations {
-
         if (null == location.getExtId()) {
             locationGenerator.generateId(location);
         }
-
     }
 
     @Override
     protected void validateReferences(Location location) throws ConstraintViolations {
-
         ConstraintViolations constraintViolations = new ConstraintViolations();
         if (!locationService.isEligibleForCreation(location, constraintViolations)) {
             throw (constraintViolations);
         }
-
     }
 
     @Override

@@ -9,10 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Created by wolfe on 9/10/14.
- */
-
 @Component("IndividualCrudHelper")
 public class IndividualCrudHelper extends AbstractEntityCrudHelperImpl<Individual> {
 
@@ -24,28 +20,22 @@ public class IndividualCrudHelper extends AbstractEntityCrudHelperImpl<Individua
 
     @Override
     protected void preCreateSanityChecks(Individual individual) throws ConstraintViolations {
-
-
     }
 
     @Override
     protected void cascadeReferences(Individual individual) throws ConstraintViolations {
-
         if (null == individual.getExtId()) {
             individualGenerator.generateId(individual);
         }
-
     }
 
 
     @Override
     protected void validateReferences(Individual individual) throws ConstraintViolations {
-
         ConstraintViolations constraintViolations = new ConstraintViolations();
         if (!individualService.isEligibleForCreation(individual, constraintViolations)) {
             throw (constraintViolations);
         }
-
     }
 
     @Override

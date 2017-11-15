@@ -17,7 +17,4 @@ public class PrivilegeConstants {
     public final static String EDIT_ENTITY = "EDIT_ENTITY";
     public final static String DELETE_ENTITY = "DELETE_ENTITY";
     public final static String VIEW_ENTITY = "VIEW_ENTITY";
-
-    public final static String CREATE_USER = "CREATE_USER";
-    public final static String DELETE_USER = "DELETE_USER";
 }

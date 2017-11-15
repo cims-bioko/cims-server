@@ -1,13 +1,11 @@
 package com.github.cimsbioko.server.domain.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.github.cimsbioko.server.domain.constraint.*;
@@ -77,22 +75,5 @@ public class Membership extends AuditableCollectedEntity implements Serializable
 
         final String otherUuid = ((Membership) other).getUuid();
         return null != uuid && null != otherUuid && uuid.equals(otherUuid);
-    }
-
-    @XmlRootElement
-    public static class Memberships implements Serializable {
-
-        private static final long serialVersionUID = 1L;
-
-        private List<Membership> memberships;
-
-        @XmlElement(name = "membership")
-        public List<Membership> getMemberships() {
-            return memberships;
-        }
-
-        public void setMemberships(List<Membership> copies) {
-            this.memberships = copies;
-        }
     }
 }

@@ -4,15 +4,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import com.github.cimsbioko.server.controller.service.EntityService;
 import com.github.cimsbioko.server.dao.GenericDao;
-import com.github.cimsbioko.server.domain.annotations.Authorized;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
-import com.github.cimsbioko.server.controller.idgeneration.IdScheme;
-import com.github.cimsbioko.server.controller.idgeneration.IdSchemeResource;
 import com.github.cimsbioko.server.controller.idgeneration.IndividualGenerator;
 import com.github.cimsbioko.server.controller.service.IndividualService;
 import com.github.cimsbioko.server.domain.model.FieldWorker;
@@ -28,15 +24,13 @@ public class IndividualServiceImpl implements IndividualService {
     private SitePropertiesService properties;
     private IndividualGenerator indivGen;
     private EntityService entityService;
-    private IdSchemeResource resource;
 
     public IndividualServiceImpl(GenericDao genericDao, IndividualGenerator generator,
-                                 SitePropertiesService properties, EntityService entityService, IdSchemeResource resource) {
+                                 SitePropertiesService properties, EntityService entityService) {
         this.genericDao = genericDao;
         this.indivGen = generator;
         this.properties = properties;
         this.entityService = entityService;
-        this.resource = resource;
     }
 
     public Individual evaluateIndividual(Individual entityItem) throws ConstraintViolations {
@@ -75,55 +69,9 @@ public class IndividualServiceImpl implements IndividualService {
         return entityItem;
     }
 
-    public void validateGeneralIndividual(Individual indiv) throws ConstraintViolations {
-        if (indiv.getGender().equals(properties.getUnknownIdentifier()))
-            throw new ConstraintViolations("The Individual is partially completed");
-    }
-
     public Individual generateId(Individual entityItem) throws ConstraintViolations {
         entityItem.setExtId(indivGen.generateId(entityItem));
         return entityItem;
-    }
-
-    /**
-     * Used to create a custom id based off a counter. The custom id generated
-     * will be incremented the number of times of the counter specified. This
-     * routine is used to create new individual ids from pregnancy outcome.
-     */
-    public String generateIdWithBound(Individual entityItem, int count) throws ConstraintViolations {
-        IdScheme scheme = resource.getIdSchemeByName("Individual");
-        String result = entityItem.getExtId().concat(
-                indivGen.buildNumberWithBound(entityItem, scheme));
-        String output = result;
-        int index = 1;
-        while (index < count) {
-            output = indivGen.incrementId(result);
-            result = output;
-            index++;
-        }
-        return output;
-    }
-
-    /**
-     * Retrieves all Individual extId's that contain the term provided.
-     */
-    public List<String> getIndividualExtIds(String term) {
-        List<String> ids = new ArrayList<>();
-        List<Individual> list = genericDao.findListByPropertyPrefix(Individual.class, "extId",
-                term, 10, true);
-        for (Individual indiv : list) {
-            ids.add(indiv.getExtId());
-        }
-
-        return ids;
-    }
-
-    public Individual findIndivById(String indivExtId, String msg) throws Exception {
-        Individual indiv = genericDao.findByProperty(Individual.class, "extId", indivExtId, true);
-        if (indiv == null) {
-            throw new Exception(msg);
-        }
-        return indiv;
     }
 
     @Transactional(readOnly = true)
@@ -167,12 +115,10 @@ public class IndividualServiceImpl implements IndividualService {
         if (membership != null)
             events.add(new LastEvent("Membership", membership.getInsertDate()));
 
-        Collections.sort(events, new Comparator<LastEvent>() {
-            public int compare(LastEvent o1, LastEvent o2) {
-                if (o1.eventDate == null || o2.eventDate == null)
-                    return 0;
-                return o1.eventDate.compareTo(o2.eventDate);
-            }
+        Collections.sort(events, (o1, o2) -> {
+            if (o1.eventDate == null || o2.eventDate == null)
+                return 0;
+            return o1.eventDate.compareTo(o2.eventDate);
         });
 
         LastEvent le = new LastEvent(null, null);
@@ -197,24 +143,5 @@ public class IndividualServiceImpl implements IndividualService {
         head.setCollectedBy(collectedBy);
         entityService.create(head);
         return head;
-    }
-
-    @Override
-    public List<Individual> getAllIndividuals() {
-        return genericDao.findAllWithoutProperty(Individual.class, "extId", "UNK");
-    }
-
-    @Override
-    @Authorized("VIEW_ENTITY")
-    public long getTotalIndividualCount() {
-        // subtracting 1 for the Unknown Individual
-        return genericDao.getTotalCount(Individual.class) - 1;
-    }
-
-    @Override
-    @Authorized("VIEW_ENTITY")
-    public List<Individual> getAllIndividualsInRange(Individual start, int size) {
-        Object startProp = start == null ? null : start.getUuid();
-        return genericDao.findPaged(Individual.class, "id", startProp, size);
     }
 }

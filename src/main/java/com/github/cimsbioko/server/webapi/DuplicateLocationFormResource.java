@@ -57,7 +57,7 @@ public class DuplicateLocationFormResource extends AbstractFormResource {
         return new ResponseEntity<>(form, HttpStatus.CREATED);
     }
 
-    @XmlEnum(String.class)
+    @XmlEnum
     @XmlType
     public enum Action {
         @XmlEnumValue("renumber")RENUMBER,

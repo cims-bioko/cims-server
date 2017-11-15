@@ -95,31 +95,6 @@ public class LuhnValidator {
         return getCharacterFromCodePoint(checkCodePoint);
     }
 
-    public boolean validateCheckCharacter(String input) {
-
-        int factor = 1;
-        int sum = 0;
-        int n = getNumberOfValidationCharacters();
-
-        // Starting from the right, work leftwards
-        // Now, the initial "factor" will always be "1"
-        // since the last character is the check character
-        for (int i = input.length() - 1; i >= 0; i--) {
-            int codePoint = getCodePointFromCharacter(input.charAt(i));
-            int addend = factor * codePoint;
-
-            // Alternate the "factor" that each "codePoint" is multiplied by
-            factor = (factor == 2) ? 1 : 2;
-
-            // Sum the digits of the "addend" as expressed in base "n"
-            addend = (addend / n) + (addend % n);
-            sum += addend;
-        }
-
-        int remainder = sum % n;
-        return (remainder == 0);
-    }
-
     public int getCodePointFromCharacter(Character c) {
         return map.get(Character.toUpperCase(c));
     }

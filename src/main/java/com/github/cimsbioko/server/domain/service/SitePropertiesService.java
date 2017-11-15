@@ -59,6 +59,4 @@ public interface SitePropertiesService {
     int getMinimumAgeOfMarriage();
 
     int getMinimumAgeOfPregnancy();
-
-    boolean isValueExtensionsForMembershipCodesEnabled();
 }

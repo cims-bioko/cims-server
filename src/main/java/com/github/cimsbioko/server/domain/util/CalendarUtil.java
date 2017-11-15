@@ -63,8 +63,4 @@ public class CalendarUtil {
     public String formatDateTime(Calendar calendar) {
         return new SimpleDateFormat(dateTimeFormat).format(calendar.getTime());
     }
-
-    public String format(Calendar cal) {
-        return formatDateTime(cal);
-    }
 }

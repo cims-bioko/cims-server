@@ -1,11 +1,8 @@
 package com.github.cimsbioko.server.controller.service.refactor.impl;
 
-import com.github.cimsbioko.server.controller.service.refactor.ResidencyService;
-import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
+import com.github.cimsbioko.server.controller.service.refactor.EntityService;
 import com.github.cimsbioko.server.controller.service.refactor.crudhelpers.EntityCrudHelper;
-import com.github.cimsbioko.server.domain.model.Individual;
-import com.github.cimsbioko.server.domain.model.Location;
 import com.github.cimsbioko.server.domain.model.Residency;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,19 +11,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ResidencyServiceImpl implements ResidencyService {
+public class ResidencyServiceImpl implements EntityService<Residency> {
 
     @Autowired
     @Qualifier("ResidencyCrudHelper")
     private EntityCrudHelper<Residency> residencyCrudHelper;
-
-    @Autowired
-    private GenericDao genericDao;
-
-    @Override
-    public List<Residency> getResidenciesByLocation(Location location) {
-        return genericDao.findListByProperty(Residency.class, "location", location);
-    }
 
     @Override
     public List<Residency> getAll() {
@@ -61,11 +50,5 @@ public class ResidencyServiceImpl implements ResidencyService {
     @Override
     public boolean isEligibleForCreation(Residency residency, ConstraintViolations cv) {
         return true;
-    }
-
-    @Override
-    public boolean hasOpenResidency(Individual individual) {
-        Residency residency = individual.getCurrentResidency();
-        return residency != null && !residency.isDeleted();
     }
 }

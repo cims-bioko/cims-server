@@ -24,6 +24,7 @@ import java.io.Serializable;
 @Table(name = "relationship")
 @XmlRootElement
 public class Relationship extends AuditableCollectedEntity implements Serializable {
+
     static final long serialVersionUID = 19L;
 
     @Searchable

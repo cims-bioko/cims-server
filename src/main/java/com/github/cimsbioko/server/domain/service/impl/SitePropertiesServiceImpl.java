@@ -33,7 +33,6 @@ public class SitePropertiesServiceImpl implements SitePropertiesService {
     int minimumAgeOfHouseholdHead;
     int minimumAgeOfMarriage;
     int minimumAgeOfPregnancy;
-    boolean valueExtensionsForMembershipCodesEnabled;
 
     public String getLocale() {
         return locale;
@@ -57,14 +56,6 @@ public class SitePropertiesServiceImpl implements SitePropertiesService {
 
     public void setSpecialStudyLocation(String specialStudyLocation) {
         this.specialStudyLocation = specialStudyLocation;
-    }
-
-    public boolean isValueExtensionsForMembershipCodesEnabled() {
-        return valueExtensionsForMembershipCodesEnabled;
-    }
-
-    public void setValueExtensionsForMembershipCodesEnabled(boolean valueExtensionsForMembershipCodesEnabled) {
-        this.valueExtensionsForMembershipCodesEnabled = valueExtensionsForMembershipCodesEnabled;
     }
 
     public String getUnknownIdentifier() {

@@ -4,20 +4,13 @@ import com.github.cimsbioko.server.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Example;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.metadata.ClassMetadata;
-import com.github.cimsbioko.server.domain.model.AuditableEntity;
-import com.github.cimsbioko.server.domain.model.Individual;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * A generic implementation of a Dao that simplifies Dao/BaseDaoImpl
@@ -53,11 +46,6 @@ public class GenericDaoImpl implements GenericDao {
     public <T> void update(T transientObject) {
         getSession().update(transientObject);
     }
-
-    public <T> void refresh(T entityItem) {
-        getSession().refresh(entityItem);
-    }
-
 
     @SuppressWarnings("unchecked")
     public <T> T merge(T entityItem) {
@@ -114,25 +102,6 @@ public class GenericDaoImpl implements GenericDao {
         return criteria.list();
     }
 
-    @Override
-    public <T> List<T> findListByMultiPropertyAndRange(Class<T> entityType, RangeProperty range, ValueProperty... properties) {
-        Criteria criteria = getSession().createCriteria(entityType);
-
-        criteria = addPropertiesToCriteria(criteria, properties);
-
-        if (range != null) {
-            criteria = addRangeToCriteria(criteria, range);
-        }
-
-        return (List<T>) criteria.list();
-    }
-
-    private Criteria addRangeToCriteria(Criteria criteria, RangeProperty range) {
-        criteria = criteria.add(Restrictions.between(range.getPropertyName(), range.getMinRange(), range.getMaxRange()));
-
-        return criteria;
-    }
-
     @SuppressWarnings("unchecked")
     public <T> T findUniqueByPropertyWithOrder(Class<T> entityType, String propertyName, Object value,
                                                String orderByCol, boolean ascending) {
@@ -149,14 +118,6 @@ public class GenericDaoImpl implements GenericDao {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> List<T> findListByPropertyWithOrder(Class<T> entityType, String propertyName, Object value, OrderProperty... orderProps) {
-        Criteria criteria = getSession().createCriteria(entityType).add(Restrictions.eq(propertyName, value));
-        criteria = addOrderPropertiesToCriteria(criteria, orderProps);
-
-        return (List<T>) criteria.list();
-    }
-
-    @SuppressWarnings("unchecked")
     public <T> List<T> findAllWithOrder(Class<T> entityType, OrderProperty... orderProps) {
         Criteria criteria = getSession().createCriteria(entityType);
         return (List<T>) addOrderPropertiesToCriteria(criteria, orderProps).list();
@@ -168,136 +129,5 @@ public class GenericDaoImpl implements GenericDao {
             criteria = criteria.addOrder(order);
         }
         return criteria;
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> List<T> findListByMultiProperty(Class<T> entityType, ValueProperty... properties) {
-        Criteria criteria = getSession().createCriteria(entityType);
-
-        criteria = addPropertiesToCriteria(criteria, properties);
-
-        return (List<T>) criteria.list();
-    }
-
-    private Criteria addPropertiesToCriteria(Criteria criteria, ValueProperty... properties) {
-        for (ValueProperty prop : properties) {
-            criteria = criteria.add(Restrictions.eq(prop.getPropertyName(), prop.getValue()));
-        }
-        return criteria;
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> T findByMultiProperty(Class<T> entityType, ValueProperty... properties) {
-        Criteria criteria = getSession().createCriteria(entityType);
-        criteria = addPropertiesToCriteria(criteria, properties);
-
-        return (T) criteria.uniqueResult();
-    }
-
-    public <T> long getTotalCount(Class<T> entityType) {
-        return (Long) getSession().createCriteria(entityType).setProjection(
-                Projections.rowCount()).uniqueResult();
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> List<T> findByExample(Class<T> entityType, T exampleInstance, String... excludeProperty) {
-        Criteria crit = getSession().createCriteria(entityType);
-        Example example = Example.create(exampleInstance);
-        for (String exclude : excludeProperty) {
-            example.excludeProperty(exclude);
-        }
-        crit.add(example);
-        return crit.list();
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> Map<String, ClassMetadata> getClassMetaData() {
-        return getSession().getSessionFactory().getAllClassMetadata();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> List<T> findListByPropertyPrefix(Class<T> entityType, String property, String value, int limit,
-                                                boolean filterDeleted) {
-        Criteria crit = getSession().createCriteria(entityType);
-        if (filterDeleted) {
-            crit = crit.add(Restrictions.eq("deleted", false));
-        }
-
-        crit.addOrder(Order.asc(property));
-
-        if (limit > 0) {
-            crit = crit.setMaxResults(limit);
-        }
-
-        return (List<T>) crit.add(Restrictions.like(property, value, MatchMode.START)).list();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> List<T> findAllWithoutProperty(Class<T> entityType, String property, String value) {
-        Criteria crit = getSession().createCriteria(entityType);
-        crit.add(Restrictions.ne(property, value));
-
-        if (AuditableEntity.class.isAssignableFrom(entityType)) {
-            crit.add(Restrictions.eq("deleted", false));
-        }
-
-        return (List<T>) crit.list();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> List<T> findPaged(Class<?> entityType, String orderProperty, Object startProp, int size) {
-        Criteria crit = getSession().createCriteria(entityType);
-
-        if (Individual.class.isAssignableFrom(entityType)) {
-            crit.add(Restrictions.ne("extId", "UNK"));
-        }
-
-        crit.add(Restrictions.eq("deleted", false));
-        crit.addOrder(Order.asc(orderProperty));
-        if (startProp != null) {
-            crit.add(Restrictions.gt(orderProperty, startProp));
-        }
-        crit.setMaxResults(size);
-        return (List<T>) crit.list();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> List<T> findPagedFiltered(Class<?> entityType, String orderProperty, String filterProperty,
-                                         Object filterValue, int start, int size) {
-        Criteria crit = getSession().createCriteria(entityType);
-
-        crit.add(Restrictions.eq(filterProperty, filterValue));
-        crit.add(Restrictions.eq("deleted", false));
-        crit.addOrder(Order.asc(orderProperty));
-        crit.setFirstResult(start).setMaxResults(size);
-        return (List<T>) crit.list();
-    }
-
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> List<T> findPagedFilteredgt(Class<?> entityType, String orderProperty, String filterProperty,
-                                           Object filterValue, Object startProp, int size) {
-        Criteria crit = getSession().createCriteria(entityType);
-
-        crit.add(Restrictions.ge(filterProperty, filterValue));
-        crit.add(Restrictions.eq("deleted", false));
-        crit.addOrder(Order.asc(orderProperty));
-        if (startProp != null) {
-            crit.add(Restrictions.gt(orderProperty, startProp));
-        }
-        crit.setMaxResults(size);
-        return (List<T>) crit.list();
-    }
-
-    @Override
-    public <T> long getTotalCountWithFilter(Class<T> entityType, String filterProperty, Object filterValue) {
-        long total = (Long) getSession().createCriteria(entityType).add(Restrictions.ge(filterProperty, filterValue))
-                .setProjection(Projections.rowCount()).uniqueResult();
-        return total;
     }
 }

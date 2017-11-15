@@ -31,7 +31,6 @@ import java.util.List;
 
 import static com.github.cimsbioko.server.webapi.LocationFormResource.LOCATION_FORM_PATH;
 
-
 @Controller
 @RequestMapping(LOCATION_FORM_PATH)
 public class LocationFormResource extends AbstractFormResource {
@@ -171,22 +170,16 @@ public class LocationFormResource extends AbstractFormResource {
     }
 
     private String generateUniqueExtId(String currentExtId) {
-
         String duplicateLocationSuffix = "-d";
         int sequenceNumber = 1;
-        // -d                   // 1
         while (null != locationService.getByExtId(currentExtId + duplicateLocationSuffix + sequenceNumber)) {
             sequenceNumber++;
         }
-
         duplicateLocationSuffix = duplicateLocationSuffix + sequenceNumber;
-
         return currentExtId + duplicateLocationSuffix;
-
     }
 
     private void copyFormDataToLocation(Form form, Location location) {
-
         // fieldWorker, CollectedDateTime, and HierarchyLevel are set outside of this method
         location.setUuid(form.getUuid());
         location.setLocationName(form.getLocationName());
@@ -301,24 +294,12 @@ public class LocationFormResource extends AbstractFormResource {
             return hierarchyParentUuid;
         }
 
-        public void setHierarchyParentUuid(String hierarchyParentUuid) {
-            this.hierarchyParentUuid = hierarchyParentUuid;
-        }
-
         public String getEntityExtId() {
             return entityExtId;
         }
 
-        public void setEntityExtId(String entityExtId) {
-            this.entityExtId = entityExtId;
-        }
-
         public String getFieldWorkerUuid() {
             return fieldWorkerUuid;
-        }
-
-        public void setFieldWorkerUuid(String fieldWorkerUuid) {
-            this.fieldWorkerUuid = fieldWorkerUuid;
         }
 
         public String getHierarchyUuid() {
@@ -333,10 +314,6 @@ public class LocationFormResource extends AbstractFormResource {
             return longitude;
         }
 
-        public void setLongitude(String longitude) {
-            this.longitude = longitude;
-        }
-
         public String getUuid() {
             return uuid;
         }
@@ -347,10 +324,6 @@ public class LocationFormResource extends AbstractFormResource {
 
         public String getLatitude() {
             return latitude;
-        }
-
-        public void setLatitude(String latitude) {
-            this.latitude = latitude;
         }
 
         public String getDescription() {
@@ -365,48 +338,24 @@ public class LocationFormResource extends AbstractFormResource {
             return buildingNumber;
         }
 
-        public void setBuildingNumber(Integer buildingNumber) {
-            this.buildingNumber = buildingNumber;
-        }
-
         public Integer getFloorNumber() {
             return floorNumber;
-        }
-
-        public void setFloorNumber(Integer floorNumber) {
-            this.floorNumber = floorNumber;
         }
 
         public String getFieldWorkerExtId() {
             return fieldWorkerExtId;
         }
 
-        public void setFieldWorkerExtId(String fieldWorkerExtId) {
-            this.fieldWorkerExtId = fieldWorkerExtId;
-        }
-
         public Calendar getCollectionDateTime() {
             return collectionDateTime;
-        }
-
-        public void setCollectionDateTime(Calendar collectionDateTime) {
-            this.collectionDateTime = collectionDateTime;
         }
 
         public String getHierarchyExtId() {
             return hierarchyExtId;
         }
 
-        public void setHierarchyExtId(String hierarchyExtId) {
-            this.hierarchyExtId = hierarchyExtId;
-        }
-
         public String getLocationExtId() {
             return locationExtId;
-        }
-
-        public void setLocationExtId(String locationExtId) {
-            this.locationExtId = locationExtId;
         }
 
         public String getLocationName() {
@@ -421,16 +370,9 @@ public class LocationFormResource extends AbstractFormResource {
             return locationType;
         }
 
-        public void setLocationType(String locationType) {
-            this.locationType = locationType;
-        }
-
         public String getSectorName() {
             return sectorName;
         }
 
-        public void setSectorName(String sectorName) {
-            this.sectorName = sectorName;
-        }
     }
 }

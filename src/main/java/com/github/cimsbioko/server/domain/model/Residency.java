@@ -6,12 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 @Description(description = "A Residency represents a home within the study area. " +
         "It contains information about the Individual who lives at the Residency " +
@@ -61,23 +59,6 @@ public class Residency extends AuditableCollectedEntity implements Serializable 
 
         final String otherUuid = ((Residency) other).getUuid();
         return null != uuid && null != otherUuid && uuid.equals(otherUuid);
-    }
-
-    @XmlRootElement
-    public static class Residencies implements Serializable {
-
-        private static final long serialVersionUID = 1L;
-
-        private List<Residency> residencies;
-
-        @XmlElement(name = "residency")
-        public List<Residency> getResidencies() {
-            return residencies;
-        }
-
-        public void setResidencies(List<Residency> copies) {
-            this.residencies = copies;
-        }
     }
 
     public static Comparator<Residency> latestByInsertDate() {

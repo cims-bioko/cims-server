@@ -21,9 +21,7 @@ public class ErrorServiceImpl implements ErrorService {
         if (null == error.getFieldWorker()) {
             error.setFieldWorker(fieldWorkerService.getUnknownFieldWorker());
         }
-
         errorDao.save(error);
-
         return error;
     }
 

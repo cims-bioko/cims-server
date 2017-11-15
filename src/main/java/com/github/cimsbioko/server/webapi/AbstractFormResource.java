@@ -16,8 +16,6 @@ import java.util.Calendar;
 
 public class AbstractFormResource {
 
-    public static final String NOT_APPLICABLE_END_TYPE = "NA";
-
     @Autowired
     private ErrorService errorService;
 

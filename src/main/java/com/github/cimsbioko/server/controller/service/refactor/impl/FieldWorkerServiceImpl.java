@@ -24,8 +24,6 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
     @Qualifier("fieldWorkerIdGenerator")
     private FieldWorkerGenerator fieldWorkerGenerator;
 
-
-    //TODO: refactor this out
     @Autowired
     GenericDao genericDao;
 
@@ -42,7 +40,6 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
     @Override
     public FieldWorker getByUuid(String id) {
         return fieldWorkerCrudHelper.getByUuid(id);
-
     }
 
     @Override
@@ -77,7 +74,6 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
         fieldWorkerCrudHelper.save(fieldWorker);
     }
 
-
     @Override
     public void generatePasswordHash(FieldWorker fieldWorker) throws ConstraintViolations {
 
@@ -97,32 +93,25 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
         fieldWorker.setConfirmPassword(null);
     }
 
-
     private List<FieldWorker> getAllOrderedByIdPrefix() {
         GenericDao.OrderProperty fieldWorkerIdPrefix = new GenericDao.OrderProperty() {
-
             public String getPropertyName() {
                 return "idPrefix";
             }
-
             public boolean isAscending() {
                 return true;
             }
         };
-
         return genericDao.findAllWithOrder(FieldWorker.class, fieldWorkerIdPrefix);
     }
 
     @Override
     public void generateIdPrefix(FieldWorker fieldWorker) {
-
         List<FieldWorker> fieldWorkers = getAllOrderedByIdPrefix();
-
         if (fieldWorkers.isEmpty()) {
             fieldWorker.setIdPrefix(0);
             return;
         }
-
         FieldWorker lastFieldWorker = fieldWorkers.get(fieldWorkers.size() - 1);
         int newIdPrefix = lastFieldWorker.getIdPrefix() + 1;
         fieldWorker.setIdPrefix(newIdPrefix);
@@ -130,12 +119,9 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
 
     @Override
     public FieldWorker generateId(FieldWorker fieldWorker) throws ConstraintViolations {
-
         if (fieldWorkerGenerator.generated && null == fieldWorker.getExtId()) {
             fieldWorker.setExtId(fieldWorkerGenerator.generateId(fieldWorker));
         }
         return fieldWorker;
     }
-
-
 }

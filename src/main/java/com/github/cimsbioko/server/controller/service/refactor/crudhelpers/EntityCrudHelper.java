@@ -6,10 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * Created by Wolfe 9/8/14.
- */
-
 public interface EntityCrudHelper<T extends AuditableEntity> {
 
     List<T> getAll();

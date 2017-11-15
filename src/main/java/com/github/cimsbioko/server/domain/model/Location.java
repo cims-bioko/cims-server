@@ -12,12 +12,10 @@ import com.github.cimsbioko.server.domain.constraint.ExtensionStringConstraint;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Description(description = "All distinct Locations within the area of study are represented here. A Location is identified by a uniquely generated identifier that the system uses internally. Each Location has a name associated with it and resides at a particular hierarchy within the Location Hierarchy.")
 @Entity
@@ -151,21 +149,4 @@ public class Location
         final String otherUuid = ((Location) other).getUuid();
         return null != uuid && null != otherUuid && uuid.equals(otherUuid);
     }
-
-    @XmlRootElement
-    public static class Locations {
-
-        private List<Location> locations;
-
-        @XmlElement(name = "location")
-        public List<Location> getLocations() {
-            return locations;
-        }
-
-        public void setLocations(List<Location> locations) {
-            this.locations = locations;
-        }
-
-    }
-
 }

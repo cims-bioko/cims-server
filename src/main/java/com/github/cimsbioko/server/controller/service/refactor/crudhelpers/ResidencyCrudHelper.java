@@ -6,27 +6,19 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Created by wolfe on 9/10/14.
- */
-
 @Component("ResidencyCrudHelper")
 public class ResidencyCrudHelper extends AbstractEntityCrudHelperImpl<Residency> {
 
-
     @Override
     protected void preCreateSanityChecks(Residency residency) throws ConstraintViolations {
-
     }
 
     @Override
     protected void cascadeReferences(Residency residency) throws ConstraintViolations {
-
     }
 
     @Override
     protected void validateReferences(Residency residency) throws ConstraintViolations {
-
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.github.cimsbioko.server.controller.service.refactor.impl;
 
 import com.github.cimsbioko.server.controller.service.refactor.LocationService;
 import com.github.cimsbioko.server.controller.service.refactor.crudhelpers.EntityCrudHelper;
-import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.model.Location;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,6 @@ public class LocationServiceImpl implements LocationService {
     @Qualifier("LocationCrudHelper")
     private EntityCrudHelper<Location> locationCrudHelper;
 
-    @Autowired
-    private GenericDao genericDao;
-
     @Override
     public List<Location> getAll() {
         return locationCrudHelper.getAll();
@@ -34,7 +30,6 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public Location getByUuid(String id) {
         return locationCrudHelper.getByUuid(id);
-
     }
 
     @Override
@@ -66,12 +61,10 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public void create(Location location) throws ConstraintViolations {
         locationCrudHelper.create(location);
-
     }
 
     @Override
     public void save(Location location) throws ConstraintViolations {
         locationCrudHelper.save(location);
-
     }
 }

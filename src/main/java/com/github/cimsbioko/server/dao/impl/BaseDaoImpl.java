@@ -10,7 +10,6 @@ import com.github.cimsbioko.server.domain.model.User;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -80,10 +79,6 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK> {
         getSession().delete(persistentObject);
     }
 
-    public void evict(T persistentObject) {
-        getSession().evict(persistentObject);
-    }
-
     /**
      * Retrieve an entity with the specified <code>propertyName</code>
      * with the associated <code>value</code>
@@ -145,24 +140,6 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK> {
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
-    public List<T> findListByProperty(String propertyName, Object value, boolean filterDeleted) {
-        Criteria criteria = getSession().createCriteria(entityType).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).
-                add(Restrictions.eq(propertyName, value));
-        if (filterDeleted) {
-            criteria = criteria.add(Restrictions.eq("deleted", false));
-        }
-        return criteria.list();
-    }
-
-    public List<T> findListByPropertyPaged(String propertyName, Object value, int firstResult, int maxResults) {
-        Criteria criteria = getSession().createCriteria(entityType).add(Restrictions.eq(propertyName, value));
-        if (AuditableEntity.class.isAssignableFrom(entityType)) {
-            criteria = addImplicitRestrictions(criteria);
-        }
-        return (List<T>) criteria.setFirstResult(firstResult).setMaxResults(maxResults).
-                setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
-    }
-
     public List<T> findListByPropertyPagedInsensitive(String propertyName, Object value, int firstResult, int maxResults) {
         Criteria criteria = getSession().createCriteria(entityType).add(Restrictions.ilike(propertyName, (String) value, MatchMode.ANYWHERE));
         if (AuditableEntity.class.isAssignableFrom(entityType) || User.class.isAssignableFrom(entityType)) {
@@ -170,16 +147,6 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK> {
         }
         return (List<T>) criteria.setFirstResult(firstResult).setMaxResults(maxResults).
                 setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
-    }
-
-    public List<T> findByExample(T exampleInstance, String... excludeProperty) {
-        Criteria crit = getSession().createCriteria(entityType);
-        Example example = Example.create(exampleInstance);
-        for (String exclude : excludeProperty) {
-            example.excludeProperty(exclude);
-        }
-        crit.add(example);
-        return crit.list();
     }
 
     public long getCountByProperty(String propertyName, Object value) {

@@ -2,8 +2,6 @@ package com.github.cimsbioko.server.controller.service.refactor.impl;
 
 import com.github.cimsbioko.server.controller.service.refactor.IndividualService;
 import com.github.cimsbioko.server.controller.service.refactor.crudhelpers.EntityCrudHelper;
-import com.github.cimsbioko.server.dao.GenericDao;
-import com.github.cimsbioko.server.domain.annotations.Authorized;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.controller.service.refactor.SocialGroupService;
 import com.github.cimsbioko.server.domain.model.SocialGroup;
@@ -22,9 +20,6 @@ public class SocialGroupServiceImpl implements SocialGroupService {
 
     @Autowired
     private IndividualService individualService;
-
-    @Autowired
-    private GenericDao genericDao;
 
     @Override
     public List<SocialGroup> getAll() {
@@ -72,17 +67,4 @@ public class SocialGroupServiceImpl implements SocialGroupService {
         return !isDead && hasExtId;
 
     }
-
-    @Override
-    @Authorized("VIEW_ENTITY")
-    public List<SocialGroup> getAllSocialGroupsInRange(int i, int pageSize) {
-        return genericDao.findPaged(SocialGroup.class, "extId", i, pageSize);
-    }
-
-    @Override
-    @Authorized("VIEW_ENTITY")
-    public long getTotalSocialGroupCount() {
-        return genericDao.getTotalCount(SocialGroup.class);
-    }
-
 }

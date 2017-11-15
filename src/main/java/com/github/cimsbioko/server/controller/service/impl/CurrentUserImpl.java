@@ -7,7 +7,6 @@ import java.util.Set;
 import com.github.cimsbioko.server.controller.security.ExtendedUser;
 import com.github.cimsbioko.server.controller.service.CurrentUser;
 import com.github.cimsbioko.server.domain.model.Privilege;
-import com.github.cimsbioko.server.domain.model.User;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,10 +35,6 @@ public class CurrentUserImpl implements CurrentUser {
         }
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, password, authorities);
         getSecurityContext().setAuthentication(auth);
-    }
-
-    public User getCurrentUser() {
-        return isAuthenticated()? getExtendedUser().getDomainUser() : null;
     }
 
     public Set<Privilege> getCurrentUserPrivileges() {

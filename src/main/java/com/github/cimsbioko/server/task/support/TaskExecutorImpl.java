@@ -32,7 +32,6 @@ public class TaskExecutorImpl implements TaskExecutor {
         }
     }
 
-
     @Resource(name = "mobileDBWriter")
     public void setMobileDBWriter(SyncFileTask mobileDBWriter) {
         this.mobileDBWriter = mobileDBWriter;

@@ -1,10 +1,6 @@
 package com.github.cimsbioko.server.domain.service.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -25,11 +21,6 @@ public class ValueConstraintServiceImpl implements ValueConstraintService {
         } catch (JDOMException | IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public boolean isConstraintDefined(String constraintName) {
-        Element ele = findConstraintByName(constraintName);
-        return ele != null;
     }
 
     public Element findConstraintByName(String constraintName) {
@@ -53,22 +44,5 @@ public class ValueConstraintServiceImpl implements ValueConstraintService {
             }
         }
         return false;
-    }
-
-    public List<String> getAllConstraintNames() {
-        List<String> output = new ArrayList<>();
-        for (Element ele : doc.getRootElement().getChildren()) {
-            output.add(ele.getAttribute("id").getValue());
-        }
-        return output;
-    }
-
-    public Map<String, String> getMapForConstraint(String constraintName) {
-        Map<String, String> keyValues = new TreeMap<>();
-        Element constraint = findConstraintByName(constraintName);
-        for (Element child : constraint.getChildren()) {
-            keyValues.put(child.getValue(), child.getAttributeValue("description"));
-        }
-        return keyValues;
     }
 }

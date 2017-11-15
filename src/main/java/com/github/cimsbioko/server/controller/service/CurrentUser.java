@@ -3,14 +3,8 @@ package com.github.cimsbioko.server.controller.service;
 import java.util.Set;
 
 import com.github.cimsbioko.server.domain.model.Privilege;
-import com.github.cimsbioko.server.domain.model.User;
 
 public interface CurrentUser {
-
-    /**
-     * @return the OpenHDS representation of the current logged in user
-     */
-    User getCurrentUser();
 
     /**
      * @return a set of all privileges for the current logged in user
