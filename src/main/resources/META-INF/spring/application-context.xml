@@ -249,9 +249,6 @@
 
     <util:properties id="exportQueries" location="classpath:export-queries.properties"/>
 
-    <!-- errorhandling (the module, not the aspect - confusing? yes.) -->
-    <context:component-scan base-package="com.github.cimsbioko.server.errorhandling" />
-
     <bean id="errorDao" parent="baseTransactionBean">
         <property name="target">
             <bean class="com.github.cimsbioko.server.dao.impl.ErrorDaoImpl">
