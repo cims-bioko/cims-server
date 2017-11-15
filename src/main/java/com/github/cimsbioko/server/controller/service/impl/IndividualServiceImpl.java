@@ -151,9 +151,9 @@ public class IndividualServiceImpl implements IndividualService {
         }
 
         Relationship relationship = genericDao.findUniqueByPropertyWithOrder(Relationship.class,
-                "individualA", individual, "startDate", false);
+                "individualA", individual, "insertDate", false);
         Relationship relationship2 = genericDao.findUniqueByPropertyWithOrder(Relationship.class,
-                "individualB", individual, "startDate", false);
+                "individualB", individual, "insertDate", false);
         Membership membership = genericDao.findUniqueByPropertyWithOrder(Membership.class,
                 "individual", individual, "insertDate", false);
 
