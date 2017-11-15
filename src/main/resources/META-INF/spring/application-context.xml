@@ -219,9 +219,7 @@
         <property name="target">
             <bean class="com.github.cimsbioko.server.controller.service.impl.EntityServiceImpl">
                 <constructor-arg ref="genericDao"/>
-                <constructor-arg ref="currentUser"/>
                 <constructor-arg ref="calendarUtil"/>
-                <constructor-arg ref="siteProperties"/>
                 <constructor-arg ref="entityValidator"/>
             </bean>
         </property>
@@ -384,10 +382,8 @@
             <bean class="com.github.cimsbioko.server.controller.service.impl.MembershipServiceImpl">
                 <constructor-arg ref="genericDao"/>
                 <constructor-arg ref="individualService"/>
-                <constructor-arg ref="siteProperties"/>
                 <constructor-arg ref="entityValidator"/>
                 <constructor-arg ref="calendarUtil"/>
-                <constructor-arg ref="currentUser"/>
             </bean>
         </property>
     </bean>
@@ -398,7 +394,6 @@
                 <constructor-arg ref="genericDao"/>
                 <constructor-arg ref="entityService"/>
                 <constructor-arg ref="individualService"/>
-                <constructor-arg ref="siteProperties"/>
             </bean>
         </property>
     </bean>
@@ -407,8 +402,6 @@
         <property name="target">
             <bean class="com.github.cimsbioko.server.controller.service.impl.ResidencyServiceImpl">
                 <constructor-arg ref="genericDao"/>
-                <constructor-arg ref="siteProperties"/>
-                <constructor-arg ref="currentUser"/>
                 <constructor-arg ref="entityValidator"/>
                 <constructor-arg ref="calendarUtil"/>
             </bean>

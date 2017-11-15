@@ -11,7 +11,6 @@ import com.github.cimsbioko.server.domain.util.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
 import java.util.Date;
 
 
@@ -32,7 +31,6 @@ public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> im
     @Override
     public void delete(T entity) throws IllegalArgumentException {
         entity.setDeleted(true);
-        entityValidationService.setStatusVoided(entity);
         genericDao.update(entity);
     }
 
@@ -40,41 +38,23 @@ public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> im
     @Override
     public void create(T entity) throws ConstraintViolations {
 
-        if (null != currentUser) {
-            entity.setInsertBy(currentUser.getCurrentUser());
-        }
-
         //TODO: there are too many places that validations are happening - or they are atleast organized poorly.
         //TODO: clean up the validations into well defined blobs of logic.
 
-        // is the entity eligble?
         preCreateSanityChecks(entity);
-
-        // complete the cascading effects of creating this entity
         cascadeReferences(entity);
-
-        // evaluate the changes, sanity check
         validateReferences(entity);
-
-
-        Calendar insertDate = calendarUtil.dateToCalendar(new Date());
-        entity.setInsertDate(insertDate);
+        entity.setInsertDate(calendarUtil.dateToCalendar(new Date()));
 
         setEntityUuidIfNull(entity);
-
-        entityValidationService.setStatusPending(entity);
         entityValidationService.validateEntity(entity);
-
-
         genericDao.create(entity);
-
     }
 
     @Transactional
     @Override
     public void save(T entity) throws ConstraintViolations {
         validateReferences(entity);
-        entityValidationService.setStatusPending(entity);
         entityValidationService.validateEntity(entity);
         genericDao.update(genericDao.merge(entity));
     }

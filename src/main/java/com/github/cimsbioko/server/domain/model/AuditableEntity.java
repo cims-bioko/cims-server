@@ -26,10 +26,6 @@ public abstract class AuditableEntity implements UuidIdentifiable, Serializable 
     @Description(description = "Indicator for signaling some data to be deleted.")
     protected boolean deleted = false;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @Description(description = "User who inserted the data.")
-    protected User insertBy;
-
     @Description(description = "Date of insertion.")
     protected Calendar insertDate;
 
@@ -50,14 +46,6 @@ public abstract class AuditableEntity implements UuidIdentifiable, Serializable 
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
-    }
-
-    public User getInsertBy() {
-        return insertBy;
-    }
-
-    public void setInsertBy(User insertBy) {
-        this.insertBy = insertBy;
     }
 
     public Calendar getInsertDate() {

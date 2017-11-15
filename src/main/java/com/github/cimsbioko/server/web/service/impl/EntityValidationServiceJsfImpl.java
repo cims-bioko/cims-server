@@ -29,14 +29,6 @@ public class EntityValidationServiceJsfImpl<T> implements EntityValidationServic
         this.jsfService = jsfService;
     }
 
-    public void setStatusPending(T entityItem) {
-        log.warn("stubbed validation service would have marked {} pending", entityItem);
-    }
-
-    public void setStatusVoided(T entityItem) {
-        log.warn("stubbed validation service would have marked {} voided", entityItem);
-    }
-
     public void validateEntity(T entityItem) throws ConstraintViolations {
         List<String> violations = validateType(entityItem);
 

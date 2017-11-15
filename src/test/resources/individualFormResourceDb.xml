@@ -15,28 +15,28 @@
                  passwordHash="invalid-password-hash" deleted="false" idPrefix="98"/>
 
     <individual uuid="Individual2" extId="individual2" firstName="Individual" middleName="" lastName="2"
-                gender="2" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19"
+                gender="2" dob="1900-12-19" insertDate="2009-12-19"
                 deleted="false" collectedBy_uuid="FieldWorker1" dip="2"/>
 
     <individual uuid="Unknown Individual" extId="UNK" firstName="Unknown" middleName="NULL" lastName="Unknown"
-                gender="1" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19"
+                gender="1" dob="1900-12-19" insertDate="2009-12-19"
                 deleted="false" collectedBy_uuid="FieldWorker1" dip="0"/>
 
     <location uuid="LOCATION2" extId="testLocation" locationName="Test Location"
         locationHierarchy_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
-        collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" />
+        collectedBy_uuid="FieldWorker1" />
 
     <location uuid="NONHOUSEHOLDLOCATION" extId="newHouse_id" locationName="Non-household Location"
         locationHierarchy_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
-        collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" />
+        collectedBy_uuid="FieldWorker1" />
 
     <location uuid="HOUSEHOLDLOCATION" extId="existing_id" locationName="Household Location"
         locationHierarchy_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
-        collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" />
+        collectedBy_uuid="FieldWorker1" />
 
     <socialgroup uuid="HOUSEHOLDSOCIALGROUP" extId="existing_id" groupName="Household Social Group"
         groupHead_uuid="Individual2" groupType="COH" insertDate="2000-12-19" deleted="false"
-        collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" />
+        collectedBy_uuid="FieldWorker1" />
 
     <residency uuid="Residency" location_uuid="HOUSEHOLDLOCATION" individual_uuid="Individual2"
                collectedBy_uuid="UnknownFieldWorker" deleted="false"/>

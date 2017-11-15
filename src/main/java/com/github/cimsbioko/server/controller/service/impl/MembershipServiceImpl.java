@@ -22,9 +22,9 @@ public class MembershipServiceImpl extends EntityServiceRefactoredImpl implement
     private IndividualService individualService;
     private GenericDao genericDao;
 
-    public MembershipServiceImpl(GenericDao genericDao, IndividualService individualService, SitePropertiesService siteProperties,
-                                 EntityValidationService entityValidationService, CalendarUtil calendarUtil, CurrentUser currentUser) {
-        super(genericDao, currentUser, calendarUtil, siteProperties, entityValidationService);
+    public MembershipServiceImpl(GenericDao genericDao, IndividualService individualService,
+                                 EntityValidationService entityValidationService, CalendarUtil calendarUtil) {
+        super(genericDao, calendarUtil, entityValidationService);
         this.genericDao = genericDao;
         this.individualService = individualService;
     }

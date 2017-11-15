@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.controller.service.impl;
 
-import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,10 +10,8 @@ import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.User;
 import com.github.cimsbioko.server.domain.util.CalendarUtil;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
-import com.github.cimsbioko.server.controller.service.CurrentUser;
 import com.github.cimsbioko.server.controller.service.EntityValidationService;
 import com.github.cimsbioko.server.domain.model.AuditableEntity;
-import com.github.cimsbioko.server.domain.service.SitePropertiesService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -28,81 +25,46 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @SuppressWarnings("unchecked")
 public class EntityServiceImpl implements EntityService {
+
     private GenericDao genericDao;
-    private CurrentUser currentUser;
     private CalendarUtil calendarUtil;
-    private SitePropertiesService siteProperties;
     private EntityValidationService classValidator;
 
-    public EntityServiceImpl(GenericDao genericDao, CurrentUser currentUser, CalendarUtil calendarUtil, SitePropertiesService siteProperties, EntityValidationService classValidator) {
+    public EntityServiceImpl(GenericDao genericDao, CalendarUtil calendarUtil, EntityValidationService classValidator) {
         this.genericDao = genericDao;
-        this.currentUser = currentUser;
         this.calendarUtil = calendarUtil;
-        this.siteProperties = siteProperties;
         this.classValidator = classValidator;
     }
 
     @Transactional
     public <T> void create(T entityItem) throws IllegalArgumentException, ConstraintViolations, SQLException {
         if (entityItem instanceof AuditableEntity) {
-
             try {
                 AbstractEntityCrudHelperImpl.setEntityUuidIfNull((AuditableEntity) entityItem);
             } catch (Exception e) {
                 System.out.println(e.toString());
             }
-
-
             try {
                 Calendar insertDate = calendarUtil.dateToCalendar(new Date());
                 ((AuditableEntity) entityItem).setInsertDate(insertDate);
             } catch (Exception e) {
                 System.out.println(e.toString());
             }
-
-
-            try {
-                if (currentUser != null) {
-                    ((AuditableEntity) entityItem).setInsertBy(currentUser.getCurrentUser());
-                }
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
         }
         classValidator.validateEntity(entityItem);
-
         genericDao.create(entityItem);
     }
 
     @Transactional
     public <T> void delete(T persistentObject) throws SQLException {
-        Method setDeletedMethod;
         if (persistentObject instanceof AuditableEntity) {
-            Method voidedByMethod;
-            Method voidedDateMethod;
-
-            try {
-                voidedByMethod = persistentObject.getClass().getMethod("setVoidBy", User.class);
-                voidedByMethod.invoke(persistentObject, currentUser.getCurrentUser());
-
-                Calendar voidDate = calendarUtil.dateToCalendar(new Date());
-                voidedDateMethod = persistentObject.getClass().getMethod("setVoidDate", Calendar.class);
-                voidedDateMethod.invoke(persistentObject, voidDate);
-
-                setDeletedMethod = persistentObject.getClass().getMethod("setDeleted", boolean.class);
-                setDeletedMethod.invoke(persistentObject, true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            genericDao.update(persistentObject);
+            AuditableEntity auditable = (AuditableEntity)persistentObject;
+            auditable.setDeleted(true);
+            genericDao.update(auditable);
         } else if (persistentObject instanceof User) {
-            try {
-                setDeletedMethod = persistentObject.getClass().getMethod("setDeleted", boolean.class);
-                setDeletedMethod.invoke(persistentObject, true);
-                genericDao.update(persistentObject);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            User user = (User)persistentObject;
+            user.setDeleted(true);
+            genericDao.update(user);
         } else {
             genericDao.delete(persistentObject);
         }

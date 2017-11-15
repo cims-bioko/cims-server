@@ -14,12 +14,10 @@ import com.github.cimsbioko.server.domain.model.FieldWorker;
 import com.github.cimsbioko.server.domain.model.Residency;
 import com.github.cimsbioko.server.domain.util.CalendarUtil;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
-import com.github.cimsbioko.server.controller.service.CurrentUser;
 import com.github.cimsbioko.server.controller.service.EntityValidationService;
 import com.github.cimsbioko.server.controller.service.ResidencyService;
 import com.github.cimsbioko.server.domain.model.Individual;
 import com.github.cimsbioko.server.domain.model.Location;
-import com.github.cimsbioko.server.domain.service.SitePropertiesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,9 +32,9 @@ public class ResidencyServiceImpl extends EntityServiceRefactoredImpl implements
 
     private GenericDao genericDao;
 
-    public ResidencyServiceImpl(GenericDao genericDao, SitePropertiesService siteProperties, EntityValidationService entityValidationService,
-                                CalendarUtil calendarUtil, CurrentUser currentUser) {
-        super(genericDao, currentUser, calendarUtil, siteProperties, entityValidationService);
+    public ResidencyServiceImpl(GenericDao genericDao, EntityValidationService entityValidationService,
+                                CalendarUtil calendarUtil) {
+        super(genericDao, calendarUtil, entityValidationService);
         this.genericDao = genericDao;
     }
 
