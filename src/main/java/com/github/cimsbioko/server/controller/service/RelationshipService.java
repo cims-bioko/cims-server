@@ -14,9 +14,6 @@ public interface RelationshipService {
     @Authorized({PrivilegeConstants.CREATE_ENTITY})
     Relationship evaluateRelationship(Relationship entityItem) throws ConstraintViolations;
 
-    @Authorized({PrivilegeConstants.CREATE_ENTITY})
-    Relationship checkRelationship(Relationship persistedItem, Relationship entityItem) throws ConstraintViolations;
-
     @Authorized({PrivilegeConstants.VIEW_ENTITY})
     boolean checkValidRelationship(Relationship entityItem);
 

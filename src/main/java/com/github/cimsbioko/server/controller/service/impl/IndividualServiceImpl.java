@@ -161,9 +161,9 @@ public class IndividualServiceImpl implements IndividualService {
 
         events.add(new LastEvent("Enumeration/Baseline", individual.getDob()));
         if (relationship != null)
-            events.add(new LastEvent("Relationship", relationship.getStartDate()));
+            events.add(new LastEvent("Relationship", relationship.getInsertDate()));
         if (relationship2 != null)
-            events.add(new LastEvent("Relationship", relationship2.getStartDate()));
+            events.add(new LastEvent("Relationship", relationship2.getInsertDate()));
         if (membership != null)
             events.add(new LastEvent("Membership", membership.getInsertDate()));
 

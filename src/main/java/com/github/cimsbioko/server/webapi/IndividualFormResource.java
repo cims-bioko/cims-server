@@ -454,7 +454,6 @@ public class IndividualFormResource extends AbstractFormResource {
         relationship.setIndividualB(individualB);
         relationship.setCollectedBy(collectedBy);
         relationship.setInsertDate(insertTime);
-        relationship.setStartDate(collectionTime);
         relationship.setaIsToB(form.getIndividualRelationshipToHeadOfHousehold());
 
         // attach to individual

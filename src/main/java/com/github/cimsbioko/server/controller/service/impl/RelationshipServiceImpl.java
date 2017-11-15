@@ -31,24 +31,10 @@ public class RelationshipServiceImpl implements RelationshipService {
     }
 
     public Relationship evaluateRelationship(Relationship entityItem) throws ConstraintViolations {
-
         if (!checkValidRelationship(entityItem))
             throw new ConstraintViolations("An Individual cannot have multiple relationships with the same person.");
         if (individualService.getLatestEvent(entityItem.getIndividualA()).equals("Death") || individualService.getLatestEvent(entityItem.getIndividualB()).equals("Death"))
             throw new ConstraintViolations("A Relationship cannot be created for an Individual who has a Death event.");
-        if (!checkEndEventTypeForDeathOnCreate(entityItem))
-            throw new ConstraintViolations("A Relationship cannot be saved because the end event type of Death cannot apply to Individuals who do not have a Death event.");
-
-        return entityItem;
-    }
-
-    public Relationship checkRelationship(Relationship persistedItem, Relationship entityItem) throws ConstraintViolations {
-
-        if (!compareDeathInRelationship(persistedItem, entityItem))
-            throw new ConstraintViolations("A Relationship cannot be saved because an attempt was made to modify the end event type on an Individual who has a Death event.");
-        if (!checkEndEventTypeForDeathOnEdit(persistedItem, entityItem))
-            throw new ConstraintViolations("A Relationship cannot be saved because the end event type of Death cannot apply to Individuals who do not have a Death event.");
-
         return entityItem;
     }
 
@@ -76,47 +62,6 @@ public class RelationshipServiceImpl implements RelationshipService {
                 return false;
         }
         return true;
-    }
-
-    /**
-     * Compares the persisted and (soon to be persisted) Relationship items.
-     * If the persisted item and entity item has a mismatch of an end event type
-     * and the persisted item has a end type of death, the edit cannot be saved.
-     */
-    public boolean compareDeathInRelationship(Relationship persistedItem, Relationship entityItem) {
-
-        if (individualService.getLatestEvent(persistedItem.getIndividualA()).equals("Death"))
-            if (persistedItem.getEndType().equals(siteProperties.getDeathCode()) && !entityItem.getEndType().equals(siteProperties.getDeathCode()))
-                return false;
-
-        if (individualService.getLatestEvent(persistedItem.getIndividualB()).equals("Death"))
-            if (persistedItem.getEndType().equals(siteProperties.getDeathCode()) && !entityItem.getEndType().equals(siteProperties.getDeathCode()))
-                return false;
-
-        return true;
-    }
-
-    /**
-     * Compares the persisted and (soon to be persisted) Relationship items.
-     * If the persisted item does not have an end type of Death and the entityItem does,
-     * the edit can only continue if one of the Individuals has a Death Event.
-     */
-    public boolean checkEndEventTypeForDeathOnEdit(Relationship persistedItem, Relationship entityItem) {
-
-        return !(entityItem.getEndType().equals(siteProperties.getDeathCode()) &&
-                !individualService.getLatestEvent(persistedItem.getIndividualA()).equals("Death") &&
-                !individualService.getLatestEvent(persistedItem.getIndividualB()).equals("Death"));
-
-    }
-
-    /**
-     * If the entityItem has an end event type of Death and the specified Individuals
-     * don't have a Death Event, the Relationship cannot be created.
-     */
-    public boolean checkEndEventTypeForDeathOnCreate(Relationship entityItem) {
-
-        return !(entityItem.getEndType().equals(siteProperties.getDeathCode()) && !individualService.getLatestEvent(entityItem.getIndividualA()).equals("Death") && !individualService.getLatestEvent(entityItem.getIndividualB()).equals("Death"));
-
     }
 
     public List<Relationship> getAllRelationships(Individual individual) {
@@ -180,12 +125,7 @@ public class RelationshipServiceImpl implements RelationshipService {
     @Override
     @Transactional
     public void createRelationship(Relationship relationship) throws ConstraintViolations {
-        if (relationship.getEndType() == null) {
-            relationship.setEndType(siteProperties.getNotApplicableCode());
-        }
-
         evaluateRelationship(relationship);
-
         try {
             entityService.create(relationship);
         } catch (IllegalArgumentException e) {
