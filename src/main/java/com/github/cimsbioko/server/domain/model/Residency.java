@@ -80,11 +80,11 @@ public class Residency extends AuditableCollectedEntity implements Serializable 
         }
     }
 
-    public static Comparator<Residency> latestByStartDateAndInsertDate() {
+    public static Comparator<Residency> latestByInsertDate() {
         return (o1, o2) -> (null == o1.insertDate || null == o2.insertDate) ? 0 : o1.insertDate.compareTo(o2.insertDate);
     }
 
-    public static Comparator<Residency> earliestByStartDateAndInsertDate() {
-        return Collections.reverseOrder(latestByStartDateAndInsertDate());
+    public static Comparator<Residency> earliestByInsertDate() {
+        return Collections.reverseOrder(latestByInsertDate());
     }
 }

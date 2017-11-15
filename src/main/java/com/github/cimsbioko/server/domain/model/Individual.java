@@ -177,7 +177,7 @@ public class Individual extends AuditableCollectedEntity implements Serializable
 
         // sort by "earliest" and pick off the "least early" ie "latest"
         PriorityQueue<Residency> residencyHeap = new PriorityQueue<>(
-                allResidencies.size(), Residency.earliestByStartDateAndInsertDate());
+                allResidencies.size(), Residency.earliestByInsertDate());
         residencyHeap.addAll(allResidencies);
 
         return residencyHeap.peek();
