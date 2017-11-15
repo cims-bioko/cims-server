@@ -133,41 +133,7 @@ public class ResidencyServiceImpl extends EntityServiceRefactoredImpl implements
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see ResidencyService#getIndividualsByLocation(Location)
-     */
     public List<Individual> getIndividualsByLocation(Location location) {
-        // get a list of all residencies for a given location
-        List<Residency> residencies = genericDao.findListByProperty(Residency.class, "location", location);
-
-        /** Filter out residencies that have already ended */
-        List<Residency> unendedResidencies = new ArrayList<>();
-        for (Residency residency : residencies) {
-            if (residency.getEndDate() == null) {
-                unendedResidencies.add(residency);
-            }
-        }
-        Set<Individual> individuals = new TreeSet<>(new IndividualComparator());
-
-        for (Residency residency : unendedResidencies) {
-            if (!residency.getIndividual().isDeleted())
-                individuals.add(residency.getIndividual());
-        }
-
-        // for each individual determine if this is there current residency
-        Iterator<Individual> itr = individuals.iterator();
-        while (itr.hasNext()) {
-            Individual indiv = itr.next();
-            if (!indiv.getCurrentResidency().getLocation().getUuid().equals(location.getUuid())) {
-                itr.remove();
-            }
-        }
-
-        return new ArrayList<>(individuals);
-    }
-
-    public List<Individual> getIndividualsByLocation(Location location, Date startDate, Date endDate) {
         // get a list of all residencies for a given location
         List<Residency> residencies = genericDao.findListByProperty(Residency.class, "location", location);
 

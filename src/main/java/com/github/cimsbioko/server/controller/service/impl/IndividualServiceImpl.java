@@ -155,7 +155,7 @@ public class IndividualServiceImpl implements IndividualService {
         Relationship relationship2 = genericDao.findUniqueByPropertyWithOrder(Relationship.class,
                 "individualB", individual, "startDate", false);
         Membership membership = genericDao.findUniqueByPropertyWithOrder(Membership.class,
-                "individual", individual, "startDate", false);
+                "individual", individual, "insertDate", false);
 
         List<LastEvent> events = new ArrayList<>();
 
@@ -165,7 +165,7 @@ public class IndividualServiceImpl implements IndividualService {
         if (relationship2 != null)
             events.add(new LastEvent("Relationship", relationship2.getStartDate()));
         if (membership != null)
-            events.add(new LastEvent("Membership", membership.getStartDate()));
+            events.add(new LastEvent("Membership", membership.getInsertDate()));
 
         Collections.sort(events, new Comparator<LastEvent>() {
             public int compare(LastEvent o1, LastEvent o2) {

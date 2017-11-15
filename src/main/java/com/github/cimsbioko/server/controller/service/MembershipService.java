@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.controller.service;
 
-import java.util.Calendar;
 import java.util.List;
 
 import com.github.cimsbioko.server.domain.annotations.Authorized;
@@ -20,16 +19,7 @@ public interface MembershipService {
     Membership updateMembership(Membership entityItem) throws ConstraintViolations;
 
     @Authorized({PrivilegeConstants.CREATE_ENTITY})
-    Membership checkMembership(Membership persistedItem, Membership entityItem) throws ConstraintViolations;
-
-    @Authorized({PrivilegeConstants.CREATE_ENTITY})
     boolean checkDuplicateMembership(Individual indiv, SocialGroup group);
-
-    @Authorized({PrivilegeConstants.CREATE_ENTITY})
-    boolean compareDeathInMembership(Membership persistedItem, Membership entityItem);
-
-    @Authorized({PrivilegeConstants.CREATE_ENTITY})
-    boolean checkEndEventTypeForMembershipOnEdit(Membership persistedItem, Membership entityItem);
 
     @Authorized({PrivilegeConstants.VIEW_ENTITY})
     List<Membership> getAllMemberships(Individual indiv);
@@ -38,7 +28,7 @@ public interface MembershipService {
     List<Membership> getAllMemberships();
 
     @Authorized({PrivilegeConstants.CREATE_ENTITY})
-    Membership createMembershipForPregnancyOutcome(Calendar startDate, Individual individual, SocialGroup sg, FieldWorker fw, String relationToGroupHead);
+    Membership createMembershipForPregnancyOutcome(Individual individual, SocialGroup sg, FieldWorker fw, String relationToGroupHead);
 
     @Authorized({PrivilegeConstants.CREATE_ENTITY})
     void validateGeneralMembership(Membership membership) throws ConstraintViolations;

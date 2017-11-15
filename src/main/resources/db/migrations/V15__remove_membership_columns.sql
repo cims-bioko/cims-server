@@ -1,0 +1,1 @@
+alter table membership drop column enddate, drop column endtype, drop column startdate, drop column starttype;

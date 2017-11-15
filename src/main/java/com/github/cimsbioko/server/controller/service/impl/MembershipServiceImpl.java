@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.controller.service.impl;
 
-import java.util.Calendar;
 import java.util.List;
 
 import com.github.cimsbioko.server.controller.service.CurrentUser;
@@ -22,14 +21,12 @@ public class MembershipServiceImpl extends EntityServiceRefactoredImpl implement
 
     private IndividualService individualService;
     private GenericDao genericDao;
-    private SitePropertiesService siteProperties;
 
     public MembershipServiceImpl(GenericDao genericDao, IndividualService individualService, SitePropertiesService siteProperties,
                                  EntityValidationService entityValidationService, CalendarUtil calendarUtil, CurrentUser currentUser) {
         super(genericDao, currentUser, calendarUtil, siteProperties, entityValidationService);
         this.genericDao = genericDao;
         this.individualService = individualService;
-        this.siteProperties = siteProperties;
     }
 
     public Membership evaluateMembershipBeforeCreate(Membership entityItem) throws ConstraintViolations {
@@ -52,19 +49,6 @@ public class MembershipServiceImpl extends EntityServiceRefactoredImpl implement
 
     }
 
-    public Membership checkMembership(Membership persistedItem, Membership entityItem)
-            throws ConstraintViolations {
-
-        if (!compareDeathInMembership(persistedItem, entityItem))
-            throw new ConstraintViolations(
-                    "A Membership cannot be saved because an attempt was made to modify the end event type on an Individual who has a Death event.");
-        if (!checkEndEventTypeForMembershipOnEdit(persistedItem, entityItem))
-            throw new ConstraintViolations(
-                    "A Membership cannot be saved because the end event type of Death cannot apply to Individuals who do not have a Death event.");
-
-        return entityItem;
-    }
-
     /**
      * Checks if a duplicate Membership already exists
      */
@@ -81,57 +65,21 @@ public class MembershipServiceImpl extends EntityServiceRefactoredImpl implement
     }
 
     /**
-     * Compares the persisted and (soon to be persisted) Membership items. If
-     * the persisted item does not have an end type of Death and the entityItem
-     * does, the edit can only continue if one of the Individuals has a Death
-     * Event.
-     */
-    public boolean checkEndEventTypeForMembershipOnEdit(Membership persistedItem,
-                                                        Membership entityItem) {
-
-        return !(entityItem.getEndType().equals(siteProperties.getDeathCode())
-                && !individualService.getLatestEvent(persistedItem.getIndividual()).equals("Death")
-                && !individualService.getLatestEvent(persistedItem.getIndividual()).equals("Death"));
-
-    }
-
-    /**
-     * Compares the persisted and (soon to be persisted) Membership items. If
-     * the persisted item and entity item has a mismatch of an end event type
-     * and the persisted item has a end type of death, the edit cannot be saved.
-     */
-    public boolean compareDeathInMembership(Membership persistedItem, Membership entityItem) {
-
-        if (individualService.getLatestEvent(persistedItem.getIndividual()).equals("Death"))
-            if (persistedItem.getEndType().equals(siteProperties.getDeathCode())
-                    && !entityItem.getEndType().equals(siteProperties.getDeathCode()))
-                return false;
-
-        return true;
-    }
-
-    /**
      * Helper method for creating a membership. NOTE: This is only being used by
      * the pregnancy outcome web service method
      *
-     * @param startDate
      * @param individual
      * @param sg
      * @param fw
      * @param relationToGroupHead
      * @return
      */
-    public Membership createMembershipForPregnancyOutcome(Calendar startDate,
-                                                          Individual individual, SocialGroup sg, FieldWorker fw, String relationToGroupHead) {
+    public Membership createMembershipForPregnancyOutcome(Individual individual, SocialGroup sg, FieldWorker fw, String relationToGroupHead) {
         Membership membership = new Membership();
-        membership.setStartDate(startDate);
         membership.setIndividual(individual);
         membership.setSocialGroup(sg);
         membership.setCollectedBy(fw);
         membership.setbIsToA(relationToGroupHead);
-        membership.setStartType(siteProperties.getBirthCode());
-        membership.setEndType(siteProperties.getNotApplicableCode());
-
         return membership;
     }
 
@@ -174,18 +122,8 @@ public class MembershipServiceImpl extends EntityServiceRefactoredImpl implement
     @Override
     @Transactional
     public void createMembership(Membership membership) throws ConstraintViolations {
-        // assume a default start type of in migration
-        if (membership.getStartType() == null) {
-            membership.setStartType(siteProperties.getInmigrationCode());
-        }
-
-        if (membership.getEndType() == null) {
-            membership.setEndType(siteProperties.getNotApplicableCode());
-        }
-
         evaluateMembershipBeforeCreate(membership);
         create(membership);
-
     }
 
     @Override

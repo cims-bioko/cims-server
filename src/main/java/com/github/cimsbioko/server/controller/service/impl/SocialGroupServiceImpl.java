@@ -100,14 +100,12 @@ public class SocialGroupServiceImpl implements SocialGroupService {
     }
 
     public List<Individual> getAllIndividualsOfSocialGroup(SocialGroup group) {
-
         List<Individual> list = new ArrayList<>();
-        List<Membership> mems = genericDao.findListByProperty(Membership.class, "socialGroup",
-                group);
-
+        List<Membership> mems = genericDao.findListByProperty(Membership.class, "socialGroup", group);
         for (Membership item : mems) {
-            if (item.getEndDate() == null && !item.isDeleted())
+            if (!item.isDeleted()) {
                 list.add(item.getIndividual());
+            }
         }
         return list;
     }

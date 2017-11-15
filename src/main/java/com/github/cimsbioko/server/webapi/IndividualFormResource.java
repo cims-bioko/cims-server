@@ -421,9 +421,6 @@ public class IndividualFormResource extends AbstractFormResource {
         membership.setSocialGroup(socialGroup);
         membership.setCollectedBy(collectedBy);
         membership.setInsertDate(insertTime);
-        membership.setStartDate(collectionTime);
-        membership.setStartType(START_TYPE);
-        membership.setEndType(NOT_APPLICABLE_END_TYPE);
         membership.setbIsToA(form.getIndividualRelationshipToHeadOfHousehold());
 
 

@@ -75,8 +75,8 @@
                  collectedBy_uuid="UnknownFieldWorker" insertBy_uuid="User 1" />
 
     <membership uuid="Membership1" deleted="false" insertDate="2000-12-19"
-                collectedBy_uuid="UnknownFieldWorker" insertBy_uuid="User 1" startDate="1990-01-01"
-                bIsToA="1" individual_uuid="Individual1" socialGroup_uuid="SocialGroup1" startType="NA" endType="NA"/>
+                collectedBy_uuid="UnknownFieldWorker" insertBy_uuid="User 1"
+                bIsToA="1" individual_uuid="Individual1" socialGroup_uuid="SocialGroup1" />
 
     <residency uuid="FormerResidency" location_uuid="TestLocation1" individual_uuid="Individual1" startDate="1999-12-19"
                startType="StartType" endType="NA" collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
