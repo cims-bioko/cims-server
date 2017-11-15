@@ -41,12 +41,9 @@ public class AbstractFormResource {
                 HttpStatus.BAD_REQUEST);
     }
 
-    protected void logError(ConstraintViolations cv, FieldWorker fw, String payload, String simpleClassName, String errorConstant) {
-
-        Error error = ErrorUtil.createError(ErrorConstants.UNASSIGNED, payload, null, simpleClassName,
-                fw, errorConstant, cv.getViolations());
+    protected void logError(ConstraintViolations cv, FieldWorker fw, String payload, String simpleClassName) {
+        Error error = ErrorUtil.createError( payload, simpleClassName, fw, cv.getViolations());
         errorService.logError(error);
-
     }
 
     protected static Calendar getDateInPast() {

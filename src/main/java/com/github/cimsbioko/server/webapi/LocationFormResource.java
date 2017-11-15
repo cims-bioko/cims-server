@@ -79,7 +79,7 @@ public class LocationFormResource extends AbstractFormResource {
 
         if ("null".equals(form.getLocationExtId())) {
             cv.addViolations("No Location ExtId provided");
-            logError(cv, null, createDTOPayload(form), Form.LOG_NAME, ConstraintViolations.INVALID_LOCATION_EXT_ID);
+            logError(cv, null, createDTOPayload(form), Form.LOG_NAME);
             return requestError(cv);
         }
 
@@ -88,7 +88,7 @@ public class LocationFormResource extends AbstractFormResource {
             location = locationService.getByUuid(form.getUuid());
             if (null != location) {
                 cv.addViolations("Location already exists " + form.getUuid());
-                logError(cv, null, createDTOPayload(form), Form.LOG_NAME, ConstraintViolations.INVALID_LOCATION_UUID);
+                logError(cv, null, createDTOPayload(form), Form.LOG_NAME);
                 return requestError(cv);
             }
         } catch (Exception e) {
@@ -101,7 +101,7 @@ public class LocationFormResource extends AbstractFormResource {
         FieldWorker collectedBy = fieldWorkerService.getByUuid(form.getFieldWorkerUuid());
         if (null == collectedBy) {
             cv.addViolations("Field Worker does not exist : " + form.getFieldWorkerUuid());
-            logError(cv, null, createDTOPayload(form), Form.LOG_NAME, ConstraintViolations.INVALID_FIELD_WORKER_UUID);
+            logError(cv, null, createDTOPayload(form), Form.LOG_NAME);
             return requestError(cv);
         }
         location.setCollectedBy(collectedBy);
@@ -124,7 +124,7 @@ public class LocationFormResource extends AbstractFormResource {
 
             if (null == locationHierarchy) {
                 cv.addViolations("Location Hierarchy does not exist : " + form.getHierarchyUuid() + " / " + form.getHierarchyExtId());
-                logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME, ConstraintViolations.INVALID_LOCATION_HIERARCHY_UUID);
+                logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME);
                 return requestError(cv);
             }
         } catch (Exception e) {
@@ -140,9 +140,7 @@ public class LocationFormResource extends AbstractFormResource {
             // log the modification
             logMessage.add("Location persisted with Modified ExtId: Old = " + form.getLocationExtId() + " New = " + location.getExtId());
             String payload = createDTOPayload(form);
-            Error error = ErrorUtil.createError(ErrorConstants.UNASSIGNED, payload, null,
-                    Form.LOG_NAME, collectedBy,
-                    ErrorConstants.MODIFIED_EXTID, logMessage);
+            Error error = ErrorUtil.createError(payload, Form.LOG_NAME, collectedBy, logMessage);
             errorService.logError(error);
         } else {
             location.setExtId(form.getLocationExtId());
@@ -156,7 +154,7 @@ public class LocationFormResource extends AbstractFormResource {
         try {
             locationService.create(location);
         } catch (ConstraintViolations e) {
-            logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME, ErrorConstants.CONSTRAINT_VIOLATION);
+            logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME);
             return requestError(e);
         } catch (Exception e) {
             return serverError("General Error creating location: " + e.getMessage());

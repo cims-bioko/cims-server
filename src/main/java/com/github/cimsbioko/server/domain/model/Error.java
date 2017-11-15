@@ -6,7 +6,6 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -29,35 +28,17 @@ public class Error implements Serializable {
     private Calendar insertDate;
 
     @Column(length = 65535)
-    private String dataPayload;
-
-    private String errorMessage;
+    private String payload;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = FieldWorker.class)
     @Description(description = "The field worker who collected the data, identified by external id.")
     private FieldWorker fieldWorker;
 
-    @Description(description = "Indicator for signaling some data to be deleted.")
-    protected boolean deleted = false;
-
-    private String assignedTo;
-
     @Column
     private String entityType;
 
-    private String resolutionStatus;
-
-    private Calendar dateOfResolution;
-
-    @XmlTransient
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
+    private String message;
 
     public Calendar getInsertDate() {
         return insertDate;
@@ -67,20 +48,20 @@ public class Error implements Serializable {
         this.insertDate = insertDate;
     }
 
-    public String getDataPayload() {
-        return dataPayload;
+    public String getPayload() {
+        return payload;
     }
 
-    public void setDataPayload(String dataPayload) {
-        this.dataPayload = dataPayload;
+    public void setPayload(String payload) {
+        this.payload = payload;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public String getMessage() {
+        return message;
     }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public FieldWorker getFieldWorker() {
@@ -89,30 +70,6 @@ public class Error implements Serializable {
 
     public void setFieldWorker(FieldWorker fieldWorker) {
         this.fieldWorker = fieldWorker;
-    }
-
-    public String getAssignedTo() {
-        return assignedTo;
-    }
-
-    public void setAssignedTo(String assignedTo) {
-        this.assignedTo = assignedTo;
-    }
-
-    public String getResolutionStatus() {
-        return resolutionStatus;
-    }
-
-    public void setResolutionStatus(String resolutionStatus) {
-        this.resolutionStatus = resolutionStatus;
-    }
-
-    public Calendar getDateOfResolution() {
-        return dateOfResolution;
-    }
-
-    public void setDateOfResolution(Calendar dateOfResolution) {
-        this.dateOfResolution = dateOfResolution;
     }
 
     public String getUuid() {
