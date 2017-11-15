@@ -8,7 +8,8 @@ import com.github.cimsbioko.server.controller.service.EntityValidationService;
 import com.github.cimsbioko.server.domain.service.SitePropertiesService;
 import com.github.cimsbioko.server.web.service.JsfService;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
-import com.github.cimsbioko.server.domain.model.AuditableCollectedEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -17,6 +18,8 @@ import javax.validation.ValidatorFactory;
 
 @SuppressWarnings("unchecked")
 public class EntityValidationServiceJsfImpl<T> implements EntityValidationService<T> {
+
+    private static final Logger log = LoggerFactory.getLogger(EntityValidationServiceJsfImpl.class);
 
     SitePropertiesService siteProperties;
     JsfService jsfService;
@@ -27,17 +30,11 @@ public class EntityValidationServiceJsfImpl<T> implements EntityValidationServic
     }
 
     public void setStatusPending(T entityItem) {
-        if (entityItem instanceof AuditableCollectedEntity) {
-            ((AuditableCollectedEntity) entityItem).setStatus(siteProperties.getDataStatusPendingCode());
-            ((AuditableCollectedEntity) entityItem).setStatusMessage("");
-        }
+        log.warn("stubbed validation service would have marked {} pending", entityItem);
     }
 
     public void setStatusVoided(T entityItem) {
-        if (entityItem instanceof AuditableCollectedEntity) {
-            ((AuditableCollectedEntity) entityItem).setStatus(siteProperties.getDataStatusVoidCode());
-            ((AuditableCollectedEntity) entityItem).setStatusMessage("");
-        }
+        log.warn("stubbed validation service would have marked {} voided", entityItem);
     }
 
     public void validateEntity(T entityItem) throws ConstraintViolations {

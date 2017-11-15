@@ -13,7 +13,6 @@ import com.github.cimsbioko.server.domain.util.CalendarUtil;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.controller.service.CurrentUser;
 import com.github.cimsbioko.server.controller.service.EntityValidationService;
-import com.github.cimsbioko.server.domain.model.AuditableCollectedEntity;
 import com.github.cimsbioko.server.domain.model.AuditableEntity;
 import com.github.cimsbioko.server.domain.service.SitePropertiesService;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,7 +69,6 @@ public class EntityServiceImpl implements EntityService {
                 System.out.println(e.toString());
             }
         }
-        setStatusPending(entityItem);
         classValidator.validateEntity(entityItem);
 
         genericDao.create(entityItem);
@@ -96,7 +94,6 @@ public class EntityServiceImpl implements EntityService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            setStatusVoided(persistentObject);
             genericDao.update(persistentObject);
         } else if (persistentObject instanceof User) {
             try {
@@ -113,26 +110,11 @@ public class EntityServiceImpl implements EntityService {
 
     @Transactional
     public <T> void save(T entityItem) throws ConstraintViolations, SQLException {
-        setStatusPending(entityItem);
         classValidator.validateEntity(entityItem);
         genericDao.update(genericDao.merge(entityItem));
     }
 
     public <T> T read(Class<T> entityType, String id) {
         return genericDao.read(entityType, id);
-    }
-
-    private <T> void setStatusVoided(T entityItem) {
-        if (entityItem instanceof AuditableCollectedEntity) {
-            ((AuditableCollectedEntity) entityItem).setStatus(siteProperties.getDataStatusVoidCode());
-            ((AuditableCollectedEntity) entityItem).setStatusMessage("");
-        }
-    }
-
-    private <T> void setStatusPending(T entityItem) {
-        if (entityItem instanceof AuditableCollectedEntity) {
-            ((AuditableCollectedEntity) entityItem).setStatus(siteProperties.getDataStatusPendingCode());
-            ((AuditableCollectedEntity) entityItem).setStatusMessage("");
-        }
     }
 }

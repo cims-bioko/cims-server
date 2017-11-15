@@ -32,50 +32,50 @@
 
     <location uuid="TestLocation2" extId="testLocation2" locationName="Test Location"
               locationHierarchy_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
-              collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
+              collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" />
 
     <location uuid="NONHOUSEHOLDLOCATION" extId="newHouse_id" locationName="Non-household Location"
               locationHierarchy_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
-              collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
+              collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" />
 
     <location uuid="HOUSEHOLDLOCATION" extId="existing_id" locationName="Household Location"
               locationHierarchy_uuid="hierarchy3" locationType="RUR" insertDate="2000-12-19" deleted="false"
-              collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
+              collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" />
 
     <location uuid="TestLocation1" extId="testLocation1" locationName="Test Location" locationHierarchy_uuid="hierarchy3"
               locationType="RUR" insertDate="2000-12-19" deleted="false" collectedBy_uuid="UnknownFieldWorker"
-              insertBy_uuid="User 1" status="P" />
+              insertBy_uuid="User 1" />
 
     <location uuid="LOCATION1" extId="LOCATION1" locationName="Location 1" locationHierarchy_uuid="hierarchy3"
               locationType="RUR" insertDate="2000-12-19" deleted="false" collectedBy_uuid="UnknownFieldWorker"
-              insertBy_uuid="User 1" status="P" />
+              insertBy_uuid="User 1" />
 
     <individual uuid="Unknown Individual" extId="UNK" firstName="Unknown" middleName="NULL" lastName="Unknown"
-                gender="1" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
+                gender="1" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19"
                 deleted="false" collectedBy_uuid="UnknownFieldWorker" dip="0"/>
 
     <individual uuid="Individual1" extId="individual1" firstName="Individual" middleName="" lastName="1"
-                gender="1" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
+                gender="1" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19"
                 deleted="false" collectedBy_uuid="UnknownFieldWorker" dip="1"/>
 
     <individual uuid="Individual2" extId="individual2" firstName="Individual" middleName="" lastName="2"
-                gender="2" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
+                gender="2" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19"
                 deleted="false" collectedBy_uuid="UnknownFieldWorker" dip="2"/>
 
     <socialgroup uuid="HOUSEHOLDSOCIALGROUP" extId="existing_id" groupName="Household Social Group"
                  groupHead_uuid="Individual2" groupType="COH" insertDate="2000-12-19" deleted="false"
-                 collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" status="P" />
+                 collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" />
 
     <socialgroup uuid="SocialGroup1" extId="sg123456789" groupName="Social Group 1"
                  groupHead_uuid="Individual2" groupType="COH" insertDate="2000-12-19" deleted="false"
-                 collectedBy_uuid="UnknownFieldWorker" insertBy_uuid="User 1" status="P" />
+                 collectedBy_uuid="UnknownFieldWorker" insertBy_uuid="User 1" />
 
     <socialgroup uuid="SocialGroup2" extId="sg234567890" groupName="Social Group 2"
                  groupHead_uuid="Unknown Individual" groupType="COH" insertDate="2000-12-19" deleted="false"
-                 collectedBy_uuid="UnknownFieldWorker" insertBy_uuid="User 1" status="P" />
+                 collectedBy_uuid="UnknownFieldWorker" insertBy_uuid="User 1" />
 
     <membership uuid="Membership1" deleted="false" insertDate="2000-12-19"
-                collectedBy_uuid="UnknownFieldWorker" insertBy_uuid="User 1" status="P" startDate="1990-01-01"
+                collectedBy_uuid="UnknownFieldWorker" insertBy_uuid="User 1" startDate="1990-01-01"
                 bIsToA="1" individual_uuid="Individual1" socialGroup_uuid="SocialGroup1" startType="NA" endType="NA"/>
 
     <residency uuid="FormerResidency" location_uuid="TestLocation1" individual_uuid="Individual1" startDate="1999-12-19"
@@ -85,16 +85,16 @@
                startType="StartType" endType="NA" collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
 
     <individual uuid="PregnantIndividual" extId="Mother-001" firstName="Pregnant" middleName="" lastName="Individual"
-                gender="Female" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
+                gender="Female" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19"
                 deleted="false" collectedBy_uuid="UnknownFieldWorker" dip="1"/>
 
     <individual uuid="PregnantMale" extId="pregnantMale" firstName="Pregnant" middleName="" lastName="Male"
-                gender="Male" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19" status="P"
+                gender="Male" dob="1900-12-19" insertBy_uuid="User 1" insertDate="2009-12-19"
                 deleted="false" collectedBy_uuid="UnknownFieldWorker" dip="1"/>
 
     <socialgroup uuid="SocialGroup3" extId="sg234567891" groupName="Social Group 3"
                  groupHead_uuid="PregnantMale" groupType="COH" insertDate="2000-12-19" deleted="false"
-                 collectedBy_uuid="UnknownFieldWorker" insertBy_uuid="User 1" status="P" />
+                 collectedBy_uuid="UnknownFieldWorker" insertBy_uuid="User 1" />
 
     <residency uuid="PregnantResidency" location_uuid="TestLocation1" individual_uuid="PregnantIndividual" startDate="1999-12-19"
                startType="StartType" endType="NA" collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
