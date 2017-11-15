@@ -30,13 +30,11 @@ public class ResidencyServiceImpl implements ResidencyService {
 
     @Override
     public List<Residency> getAll() {
-
         return residencyCrudHelper.getAll();
     }
 
     @Override
     public Residency getByExtId(String id) {
-
         return residencyCrudHelper.getByExtId(id);
     }
 
@@ -47,19 +45,16 @@ public class ResidencyServiceImpl implements ResidencyService {
 
     @Override
     public void delete(Residency residency) throws IllegalArgumentException {
-
         residencyCrudHelper.delete(residency);
     }
 
     @Override
     public void create(Residency residency) throws ConstraintViolations {
-
         residencyCrudHelper.create(residency);
     }
 
     @Override
     public void save(Residency residency) throws ConstraintViolations {
-
         residencyCrudHelper.save(residency);
     }
 
@@ -68,20 +63,9 @@ public class ResidencyServiceImpl implements ResidencyService {
         return true;
     }
 
-
-    /*
-            Extra methods
-
-     */
-
     @Override
     public boolean hasOpenResidency(Individual individual) {
-
         Residency residency = individual.getCurrentResidency();
-
-        return !(null == residency || null != residency.getEndDate() || residency.isDeleted());
-
+        return residency != null && !residency.isDeleted();
     }
-
-
 }

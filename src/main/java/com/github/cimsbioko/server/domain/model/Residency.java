@@ -2,21 +2,13 @@ package com.github.cimsbioko.server.domain.model;
 
 import com.github.cimsbioko.server.domain.constraint.Searchable;
 import com.github.cimsbioko.server.domain.annotations.Description;
-import com.github.cimsbioko.server.domain.constraint.CheckEndDateNotBeforeStartDate;
-import com.github.cimsbioko.server.domain.constraint.CheckFieldNotBlank;
-import com.github.cimsbioko.server.domain.constraint.GenericStartEndDateConstraint;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -26,10 +18,9 @@ import java.util.List;
         "which is tied to a particular Location. It also contains information about " +
         "the date the Residency started and ended as well as the start and end types.")
 @Entity
-@CheckEndDateNotBeforeStartDate(allowNull = true)
 @Table(name = "residency")
 @XmlRootElement
-public class Residency extends AuditableCollectedEntity implements GenericStartEndDateConstraint, Serializable {
+public class Residency extends AuditableCollectedEntity implements Serializable {
     private static final long serialVersionUID = -4666666231598767965L;
 
     @Searchable
@@ -42,23 +33,6 @@ public class Residency extends AuditableCollectedEntity implements GenericStartE
     @Description(description = "Location of the residency, identified by external id.")
     Location location;
 
-    @NotNull
-    @Past(message = "Insert date should be in the past")
-    @Temporal(javax.persistence.TemporalType.DATE)
-    @Description(description = "Residency start date.")
-    Calendar startDate;
-
-    @CheckFieldNotBlank
-    @Description(description = "Residency start type.")
-    String startType;
-
-    @Temporal(javax.persistence.TemporalType.DATE)
-    @Description(description = "Residency end date.")
-    Calendar endDate;
-
-    @Description(description = "Residency end type.")
-    String endType;
-
     public Individual getIndividual() {
         return individual;
     }
@@ -67,44 +41,12 @@ public class Residency extends AuditableCollectedEntity implements GenericStartE
         this.individual = individual;
     }
 
-    public Calendar getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Calendar startDate) {
-        this.startDate = startDate;
-    }
-
-    public Calendar getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Calendar endDate) {
-        this.endDate = endDate;
-    }
-
     public Location getLocation() {
         return location;
     }
 
     public void setLocation(Location location) {
         this.location = location;
-    }
-
-    public String getStartType() {
-        return startType;
-    }
-
-    public void setStartType(String startType) {
-        this.startType = startType;
-    }
-
-    public String getEndType() {
-        return endType;
-    }
-
-    public void setEndType(String endType) {
-        this.endType = endType;
     }
 
     @Override
@@ -139,16 +81,7 @@ public class Residency extends AuditableCollectedEntity implements GenericStartE
     }
 
     public static Comparator<Residency> latestByStartDateAndInsertDate() {
-        return new Comparator<Residency>() {
-            @Override
-            public int compare(Residency o1, Residency o2) {
-                int byStartDate = (null == o1.startDate || null == o2.startDate) ? 0 : o1.startDate.compareTo(o2.startDate);
-                if (0 == byStartDate) {
-                    return (null == o1.insertDate || null == o2.insertDate) ? 0 : o1.insertDate.compareTo(o2.insertDate);
-                }
-                return byStartDate;
-            }
-        };
+        return (o1, o2) -> (null == o1.insertDate || null == o2.insertDate) ? 0 : o1.insertDate.compareTo(o2.insertDate);
     }
 
     public static Comparator<Residency> earliestByStartDateAndInsertDate() {

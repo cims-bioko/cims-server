@@ -387,9 +387,6 @@ public class IndividualFormResource extends AbstractFormResource {
         residency.setLocation(location);
         residency.setCollectedBy(collectedBy);
         residency.setInsertDate(insertTime);
-        residency.setStartDate(collectionTime);
-        residency.setStartType(START_TYPE);
-        residency.setEndType(NOT_APPLICABLE_END_TYPE);
 
         // attach to individial
         individual.getAllResidencies().add(residency);

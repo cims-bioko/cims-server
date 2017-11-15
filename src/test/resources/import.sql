@@ -62,6 +62,5 @@ INSERT INTO location(uuid,extId,locationName,locationHierarchy_uuid,locationType
 
 INSERT INTO socialgroup(uuid, extId, deleted, insertdate, groupName, collectedby_uuid, insertby_uuid, grouphead_uuid,groupType) VALUES ('BasseyFamily', 'MBI1', false, '1979-12-19', 'Bassey Family', 'FieldWorker1', 'User 1', 'Individual2','FAM')
 
-INSERT INTO residency(uuid,location_uuid,individual_uuid,startDate,startType,endDate,endType,collectedBy_uuid,deleted,insertDate,insertBy_uuid) VALUES ('residency_uuid1','LOCATION1','Individual5','1965-12-19','ENU',NULL,NULL,'FieldWorker1',false,'1990-11-20','User 1')
-
+INSERT INTO residency(uuid,location_uuid,individual_uuid,collectedBy_uuid,deleted,insertDate,insertBy_uuid) VALUES ('residency_uuid1','LOCATION1','Individual5','FieldWorker1',false,'1990-11-20','User 1')
 

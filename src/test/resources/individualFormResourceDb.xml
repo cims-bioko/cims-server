@@ -38,7 +38,7 @@
         groupHead_uuid="Individual2" groupType="COH" insertDate="2000-12-19" deleted="false"
         collectedBy_uuid="FieldWorker1" insertBy_uuid="User 1" />
 
-    <residency uuid="Residency" location_uuid="HOUSEHOLDLOCATION" individual_uuid="Individual2" startDate="1999-12-19"
-               startType="StartType" endType="NA" collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
+    <residency uuid="Residency" location_uuid="HOUSEHOLDLOCATION" individual_uuid="Individual2"
+               collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
 
 </dataset>
