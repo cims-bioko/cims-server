@@ -121,15 +121,6 @@ public class Membership extends AuditableCollectedEntity implements GenericEndDa
         this.bIsToA = bIsToA;
     }
 
-    public static Membership makeStub(String uuid, SocialGroup socialGroup, Individual individual, String bIsToA) {
-        Membership stub = new Membership();
-        stub.setUuid(uuid);
-        stub.setSocialGroup(socialGroup);
-        stub.setIndividual(individual);
-        stub.setbIsToA(bIsToA);
-        return stub;
-    }
-
     @Override
     public boolean equals(Object other) {
         if (this == other) {

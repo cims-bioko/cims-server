@@ -138,15 +138,6 @@ public class Location
         this.floorNumber = floorNumber;
     }
 
-    public static Location makeStub(String uuid, String extId) {
-
-        Location stub = new Location();
-        stub.setUuid(uuid);
-        stub.setExtId(extId);
-        return stub;
-
-    }
-
     @Override
     public boolean equals(Object other) {
         if (this == other) {

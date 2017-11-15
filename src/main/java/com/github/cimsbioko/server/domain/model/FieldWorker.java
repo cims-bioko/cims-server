@@ -113,15 +113,6 @@ public class FieldWorker extends AuditableEntity implements Serializable {
         this.passwordHash = passwordHash;
     }
 
-    public static FieldWorker makeStub(String uuid, String extId) {
-
-        FieldWorker stub = new FieldWorker();
-        stub.setUuid(uuid);
-        stub.setExtId(extId);
-        return stub;
-
-    }
-
     @Override
     public boolean equals(Object other) {
         if (this == other) {

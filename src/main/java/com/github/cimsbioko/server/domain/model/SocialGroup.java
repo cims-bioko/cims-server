@@ -112,13 +112,6 @@ public class SocialGroup
         memberships = list;
     }
 
-    public static SocialGroup makeStub(String uuid, String extId) {
-        SocialGroup stub = new SocialGroup();
-        stub.setUuid(uuid);
-        stub.setExtId(extId);
-        return stub;
-    }
-
     @Override
     public boolean equals(Object other) {
         if (this == other) {
