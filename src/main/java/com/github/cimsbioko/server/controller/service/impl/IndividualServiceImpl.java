@@ -193,11 +193,8 @@ public class IndividualServiceImpl implements IndividualService {
         head.setFirstName("Temporary Individual");
         head.setLastName("Temporary Individual");
         head.setExtId(extId);
-        head.setMother(findIndivById(properties.getUnknownIdentifier()));
-        head.setFather(findIndivById(properties.getUnknownIdentifier()));
         head.setGender(properties.getUnknownIdentifier());
         head.setCollectedBy(collectedBy);
-
         entityService.create(head);
         return head;
     }

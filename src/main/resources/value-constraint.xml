@@ -4,10 +4,6 @@
         <value description="Cohort">COH</value>
         <value description="Household">Household</value>
     </constraint>
-    <constraint id="dobAspectConstraint">
-        <value description="Exact">1</value>
-        <value description="Approximate">2</value>
-    </constraint>
     <constraint id="genderConstraint">
         <value description="Male">MALE</value>
         <value description="Female">FEMALE</value>

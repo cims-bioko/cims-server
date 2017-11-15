@@ -299,10 +299,6 @@ public class IndividualFormResource extends AbstractFormResource {
 
         copyFormDataToIndividual(form, individual);
 
-        // Bioko project forms don't include parents!
-        individual.setMother(individualService.getUnknownIndividual());
-        individual.setFather(individualService.getUnknownIndividual());
-
         return individual;
     }
 
@@ -329,7 +325,6 @@ public class IndividualFormResource extends AbstractFormResource {
         individual.setPointOfContactName(form.getIndividualPointOfContactName());
         individual.setPointOfContactPhoneNumber(form.getIndividualPointOfContactPhoneNumber());
         individual.setDip(form.getIndividualDip());
-        individual.setMemberStatus(form.getIndividualMemberStatus());
         individual.setNationality(form.getIndividualNationality());
     }
 
