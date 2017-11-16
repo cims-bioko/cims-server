@@ -45,12 +45,10 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import static com.github.cimsbioko.server.webapi.ODKFormsResource.ODK_API_PATH;
 import static java.time.Instant.now;
@@ -60,6 +58,7 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.security.web.util.UrlUtils.buildFullRequestUrl;
 import static org.springframework.util.StringUtils.isEmpty;
+import static org.springframework.util.StringUtils.toLanguageTag;
 
 @Controller
 @RequestMapping(ODK_API_PATH)
@@ -214,8 +213,12 @@ public class ODKFormsResource {
         Writer writer = rsp.getWriter();
         writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
                 "<xforms xmlns=\"http://openrosa.org/xforms/xformsList\">\n");
-        for (OpenRosaFormDef form : formScan()) {
-            writer.write(form.toString(buildFullRequestUrl(req)));
+        for (OpenRosaFormDef f : latestLoadedFormDefs()) {
+            try {
+                writer.write(f.toString(buildFullRequestUrl(req)));
+            } catch (IOException e) {
+                log.warn("failed to list form id={}, version={}: {}", f.id, f.version, e.toString());
+            }
         }
         writer.write("</xforms>");
     }
@@ -672,11 +675,10 @@ public class ODKFormsResource {
     /**
      * Scans the application form directory and returns the list of detected (valid) form definitions found.
      */
-    private List<OpenRosaFormDef> formScan() throws IOException {
-        List<OpenRosaFormDef> results = new ArrayList<>();
+    private Stream<Path> formPaths() throws IOException {
         if (formsDir.exists()) {
             Path formsPath = formsDir.toPath();
-            Files.walk(formsPath)
+            return Files.walk(formsPath)
                     .filter(path -> {
                         Path rel = formsPath.relativize(path);
                         File f = path.toFile();
@@ -685,23 +687,38 @@ public class ODKFormsResource {
                                 && rel.getName(0).toString().matches("\\w+")
                                 && rel.getName(1).toString().matches("\\d+")
                                 && rel.getName(2).toString().matches("\\w+[.]xml");
-                    })
-                    .forEach(path -> {
-                        try {
-                            OpenRosaFormDef formDef = loadFormDef(formsPath, path);
-                            results.add(formDef);
-                        } catch (FileNotFoundException e) {
-                            log.warn("form not found for path '{}'", path);
-                        } catch (NoSuchAlgorithmException e) {
-                            log.warn("hash failed due to missing algorithm");
-                        } catch (IOException e) {
-                            log.warn("io failure loading definition for path '{}'", path);
-                        } catch (JDOMException e) {
-                            log.warn("failed to parse form definition for path '{}'", path);
-                        }
                     });
         }
-        return results;
+        return Stream.empty();
+    }
+
+    private Stream<OpenRosaFormDef> loadedFormDefs() throws IOException {
+        Path formsPath = formsDir.toPath();
+        return formPaths().map(p -> {
+            try {
+                return loadFormDef(formsPath, p);
+            } catch (FileNotFoundException e) {
+                log.warn("form not found for path '{}'", p);
+            } catch (NoSuchAlgorithmException e) {
+                log.warn("hash failed due to missing algorithm");
+            } catch (IOException e) {
+                log.warn("io failure loading definition for path '{}'", p);
+            } catch (JDOMException e) {
+                log.warn("failed to parse form definition for path '{}'", p);
+            }
+            return null;
+        }).filter(Objects::nonNull);
+    }
+
+    private Collection<OpenRosaFormDef> latestLoadedFormDefs() throws IOException {
+        Map<String, OpenRosaFormDef> latestVersions = new HashMap<>();
+        loadedFormDefs().forEach(def -> {
+            OpenRosaFormDef latest = latestVersions.get(def.id);
+            if (latest == null || def.version.compareTo(latest.version) > 0) {
+                latestVersions.put(def.id, def);
+            }
+        });
+        return latestVersions.values();
     }
 
     private String getFileHash(File toHash) throws NoSuchAlgorithmException, IOException {
