@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.webapi;
 
-import com.github.cimsbioko.server.domain.model.FieldWorker;
 import com.github.cimsbioko.server.controller.service.ErrorService;
 import com.github.cimsbioko.server.controller.util.ErrorUtil;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
@@ -39,8 +38,8 @@ public class AbstractFormResource {
                 HttpStatus.BAD_REQUEST);
     }
 
-    protected void logError(ConstraintViolations cv, FieldWorker fw, String payload, String simpleClassName) {
-        Error error = ErrorUtil.createError( payload, simpleClassName, fw, cv.getViolations());
+    protected void logError(ConstraintViolations cv, String payload, String simpleClassName) {
+        Error error = ErrorUtil.createError( payload, simpleClassName, cv.getViolations());
         errorService.logError(error);
     }
 

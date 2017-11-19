@@ -9,11 +9,10 @@ public class ErrorUtil {
 
     public static final int MAX_MESSAGE_LENGTH = 255;
 
-    public static Error createError(String dataPayload, String entityType, FieldWorker fieldWorker, List<String> errors) {
+    public static Error createError(String dataPayload, String entityType, List<String> errors) {
         Error error = new Error();
         error.setPayload(dataPayload);
         error.setEntityType(entityType);
-        error.setFieldWorker(fieldWorker);
         // abbreviate the message if it's too long
         String messageText = String.join(",", errors);
         if (messageText.length() > MAX_MESSAGE_LENGTH) {

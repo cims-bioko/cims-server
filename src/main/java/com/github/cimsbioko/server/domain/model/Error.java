@@ -4,7 +4,6 @@ import com.github.cimsbioko.server.domain.annotations.Description;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -29,11 +28,6 @@ public class Error implements Serializable {
 
     @Column(length = 65535)
     private String payload;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = FieldWorker.class)
-    @Description(description = "The field worker who collected the data, identified by external id.")
-    private FieldWorker fieldWorker;
 
     @Column
     private String entityType;
@@ -62,14 +56,6 @@ public class Error implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public FieldWorker getFieldWorker() {
-        return fieldWorker;
-    }
-
-    public void setFieldWorker(FieldWorker fieldWorker) {
-        this.fieldWorker = fieldWorker;
     }
 
     public String getUuid() {
