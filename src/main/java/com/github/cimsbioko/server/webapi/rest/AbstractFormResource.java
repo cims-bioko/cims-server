@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.webapi;
+package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.cimsbioko.server.controller.service.ErrorService;
 import com.github.cimsbioko.server.controller.util.ErrorUtil;

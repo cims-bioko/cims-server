@@ -7,7 +7,7 @@ var imports = new JavaImporter(
     java.io,
     javax.xml.transform.stream,
     com.github.cimsbioko.server.controller.service,
-    com.github.cimsbioko.server.webapi
+    com.github.cimsbioko.server.webapi.rest
 );
 
 with (imports) {

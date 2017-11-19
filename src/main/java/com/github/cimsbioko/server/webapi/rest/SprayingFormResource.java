@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.webapi;
+package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.controller.service.refactor.LocationService;
@@ -16,7 +16,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 
-import static com.github.cimsbioko.server.webapi.SprayingFormResource.SPRAYING_FORM_PATH;
+import static com.github.cimsbioko.server.webapi.rest.SprayingFormResource.SPRAYING_FORM_PATH;
 
 @Controller
 @RequestMapping(SPRAYING_FORM_PATH)

@@ -23,7 +23,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.github.cimsbioko.server.webapi.SprayingFormResource.SPRAYING_FORM_PATH;
+import static com.github.cimsbioko.server.webapi.rest.SprayingFormResource.SPRAYING_FORM_PATH;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;

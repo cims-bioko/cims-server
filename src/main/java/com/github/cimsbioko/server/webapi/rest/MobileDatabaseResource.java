@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.webapi;
+package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.batkinson.jrsync.Metadata;
 import com.github.cimsbioko.server.task.service.AsyncTaskService;

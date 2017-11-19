@@ -1,13 +1,11 @@
-package com.github.cimsbioko.server.webapi;
+package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.cimsbioko.server.controller.service.LocationHierarchyService;
 import com.github.cimsbioko.server.controller.service.refactor.FieldWorkerService;
 import com.github.cimsbioko.server.controller.service.refactor.LocationService;
 import com.github.cimsbioko.server.domain.model.*;
-import com.github.cimsbioko.server.domain.model.Error;
 import com.github.cimsbioko.server.domain.util.CalendarAdapter;
 import com.github.cimsbioko.server.controller.service.ErrorService;
-import com.github.cimsbioko.server.controller.util.ErrorUtil;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +25,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.cimsbioko.server.webapi.LocationFormResource.LOCATION_FORM_PATH;
+import static com.github.cimsbioko.server.webapi.rest.LocationFormResource.LOCATION_FORM_PATH;
 
 @Controller
 @RequestMapping(LOCATION_FORM_PATH)

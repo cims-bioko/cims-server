@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.webapi;
+package com.github.cimsbioko.server.webapi.odk;
 
 import com.github.cimsbioko.server.controller.exception.ExistingSubmissionException;
 import com.github.cimsbioko.server.controller.service.FormSubmissionService;
@@ -50,7 +50,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import static com.github.cimsbioko.server.webapi.ODKFormsResource.ODK_API_PATH;
+import static com.github.cimsbioko.server.webapi.odk.ODKFormsResource.ODK_API_PATH;
 import static java.time.Instant.now;
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
 import static org.json.XML.toJSONObject;
@@ -58,7 +58,6 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.security.web.util.UrlUtils.buildFullRequestUrl;
 import static org.springframework.util.StringUtils.isEmpty;
-import static org.springframework.util.StringUtils.toLanguageTag;
 
 @Controller
 @RequestMapping(ODK_API_PATH)

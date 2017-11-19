@@ -1,7 +1,7 @@
 package com.github.cimsbioko.server.integration;
 
 import com.github.cimsbioko.server.integration.util.WebContextLoader;
-import com.github.cimsbioko.server.webapi.MobileDatabaseResource;
+import com.github.cimsbioko.server.webapi.rest.MobileDatabaseResource;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
@@ -30,7 +30,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.File;
 
-import static com.github.cimsbioko.server.webapi.MobileDatabaseResource.MOBILEDB_PATH;
+import static com.github.cimsbioko.server.webapi.rest.MobileDatabaseResource.MOBILEDB_PATH;
 import static org.springframework.http.MediaType.parseMediaType;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

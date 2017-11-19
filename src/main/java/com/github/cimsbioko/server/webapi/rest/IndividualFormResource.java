@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.webapi;
+package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.cimsbioko.server.controller.service.EntityService;
 import com.github.cimsbioko.server.controller.service.refactor.LocationService;
@@ -39,7 +39,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.github.cimsbioko.server.webapi.IndividualFormResource.INDIVIDUAL_FORM_PATH;
+import static com.github.cimsbioko.server.webapi.rest.IndividualFormResource.INDIVIDUAL_FORM_PATH;
 
 @Controller
 @RequestMapping(INDIVIDUAL_FORM_PATH)

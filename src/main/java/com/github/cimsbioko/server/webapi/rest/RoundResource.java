@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.webapi;
+package com.github.cimsbioko.server.webapi.rest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-import static com.github.cimsbioko.server.webapi.RoundResource.ROUND_FORM_PATH;
+import static com.github.cimsbioko.server.webapi.rest.RoundResource.ROUND_FORM_PATH;
 import static java.util.Arrays.asList;
 
 /**

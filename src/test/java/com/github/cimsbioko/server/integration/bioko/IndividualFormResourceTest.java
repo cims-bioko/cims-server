@@ -6,7 +6,7 @@ import com.github.cimsbioko.server.domain.model.Error;
 import com.github.cimsbioko.server.domain.util.CalendarAdapter;
 import com.github.cimsbioko.server.integration.AbstractResourceTest;
 import com.github.cimsbioko.server.integration.util.WebContextLoader;
-import com.github.cimsbioko.server.webapi.IndividualFormResource;
+import com.github.cimsbioko.server.webapi.rest.IndividualFormResource;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
@@ -30,7 +30,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.ByteArrayInputStream;
 
-import static com.github.cimsbioko.server.webapi.IndividualFormResource.INDIVIDUAL_FORM_PATH;
+import static com.github.cimsbioko.server.webapi.rest.IndividualFormResource.INDIVIDUAL_FORM_PATH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;

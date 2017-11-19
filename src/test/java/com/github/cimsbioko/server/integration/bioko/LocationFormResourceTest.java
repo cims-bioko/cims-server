@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.github.cimsbioko.server.webapi.LocationFormResource.LOCATION_FORM_PATH;
+import static com.github.cimsbioko.server.webapi.rest.LocationFormResource.LOCATION_FORM_PATH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
