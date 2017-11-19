@@ -134,7 +134,6 @@ public class LocationFormResource extends AbstractFormResource {
 
         // modify the extId if it matches another location's extId, log the change
         if (null != locationService.getByExtId(form.getLocationExtId())) {
-
             modifyExtId(location, form);
             // log the modification
             logMessage.add("Location persisted with Modified ExtId: Old = " + form.getLocationExtId() + " New = " + location.getExtId());
@@ -143,7 +142,6 @@ public class LocationFormResource extends AbstractFormResource {
             errorService.logError(error);
         } else {
             location.setExtId(form.getLocationExtId());
-            location.setBuildingNumber(form.getBuildingNumber());
         }
 
         // fill in data for the new location
@@ -163,10 +161,8 @@ public class LocationFormResource extends AbstractFormResource {
     }
 
     private void modifyExtId(Location location, Form form) {
-
         String newExtId = generateUniqueExtId(form.getLocationExtId());
         location.setExtId(newExtId);
-
     }
 
     private String generateUniqueExtId(String currentExtId) {
@@ -184,8 +180,6 @@ public class LocationFormResource extends AbstractFormResource {
         location.setUuid(form.getUuid());
         location.setLocationName(form.getLocationName());
         location.setLocationType(nullTypeToUrb(form.getLocationType()));
-        location.setBuildingNumber(form.getBuildingNumber());
-        location.setFloorNumber(form.getFloorNumber());
         location.setDescription(form.getDescription());
         if (form.getLatitude() != null && form.getLongitude() != null) {
             location.setGlobalPos(makePoint(form.getLongitude(), form.getLatitude()));

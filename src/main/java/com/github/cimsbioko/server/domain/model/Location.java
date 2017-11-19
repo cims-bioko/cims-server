@@ -54,13 +54,6 @@ public class Location
     @JoinColumn(name = "location_uuid")
     private List<Residency> residencies = new ArrayList<>();
 
-    // Extensions for bioko island project
-    @Description(description = "The number of this building within a sector")
-    private Integer buildingNumber;
-
-    @Description(description = "The floor number within the building this location is associated with")
-    private Integer floorNumber;
-
     @Description(description = "A description of the observable features of a location")
     private String description;
 
@@ -118,22 +111,6 @@ public class Location
 
     public void setResidencies(List<Residency> list) {
         residencies = list;
-    }
-
-    public Integer getBuildingNumber() {
-        return buildingNumber;
-    }
-
-    public void setBuildingNumber(Integer buildingNumber) {
-        this.buildingNumber = buildingNumber;
-    }
-
-    public Integer getFloorNumber() {
-        return floorNumber;
-    }
-
-    public void setFloorNumber(Integer floorNumber) {
-        this.floorNumber = floorNumber;
     }
 
     @Override
