@@ -46,7 +46,7 @@ public class SprayingFormResource extends AbstractFormResource {
         return new ResponseEntity<>(form, HttpStatus.CREATED);
     }
 
-    @XmlEnum(String.class)
+    @XmlEnum
     @XmlType
     public enum Evaluation {
         @XmlEnumValue("1")SPRAYED,

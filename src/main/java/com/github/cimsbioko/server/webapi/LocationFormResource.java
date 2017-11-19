@@ -22,11 +22,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import static com.github.cimsbioko.server.webapi.LocationFormResource.LOCATION_FORM_PATH;
@@ -57,8 +55,7 @@ public class LocationFormResource extends AbstractFormResource {
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
-    public ResponseEntity<? extends Serializable> processForm(
-            @RequestBody Form form) throws JAXBException {
+    public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form) throws JAXBException {
 
         try {
             JAXBContext context = JAXBContext.newInstance(Form.class);
@@ -71,12 +68,7 @@ public class LocationFormResource extends AbstractFormResource {
         List<String> logMessage = new ArrayList<>();
         ConstraintViolations cv = new ConstraintViolations();
 
-        // clean up "null" strings created by Mirth0
-        if ("null".equals(form.getHierarchyUuid())) {
-            form.setHierarchyUuid(null);
-        }
-
-        if ("null".equals(form.getLocationExtId())) {
+        if (form.locationExtId == null) {
             cv.addViolations("No Location ExtId provided");
             logError(cv, null, createDTOPayload(form), Form.LOG_NAME);
             return requestError(cv);
@@ -84,9 +76,9 @@ public class LocationFormResource extends AbstractFormResource {
 
         Location location;
         try {
-            location = locationService.getByUuid(form.getUuid());
+            location = locationService.getByUuid(form.uuid);
             if (null != location) {
-                cv.addViolations("Location already exists " + form.getUuid());
+                cv.addViolations("Location already exists " + form.uuid);
                 logError(cv, null, createDTOPayload(form), Form.LOG_NAME);
                 return requestError(cv);
             }
@@ -97,9 +89,9 @@ public class LocationFormResource extends AbstractFormResource {
         location = new Location();
 
         // collected by whom?
-        FieldWorker collectedBy = fieldWorkerService.getByUuid(form.getFieldWorkerUuid());
+        FieldWorker collectedBy = fieldWorkerService.getByUuid(form.fieldWorkerUuid);
         if (null == collectedBy) {
-            cv.addViolations("Field Worker does not exist : " + form.getFieldWorkerUuid());
+            cv.addViolations("Field Worker does not exist : " + form.fieldWorkerUuid);
             logError(cv, null, createDTOPayload(form), Form.LOG_NAME);
             return requestError(cv);
         }
@@ -111,9 +103,9 @@ public class LocationFormResource extends AbstractFormResource {
 
             // Get hierarchy by uuid.
             // Fall back on extId if uuid is missing, which allows us to re-process older forms.
-            String uuid = form.getHierarchyUuid();
+            String uuid = form.hierarchyUuid;
             if (null == uuid) {
-                locationHierarchy = locationHierarchyService.findByExtId(form.getHierarchyExtId());
+                locationHierarchy = locationHierarchyService.findByExtId(form.hierarchyExtId);
             } else {
                 locationHierarchy = locationHierarchyService.findByUuid(uuid);
                 if (null == locationHierarchy) {
@@ -122,7 +114,7 @@ public class LocationFormResource extends AbstractFormResource {
             }
 
             if (null == locationHierarchy) {
-                cv.addViolations("Location Hierarchy does not exist : " + form.getHierarchyUuid() + " / " + form.getHierarchyExtId());
+                cv.addViolations("Location Hierarchy does not exist : " + form.hierarchyUuid + " / " + form.hierarchyExtId);
                 logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME);
                 return requestError(cv);
             }
@@ -133,15 +125,15 @@ public class LocationFormResource extends AbstractFormResource {
         location.setLocationHierarchy(locationHierarchy);
 
         // modify the extId if it matches another location's extId, log the change
-        if (null != locationService.getByExtId(form.getLocationExtId())) {
+        if (null != locationService.getByExtId(form.locationExtId)) {
             modifyExtId(location, form);
             // log the modification
-            logMessage.add("Location persisted with Modified ExtId: Old = " + form.getLocationExtId() + " New = " + location.getExtId());
+            logMessage.add("Location persisted with Modified ExtId: Old = " + form.locationExtId + " New = " + location.getExtId());
             String payload = createDTOPayload(form);
             Error error = ErrorUtil.createError(payload, Form.LOG_NAME, collectedBy, logMessage);
             errorService.logError(error);
         } else {
-            location.setExtId(form.getLocationExtId());
+            location.setExtId(form.locationExtId);
         }
 
         // fill in data for the new location
@@ -161,7 +153,7 @@ public class LocationFormResource extends AbstractFormResource {
     }
 
     private void modifyExtId(Location location, Form form) {
-        String newExtId = generateUniqueExtId(form.getLocationExtId());
+        String newExtId = generateUniqueExtId(form.locationExtId);
         location.setExtId(newExtId);
     }
 
@@ -177,29 +169,28 @@ public class LocationFormResource extends AbstractFormResource {
 
     private void copyFormDataToLocation(Form form, Location location) {
         // fieldWorker, CollectedDateTime, and HierarchyLevel are set outside of this method
-        location.setUuid(form.getUuid());
-        location.setLocationName(form.getLocationName());
-        location.setLocationType(nullTypeToUrb(form.getLocationType()));
-        location.setDescription(form.getDescription());
-        if (form.getLatitude() != null && form.getLongitude() != null) {
-            location.setGlobalPos(makePoint(form.getLongitude(), form.getLatitude()));
+        location.setUuid(form.uuid);
+        location.setLocationName(form.locationName);
+        location.setLocationType(nullTypeToUrb(form.locationType));
+        location.setDescription(form.description);
+        if (form.latitude != null && form.longitude != null) {
+            location.setGlobalPos(makePoint(form.longitude, form.latitude));
         }
     }
 
     private static String nullTypeToUrb(String locationType) {
-        return null == locationType || "null".equals(locationType) ? "URB" : locationType;
+        return locationType == null ? "URB" : locationType;
     }
 
     private LocationHierarchy createSector(Form form) throws ConstraintViolations {
         LocationHierarchy locationHierarchy = new LocationHierarchy();
+        locationHierarchy.setExtId(form.hierarchyExtId);
+        locationHierarchy.setUuid(form.hierarchyUuid);
+        locationHierarchy.setName(form.sectorName);
 
-        locationHierarchy.setExtId(form.getHierarchyExtId());
-        locationHierarchy.setUuid(form.getHierarchyUuid());
-        locationHierarchy.setName(form.getSectorName());
-
-        String parentUuid = form.getHierarchyParentUuid();
+        String parentUuid = form.hierarchyParentUuid;
         LocationHierarchy parent = locationHierarchyService.findByUuid(parentUuid);
-        if (null == parent) {
+        if (parent == null) {
             throw new ConstraintViolations("Could not find location hierarchy parent with UUID " + parentUuid);
         }
         locationHierarchy.setParent(parent);
@@ -234,18 +225,8 @@ public class LocationFormResource extends AbstractFormResource {
         @XmlElement(name = "entity_uuid")
         private String uuid;
 
-        @XmlElement(name = "entity_ext_id")
-        private String entityExtId;
-
-        @XmlElement(name = "field_worker_ext_id")
-        private String fieldWorkerExtId;
-
         @XmlElement(name = "field_worker_uuid")
         private String fieldWorkerUuid;
-
-        @XmlElement(name = "collection_date_time")
-        @XmlJavaTypeAdapter(CalendarAdapter.class)
-        private Calendar collectionDateTime;
 
         //location form fields
         @XmlElement(name = "hierarchy_ext_id")
@@ -269,12 +250,6 @@ public class LocationFormResource extends AbstractFormResource {
         @XmlElement(name = "sector_name")
         private String sectorName;
 
-        @XmlElement(name = "location_building_number")
-        private Integer buildingNumber;
-
-        @XmlElement(name = "location_floor_number")
-        private Integer floorNumber;
-
         @XmlElement(name = "description")
         private String description;
 
@@ -283,90 +258,5 @@ public class LocationFormResource extends AbstractFormResource {
 
         @XmlElement(name = "latitude")
         private String latitude;
-
-        public String getHierarchyParentUuid() {
-            return hierarchyParentUuid;
-        }
-
-        public String getEntityExtId() {
-            return entityExtId;
-        }
-
-        public String getFieldWorkerUuid() {
-            return fieldWorkerUuid;
-        }
-
-        public String getHierarchyUuid() {
-            return hierarchyUuid;
-        }
-
-        public void setHierarchyUuid(String hierarchyUuid) {
-            this.hierarchyUuid = hierarchyUuid;
-        }
-
-        public String getLongitude() {
-            return longitude;
-        }
-
-        public String getUuid() {
-            return uuid;
-        }
-
-        public void setUuid(String uuid) {
-            this.uuid = uuid;
-        }
-
-        public String getLatitude() {
-            return latitude;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public Integer getBuildingNumber() {
-            return buildingNumber;
-        }
-
-        public Integer getFloorNumber() {
-            return floorNumber;
-        }
-
-        public String getFieldWorkerExtId() {
-            return fieldWorkerExtId;
-        }
-
-        public Calendar getCollectionDateTime() {
-            return collectionDateTime;
-        }
-
-        public String getHierarchyExtId() {
-            return hierarchyExtId;
-        }
-
-        public String getLocationExtId() {
-            return locationExtId;
-        }
-
-        public String getLocationName() {
-            return locationName;
-        }
-
-        public void setLocationName(String locationName) {
-            this.locationName = locationName;
-        }
-
-        public String getLocationType() {
-            return locationType;
-        }
-
-        public String getSectorName() {
-            return sectorName;
-        }
-
     }
 }

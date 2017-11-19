@@ -36,7 +36,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -92,34 +91,13 @@ public class IndividualFormResource extends AbstractFormResource {
             throw new RuntimeException("Could not create JAXB context and marshaller for OutMigrationFormResource");
         }
 
-        // Clean up "null" strings created by Mirth
-        if ("null".equals(form.getIndividualRelationshipToHeadOfHousehold())) {
-            form.setIndividualRelationshipToHeadOfHousehold(null);
-        }
-
-        if ("null".equals(form.getHouseholdUuid())) {
-            form.setHouseholdUuid(null);
-        }
-
-        if ("null".equals(form.getSocialgroupUuid())) {
-            form.setSocialgroupUuid(null);
-        }
-
-        if ("null".equals(form.getRelationshipUuid())) {
-            form.setRelationshipUuid(null);
-        }
-
-        if ("null".equals(form.getMembershipUuid())) {
-            form.setMembershipUuid(null);
-        }
-
         // Default relationship to head of household is "self"
-        if (null == form.getIndividualRelationshipToHeadOfHousehold()) {
-            form.setIndividualRelationshipToHeadOfHousehold(HEAD_OF_HOUSEHOLD_SELF);
+        if (form.individualRelationshipToHeadOfHousehold == null) {
+            form.individualRelationshipToHeadOfHousehold = HEAD_OF_HOUSEHOLD_SELF;
         }
 
         // collected when?
-        Calendar collectionTime = form.getCollectionDateTime();
+        Calendar collectionTime = form.collectionDateTime;
         if (null == collectionTime) {
             collectionTime = getDateInPast();
         }
@@ -129,7 +107,7 @@ public class IndividualFormResource extends AbstractFormResource {
 
         // collected by whom?
         ConstraintViolations cv = new ConstraintViolations();
-        FieldWorker collectedBy = fieldWorkerService.getByUuid(form.getFieldWorkerUuid());
+        FieldWorker collectedBy = fieldWorkerService.getByUuid(form.fieldWorkerUuid);
         if (null == collectedBy) {
             cv.addViolations("Field Worker does not exist");
             logError(cv, null, createDTOPayload(form), Form.LOG_NAME);
@@ -141,15 +119,15 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             // Get location by uuid.
             // Fall back on extId if uuid is missing, which allows us to re-process older forms.
-            String uuid = form.getHouseholdUuid();
+            String uuid = form.householdUuid;
             if (null == uuid) {
-                location = locationService.getByExtId(form.getHouseholdExtId());
+                location = locationService.getByExtId(form.householdExtId);
             } else {
                 location = locationService.getByUuid(uuid);
             }
 
             if (null == location) {
-                String errorMessage = "Location does not exist " + form.getHouseholdUuid() + " / " + form.getHouseholdExtId();
+                String errorMessage = "Location does not exist " + form.householdUuid + " / " + form.householdExtId;
                 cv.addViolations(errorMessage);
                 logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME);
                 return requestError(errorMessage);
@@ -183,16 +161,16 @@ public class IndividualFormResource extends AbstractFormResource {
         }
 
         // change the individual's extId if the server has previously changed the extId of their location/household
-        if (!form.getHouseholdExtId().equalsIgnoreCase(location.getExtId())) {
+        if (!form.householdExtId.equalsIgnoreCase(location.getExtId())) {
 
             updateIndividualExtId(individual, location);
 
             // log the modification
-            cv.addViolations("Individual ExtId updated from " + form.getIndividualExtId() + " to " + individual.getExtId());
+            cv.addViolations("Individual ExtId updated from " + form.individualExtId + " to " + individual.getExtId());
             logError(cv, collectedBy, createDTOPayload(form), Form.LOG_NAME);
 
             //household extId used later by social group, need to correct it here
-            form.setHouseholdExtId(location.getExtId());
+            form.householdExtId = location.getExtId();
         }
 
         // log a warning if the individual extId clashes with an existing individual's extId
@@ -218,7 +196,7 @@ public class IndividualFormResource extends AbstractFormResource {
         }
 
         SocialGroup socialGroup;
-        if (form.getIndividualRelationshipToHeadOfHousehold().equals(HEAD_OF_HOUSEHOLD_SELF)) {
+        if (form.individualRelationshipToHeadOfHousehold.equals(HEAD_OF_HOUSEHOLD_SELF)) {
 
             // may create social group for head of household
             socialGroup = findOrMakeSocialGroup(form, location, individual, insertTime, collectedBy);
@@ -231,9 +209,9 @@ public class IndividualFormResource extends AbstractFormResource {
 
             // Get social group by uuid.
             // Fall back on extId if uuid is missing, which allows us to re-process older forms.
-            String uuid = form.getSocialgroupUuid();
+            String uuid = form.socialgroupUuid;
             if (null == uuid) {
-                socialGroup = socialGroupService.getByExtId(form.getHouseholdExtId());
+                socialGroup = socialGroupService.getByExtId(form.householdExtId);
             } else {
                 socialGroup = socialGroupService.getByUuid(uuid);
             }
@@ -283,7 +261,7 @@ public class IndividualFormResource extends AbstractFormResource {
     private Individual findOrMakeIndividual(Form form, FieldWorker collectedBy,
                                             Calendar insertTime, ConstraintViolations cv) throws Exception {
 
-        Individual individual = individualService.getByUuid(form.getUuid());
+        Individual individual = individualService.getByUuid(form.uuid);
         if (null == individual) {
             individual = new Individual();
         }
@@ -299,27 +277,27 @@ public class IndividualFormResource extends AbstractFormResource {
     private void copyFormDataToIndividual(Form form, Individual individual)
             throws Exception {
         if (null == individual.getUuid()) {
-            individual.setUuid(form.getUuid());
+            individual.setUuid(form.uuid);
         }
-        individual.setExtId(form.getIndividualExtId());
-        individual.setFirstName(form.getIndividualFirstName());
-        individual.setMiddleName(form.getIndividualOtherNames());
-        individual.setLastName(form.getIndividualLastName());
-        individual.setGender(form.getIndividualGender());
+        individual.setExtId(form.individualExtId);
+        individual.setFirstName(form.individualFirstName);
+        individual.setMiddleName(form.individualOtherNames);
+        individual.setLastName(form.individualLastName);
+        individual.setGender(form.individualGender);
 
-        Calendar dob = form.getIndividualDateOfBirth();
+        Calendar dob = form.individualDateOfBirth;
         log.debug("date of birth {}", dob);
         if (null == dob) {
             dob = getDateInPast();
         }
         individual.setDob(dob);
-        individual.setPhoneNumber(form.getIndividualPhoneNumber());
-        individual.setOtherPhoneNumber(form.getIndividualOtherPhoneNumber());
-        individual.setLanguagePreference(form.getIndividualLanguagePreference());
-        individual.setPointOfContactName(form.getIndividualPointOfContactName());
-        individual.setPointOfContactPhoneNumber(form.getIndividualPointOfContactPhoneNumber());
-        individual.setDip(form.getIndividualDip());
-        individual.setNationality(form.getIndividualNationality());
+        individual.setPhoneNumber(form.individualPhoneNumber);
+        individual.setOtherPhoneNumber(form.individualOtherPhoneNumber);
+        individual.setLanguagePreference(form.individualLanguagePreference);
+        individual.setPointOfContactName(form.individualPointOfContactName);
+        individual.setPointOfContactPhoneNumber(form.individualPointOfContactPhoneNumber);
+        individual.setDip(form.individualDip);
+        individual.setNationality(form.individualNationality);
     }
 
 
@@ -329,9 +307,9 @@ public class IndividualFormResource extends AbstractFormResource {
         // Get social group by uuid.
         // Fall back on extId if uuid is missing, which allows us to re-process older forms.
         SocialGroup socialGroup;
-        String uuid = form.getSocialgroupUuid();
+        String uuid = form.socialgroupUuid;
         if (null == uuid) {
-            socialGroup = socialGroupService.getByExtId(form.getHouseholdExtId());
+            socialGroup = socialGroupService.getByExtId(form.householdExtId);
         } else {
             socialGroup = socialGroupService.getByUuid(uuid);
         }
@@ -404,7 +382,7 @@ public class IndividualFormResource extends AbstractFormResource {
         // might need a brand new membership
         if (null == membership) {
             membership = new Membership();
-            membership.setUuid(form.getMembershipUuid());
+            membership.setUuid(form.membershipUuid);
         }
 
         // fill in or update
@@ -412,7 +390,7 @@ public class IndividualFormResource extends AbstractFormResource {
         membership.setSocialGroup(socialGroup);
         membership.setCollectedBy(collectedBy);
         membership.setInsertDate(insertTime);
-        membership.setbIsToA(form.getIndividualRelationshipToHeadOfHousehold());
+        membership.setbIsToA(form.individualRelationshipToHeadOfHousehold);
 
 
         // attach to individual
@@ -437,7 +415,7 @@ public class IndividualFormResource extends AbstractFormResource {
         // might need a brand new relationship
         if (null == relationship) {
             relationship = new Relationship();
-            relationship.setUuid(form.getRelationshipUuid());
+            relationship.setUuid(form.relationshipUuid);
         }
 
         // fill in or update
@@ -445,7 +423,7 @@ public class IndividualFormResource extends AbstractFormResource {
         relationship.setIndividualB(individualB);
         relationship.setCollectedBy(collectedBy);
         relationship.setInsertDate(insertTime);
-        relationship.setaIsToB(form.getIndividualRelationshipToHeadOfHousehold());
+        relationship.setaIsToB(form.individualRelationshipToHeadOfHousehold);
 
         // attach to individual
         individualA.getAllRelationships1().add(relationship);
@@ -569,122 +547,5 @@ public class IndividualFormResource extends AbstractFormResource {
 
         @XmlElement(name = "individual_nationality")
         private String individualNationality;
-
-        public String getMembershipUuid() {
-            return membershipUuid;
-        }
-
-        public void setMembershipUuid(String membershipUuid) {
-            this.membershipUuid = membershipUuid;
-        }
-
-        public String getRelationshipUuid() {
-            return relationshipUuid;
-        }
-
-        public void setRelationshipUuid(String relationshipUuid) {
-            this.relationshipUuid = relationshipUuid;
-        }
-
-        public String getSocialgroupUuid() {
-            return socialgroupUuid;
-        }
-
-        public void setSocialgroupUuid(String socialgroupUuid) {
-            this.socialgroupUuid = socialgroupUuid;
-        }
-
-        public String getFieldWorkerUuid() {
-            return fieldWorkerUuid;
-        }
-
-        public String getHouseholdUuid() {
-            return householdUuid;
-        }
-
-        public void setHouseholdUuid(String householdUuid) {
-            this.householdUuid = householdUuid;
-        }
-
-        public String getUuid() {
-            return uuid;
-        }
-
-        public void setUuid(String uuid) {
-            this.uuid = uuid;
-        }
-
-        public Calendar getCollectionDateTime() {
-            return collectionDateTime;
-        }
-
-        public String getHouseholdExtId() {
-            return householdExtId;
-        }
-
-        public void setHouseholdExtId(String householdExtId) {
-            this.householdExtId = householdExtId;
-        }
-
-        public String getIndividualExtId() {
-            return individualExtId;
-        }
-
-        public String getIndividualFirstName() {
-            return individualFirstName;
-        }
-
-        public String getIndividualLastName() {
-            return individualLastName;
-        }
-
-        public String getIndividualOtherNames() {
-            return individualOtherNames;
-        }
-
-        public Calendar getIndividualDateOfBirth() {
-            return individualDateOfBirth;
-        }
-
-        public String getIndividualGender() {
-            return individualGender;
-        }
-
-        public String getIndividualRelationshipToHeadOfHousehold() {
-            return individualRelationshipToHeadOfHousehold;
-        }
-
-        public void setIndividualRelationshipToHeadOfHousehold(
-                String individualRelationshipToHeadOfHousehold) {
-            this.individualRelationshipToHeadOfHousehold = individualRelationshipToHeadOfHousehold;
-        }
-
-        public String getIndividualPhoneNumber() {
-            return individualPhoneNumber;
-        }
-
-        public String getIndividualOtherPhoneNumber() {
-            return individualOtherPhoneNumber;
-        }
-
-        public String getIndividualLanguagePreference() {
-            return individualLanguagePreference;
-        }
-
-        public String getIndividualPointOfContactName() {
-            return individualPointOfContactName;
-        }
-
-        public String getIndividualPointOfContactPhoneNumber() {
-            return individualPointOfContactPhoneNumber;
-        }
-
-        public int getIndividualDip() {
-            return individualDip;
-        }
-
-        public String getIndividualNationality() {
-            return individualNationality;
-        }
     }
 }
