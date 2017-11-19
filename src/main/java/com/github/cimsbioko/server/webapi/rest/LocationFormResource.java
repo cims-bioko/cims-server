@@ -5,7 +5,6 @@ import com.github.cimsbioko.server.controller.service.refactor.FieldWorkerServic
 import com.github.cimsbioko.server.controller.service.refactor.LocationService;
 import com.github.cimsbioko.server.domain.model.*;
 import com.github.cimsbioko.server.domain.util.CalendarAdapter;
-import com.github.cimsbioko.server.controller.service.ErrorService;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,9 +40,6 @@ public class LocationFormResource extends AbstractFormResource {
 
     @Autowired
     private LocationHierarchyService locationHierarchyService;
-
-    @Autowired
-    private ErrorService errorService;
 
     @Autowired
     private CalendarAdapter adapter;
