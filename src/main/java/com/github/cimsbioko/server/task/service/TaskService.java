@@ -1,10 +1,10 @@
 package com.github.cimsbioko.server.task.service;
 
-import com.github.cimsbioko.server.domain.model.AsyncTask;
+import com.github.cimsbioko.server.domain.model.Task;
 
 import java.util.List;
 
-public interface AsyncTaskService {
+public interface TaskService {
 
     String MOBILEDB_TASK_NAME = "Mobile DB Task";
 
@@ -18,5 +18,5 @@ public interface AsyncTaskService {
 
     void finishTask(String name, long itemsWritten, String descriptorValue);
 
-    List<AsyncTask> findAll();
+    List<Task> findAll();
 }

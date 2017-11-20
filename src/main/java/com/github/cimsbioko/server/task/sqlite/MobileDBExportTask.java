@@ -4,7 +4,7 @@ import com.github.batkinson.jrsync.Metadata;
 
 import com.github.cimsbioko.server.task.SyncFileTask;
 import com.github.cimsbioko.server.task.TaskContext;
-import com.github.cimsbioko.server.task.service.AsyncTaskService;
+import com.github.cimsbioko.server.task.service.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import java.util.Properties;
 import javax.annotation.Resource;
 
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
-import static com.github.cimsbioko.server.task.service.AsyncTaskService.MOBILEDB_TASK_NAME;
+import static com.github.cimsbioko.server.task.service.TaskService.MOBILEDB_TASK_NAME;
 
 /**
  * Exports an sqlite database usable by the tablet application.
@@ -38,7 +38,7 @@ public class MobileDBExportTask implements SyncFileTask {
     private static final int DEFAULT_SYNC_BLOCK_SIZE = 8192;
     private static final String MD5 = "MD5";
 
-    private AsyncTaskService asyncTaskService;
+    private TaskService taskService;
 
     private Exporter exporter;
 
@@ -49,8 +49,8 @@ public class MobileDBExportTask implements SyncFileTask {
     private org.springframework.core.io.Resource postDdl;
 
     @Autowired
-    public MobileDBExportTask(AsyncTaskService taskService, Exporter exporter) {
-        asyncTaskService = taskService;
+    public MobileDBExportTask(TaskService taskService, Exporter exporter) {
+        this.taskService = taskService;
         this.exporter = exporter;
         tableQueries = new Properties();
     }
@@ -75,7 +75,7 @@ public class MobileDBExportTask implements SyncFileTask {
     @Transactional
     public void run(TaskContext context) {
 
-        asyncTaskService.startTask(MOBILEDB_TASK_NAME);
+        taskService.startTask(MOBILEDB_TASK_NAME);
         int tablesExported = 0;
 
         try {
@@ -88,7 +88,7 @@ public class MobileDBExportTask implements SyncFileTask {
             exporter.scriptTarget(preDdl.getInputStream(), scratch);
             for (Map.Entry e : tableQueries.entrySet()) {
                 exporter.export(e.getValue().toString(), e.getKey().toString(), scratch);
-                asyncTaskService.updateTaskProgress(MOBILEDB_TASK_NAME, ++tablesExported);
+                taskService.updateTaskProgress(MOBILEDB_TASK_NAME, ++tablesExported);
             }
             exporter.scriptTarget(postDdl.getInputStream(), scratch);
 
@@ -103,11 +103,11 @@ public class MobileDBExportTask implements SyncFileTask {
 
             // Complete the process, latching the new file contents and sync metadata
             if (scratch.renameTo(dest) && metaScratch.renameTo(metaDest)) {
-                asyncTaskService.finishTask(MOBILEDB_TASK_NAME, tablesExported, md5);
+                taskService.finishTask(MOBILEDB_TASK_NAME, tablesExported, md5);
             }
         } catch (IOException | SQLException | ClassNotFoundException | NoSuchAlgorithmException e) {
             log.error("failed to export mobile db", e);
-            asyncTaskService.finishTask(MOBILEDB_TASK_NAME, tablesExported, e.getMessage());
+            taskService.finishTask(MOBILEDB_TASK_NAME, tablesExported, e.getMessage());
         }
     }
 

@@ -43,7 +43,7 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="annotatedClasses">
             <list>
-                <value>com.github.cimsbioko.server.domain.model.AsyncTask</value>
+                <value>com.github.cimsbioko.server.domain.model.Task</value>
                 <value>com.github.cimsbioko.server.domain.model.AuditableCollectedEntity</value>
                 <value>com.github.cimsbioko.server.domain.model.AuditableEntity</value>
                 <value>com.github.cimsbioko.server.domain.model.FieldWorker</value>
@@ -144,7 +144,7 @@
     </bean>
 
     <bean id="taskDao" parent="baseDao">
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.AsyncTask"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.model.Task"/>
     </bean>
 
     <bean id="flywayTemplate" class="org.flywaydb.core.Flyway" abstract="true">
@@ -574,7 +574,7 @@
     <!-- Beans -->
     <bean id="taskBean" class="com.github.cimsbioko.server.web.beans.TaskBean" init-method="scheduleAllTasks">
         <constructor-arg ref="openhdsTaskExecutor"/>
-        <constructor-arg ref="asyncTaskServiceImpl"/>
+        <constructor-arg ref="taskServiceImpl"/>
         <constructor-arg ref="taskScheduler"/>
         <constructor-arg ref="currentUser"/>
     </bean>

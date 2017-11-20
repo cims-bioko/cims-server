@@ -1,0 +1,1 @@
+alter table asynctask rename to task;

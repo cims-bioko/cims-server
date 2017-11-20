@@ -5,8 +5,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import com.github.cimsbioko.server.controller.service.CurrentUser;
-import com.github.cimsbioko.server.domain.model.AsyncTask;
-import com.github.cimsbioko.server.task.service.AsyncTaskService;
+import com.github.cimsbioko.server.domain.model.Task;
+import com.github.cimsbioko.server.task.service.TaskService;
 import com.github.cimsbioko.server.task.support.TaskExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ public class TaskBean {
 
     private static final String TASK_VIEW = "task";
     private TaskExecutor taskExecutor;
-    private AsyncTaskService asyncTaskService;
+    private TaskService taskService;
     private TaskScheduler scheduler;
     private CurrentUser currentUser;
 
@@ -27,10 +27,10 @@ public class TaskBean {
 
     private String cronSchedule = "0 0 * * * ?";
 
-    public TaskBean(TaskExecutor taskExecutor, AsyncTaskService asyncTaskService, TaskScheduler scheduler,
+    public TaskBean(TaskExecutor taskExecutor, TaskService taskService, TaskScheduler scheduler,
                     CurrentUser currentUser) {
         this.taskExecutor = taskExecutor;
-        this.asyncTaskService = asyncTaskService;
+        this.taskService = taskService;
         this.scheduler = scheduler;
         this.currentUser = currentUser;
     }
@@ -83,8 +83,8 @@ public class TaskBean {
         return TASK_VIEW;
     }
 
-    public List<AsyncTask> getTasks() {
-        return asyncTaskService.findAll();
+    public List<Task> getTasks() {
+        return taskService.findAll();
     }
 
     public String getCronSchedule() {

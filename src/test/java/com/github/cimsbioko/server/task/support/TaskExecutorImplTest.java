@@ -11,9 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import com.github.cimsbioko.server.task.SyncFileTask;
-import com.github.cimsbioko.server.task.service.AsyncTaskService;
+import com.github.cimsbioko.server.task.service.TaskService;
 
-import static com.github.cimsbioko.server.task.service.AsyncTaskService.MOBILEDB_TASK_NAME;
+import static com.github.cimsbioko.server.task.service.TaskService.MOBILEDB_TASK_NAME;
 
 public class TaskExecutorImplTest {
 
@@ -21,7 +21,7 @@ public class TaskExecutorImplTest {
     FileResolver fileResolver;
 
     @Mock
-    AsyncTaskService asyncTaskService;
+    TaskService taskService;
 
     @Mock
     private SyncFileTask writeTask;
@@ -31,12 +31,12 @@ public class TaskExecutorImplTest {
     @Before
     public void setUp() {
         initMocks(this);
-        executor = new TaskExecutorImpl(asyncTaskService, fileResolver);
+        executor = new TaskExecutorImpl(taskService, fileResolver);
     }
     
     @Test
     public void shouldRunIndividualXmlTask() {
-        when(asyncTaskService.taskShouldRun(MOBILEDB_TASK_NAME)).thenReturn(true);
+        when(taskService.taskShouldRun(MOBILEDB_TASK_NAME)).thenReturn(true);
 
         executor.setMobileDBWriter(writeTask);
         executor.executeMobileDBTask();
@@ -47,7 +47,7 @@ public class TaskExecutorImplTest {
 
     @Test
     public void shouldNotRunIndividualXmlTask() {
-        when(asyncTaskService.taskShouldRun(MOBILEDB_TASK_NAME)).thenReturn(false);
+        when(taskService.taskShouldRun(MOBILEDB_TASK_NAME)).thenReturn(false);
 
         executor.setMobileDBWriter(writeTask);
         executor.executeMobileDBTask();

@@ -2,8 +2,8 @@ package com.github.cimsbioko.server.task.service.impl;
 
 import org.hibernate.SessionFactory;
 import com.github.cimsbioko.server.dao.Dao;
-import com.github.cimsbioko.server.domain.model.AsyncTask;
-import com.github.cimsbioko.server.task.service.AsyncTaskService;
+import com.github.cimsbioko.server.domain.model.Task;
+import com.github.cimsbioko.server.task.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -14,13 +14,13 @@ import java.util.Calendar;
 import java.util.List;
 
 @Component
-public class AsyncTaskServiceImpl implements AsyncTaskService {
+public class TaskServiceImpl implements TaskService {
 
     private SessionFactory sessionFactory;
-    private Dao<AsyncTask, String> dao;
+    private Dao<Task, String> dao;
 
     @Autowired
-    public AsyncTaskServiceImpl(SessionFactory sessionFactory, @Qualifier("taskDao") Dao<AsyncTask, String> dao) {
+    public TaskServiceImpl(SessionFactory sessionFactory, @Qualifier("taskDao") Dao<Task, String> dao) {
         this.sessionFactory = sessionFactory;
         this.dao = dao;
     }
@@ -31,7 +31,7 @@ public class AsyncTaskServiceImpl implements AsyncTaskService {
         return taskShouldRun(dao.findByProperty("name", name));
     }
 
-    private boolean taskShouldRun(AsyncTask task) {
+    private boolean taskShouldRun(Task task) {
         return task == null || task.getFinished() != null;
     }
 
@@ -39,9 +39,9 @@ public class AsyncTaskServiceImpl implements AsyncTaskService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void startTask(String name) {
-        AsyncTask task = dao.findByProperty("name", name);
+        Task task = dao.findByProperty("name", name);
         if (task == null) {
-            task = new AsyncTask();
+            task = new Task();
             task.setName(name);
         }
         task.setFinished(null);
@@ -54,14 +54,14 @@ public class AsyncTaskServiceImpl implements AsyncTaskService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateTaskProgress(String name, long itemsWritten) {
-        AsyncTask task = dao.findByProperty("name", name);
+        Task task = dao.findByProperty("name", name);
         task.setItemCount(itemsWritten);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public String getDescriptor(String name) {
-        AsyncTask task = dao.findByProperty("name", name);
+        Task task = dao.findByProperty("name", name);
         return task == null ? null : task.getDescriptor();
     }
 
@@ -69,14 +69,14 @@ public class AsyncTaskServiceImpl implements AsyncTaskService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void finishTask(String name, long itemsWritten, String descriptorValue) {
-        AsyncTask task = dao.findByProperty("name", name);
+        Task task = dao.findByProperty("name", name);
         task.setItemCount(itemsWritten);
         task.setFinished(Calendar.getInstance());
         task.setDescriptor(descriptorValue);
     }
 
     @Override
-    public List<AsyncTask> findAll() {
+    public List<Task> findAll() {
         return dao.findAll(false);
     }
 

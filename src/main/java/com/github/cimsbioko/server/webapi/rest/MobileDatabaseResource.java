@@ -1,7 +1,7 @@
 package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.batkinson.jrsync.Metadata;
-import com.github.cimsbioko.server.task.service.AsyncTaskService;
+import com.github.cimsbioko.server.task.service.TaskService;
 import com.github.cimsbioko.server.task.support.FileResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -19,7 +19,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import static com.github.cimsbioko.server.Application.WebConfig.CACHED_FILES_PATH;
-import static com.github.cimsbioko.server.task.service.AsyncTaskService.MOBILEDB_TASK_NAME;
+import static com.github.cimsbioko.server.task.service.TaskService.MOBILEDB_TASK_NAME;
 
 
 /**
@@ -42,12 +42,12 @@ public class MobileDatabaseResource {
     private FileResolver fileResolver;
 
     @Autowired
-    private AsyncTaskService asyncTaskService;
+    private TaskService taskService;
 
     @RequestMapping(value = MOBILEDB_PATH, method = RequestMethod.GET, produces = {SQLITE_MIME_TYPE, Metadata.MIME_TYPE})
     public String mobileDB(WebRequest request) throws ServletException, IOException {
 
-        String contentHash = asyncTaskService.getDescriptor(MOBILEDB_TASK_NAME);
+        String contentHash = taskService.getDescriptor(MOBILEDB_TASK_NAME);
         File cacheFile = fileResolver.resolveMobileDBFile();
         File metadataFile = new File(cacheFile.getParentFile(), cacheFile.getName() + "." + Metadata.FILE_EXT);
         String accept = request.getHeader(Headers.ACCEPT);

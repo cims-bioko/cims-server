@@ -7,8 +7,8 @@ import java.util.Calendar;
 
 
 @Entity
-@Table(name = "asynctask")
-public class AsyncTask {
+@Table(name = "task")
+public class Task {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
