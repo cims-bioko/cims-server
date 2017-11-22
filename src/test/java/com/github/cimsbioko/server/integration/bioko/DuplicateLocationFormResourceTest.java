@@ -80,7 +80,7 @@ public class DuplicateLocationFormResourceTest extends AbstractResourceTest {
                         .session(session)
                         .accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .content(getTestForm("gps-only")))
+                        .content(getGPSTestForm("new_lat", "new_lng")))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
@@ -93,6 +93,26 @@ public class DuplicateLocationFormResourceTest extends AbstractResourceTest {
         assertEquals("new_acc", dbLoc.getAccuracy());
     }
 
+    @Test
+    public void testGPSActionWithoutCoordinatesUpdatesDescription() throws Exception {
+        mockMvc.perform(
+                post(DUPLICATE_LOCATION_FORM_PATH)
+                        .session(session)
+                        .accept(MediaType.APPLICATION_XML)
+                        .contentType(MediaType.APPLICATION_XML)
+                        .content(getGPSTestForm(null, null)))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_XML));
+
+        Location dbLoc = lookupLocation();
+        assertNotNull(dbLoc);
+        assertNotEquals(Boolean.TRUE, dbLoc.isDeleted());
+        assertEquals("new_desc", dbLoc.getDescription());
+        assertNull("new_lat", dbLoc.getLatitude());
+        assertNull("new_lng", dbLoc.getLongitude());
+        assertNull("new_acc", dbLoc.getAccuracy());
+    }
+
     private String getTestForm(String action) {
         return "<duplicateLocationForm>" +
                 "<entity_uuid>TestLocation1</entity_uuid>" +
@@ -100,6 +120,21 @@ public class DuplicateLocationFormResourceTest extends AbstractResourceTest {
                 "<global_position_lat>new_lat</global_position_lat>" +
                 "<global_position_lng>new_lng</global_position_lng>" +
                 "<global_position_acc>new_acc</global_position_acc>" +
+                "<description>new_desc</description>" +
+                "</duplicateLocationForm>";
+    }
+
+    private String getGPSTestForm(String latitude, String longitude) {
+        String gpsPart = "";
+        if (latitude != null && longitude != null) {
+            gpsPart = "<global_position_lat>" + latitude + "</global_position_lat>" +
+                    "<global_position_lng>" + longitude + "</global_position_lng>" +
+                    "<global_position_acc>new_acc</global_position_acc>";
+        }
+        return "<duplicateLocationForm>" +
+                "<entity_uuid>TestLocation1</entity_uuid>" +
+                "<action>gps-only</action>" +
+                gpsPart +
                 "<description>new_desc</description>" +
                 "</duplicateLocationForm>";
     }

@@ -35,9 +35,11 @@ public class DuplicateLocationFormResource extends AbstractFormResource {
             Location location = locationService.getByUuid(form.uuid);
             switch (form.action) {
                 case GPS_ONLY:
-                    location.setLatitude(form.latitude);
-                    location.setLongitude(form.longitude);
-                    location.setAccuracy(form.accuracy);
+                    if  (form.latitude != null && form.longitude != null) {
+                        location.setLatitude(form.latitude);
+                        location.setLongitude(form.longitude);
+                        location.setAccuracy(form.accuracy);
+                    }
                     break;
                 case REMOVE:
                     location.setDeleted(true);
