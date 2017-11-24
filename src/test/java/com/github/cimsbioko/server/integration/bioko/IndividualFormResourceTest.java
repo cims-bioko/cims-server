@@ -395,18 +395,6 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         // head of household exists
         Individual head = genericDao.findByProperty(Individual.class, "uuid", headUuid);
         assertNotNull(head);
-
-        // relationship to head
-        // membership in social group
-        Relationship relationship = null;
-        for (Relationship r : individual.getAllRelationships1()) {
-            if (r.getIndividualB().equals(head)) {
-                relationship = r;
-                break;
-            }
-        }
-        assertNotNull(relationship);
-        assertEquals(membershipType, relationship.getaIsToB());
     }
 
 }

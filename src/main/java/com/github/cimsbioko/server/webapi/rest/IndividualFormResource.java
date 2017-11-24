@@ -14,7 +14,6 @@ import com.github.cimsbioko.server.domain.annotations.Description;
 import com.github.cimsbioko.server.domain.model.Individual;
 import com.github.cimsbioko.server.domain.model.Location;
 import com.github.cimsbioko.server.domain.model.Membership;
-import com.github.cimsbioko.server.domain.model.Relationship;
 import com.github.cimsbioko.server.domain.model.Residency;
 import com.github.cimsbioko.server.domain.model.SocialGroup;
 import org.slf4j.Logger;
@@ -217,10 +216,6 @@ public class IndividualFormResource extends AbstractFormResource {
             }
         }
 
-        // individual's relationship with group
-        findOrMakeRelationship(individual, socialGroup.getGroupHead(), collectedBy, collectionTime, insertTime,
-                form);
-
         // persist the socialGroup, cascade to through individual to relationship
         try {
             createOrSaveSocialGroup(socialGroup);
@@ -399,38 +394,6 @@ public class IndividualFormResource extends AbstractFormResource {
         return membership;
     }
 
-    private Relationship findOrMakeRelationship(Individual individualA, Individual individualB, FieldWorker collectedBy,
-                                                Calendar collectionTime, Calendar insertTime, Form form) {
-
-        Relationship relationship = null;
-
-        // get relationships where this individualA acts as relationship individualA
-        for (Relationship r : individualA.getAllRelationships1()) {
-            if (r.getIndividualB().equals(individualB)) {
-                relationship = r;
-                break;
-            }
-        }
-
-        // might need a brand new relationship
-        if (null == relationship) {
-            relationship = new Relationship();
-            relationship.setUuid(form.relationshipUuid);
-        }
-
-        // fill in or update
-        relationship.setIndividualA(individualA);
-        relationship.setIndividualB(individualB);
-        relationship.setCollectedBy(collectedBy);
-        relationship.setInsertDate(insertTime);
-        relationship.setaIsToB(form.individualRelationshipToHeadOfHousehold);
-
-        // attach to individual
-        individualA.getAllRelationships1().add(relationship);
-
-        return relationship;
-    }
-
     private void createOrSaveLocation(Location location) throws ConstraintViolations, SQLException {
         if (null == locationService.getByUuid(location.getUuid())) {
             locationService.create(location);
@@ -468,7 +431,7 @@ public class IndividualFormResource extends AbstractFormResource {
     }
 
 
-    @Description(description = "Model data from the Individual xform for the Bioko island project.  Contains Individual, Relationship, and Membership data.")
+    @Description(description = "Model data from the Individual xform for the Bioko island project. Contains Individual, social data.")
     @XmlRootElement(name = "individualForm")
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = Form.LOG_NAME)

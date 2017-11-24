@@ -56,14 +56,6 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @Description(description = "The set of all residencies that the individual may have.")
     private Set<Residency> allResidencies = new HashSet<>();
 
-    @OneToMany(mappedBy = "individualA", cascade = {CascadeType.ALL})
-    @Description(description = "The set of all relationships that the individual may have with another individual.")
-    private Set<Relationship> allRelationships1 = new HashSet<>();
-
-    @OneToMany(mappedBy = "individualB", cascade = {CascadeType.ALL})
-    @Description(description = "The set of all relationships where another individual may have with this individual.")
-    private Set<Relationship> allRelationships2 = new HashSet<>();
-
     @OneToMany(mappedBy = "individual", cascade = {CascadeType.ALL})
     @Description(description = "The set of all memberships the individual is participating in.")
     private Set<Membership> allMemberships = new HashSet<>();
@@ -141,22 +133,6 @@ public class Individual extends AuditableCollectedEntity implements Serializable
 
     public void setAllResidencies(Set<Residency> list) {
         allResidencies = list;
-    }
-
-    public Set<Relationship> getAllRelationships1() {
-        return allRelationships1;
-    }
-
-    public void setAllRelationships1(Set<Relationship> list) {
-        allRelationships1 = list;
-    }
-
-    public Set<Relationship> getAllRelationships2() {
-        return allRelationships2;
-    }
-
-    public void setAllRelationships2(Set<Relationship> list) {
-        allRelationships2 = list;
     }
 
     @XmlElementWrapper(name = "memberships")

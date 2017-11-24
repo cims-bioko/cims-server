@@ -14,7 +14,6 @@ import com.github.cimsbioko.server.controller.service.IndividualService;
 import com.github.cimsbioko.server.domain.model.FieldWorker;
 import com.github.cimsbioko.server.domain.model.Individual;
 import com.github.cimsbioko.server.domain.model.Membership;
-import com.github.cimsbioko.server.domain.model.Relationship;
 import com.github.cimsbioko.server.domain.service.SitePropertiesService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -98,20 +97,12 @@ public class IndividualServiceImpl implements IndividualService {
             return "";
         }
 
-        Relationship relationship = genericDao.findUniqueByPropertyWithOrder(Relationship.class,
-                "individualA", individual, "insertDate", false);
-        Relationship relationship2 = genericDao.findUniqueByPropertyWithOrder(Relationship.class,
-                "individualB", individual, "insertDate", false);
         Membership membership = genericDao.findUniqueByPropertyWithOrder(Membership.class,
                 "individual", individual, "insertDate", false);
 
         List<LastEvent> events = new ArrayList<>();
 
         events.add(new LastEvent("Enumeration/Baseline", individual.getDob()));
-        if (relationship != null)
-            events.add(new LastEvent("Relationship", relationship.getInsertDate()));
-        if (relationship2 != null)
-            events.add(new LastEvent("Relationship", relationship2.getInsertDate()));
         if (membership != null)
             events.add(new LastEvent("Membership", membership.getInsertDate()));
 
