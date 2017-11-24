@@ -10,7 +10,11 @@ import com.vividsolutions.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.oxm.GenericMarshaller;
 
+import javax.xml.transform.stream.StreamResult;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 
 public class AbstractFormResource {
@@ -20,6 +24,9 @@ public class AbstractFormResource {
 
     @Autowired
     private GeometryFactory geometryFactory;
+
+    @Autowired
+    private GenericMarshaller marshaller;
 
     protected ResponseEntity<ApiError> requestError(String message) {
         ApiError error = new ApiError();
@@ -53,5 +60,15 @@ public class AbstractFormResource {
         Double lng = Double.parseDouble(longitude), lat = Double.parseDouble(latitude);
         Coordinate coord = new Coordinate(lng, lat);
         return geometryFactory.createPoint(coord);
+    }
+
+    protected String marshalForm(Object form) throws IOException {
+        if (!marshaller.supports(form.getClass())) {
+            return "<error>marshaller does not support type</error>";
+        } else {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);
+            marshaller.marshal(form, new StreamResult(baos));
+            return baos.toString();
+        }
     }
 }

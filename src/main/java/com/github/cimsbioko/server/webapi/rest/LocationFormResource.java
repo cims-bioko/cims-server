@@ -4,7 +4,6 @@ import com.github.cimsbioko.server.controller.service.LocationHierarchyService;
 import com.github.cimsbioko.server.controller.service.refactor.FieldWorkerService;
 import com.github.cimsbioko.server.controller.service.refactor.LocationService;
 import com.github.cimsbioko.server.domain.model.*;
-import com.github.cimsbioko.server.domain.util.CalendarAdapter;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,14 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.*;
+import java.io.IOException;
 import java.io.Serializable;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.github.cimsbioko.server.webapi.rest.LocationFormResource.LOCATION_FORM_PATH;
 
@@ -41,30 +35,15 @@ public class LocationFormResource extends AbstractFormResource {
     @Autowired
     private LocationHierarchyService locationHierarchyService;
 
-    @Autowired
-    private CalendarAdapter adapter;
-
-    private Marshaller marshaller = null; // FIXME: *not thread safe!!!*
-
-
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
-    public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form) throws JAXBException {
+    public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form) throws IOException {
 
-        try {
-            JAXBContext context = JAXBContext.newInstance(Form.class);
-            marshaller = context.createMarshaller();
-            marshaller.setAdapter(adapter);
-        } catch (JAXBException e) {
-            throw new RuntimeException("Could not create JAXB context and marshaller for OutMigrationFormResource");
-        }
-
-        List<String> logMessage = new ArrayList<>();
         ConstraintViolations cv = new ConstraintViolations();
 
         if (form.locationExtId == null) {
             cv.addViolations("No Location ExtId provided");
-            logError(cv, createDTOPayload(form), Form.LOG_NAME);
+            logError(cv, marshalForm(form), Form.LOG_NAME);
             return requestError(cv);
         }
 
@@ -73,7 +52,7 @@ public class LocationFormResource extends AbstractFormResource {
             location = locationService.getByUuid(form.uuid);
             if (null != location) {
                 cv.addViolations("Location already exists " + form.uuid);
-                logError(cv, createDTOPayload(form), Form.LOG_NAME);
+                logError(cv, marshalForm(form), Form.LOG_NAME);
                 return requestError(cv);
             }
         } catch (Exception e) {
@@ -86,7 +65,7 @@ public class LocationFormResource extends AbstractFormResource {
         FieldWorker collectedBy = fieldWorkerService.getByUuid(form.fieldWorkerUuid);
         if (null == collectedBy) {
             cv.addViolations("Field Worker does not exist : " + form.fieldWorkerUuid);
-            logError(cv, createDTOPayload(form), Form.LOG_NAME);
+            logError(cv, marshalForm(form), Form.LOG_NAME);
             return requestError(cv);
         }
         location.setCollectedBy(collectedBy);
@@ -109,7 +88,7 @@ public class LocationFormResource extends AbstractFormResource {
 
             if (null == locationHierarchy) {
                 cv.addViolations("Location Hierarchy does not exist : " + form.hierarchyUuid + " / " + form.hierarchyExtId);
-                logError(cv, createDTOPayload(form), Form.LOG_NAME);
+                logError(cv, marshalForm(form), Form.LOG_NAME);
                 return requestError(cv);
             }
         } catch (Exception e) {
@@ -122,7 +101,7 @@ public class LocationFormResource extends AbstractFormResource {
         if (null != locationService.getByExtId(form.locationExtId)) {
             modifyExtId(location, form);
             cv.addViolations("Location persisted with Modified ExtId: Old = " + form.locationExtId + " New = " + location.getExtId());
-            logError(cv, createDTOPayload(form), Form.LOG_NAME);
+            logError(cv, marshalForm(form), Form.LOG_NAME);
         } else {
             location.setExtId(form.locationExtId);
         }
@@ -134,7 +113,7 @@ public class LocationFormResource extends AbstractFormResource {
         try {
             locationService.create(location);
         } catch (ConstraintViolations e) {
-            logError(cv, createDTOPayload(form), Form.LOG_NAME);
+            logError(cv, marshalForm(form), Form.LOG_NAME);
             return requestError(e);
         } catch (Exception e) {
             return serverError("General Error creating location: " + e.getMessage());
@@ -196,12 +175,6 @@ public class LocationFormResource extends AbstractFormResource {
         locationHierarchyService.createLocationHierarchy(locationHierarchy);
 
         return locationHierarchy;
-    }
-
-    private String createDTOPayload(Form form) throws JAXBException {
-        StringWriter writer = new StringWriter();
-        marshaller.marshal(form, writer);
-        return writer.toString();
     }
 
 

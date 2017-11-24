@@ -27,13 +27,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.IOException;
 import java.io.Serializable;
-import java.io.StringWriter;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
@@ -70,25 +67,11 @@ public class IndividualFormResource extends AbstractFormResource {
     @Autowired
     private SocialGroupService socialGroupService;
 
-    @Autowired
-    private CalendarAdapter adapter;
-
-    private Marshaller marshaller = null; // FIXME: *not thread safe!!!*
-
     // This individual form should cause several CRUDS:
     // location, individual, socialGroup, residency, membership, relationship
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
-    public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form)
-            throws JAXBException {
-
-        try {
-            JAXBContext context = JAXBContext.newInstance(Form.class);
-            marshaller = context.createMarshaller();
-            marshaller.setAdapter(adapter);
-        } catch (JAXBException e) {
-            throw new RuntimeException("Could not create JAXB context and marshaller for OutMigrationFormResource");
-        }
+    public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form) throws IOException {
 
         // Default relationship to head of household is "self"
         if (form.individualRelationshipToHeadOfHousehold == null) {
@@ -109,7 +92,7 @@ public class IndividualFormResource extends AbstractFormResource {
         FieldWorker collectedBy = fieldWorkerService.getByUuid(form.fieldWorkerUuid);
         if (null == collectedBy) {
             cv.addViolations("Field Worker does not exist");
-            logError(cv, createDTOPayload(form), Form.LOG_NAME);
+            logError(cv, marshalForm(form), Form.LOG_NAME);
             return requestError(cv);
         }
 
@@ -128,7 +111,7 @@ public class IndividualFormResource extends AbstractFormResource {
             if (null == location) {
                 String errorMessage = "Location does not exist " + form.householdUuid + " / " + form.householdExtId;
                 cv.addViolations(errorMessage);
-                logError(cv, createDTOPayload(form), Form.LOG_NAME);
+                logError(cv, marshalForm(form), Form.LOG_NAME);
                 return requestError(errorMessage);
             }
 
@@ -152,7 +135,7 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             individual = findOrMakeIndividual(form, collectedBy, insertTime, cv);
             if (cv.hasViolations()) {
-                logError(cv, createDTOPayload(form), Form.LOG_NAME);
+                logError(cv, marshalForm(form), Form.LOG_NAME);
                 return requestError(cv);
             }
         } catch (Exception e) {
@@ -166,7 +149,7 @@ public class IndividualFormResource extends AbstractFormResource {
 
             // log the modification
             cv.addViolations("Individual ExtId updated from " + form.individualExtId + " to " + individual.getExtId());
-            logError(cv, createDTOPayload(form), Form.LOG_NAME);
+            logError(cv, marshalForm(form), Form.LOG_NAME);
 
             //household extId used later by social group, need to correct it here
             form.householdExtId = location.getExtId();
@@ -176,7 +159,7 @@ public class IndividualFormResource extends AbstractFormResource {
         if (0 != individualService.getExistingExtIdCount(individual.getExtId())) {
             // log the modification
             cv.addViolations("Warning: Individual ExtId clashes with an existing Individual's extId : " + individual.getExtId());
-            logError(cv, createDTOPayload(form), Form.LOG_NAME);
+            logError(cv, marshalForm(form), Form.LOG_NAME);
         }
 
         // individual's residency at location
@@ -186,7 +169,7 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             createOrSaveIndividual(individual);
         } catch (ConstraintViolations e) {
-            logError(e, createDTOPayload(form), Form.LOG_NAME);
+            logError(e, marshalForm(form), Form.LOG_NAME);
             return requestError(e);
         } catch (SQLException e) {
             return serverError("SQL Error updating or saving individual: " + e.getMessage());
@@ -219,7 +202,7 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             createOrSaveSocialGroup(socialGroup);
         } catch (ConstraintViolations e) {
-            logError(e, createDTOPayload(form), Form.LOG_NAME);
+            logError(e, marshalForm(form), Form.LOG_NAME);
             return requestError(e);
         } catch (SQLException e) {
             return serverError("SQL Error updating or saving socialGroup: " + e.getMessage());
@@ -233,7 +216,7 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             entityService.create(membership);
         } catch (ConstraintViolations constraintViolations) {
-            logError(constraintViolations, createDTOPayload(form), Form.LOG_NAME);
+            logError(constraintViolations, marshalForm(form), Form.LOG_NAME);
             return serverError("ConstraintViolations saving membership: " + constraintViolations.getMessage());
         } catch (SQLException e) {
             return serverError("SQL Error updating or saving membership: " + e.getMessage());
@@ -422,13 +405,6 @@ public class IndividualFormResource extends AbstractFormResource {
             individualService.save(individual);
         }
     }
-
-    private String createDTOPayload(Form form) throws JAXBException {
-        StringWriter writer = new StringWriter();
-        marshaller.marshal(form, writer);
-        return writer.toString();
-    }
-
 
     @Description(description = "Model data from the Individual xform for the Bioko island project. Contains Individual, social data.")
     @XmlRootElement(name = "individualForm")
