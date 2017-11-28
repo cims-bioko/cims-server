@@ -53,7 +53,6 @@
                 <value>com.github.cimsbioko.server.domain.model.LocationHierarchyLevel</value>
                 <value>com.github.cimsbioko.server.domain.model.Membership</value>
                 <value>com.github.cimsbioko.server.domain.model.Privilege</value>
-                <value>com.github.cimsbioko.server.domain.model.Residency</value>
                 <value>com.github.cimsbioko.server.domain.model.Role</value>
                 <value>com.github.cimsbioko.server.domain.model.SocialGroup</value>
                 <value>com.github.cimsbioko.server.domain.model.User</value>
@@ -123,10 +122,6 @@
 
     <bean id="membershipDao" parent="baseDao">
         <constructor-arg value="com.github.cimsbioko.server.domain.model.Membership"/>
-    </bean>
-
-    <bean id="residencyDao" parent="baseDao">
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.Residency"/>
     </bean>
 
     <bean id="roleDao" parent="baseDao"

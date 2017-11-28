@@ -53,10 +53,6 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     private Calendar dob;
 
     @OneToMany(mappedBy = "individual", cascade = {CascadeType.ALL})
-    @Description(description = "The set of all residencies that the individual may have.")
-    private Set<Residency> allResidencies = new HashSet<>();
-
-    @OneToMany(mappedBy = "individual", cascade = {CascadeType.ALL})
     @Description(description = "The set of all memberships the individual is participating in.")
     private Set<Membership> allMemberships = new HashSet<>();
 
@@ -125,16 +121,6 @@ public class Individual extends AuditableCollectedEntity implements Serializable
         dob = date;
     }
 
-    @XmlElementWrapper(name = "residencies")
-    @XmlElement(name = "residency")
-    public Set<Residency> getAllResidencies() {
-        return allResidencies;
-    }
-
-    public void setAllResidencies(Set<Residency> list) {
-        allResidencies = list;
-    }
-
     @XmlElementWrapper(name = "memberships")
     @XmlElement(name = "membership")
     public Set<Membership> getAllMemberships() {
@@ -143,19 +129,6 @@ public class Individual extends AuditableCollectedEntity implements Serializable
 
     public void setAllMemberships(Set<Membership> list) {
         allMemberships = list;
-    }
-
-    public Residency getCurrentResidency() {
-        if (allResidencies.size() == 0) {
-            return null;
-        }
-
-        // sort by "earliest" and pick off the "least early" ie "latest"
-        PriorityQueue<Residency> residencyHeap = new PriorityQueue<>(
-                allResidencies.size(), Residency.earliestByInsertDate());
-        residencyHeap.addAll(allResidencies);
-
-        return residencyHeap.peek();
     }
 
     public void setPhoneNumber(String phoneNumber) {

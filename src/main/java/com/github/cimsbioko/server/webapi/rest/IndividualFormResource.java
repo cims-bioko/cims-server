@@ -5,7 +5,6 @@ import com.github.cimsbioko.server.controller.service.refactor.LocationService;
 import com.github.cimsbioko.server.domain.model.FieldWorker;
 import com.github.cimsbioko.server.domain.util.CalendarAdapter;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
-import com.github.cimsbioko.server.controller.service.ResidencyService;
 import com.github.cimsbioko.server.controller.service.refactor.FieldWorkerService;
 import com.github.cimsbioko.server.controller.service.refactor.IndividualService;
 import com.github.cimsbioko.server.controller.service.refactor.SocialGroupService;
@@ -14,7 +13,6 @@ import com.github.cimsbioko.server.domain.annotations.Description;
 import com.github.cimsbioko.server.domain.model.Individual;
 import com.github.cimsbioko.server.domain.model.Location;
 import com.github.cimsbioko.server.domain.model.Membership;
-import com.github.cimsbioko.server.domain.model.Residency;
 import com.github.cimsbioko.server.domain.model.SocialGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,13 +60,10 @@ public class IndividualFormResource extends AbstractFormResource {
     private LocationService locationService;
 
     @Autowired
-    private ResidencyService residencyService;
-
-    @Autowired
     private SocialGroupService socialGroupService;
 
     // This individual form should cause several CRUDS:
-    // location, individual, socialGroup, residency, membership, relationship
+    // location, individual, socialGroup, membership
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
     public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form) throws IOException {
@@ -162,10 +157,8 @@ public class IndividualFormResource extends AbstractFormResource {
             logError(cv, marshalForm(form), Form.LOG_NAME);
         }
 
-        // individual's residency at location
-        findOrMakeResidency(individual, location, collectionTime, insertTime, collectedBy);
-
-        // persist the individual, cascade to residency
+        // persist the individual, used to be for cascading to residency
+        // TODO: remove this type of code, since it's probably unnecessary after removing that entity
         try {
             createOrSaveIndividual(individual);
         } catch (ConstraintViolations e) {
@@ -307,40 +300,6 @@ public class IndividualFormResource extends AbstractFormResource {
         socialGroup.setGroupType(HOUSEHOLD_GROUP_TYPE);
 
         return socialGroup;
-    }
-
-    private Residency findOrMakeResidency(Individual individual, Location location, Calendar collectionTime,
-                                          Calendar insertTime, FieldWorker collectedBy) {
-
-        Residency residency = null;
-
-        // try to find an existing residency to modify
-        if (residencyService.hasOpenResidency(individual)) {
-            List<Residency> allResidencies = residencyService.getAllResidencies(individual);
-            for (Residency r : allResidencies) {
-                if (location.equals(r.getLocation())) {
-                    residency = r;
-                    break;
-                }
-            }
-        }
-
-        // might need to make a new residency
-        if (null == residency) {
-            residency = new Residency();
-            AbstractEntityCrudHelperImpl.setEntityUuidIfNull(residency);
-        }
-
-        // fill in or update
-        residency.setIndividual(individual);
-        residency.setLocation(location);
-        residency.setCollectedBy(collectedBy);
-        residency.setInsertDate(insertTime);
-
-        // attach to individial
-        individual.getAllResidencies().add(residency);
-
-        return residency;
     }
 
     private Membership findOrMakeMembership(Individual individual, SocialGroup socialGroup, FieldWorker collectedBy,

@@ -367,16 +367,6 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         Location location = genericDao.findByProperty(Location.class, "extId", householdExtId);
         assertNotNull(location);
 
-        // residency at location
-        Residency residency = null;
-        for (Residency r : individual.getAllResidencies()) {
-            if (r.getLocation().equals(location)) {
-                residency = r;
-                break;
-            }
-        }
-        assertNotNull(residency);
-
         // socialGroup exists
         SocialGroup socialGroup = genericDao.findByProperty(SocialGroup.class, "extId", householdExtId);
         assertNotNull(socialGroup);

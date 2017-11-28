@@ -75,12 +75,6 @@
                 collectedBy_uuid="UnknownFieldWorker" bIsToA="1" individual_uuid="Individual1"
                 socialGroup_uuid="SocialGroup1" />
 
-    <residency uuid="FormerResidency" location_uuid="TestLocation1" individual_uuid="Individual1"
-               collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
-
-    <residency uuid="CurrentResidency" location_uuid="TestLocation1" individual_uuid="Individual2"
-               collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
-
     <individual uuid="PregnantIndividual" extId="Mother-001" firstName="Pregnant" middleName="" lastName="Individual"
                 gender="Female" dob="1900-12-19" insertDate="2009-12-19" deleted="false"
                 collectedBy_uuid="UnknownFieldWorker" dip="1"/>
@@ -92,8 +86,5 @@
     <socialgroup uuid="SocialGroup3" extId="sg234567891" groupName="Social Group 3"
                  groupHead_uuid="PregnantMale" groupType="COH" insertDate="2000-12-19" deleted="false"
                  collectedBy_uuid="UnknownFieldWorker" />
-
-    <residency uuid="PregnantResidency" location_uuid="TestLocation1" individual_uuid="PregnantIndividual"
-               collectedBy_uuid="UnknownFieldWorker" deleted="false"/>
 
 </dataset>

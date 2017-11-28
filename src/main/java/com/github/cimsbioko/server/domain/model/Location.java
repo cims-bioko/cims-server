@@ -14,8 +14,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Description(description = "All distinct Locations within the area of study are represented here. A Location is identified by a uniquely generated identifier that the system uses internally. Each Location has a name associated with it and resides at a particular hierarchy within the Location Hierarchy.")
 @Entity
@@ -49,10 +47,6 @@ public class Location
     @Description(description = "the global position represented as longitude, latitude, altitude")
     @Column(name = "global_pos")
     private Point globalPos;
-
-    @OneToMany(targetEntity = Residency.class)
-    @JoinColumn(name = "location_uuid")
-    private List<Residency> residencies = new ArrayList<>();
 
     @Description(description = "A description of the observable features of a location")
     private String description;
@@ -103,14 +97,6 @@ public class Location
 
     public void setGlobalPos(Point globalPos) {
         this.globalPos = globalPos;
-    }
-
-    public List<Residency> getResidencies() {
-        return residencies;
-    }
-
-    public void setResidencies(List<Residency> list) {
-        residencies = list;
     }
 
     @Override
