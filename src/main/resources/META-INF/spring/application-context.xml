@@ -25,15 +25,7 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <bean id="databaseConfigurer"
-          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="ignoreUnresolvablePlaceholders" value="true"/>
-        <property name="locations">
-            <list>
-                <value>classpath:/META-INF/build-info.properties</value>
-            </list>
-        </property>
-    </bean>
+
 
     <!-- dao -->
     <context:component-scan base-package="com.github.cimsbioko.server.dao" />

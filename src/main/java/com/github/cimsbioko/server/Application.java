@@ -8,10 +8,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.*;
 import org.springframework.orm.hibernate5.support.OpenSessionInViewFilter;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
@@ -31,6 +28,7 @@ import java.util.Properties;
 @EnableAutoConfiguration
 @ImportResource("classpath:/META-INF/spring/application-context.xml")
 @Import(SecurityConfiguration.class)
+@PropertySource(value = "classpath:/META-INF/build-info.properties", ignoreResourceNotFound = true)
 public class Application extends SpringBootServletInitializer {
 
     @Value("${app.data.dir}")
@@ -70,21 +68,8 @@ public class Application extends SpringBootServletInitializer {
     }
 
     @Bean
-    String appVersion() {
-        InputStream infoStream = getClass().getResourceAsStream("/META-INF/build-info.properties");
-        if (infoStream != null) {
-            Properties buildInfo = new Properties();
-            try {
-                buildInfo.load(infoStream);
-            } catch (IOException e) {
-                /* ignore */
-            }
-            String buildVersion = buildInfo.getProperty("build.version");
-            if (buildVersion != null) {
-                return buildVersion;
-            }
-        }
-        return "DEV";
+    String appVersion(@Value("${build.version}") String buildVersion) {
+        return buildVersion != null ? buildVersion : "DEV";
     }
 
     @Configuration
