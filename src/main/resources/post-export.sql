@@ -12,3 +12,4 @@ create index fieldworkers_id_prefix_index on fieldworkers(idprefix)
 create index fieldworkers_password_index on fieldworkers(password)
 create index socialgroup_location_index on socialgroups(location_uuid)
 create index membership_individual_index on memberships(individual_uuid)
+vacuum
