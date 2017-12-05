@@ -352,16 +352,6 @@
         </property>
     </bean>
 
-    <bean id="residencyService" parent="baseServiceTransactionBean" lazy-init="true">
-        <property name="target">
-            <bean class="com.github.cimsbioko.server.controller.service.impl.ResidencyServiceImpl">
-                <constructor-arg ref="genericDao"/>
-                <constructor-arg ref="entityValidator"/>
-                <constructor-arg ref="calendarUtil"/>
-            </bean>
-        </property>
-    </bean>
-
     <bean id="roleService" parent="baseServiceTransactionBean" lazy-init="true">
         <property name="target">
             <bean class="com.github.cimsbioko.server.controller.service.impl.RoleServiceImpl">
