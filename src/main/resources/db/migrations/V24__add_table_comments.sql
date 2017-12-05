@@ -1,0 +1,23 @@
+comment on table error is 'form processing failures at the web endpoint level';
+comment on table fieldworker is 'who can login for data entry on tablets';
+comment on table form_submission is 'submissions receieved from the ODK api';
+comment on table individual is 'persons observed in the population';
+comment on table location is 'locations where structures exist';
+comment on table locationhierarchy is 'administrative (political) hierarchy locations fall in';
+comment on table locationhierarchylevel is 'tiers in the administrative hierarchy system';
+comment on table membership is 'links individuals to socialgroups';
+comment on table privilege is 'privileges assigned to operations/data requiring access control';
+comment on table role is 'name for collection of privileges which can be assigned to a user';
+comment on table role_privileges is 'links privileges to roles';
+comment on table schema_version is 'used by flywaydb to manage database migrations';
+comment on table socialgroup is 'a group of individuals located at a structure (roughly, a family)';
+comment on table task is 'tracks status of server background tasks';
+comment on table users is 'who can login on the server';
+comment on table user_roles is 'links users to roles for access control';
+
+comment on view v_locationhierarchy_sync is 'used to generate mobile locationhierachy table';
+comment on view v_fieldworker_sync is 'used to generate mobile fieldworker table';
+comment on view v_membership_sync is 'used to generate mobile membership table';
+comment on view v_individual_sync is 'used to generate mobile individual table';
+comment on view v_location_sync is 'used to generate mobile location table';
+comment on view v_socialgroup_sync is 'used to generate mobile socialgroup table';
