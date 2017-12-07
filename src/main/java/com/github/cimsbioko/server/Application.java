@@ -20,9 +20,6 @@ import javax.annotation.Resource;
 import javax.faces.webapp.FacesServlet;
 import javax.servlet.MultipartConfigElement;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 @Configuration
 @EnableAutoConfiguration
