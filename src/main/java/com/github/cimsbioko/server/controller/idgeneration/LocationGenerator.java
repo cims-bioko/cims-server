@@ -39,7 +39,7 @@ public class LocationGenerator extends Generator<Location> {
             if (filter != null) {
 
                 if (key.equals(IdGeneratedFields.LOCATION_HIERARCHY_ID.toString())) {
-                    String locId = location.getLocationHierarchy().getExtId();
+                    String locId = location.getHierarchy().getExtId();
                     if (filter > 0 && locId.length() >= filter)
                         sb.append(formatProperString(locId, filter));
                     else if (filter == 0 || locId.length() < filter)
@@ -48,11 +48,11 @@ public class LocationGenerator extends Generator<Location> {
                         throw new ConstraintViolations("An error occurred while attempting to generate " +
                                 "the id on the field specified as '" + locId + "'");
                 } else if (key.equals(IdGeneratedFields.LOCATION_NAME.toString())) {
-                    String locationName = location.getLocationName();
+                    String locationName = location.getName();
 
                     if (locationName.length() >= filter) {
 
-                        if (filter > 0 && location.getLocationName().length() >= filter)
+                        if (filter > 0 && location.getName().length() >= filter)
                             sb.append(formatProperString(locationName, filter));
                         else if (filter == 0 || locationName.length() < filter)
                             sb.append(formatProperString(locationName, locationName.length()));

@@ -37,14 +37,17 @@ public class User implements Serializable, UuidIdentifiable {
     @CheckFieldNotBlank
     @Searchable
     @Description(description = "User's first name")
+    @Column(name = "first_name")
     String firstName;
 
     @CheckFieldNotBlank
     @Searchable
     @Description(description = "User's last name")
+    @Column(name = "last_name")
     String lastName;
 
     @Description(description = "User's full name")
+    @Column(name = "full_name")
     String fullName;
 
     @Description(description = "Description of the user.")
@@ -59,7 +62,8 @@ public class User implements Serializable, UuidIdentifiable {
     String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles", joinColumns = {@JoinColumn(name = "user_uuid")}, inverseJoinColumns = @JoinColumn(name = "role_uuid"))
+    @JoinTable(name = "user_roles", joinColumns = {
+            @JoinColumn(name = "user")}, inverseJoinColumns = @JoinColumn(name = "role"))
     @Description(description = "Set of roles applied to the user.")
     Set<Role> roles = new HashSet<>();
 
@@ -70,7 +74,8 @@ public class User implements Serializable, UuidIdentifiable {
     String sessionId;
 
     // this is used for seamless integration with special study
-    long lastLoginTime;
+    @Column(name = "last_login")
+    long lastLogin;
 
     public User() {
     }
@@ -154,12 +159,12 @@ public class User implements Serializable, UuidIdentifiable {
         this.sessionId = sessionId;
     }
 
-    public long getLastLoginTime() {
-        return lastLoginTime;
+    public long getLastLogin() {
+        return lastLogin;
     }
 
-    public void setLastLoginTime(long lastLoginTime) {
-        this.lastLoginTime = lastLoginTime;
+    public void setLastLogin(long lastLogin) {
+        this.lastLogin = lastLogin;
     }
 
     public boolean isDeleted() {

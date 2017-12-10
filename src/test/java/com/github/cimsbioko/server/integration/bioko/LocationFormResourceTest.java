@@ -209,8 +209,8 @@ public class LocationFormResourceTest extends AbstractResourceTest {
 
         Location persistedLocation = genericDao.findByProperty(Location.class, "extId", locationExtId);
         assertNotNull(persistedLocation);
-        assertEquals("newLocationName", persistedLocation.getLocationName());
-        assertEquals("RUR", persistedLocation.getLocationType());
+        assertEquals("newLocationName", persistedLocation.getName());
+        assertEquals("RUR", persistedLocation.getType());
 
     }
 

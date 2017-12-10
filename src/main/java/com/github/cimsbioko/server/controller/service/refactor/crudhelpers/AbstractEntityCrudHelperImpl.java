@@ -43,7 +43,7 @@ public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> im
         preCreateSanityChecks(entity);
         cascadeReferences(entity);
         validateReferences(entity);
-        entity.setInsertDate(calendarUtil.dateToCalendar(new Date()));
+        entity.setCreated(calendarUtil.dateToCalendar(new Date()));
 
         setEntityUuidIfNull(entity);
         entityValidationService.validateEntity(entity);

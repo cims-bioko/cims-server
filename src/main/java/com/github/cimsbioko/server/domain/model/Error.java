@@ -24,7 +24,7 @@ public class Error implements Serializable {
 
     @Temporal(javax.persistence.TemporalType.DATE)
     @Description(description = "Date of insertion.")
-    private Calendar insertDate;
+    private Calendar created;
 
     @Column(length = 65535)
     private String payload;
@@ -34,12 +34,12 @@ public class Error implements Serializable {
 
     private String message;
 
-    public Calendar getInsertDate() {
-        return insertDate;
+    public Calendar getCreated() {
+        return created;
     }
 
-    public void setInsertDate(Calendar insertDate) {
-        this.insertDate = insertDate;
+    public void setCreated(Calendar created) {
+        this.created = created;
     }
 
     public String getPayload() {

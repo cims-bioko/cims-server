@@ -373,14 +373,14 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
 
         // membership in social group
         Membership membership = null;
-        for (Membership m : individual.getAllMemberships()) {
-            if (m.getSocialGroup().equals(socialGroup)) {
+        for (Membership m : individual.getMemberships()) {
+            if (m.getGroup().equals(socialGroup)) {
                 membership = m;
                 break;
             }
         }
         assertNotNull(membership);
-        assertEquals(membershipType, membership.getbIsToA());
+        assertEquals(membershipType, membership.getRole());
 
         // head of household exists
         Individual head = genericDao.findByProperty(Individual.class, "uuid", headUuid);

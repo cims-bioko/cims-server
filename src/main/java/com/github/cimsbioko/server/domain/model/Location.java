@@ -34,15 +34,17 @@ public class Location
     @CheckFieldNotBlank
     @Searchable
     @Description(description = "Name of the location.")
-    private String locationName;
+    private String name;
 
     @ManyToOne
     @Cascade(CascadeType.SAVE_UPDATE)
-    private LocationHierarchy locationHierarchy = new LocationHierarchy();
+    @JoinColumn(name = "hierarchy")
+    private LocationHierarchy hierarchy = new LocationHierarchy();
 
     @ExtensionStringConstraint(constraint = "locationTypeConstraint", message = "Invalid Value for location type", allowNull = true)
     @Description(description = "The type of Location.")
-    private String locationType;
+    @Column(name = "type")
+    private String type;
 
     @Description(description = "the global position represented as longitude, latitude, altitude")
     @Column(name = "global_pos")
@@ -67,28 +69,28 @@ public class Location
         extId = id;
     }
 
-    public String getLocationName() {
-        return locationName;
+    public String getName() {
+        return name;
     }
 
-    public void setLocationName(String name) {
-        locationName = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public LocationHierarchy getLocationHierarchy() {
-        return locationHierarchy;
+    public LocationHierarchy getHierarchy() {
+        return hierarchy;
     }
 
-    public void setLocationHierarchy(LocationHierarchy hierarchy) {
-        locationHierarchy = hierarchy;
+    public void setHierarchy(LocationHierarchy hierarchy) {
+        this.hierarchy = hierarchy;
     }
 
-    public String getLocationType() {
-        return locationType;
+    public String getType() {
+        return type;
     }
 
-    public void setLocationType(String type) {
-        locationType = type;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Point getGlobalPos() {

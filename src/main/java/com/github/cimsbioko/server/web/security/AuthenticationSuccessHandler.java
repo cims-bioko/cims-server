@@ -37,7 +37,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 
         User user = users.get(0);
         user.setSessionId(sessId);
-        user.setLastLoginTime(System.currentTimeMillis());
+        user.setLastLogin(System.currentTimeMillis());
 
         userDao.saveOrUpdate(user);
 

@@ -41,7 +41,7 @@ public class LocationServiceImpl implements LocationService {
         }
 
         boolean nullExtId = (null == location.getExtId());
-        boolean nullLocationHierarchy = (null == location.getLocationHierarchy());
+        boolean nullLocationHierarchy = (null == location.getHierarchy());
 
         if (nullExtId) {
             ConstraintViolations.addViolationIfNotNull(cv, "The location has a null ExtId.");

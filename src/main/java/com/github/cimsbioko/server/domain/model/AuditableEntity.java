@@ -3,9 +3,7 @@ package com.github.cimsbioko.server.domain.model;
 import com.github.cimsbioko.server.domain.annotations.Description;
 
 import javax.persistence.Column;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
@@ -27,7 +25,7 @@ public abstract class AuditableEntity implements UuidIdentifiable, Serializable 
     protected boolean deleted = false;
 
     @Description(description = "Date of insertion.")
-    protected Calendar insertDate;
+    protected Calendar created;
 
     @Override
     public String getUuid() {
@@ -48,12 +46,12 @@ public abstract class AuditableEntity implements UuidIdentifiable, Serializable 
         this.deleted = deleted;
     }
 
-    public Calendar getInsertDate() {
-        return insertDate;
+    public Calendar getCreated() {
+        return created;
     }
 
-    public void setInsertDate(Calendar insertDate) {
-        this.insertDate = insertDate;
+    public void setCreated(Calendar created) {
+        this.created = created;
     }
 
     @Override

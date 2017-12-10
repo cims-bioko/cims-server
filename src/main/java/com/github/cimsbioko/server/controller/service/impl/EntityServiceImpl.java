@@ -45,8 +45,8 @@ public class EntityServiceImpl implements EntityService {
                 System.out.println(e.toString());
             }
             try {
-                Calendar insertDate = calendarUtil.dateToCalendar(new Date());
-                ((AuditableEntity) entityItem).setInsertDate(insertDate);
+                Calendar created = calendarUtil.dateToCalendar(new Date());
+                ((AuditableEntity) entityItem).setCreated(created);
             } catch (Exception e) {
                 System.out.println(e.toString());
             }

@@ -27,8 +27,8 @@ public abstract class EntityServiceRefactoredImpl implements EntityServiceRefact
 
     @Transactional
     public void create(AuditableEntity entityItem) throws ConstraintViolations {
-        Calendar insertDate = calendarUtil.dateToCalendar(new Date());
-        entityItem.setInsertDate(insertDate);
+        Calendar created = calendarUtil.dateToCalendar(new Date());
+        entityItem.setCreated(created);
         AbstractEntityCrudHelperImpl.setEntityUuidIfNull(entityItem);
         entityValidationService.validateEntity(entityItem);
         genericDao.create(entityItem);

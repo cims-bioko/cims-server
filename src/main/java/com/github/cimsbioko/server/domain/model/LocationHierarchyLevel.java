@@ -24,7 +24,7 @@ public class LocationHierarchyLevel implements UuidIdentifiable, Serializable {
     String uuid;
 
     @Description(description = "A key to identify this level, assign 1, 2, 3, ... etc")
-    int keyIdentifier;
+    int keyId;
 
     @NotNull
     @CheckFieldNotBlank
@@ -42,12 +42,12 @@ public class LocationHierarchyLevel implements UuidIdentifiable, Serializable {
         this.uuid = uuid;
     }
 
-    public int getKeyIdentifier() {
-        return keyIdentifier;
+    public int getKeyId() {
+        return keyId;
     }
 
-    public void setKeyIdentifier(int keyIdentifier) {
-        this.keyIdentifier = keyIdentifier;
+    public void setKeyId(int keyId) {
+        this.keyId = keyId;
     }
 
     public String getName() {

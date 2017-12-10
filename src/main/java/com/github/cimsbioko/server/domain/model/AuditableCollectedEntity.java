@@ -3,6 +3,7 @@ package com.github.cimsbioko.server.domain.model;
 import java.io.Serializable;
 
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
@@ -21,13 +22,14 @@ public abstract class AuditableCollectedEntity extends AuditableEntity implement
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = FieldWorker.class)
     @Description(description = "The field worker who collected the data, identified by external id.")
-    protected FieldWorker collectedBy;
+    @JoinColumn(name = "collector")
+    protected FieldWorker collector;
 
-    public FieldWorker getCollectedBy() {
-        return collectedBy;
+    public FieldWorker getCollector() {
+        return collector;
     }
 
-    public void setCollectedBy(FieldWorker collectedBy) {
-        this.collectedBy = collectedBy;
+    public void setCollector(FieldWorker collector) {
+        this.collector = collector;
     }
 }

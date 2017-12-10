@@ -236,7 +236,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
         String result = scalarSetup(outcomePrefix + "_edit");
         if (AuditableCollectedEntity.class.isAssignableFrom(entityClass)) {
             // load field worker to avoid lazy load exeptions
-            ((AuditableCollectedEntity) entityItem).getCollectedBy().getExtId();
+            ((AuditableCollectedEntity) entityItem).getCollector().getExtId();
         }
         return result;
     }

@@ -4,13 +4,7 @@ import com.github.cimsbioko.server.domain.constraint.Searchable;
 import com.github.cimsbioko.server.domain.annotations.Description;
 import com.github.cimsbioko.server.domain.constraint.CheckFieldNotBlank;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
@@ -43,6 +37,7 @@ public class LocationHierarchy implements UuidIdentifiable, Serializable {
 
     @Description(description = "Parent location's name.")
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = LocationHierarchy.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent")
     LocationHierarchy parent;
 
     @NotNull
@@ -53,6 +48,7 @@ public class LocationHierarchy implements UuidIdentifiable, Serializable {
 
     @Description(description = "Level of the location hierarchy.")
     @ManyToOne
+    @JoinColumn(name = "level")
     LocationHierarchyLevel level;
 
     @Override

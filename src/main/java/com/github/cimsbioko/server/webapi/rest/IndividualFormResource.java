@@ -31,7 +31,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.List;
 
 import static com.github.cimsbioko.server.webapi.rest.IndividualFormResource.INDIVIDUAL_FORM_PATH;
 
@@ -177,7 +176,7 @@ public class IndividualFormResource extends AbstractFormResource {
             socialGroup = findOrMakeSocialGroup(form, location, individual, insertTime, collectedBy);
 
             // name the location after the head of household
-            location.setLocationName(individual.getLastName());
+            location.setName(individual.getLastName());
 
         } else {
             // household must already exist for household member
@@ -236,8 +235,8 @@ public class IndividualFormResource extends AbstractFormResource {
             individual = new Individual();
         }
 
-        individual.setCollectedBy(collectedBy);
-        individual.setInsertDate(insertTime);
+        individual.setCollector(collectedBy);
+        individual.setCreated(insertTime);
 
         copyFormDataToIndividual(form, individual);
 
@@ -261,11 +260,11 @@ public class IndividualFormResource extends AbstractFormResource {
             dob = getDateInPast();
         }
         individual.setDob(dob);
-        individual.setPhoneNumber(form.individualPhoneNumber);
-        individual.setOtherPhoneNumber(form.individualOtherPhoneNumber);
-        individual.setLanguagePreference(form.individualLanguagePreference);
-        individual.setPointOfContactName(form.individualPointOfContactName);
-        individual.setPointOfContactPhoneNumber(form.individualPointOfContactPhoneNumber);
+        individual.setPhone1(form.individualPhoneNumber);
+        individual.setPhone2(form.individualOtherPhoneNumber);
+        individual.setLanguage(form.individualLanguagePreference);
+        individual.setContactName(form.individualPointOfContactName);
+        individual.setContactPhone(form.individualPointOfContactPhoneNumber);
         individual.setDip(form.individualDip);
         individual.setNationality(form.individualNationality);
     }
@@ -290,14 +289,14 @@ public class IndividualFormResource extends AbstractFormResource {
             socialGroup.setUuid(uuid);
             socialGroup.setExtId(location.getExtId());
             socialGroup.setLocation(location);
-            socialGroup.setCollectedBy(collectedBy);
-            socialGroup.setInsertDate(insertTime);
+            socialGroup.setCollector(collectedBy);
+            socialGroup.setCreated(insertTime);
             AbstractEntityCrudHelperImpl.setEntityUuidIfNull(socialGroup);
         }
 
-        socialGroup.setGroupHead(head);
-        socialGroup.setGroupName(head.getLastName());
-        socialGroup.setGroupType(HOUSEHOLD_GROUP_TYPE);
+        socialGroup.setHead(head);
+        socialGroup.setName(head.getLastName());
+        socialGroup.setType(HOUSEHOLD_GROUP_TYPE);
 
         return socialGroup;
     }
@@ -309,8 +308,8 @@ public class IndividualFormResource extends AbstractFormResource {
 
 
         // try to find existing membership
-        for (Membership m : individual.getAllMemberships()) {
-            if (m.getSocialGroup().equals(socialGroup)) {
+        for (Membership m : individual.getMemberships()) {
+            if (m.getGroup().equals(socialGroup)) {
                 membership = m;
             }
         }
@@ -322,15 +321,15 @@ public class IndividualFormResource extends AbstractFormResource {
         }
 
         // fill in or update
-        membership.setIndividual(individual);
-        membership.setSocialGroup(socialGroup);
-        membership.setCollectedBy(collectedBy);
-        membership.setInsertDate(insertTime);
-        membership.setbIsToA(form.individualRelationshipToHeadOfHousehold);
+        membership.setMember(individual);
+        membership.setGroup(socialGroup);
+        membership.setCollector(collectedBy);
+        membership.setCreated(insertTime);
+        membership.setRole(form.individualRelationshipToHeadOfHousehold);
 
 
         // attach to individual
-        individual.getAllMemberships().add(membership);
+        individual.getMemberships().add(membership);
 
         return membership;
     }

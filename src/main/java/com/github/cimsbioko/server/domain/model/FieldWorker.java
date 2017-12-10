@@ -4,6 +4,7 @@ import com.github.cimsbioko.server.domain.annotations.Description;
 import com.github.cimsbioko.server.domain.constraint.CheckFieldNotBlank;
 import com.github.cimsbioko.server.domain.constraint.Searchable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -18,7 +19,6 @@ import java.io.Serializable;
 @Table(name = "fieldworker")
 public class FieldWorker extends AuditableEntity implements Serializable {
 
-
     private static final long serialVersionUID = -7550088299362704483L;
 
     @NotNull
@@ -30,11 +30,13 @@ public class FieldWorker extends AuditableEntity implements Serializable {
     @CheckFieldNotBlank
     @Searchable
     @Description(description = "First name of the field worker.")
+    @Column(name = "first_name")
     String firstName;
 
     @CheckFieldNotBlank
     @Searchable
     @Description(description = "Last name of the field worker.")
+    @Column(name = "last_name")
     String lastName;
 
     @Description(description = "Password entered for a new field worker.")
@@ -48,6 +50,7 @@ public class FieldWorker extends AuditableEntity implements Serializable {
     @NotNull
     @CheckFieldNotBlank
     @Description(description = "Hashed version of a field worker's password.")
+    @Column(name = "password_hash")
     String passwordHash;
 
     @Description(description = "The ID prefix used in individual extId generation.")

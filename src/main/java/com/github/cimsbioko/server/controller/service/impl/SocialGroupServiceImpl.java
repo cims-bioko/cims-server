@@ -44,7 +44,7 @@ public class SocialGroupServiceImpl implements SocialGroupService {
     public void modifySocialGroupHead(SocialGroup group, Individual selectedSuccessor,
                                       List<Membership> memberships) throws Exception {
 
-        group.setGroupHead(selectedSuccessor);
+        group.setHead(selectedSuccessor);
 
         // Remove all Memberships from the Social Group
         Set<Membership> mems = group.getMemberships();

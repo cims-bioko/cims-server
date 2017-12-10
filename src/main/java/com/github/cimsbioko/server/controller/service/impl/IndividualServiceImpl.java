@@ -98,13 +98,13 @@ public class IndividualServiceImpl implements IndividualService {
         }
 
         Membership membership = genericDao.findUniqueByPropertyWithOrder(Membership.class,
-                "individual", individual, "insertDate", false);
+                "individual", individual, "created", false);
 
         List<LastEvent> events = new ArrayList<>();
 
         events.add(new LastEvent("Enumeration/Baseline", individual.getDob()));
         if (membership != null)
-            events.add(new LastEvent("Membership", membership.getInsertDate()));
+            events.add(new LastEvent("Membership", membership.getCreated()));
 
         Collections.sort(events, (o1, o2) -> {
             if (o1.eventDate == null || o2.eventDate == null)
@@ -131,7 +131,7 @@ public class IndividualServiceImpl implements IndividualService {
         head.setLastName("Temporary Individual");
         head.setExtId(extId);
         head.setGender(properties.getUnknownIdentifier());
-        head.setCollectedBy(collectedBy);
+        head.setCollector(collectedBy);
         entityService.create(head);
         return head;
     }

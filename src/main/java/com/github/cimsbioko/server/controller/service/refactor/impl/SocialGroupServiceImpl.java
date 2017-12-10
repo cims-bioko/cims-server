@@ -54,7 +54,7 @@ public class SocialGroupServiceImpl implements SocialGroupService {
     @Override
     public boolean isEligibleForCreation(SocialGroup socialGroup, ConstraintViolations cv) {
 
-        boolean isDead = individualService.isDeceased(socialGroup.getGroupHead());
+        boolean isDead = individualService.isDeceased(socialGroup.getHead());
         if (isDead) {
             ConstraintViolations.addViolationIfNotNull(cv, "Head is dead.");
         }

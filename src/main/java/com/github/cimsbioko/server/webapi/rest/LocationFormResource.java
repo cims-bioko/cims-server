@@ -68,7 +68,7 @@ public class LocationFormResource extends AbstractFormResource {
             logError(cv, marshalForm(form), Form.LOG_NAME);
             return requestError(cv);
         }
-        location.setCollectedBy(collectedBy);
+        location.setCollector(collectedBy);
 
         // collected where?
         LocationHierarchy locationHierarchy;
@@ -95,7 +95,7 @@ public class LocationFormResource extends AbstractFormResource {
             return requestError("Error getting reference to LocationHierarchy: " + e.getMessage());
         }
 
-        location.setLocationHierarchy(locationHierarchy);
+        location.setHierarchy(locationHierarchy);
 
         // modify the extId if it matches another location's extId, log the change
         if (null != locationService.getByExtId(form.locationExtId)) {
@@ -140,8 +140,8 @@ public class LocationFormResource extends AbstractFormResource {
     private void copyFormDataToLocation(Form form, Location location) {
         // fieldWorker, CollectedDateTime, and HierarchyLevel are set outside of this method
         location.setUuid(form.uuid);
-        location.setLocationName(form.locationName);
-        location.setLocationType(nullTypeToUrb(form.locationType));
+        location.setName(form.locationName);
+        location.setType(nullTypeToUrb(form.locationType));
         location.setDescription(form.description);
         if (form.latitude != null && form.longitude != null) {
             location.setGlobalPos(makePoint(form.longitude, form.latitude));
@@ -165,7 +165,7 @@ public class LocationFormResource extends AbstractFormResource {
         }
         locationHierarchy.setParent(parent);
 
-        int levelKeyId = parent.getLevel().getKeyIdentifier() + 1;
+        int levelKeyId = parent.getLevel().getKeyId() + 1;
         LocationHierarchyLevel level = locationHierarchyService.getLevel(levelKeyId);
         if (null == level) {
             throw new ConstraintViolations("Could not find location hierarchy level with key " + levelKeyId);

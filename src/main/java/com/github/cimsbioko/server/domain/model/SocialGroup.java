@@ -11,16 +11,9 @@ import com.github.cimsbioko.server.domain.constraint.ExtensionStringConstraint;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlElement;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
@@ -40,7 +33,7 @@ public class SocialGroup
     @Searchable
     @CheckFieldNotBlank
     @Description(description = "Name of the social group.")
-    private String groupName;
+    private String name;
 
     @Searchable
     @CheckEntityNotVoided
@@ -48,20 +41,20 @@ public class SocialGroup
     @CheckHouseholdHeadAge(allowNull = true, message = "The social group head is younger than the minimum age required in order to be a household head.")
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @Description(description = "Individual who is head of the social group, identified by the external id.")
-    private Individual groupHead;
+    @JoinColumn(name = "head")
+    private Individual head;
 
     @ExtensionStringConstraint(constraint = "socialGroupTypeConstraint", message = "Invalid Value for social group type", allowNull = true)
     @Description(description = "Type of the social group.")
-    private String groupType;
+    private String type;
 
-    @OneToMany(cascade = {
-            CascadeType.ALL
-    }, mappedBy = "socialGroup")
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "group")
     @Description(description = "The set of all memberships of the social group.")
     private Set<Membership> memberships = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @Description(description = "The location associated with this social group")
+    @JoinColumn(name = "location")
     private Location location;
 
     public Location getLocation() {
@@ -80,28 +73,28 @@ public class SocialGroup
         extId = id;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getName() {
+        return name;
     }
 
-    public void setGroupName(String name) {
-        groupName = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Individual getGroupHead() {
-        return groupHead;
+    public Individual getHead() {
+        return head;
     }
 
-    public void setGroupHead(Individual head) {
-        groupHead = head;
+    public void setHead(Individual head) {
+        this.head = head;
     }
 
-    public String getGroupType() {
-        return groupType;
+    public String getType() {
+        return type;
     }
 
-    public void setGroupType(String group) {
-        groupType = group;
+    public void setType(String group) {
+        type = group;
     }
 
     public Set<Membership> getMemberships() {

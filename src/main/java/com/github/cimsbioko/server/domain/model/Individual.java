@@ -32,15 +32,18 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @NotNull
     @Searchable
     @Description(description = "First name of the individual.")
+    @Column(name = "first_name")
     private String firstName;
 
     @Searchable
     @Description(description = "Middle name of the individual.")
+    @Column(name = "middle_name")
     private String middleName;
 
     @CheckFieldNotBlank
     @Searchable
     @Description(description = "Last name of the individual.")
+    @Column(name = "last_name")
     private String lastName;
 
     @ExtensionStringConstraint(constraint = "genderConstraint", message = "Invalid Value for gender", allowNull = true)
@@ -52,23 +55,26 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @Description(description = "Birth date of the individual.")
     private Calendar dob;
 
-    @OneToMany(mappedBy = "individual", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.ALL})
     @Description(description = "The set of all memberships the individual is participating in.")
     private Set<Membership> allMemberships = new HashSet<>();
 
     //Project-specific fields
-    @Column
-    private String phoneNumber;
-    @Column
-    private String otherPhoneNumber;
-    @Column
-    private String languagePreference;
-    @Column
-    private String pointOfContactName;
-    @Column
-    private String pointOfContactPhoneNumber;
+    private String phone1;
+
+    private String phone2;
+
+    private String language;
+
+    @Column(name = "contact_name")
+    private String contactName;
+
+    @Column(name = "contact_phone")
+    private String contactPhone;
+
     @Column
     private int dip;
+
     @Column
     private String nationality;
 
@@ -123,52 +129,52 @@ public class Individual extends AuditableCollectedEntity implements Serializable
 
     @XmlElementWrapper(name = "memberships")
     @XmlElement(name = "membership")
-    public Set<Membership> getAllMemberships() {
+    public Set<Membership> getMemberships() {
         return allMemberships;
     }
 
-    public void setAllMemberships(Set<Membership> list) {
+    public void setMemberships(Set<Membership> list) {
         allMemberships = list;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhone1(String phone1) {
+        this.phone1 = phone1;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhone1() {
+        return phone1;
     }
 
-    public void setOtherPhoneNumber(String otherPhoneNumber) {
-        this.otherPhoneNumber = otherPhoneNumber;
+    public void setPhone2(String phone2) {
+        this.phone2 = phone2;
     }
 
-    public String getOtherPhoneNumber() {
-        return otherPhoneNumber;
+    public String getPhone2() {
+        return phone2;
     }
 
-    public void setLanguagePreference(String languagePreference) {
-        this.languagePreference = languagePreference;
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
-    public String getLanguagePreference() {
-        return languagePreference;
+    public String getLanguage() {
+        return language;
     }
 
-    public void setPointOfContactName(String pointOfContactName) {
-        this.pointOfContactName = pointOfContactName;
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
     }
 
-    public String getPointOfContactName() {
-        return pointOfContactName;
+    public String getContactName() {
+        return contactName;
     }
 
-    public void setPointOfContactPhoneNumber(String pointOfContactPhoneNumber) {
-        this.pointOfContactPhoneNumber = pointOfContactPhoneNumber;
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
     }
 
-    public String getPointOfContactPhoneNumber() {
-        return pointOfContactPhoneNumber;
+    public String getContactPhone() {
+        return contactPhone;
     }
 
     public void setDip(int dip) {

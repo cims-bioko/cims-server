@@ -33,7 +33,7 @@ public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
         User u = users.get(0);
 
         u.setSessionId("");
-        u.setLastLoginTime(0);
+        u.setLastLogin(0);
         userDao.saveOrUpdate(u);
 
         super.onLogoutSuccess(request, response, authentication);

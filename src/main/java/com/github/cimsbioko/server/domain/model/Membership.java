@@ -2,10 +2,7 @@ package com.github.cimsbioko.server.domain.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.github.cimsbioko.server.domain.constraint.*;
@@ -28,39 +25,41 @@ public class Membership extends AuditableCollectedEntity implements Serializable
     @CheckIndividualNotUnknown
     @ManyToOne(fetch = FetchType.LAZY)
     @Description(description = "Individual the membership is associated with, identified by external id.")
-    Individual individual;
+    @JoinColumn(name = "member")
+    Individual member;
 
     @Searchable
     @ManyToOne(fetch = FetchType.LAZY)
     @Description(description = "The social group of the membership, identified by external id.")
-    SocialGroup socialGroup;
+    @JoinColumn(name = "\"group\"")
+    SocialGroup group;
 
     @ExtensionStringConstraint(constraint = "membershipConstraint", message = "Invalid Value for membership relation to head", allowNull = true)
     @Description(description = "Relationship type to the group head.")
-    String bIsToA;
+    String role;
 
-    public Individual getIndividual() {
-        return individual;
+    public Individual getMember() {
+        return member;
     }
 
-    public void setIndividual(Individual individual) {
-        this.individual = individual;
+    public void setMember(Individual member) {
+        this.member = member;
     }
 
-    public SocialGroup getSocialGroup() {
-        return socialGroup;
+    public SocialGroup getGroup() {
+        return group;
     }
 
-    public void setSocialGroup(SocialGroup socialGroup) {
-        this.socialGroup = socialGroup;
+    public void setGroup(SocialGroup group) {
+        this.group = group;
     }
 
-    public String getbIsToA() {
-        return bIsToA;
+    public String getRole() {
+        return role;
     }
 
-    public void setbIsToA(String bIsToA) {
-        this.bIsToA = bIsToA;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override
