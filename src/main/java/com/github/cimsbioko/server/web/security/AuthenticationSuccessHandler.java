@@ -1,7 +1,6 @@
 package com.github.cimsbioko.server.web.security;
 
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,16 +30,9 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         org.springframework.security.core.userdetails.User u = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
-        List<User> users = userDao.findByUsername(u.getUsername());
-
-        String sessId = request.getSession().getId();
-
-        User user = users.get(0);
-        user.setSessionId(sessId);
+        User user = userDao.findByUsername(u.getUsername()).get(0);
         user.setLastLogin(System.currentTimeMillis());
-
         userDao.saveOrUpdate(user);
-
         super.onAuthenticationSuccess(request, response, authentication);
     }
 }

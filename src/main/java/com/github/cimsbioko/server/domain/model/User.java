@@ -71,9 +71,6 @@ public class User implements Serializable, UuidIdentifiable {
     boolean deleted = false;
 
     // this is used for seamless integration with special study
-    String sessionId;
-
-    // this is used for seamless integration with special study
     @Column(name = "last_login")
     long lastLogin;
 
@@ -149,14 +146,6 @@ public class User implements Serializable, UuidIdentifiable {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
     }
 
     public long getLastLogin() {

@@ -1,7 +1,6 @@
 package com.github.cimsbioko.server.web.security;
 
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,13 +28,9 @@ public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
-        List<User> users = userDao.findByUsername(user.getUsername());
-        User u = users.get(0);
-
-        u.setSessionId("");
+        User u = userDao.findByUsername(user.getUsername()).get(0);
         u.setLastLogin(0);
         userDao.saveOrUpdate(u);
-
         super.onLogoutSuccess(request, response, authentication);
     }
 }
