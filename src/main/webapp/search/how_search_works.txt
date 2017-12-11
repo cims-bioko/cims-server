@@ -23,5 +23,3 @@ FieldWorker
 Individual
 Location
 LocationHierarchy
-Relationship
-SocialGroup

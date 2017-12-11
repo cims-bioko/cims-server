@@ -56,21 +56,6 @@
     <individual uuid="Individual2" extId="individual2" first_Name="Individual" middle_Name="" last_Name="2"
                 gender="2" dob="1900-12-19" created="2009-12-19" deleted="false" collector="UnknownFieldWorker" dip="2"/>
 
-    <socialgroup uuid="HOUSEHOLDSOCIALGROUP" extId="existing_id" name="Household Social Group"
-                 head="Individual2" type="COH" created="2000-12-19" deleted="false"
-                 collector="FieldWorker1" />
-
-    <socialgroup uuid="SocialGroup1" extId="sg123456789" name="Social Group 1"
-                 head="Individual2" type="COH" created="2000-12-19" deleted="false"
-                 collector="UnknownFieldWorker" />
-
-    <socialgroup uuid="SocialGroup2" extId="sg234567890" name="Social Group 2"
-                 head="Unknown Individual" type="COH" created="2000-12-19" deleted="false"
-                 collector="UnknownFieldWorker" />
-
-    <membership uuid="Membership1" deleted="false" created="2000-12-19"
-                collector="UnknownFieldWorker" role="1" member="Individual1"
-                group="SocialGroup1" />
 
     <individual uuid="PregnantIndividual" extId="Mother-001" first_Name="Pregnant" middle_Name="" last_Name="Individual"
                 gender="Female" dob="1900-12-19" created="2009-12-19" deleted="false"
@@ -79,9 +64,5 @@
     <individual uuid="PregnantMale" extId="pregnantMale" first_Name="Pregnant" middle_Name="" last_Name="Male"
                 gender="Male" dob="1900-12-19" created="2009-12-19"
                 deleted="false" collector="UnknownFieldWorker" dip="1"/>
-
-    <socialgroup uuid="SocialGroup3" extId="sg234567891" name="Social Group 3"
-                 head="PregnantMale" type="COH" created="2000-12-19" deleted="false"
-                 collector="UnknownFieldWorker" />
 
 </dataset>

@@ -32,7 +32,7 @@ public interface GenericDao {
     /**
      * Find an entry of some type from the database. Does not exclude "deleted" entries.
      *
-     * @param entityType   The class of the entry we're looking for (e.g. SocialGroup.class)
+     * @param entityType   The class of the entry we're looking for (e.g. Individual.class)
      * @param propertyName The column name to filter by (e.g. "extId")
      * @param value        The value to match in this column (e.g. an extId)
      * @return an object of the class type passed
@@ -42,7 +42,7 @@ public interface GenericDao {
     /**
      * Find an entry of some type from the database.
      *
-     * @param entityType    The class of the entry we're looking for (e.g. SocialGroup.class)
+     * @param entityType    The class of the entry we're looking for (e.g. Individual.class)
      * @param propertyName  The column name to filter by (e.g. "extId")
      * @param value         The value to match in this column (e.g. an extId)
      * @param filterDeleted True to only return entries which haven't been marked deleted

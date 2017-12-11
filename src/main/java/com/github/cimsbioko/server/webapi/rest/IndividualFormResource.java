@@ -1,19 +1,14 @@
 package com.github.cimsbioko.server.webapi.rest;
 
-import com.github.cimsbioko.server.controller.service.EntityService;
 import com.github.cimsbioko.server.controller.service.refactor.LocationService;
 import com.github.cimsbioko.server.domain.model.FieldWorker;
 import com.github.cimsbioko.server.domain.util.CalendarAdapter;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.controller.service.refactor.FieldWorkerService;
 import com.github.cimsbioko.server.controller.service.refactor.IndividualService;
-import com.github.cimsbioko.server.controller.service.refactor.SocialGroupService;
-import com.github.cimsbioko.server.controller.service.refactor.crudhelpers.AbstractEntityCrudHelperImpl;
 import com.github.cimsbioko.server.domain.annotations.Description;
 import com.github.cimsbioko.server.domain.model.Individual;
 import com.github.cimsbioko.server.domain.model.Location;
-import com.github.cimsbioko.server.domain.model.Membership;
-import com.github.cimsbioko.server.domain.model.SocialGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,15 +37,11 @@ public class IndividualFormResource extends AbstractFormResource {
 
     private static final Logger log = LoggerFactory.getLogger(IndividualFormResource.class);
 
-    // TODO: value codes can be configured by projects
+    // FIXME: value codes can be configured by projects
     private static final String HEAD_OF_HOUSEHOLD_SELF = "1";
-    private static final String HOUSEHOLD_GROUP_TYPE = "COH";
 
     @Autowired
     private FieldWorkerService fieldWorkerService;
-
-    @Autowired
-    private EntityService entityService;
 
     @Autowired
     private IndividualService individualService;
@@ -58,11 +49,8 @@ public class IndividualFormResource extends AbstractFormResource {
     @Autowired
     private LocationService locationService;
 
-    @Autowired
-    private SocialGroupService socialGroupService;
-
     // This individual form should cause several CRUDS:
-    // location, individual, socialGroup, membership
+    // location, individual
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
     public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form) throws IOException {
@@ -72,19 +60,13 @@ public class IndividualFormResource extends AbstractFormResource {
             form.individualRelationshipToHeadOfHousehold = HEAD_OF_HOUSEHOLD_SELF;
         }
 
-        // collected when?
-        Calendar collectionTime = form.collectionDateTime;
-        if (null == collectionTime) {
-            collectionTime = getDateInPast();
-        }
-
         // inserted when?
         Calendar insertTime = Calendar.getInstance();
 
         // collected by whom?
         ConstraintViolations cv = new ConstraintViolations();
         FieldWorker collectedBy = fieldWorkerService.getByUuid(form.fieldWorkerUuid);
-        if (null == collectedBy) {
+        if (collectedBy == null) {
             cv.addViolations("Field Worker does not exist");
             logError(cv, marshalForm(form), Form.LOG_NAME);
             return requestError(cv);
@@ -95,14 +77,13 @@ public class IndividualFormResource extends AbstractFormResource {
         try {
             // Get location by uuid.
             // Fall back on extId if uuid is missing, which allows us to re-process older forms.
-            String uuid = form.householdUuid;
-            if (null == uuid) {
-                location = locationService.getByExtId(form.householdExtId);
+            if (form.householdUuid != null) {
+                location = locationService.getByUuid(form.householdUuid);
             } else {
-                location = locationService.getByUuid(uuid);
+                location = locationService.getByExtId(form.householdExtId);
             }
 
-            if (null == location) {
+            if (location == null) {
                 String errorMessage = "Location does not exist " + form.householdUuid + " / " + form.householdExtId;
                 cv.addViolations(errorMessage);
                 logError(cv, marshalForm(form), Form.LOG_NAME);
@@ -111,17 +92,6 @@ public class IndividualFormResource extends AbstractFormResource {
 
         } catch (Exception e) {
             return requestError("Error getting location: " + e.getMessage());
-        }
-
-        // persist the location
-        try {
-            createOrSaveLocation(location);
-        } catch (ConstraintViolations e) {
-            return requestError(e);
-        } catch (SQLException e) {
-            return serverError("SQL Error updating or saving location: " + e.getMessage());
-        } catch (Exception e) {
-            return serverError("General Error updating or saving location: " + e.getMessage());
         }
 
         // make a new individual, to be persisted below
@@ -136,6 +106,8 @@ public class IndividualFormResource extends AbstractFormResource {
             return requestError("Error finding or creating individual: " + e.getMessage());
         }
 
+        location.addResident(individual);
+
         // change the individual's extId if the server has previously changed the extId of their location/household
         if (!form.householdExtId.equalsIgnoreCase(location.getExtId())) {
 
@@ -144,20 +116,16 @@ public class IndividualFormResource extends AbstractFormResource {
             // log the modification
             cv.addViolations("Individual ExtId updated from " + form.individualExtId + " to " + individual.getExtId());
             logError(cv, marshalForm(form), Form.LOG_NAME);
-
-            //household extId used later by social group, need to correct it here
-            form.householdExtId = location.getExtId();
         }
 
         // log a warning if the individual extId clashes with an existing individual's extId
-        if (0 != individualService.getExistingExtIdCount(individual.getExtId())) {
-            // log the modification
+        if (individualService.getExistingExtIdCount(individual.getExtId()) != 0) {
             cv.addViolations("Warning: Individual ExtId clashes with an existing Individual's extId : " + individual.getExtId());
             logError(cv, marshalForm(form), Form.LOG_NAME);
         }
 
         // persist the individual, used to be for cascading to residency
-        // TODO: remove this type of code, since it's probably unnecessary after removing that entity
+        // TODO: remove this type of code, since it's probably unnecessary after removing residency
         try {
             createOrSaveIndividual(individual);
         } catch (ConstraintViolations e) {
@@ -169,69 +137,22 @@ public class IndividualFormResource extends AbstractFormResource {
             return serverError("General Error updating or saving individual: " + e.getMessage());
         }
 
-        SocialGroup socialGroup;
         if (form.individualRelationshipToHeadOfHousehold.equals(HEAD_OF_HOUSEHOLD_SELF)) {
-
-            // may create social group for head of household
-            socialGroup = findOrMakeSocialGroup(form, location, individual, insertTime, collectedBy);
-
-            // name the location after the head of household
             location.setName(individual.getLastName());
-
-        } else {
-            // household must already exist for household member
-
-            // Get social group by uuid.
-            // Fall back on extId if uuid is missing, which allows us to re-process older forms.
-            if (form.socialgroupUuid == null) {
-                socialGroup = socialGroupService.getByExtId(form.householdExtId);
-            } else {
-                socialGroup = socialGroupService.getByUuid(form.socialgroupUuid);
-            }
-        }
-
-        // persist the socialGroup, cascade to through individual to relationship
-        try {
-            createOrSaveSocialGroup(socialGroup);
-        } catch (ConstraintViolations e) {
-            logError(e, marshalForm(form), Form.LOG_NAME);
-            return requestError(e);
-        } catch (SQLException e) {
-            return serverError("SQL Error updating or saving socialGroup: " + e.getMessage());
-        } catch (Exception e) {
-            return serverError("General Error updating or saving socialGroup: " + e.getMessage());
-        }
-
-        // individual's membership in the social group
-        Membership membership = findOrMakeMembership(individual, socialGroup, collectedBy,
-                collectionTime, insertTime, form);
-        try {
-            entityService.create(membership);
-        } catch (ConstraintViolations constraintViolations) {
-            logError(constraintViolations, marshalForm(form), Form.LOG_NAME);
-            return serverError("ConstraintViolations saving membership: " + constraintViolations.getMessage());
-        } catch (SQLException e) {
-            return serverError("SQL Error updating or saving membership: " + e.getMessage());
         }
 
         return new ResponseEntity<>(form, HttpStatus.CREATED);
     }
 
     private void updateIndividualExtId(Individual individual, Location location) {
-
-        // -001
         String individualSuffixSequence = individual.getExtId().substring(individual.getExtId().length() - 4);
-
-        // M1000S57E02P1-001
         individual.setExtId(location.getExtId() + individualSuffixSequence);
-
     }
 
     private Individual findOrMakeIndividual(Form form, FieldWorker collectedBy,
                                             Calendar insertTime, ConstraintViolations cv) throws Exception {
-
         Individual individual = individualService.getByUuid(form.uuid);
-        if (null == individual) {
+        if (individual == null) {
             individual = new Individual();
         }
 
@@ -245,7 +166,7 @@ public class IndividualFormResource extends AbstractFormResource {
 
     private void copyFormDataToIndividual(Form form, Individual individual)
             throws Exception {
-        if (null == individual.getUuid()) {
+        if (individual.getUuid() == null) {
             individual.setUuid(form.uuid);
         }
         individual.setExtId(form.individualExtId);
@@ -267,97 +188,12 @@ public class IndividualFormResource extends AbstractFormResource {
         individual.setContactPhone(form.individualPointOfContactPhoneNumber);
         individual.setDip(form.individualDip);
         individual.setNationality(form.individualNationality);
-    }
-
-
-    private SocialGroup findOrMakeSocialGroup(Form form, Location location, Individual head,
-                                              Calendar insertTime, FieldWorker collectedBy) {
-
-        // Get social group by uuid.
-        // Fall back on extId if uuid is missing, which allows us to re-process older forms.
-        SocialGroup socialGroup;
-        String uuid = form.socialgroupUuid;
-        if (null == uuid) {
-            socialGroup = socialGroupService.getByExtId(form.householdExtId);
-        } else {
-            socialGroup = socialGroupService.getByUuid(uuid);
-        }
-
-        if (null == socialGroup) {
-            // make a new social group
-            socialGroup = new SocialGroup();
-            socialGroup.setUuid(uuid);
-            socialGroup.setExtId(location.getExtId());
-            socialGroup.setLocation(location);
-            socialGroup.setCollector(collectedBy);
-            socialGroup.setCreated(insertTime);
-            AbstractEntityCrudHelperImpl.setEntityUuidIfNull(socialGroup);
-        }
-
-        socialGroup.setHead(head);
-        socialGroup.setName(head.getLastName());
-        socialGroup.setType(HOUSEHOLD_GROUP_TYPE);
-
-        return socialGroup;
-    }
-
-    private Membership findOrMakeMembership(Individual individual, SocialGroup socialGroup, FieldWorker collectedBy,
-                                            Calendar collectionTime, Calendar insertTime, Form form) {
-
-        Membership membership = null;
-
-
-        // try to find existing membership
-        for (Membership m : individual.getMemberships()) {
-            if (m.getGroup().equals(socialGroup)) {
-                membership = m;
-            }
-        }
-
-        // might need a brand new membership
-        if (null == membership) {
-            membership = new Membership();
-            membership.setUuid(form.membershipUuid);
-        }
-
-        // fill in or update
-        membership.setMember(individual);
-        membership.setGroup(socialGroup);
-        membership.setCollector(collectedBy);
-        membership.setCreated(insertTime);
-        membership.setRole(form.individualRelationshipToHeadOfHousehold);
-
-
-        // attach to individual
-        individual.getMemberships().add(membership);
-
-        return membership;
-    }
-
-    private void createOrSaveLocation(Location location) throws ConstraintViolations, SQLException {
-        if (null == locationService.getByUuid(location.getUuid())) {
-            locationService.create(location);
-        } else {
-            locationService.save(location);
-        }
-    }
-
-    private void createOrSaveSocialGroup(SocialGroup socialGroup) throws ConstraintViolations,
-            SQLException {
-
-        SocialGroup sg = socialGroupService.getByUuid(socialGroup.getUuid());
-
-        if (null == sg) {
-            socialGroupService.create(socialGroup);
-        } else {
-            socialGroupService.save(socialGroup);
-        }
-
+        individual.setHomeRole(form.individualRelationshipToHeadOfHousehold);
     }
 
     private void createOrSaveIndividual(Individual individual) throws ConstraintViolations,
             SQLException {
-        if (null == individualService.getByUuid(individual.getUuid())) {
+        if (individualService.getByUuid(individual.getUuid()) == null) {
             individualService.create(individual);
         } else {
             individualService.save(individual);
@@ -391,15 +227,6 @@ public class IndividualFormResource extends AbstractFormResource {
 
         @XmlElement(name = "household_uuid")
         private String householdUuid;
-
-        @XmlElement(name = "membership_uuid")
-        private String membershipUuid;
-
-        @XmlElement(name = "relationship_uuid")
-        private String relationshipUuid;
-
-        @XmlElement(name = "socialgroup_uuid")
-        private String socialgroupUuid;
 
         @XmlElement(name = "individual_ext_id")
         private String individualExtId;

@@ -1,10 +1,6 @@
 package com.github.cimsbioko.server.controller.service.impl;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
 
 import com.github.cimsbioko.server.controller.service.EntityService;
 import com.github.cimsbioko.server.dao.GenericDao;
@@ -13,7 +9,6 @@ import com.github.cimsbioko.server.controller.idgeneration.IndividualGenerator;
 import com.github.cimsbioko.server.controller.service.IndividualService;
 import com.github.cimsbioko.server.domain.model.FieldWorker;
 import com.github.cimsbioko.server.domain.model.Individual;
-import com.github.cimsbioko.server.domain.model.Membership;
 import com.github.cimsbioko.server.domain.service.SitePropertiesService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,50 +72,6 @@ public class IndividualServiceImpl implements IndividualService {
     public Individual findIndivById(String indivExtId) {
         Individual indiv = genericDao.findByProperty(Individual.class, "extId", indivExtId, true);
         return indiv;
-    }
-
-    private class LastEvent {
-        String eventType;
-        Calendar eventDate;
-
-        public LastEvent(String eventType, Calendar eventDate) {
-            this.eventType = eventType;
-            this.eventDate = eventDate;
-        }
-    }
-
-    @Transactional(readOnly = true)
-    public String getLatestEvent(Individual individual) {
-        // it's possible the individual passed in hasn't actually been persisted
-        // yet. This is a guard against throwing a Transient Object exception
-        if (findIndivById(individual.getExtId()) == null) {
-            return "";
-        }
-
-        Membership membership = genericDao.findUniqueByPropertyWithOrder(Membership.class,
-                "individual", individual, "created", false);
-
-        List<LastEvent> events = new ArrayList<>();
-
-        events.add(new LastEvent("Enumeration/Baseline", individual.getDob()));
-        if (membership != null)
-            events.add(new LastEvent("Membership", membership.getCreated()));
-
-        Collections.sort(events, (o1, o2) -> {
-            if (o1.eventDate == null || o2.eventDate == null)
-                return 0;
-            return o1.eventDate.compareTo(o2.eventDate);
-        });
-
-        LastEvent le = new LastEvent(null, null);
-        if (!events.isEmpty() && events.size() > 1) {
-            le = events.get(events.size() - 1);
-        } else if (events.size() == 1) {
-            le = events.get(0);
-        }
-
-        return le.eventType == null ? "" : le.eventType;
-
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -356,8 +356,7 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         verifyEntityCrud("12345678901234935890123456789012", "existing_id", "Individual2", "2");
     }
 
-    private void verifyEntityCrud(String individualUuid, String householdExtId, String headUuid,
-                                  String membershipType) {
+    private void verifyEntityCrud(String individualUuid, String householdExtId, String headUuid, String membershipType) {
 
         // individual exists
         Individual individual = genericDao.findByProperty(Individual.class, "uuid", individualUuid);
@@ -366,21 +365,9 @@ public class IndividualFormResourceTest extends AbstractResourceTest {
         // location exists
         Location location = genericDao.findByProperty(Location.class, "extId", householdExtId);
         assertNotNull(location);
+        assertEquals(location, individual.getHome());
 
-        // socialGroup exists
-        SocialGroup socialGroup = genericDao.findByProperty(SocialGroup.class, "extId", householdExtId);
-        assertNotNull(socialGroup);
-
-        // membership in social group
-        Membership membership = null;
-        for (Membership m : individual.getMemberships()) {
-            if (m.getGroup().equals(socialGroup)) {
-                membership = m;
-                break;
-            }
-        }
-        assertNotNull(membership);
-        assertEquals(membershipType, membership.getRole());
+        assertEquals(membershipType, individual.getHomeRole());
 
         // head of household exists
         Individual head = genericDao.findByProperty(Individual.class, "uuid", headUuid);

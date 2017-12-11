@@ -43,10 +43,8 @@
                 <value>com.github.cimsbioko.server.domain.model.Location</value>
                 <value>com.github.cimsbioko.server.domain.model.LocationHierarchy</value>
                 <value>com.github.cimsbioko.server.domain.model.LocationHierarchyLevel</value>
-                <value>com.github.cimsbioko.server.domain.model.Membership</value>
                 <value>com.github.cimsbioko.server.domain.model.Privilege</value>
                 <value>com.github.cimsbioko.server.domain.model.Role</value>
-                <value>com.github.cimsbioko.server.domain.model.SocialGroup</value>
                 <value>com.github.cimsbioko.server.domain.model.User</value>
                 <value>com.github.cimsbioko.server.domain.model.Error</value>
             </list>
@@ -112,17 +110,9 @@
         <constructor-arg value="com.github.cimsbioko.server.domain.model.LocationHierarchyLevel"/>
     </bean>
 
-    <bean id="membershipDao" parent="baseDao">
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.Membership"/>
-    </bean>
-
     <bean id="roleDao" parent="baseDao"
           class="com.github.cimsbioko.server.dao.impl.RoleDaoImpl">
         <constructor-arg value="com.github.cimsbioko.server.domain.model.Role"/>
-    </bean>
-
-    <bean id="socialGroupDao" parent="baseDao">
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.SocialGroup"/>
     </bean>
 
     <bean id="taskDao" parent="baseDao">
@@ -440,30 +430,6 @@
             <map>
                 <entry key="LOCATION_PREFIX">
                     <value>${openhds.locationIdLength}</value>
-                </entry>
-            </map>
-        </property>
-    </bean>
-
-    <!-- Supported fields are SOCIALGROUP_NAME -->
-    <bean id="socialGroupIdScheme" class="com.github.cimsbioko.server.controller.idgeneration.IdScheme">
-        <property name="name" value="SocialGroup"/>
-        <property name="prefix">
-            <value>${openhds.sgPrefix}</value>
-        </property>
-        <property name="checkDigit">
-            <value>${openhds.sgCheckDigit}</value>
-        </property>
-        <property name="incrementBound">
-            <value>${openhds.sgIncrementBound}</value>
-        </property>
-        <property name="length">
-            <value>${openhds.sgIdLength}</value>
-        </property>
-        <property name="fields">
-            <map>
-                <entry key="SOCIALGROUP_NAME">
-                    <value>${openhds.sgNameLength}</value>
                 </entry>
             </map>
         </property>

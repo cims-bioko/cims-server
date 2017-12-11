@@ -59,5 +59,3 @@ INSERT INTO locationhierarchylevel(uuid,keyId,name) VALUES('HierarchyLevel2',2,'
 INSERT INTO locationhierarchylevel(uuid,keyId,name) VALUES('HierarchyLevel3',3,'Village')
 
 INSERT INTO location(uuid,extId,name,hierarchy,type,created,deleted,collector) VALUES ('LOCATION1','NJA001','House 3','hierarchy_root','RUR','2000-12-19',false,'FieldWorker1')
-
-INSERT INTO socialgroup(uuid,extId,deleted,created,name,collector,head,type) VALUES ('BasseyFamily', 'MBI1', false, '1979-12-19', 'Bassey Family', 'FieldWorker1','Individual2','FAM')

@@ -32,8 +32,4 @@
         hierarchy="hierarchy3" type="RUR" created="2000-12-19" deleted="false"
         collector="FieldWorker1" />
 
-    <socialgroup uuid="HOUSEHOLDSOCIALGROUP" extId="existing_id" name="Household Social Group"
-        head="Individual2" type="COH" created="2000-12-19" deleted="false"
-        collector="FieldWorker1" />
-
 </dataset>

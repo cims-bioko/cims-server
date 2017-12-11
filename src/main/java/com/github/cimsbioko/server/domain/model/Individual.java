@@ -8,8 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
@@ -55,10 +53,6 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @Description(description = "Birth date of the individual.")
     private Calendar dob;
 
-    @OneToMany(mappedBy = "member", cascade = {CascadeType.ALL})
-    @Description(description = "The set of all memberships the individual is participating in.")
-    private Set<Membership> allMemberships = new HashSet<>();
-
     //Project-specific fields
     private String phone1;
 
@@ -72,11 +66,16 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @Column(name = "contact_phone")
     private String contactPhone;
 
-    @Column
     private int dip;
 
-    @Column
     private String nationality;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "home")
+    private Location home;
+
+    @Column(name = "home_role")
+    private String homeRole;
 
     public String getExtId() {
         return extId;
@@ -125,16 +124,6 @@ public class Individual extends AuditableCollectedEntity implements Serializable
 
     public void setDob(Calendar date) {
         dob = date;
-    }
-
-    @XmlElementWrapper(name = "memberships")
-    @XmlElement(name = "membership")
-    public Set<Membership> getMemberships() {
-        return allMemberships;
-    }
-
-    public void setMemberships(Set<Membership> list) {
-        allMemberships = list;
     }
 
     public void setPhone1(String phone1) {
@@ -191,6 +180,22 @@ public class Individual extends AuditableCollectedEntity implements Serializable
 
     public void setNationality(String nationality) {
         this.nationality = nationality;
+    }
+
+    public Location getHome() {
+        return home;
+    }
+
+    public void setHome(Location home) {
+        this.home = home;
+    }
+
+    public String getHomeRole() {
+        return homeRole;
+    }
+
+    public void setHomeRole(String homeRole) {
+        this.homeRole = homeRole;
     }
 
     @Override
