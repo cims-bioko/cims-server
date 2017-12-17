@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.domain.model;
 
-import com.github.cimsbioko.server.domain.constraint.Searchable;
 import com.github.cimsbioko.server.domain.annotations.Description;
 import com.github.cimsbioko.server.domain.constraint.CheckFieldNotBlank;
 
@@ -28,7 +27,6 @@ public class LocationHierarchyLevel implements UuidIdentifiable, Serializable {
 
     @NotNull
     @CheckFieldNotBlank
-    @Searchable
     @Description(description = "The name of this location hierarchy level.")
     String name;
 

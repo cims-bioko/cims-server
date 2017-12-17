@@ -23,23 +23,19 @@ public class Individual extends AuditableCollectedEntity implements Serializable
 
     @NotNull
     @Size(min = 1)
-    @Searchable
     @Description(description = "External Id of the individual. This id is used internally.")
     private String extId;
 
     @NotNull
-    @Searchable
     @Description(description = "First name of the individual.")
     @Column(name = "first_name")
     private String firstName;
 
-    @Searchable
     @Description(description = "Middle name of the individual.")
     @Column(name = "middle_name")
     private String middleName;
 
     @CheckFieldNotBlank
-    @Searchable
     @Description(description = "Last name of the individual.")
     @Column(name = "last_name")
     private String lastName;

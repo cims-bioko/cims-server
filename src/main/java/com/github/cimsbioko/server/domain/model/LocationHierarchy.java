@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.domain.model;
 
-import com.github.cimsbioko.server.domain.constraint.Searchable;
 import com.github.cimsbioko.server.domain.annotations.Description;
 import com.github.cimsbioko.server.domain.constraint.CheckFieldNotBlank;
 
@@ -31,7 +30,6 @@ public class LocationHierarchy implements UuidIdentifiable, Serializable {
 
     @CheckFieldNotBlank
     @NotNull
-    @Searchable
     @Description(description = "External Id of the location hierarchy. This id is used internally.")
     String extId;
 
@@ -42,7 +40,6 @@ public class LocationHierarchy implements UuidIdentifiable, Serializable {
 
     @NotNull
     @CheckFieldNotBlank
-    @Searchable
     @Description(description = "The name of this location hierarchy record.")
     String name;
 

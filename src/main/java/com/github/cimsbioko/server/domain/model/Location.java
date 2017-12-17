@@ -3,7 +3,6 @@ package com.github.cimsbioko.server.domain.model;
 
 import com.github.cimsbioko.server.domain.annotations.Description;
 import com.github.cimsbioko.server.domain.constraint.CheckFieldNotBlank;
-import com.github.cimsbioko.server.domain.constraint.Searchable;
 import com.vividsolutions.jts.geom.Point;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -29,12 +28,10 @@ public class Location
 
     @NotNull
     @Size(min = 1)
-    @Searchable
     @Description(description = "External Id of the location. This id is used internally.")
     private String extId;
 
     @CheckFieldNotBlank
-    @Searchable
     @Description(description = "Name of the location.")
     private String name;
 
