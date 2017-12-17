@@ -226,13 +226,6 @@
     <!-- controller -->
     <context:component-scan base-package="com.github.cimsbioko.server.controller"/>
 
-    <security:authentication-manager>
-        <security:authentication-provider user-service-ref="userDetailsService"/>
-    </security:authentication-manager>
-
-    <!-- allows for the @secured annotation -->
-    <security:global-method-security secured-annotations="enabled"/>
-
     <!-- allow async tasks to inherit security context, make service method calls -->
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="targetClass" value="org.springframework.security.core.context.SecurityContextHolder"/>
