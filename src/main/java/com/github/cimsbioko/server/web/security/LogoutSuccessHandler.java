@@ -27,10 +27,12 @@ public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
     @Transactional
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
-        User u = userDao.findByUsername(user.getUsername()).get(0);
-        u.setLastLogin(0);
-        userDao.saveOrUpdate(u);
-        super.onLogoutSuccess(request, response, authentication);
+        if (authentication != null) {
+            org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+            User u = userDao.findByUsername(user.getUsername()).get(0);
+            u.setLastLogin(0);
+            userDao.saveOrUpdate(u);
+            super.onLogoutSuccess(request, response, authentication);
+        }
     }
 }
