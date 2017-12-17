@@ -1,12 +1,11 @@
 package com.github.cimsbioko.server.controller.service;
 
-import com.github.cimsbioko.server.domain.annotations.Authorized;
 import com.github.cimsbioko.server.domain.model.FieldWorker;
-import com.github.cimsbioko.server.domain.model.Privilege;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface FieldWorkerService {
 
-    @Authorized({Privilege.VIEW_ENTITY})
+    @PreAuthorize("hasAuthority('VIEW_ENTITY')")
     FieldWorker getUnknownFieldWorker();
 
 }

@@ -14,7 +14,6 @@ import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 
 
-import com.github.cimsbioko.server.controller.exception.AuthorizationException;
 import com.github.cimsbioko.server.controller.service.EntityService;
 import com.github.cimsbioko.server.dao.Dao;
 import com.github.cimsbioko.server.dao.GenericDao;
@@ -205,9 +204,6 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
         } catch (SQLException e) {
             jsfService.addError("Error creating record in database");
             return null;
-        } catch (AuthorizationException e) {
-            jsfService.addError(e.getMessage());
-            return null;
         } catch (Exception e) {
             jsfService.addError(e.getMessage());
             return null;
@@ -271,9 +267,6 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
         } catch (SQLException e) {
             jsfService.addError("Error updating the current entity");
             return null;
-        } catch (AuthorizationException e) {
-            jsfService.addError(e.getMessage());
-            return null;
         } catch (Exception e) {
             jsfService.addError("Error updating entity");
             return null;
@@ -292,11 +285,8 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 
         try {
             entityService.delete(persistentObject);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             jsfService.addError("Could not delete the persistent entity");
-            return null;
-        } catch (AuthorizationException e) {
-            jsfService.addError(e.getMessage());
             return null;
         }
 

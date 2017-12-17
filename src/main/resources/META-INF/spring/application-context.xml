@@ -271,11 +271,6 @@
     <!-- Simple bean to get current logged in user -->
     <bean id="currentUser" class="com.github.cimsbioko.server.controller.service.impl.CurrentUserImpl" />
 
-    <!-- Authorization Advice to determine if logged in User has privilege to access method within service -->
-    <bean id="authorizationAdvice" class="com.github.cimsbioko.server.controller.aop.AuthorizationAdvice">
-        <property name="currentUser" ref="currentUser"/>
-    </bean>
-
     <!-- security configuration -->
     <bean id="userDetailsService" parent="baseTransactionBean">
         <property name="target">
@@ -286,22 +281,10 @@
     </bean>
 
     <!-- Base service bean that includes authorization advice -->
-    <bean id="baseServiceBean" class="org.springframework.aop.framework.ProxyFactoryBean" abstract="true">
-        <property name="interceptorNames">
-            <list>
-                <value>authorizationAdvice</value>
-            </list>
-        </property>
-    </bean>
+    <bean id="baseServiceBean" class="org.springframework.aop.framework.ProxyFactoryBean" abstract="true" />
 
     <!-- This should be used as the parent for any service bean that has a Transactional annotation -->
-    <bean id="baseServiceTransactionBean" parent="baseTransactionBean" abstract="true">
-        <property name="preInterceptors">
-            <list>
-                <ref bean="authorizationAdvice"/>
-            </list>
-        </property>
-    </bean>
+    <bean id="baseServiceTransactionBean" parent="baseTransactionBean" abstract="true" />
 
     <bean id="fieldWorkerService" parent="baseServiceBean">
         <property name="target">

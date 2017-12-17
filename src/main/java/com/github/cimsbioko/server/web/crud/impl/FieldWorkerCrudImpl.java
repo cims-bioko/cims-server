@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.web.crud.impl;
 
-import com.github.cimsbioko.server.controller.exception.AuthorizationException;
 import com.github.cimsbioko.server.controller.service.refactor.FieldWorkerService;
 import com.github.cimsbioko.server.domain.model.FieldWorker;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
@@ -37,7 +36,7 @@ public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
             fieldWorkerService.generateIdPrefix(entityItem);
             fieldWorkerService.isEligibleForCreation(entityItem, new ConstraintViolations());
             return super.create();
-        } catch (ConstraintViolations | AuthorizationException e) {
+        } catch (ConstraintViolations e) {
             jsfService.addError(e.getMessage());
         }
         return null;

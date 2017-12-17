@@ -2,10 +2,9 @@ package com.github.cimsbioko.server.controller.service;
 
 import java.sql.SQLException;
 
-import com.github.cimsbioko.server.domain.model.Privilege;
 import org.hibernate.exception.ConstraintViolationException;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
-import com.github.cimsbioko.server.domain.annotations.Authorized;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
  * Interface that represents a generic service that can be used to create/read/delete entities in the system
@@ -26,10 +25,10 @@ public interface EntityService {
      * @throws ConstraintViolationException if the entity violates a constraint
      * @throws SQLException                 if the entity fails to be persisted
      */
-    @Authorized({Privilege.CREATE_ENTITY})
+    @PreAuthorize("hasAuthority('CREATE_ENTITY')")
     <T> void create(T entityItem) throws IllegalArgumentException, ConstraintViolations, SQLException;
 
-    @Authorized({Privilege.EDIT_ENTITY})
+    @PreAuthorize("hasAuthority('EDIT_ENTITY')")
     <T> void save(T entityItem) throws ConstraintViolations, SQLException;
 
     /**
@@ -38,7 +37,7 @@ public interface EntityService {
      * @param id
      * @return
      */
-    @Authorized({Privilege.VIEW_ENTITY})
+    @PreAuthorize("hasAuthority('VIEW_ENTITY')")
     <T> T read(Class<T> entityType, String id);
 
     /**
@@ -47,7 +46,7 @@ public interface EntityService {
      * @param entityItem
      * @throws SQLException
      */
-    @Authorized({Privilege.DELETE_ENTITY})
+    @PreAuthorize("hasAuthority('DELETE_ENTITY')")
     <T> void delete(T entityItem) throws SQLException;
 
 }

@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class ExtendedUserImpl extends org.springframework.security.core.userdetails.User implements ExtendedUser {
 
-    private static final String SPRING_ROLE = "ROLE_AUTHENTICATED";
+    private static final String ROLE_PREFIX = "ROLE_";
 
     private Set<Privilege> allPrivileges;
 
@@ -24,8 +24,8 @@ public class ExtendedUserImpl extends org.springframework.security.core.userdeta
 
     private static Collection<GrantedAuthority> convertAuthorities(Set<Role> roles) {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(SPRING_ROLE));
         for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(ROLE_PREFIX + role.getName()));
             for (Privilege privilege : role.getPrivileges()) {
                 authorities.add(new SimpleGrantedAuthority(privilege.getPrivilege()));
             }
