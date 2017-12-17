@@ -11,11 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.github.cimsbioko.server.domain.constraint.Searchable;
-import com.github.cimsbioko.server.domain.annotations.Description;
 
-@Description(description = "A Role represents the different actors who use the system. " +
-        "A Role contains a group of Privileges. They are assigned to Users which define " +
-        "the actions they can take within OpenHDS.")
 @Entity
 @Table(name = "role")
 public class Role extends AuditableEntity implements Serializable {
@@ -23,14 +19,11 @@ public class Role extends AuditableEntity implements Serializable {
     static final long serialVersionUID = 21L;
 
     @Searchable
-    @Description(description = "Name of the role.")
     String name;
 
-    @Description(description = "Description of the role.")
     String description;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @Description(description = "Set of privileges which define the rights that actors have.")
     @JoinTable(name = "role_privileges", joinColumns = {
             @JoinColumn(name = "role")}, inverseJoinColumns = @JoinColumn(name = "privilege"))
     Set<Privilege> privileges = new HashSet<>();

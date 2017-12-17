@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.domain.model;
 
-import com.github.cimsbioko.server.domain.annotations.Description;
 import com.github.cimsbioko.server.domain.constraint.CheckFieldNotBlank;
 
 import javax.persistence.*;
@@ -8,15 +7,6 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
-@Description(description = "The Location Hierarchy represents the overall structure " +
-        "of all Locations within the study area. The levels of the hierarchy are " +
-        "specified in a configuration file which may set the levels as follows: " +
-        "Region, District, Village. Each record in this hierarchy will have " +
-        "a uniquely generated identifier which the system uses internally. " +
-        "Every record will also have a parent location name except the root. Finally, " +
-        "all records within the hierarchy will have a name which must be unique. " +
-        "Note that this is not to be confused with Location. The Location's name " +
-        "field must reference a valid location name from this configured hierarchy.")
 @Entity
 @Table(name = "locationhierarchy")
 @XmlRootElement
@@ -30,20 +20,16 @@ public class LocationHierarchy implements UuidIdentifiable, Serializable {
 
     @CheckFieldNotBlank
     @NotNull
-    @Description(description = "External Id of the location hierarchy. This id is used internally.")
     String extId;
 
-    @Description(description = "Parent location's name.")
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = LocationHierarchy.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "parent")
     LocationHierarchy parent;
 
     @NotNull
     @CheckFieldNotBlank
-    @Description(description = "The name of this location hierarchy record.")
     String name;
 
-    @Description(description = "Level of the location hierarchy.")
     @ManyToOne
     @JoinColumn(name = "level")
     LocationHierarchyLevel level;

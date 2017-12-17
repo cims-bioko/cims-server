@@ -1,7 +1,6 @@
 
 package com.github.cimsbioko.server.domain.model;
 
-import com.github.cimsbioko.server.domain.annotations.Description;
 import com.github.cimsbioko.server.domain.constraint.CheckFieldNotBlank;
 import com.vividsolutions.jts.geom.Point;
 import org.hibernate.annotations.Cascade;
@@ -16,7 +15,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Description(description = "All distinct Locations within the area of study are represented here. A Location is identified by a uniquely generated identifier that the system uses internally. Each Location has a name associated with it and resides at a particular hierarchy within the Location Hierarchy.")
 @Entity
 @Table(name = "location")
 @XmlRootElement
@@ -28,11 +26,9 @@ public class Location
 
     @NotNull
     @Size(min = 1)
-    @Description(description = "External Id of the location. This id is used internally.")
     private String extId;
 
     @CheckFieldNotBlank
-    @Description(description = "Name of the location.")
     private String name;
 
     @ManyToOne
@@ -41,15 +37,12 @@ public class Location
     private LocationHierarchy hierarchy = new LocationHierarchy();
 
     @ExtensionStringConstraint(constraint = "locationTypeConstraint", message = "Invalid Value for location type", allowNull = true)
-    @Description(description = "The type of Location.")
     @Column(name = "type")
     private String type;
 
-    @Description(description = "the global position represented as longitude, latitude, altitude")
     @Column(name = "global_pos")
     private Point globalPos;
 
-    @Description(description = "A description of the observable features of a location")
     private String description;
 
     @OneToMany(mappedBy = "home")

@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.domain.model;
 
-import com.github.cimsbioko.server.domain.annotations.Description;
 import com.github.cimsbioko.server.domain.constraint.*;
 import com.github.cimsbioko.server.domain.util.CalendarAdapter;
 
@@ -13,7 +12,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.*;
 
-@Description(description = "An Individual represents one who is a part of the study. Each Individual is identified by a uniquely generated external identifier which the system uses internally. Information about the Individual such as name, gender, date of birth, and parents are stored here. An Individual may be associated with many Residencies, Relationships, and Memberships.")
 @Entity
 @Table(name = "individual")
 @XmlRootElement(name = "individual")
@@ -23,30 +21,24 @@ public class Individual extends AuditableCollectedEntity implements Serializable
 
     @NotNull
     @Size(min = 1)
-    @Description(description = "External Id of the individual. This id is used internally.")
     private String extId;
 
     @NotNull
-    @Description(description = "First name of the individual.")
     @Column(name = "first_name")
     private String firstName;
 
-    @Description(description = "Middle name of the individual.")
     @Column(name = "middle_name")
     private String middleName;
 
     @CheckFieldNotBlank
-    @Description(description = "Last name of the individual.")
     @Column(name = "last_name")
     private String lastName;
 
     @ExtensionStringConstraint(constraint = "genderConstraint", message = "Invalid Value for gender", allowNull = true)
-    @Description(description = "The gender of the individual.")
     private String gender;
 
     @Past(message = "Date of birth must a date in the past")
     @Temporal(TemporalType.DATE)
-    @Description(description = "Birth date of the individual.")
     private Calendar dob;
 
     //Project-specific fields

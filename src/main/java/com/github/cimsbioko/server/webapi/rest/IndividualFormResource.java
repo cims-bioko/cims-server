@@ -6,7 +6,6 @@ import com.github.cimsbioko.server.domain.util.CalendarAdapter;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.controller.service.refactor.FieldWorkerService;
 import com.github.cimsbioko.server.controller.service.refactor.IndividualService;
-import com.github.cimsbioko.server.domain.annotations.Description;
 import com.github.cimsbioko.server.domain.model.Individual;
 import com.github.cimsbioko.server.domain.model.Location;
 import org.slf4j.Logger;
@@ -200,7 +199,6 @@ public class IndividualFormResource extends AbstractFormResource {
         }
     }
 
-    @Description(description = "Model data from the Individual xform for the Bioko island project. Contains Individual, social data.")
     @XmlRootElement(name = "individualForm")
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = Form.LOG_NAME)

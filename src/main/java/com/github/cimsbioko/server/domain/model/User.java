@@ -2,7 +2,6 @@ package com.github.cimsbioko.server.domain.model;
 
 import com.github.cimsbioko.server.domain.constraint.Searchable;
 import org.hibernate.annotations.GenericGenerator;
-import com.github.cimsbioko.server.domain.annotations.Description;
 import com.github.cimsbioko.server.domain.constraint.CheckFieldNotBlank;
 
 import javax.persistence.Column;
@@ -18,10 +17,6 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@Description(description = "A User in the system. Users contain a group of Roles which " +
-        "define the actions they can take within OpenHDS. It contains descriptive " +
-        "information about the User such as first and last name, description, and " +
-        "the chosen username and password.")
 @Entity
 @Table(name = "users")
 public class User implements Serializable, UuidIdentifiable {
@@ -36,38 +31,30 @@ public class User implements Serializable, UuidIdentifiable {
 
     @CheckFieldNotBlank
     @Searchable
-    @Description(description = "User's first name")
     @Column(name = "first_name")
     String firstName;
 
     @CheckFieldNotBlank
     @Searchable
-    @Description(description = "User's last name")
     @Column(name = "last_name")
     String lastName;
 
-    @Description(description = "User's full name")
     @Column(name = "full_name")
     String fullName;
 
-    @Description(description = "Description of the user.")
     String description;
 
     @CheckFieldNotBlank
-    @Description(description = "The name used for logging into the system.")
     String username;
 
     @CheckFieldNotBlank
-    @Description(description = "Password associated with the username.")
     String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles", joinColumns = {
             @JoinColumn(name = "user")}, inverseJoinColumns = @JoinColumn(name = "role"))
-    @Description(description = "Set of roles applied to the user.")
     Set<Role> roles = new HashSet<>();
 
-    @Description(description = "Indicator for signaling some data to be deleted.")
     boolean deleted = false;
 
     // this is used for seamless integration with special study

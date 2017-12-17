@@ -8,8 +8,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 
-import com.github.cimsbioko.server.domain.annotations.Description;
-
 /**
  * An AuditableCollectedEntity is any entity that is recorded or collected by a Field Worker
  * that needs to be audited
@@ -21,7 +19,6 @@ public abstract class AuditableCollectedEntity extends AuditableEntity implement
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = FieldWorker.class)
-    @Description(description = "The field worker who collected the data, identified by external id.")
     @JoinColumn(name = "collector")
     protected FieldWorker collector;
 

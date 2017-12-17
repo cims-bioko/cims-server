@@ -1,7 +1,5 @@
 package com.github.cimsbioko.server.domain.model;
 
-import com.github.cimsbioko.server.domain.annotations.Description;
-
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -21,10 +19,8 @@ public abstract class AuditableEntity implements UuidIdentifiable, Serializable 
     @Column(length = 32)
     String uuid;
 
-    @Description(description = "Indicator for signaling some data to be deleted.")
     protected boolean deleted = false;
 
-    @Description(description = "Date of insertion.")
     protected Calendar created;
 
     @Override

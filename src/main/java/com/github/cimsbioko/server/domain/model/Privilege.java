@@ -1,7 +1,6 @@
 package com.github.cimsbioko.server.domain.model;
 
 import org.hibernate.annotations.GenericGenerator;
-import com.github.cimsbioko.server.domain.annotations.Description;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-@Description(description = "A Privilege represents the rights that are required in " +
-        "order to access service level methods.")
 @Entity
 @Table(name = "privilege")
 public class Privilege implements Serializable {
@@ -37,7 +34,6 @@ public class Privilege implements Serializable {
     @Column(length = 32)
     private String uuid;
 
-    @Description(description = "Name of the privilege.")
     private String privilege;
 
     public String getUuid() {

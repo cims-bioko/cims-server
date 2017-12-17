@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.domain.model;
 
-import com.github.cimsbioko.server.domain.annotations.Description;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -8,7 +7,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Calendar;
 
-@Description(description = "An error log")
 @Entity
 @Table(name = "error")
 @XmlRootElement(name = "error")
@@ -23,7 +21,6 @@ public class Error implements Serializable {
     private String uuid;
 
     @Temporal(javax.persistence.TemporalType.DATE)
-    @Description(description = "Date of insertion.")
     private Calendar created;
 
     @Column(length = 65535)
