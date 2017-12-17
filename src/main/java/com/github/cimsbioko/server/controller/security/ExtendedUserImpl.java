@@ -15,13 +15,11 @@ public class ExtendedUserImpl extends org.springframework.security.core.userdeta
 
     private static final String SPRING_ROLE = "ROLE_AUTHENTICATED";
 
-    private User user;
     private Set<Privilege> allPrivileges;
 
     public ExtendedUserImpl(User user) {
         super(user.getUsername(), user.getPassword(), convertAuthorities(user.getRoles()));
         allPrivileges = compilePrivileges(user.getRoles());
-        this.user = user;
     }
 
     private static Collection<GrantedAuthority> convertAuthorities(Set<Role> roles) {
@@ -41,11 +39,6 @@ public class ExtendedUserImpl extends org.springframework.security.core.userdeta
             privs.addAll(role.getPrivileges());
         }
         return privs;
-    }
-
-    @Override
-    public User getDomainUser() {
-        return user;
     }
 
     @Override
