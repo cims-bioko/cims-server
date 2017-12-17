@@ -2,10 +2,10 @@ package com.github.cimsbioko.server.controller.service;
 
 import java.sql.SQLException;
 
+import com.github.cimsbioko.server.domain.model.Privilege;
 import org.hibernate.exception.ConstraintViolationException;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.annotations.Authorized;
-import com.github.cimsbioko.server.domain.model.PrivilegeConstants;
 
 /**
  * Interface that represents a generic service that can be used to create/read/delete entities in the system
@@ -26,10 +26,10 @@ public interface EntityService {
      * @throws ConstraintViolationException if the entity violates a constraint
      * @throws SQLException                 if the entity fails to be persisted
      */
-    @Authorized({PrivilegeConstants.CREATE_ENTITY})
+    @Authorized({Privilege.CREATE_ENTITY})
     <T> void create(T entityItem) throws IllegalArgumentException, ConstraintViolations, SQLException;
 
-    @Authorized({PrivilegeConstants.EDIT_ENTITY})
+    @Authorized({Privilege.EDIT_ENTITY})
     <T> void save(T entityItem) throws ConstraintViolations, SQLException;
 
     /**
@@ -38,7 +38,7 @@ public interface EntityService {
      * @param id
      * @return
      */
-    @Authorized({PrivilegeConstants.VIEW_ENTITY})
+    @Authorized({Privilege.VIEW_ENTITY})
     <T> T read(Class<T> entityType, String id);
 
     /**
@@ -47,7 +47,7 @@ public interface EntityService {
      * @param entityItem
      * @throws SQLException
      */
-    @Authorized({PrivilegeConstants.DELETE_ENTITY})
+    @Authorized({Privilege.DELETE_ENTITY})
     <T> void delete(T entityItem) throws SQLException;
 
 }

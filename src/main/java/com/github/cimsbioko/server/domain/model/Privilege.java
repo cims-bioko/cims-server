@@ -18,6 +18,12 @@ public class Privilege implements Serializable {
 
     private static final long serialVersionUID = -5969044695942713833L;
 
+    public static final String CREATE_ENTITY = "CREATE_ENTITY";
+    public static final String EDIT_ENTITY = "EDIT_ENTITY";
+    public static final String DELETE_ENTITY = "DELETE_ENTITY";
+    public static final String VIEW_ENTITY = "VIEW_ENTITY";
+
+
     public Privilege() {
     }
 

@@ -4,32 +4,31 @@ package com.github.cimsbioko.server.controller.service.refactor;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.annotations.Authorized;
 import com.github.cimsbioko.server.domain.model.AuditableEntity;
+import com.github.cimsbioko.server.domain.model.Privilege;
 
 import java.util.List;
 
-import static com.github.cimsbioko.server.domain.model.PrivilegeConstants.*;
-
 public interface EntityService<T extends AuditableEntity> {
 
-    @Authorized({VIEW_ENTITY})
+    @Authorized({Privilege.VIEW_ENTITY})
     List<T> getAll();
 
-    @Authorized({VIEW_ENTITY})
+    @Authorized({Privilege.VIEW_ENTITY})
     T getByExtId(String id);
 
-    @Authorized({VIEW_ENTITY})
+    @Authorized({Privilege.VIEW_ENTITY})
     T getByUuid(String id);
 
-    @Authorized({VIEW_ENTITY})
+    @Authorized({Privilege.VIEW_ENTITY})
     boolean isEligibleForCreation(T entity, ConstraintViolations cv);
 
-    @Authorized({DELETE_ENTITY})
+    @Authorized({Privilege.DELETE_ENTITY})
     void delete(T entity) throws IllegalArgumentException;
 
-    @Authorized({CREATE_ENTITY})
+    @Authorized({Privilege.CREATE_ENTITY})
     void create(T entity) throws ConstraintViolations;
 
-    @Authorized({EDIT_ENTITY})
+    @Authorized({Privilege.EDIT_ENTITY})
     void save(T entity) throws ConstraintViolations;
 
 }
