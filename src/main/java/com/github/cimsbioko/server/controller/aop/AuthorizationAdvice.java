@@ -27,23 +27,19 @@ public class AuthorizationAdvice implements MethodBeforeAdvice {
     private final static Logger log = LoggerFactory.getLogger(AuthorizationAdvice.class);
 
     public void before(Method method, Object[] args, Object target) throws Throwable {
-        // grab the privileges the method is annotated with
+
         Collection<String> privileges = getPrivileges(method);
-        // grab the require all field
         boolean requiredAll = getRequiredAll(method);
 
-        if (privileges == null) { // method not annotated with authorized
+        if (privileges == null) {
             return;
         }
 
-        // retrieve the current list of privileges for current logged in user
         Set<Privilege> userPrivileges = currentUser.getCurrentUserPrivileges();
 
-        // iterate over each privilege required by method and determine
-        // if user has that privilege
         for (String privilege : privileges) {
             Privilege priv = new Privilege(privilege);
-            if (userPrivileges.contains(priv)) { // user has the privilege
+            if (userPrivileges.contains(priv)) {
                 if (!requiredAll) { // only need 1 privilege
                     return;
                 }
