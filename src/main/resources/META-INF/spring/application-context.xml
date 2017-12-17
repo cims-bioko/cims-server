@@ -75,24 +75,20 @@
     <!-- dao configuration -->
 
     <!-- All entity DAOs should inhert from this bean -->
-    <bean id="baseDao" class="com.github.cimsbioko.server.dao.impl.BaseDaoImpl"
-          abstract="true">
+    <bean id="baseDao" class="com.github.cimsbioko.server.dao.impl.BaseDaoImpl" abstract="true">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="userDao" parent="baseDao"
-          class="com.github.cimsbioko.server.dao.impl.UserDaoImpl">
+    <bean id="userDao" parent="baseDao" class="com.github.cimsbioko.server.dao.impl.UserDaoImpl">
         <constructor-arg value="com.github.cimsbioko.server.domain.model.User"/>
     </bean>
 
-    <bean id="fieldWorkerDao" parent="baseDao"
-          class="com.github.cimsbioko.server.dao.impl.FieldWorkerDaoImpl">
+    <bean id="fieldWorkerDao" parent="baseDao" class="com.github.cimsbioko.server.dao.impl.FieldWorkerDaoImpl">
         <constructor-arg value="com.github.cimsbioko.server.domain.model.FieldWorker"/>
         <property name="properties" ref="siteProperties"/>
     </bean>
 
-    <bean id="individualDao" parent="baseDao"
-          class="com.github.cimsbioko.server.dao.impl.IndividualDaoImpl">
+    <bean id="individualDao" parent="baseDao" class="com.github.cimsbioko.server.dao.impl.IndividualDaoImpl">
         <constructor-arg value="com.github.cimsbioko.server.domain.model.Individual"/>
         <property name="properties" ref="siteProperties"/>
     </bean>
@@ -101,8 +97,7 @@
         <constructor-arg value="com.github.cimsbioko.server.domain.model.Location"/>
     </bean>
 
-    <bean id="locationHierarchyDao" parent="baseDao"
-          class="com.github.cimsbioko.server.dao.impl.LocationHierarchyDaoImpl">
+    <bean id="locationHierarchyDao" parent="baseDao" class="com.github.cimsbioko.server.dao.impl.LocationHierarchyDaoImpl">
         <constructor-arg value="com.github.cimsbioko.server.domain.model.LocationHierarchy"/>
     </bean>
 
@@ -110,8 +105,7 @@
         <constructor-arg value="com.github.cimsbioko.server.domain.model.LocationHierarchyLevel"/>
     </bean>
 
-    <bean id="roleDao" parent="baseDao"
-          class="com.github.cimsbioko.server.dao.impl.RoleDaoImpl">
+    <bean id="roleDao" parent="baseDao" class="com.github.cimsbioko.server.dao.impl.RoleDaoImpl">
         <constructor-arg value="com.github.cimsbioko.server.domain.model.Role"/>
     </bean>
 
