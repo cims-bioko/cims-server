@@ -37,10 +37,6 @@
             <props>
                 <prop key="hibernate.show_sql">${app.hibernate.showSql}</prop>
                 <prop key="hibernate.hbm2ddl.auto">${app.hibernate.export}</prop>
-                <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory
-                </prop>
-                <prop key="hibernate.jdbc.use_streams_for_binary"></prop>
-                <prop key="hibernate.jdbc.batch_size">0</prop>
                 <prop key="hibernate.dialect">${app.hibernate.dialect}</prop>
                 <prop key="javax.persistence.validation.mode">NONE</prop>
             </props>
