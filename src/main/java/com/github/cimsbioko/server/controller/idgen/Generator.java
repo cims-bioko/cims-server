@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.controller.idgeneration;
+package com.github.cimsbioko.server.controller.idgen;
 
 import java.util.List;
 import java.util.regex.Matcher;

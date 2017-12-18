@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.controller.service.refactor.crudhelpers;
 
-import com.github.cimsbioko.server.controller.idgeneration.IndividualGenerator;
+import com.github.cimsbioko.server.controller.idgen.IndividualGenerator;
 import com.github.cimsbioko.server.controller.service.refactor.IndividualService;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.model.Individual;

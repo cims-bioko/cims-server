@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.controller.service.refactor.crudhelpers;
 
-import com.github.cimsbioko.server.controller.idgeneration.LocationGenerator;
+import com.github.cimsbioko.server.controller.idgen.LocationGenerator;
 import com.github.cimsbioko.server.controller.service.refactor.LocationService;
 import com.github.cimsbioko.server.domain.model.Location;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;

@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.controller.service.refactor.impl;
 
-import com.github.cimsbioko.server.controller.idgeneration.FieldWorkerGenerator;
+import com.github.cimsbioko.server.controller.idgen.FieldWorkerGenerator;
 import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.FieldWorker;
 import org.mindrot.jbcrypt.BCrypt;

@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.controller.idgeneration;
+package com.github.cimsbioko.server.controller.idgen;
 
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.model.Individual;

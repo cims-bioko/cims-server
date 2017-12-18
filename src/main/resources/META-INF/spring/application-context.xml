@@ -178,7 +178,7 @@
     </bean>
 
     <!-- Supported fields are LOCATION_NAME, LOCATION_HIERARCHY_ID -->
-    <bean id="locationIdScheme" class="com.github.cimsbioko.server.controller.idgeneration.IdScheme">
+    <bean id="locationIdScheme" class="com.github.cimsbioko.server.controller.idgen.IdScheme">
         <property name="name" value="Location"/>
         <property name="prefix">
             <value>${openhds.locationPrefix}</value>
@@ -206,7 +206,7 @@
 
     <!-- Supported fields are CHILD_LOC_NAME -->
     <!-- If CHILD_LOC_NAME is used, CHILD_LOC_NAME_FIRST and CHILD_LOC_NAME_LAST must be as well -->
-    <bean id="locationHierarchyIdScheme" class="com.github.cimsbioko.server.controller.idgeneration.IdScheme">
+    <bean id="locationHierarchyIdScheme" class="com.github.cimsbioko.server.controller.idgen.IdScheme">
         <property name="name" value="LocationHierarchy"/>
         <property name="prefix">
             <value>${openhds.locationHPrefix}</value>
@@ -236,7 +236,7 @@
     </bean>
 
     <!-- Supported fields are INDIVIDUAL_FNAME, INDIVIDUAL_MNAME, INDIVIDUAL_LNAME -->
-    <bean id="individualIdScheme" class="com.github.cimsbioko.server.controller.idgeneration.IdScheme">
+    <bean id="individualIdScheme" class="com.github.cimsbioko.server.controller.idgen.IdScheme">
         <property name="name" value="Individual"/>
         <property name="prefix">
             <value>${openhds.individualPrefix}</value>
@@ -260,7 +260,7 @@
     </bean>
 
     <!-- Supported fields are FIELDWORKER_FNAME, FIELDWORKER_LNAME -->
-    <bean id="fieldWorkerIdScheme" class="com.github.cimsbioko.server.controller.idgeneration.IdScheme">
+    <bean id="fieldWorkerIdScheme" class="com.github.cimsbioko.server.controller.idgen.IdScheme">
         <property name="name" value="FieldWorker"/>
         <property name="prefix">
             <value>${openhds.fwPrefix}</value>
