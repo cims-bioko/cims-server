@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 
@@ -29,7 +28,7 @@ public class DuplicateLocationFormResource extends AbstractFormResource {
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
-    public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form) throws JAXBException {
+    public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form) {
 
         if (form.uuid != null) {
             Location location = locationService.getByUuid(form.uuid);

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +44,7 @@ public class MobileDatabaseResource {
     private TaskService taskService;
 
     @RequestMapping(value = MOBILEDB_PATH, method = RequestMethod.GET, produces = {SQLITE_MIME_TYPE, Metadata.MIME_TYPE})
-    public String mobileDB(WebRequest request) throws ServletException, IOException {
+    public String mobileDB(WebRequest request) {
 
         String contentHash = taskService.getDescriptor(MOBILEDB_TASK_NAME);
         File cacheFile = fileResolver.resolveMobileDBFile();
