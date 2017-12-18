@@ -5,21 +5,18 @@ import com.github.cimsbioko.server.domain.model.Role;
 import com.github.cimsbioko.server.domain.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
-public class ExtendedUserImpl extends org.springframework.security.core.userdetails.User implements ExtendedUser {
+public class UserImpl extends org.springframework.security.core.userdetails.User implements UserDetails {
 
     private static final String ROLE_PREFIX = "ROLE_";
 
-    private Set<Privilege> allPrivileges;
-
-    public ExtendedUserImpl(User user) {
+    public UserImpl(User user) {
         super(user.getUsername(), user.getPassword(), convertAuthorities(user.getRoles()));
-        allPrivileges = compilePrivileges(user.getRoles());
     }
 
     private static Collection<GrantedAuthority> convertAuthorities(Set<Role> roles) {
@@ -31,18 +28,5 @@ public class ExtendedUserImpl extends org.springframework.security.core.userdeta
             }
         }
         return authorities;
-    }
-
-    private static Set<Privilege> compilePrivileges(Set<Role> roles) {
-        Set<Privilege> privs = new HashSet<>();
-        for (Role role : roles) {
-            privs.addAll(role.getPrivileges());
-        }
-        return privs;
-    }
-
-    @Override
-    public Set<Privilege> getAllPrivileges() {
-        return allPrivileges;
     }
 }

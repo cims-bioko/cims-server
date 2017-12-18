@@ -20,12 +20,12 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     private UserDao userDao;
 
-    public ExtendedUser loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
         List<com.github.cimsbioko.server.domain.model.User> users = userDao.findByUsername(username);
         if (users == null || users.size() == 0) { // no user found by the name
             throw new UsernameNotFoundException("user " + username + " was not found");
         }
-        return new ExtendedUserImpl(users.get(0));
+        return new UserImpl(users.get(0));
     }
 
     public void setUserDao(UserDao userDao) {
