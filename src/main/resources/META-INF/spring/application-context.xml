@@ -28,20 +28,9 @@
     <bean id="sessionFactory"
           class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" depends-on="flyway">
         <property name="dataSource" ref="dataSource"/>
-        <property name="annotatedClasses">
+        <property name="packagesToScan">
             <list>
-                <value>com.github.cimsbioko.server.domain.model.Task</value>
-                <value>com.github.cimsbioko.server.domain.model.AuditableCollectedEntity</value>
-                <value>com.github.cimsbioko.server.domain.model.AuditableEntity</value>
-                <value>com.github.cimsbioko.server.domain.model.FieldWorker</value>
-                <value>com.github.cimsbioko.server.domain.model.Individual</value>
-                <value>com.github.cimsbioko.server.domain.model.Location</value>
-                <value>com.github.cimsbioko.server.domain.model.LocationHierarchy</value>
-                <value>com.github.cimsbioko.server.domain.model.LocationHierarchyLevel</value>
-                <value>com.github.cimsbioko.server.domain.model.Privilege</value>
-                <value>com.github.cimsbioko.server.domain.model.Role</value>
-                <value>com.github.cimsbioko.server.domain.model.User</value>
-                <value>com.github.cimsbioko.server.domain.model.Error</value>
+                <value>com.github.cimsbioko.server.domain.model</value>
             </list>
         </property>
         <property name="hibernateProperties">
