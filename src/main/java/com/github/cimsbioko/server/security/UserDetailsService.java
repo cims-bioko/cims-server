@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.controller.security;
+package com.github.cimsbioko.server.security;
 
 import java.util.List;
 

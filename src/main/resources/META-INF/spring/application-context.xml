@@ -161,7 +161,7 @@
     <bean id="currentUser" class="com.github.cimsbioko.server.controller.service.impl.CurrentUserImpl" />
 
     <!-- security configuration -->
-    <bean class="com.github.cimsbioko.server.controller.security.UserDetailsService">
+    <bean class="com.github.cimsbioko.server.security.UserDetailsService">
         <property name="userDao" ref="userDao"/>
     </bean>
 
