@@ -54,9 +54,6 @@ public interface GenericDao {
 
     <T> List<T> findListByProperty(Class<T> entityType, String propertyName, Object value, boolean filterDeleted);
 
-    <T> T findUniqueByPropertyWithOrder(Class<T> entityType, String propertyName, Object value,
-                                        String orderByCol, boolean ascending);
-
     void clear();
 
     Session getSession();

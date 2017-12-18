@@ -73,10 +73,4 @@ public class IndividualServiceImpl implements IndividualService {
     public void save(Individual individual) throws ConstraintViolations {
         individualCrudHelper.save(individual);
     }
-
-    @Override
-    public boolean isDeceased(Individual individual) {
-        //TODO: refactor the "getLatestEvent" logic in the old IndividualService
-        return false;
-    }
 }

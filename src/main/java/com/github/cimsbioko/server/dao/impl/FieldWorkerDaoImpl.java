@@ -22,12 +22,4 @@ public class FieldWorkerDaoImpl extends BaseDaoImpl<FieldWorker, String> {
         criteria = super.addImplicitRestrictions(criteria);
         return criteria.add(Restrictions.ne("extId", properties.getUnknownIdentifier()));
     }
-
-    public SitePropertiesService getProperties() {
-        return properties;
-    }
-
-    public void setProperties(SitePropertiesService properties) {
-        this.properties = properties;
-    }
 }

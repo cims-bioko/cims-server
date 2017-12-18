@@ -102,17 +102,6 @@ public class GenericDaoImpl implements GenericDao {
         return criteria.list();
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T findUniqueByPropertyWithOrder(Class<T> entityType, String propertyName, Object value,
-                                               String orderByCol, boolean ascending) {
-        Order order = (ascending ? Order.asc(orderByCol) : Order.desc(orderByCol));
-
-        return (T) getSession().createCriteria(entityType).
-                add(Restrictions.eq(propertyName, value)).
-                add(Restrictions.eq("deleted", false)).
-                addOrder(order).setMaxResults(1).uniqueResult();
-    }
-
     public void clear() {
         getSession().clear();
     }

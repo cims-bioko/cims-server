@@ -24,7 +24,7 @@ public class CalendarAdapter extends XmlAdapter<String, Calendar> {
         }
     }
 
-    public String marshal(Calendar v) throws Exception {
+    public String marshal(Calendar v) {
         init();
         return util.formatDateTime(v);
     }

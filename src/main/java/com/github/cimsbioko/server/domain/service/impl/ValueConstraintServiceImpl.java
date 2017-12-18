@@ -23,14 +23,6 @@ public class ValueConstraintServiceImpl implements ValueConstraintService {
         }
     }
 
-    public Element findConstraintByName(String constraintName) {
-        for (Element ele : doc.getRootElement().getChildren()) {
-            if (ele.getAttribute("id").getValue().equals(constraintName))
-                return ele;
-        }
-        return null;
-    }
-
     public boolean isValidConstraintValue(String constraintName, Object value) {
         // Get children of the root element whose "id" attribute is constraintName...
         for (Element elt : doc.getRootElement().getChildren()) {
