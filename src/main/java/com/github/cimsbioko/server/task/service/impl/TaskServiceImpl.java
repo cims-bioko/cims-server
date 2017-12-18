@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.task.service.impl;
 
-import org.hibernate.SessionFactory;
 import com.github.cimsbioko.server.dao.Dao;
 import com.github.cimsbioko.server.domain.model.Task;
 import com.github.cimsbioko.server.task.service.TaskService;
@@ -16,12 +15,10 @@ import java.util.List;
 @Component
 public class TaskServiceImpl implements TaskService {
 
-    private SessionFactory sessionFactory;
     private Dao<Task, String> dao;
 
     @Autowired
-    public TaskServiceImpl(SessionFactory sessionFactory, @Qualifier("taskDao") Dao<Task, String> dao) {
-        this.sessionFactory = sessionFactory;
+    public TaskServiceImpl(@Qualifier("taskDao") Dao<Task, String> dao) {
         this.dao = dao;
     }
 
