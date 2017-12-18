@@ -14,17 +14,14 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import com.github.cimsbioko.server.domain.model.AuditableEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @SuppressWarnings("unchecked")
 public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK> {
 
-    /**
-     * Model object type
-     */
     Class<T> entityType;
-    /**
-     * Hibernate session factory configured in applicationContext
-     */
+
+    @Autowired
     SessionFactory sessFact;
 
     public BaseDaoImpl(Class<T> entityType) {

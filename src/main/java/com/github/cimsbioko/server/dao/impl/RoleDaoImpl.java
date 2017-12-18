@@ -8,6 +8,7 @@ import com.github.cimsbioko.server.domain.model.User;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 /**
  * Specialized class for Role entity
@@ -17,10 +18,11 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author Dave Roberge
  */
+@Repository("roleDao")
 public class RoleDaoImpl extends BaseDaoImpl<Role, String> implements RoleDao {
 
-    public RoleDaoImpl(Class<Role> entityType) {
-        super(entityType);
+    public RoleDaoImpl() {
+        super(Role.class);
     }
 
     @SuppressWarnings("unchecked")

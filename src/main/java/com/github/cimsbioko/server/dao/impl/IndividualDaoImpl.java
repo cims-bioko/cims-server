@@ -5,6 +5,8 @@ import org.hibernate.criterion.Restrictions;
 import com.github.cimsbioko.server.domain.model.AuditableEntity;
 import com.github.cimsbioko.server.domain.model.Individual;
 import com.github.cimsbioko.server.domain.service.SitePropertiesService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 /**
  * A specialized class for the Individual entity
@@ -13,12 +15,14 @@ import com.github.cimsbioko.server.domain.service.SitePropertiesService;
  *
  * @author Dave Roberge
  */
+@Repository("individualDao")
 public class IndividualDaoImpl extends BaseDaoImpl<Individual, String> {
 
+    @Autowired
     SitePropertiesService properties;
 
-    public IndividualDaoImpl(Class<Individual> entityType) {
-        super(entityType);
+    public IndividualDaoImpl() {
+        super(Individual.class);
     }
 
     @Override

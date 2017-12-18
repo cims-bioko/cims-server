@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Repository
+@Repository("formSubmissionDao")
 public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements FormSubmissionDao {
 
     private static final String COLUMNS = "instanceId, as_xml, as_json, form_id, form_version, form_binding," +

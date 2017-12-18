@@ -11,18 +11,18 @@ import com.github.cimsbioko.server.domain.util.CalendarUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository("errorDao")
 public class ErrorDaoImpl implements ErrorDao {
 
     private static final Logger logger = LoggerFactory.getLogger(ErrorDaoImpl.class);
+
+    @Autowired
     private EntityService entityService;
 
     @Autowired
     private CalendarUtil calendarUtil;
-
-    public ErrorDaoImpl(EntityService entityService) {
-        this.entityService = entityService;
-    }
 
     public Error save(Error error) {
         try {
