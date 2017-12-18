@@ -165,18 +165,6 @@
         <property name="userDao" ref="userDao"/>
     </bean>
 
-    <bean class="com.github.cimsbioko.server.controller.service.impl.FieldWorkerServiceImpl" lazy-init="true">
-        <constructor-arg ref="genericDao"/>
-        <constructor-arg ref="fieldWorkerIdGenerator"/>
-    </bean>
-
-    <bean class="com.github.cimsbioko.server.controller.service.impl.IndividualServiceImpl">
-        <constructor-arg ref="genericDao"/>
-        <constructor-arg ref="individualIdGenerator"/>
-        <constructor-arg ref="siteProperties"/>
-        <constructor-arg ref="entityService"/>
-    </bean>
-
     <bean class="com.github.cimsbioko.server.controller.service.impl.LocationHierarchyServiceImpl">
         <constructor-arg ref="genericDao"/>
         <constructor-arg ref="entityService"/>
@@ -187,7 +175,6 @@
     <bean id="roleService" class="com.github.cimsbioko.server.controller.service.impl.RoleServiceImpl">
         <constructor-arg ref="roleDao"/>
         <constructor-arg ref="genericDao"/>
-        <constructor-arg ref="entityService"/>
     </bean>
 
     <!-- Supported fields are LOCATION_NAME, LOCATION_HIERARCHY_ID -->
@@ -299,8 +286,7 @@
         </property>
     </bean>
 
-    <bean id="entityValidator"
-          class="com.github.cimsbioko.server.web.service.impl.EntityValidationServiceJsfImpl">
+    <bean id="entityValidator" class="com.github.cimsbioko.server.web.service.impl.EntityValidationServiceJsfImpl">
         <constructor-arg ref="jsfService"/>
     </bean>
 

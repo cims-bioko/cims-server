@@ -2,7 +2,6 @@ package com.github.cimsbioko.server.controller.service.impl;
 
 import java.util.List;
 
-import com.github.cimsbioko.server.controller.service.EntityService;
 import com.github.cimsbioko.server.controller.service.RoleService;
 import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.dao.RoleDao;
@@ -15,13 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class RoleServiceImpl implements RoleService {
 
     private GenericDao genericDao;
-    private EntityService service;
     private RoleDao roleDao;
 
-    public RoleServiceImpl(RoleDao roleDao, GenericDao genericDao, EntityService service) {
+    public RoleServiceImpl(RoleDao roleDao, GenericDao genericDao) {
         this.roleDao = roleDao;
         this.genericDao = genericDao;
-        this.service = service;
     }
 
     public Role evaluateRole(Role entityItem) throws ConstraintViolations {
