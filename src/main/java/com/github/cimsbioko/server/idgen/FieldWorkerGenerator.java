@@ -1,6 +1,6 @@
-package com.github.cimsbioko.server.controller.idgen;
+package com.github.cimsbioko.server.idgen;
 
-import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
+import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.model.FieldWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

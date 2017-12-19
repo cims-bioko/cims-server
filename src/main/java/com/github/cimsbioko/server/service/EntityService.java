@@ -3,7 +3,7 @@ package com.github.cimsbioko.server.service;
 import java.sql.SQLException;
 
 import org.hibernate.exception.ConstraintViolationException;
-import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
+import com.github.cimsbioko.server.exception.ConstraintViolations;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 /**

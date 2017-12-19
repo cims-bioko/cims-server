@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.service.refactor.crudhelpers;
 
-import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
+import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.model.AuditableEntity;
 import org.springframework.transaction.annotation.Transactional;
 

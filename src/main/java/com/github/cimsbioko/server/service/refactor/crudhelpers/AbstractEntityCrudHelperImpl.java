@@ -1,8 +1,8 @@
 package com.github.cimsbioko.server.service.refactor.crudhelpers;
 
 import com.github.cimsbioko.server.dao.GenericDao;
-import com.github.cimsbioko.server.controller.idgen.UUIDGenerator;
-import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
+import com.github.cimsbioko.server.idgen.UUIDGenerator;
+import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.CurrentUser;
 import com.github.cimsbioko.server.service.EntityValidationService;
 import com.github.cimsbioko.server.domain.model.AuditableEntity;

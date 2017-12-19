@@ -22,7 +22,7 @@ import com.github.cimsbioko.server.web.crud.EntityCrud;
 import com.github.cimsbioko.server.web.service.JsfService;
 import com.github.cimsbioko.server.web.ui.NavigationMenuBean;
 import com.github.cimsbioko.server.web.ui.PagingState;
-import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
+import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.model.AuditableCollectedEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

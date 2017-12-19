@@ -2,7 +2,7 @@ package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.cimsbioko.server.service.ErrorService;
 import com.github.cimsbioko.server.util.ErrorUtil;
-import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
+import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.model.Error;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;

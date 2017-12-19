@@ -25,7 +25,7 @@ public class User implements Serializable, UuidIdentifiable {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "com.github.cimsbioko.server.controller.idgen.UUIDGenerator")
+    @GenericGenerator(name = "system-uuid", strategy = "com.github.cimsbioko.server.idgen.UUIDGenerator")
     @Column(length = 32)
     String uuid;
 

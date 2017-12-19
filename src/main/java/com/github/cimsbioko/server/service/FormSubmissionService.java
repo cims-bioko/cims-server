@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.service;
 
-import com.github.cimsbioko.server.controller.exception.ExistingSubmissionException;
+import com.github.cimsbioko.server.exception.ExistingSubmissionException;
 import com.github.cimsbioko.server.domain.model.FormSubmission;
 import org.springframework.transaction.annotation.Transactional;
 

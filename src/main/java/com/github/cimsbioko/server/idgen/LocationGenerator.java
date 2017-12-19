@@ -1,7 +1,6 @@
-package com.github.cimsbioko.server.controller.idgen;
+package com.github.cimsbioko.server.idgen;
 
-import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
-import com.github.cimsbioko.server.domain.model.Individual;
+import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.model.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,22 +13,17 @@ import java.util.Map;
 /**
  * @author Brian
  *         <p>
- *         The Generator for Individual Ids. It examines the siteProperties and
+ *         The Generator for Location Ids. It examines the siteProperties and
  *         based on the template provided, creates the id. Refer to the
  *         application-context with the different components involved with
  *         the id.
  */
 
-@Component("individualIdGenerator")
-public class IndividualGenerator extends Generator<Individual> {
-    private Location location;
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
+@Component("locationIdGenerator")
+public class LocationGenerator extends Generator<Location> {
 
     @Override
-    public String generateId(Individual individual) throws ConstraintViolations {
+    public String generateId(Location location) throws ConstraintViolations {
         StringBuilder sb = new StringBuilder();
 
         IdScheme scheme = getIdScheme();
@@ -44,32 +38,39 @@ public class IndividualGenerator extends Generator<Individual> {
 
             if (filter != null) {
 
-                if (key.equals(IdGeneratedFields.LOCATION_PREFIX.toString())) {
-                    //String fname = individual.getFirstName();
-                    String extId = location.getExtId();
+                if (key.equals(IdGeneratedFields.LOCATION_HIERARCHY_ID.toString())) {
+                    String locId = location.getHierarchy().getExtId();
+                    if (filter > 0 && locId.length() >= filter)
+                        sb.append(formatProperString(locId, filter));
+                    else if (filter == 0 || locId.length() < filter)
+                        sb.append(formatProperString(locId, locId.length()));
+                    else
+                        throw new ConstraintViolations("An error occurred while attempting to generate " +
+                                "the id on the field specified as '" + locId + "'");
+                } else if (key.equals(IdGeneratedFields.LOCATION_NAME.toString())) {
+                    String locationName = location.getName();
 
-                    if (extId.length() >= filter) {
+                    if (locationName.length() >= filter) {
 
-                        if (filter > 0 && extId.length() >= filter)
-                            sb.append(formatProperString(extId, filter));
-                        else if (filter == 0 || extId.length() < filter)
-                            sb.append(formatProperString(extId, extId.length()));
+                        if (filter > 0 && location.getName().length() >= filter)
+                            sb.append(formatProperString(locationName, filter));
+                        else if (filter == 0 || locationName.length() < filter)
+                            sb.append(formatProperString(locationName, locationName.length()));
                         else
                             throw new ConstraintViolations("An error occurred while attempting to generate " +
-                                    "the id on the field specified as '" + extId + "'");
+                                    "the id on the field specified as '" + locationName + "'");
                     } else
-                        throw new ConstraintViolations("Unable to generate the id. Make sure the First Name field is of the required length " +
+                        throw new ConstraintViolations("Unable to generate the id. Make sure the field Location Name is of the required length " +
                                 "specified in the id configuration.");
                 }
-
             }
         }
 
         extId = sb.toString();
         if (scheme.getIncrementBound() > 0)
-            sb.append(buildNumberWithBound(individual, scheme));
+            sb.append(buildNumberWithBound(location, scheme));
         else
-            sb.append(buildNumber(Individual.class, sb.toString(), scheme.isCheckDigit()));
+            sb.append(buildNumber(Location.class, sb.toString(), scheme.isCheckDigit()));
 
         validateIdLength(sb.toString(), scheme);
 
@@ -77,9 +78,9 @@ public class IndividualGenerator extends Generator<Individual> {
     }
 
     @Override
-    public String buildNumberWithBound(Individual entityItem, IdScheme scheme) throws ConstraintViolations {
+    public String buildNumberWithBound(Location entityItem, IdScheme scheme) throws ConstraintViolations {
 
-        Individual tempIndividual = new Individual();
+        Location loc = new Location();
 
         Integer size = 1;
         String result = "";
@@ -88,7 +89,7 @@ public class IndividualGenerator extends Generator<Individual> {
         Integer incBound = scheme.getIncrementBound();
         int incBoundLength = incBound.toString().length();
 
-        while (tempIndividual != null) {
+        while (loc != null) {
 
             result = "";
             String tempExtId = extId;
@@ -111,20 +112,20 @@ public class IndividualGenerator extends Generator<Individual> {
                 tempExtId = tempExtId.concat(resultChar);
             }
 
-            tempIndividual = genericDao.findByProperty(Individual.class, "extId", tempExtId, true);
+            loc = genericDao.findByProperty(Location.class, "extId", tempExtId, true);
             size++;
         }
         return result;
     }
 
     public IdScheme getIdScheme() {
-        int index = Collections.binarySearch(resource.getIdScheme(), new IdScheme("Individual"));
+        int index = Collections.binarySearch(resource.getIdScheme(), new IdScheme("Location"));
         return resource.getIdScheme().get(index);
     }
 
     @Override
     @Autowired
-    @Value("${openhds.individualIdUseGenerator}")
+    @Value("${openhds.locationIdUseGenerator}")
     public void setGenerated(boolean generated) {
         this.generated = generated;
     }

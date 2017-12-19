@@ -5,7 +5,7 @@ import java.util.List;
 import com.github.cimsbioko.server.service.RoleService;
 import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.dao.RoleDao;
-import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
+import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.model.Privilege;
 import com.github.cimsbioko.server.domain.model.Role;
 import com.github.cimsbioko.server.domain.model.User;

@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.webapi.rest;
 
-import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
+import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.refactor.LocationService;
 import com.github.cimsbioko.server.domain.model.Location;
 import org.springframework.beans.factory.annotation.Autowired;

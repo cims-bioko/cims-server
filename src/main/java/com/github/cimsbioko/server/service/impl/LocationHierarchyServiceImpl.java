@@ -2,8 +2,8 @@ package com.github.cimsbioko.server.service.impl;
 
 import com.github.cimsbioko.server.service.EntityService;
 import com.github.cimsbioko.server.dao.GenericDao;
-import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
-import com.github.cimsbioko.server.controller.idgen.Generator;
+import com.github.cimsbioko.server.exception.ConstraintViolations;
+import com.github.cimsbioko.server.idgen.Generator;
 import com.github.cimsbioko.server.service.LocationHierarchyService;
 import com.github.cimsbioko.server.domain.model.Location;
 import com.github.cimsbioko.server.domain.model.LocationHierarchy;

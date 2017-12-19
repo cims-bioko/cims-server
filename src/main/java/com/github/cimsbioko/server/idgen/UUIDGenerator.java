@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.controller.idgen;
+package com.github.cimsbioko.server.idgen;
 
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;

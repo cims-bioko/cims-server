@@ -6,7 +6,7 @@ import java.util.Set;
 
 import com.github.cimsbioko.server.service.EntityValidationService;
 import com.github.cimsbioko.server.web.service.JsfService;
-import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
+import com.github.cimsbioko.server.exception.ConstraintViolations;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

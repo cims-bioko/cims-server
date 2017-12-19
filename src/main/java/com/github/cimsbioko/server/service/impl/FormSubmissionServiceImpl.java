@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.service.impl;
 
-import com.github.cimsbioko.server.controller.exception.ExistingSubmissionException;
+import com.github.cimsbioko.server.exception.ExistingSubmissionException;
 import com.github.cimsbioko.server.service.FormSubmissionService;
 import com.github.cimsbioko.server.dao.FormSubmissionDao;
 import com.github.cimsbioko.server.domain.model.FormSubmission;

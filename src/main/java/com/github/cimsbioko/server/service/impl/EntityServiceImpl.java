@@ -8,7 +8,7 @@ import com.github.cimsbioko.server.service.refactor.crudhelpers.AbstractEntityCr
 import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.User;
 import com.github.cimsbioko.server.util.CalendarUtil;
-import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
+import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.EntityValidationService;
 import com.github.cimsbioko.server.domain.model.AuditableEntity;
 import org.springframework.transaction.annotation.Transactional;

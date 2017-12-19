@@ -45,9 +45,17 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <tx:annotation-driven/>
+    <context:annotation-config/>
+    <tx:annotation-driven />
+    <mvc:annotation-driven />
 
     <context:component-scan base-package="com.github.cimsbioko.server.dao" />
+    <context:component-scan base-package="com.github.cimsbioko.server.domain" />
+    <context:component-scan base-package="com.github.cimsbioko.server.idgen"/>
+    <context:component-scan base-package="com.github.cimsbioko.server.service"/>
+    <context:component-scan base-package="com.github.cimsbioko.server.task" />
+    <context:component-scan base-package="com.github.cimsbioko.server.util"/>
+    <context:component-scan base-package="com.github.cimsbioko.server.web"/>
 
     <bean id="taskDao" class="com.github.cimsbioko.server.dao.impl.BaseDaoImpl">
         <constructor-arg value="com.github.cimsbioko.server.domain.model.Task"/>
@@ -63,18 +71,8 @@
         </property>
     </bean>
 
-    <context:component-scan base-package="com.github.cimsbioko.server.domain" />
-
     <bean id="appContextAware" class="com.github.cimsbioko.server.domain.constraint.AppContextAware" />
     <bean id="valueConstraintService" class="com.github.cimsbioko.server.domain.service.impl.ValueConstraintServiceImpl" />
-
-    <!-- web -->
-    <context:annotation-config/>
-
-    <context:component-scan base-package="com.github.cimsbioko.server.web"/>
-
-    <mvc:annotation-driven />
-
 
     <bean class="com.github.cimsbioko.server.security.AuthenticationSuccessHandler">
         <constructor-arg ref="userDao"/>
@@ -115,9 +113,6 @@
         <constructor-arg ref="entityValidator"/>
     </bean>
 
-    <!-- task -->
-    <context:component-scan base-package="com.github.cimsbioko.server.task" />
-
     <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler" />
     <task:executor id="taskExecutor" pool-size="1" queue-capacity="25" />
     <task:scheduler id="taskScheduler" pool-size="1"/>
@@ -143,10 +138,6 @@
 
     <util:properties id="exportQueries" location="classpath:export-queries.properties"/>
 
-    <!-- controller -->
-    <context:component-scan base-package="com.github.cimsbioko.server.service"/>
-    <context:component-scan base-package="com.github.cimsbioko.server.util"/>
-    <context:component-scan base-package="com.github.cimsbioko.server.controller"/>
 
     <!-- allow async tasks to inherit security context, make service method calls -->
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -180,7 +171,7 @@
     </bean>
 
     <!-- Supported fields are LOCATION_NAME, LOCATION_HIERARCHY_ID -->
-    <bean id="locationIdScheme" class="com.github.cimsbioko.server.controller.idgen.IdScheme">
+    <bean id="locationIdScheme" class="com.github.cimsbioko.server.idgen.IdScheme">
         <property name="name" value="Location"/>
         <property name="prefix">
             <value>${openhds.locationPrefix}</value>
@@ -208,7 +199,7 @@
 
     <!-- Supported fields are CHILD_LOC_NAME -->
     <!-- If CHILD_LOC_NAME is used, CHILD_LOC_NAME_FIRST and CHILD_LOC_NAME_LAST must be as well -->
-    <bean id="locationHierarchyIdScheme" class="com.github.cimsbioko.server.controller.idgen.IdScheme">
+    <bean id="locationHierarchyIdScheme" class="com.github.cimsbioko.server.idgen.IdScheme">
         <property name="name" value="LocationHierarchy"/>
         <property name="prefix">
             <value>${openhds.locationHPrefix}</value>
@@ -238,7 +229,7 @@
     </bean>
 
     <!-- Supported fields are INDIVIDUAL_FNAME, INDIVIDUAL_MNAME, INDIVIDUAL_LNAME -->
-    <bean id="individualIdScheme" class="com.github.cimsbioko.server.controller.idgen.IdScheme">
+    <bean id="individualIdScheme" class="com.github.cimsbioko.server.idgen.IdScheme">
         <property name="name" value="Individual"/>
         <property name="prefix">
             <value>${openhds.individualPrefix}</value>
@@ -262,7 +253,7 @@
     </bean>
 
     <!-- Supported fields are FIELDWORKER_FNAME, FIELDWORKER_LNAME -->
-    <bean id="fieldWorkerIdScheme" class="com.github.cimsbioko.server.controller.idgen.IdScheme">
+    <bean id="fieldWorkerIdScheme" class="com.github.cimsbioko.server.idgen.IdScheme">
         <property name="name" value="FieldWorker"/>
         <property name="prefix">
             <value>${openhds.fwPrefix}</value>

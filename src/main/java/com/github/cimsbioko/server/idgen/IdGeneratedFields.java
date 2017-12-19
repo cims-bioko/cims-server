@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.controller.idgen;
+package com.github.cimsbioko.server.idgen;
 
 public enum IdGeneratedFields {
 

@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.controller.exception;
+package com.github.cimsbioko.server.exception;
 
 import java.util.ArrayList;
 import java.util.List;

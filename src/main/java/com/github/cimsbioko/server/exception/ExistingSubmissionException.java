@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.controller.exception;
+package com.github.cimsbioko.server.exception;
 
 import com.github.cimsbioko.server.domain.model.FormSubmission;
 
