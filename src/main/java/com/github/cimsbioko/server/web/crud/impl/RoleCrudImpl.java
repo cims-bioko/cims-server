@@ -7,9 +7,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import com.github.cimsbioko.server.service.RoleService;
-import com.github.cimsbioko.server.domain.model.Privilege;
-import com.github.cimsbioko.server.domain.model.Role;
-import com.github.cimsbioko.server.domain.model.User;
+import com.github.cimsbioko.server.domain.Privilege;
+import com.github.cimsbioko.server.domain.Role;
+import com.github.cimsbioko.server.domain.User;
 import com.github.cimsbioko.server.web.crud.RoleCrud;
 
 public class RoleCrudImpl extends EntityCrudImpl<Role, String> implements RoleCrud {

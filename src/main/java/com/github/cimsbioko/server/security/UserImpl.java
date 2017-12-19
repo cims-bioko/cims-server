@@ -1,8 +1,8 @@
 package com.github.cimsbioko.server.security;
 
-import com.github.cimsbioko.server.domain.model.Privilege;
-import com.github.cimsbioko.server.domain.model.Role;
-import com.github.cimsbioko.server.domain.model.User;
+import com.github.cimsbioko.server.domain.Privilege;
+import com.github.cimsbioko.server.domain.Role;
+import com.github.cimsbioko.server.domain.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

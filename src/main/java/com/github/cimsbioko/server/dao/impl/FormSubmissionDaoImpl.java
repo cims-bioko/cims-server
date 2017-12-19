@@ -1,7 +1,7 @@
 package com.github.cimsbioko.server.dao.impl;
 
 import com.github.cimsbioko.server.dao.FormSubmissionDao;
-import com.github.cimsbioko.server.domain.model.FormSubmission;
+import com.github.cimsbioko.server.domain.FormSubmission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

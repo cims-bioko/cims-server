@@ -42,7 +42,7 @@
     <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
         <property name="packagesToScan">
             <array>
-                <value>com.github.cimsbioko.server.domain.model</value>
+                <value>com.github.cimsbioko.server.domain</value>
                 <value>com.github.cimsbioko.server.webapi</value>
             </array>
         </property>

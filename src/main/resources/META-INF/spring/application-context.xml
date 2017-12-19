@@ -27,7 +27,7 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan">
             <list>
-                <value>com.github.cimsbioko.server.domain.model</value>
+                <value>com.github.cimsbioko.server.domain</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -58,7 +58,7 @@
     <context:component-scan base-package="com.github.cimsbioko.server.web"/>
 
     <bean id="taskDao" class="com.github.cimsbioko.server.dao.impl.BaseDaoImpl">
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.Task"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.Task"/>
     </bean>
 
     <bean id="flywayTemplate" class="org.flywaydb.core.Flyway" abstract="true">
@@ -89,19 +89,19 @@
     <!-- Entity Converters -->
     <bean id="fieldWorkerConverter" class="com.github.cimsbioko.server.web.cvt.EntityConverterImpl">
         <constructor-arg ref="fieldWorkerDao"/>
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.FieldWorker"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.FieldWorker"/>
         <constructor-arg value="java.lang.String"/>
     </bean>
 
     <bean id="roleConverter" class="com.github.cimsbioko.server.web.cvt.EntityConverterImpl">
         <constructor-arg ref="roleDao"/>
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.Role"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.Role"/>
         <constructor-arg value="java.lang.String"/>
     </bean>
 
     <bean id="userConverter" class="com.github.cimsbioko.server.web.cvt.EntityConverterImpl">
         <constructor-arg ref="userDao"/>
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.User"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.User"/>
         <constructor-arg value="java.lang.String"/>
     </bean>
 
@@ -300,14 +300,14 @@
 
     <bean id="fieldWorkerCrud" scope="session" parent="baseCrud" class="com.github.cimsbioko.server.web.crud.impl.FieldWorkerCrudImpl">
         <aop:scoped-proxy proxy-target-class="false"/>
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.FieldWorker"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.FieldWorker"/>
         <property name="dao" ref="fieldWorkerDao"/>
         <property name="converter" ref="fieldWorkerConverter"/>
     </bean>
 
     <bean id="roleCrud" scope="session" parent="baseCrud" class="com.github.cimsbioko.server.web.crud.impl.RoleCrudImpl">
         <aop:scoped-proxy proxy-target-class="false"/>
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.Role"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.Role"/>
         <property name="dao" ref="roleDao"/>
         <property name="converter" ref="roleConverter"/>
         <property name="service" ref="roleService"/>
@@ -315,7 +315,7 @@
 
     <bean id="userCrud" scope="session" parent="baseCrud" class="com.github.cimsbioko.server.web.crud.impl.UserCrudImpl">
         <aop:scoped-proxy proxy-target-class="false"/>
-        <constructor-arg value="com.github.cimsbioko.server.domain.model.User"/>
+        <constructor-arg value="com.github.cimsbioko.server.domain.User"/>
         <property name="dao" ref="userDao"/>
         <property name="converter" ref="userConverter"/>
         <property name="service" ref="userService"/>

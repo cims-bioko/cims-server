@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import com.github.cimsbioko.server.service.CurrentUser;
-import com.github.cimsbioko.server.domain.model.FieldWorker;
+import com.github.cimsbioko.server.domain.FieldWorker;
 import com.github.cimsbioko.server.web.crud.EntityCrud;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

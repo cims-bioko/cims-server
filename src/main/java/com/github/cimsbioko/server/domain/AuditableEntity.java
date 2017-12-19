@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.domain.model;
+package com.github.cimsbioko.server.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Id;

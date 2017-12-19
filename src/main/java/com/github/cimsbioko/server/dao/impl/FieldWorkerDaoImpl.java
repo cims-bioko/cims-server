@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.dao.impl;
 
-import com.github.cimsbioko.server.domain.model.FieldWorker;
+import com.github.cimsbioko.server.domain.FieldWorker;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import com.github.cimsbioko.server.service.SitePropertiesService;

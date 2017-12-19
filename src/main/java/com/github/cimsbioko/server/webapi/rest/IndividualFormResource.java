@@ -1,13 +1,13 @@
 package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.cimsbioko.server.service.refactor.LocationService;
-import com.github.cimsbioko.server.domain.model.FieldWorker;
+import com.github.cimsbioko.server.domain.FieldWorker;
 import com.github.cimsbioko.server.util.CalendarAdapter;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.refactor.FieldWorkerService;
 import com.github.cimsbioko.server.service.refactor.IndividualService;
-import com.github.cimsbioko.server.domain.model.Individual;
-import com.github.cimsbioko.server.domain.model.Location;
+import com.github.cimsbioko.server.domain.Individual;
+import com.github.cimsbioko.server.domain.Location;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

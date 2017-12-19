@@ -2,7 +2,7 @@ package com.github.cimsbioko.server.service.refactor.crudhelpers;
 
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.refactor.FieldWorkerService;
-import com.github.cimsbioko.server.domain.model.FieldWorker;
+import com.github.cimsbioko.server.domain.FieldWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

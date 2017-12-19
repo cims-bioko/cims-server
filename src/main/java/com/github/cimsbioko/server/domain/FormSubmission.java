@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.domain.model;
+package com.github.cimsbioko.server.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;

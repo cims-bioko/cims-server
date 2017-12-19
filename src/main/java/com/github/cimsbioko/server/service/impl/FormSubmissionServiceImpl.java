@@ -3,7 +3,7 @@ package com.github.cimsbioko.server.service.impl;
 import com.github.cimsbioko.server.exception.ExistingSubmissionException;
 import com.github.cimsbioko.server.service.FormSubmissionService;
 import com.github.cimsbioko.server.dao.FormSubmissionDao;
-import com.github.cimsbioko.server.domain.model.FormSubmission;
+import com.github.cimsbioko.server.domain.FormSubmission;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 

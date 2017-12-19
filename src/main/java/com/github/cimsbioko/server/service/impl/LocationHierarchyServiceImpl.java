@@ -5,9 +5,9 @@ import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.idgen.Generator;
 import com.github.cimsbioko.server.service.LocationHierarchyService;
-import com.github.cimsbioko.server.domain.model.Location;
-import com.github.cimsbioko.server.domain.model.LocationHierarchy;
-import com.github.cimsbioko.server.domain.model.LocationHierarchyLevel;
+import com.github.cimsbioko.server.domain.Location;
+import com.github.cimsbioko.server.domain.LocationHierarchy;
+import com.github.cimsbioko.server.domain.LocationHierarchyLevel;
 
 import java.sql.SQLException;
 

@@ -2,7 +2,7 @@ package com.github.cimsbioko.server.service.refactor.impl;
 
 import com.github.cimsbioko.server.idgen.FieldWorkerGenerator;
 import com.github.cimsbioko.server.dao.GenericDao;
-import com.github.cimsbioko.server.domain.model.FieldWorker;
+import com.github.cimsbioko.server.domain.FieldWorker;
 import org.mindrot.jbcrypt.BCrypt;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.refactor.FieldWorkerService;

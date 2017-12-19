@@ -1,9 +1,12 @@
 package com.github.cimsbioko.server.webapi.rest;
 
+import com.github.cimsbioko.server.domain.FieldWorker;
+import com.github.cimsbioko.server.domain.Location;
+import com.github.cimsbioko.server.domain.LocationHierarchy;
+import com.github.cimsbioko.server.domain.LocationHierarchyLevel;
 import com.github.cimsbioko.server.service.LocationHierarchyService;
 import com.github.cimsbioko.server.service.refactor.FieldWorkerService;
 import com.github.cimsbioko.server.service.refactor.LocationService;
-import com.github.cimsbioko.server.domain.model.*;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,8 @@
 package com.github.cimsbioko.server.service;
 
-import com.github.cimsbioko.server.domain.model.*;
+import com.github.cimsbioko.server.domain.Location;
+import com.github.cimsbioko.server.domain.LocationHierarchy;
+import com.github.cimsbioko.server.domain.LocationHierarchyLevel;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import org.springframework.security.access.prepost.PreAuthorize;
 

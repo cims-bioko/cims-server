@@ -4,16 +4,16 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.github.cimsbioko.server.dao.Dao;
-import com.github.cimsbioko.server.domain.model.FieldWorker;
-import com.github.cimsbioko.server.domain.model.LocationHierarchy;
-import com.github.cimsbioko.server.domain.model.User;
+import com.github.cimsbioko.server.domain.FieldWorker;
+import com.github.cimsbioko.server.domain.LocationHierarchy;
+import com.github.cimsbioko.server.domain.User;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import com.github.cimsbioko.server.domain.model.AuditableEntity;
+import com.github.cimsbioko.server.domain.AuditableEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @SuppressWarnings("unchecked")

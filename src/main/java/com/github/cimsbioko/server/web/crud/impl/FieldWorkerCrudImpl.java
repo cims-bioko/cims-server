@@ -1,7 +1,7 @@
 package com.github.cimsbioko.server.web.crud.impl;
 
 import com.github.cimsbioko.server.service.refactor.FieldWorkerService;
-import com.github.cimsbioko.server.domain.model.FieldWorker;
+import com.github.cimsbioko.server.domain.FieldWorker;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import org.springframework.beans.factory.annotation.Autowired;
 

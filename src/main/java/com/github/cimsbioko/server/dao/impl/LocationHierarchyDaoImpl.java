@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.dao.impl;
 
-import com.github.cimsbioko.server.domain.model.LocationHierarchy;
+import com.github.cimsbioko.server.domain.LocationHierarchy;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;

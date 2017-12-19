@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.domain.model;
+package com.github.cimsbioko.server.domain;
 
 /**
  * Identify entities that can be identified by a uuid.

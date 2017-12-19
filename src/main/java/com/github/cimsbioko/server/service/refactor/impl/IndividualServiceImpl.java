@@ -4,7 +4,7 @@ import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.refactor.IndividualService;
 import com.github.cimsbioko.server.service.refactor.crudhelpers.EntityCrudHelper;
-import com.github.cimsbioko.server.domain.model.Individual;
+import com.github.cimsbioko.server.domain.Individual;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

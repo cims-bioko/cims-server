@@ -17,13 +17,13 @@ import javax.faces.model.SelectItem;
 import com.github.cimsbioko.server.service.EntityService;
 import com.github.cimsbioko.server.dao.Dao;
 import com.github.cimsbioko.server.dao.GenericDao;
-import com.github.cimsbioko.server.domain.constraint.Searchable;
+import com.github.cimsbioko.server.domain.Searchable;
 import com.github.cimsbioko.server.web.crud.EntityCrud;
 import com.github.cimsbioko.server.web.service.JsfService;
 import com.github.cimsbioko.server.web.ui.NavigationMenuBean;
 import com.github.cimsbioko.server.web.ui.PagingState;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
-import com.github.cimsbioko.server.domain.model.AuditableCollectedEntity;
+import com.github.cimsbioko.server.domain.AuditableCollectedEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -2,7 +2,7 @@ package com.github.cimsbioko.server.util;
 
 import java.util.List;
 
-import com.github.cimsbioko.server.domain.model.Error;
+import com.github.cimsbioko.server.domain.Error;
 
 public class ErrorUtil {
 

@@ -1,8 +1,9 @@
 package com.github.cimsbioko.server.integration.bioko;
 
 import com.github.cimsbioko.server.dao.GenericDao;
-import com.github.cimsbioko.server.domain.model.*;
-import com.github.cimsbioko.server.domain.model.Error;
+import com.github.cimsbioko.server.domain.Individual;
+import com.github.cimsbioko.server.domain.Location;
+import com.github.cimsbioko.server.domain.Error;
 import com.github.cimsbioko.server.util.CalendarAdapter;
 import com.github.cimsbioko.server.integration.AbstractResourceTest;
 import com.github.cimsbioko.server.integration.util.WebContextLoader;

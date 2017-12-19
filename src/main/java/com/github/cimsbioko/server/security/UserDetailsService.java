@@ -3,6 +3,7 @@ package com.github.cimsbioko.server.security;
 import java.util.List;
 
 import com.github.cimsbioko.server.dao.UserDao;
+import com.github.cimsbioko.server.domain.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,7 +22,7 @@ public class UserDetailsService implements org.springframework.security.core.use
     private UserDao userDao;
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
-        List<com.github.cimsbioko.server.domain.model.User> users = userDao.findByUsername(username);
+        List<User> users = userDao.findByUsername(username);
         if (users == null || users.size() == 0) { // no user found by the name
             throw new UsernameNotFoundException("user " + username + " was not found");
         }

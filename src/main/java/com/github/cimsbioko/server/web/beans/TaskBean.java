@@ -5,7 +5,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import com.github.cimsbioko.server.service.CurrentUser;
-import com.github.cimsbioko.server.domain.model.Task;
+import com.github.cimsbioko.server.domain.Task;
 import com.github.cimsbioko.server.service.TaskService;
 import com.github.cimsbioko.server.task.support.TaskExecutor;
 import org.slf4j.Logger;

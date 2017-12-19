@@ -3,8 +3,8 @@ package com.github.cimsbioko.server.dao.impl;
 import java.util.List;
 
 import com.github.cimsbioko.server.dao.RoleDao;
-import com.github.cimsbioko.server.domain.model.Role;
-import com.github.cimsbioko.server.domain.model.User;
+import com.github.cimsbioko.server.domain.Role;
+import com.github.cimsbioko.server.domain.User;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Restrictions;

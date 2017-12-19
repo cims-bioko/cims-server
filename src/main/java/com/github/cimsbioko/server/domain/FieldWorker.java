@@ -1,7 +1,6 @@
-package com.github.cimsbioko.server.domain.model;
+package com.github.cimsbioko.server.domain;
 
 import com.github.cimsbioko.server.domain.constraint.CheckFieldNotBlank;
-import com.github.cimsbioko.server.domain.constraint.Searchable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

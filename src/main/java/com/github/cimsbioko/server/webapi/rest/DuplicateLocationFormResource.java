@@ -2,7 +2,7 @@ package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.refactor.LocationService;
-import com.github.cimsbioko.server.domain.model.Location;
+import com.github.cimsbioko.server.domain.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

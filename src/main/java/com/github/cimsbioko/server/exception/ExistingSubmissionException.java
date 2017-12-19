@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.exception;
 
-import com.github.cimsbioko.server.domain.model.FormSubmission;
+import com.github.cimsbioko.server.domain.FormSubmission;
 
 public class ExistingSubmissionException extends Exception {
 

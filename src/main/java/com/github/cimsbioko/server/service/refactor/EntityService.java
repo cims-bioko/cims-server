@@ -2,7 +2,7 @@ package com.github.cimsbioko.server.service.refactor;
 
 
 import com.github.cimsbioko.server.exception.ConstraintViolations;
-import com.github.cimsbioko.server.domain.model.AuditableEntity;
+import com.github.cimsbioko.server.domain.AuditableEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.domain.model;
+package com.github.cimsbioko.server.domain;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -9,8 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
-import com.github.cimsbioko.server.domain.constraint.Searchable;
 
 @Entity
 @Table(name = "role")

@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.domain.constraint;
+package com.github.cimsbioko.server.domain;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

@@ -1,7 +1,7 @@
 package com.github.cimsbioko.server.service.impl;
 
 import com.github.cimsbioko.server.dao.Dao;
-import com.github.cimsbioko.server.domain.model.Task;
+import com.github.cimsbioko.server.domain.Task;
 import com.github.cimsbioko.server.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

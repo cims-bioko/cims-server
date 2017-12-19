@@ -6,7 +6,7 @@ import java.util.Date;
 import com.github.cimsbioko.server.service.EntityService;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.dao.ErrorDao;
-import com.github.cimsbioko.server.domain.model.Error;
+import com.github.cimsbioko.server.domain.Error;
 import com.github.cimsbioko.server.util.CalendarUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

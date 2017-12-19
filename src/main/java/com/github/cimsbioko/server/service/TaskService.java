@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.service;
 
-import com.github.cimsbioko.server.domain.model.Task;
+import com.github.cimsbioko.server.domain.Task;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package com.github.cimsbioko.server.service.impl;
 
 import com.github.cimsbioko.server.service.ErrorService;
 import com.github.cimsbioko.server.dao.ErrorDao;
-import com.github.cimsbioko.server.domain.model.Error;
+import com.github.cimsbioko.server.domain.Error;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

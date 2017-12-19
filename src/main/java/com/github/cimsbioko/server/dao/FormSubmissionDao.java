@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.dao;
 
-import com.github.cimsbioko.server.domain.model.FormSubmission;
+import com.github.cimsbioko.server.domain.FormSubmission;
 
 import java.sql.Timestamp;
 import java.util.List;
