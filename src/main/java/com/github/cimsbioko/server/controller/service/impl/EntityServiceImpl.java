@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.controller.service.impl;
 
-import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -37,7 +36,7 @@ public class EntityServiceImpl implements EntityService {
     }
 
     @Transactional
-    public <T> void create(T entityItem) throws IllegalArgumentException, ConstraintViolations, SQLException {
+    public <T> void create(T entityItem) throws IllegalArgumentException, ConstraintViolations {
         if (entityItem instanceof AuditableEntity) {
             try {
                 AbstractEntityCrudHelperImpl.setEntityUuidIfNull((AuditableEntity) entityItem);
@@ -56,7 +55,7 @@ public class EntityServiceImpl implements EntityService {
     }
 
     @Transactional
-    public <T> void delete(T persistentObject) throws SQLException {
+    public <T> void delete(T persistentObject) {
         if (persistentObject instanceof AuditableEntity) {
             AuditableEntity auditable = (AuditableEntity)persistentObject;
             auditable.setDeleted(true);
@@ -71,7 +70,7 @@ public class EntityServiceImpl implements EntityService {
     }
 
     @Transactional
-    public <T> void save(T entityItem) throws ConstraintViolations, SQLException {
+    public <T> void save(T entityItem) throws ConstraintViolations {
         classValidator.validateEntity(entityItem);
         genericDao.update(genericDao.merge(entityItem));
     }
