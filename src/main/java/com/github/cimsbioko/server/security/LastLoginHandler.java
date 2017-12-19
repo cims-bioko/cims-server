@@ -12,16 +12,14 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * A custom authentication success handler that records the session id for a user.
- * The session id saved is used by the special studies to verify a user has successfully
- * logged into openhds
+ * A custom authentication success handler that records the last login time for a user.
  */
-public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+public class LastLoginHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     private static final String WELCOME_PAGE = "/welcome.faces";
     private final UserDao userDao;
 
-    public AuthenticationSuccessHandler(UserDao userDao) {
+    public LastLoginHandler(UserDao userDao) {
         this.userDao = userDao;
         setDefaultTargetUrl(WELCOME_PAGE);
     }

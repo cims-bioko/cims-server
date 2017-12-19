@@ -74,11 +74,7 @@
     <bean id="appContextAware" class="com.github.cimsbioko.server.util.AppContextAware" />
     <bean id="valueConstraintService" class="com.github.cimsbioko.server.service.impl.ValueConstraintServiceImpl" />
 
-    <bean class="com.github.cimsbioko.server.security.AuthenticationSuccessHandler">
-        <constructor-arg ref="userDao"/>
-    </bean>
-
-    <bean class="com.github.cimsbioko.server.security.LogoutSuccessHandler">
+    <bean class="com.github.cimsbioko.server.security.LastLoginHandler">
         <constructor-arg ref="userDao"/>
     </bean>
 

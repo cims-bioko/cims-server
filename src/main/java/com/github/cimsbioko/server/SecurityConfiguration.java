@@ -75,9 +75,6 @@ public class SecurityConfiguration {
         @Autowired
         AuthenticationSuccessHandler authSuccessHandler;
 
-        @Autowired
-        LogoutSuccessHandler logoutSuccessHandler;
-
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .headers().disable()
@@ -93,8 +90,7 @@ public class SecurityConfiguration {
                     .failureUrl("/login.faces?login_error=1")
                     .and()
                     .logout()
-                    .logoutUrl("/logoutProcess")
-                    .logoutSuccessHandler(logoutSuccessHandler);
+                    .logoutUrl("/logoutProcess");
         }
     }
 }
