@@ -6,7 +6,7 @@
 var imports = new JavaImporter(
     java.io,
     javax.xml.transform.stream,
-    com.github.cimsbioko.server.controller.service,
+    com.github.cimsbioko.server.service,
     com.github.cimsbioko.server.webapi.rest
 );
 

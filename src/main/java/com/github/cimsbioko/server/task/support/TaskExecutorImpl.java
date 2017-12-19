@@ -2,7 +2,7 @@ package com.github.cimsbioko.server.task.support;
 
 import com.github.cimsbioko.server.task.SyncFileTask;
 import com.github.cimsbioko.server.task.TaskContext;
-import com.github.cimsbioko.server.controller.service.TaskService;
+import com.github.cimsbioko.server.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

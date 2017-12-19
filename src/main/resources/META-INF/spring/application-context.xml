@@ -109,7 +109,7 @@
 
     <bean id="jsfService" class="com.github.cimsbioko.server.web.service.impl.JsfServiceImpl"/>
 
-    <bean id="entityService" class="com.github.cimsbioko.server.controller.service.impl.EntityServiceImpl">
+    <bean id="entityService" class="com.github.cimsbioko.server.service.impl.EntityServiceImpl">
         <constructor-arg ref="genericDao"/>
         <constructor-arg ref="calendarUtil"/>
         <constructor-arg ref="entityValidator"/>
@@ -144,6 +144,7 @@
     <util:properties id="exportQueries" location="classpath:export-queries.properties"/>
 
     <!-- controller -->
+    <context:component-scan base-package="com.github.cimsbioko.server.service"/>
     <context:component-scan base-package="com.github.cimsbioko.server.controller"/>
 
     <!-- allow async tasks to inherit security context, make service method calls -->
@@ -158,21 +159,21 @@
     </bean>
 
     <!-- Simple bean to get current logged in user -->
-    <bean id="currentUser" class="com.github.cimsbioko.server.controller.service.impl.CurrentUserImpl" />
+    <bean id="currentUser" class="com.github.cimsbioko.server.service.impl.CurrentUserImpl" />
 
     <!-- security configuration -->
     <bean class="com.github.cimsbioko.server.security.UserDetailsService">
         <property name="userDao" ref="userDao"/>
     </bean>
 
-    <bean class="com.github.cimsbioko.server.controller.service.impl.LocationHierarchyServiceImpl">
+    <bean class="com.github.cimsbioko.server.service.impl.LocationHierarchyServiceImpl">
         <constructor-arg ref="genericDao"/>
         <constructor-arg ref="entityService"/>
         <constructor-arg ref="locationIdGenerator"/>
         <constructor-arg ref="locationHierarchyIdGenerator"/>
     </bean>
 
-    <bean id="roleService" class="com.github.cimsbioko.server.controller.service.impl.RoleServiceImpl">
+    <bean id="roleService" class="com.github.cimsbioko.server.service.impl.RoleServiceImpl">
         <constructor-arg ref="roleDao"/>
         <constructor-arg ref="genericDao"/>
     </bean>
@@ -290,7 +291,7 @@
         <constructor-arg ref="jsfService"/>
     </bean>
 
-    <bean id="userService" class="com.github.cimsbioko.server.controller.service.impl.UserServiceImpl">
+    <bean id="userService" class="com.github.cimsbioko.server.service.impl.UserServiceImpl">
         <constructor-arg name="genericDao" ref="genericDao"/>
     </bean>
 

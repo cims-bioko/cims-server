@@ -1,7 +1,7 @@
 package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.batkinson.jrsync.Metadata;
-import com.github.cimsbioko.server.controller.service.TaskService;
+import com.github.cimsbioko.server.service.TaskService;
 import com.github.cimsbioko.server.task.support.FileResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -18,7 +18,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import static com.github.cimsbioko.server.Application.WebConfig.CACHED_FILES_PATH;
-import static com.github.cimsbioko.server.controller.service.TaskService.MOBILEDB_TASK_NAME;
+import static com.github.cimsbioko.server.service.TaskService.MOBILEDB_TASK_NAME;
 
 
 /**

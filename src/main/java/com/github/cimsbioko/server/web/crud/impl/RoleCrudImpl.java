@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import com.github.cimsbioko.server.controller.service.RoleService;
+import com.github.cimsbioko.server.service.RoleService;
 import com.github.cimsbioko.server.domain.model.Privilege;
 import com.github.cimsbioko.server.domain.model.Role;
 import com.github.cimsbioko.server.domain.model.User;

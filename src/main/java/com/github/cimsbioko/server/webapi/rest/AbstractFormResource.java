@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.webapi.rest;
 
-import com.github.cimsbioko.server.controller.service.ErrorService;
+import com.github.cimsbioko.server.service.ErrorService;
 import com.github.cimsbioko.server.controller.util.ErrorUtil;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.model.Error;

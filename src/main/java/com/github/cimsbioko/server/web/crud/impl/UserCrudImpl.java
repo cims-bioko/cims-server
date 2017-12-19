@@ -8,7 +8,7 @@ import javax.faces.model.SelectItem;
 import com.github.cimsbioko.server.domain.model.Role;
 import com.github.cimsbioko.server.domain.model.User;
 import com.github.cimsbioko.server.web.crud.UserCrud;
-import com.github.cimsbioko.server.controller.service.UserService;
+import com.github.cimsbioko.server.service.UserService;
 
 import static org.hibernate.Hibernate.initialize;
 

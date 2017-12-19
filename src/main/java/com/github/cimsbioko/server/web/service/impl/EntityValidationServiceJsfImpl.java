@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.github.cimsbioko.server.controller.service.EntityValidationService;
+import com.github.cimsbioko.server.service.EntityValidationService;
 import com.github.cimsbioko.server.web.service.JsfService;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 

@@ -14,7 +14,7 @@ import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 
 
-import com.github.cimsbioko.server.controller.service.EntityService;
+import com.github.cimsbioko.server.service.EntityService;
 import com.github.cimsbioko.server.dao.Dao;
 import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.constraint.Searchable;
