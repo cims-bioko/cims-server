@@ -7,7 +7,7 @@ import com.github.cimsbioko.server.service.EntityService;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.dao.ErrorDao;
 import com.github.cimsbioko.server.domain.model.Error;
-import com.github.cimsbioko.server.domain.util.CalendarUtil;
+import com.github.cimsbioko.server.util.CalendarUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

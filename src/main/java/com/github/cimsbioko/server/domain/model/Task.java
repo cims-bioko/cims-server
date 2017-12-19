@@ -12,7 +12,7 @@ public class Task {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "com.github.cimsbioko.server.domain.util.UUIDGenerator")
+    @GenericGenerator(name = "system-uuid", strategy = "com.github.cimsbioko.server.controller.idgen.UUIDGenerator")
     @Column(length = 32)
     String uuid;
     private String name;

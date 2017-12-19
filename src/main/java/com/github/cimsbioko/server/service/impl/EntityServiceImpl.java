@@ -7,7 +7,7 @@ import com.github.cimsbioko.server.service.EntityService;
 import com.github.cimsbioko.server.service.refactor.crudhelpers.AbstractEntityCrudHelperImpl;
 import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.User;
-import com.github.cimsbioko.server.domain.util.CalendarUtil;
+import com.github.cimsbioko.server.util.CalendarUtil;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.EntityValidationService;
 import com.github.cimsbioko.server.domain.model.AuditableEntity;

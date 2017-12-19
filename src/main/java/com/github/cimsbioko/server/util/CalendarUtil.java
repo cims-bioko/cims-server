@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.domain.util;
+package com.github.cimsbioko.server.util;
 
 import java.text.DateFormat;
 import java.text.ParseException;

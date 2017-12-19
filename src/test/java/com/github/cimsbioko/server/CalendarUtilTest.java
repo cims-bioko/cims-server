@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server;
 
-import com.github.cimsbioko.server.domain.util.CalendarUtil;
+import com.github.cimsbioko.server.util.CalendarUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

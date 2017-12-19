@@ -145,6 +145,7 @@
 
     <!-- controller -->
     <context:component-scan base-package="com.github.cimsbioko.server.service"/>
+    <context:component-scan base-package="com.github.cimsbioko.server.util"/>
     <context:component-scan base-package="com.github.cimsbioko.server.controller"/>
 
     <!-- allow async tasks to inherit security context, make service method calls -->

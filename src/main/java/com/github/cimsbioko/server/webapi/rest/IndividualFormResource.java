@@ -2,7 +2,7 @@ package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.cimsbioko.server.service.refactor.LocationService;
 import com.github.cimsbioko.server.domain.model.FieldWorker;
-import com.github.cimsbioko.server.domain.util.CalendarAdapter;
+import com.github.cimsbioko.server.util.CalendarAdapter;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.refactor.FieldWorkerService;
 import com.github.cimsbioko.server.service.refactor.IndividualService;

@@ -1,8 +1,7 @@
-package com.github.cimsbioko.server.controller.util;
+package com.github.cimsbioko.server.util;
 
 import java.util.List;
 
-import com.github.cimsbioko.server.domain.model.FieldWorker;
 import com.github.cimsbioko.server.domain.model.Error;
 
 public class ErrorUtil {

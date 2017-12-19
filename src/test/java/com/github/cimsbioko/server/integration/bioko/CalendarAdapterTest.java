@@ -3,8 +3,8 @@ package com.github.cimsbioko.server.integration.bioko;
 import java.text.ParseException;
 import java.util.Calendar;
 
-import com.github.cimsbioko.server.domain.util.CalendarAdapter;
-import com.github.cimsbioko.server.domain.util.CalendarUtil;
+import com.github.cimsbioko.server.util.CalendarAdapter;
+import com.github.cimsbioko.server.util.CalendarUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
