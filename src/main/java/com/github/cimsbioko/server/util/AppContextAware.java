@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.domain.constraint;
+package com.github.cimsbioko.server.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

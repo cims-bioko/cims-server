@@ -3,7 +3,7 @@ package com.github.cimsbioko.server.domain.constraint.impl;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.github.cimsbioko.server.domain.constraint.AppContextAware;
+import com.github.cimsbioko.server.util.AppContextAware;
 import com.github.cimsbioko.server.service.ValueConstraintService;
 import com.github.cimsbioko.server.domain.constraint.ExtensionStringConstraint;
 

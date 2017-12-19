@@ -71,7 +71,7 @@
         </property>
     </bean>
 
-    <bean id="appContextAware" class="com.github.cimsbioko.server.domain.constraint.AppContextAware" />
+    <bean id="appContextAware" class="com.github.cimsbioko.server.util.AppContextAware" />
     <bean id="valueConstraintService" class="com.github.cimsbioko.server.service.impl.ValueConstraintServiceImpl" />
 
     <bean class="com.github.cimsbioko.server.security.AuthenticationSuccessHandler">
