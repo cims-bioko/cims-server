@@ -76,11 +76,11 @@
     <mvc:annotation-driven />
 
 
-    <bean class="com.github.cimsbioko.server.web.security.AuthenticationSuccessHandler">
+    <bean class="com.github.cimsbioko.server.security.AuthenticationSuccessHandler">
         <constructor-arg ref="userDao"/>
     </bean>
 
-    <bean class="com.github.cimsbioko.server.web.security.LogoutSuccessHandler">
+    <bean class="com.github.cimsbioko.server.security.LogoutSuccessHandler">
         <constructor-arg ref="userDao"/>
     </bean>
 

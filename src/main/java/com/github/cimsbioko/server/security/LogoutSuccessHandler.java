@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.web.security;
+package com.github.cimsbioko.server.security;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
