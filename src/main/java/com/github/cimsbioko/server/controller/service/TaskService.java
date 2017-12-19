@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.task.service;
+package com.github.cimsbioko.server.controller.service;
 
 import com.github.cimsbioko.server.domain.model.Task;
 

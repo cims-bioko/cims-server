@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.github.cimsbioko.server.controller.service.CurrentUser;
 import com.github.cimsbioko.server.domain.model.Task;
-import com.github.cimsbioko.server.task.service.TaskService;
+import com.github.cimsbioko.server.controller.service.TaskService;
 import com.github.cimsbioko.server.task.support.TaskExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

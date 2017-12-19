@@ -11,9 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import com.github.cimsbioko.server.task.SyncFileTask;
-import com.github.cimsbioko.server.task.service.TaskService;
+import com.github.cimsbioko.server.controller.service.TaskService;
 
-import static com.github.cimsbioko.server.task.service.TaskService.MOBILEDB_TASK_NAME;
+import static com.github.cimsbioko.server.controller.service.TaskService.MOBILEDB_TASK_NAME;
 
 public class TaskExecutorImplTest {
 

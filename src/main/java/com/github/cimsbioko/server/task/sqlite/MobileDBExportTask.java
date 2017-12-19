@@ -4,7 +4,7 @@ import com.github.batkinson.jrsync.Metadata;
 
 import com.github.cimsbioko.server.task.SyncFileTask;
 import com.github.cimsbioko.server.task.TaskContext;
-import com.github.cimsbioko.server.task.service.TaskService;
+import com.github.cimsbioko.server.controller.service.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import java.util.Properties;
 import javax.annotation.Resource;
 
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
-import static com.github.cimsbioko.server.task.service.TaskService.MOBILEDB_TASK_NAME;
+import static com.github.cimsbioko.server.controller.service.TaskService.MOBILEDB_TASK_NAME;
 
 /**
  * Exports an sqlite database usable by the tablet application.

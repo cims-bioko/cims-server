@@ -1,8 +1,8 @@
-package com.github.cimsbioko.server.task.service.impl;
+package com.github.cimsbioko.server.controller.service.impl;
 
 import com.github.cimsbioko.server.dao.Dao;
 import com.github.cimsbioko.server.domain.model.Task;
-import com.github.cimsbioko.server.task.service.TaskService;
+import com.github.cimsbioko.server.controller.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
