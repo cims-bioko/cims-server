@@ -20,16 +20,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private UserDao userDao;
+    private UserMapper userMapper;
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
         List<User> users = userDao.findByUsername(username);
         if (users == null || users.size() == 0) { // no user found by the name
             throw new UsernameNotFoundException("user " + username + " was not found");
         }
-        return new UserImpl(users.get(0));
+        return userMapper.userToUserDetails(users.get(0));
     }
 
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
+    }
+
+    public void setUserMapper(UserMapper userMapper) {
+        this.userMapper = userMapper;
     }
 }
