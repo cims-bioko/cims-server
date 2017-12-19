@@ -146,10 +146,7 @@
         </property>
     </bean>
 
-    <!-- Simple bean to get current logged in user -->
     <bean id="currentUser" class="com.github.cimsbioko.server.service.impl.CurrentUserImpl" />
-
-    <!-- security configuration -->
 
     <bean id="roleMapper" class="com.github.cimsbioko.server.security.RoleMapper" />
 
@@ -325,7 +322,6 @@
         <property name="service" ref="userService"/>
     </bean>
 
-    <!-- Beans -->
     <bean id="taskBean" class="com.github.cimsbioko.server.web.beans.TaskBean" init-method="scheduleAllTasks">
         <constructor-arg ref="openhdsTaskExecutor"/>
         <constructor-arg ref="taskServiceImpl"/>
