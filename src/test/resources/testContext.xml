@@ -17,8 +17,7 @@
     </bean>
 
     <!-- This bean is here to override the session scoped baseCrud from the application-context -->
-    <bean id="baseCrud" class="com.github.cimsbioko.server.web.crud.impl.EntityCrudImpl"
-          abstract="true">
+    <bean id="baseCrud" class="com.github.cimsbioko.server.web.crud.impl.EntityCrudImpl" abstract="true">
         <property name="jsfService" ref="jsfService"/>
         <property name="entityService" ref="entityService"/>
         <property name="genericDao" ref="genericDao"/>
@@ -26,8 +25,7 @@
     </bean>
 
     <!-- Independent database configuration for test context -->
-    <bean id="databaseConfigurer"
-          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <bean id="databaseConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
         <property name="locations">
             <list>
