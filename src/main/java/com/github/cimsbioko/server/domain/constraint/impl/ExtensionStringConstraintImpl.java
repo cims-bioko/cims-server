@@ -4,7 +4,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import com.github.cimsbioko.server.domain.constraint.AppContextAware;
-import com.github.cimsbioko.server.domain.service.ValueConstraintService;
+import com.github.cimsbioko.server.service.ValueConstraintService;
 import com.github.cimsbioko.server.domain.constraint.ExtensionStringConstraint;
 
 public class ExtensionStringConstraintImpl extends AppContextAware implements ConstraintValidator<ExtensionStringConstraint, String> {

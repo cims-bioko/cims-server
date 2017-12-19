@@ -3,7 +3,7 @@ package com.github.cimsbioko.server.dao.impl;
 import com.github.cimsbioko.server.domain.model.FieldWorker;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
-import com.github.cimsbioko.server.domain.service.SitePropertiesService;
+import com.github.cimsbioko.server.service.SitePropertiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

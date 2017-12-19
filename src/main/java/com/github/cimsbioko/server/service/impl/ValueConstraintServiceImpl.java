@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.domain.service.impl;
+package com.github.cimsbioko.server.service.impl;
 
 import java.io.IOException;
 
@@ -6,7 +6,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
-import com.github.cimsbioko.server.domain.service.ValueConstraintService;
+import com.github.cimsbioko.server.service.ValueConstraintService;
 import org.springframework.core.io.ClassPathResource;
 
 public class ValueConstraintServiceImpl implements ValueConstraintService {

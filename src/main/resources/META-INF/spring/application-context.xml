@@ -72,7 +72,7 @@
     </bean>
 
     <bean id="appContextAware" class="com.github.cimsbioko.server.domain.constraint.AppContextAware" />
-    <bean id="valueConstraintService" class="com.github.cimsbioko.server.domain.service.impl.ValueConstraintServiceImpl" />
+    <bean id="valueConstraintService" class="com.github.cimsbioko.server.service.impl.ValueConstraintServiceImpl" />
 
     <bean class="com.github.cimsbioko.server.security.AuthenticationSuccessHandler">
         <constructor-arg ref="userDao"/>
@@ -337,7 +337,7 @@
     </bean>
 
     <bean id="siteProperties"
-          class="com.github.cimsbioko.server.domain.service.impl.SitePropertiesServiceImpl">
+          class="com.github.cimsbioko.server.service.impl.SitePropertiesServiceImpl">
         <property name="locale">
             <value>${locale}</value>
         </property>

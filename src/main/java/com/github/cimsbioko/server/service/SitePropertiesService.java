@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.domain.service;
+package com.github.cimsbioko.server.service;
 
 public interface SitePropertiesService {
 

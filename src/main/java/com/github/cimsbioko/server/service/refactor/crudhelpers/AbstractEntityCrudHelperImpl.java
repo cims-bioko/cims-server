@@ -6,7 +6,7 @@ import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.CurrentUser;
 import com.github.cimsbioko.server.service.EntityValidationService;
 import com.github.cimsbioko.server.domain.model.AuditableEntity;
-import com.github.cimsbioko.server.domain.service.SitePropertiesService;
+import com.github.cimsbioko.server.service.SitePropertiesService;
 import com.github.cimsbioko.server.util.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
