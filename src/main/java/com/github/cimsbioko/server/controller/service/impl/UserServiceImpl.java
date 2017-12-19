@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.web.service.impl;
+package com.github.cimsbioko.server.controller.service.impl;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.model.Role;
 import com.github.cimsbioko.server.domain.model.User;
 import com.github.cimsbioko.server.controller.exception.ConstraintViolations;
-import com.github.cimsbioko.server.web.service.UserService;
+import com.github.cimsbioko.server.controller.service.UserService;
 
 public class UserServiceImpl implements UserService {
 

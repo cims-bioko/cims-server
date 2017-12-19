@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.web.service;
+package com.github.cimsbioko.server.controller.service;
 
 import java.util.List;
 

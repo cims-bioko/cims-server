@@ -290,7 +290,7 @@
         <constructor-arg ref="jsfService"/>
     </bean>
 
-    <bean id="userService" class="com.github.cimsbioko.server.web.service.impl.UserServiceImpl">
+    <bean id="userService" class="com.github.cimsbioko.server.controller.service.impl.UserServiceImpl">
         <constructor-arg name="genericDao" ref="genericDao"/>
     </bean>
 
