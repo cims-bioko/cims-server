@@ -77,12 +77,6 @@ public class Application extends SpringBootServletInitializer {
         @Resource
         File dataDir;
 
-        @Resource
-        File formsDir;
-
-        @Resource
-        File submissionsDir;
-
         @Bean
         ServletRegistrationBean jsfServletRegistration() {
             ServletRegistrationBean reg = new ServletRegistrationBean();
