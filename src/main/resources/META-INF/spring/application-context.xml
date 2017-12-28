@@ -50,7 +50,6 @@
     <mvc:annotation-driven />
 
     <context:component-scan base-package="com.github.cimsbioko.server.dao" />
-    <context:component-scan base-package="com.github.cimsbioko.server.domain" />
     <context:component-scan base-package="com.github.cimsbioko.server.idgen"/>
     <context:component-scan base-package="com.github.cimsbioko.server.service"/>
     <context:component-scan base-package="com.github.cimsbioko.server.task" />
