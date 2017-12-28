@@ -13,21 +13,21 @@ public class ExtensionStringConstraintImpl extends AppContextAware implements Co
     private boolean allowNull;
     private ValueConstraintService service;
 
-    public void initialize(ExtensionStringConstraint arg0) {
+    public void initialize(ExtensionStringConstraint annotation) {
         service = (ValueConstraintService) context.getBean("valueConstraintService");
-        this.constraint = arg0.constraint();
-        this.allowNull = arg0.allowNull();
+        this.constraint = annotation.constraint();
+        this.allowNull = annotation.allowNull();
     }
 
-    public boolean isValid(String arg0, ConstraintValidatorContext arg1) {
+    public boolean isValid(String value, ConstraintValidatorContext context) {
 
-        if (arg0 == null)
+        if (value == null)
             return true;
 
-        if (allowNull && arg0.equals(""))
+        if (allowNull && value.equals(""))
             return true;
 
-        return service.isValidConstraintValue(constraint, arg0);
+        return service.isValidConstraintValue(constraint, value);
     }
 }
 

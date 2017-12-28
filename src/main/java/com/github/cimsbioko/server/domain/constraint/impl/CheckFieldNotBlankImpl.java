@@ -7,15 +7,15 @@ import com.github.cimsbioko.server.domain.constraint.CheckFieldNotBlank;
 
 public class CheckFieldNotBlankImpl implements ConstraintValidator<CheckFieldNotBlank, String> {
 
-    public void initialize(CheckFieldNotBlank arg0) {
+    public void initialize(CheckFieldNotBlank annotation) {
     }
 
-    public boolean isValid(String arg0, ConstraintValidatorContext arg1) {
-        if (arg0 == null) {
+    public boolean isValid(String value, ConstraintValidatorContext context) {
+        if (value == null) {
             return false;
         }
 
-        return arg0.trim().length() != 0;
+        return value.trim().length() != 0;
     }
 
 }
