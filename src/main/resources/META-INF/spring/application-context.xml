@@ -22,8 +22,7 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <bean id="sessionFactory"
-          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" depends-on="flyway">
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan">
             <list>
@@ -58,16 +57,6 @@
 
     <bean id="taskDao" class="com.github.cimsbioko.server.dao.impl.BaseDaoImpl">
         <constructor-arg value="com.github.cimsbioko.server.domain.Task"/>
-    </bean>
-
-    <bean id="flywayTemplate" class="org.flywaydb.core.Flyway" abstract="true">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="baselineOnMigrate" value="true"/>
-        <property name="baselineVersion">
-            <bean class="org.flywaydb.core.api.MigrationVersion" factory-method="fromVersion">
-                <constructor-arg value="2"/>
-            </bean>
-        </property>
     </bean>
 
     <bean id="appContextAware" class="com.github.cimsbioko.server.util.AppContextAware" />
@@ -425,12 +414,5 @@
             <value>${openhds.specialStudyLocation}</value>
         </property>
     </bean>
-
-    <beans profile="!migratedb">
-        <bean id="flyway" parent="flywayTemplate"/>
-    </beans>
-    <beans profile="migratedb">
-        <bean id="flyway" parent="flywayTemplate" init-method="migrate"/>
-    </beans>
 
 </beans>
