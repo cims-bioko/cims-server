@@ -24,16 +24,6 @@ public class UserCrudImpl extends EntityCrudImpl<User, String> implements UserCr
     }
 
     @Override
-    public String createSetup() {
-        reset(false, true);
-        showListing = false;
-        entityItem = newInstance();
-        navMenuBean.setNextItem(entityClass.getSimpleName());
-        navMenuBean.addCrumb(entityClass.getSimpleName() + " Create");
-        return outcomePrefix + "_create";
-    }
-
-    @Override
     protected void postSetup() {
         if (entityItem != null) {
             initialize(entityItem.getRoles());
