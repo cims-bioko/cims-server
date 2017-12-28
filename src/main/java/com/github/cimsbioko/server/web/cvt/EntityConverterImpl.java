@@ -32,8 +32,7 @@ public class EntityConverterImpl<T, PK extends Serializable> implements Converte
     Constructor<PK> keyConstructor;
     Method keyGetter;
 
-    public EntityConverterImpl(Dao<T, PK> entityDao, Class<T> entityClass,
-                               Class<PK> keyClass) {
+    public EntityConverterImpl(Dao<T, PK> entityDao, Class<T> entityClass, Class<PK> keyClass) {
         if (entityClass == null)
             throw new IllegalArgumentException("converter requires entity type");
         this.entityClass = entityClass;
@@ -59,8 +58,7 @@ public class EntityConverterImpl<T, PK extends Serializable> implements Converte
     }
 
     @Transactional
-    public T getAsObject(FacesContext context, UIComponent component,
-                         String value) {
+    public T getAsObject(FacesContext context, UIComponent component, String value) {
         if (value == null || value.length() == 0) {
             return null;
         }
