@@ -24,36 +24,9 @@ import java.io.File;
 @Configuration
 @EnableAutoConfiguration
 @ImportResource("classpath:/META-INF/spring/application-context.xml")
-@Import(SecurityConfig.class)
+@Import({FileSystemConfig.class, SecurityConfig.class})
 @PropertySource(value = "classpath:/META-INF/build-info.properties", ignoreResourceNotFound = true)
 public class Application extends SpringBootServletInitializer {
-
-    @Value("${app.data.dir}")
-    File dataDir;
-
-    @Value("${app.forms.dir}")
-    File formsDir;
-
-    @Value("${app.submissions.dir}")
-    File submissionsDir;
-
-    @Bean
-    File dataDir() {
-        dataDir.mkdirs();
-        return dataDir;
-    }
-
-    @Bean
-    File formsDir() {
-        formsDir.mkdirs();
-        return formsDir;
-    }
-
-    @Bean
-    File submissionsDir() {
-        submissionsDir.mkdirs();
-        return submissionsDir;
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
