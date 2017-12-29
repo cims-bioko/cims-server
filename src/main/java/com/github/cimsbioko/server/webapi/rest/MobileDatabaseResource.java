@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import static com.github.cimsbioko.server.Application.WebConfig.CACHED_FILES_PATH;
+import static com.github.cimsbioko.server.WebConfig.CACHED_FILES_PATH;
 import static com.github.cimsbioko.server.service.TaskService.MOBILEDB_TASK_NAME;
 
 
