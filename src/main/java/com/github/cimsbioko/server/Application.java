@@ -24,7 +24,7 @@ import java.io.File;
 @Configuration
 @EnableAutoConfiguration
 @ImportResource("classpath:/META-INF/spring/application-context.xml")
-@Import(SecurityConfiguration.class)
+@Import(SecurityConfig.class)
 @PropertySource(value = "classpath:/META-INF/build-info.properties", ignoreResourceNotFound = true)
 public class Application extends SpringBootServletInitializer {
 
