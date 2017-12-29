@@ -43,12 +43,23 @@ public class Application extends SpringBootServletInitializer {
     }
 
     @Configuration
-    public static class WebConfig extends WebMvcConfigurerAdapter {
+    public static class WebConfig {
 
         public static final String CACHED_FILES_PATH = "/WEB-INF/cached-files";
 
         @Resource
         File dataDir;
+
+        @Bean
+        WebMvcConfigurerAdapter webMvcConfigurerAdapter() {
+            return new WebMvcConfigurerAdapter() {
+                @Override
+                public void addResourceHandlers (ResourceHandlerRegistry registry){
+                    registry.addResourceHandler(CACHED_FILES_PATH + "/**")
+                            .addResourceLocations(dataDir.toURI().toString());
+                }
+            };
+        }
 
         @Bean
         ServletRegistrationBean jsfServletRegistration() {
@@ -57,12 +68,6 @@ public class Application extends SpringBootServletInitializer {
             reg.setLoadOnStartup(1);
             reg.addUrlMappings("*.faces");
             return reg;
-        }
-
-        @Override
-        public void addResourceHandlers(ResourceHandlerRegistry registry) {
-            registry.addResourceHandler(CACHED_FILES_PATH + "/**")
-                    .addResourceLocations(dataDir.toURI().toString());
         }
 
         @Bean
