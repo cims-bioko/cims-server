@@ -3,11 +3,9 @@ package com.github.cimsbioko.server;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.*;
 import org.springframework.orm.hibernate5.support.OpenSessionInViewFilter;
 import org.springframework.web.multipart.MultipartResolver;
@@ -26,15 +24,10 @@ import java.io.File;
 @ImportResource("classpath:/META-INF/spring/application-context.xml")
 @Import({FileSystemConfig.class, SecurityConfig.class})
 @PropertySource(value = "classpath:/META-INF/build-info.properties", ignoreResourceNotFound = true)
-public class Application extends SpringBootServletInitializer {
+public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-    }
-
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
     }
 
     @Bean
