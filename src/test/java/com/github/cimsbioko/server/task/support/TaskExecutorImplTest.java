@@ -18,10 +18,10 @@ import static com.github.cimsbioko.server.service.TaskService.MOBILEDB_TASK_NAME
 public class TaskExecutorImplTest {
 
     @Mock
-    FileResolver fileResolver;
+    private FileResolver fileResolver;
 
     @Mock
-    TaskService taskService;
+    private TaskService taskService;
 
     @Mock
     private SyncFileTask writeTask;
