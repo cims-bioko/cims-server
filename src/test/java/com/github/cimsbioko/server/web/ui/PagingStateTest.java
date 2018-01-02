@@ -1,6 +1,4 @@
-package com.github.cimsbioko.server.webui;
-
-import com.github.cimsbioko.server.web.ui.PagingState;
+package com.github.cimsbioko.server.web.ui;
 
 import junit.framework.TestCase;
 

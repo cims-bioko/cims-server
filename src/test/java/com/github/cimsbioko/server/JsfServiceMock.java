@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.integration.util;
+package com.github.cimsbioko.server;
 
 import java.util.ArrayList;
 import java.util.Collection;

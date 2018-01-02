@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.integration.bioko;
+package com.github.cimsbioko.server.util;
 
 import java.text.ParseException;
 import java.util.Calendar;

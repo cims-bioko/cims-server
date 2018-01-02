@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.integration.util;
+package com.github.cimsbioko.server;
 
 /*
  * Copyright 2011-2012 the original author or authors.

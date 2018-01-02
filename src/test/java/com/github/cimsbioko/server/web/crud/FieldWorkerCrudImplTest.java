@@ -1,7 +1,7 @@
-package com.github.cimsbioko.server.integration;
+package com.github.cimsbioko.server.web.crud;
 
 import com.github.cimsbioko.server.dao.GenericDao;
-import com.github.cimsbioko.server.integration.util.WebContextLoader;
+import com.github.cimsbioko.server.WebContextLoader;
 import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import com.github.cimsbioko.server.service.CurrentUser;
 import com.github.cimsbioko.server.domain.FieldWorker;
-import com.github.cimsbioko.server.web.crud.EntityCrud;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -29,7 +28,7 @@ import static org.junit.Assert.assertNotNull;
 @Transactional
 @ContextConfiguration(loader = WebContextLoader.class, locations = {"/httpScopes.xml", "/testContext.xml"})
 @ActiveProfiles("test")
-public class FieldWorkerTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class FieldWorkerCrudImplTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
     @Qualifier("fieldWorkerCrud")

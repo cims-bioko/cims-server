@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.integration;
+package com.github.cimsbioko.server.webapi;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

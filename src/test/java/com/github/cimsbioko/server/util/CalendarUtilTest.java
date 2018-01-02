@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server;
+package com.github.cimsbioko.server.util;
 
 import com.github.cimsbioko.server.util.CalendarUtil;
 import org.junit.Before;

@@ -1,7 +1,6 @@
-package com.github.cimsbioko.server.integration;
+package com.github.cimsbioko.server.webapi.rest;
 
-import com.github.cimsbioko.server.integration.util.WebContextLoader;
-import com.github.cimsbioko.server.webapi.rest.MobileDatabaseResource;
+import com.github.cimsbioko.server.WebContextLoader;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;

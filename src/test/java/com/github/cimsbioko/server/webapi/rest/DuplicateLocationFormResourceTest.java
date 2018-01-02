@@ -1,9 +1,9 @@
-package com.github.cimsbioko.server.integration.bioko;
+package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.Location;
-import com.github.cimsbioko.server.integration.AbstractResourceTest;
-import com.github.cimsbioko.server.integration.util.WebContextLoader;
+import com.github.cimsbioko.server.webapi.AbstractResourceTest;
+import com.github.cimsbioko.server.WebContextLoader;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
@@ -23,7 +23,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.github.cimsbioko.server.webapi.rest.SprayingFormResource.SPRAYING_FORM_PATH;
+import static com.github.cimsbioko.server.webapi.rest.DuplicateLocationFormResource.DUPLICATE_LOCATION_FORM_PATH;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         DbUnitTestExecutionListener.class})
 @DatabaseSetup(value = "/formResourceTestDb.xml", type = DatabaseOperation.REFRESH)
 @ActiveProfiles("test")
-public class SprayingFormResourceTest extends AbstractResourceTest {
+public class DuplicateLocationFormResourceTest extends AbstractResourceTest {
 
     @Autowired
     private GenericDao genericDao;
@@ -53,42 +53,51 @@ public class SprayingFormResourceTest extends AbstractResourceTest {
     }
 
     @Test
-    public void testDestroyedEvaluation() throws Exception {
+    public void testRemoveAction() throws Exception {
         mockMvc.perform(
-                post(SPRAYING_FORM_PATH)
+                post(DUPLICATE_LOCATION_FORM_PATH)
                         .session(session)
                         .accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .content(getTestForm("5")))
+                        .content(getTestForm("remove")))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         Location dbLoc = lookupLocation();
         assertNotNull(dbLoc);
         assertEquals(Boolean.TRUE, dbLoc.isDeleted());
+        assertEquals("new_desc", dbLoc.getDescription());
+        assertNull(dbLoc.getGlobalPos());
     }
 
     @Test
-    public void testNotDestroyedEvaluation() throws Exception {
+    public void testGPSAction() throws Exception {
         mockMvc.perform(
-                post(SPRAYING_FORM_PATH)
+                post(DUPLICATE_LOCATION_FORM_PATH)
                         .session(session)
                         .accept(MediaType.APPLICATION_XML)
                         .contentType(MediaType.APPLICATION_XML)
-                        .content(getTestForm("4")))
+                        .content(getTestForm("gps-only")))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_XML));
 
         Location dbLoc = lookupLocation();
         assertNotNull(dbLoc);
         assertNotEquals(Boolean.TRUE, dbLoc.isDeleted());
+        assertEquals("new_desc", dbLoc.getDescription());
+        assertNotNull(dbLoc.getGlobalPos());
+        assertEquals(3.0, dbLoc.getGlobalPos().getCoordinate().y, 0.1);
+        assertEquals(8.0, dbLoc.getGlobalPos().getCoordinate().x, 0.1);
     }
 
-    private String getTestForm(String evaluation) {
-        return String.format(
-                "<sprayingForm><entity_uuid>TestLocation1</entity_uuid><evaluation>%s</evaluation></sprayingForm>",
-                evaluation
-        );
+    private String getTestForm(String action) {
+        return "<duplicateLocationForm>" +
+                "<entity_uuid>TestLocation1</entity_uuid>" +
+                "<action>" + action + "</action>" +
+                "<global_position_lat>3.0</global_position_lat>" +
+                "<global_position_lng>8.0</global_position_lng>" +
+                "<description>new_desc</description>" +
+                "</duplicateLocationForm>";
     }
 
     private Location lookupLocation() {

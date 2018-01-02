@@ -1,13 +1,12 @@
-package com.github.cimsbioko.server.integration.bioko;
+package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.Individual;
 import com.github.cimsbioko.server.domain.Location;
 import com.github.cimsbioko.server.domain.Error;
 import com.github.cimsbioko.server.util.CalendarAdapter;
-import com.github.cimsbioko.server.integration.AbstractResourceTest;
-import com.github.cimsbioko.server.integration.util.WebContextLoader;
-import com.github.cimsbioko.server.webapi.rest.IndividualFormResource;
+import com.github.cimsbioko.server.webapi.AbstractResourceTest;
+import com.github.cimsbioko.server.WebContextLoader;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;

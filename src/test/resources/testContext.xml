@@ -36,7 +36,7 @@
     </bean>
 
     <!-- JsfService is mocked for tests -->
-    <bean id="jsfService" class="com.github.cimsbioko.server.integration.util.JsfServiceMock"/>
+    <bean id="jsfService" class="com.github.cimsbioko.server.JsfServiceMock"/>
 
     <!-- Independent data source for test context -->
     <bean id="dataSource" class="com.github.cimsbioko.server.GeoDBTestDataSource" />
