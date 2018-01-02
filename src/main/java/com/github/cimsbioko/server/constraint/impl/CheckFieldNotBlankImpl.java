@@ -1,9 +1,9 @@
-package com.github.cimsbioko.server.domain.constraint.impl;
+package com.github.cimsbioko.server.constraint.impl;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.github.cimsbioko.server.domain.constraint.CheckFieldNotBlank;
+import com.github.cimsbioko.server.constraint.CheckFieldNotBlank;
 
 public class CheckFieldNotBlankImpl implements ConstraintValidator<CheckFieldNotBlank, String> {
 

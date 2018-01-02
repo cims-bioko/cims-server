@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.domain;
 
-import com.github.cimsbioko.server.domain.constraint.CheckFieldNotBlank;
+import com.github.cimsbioko.server.constraint.CheckFieldNotBlank;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

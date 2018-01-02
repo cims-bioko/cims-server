@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.domain.constraint;
+package com.github.cimsbioko.server.constraint;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.FIELD;
@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.github.cimsbioko.server.domain.constraint.impl.ExtensionStringConstraintImpl;
+import com.github.cimsbioko.server.constraint.impl.ExtensionStringConstraintImpl;
 
 @Target({METHOD, FIELD, ANNOTATION_TYPE})
 @Retention(RUNTIME)

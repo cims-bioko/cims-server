@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.domain;
 
-import com.github.cimsbioko.server.domain.constraint.*;
+import com.github.cimsbioko.server.constraint.*;
 import com.github.cimsbioko.server.util.CalendarAdapter;
 
 import javax.persistence.*;

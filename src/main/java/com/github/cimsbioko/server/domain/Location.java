@@ -1,11 +1,11 @@
 
 package com.github.cimsbioko.server.domain;
 
-import com.github.cimsbioko.server.domain.constraint.CheckFieldNotBlank;
+import com.github.cimsbioko.server.constraint.CheckFieldNotBlank;
 import com.vividsolutions.jts.geom.Point;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import com.github.cimsbioko.server.domain.constraint.ExtensionStringConstraint;
+import com.github.cimsbioko.server.constraint.ExtensionStringConstraint;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
