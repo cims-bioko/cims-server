@@ -35,7 +35,8 @@ public class TaskExecutorImplTest {
     }
     
     @Test
-    public void shouldRunIndividualXmlTask() {
+    public void shouldRunMobileDbTask() {
+
         when(taskService.taskShouldRun(MOBILEDB_TASK_NAME)).thenReturn(true);
 
         executor.setMobileDBWriter(writeTask);
@@ -46,7 +47,8 @@ public class TaskExecutorImplTest {
     }
 
     @Test
-    public void shouldNotRunIndividualXmlTask() {
+    public void shouldNotRunMobileDbTask() {
+
         when(taskService.taskShouldRun(MOBILEDB_TASK_NAME)).thenReturn(false);
 
         executor.setMobileDBWriter(writeTask);
