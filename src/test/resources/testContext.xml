@@ -10,6 +10,7 @@
     <import resource="classpath:/META-INF/spring/application-context.xml"/>
     <import resource="classpath:/META-INF/spring/webapi-application-context.xml" />
 
+    <bean class="com.github.cimsbioko.server.PersistenceConfig" />
     <bean class="com.github.cimsbioko.server.SecurityConfig" />
 
     <bean id="dataDir" class="java.io.File">
