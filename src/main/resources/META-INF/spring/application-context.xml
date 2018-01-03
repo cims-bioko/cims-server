@@ -6,7 +6,7 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:util="http://www.springframework.org/schema/util"
        xmlns:task="http://www.springframework.org/schema/task"
-       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:lang="http://www.springframework.org/schema/lang"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/aop
@@ -18,7 +18,9 @@
         http://www.springframework.org/schema/util
         http://www.springframework.org/schema/util/spring-util.xsd
         http://www.springframework.org/schema/task
-        http://www.springframework.org/schema/task/spring-task.xsd">
+        http://www.springframework.org/schema/task/spring-task.xsd
+        http://www.springframework.org/schema/lang
+        http://www.springframework.org/schema/lang/spring-lang.xsd">
 
     <context:annotation-config/>
     <mvc:annotation-driven />
@@ -132,6 +134,11 @@
         <constructor-arg ref="roleDao"/>
         <constructor-arg ref="genericDao"/>
     </bean>
+
+    <!-- this should be moved to the formproc java config -->
+    <lang:std id="formProcessor"
+              script-source="classpath:/process-forms.js"
+              script-interfaces="com.github.cimsbioko.server.formproc.FormProcessor" />
 
     <!-- Supported fields are LOCATION_NAME, LOCATION_HIERARCHY_ID -->
     <bean id="locationIdScheme" class="com.github.cimsbioko.server.idgen.IdScheme">

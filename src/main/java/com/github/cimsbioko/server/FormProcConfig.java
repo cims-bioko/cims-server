@@ -5,12 +5,14 @@ import com.github.cimsbioko.server.util.CalendarAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 import static com.github.cimsbioko.server.FormProcConfig.PROC_PKG;
 
 @Configuration
 @ComponentScan(PROC_PKG)
+@EnableAspectJAutoProxy
 public class FormProcConfig {
 
     public static final String PROC_PKG = "com.github.cimsbioko.server.formproc";
@@ -22,4 +24,5 @@ public class FormProcConfig {
         marshaller.setAdapters(calendarAdapter);
         return marshaller;
     }
+
 }

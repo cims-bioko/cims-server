@@ -1,30 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:lang="http://www.springframework.org/schema/lang"
-       xmlns:task="http://www.springframework.org/schema/task"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd
-        http://www.springframework.org/schema/lang
-        http://www.springframework.org/schema/lang/spring-lang.xsd
-        http://www.springframework.org/schema/task
-        http://www.springframework.org/schema/task/spring-task.xsd
         http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx.xsd
-        http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop.xsd">
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <context:annotation-config/>
     <context:component-scan base-package="com.github.cimsbioko.server.webapi"/>
-
-    <aop:aspectj-autoproxy />
 
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="asyncRequestTimeout">
@@ -71,15 +61,5 @@
     </bean>
 
     <tx:annotation-driven />
-
-    <lang:std id="formProcessor"
-              script-source="classpath:/process-forms.js"
-              script-interfaces="com.github.cimsbioko.server.webapi.FormProcessor" />
-
-    <!-- disabled since testContext.xml imports multiple bean async bean post-processors into the same context -->
-    <beans profile="!test">
-        <!-- required in child context for tasks to refer to web endpoints -->
-        <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler" />
-    </beans>
 
 </beans>

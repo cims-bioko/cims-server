@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.webapi;
+package com.github.cimsbioko.server.formproc;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
