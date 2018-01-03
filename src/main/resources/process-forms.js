@@ -7,6 +7,7 @@ var imports = new JavaImporter(
     java.io,
     javax.xml.transform.stream,
     com.github.cimsbioko.server.service,
+    com.github.cimsbioko.server.formproc,
     com.github.cimsbioko.server.webapi.rest
 );
 
@@ -27,7 +28,7 @@ with (imports) {
     function setApplicationContext(ctx) {
         appCtx = ctx;
         formService = getBean(FormSubmissionService.class);
-        jaxb = getBean('jaxbMarshaller');
+        jaxb = getBean('formMarshaller');
     }
 
     /**
@@ -42,7 +43,7 @@ with (imports) {
      */
     var bindings = {
         spraying: {
-            endpoint: SprayingFormResource.class,
+            endpoint: SprayingFormProcessor.class,
             mapData: function(data) {
                 return {
                     sprayingForm: {
@@ -53,7 +54,7 @@ with (imports) {
             }
         },
         location: {
-            endpoint: LocationFormResource.class,
+            endpoint: LocationFormProcessor.class,
             mapData: function(data) {
                 var result = {
                     locationForm: {
@@ -83,7 +84,7 @@ with (imports) {
             }
         },
         duplicate_location: {
-            endpoint: DuplicateLocationFormResource.class,
+            endpoint: DuplicateLocationFormProcessor.class,
             mapData: function(data) {
                 var result = {
                     duplicateLocationForm: {
@@ -102,7 +103,7 @@ with (imports) {
             }
         },
         individual: {
-            endpoint: IndividualFormResource.class,
+            endpoint: IndividualFormProcessor.class,
             mapData: function(data) {
                 return {
                     individualForm: {

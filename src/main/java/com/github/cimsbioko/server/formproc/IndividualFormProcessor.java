@@ -1,23 +1,21 @@
-package com.github.cimsbioko.server.webapi.rest;
+package com.github.cimsbioko.server.formproc;
 
-import com.github.cimsbioko.server.service.refactor.LocationService;
 import com.github.cimsbioko.server.domain.FieldWorker;
-import com.github.cimsbioko.server.util.CalendarAdapter;
+import com.github.cimsbioko.server.domain.Individual;
+import com.github.cimsbioko.server.domain.Location;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.refactor.FieldWorkerService;
 import com.github.cimsbioko.server.service.refactor.IndividualService;
-import com.github.cimsbioko.server.domain.Individual;
-import com.github.cimsbioko.server.domain.Location;
+import com.github.cimsbioko.server.service.refactor.LocationService;
+import com.github.cimsbioko.server.util.CalendarAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -26,15 +24,10 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-import static com.github.cimsbioko.server.webapi.rest.IndividualFormResource.INDIVIDUAL_FORM_PATH;
+@Component
+public class IndividualFormProcessor extends AbstractFormProcessor {
 
-@Controller
-@RequestMapping(INDIVIDUAL_FORM_PATH)
-public class IndividualFormResource extends AbstractFormResource {
-
-    public static final String INDIVIDUAL_FORM_PATH = "/rest/individualForm";
-
-    private static final Logger log = LoggerFactory.getLogger(IndividualFormResource.class);
+    private static final Logger log = LoggerFactory.getLogger(IndividualFormProcessor.class);
 
     // FIXME: value codes can be configured by projects
     private static final String HEAD_OF_HOUSEHOLD_SELF = "1";
@@ -50,7 +43,6 @@ public class IndividualFormResource extends AbstractFormResource {
 
     // This individual form should cause several CRUDS:
     // location, individual
-    @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
     public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form) throws IOException {
 
@@ -130,8 +122,6 @@ public class IndividualFormResource extends AbstractFormResource {
         } catch (ConstraintViolations e) {
             logError(e, marshalForm(form), Form.LOG_NAME);
             return requestError(e);
-        } catch (SQLException e) {
-            return serverError("SQL Error updating or saving individual: " + e.getMessage());
         } catch (Exception e) {
             return serverError("General Error updating or saving individual: " + e.getMessage());
         }
@@ -149,7 +139,7 @@ public class IndividualFormResource extends AbstractFormResource {
     }
 
     private Individual findOrMakeIndividual(Form form, FieldWorker collectedBy,
-                                            Calendar insertTime, ConstraintViolations cv) throws Exception {
+                                            Calendar insertTime, ConstraintViolations cv) {
         Individual individual = individualService.getByUuid(form.uuid);
         if (individual == null) {
             individual = new Individual();
@@ -163,8 +153,7 @@ public class IndividualFormResource extends AbstractFormResource {
         return individual;
     }
 
-    private void copyFormDataToIndividual(Form form, Individual individual)
-            throws Exception {
+    private void copyFormDataToIndividual(Form form, Individual individual) {
         if (individual.getUuid() == null) {
             individual.setUuid(form.uuid);
         }
@@ -190,8 +179,7 @@ public class IndividualFormResource extends AbstractFormResource {
         individual.setHomeRole(form.individualRelationshipToHeadOfHousehold);
     }
 
-    private void createOrSaveIndividual(Individual individual) throws ConstraintViolations,
-            SQLException {
+    private void createOrSaveIndividual(Individual individual) throws ConstraintViolations {
         if (individualService.getByUuid(individual.getUuid()) == null) {
             individualService.create(individual);
         } else {

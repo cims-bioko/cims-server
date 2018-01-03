@@ -1,33 +1,26 @@
-package com.github.cimsbioko.server.webapi.rest;
+package com.github.cimsbioko.server.formproc;
 
 import com.github.cimsbioko.server.domain.FieldWorker;
 import com.github.cimsbioko.server.domain.Location;
 import com.github.cimsbioko.server.domain.LocationHierarchy;
 import com.github.cimsbioko.server.domain.LocationHierarchyLevel;
+import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.LocationHierarchyService;
 import com.github.cimsbioko.server.service.refactor.FieldWorkerService;
 import com.github.cimsbioko.server.service.refactor.LocationService;
-import com.github.cimsbioko.server.exception.ConstraintViolations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.xml.bind.annotation.*;
 import java.io.IOException;
 import java.io.Serializable;
 
-import static com.github.cimsbioko.server.webapi.rest.LocationFormResource.LOCATION_FORM_PATH;
-
-@Controller
-@RequestMapping(LOCATION_FORM_PATH)
-public class LocationFormResource extends AbstractFormResource {
-
-    public static final String LOCATION_FORM_PATH = "/rest/locationForm";
+@Component
+public class LocationFormProcessor extends AbstractFormProcessor {
 
     @Autowired
     private FieldWorkerService fieldWorkerService;
@@ -38,7 +31,6 @@ public class LocationFormResource extends AbstractFormResource {
     @Autowired
     private LocationHierarchyService locationHierarchyService;
 
-    @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
     @Transactional
     public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form) throws IOException {
 

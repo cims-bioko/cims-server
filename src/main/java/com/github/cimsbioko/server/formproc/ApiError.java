@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.webapi.rest;
+package com.github.cimsbioko.server.formproc;
 
 import java.io.Serializable;
 import java.util.ArrayList;

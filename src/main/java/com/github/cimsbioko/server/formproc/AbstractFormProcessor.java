@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.webapi.rest;
+package com.github.cimsbioko.server.formproc;
 
 import com.github.cimsbioko.server.service.ErrorService;
 import com.github.cimsbioko.server.util.ErrorUtil;
@@ -8,6 +8,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.oxm.GenericMarshaller;
@@ -17,7 +18,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 
-public class AbstractFormResource {
+public class AbstractFormProcessor {
 
     @Autowired
     private ErrorService errorService;
@@ -26,6 +27,7 @@ public class AbstractFormResource {
     private GeometryFactory geometryFactory;
 
     @Autowired
+    @Qualifier("formMarshaller")
     private GenericMarshaller marshaller;
 
     protected ResponseEntity<ApiError> requestError(String message) {

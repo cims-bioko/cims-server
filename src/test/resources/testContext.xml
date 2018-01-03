@@ -12,6 +12,7 @@
 
     <bean class="com.github.cimsbioko.server.PersistenceConfig" />
     <bean class="com.github.cimsbioko.server.SecurityConfig" />
+    <bean class="com.github.cimsbioko.server.FormProcConfig" />
 
     <bean id="dataDir" class="java.io.File">
         <constructor-arg value="#{systemProperties['java.io.tmpdir']}/cims-server-test"/>
