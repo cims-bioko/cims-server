@@ -64,11 +64,6 @@ public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements
     }
 
     @Override
-    public List<FormSubmission> findByForm(String formId, String formVersion) {
-        return sql.query(BASE_QUERY + " where form_id = ? and form_version = ?", mapper, formId, formVersion);
-    }
-
-    @Override
     public List<FormSubmission> findUnprocessed(int batchSize) {
         return sql.query(BASE_QUERY + " where processed is null order by collected asc limit ?", mapper, batchSize);
     }

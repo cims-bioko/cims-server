@@ -9,7 +9,6 @@ public interface FormSubmissionDao {
     void save(FormSubmission submission);
     void delete(String uuid);
     FormSubmission findById(String uuid);
-    List<FormSubmission> findByForm(String formId, String formVersion);
     List<FormSubmission> findUnprocessed(int batchSize);
     List<FormSubmission> findRecent(String form, String version, String binding, String device, Integer limit);
     List<FormSubmission> find(String form, String version, String binding, String device, Timestamp submittedSince, Integer limit, boolean sortDesc);
