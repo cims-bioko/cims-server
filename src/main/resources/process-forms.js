@@ -134,6 +134,28 @@ with (imports) {
                 };
             }
         },
+        create_map: {
+            endpoint: CreateMapFormProcessor.class,
+            mapData: function(data) {
+                return {
+                    createMapForm: {
+                        locality_uuid: data.localityUuid,
+                        map_name: data.mapName,
+                    }
+                };
+            }
+        },
+        create_sector: {
+            endpoint: CreateSectorFormProcessor.class,
+            mapData: function(data) {
+                return {
+                    createSectorForm: {
+                        map_uuid: data.mapUuid,
+                        sector_name: data.sectorName,
+                    }
+                };
+            }
+        },
     };
 
     /**
