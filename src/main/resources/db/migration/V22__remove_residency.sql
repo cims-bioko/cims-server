@@ -1,3 +1,10 @@
+create or replace function uuid_nodash() returns varchar(32) AS $$
+declare
+  uuid text = uuid_generate_v4();
+begin
+  return replace(uuid, '-', '');
+end$$ language plpgsql;
+
 /*
    The only individuals with non-matching residency/socialgroups are one without a socialgroup.
    Since that is the case, we can create the missing social groups based on their residency records.
