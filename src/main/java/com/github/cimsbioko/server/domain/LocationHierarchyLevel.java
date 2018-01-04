@@ -1,7 +1,5 @@
 package com.github.cimsbioko.server.domain;
 
-import com.github.cimsbioko.server.constraint.CheckFieldNotBlank;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -20,7 +18,6 @@ public class LocationHierarchyLevel implements UuidIdentifiable, Serializable {
     int keyId;
 
     @NotNull
-    @CheckFieldNotBlank
     String name;
 
     @Override

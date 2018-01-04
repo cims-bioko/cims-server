@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.domain;
 
-import com.github.cimsbioko.server.constraint.*;
 import com.github.cimsbioko.server.util.CalendarAdapter;
 
 import javax.persistence.*;
@@ -30,11 +29,9 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @Column(name = "middle_name")
     private String middleName;
 
-    @CheckFieldNotBlank
     @Column(name = "last_name")
     private String lastName;
 
-    @ExtensionStringConstraint(constraint = "genderConstraint", message = "Invalid Value for gender", allowNull = true)
     private String gender;
 
     @Past(message = "Date of birth must a date in the past")

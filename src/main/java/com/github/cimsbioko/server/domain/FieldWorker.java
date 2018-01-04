@@ -1,7 +1,5 @@
 package com.github.cimsbioko.server.domain;
 
-import com.github.cimsbioko.server.constraint.CheckFieldNotBlank;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -16,16 +14,13 @@ public class FieldWorker extends AuditableEntity implements Serializable {
     private static final long serialVersionUID = -7550088299362704483L;
 
     @NotNull
-    @CheckFieldNotBlank
     @Searchable
     String extId;
 
-    @CheckFieldNotBlank
     @Searchable
     @Column(name = "first_name")
     String firstName;
 
-    @CheckFieldNotBlank
     @Searchable
     @Column(name = "last_name")
     String lastName;
@@ -37,7 +32,6 @@ public class FieldWorker extends AuditableEntity implements Serializable {
     String confirmPassword;
 
     @NotNull
-    @CheckFieldNotBlank
     @Column(name = "password_hash")
     String passwordHash;
 

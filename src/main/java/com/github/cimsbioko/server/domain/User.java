@@ -1,7 +1,6 @@
 package com.github.cimsbioko.server.domain;
 
 import org.hibernate.annotations.GenericGenerator;
-import com.github.cimsbioko.server.constraint.CheckFieldNotBlank;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,12 +27,10 @@ public class User implements Serializable, UuidIdentifiable {
     @Column(length = 32)
     String uuid;
 
-    @CheckFieldNotBlank
     @Searchable
     @Column(name = "first_name")
     String firstName;
 
-    @CheckFieldNotBlank
     @Searchable
     @Column(name = "last_name")
     String lastName;
@@ -43,10 +40,8 @@ public class User implements Serializable, UuidIdentifiable {
 
     String description;
 
-    @CheckFieldNotBlank
     String username;
 
-    @CheckFieldNotBlank
     String password;
 
     @ManyToMany(fetch = FetchType.LAZY)

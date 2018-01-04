@@ -1,7 +1,5 @@
 package com.github.cimsbioko.server.domain;
 
-import com.github.cimsbioko.server.constraint.CheckFieldNotBlank;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -18,7 +16,6 @@ public class LocationHierarchy implements UuidIdentifiable, Serializable {
     @Column(length = 32)
     String uuid;
 
-    @CheckFieldNotBlank
     @NotNull
     String extId;
 
@@ -27,7 +24,6 @@ public class LocationHierarchy implements UuidIdentifiable, Serializable {
     LocationHierarchy parent;
 
     @NotNull
-    @CheckFieldNotBlank
     String name;
 
     @ManyToOne

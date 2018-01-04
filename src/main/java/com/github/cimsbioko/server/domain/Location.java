@@ -1,11 +1,9 @@
 
 package com.github.cimsbioko.server.domain;
 
-import com.github.cimsbioko.server.constraint.CheckFieldNotBlank;
 import com.vividsolutions.jts.geom.Point;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import com.github.cimsbioko.server.constraint.ExtensionStringConstraint;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -28,7 +26,6 @@ public class Location
     @Size(min = 1)
     private String extId;
 
-    @CheckFieldNotBlank
     private String name;
 
     @ManyToOne
@@ -36,7 +33,6 @@ public class Location
     @JoinColumn(name = "hierarchy")
     private LocationHierarchy hierarchy = new LocationHierarchy();
 
-    @ExtensionStringConstraint(constraint = "locationTypeConstraint", message = "Invalid Value for location type", allowNull = true)
     @Column(name = "type")
     private String type;
 
