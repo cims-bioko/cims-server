@@ -9,11 +9,8 @@ import com.github.cimsbioko.server.service.LocationHierarchyService;
 import com.github.cimsbioko.server.service.refactor.FieldWorkerService;
 import com.github.cimsbioko.server.service.refactor.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.xml.bind.annotation.*;
 import java.io.IOException;
@@ -32,14 +29,14 @@ public class LocationFormProcessor extends AbstractFormProcessor {
     private LocationHierarchyService locationHierarchyService;
 
     @Transactional
-    public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form) throws IOException {
+    public void processForm(Form form) throws IOException {
 
         ConstraintViolations cv = new ConstraintViolations();
 
         if (form.locationExtId == null) {
             cv.addViolations("No Location ExtId provided");
             logError(cv, marshalForm(form), Form.LOG_NAME);
-            return requestError(cv);
+            return;
         }
 
         Location location;
@@ -48,10 +45,10 @@ public class LocationFormProcessor extends AbstractFormProcessor {
             if (null != location) {
                 cv.addViolations("Location already exists " + form.uuid);
                 logError(cv, marshalForm(form), Form.LOG_NAME);
-                return requestError(cv);
+                return;
             }
         } catch (Exception e) {
-            return requestError("Error checking for existing location : " + e.getMessage());
+            return;
         }
 
         location = new Location();
@@ -61,7 +58,7 @@ public class LocationFormProcessor extends AbstractFormProcessor {
         if (null == collectedBy) {
             cv.addViolations("Field Worker does not exist : " + form.fieldWorkerUuid);
             logError(cv, marshalForm(form), Form.LOG_NAME);
-            return requestError(cv);
+            return;
         }
         location.setCollector(collectedBy);
 
@@ -84,10 +81,10 @@ public class LocationFormProcessor extends AbstractFormProcessor {
             if (null == locationHierarchy) {
                 cv.addViolations("Location Hierarchy does not exist : " + form.hierarchyUuid + " / " + form.hierarchyExtId);
                 logError(cv, marshalForm(form), Form.LOG_NAME);
-                return requestError(cv);
+                return;
             }
         } catch (Exception e) {
-            return requestError("Error getting reference to LocationHierarchy: " + e.getMessage());
+            return;
         }
 
         location.setHierarchy(locationHierarchy);
@@ -109,12 +106,10 @@ public class LocationFormProcessor extends AbstractFormProcessor {
             locationService.create(location);
         } catch (ConstraintViolations e) {
             logError(cv, marshalForm(form), Form.LOG_NAME);
-            return requestError(e);
+            return;
         } catch (Exception e) {
-            return serverError("General Error creating location: " + e.getMessage());
+            return;
         }
-
-        return new ResponseEntity<>(form, HttpStatus.CREATED);
     }
 
     private void modifyExtId(Location location, Form form) {

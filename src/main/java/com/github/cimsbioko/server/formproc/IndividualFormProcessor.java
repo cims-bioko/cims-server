@@ -11,17 +11,13 @@ import com.github.cimsbioko.server.util.CalendarAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.IOException;
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.Calendar;
 
 @Component
@@ -44,7 +40,7 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
     // This individual form should cause several CRUDS:
     // location, individual
     @Transactional
-    public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form) throws IOException {
+    public void processForm(Form form) throws IOException {
 
         // Default relationship to head of household is "self"
         if (form.individualRelationshipToHeadOfHousehold == null) {
@@ -60,7 +56,7 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
         if (collectedBy == null) {
             cv.addViolations("Field Worker does not exist");
             logError(cv, marshalForm(form), Form.LOG_NAME);
-            return requestError(cv);
+            return;
         }
 
         // where are we?
@@ -78,11 +74,11 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
                 String errorMessage = "Location does not exist " + form.householdUuid + " / " + form.householdExtId;
                 cv.addViolations(errorMessage);
                 logError(cv, marshalForm(form), Form.LOG_NAME);
-                return requestError(errorMessage);
+                return;
             }
 
         } catch (Exception e) {
-            return requestError("Error getting location: " + e.getMessage());
+            return;
         }
 
         // make a new individual, to be persisted below
@@ -91,10 +87,10 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
             individual = findOrMakeIndividual(form, collectedBy, insertTime, cv);
             if (cv.hasViolations()) {
                 logError(cv, marshalForm(form), Form.LOG_NAME);
-                return requestError(cv);
+                return;
             }
         } catch (Exception e) {
-            return requestError("Error finding or creating individual: " + e.getMessage());
+            return;
         }
 
         location.addResident(individual);
@@ -121,16 +117,16 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
             createOrSaveIndividual(individual);
         } catch (ConstraintViolations e) {
             logError(e, marshalForm(form), Form.LOG_NAME);
-            return requestError(e);
+            return;
         } catch (Exception e) {
-            return serverError("General Error updating or saving individual: " + e.getMessage());
+            return;
         }
 
         if (form.individualRelationshipToHeadOfHousehold.equals(HEAD_OF_HOUSEHOLD_SELF)) {
             location.setName(individual.getLastName());
         }
 
-        return new ResponseEntity<>(form, HttpStatus.CREATED);
+        return;
     }
 
     private void updateIndividualExtId(Individual individual, Location location) {

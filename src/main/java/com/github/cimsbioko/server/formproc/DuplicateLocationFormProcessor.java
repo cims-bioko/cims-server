@@ -4,11 +4,8 @@ import com.github.cimsbioko.server.domain.Location;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.refactor.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
@@ -20,8 +17,7 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
     private LocationService locationService;
 
     @Transactional
-    public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form) {
-
+    public void processForm(Form form) {
         if (form.uuid != null) {
             Location location = locationService.getByUuid(form.uuid);
             switch (form.action) {
@@ -41,11 +37,9 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
                 }
                 locationService.save(location);
             } catch (ConstraintViolations cv) {
-                return requestError(cv);
+                /* ignore - fall through to return */
             }
         }
-
-        return new ResponseEntity<>(form, HttpStatus.CREATED);
     }
 
     @XmlEnum
