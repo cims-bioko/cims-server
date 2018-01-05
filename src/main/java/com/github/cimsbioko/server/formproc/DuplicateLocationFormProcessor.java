@@ -3,6 +3,8 @@ package com.github.cimsbioko.server.formproc;
 import com.github.cimsbioko.server.domain.Location;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.refactor.LocationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,8 @@ import java.io.Serializable;
 @Component
 public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
 
+    private static final Logger log = LoggerFactory.getLogger(DuplicateLocationFormProcessor.class);
+
     @Autowired
     private LocationService locationService;
 
@@ -20,24 +24,28 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
     public void processForm(Form form) {
         if (form.uuid != null) {
             Location location = locationService.getByUuid(form.uuid);
-            switch (form.action) {
-                case GPS_ONLY:
-                    if (form.latitude != null && form.longitude != null) {
-                        location.setGlobalPos(makePoint(form.longitude, form.latitude));
-                    }
-                    break;
-                case REMOVE:
-                    location.setDeleted(true);
-                    break;
-            }
-            try {
-                // Always attempt to update description if it's provided
-                if (form.description != null) {
-                    location.setDescription(form.description);
+            if (location != null) {
+                switch (form.action) {
+                    case GPS_ONLY:
+                        if (form.latitude != null && form.longitude != null) {
+                            location.setGlobalPos(makePoint(form.longitude, form.latitude));
+                        }
+                        break;
+                    case REMOVE:
+                        location.setDeleted(true);
+                        break;
                 }
-                locationService.save(location);
-            } catch (ConstraintViolations cv) {
-                /* ignore - fall through to return */
+                try {
+                    // Always attempt to update description if it's provided
+                    if (form.description != null) {
+                        location.setDescription(form.description);
+                    }
+                    locationService.save(location);
+                } catch (ConstraintViolations cv) {
+                    /* ignore - fall through to return */
+                }
+            } else {
+                log.info("location {} not found, ignoring", form.uuid);
             }
         }
     }
