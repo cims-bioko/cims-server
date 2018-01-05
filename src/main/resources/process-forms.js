@@ -39,42 +39,16 @@ with (imports) {
     }
 
     /**
-     * Metadata for adapting raw odk form submissions to existing form endpoints.
+     * Metadata for adapting raw odk form submissions to form processors.
      */
     var bindings = {
         spraying: {
-            endpoint: SprayingFormProcessor.class,
-            mapData: function(data) {
-                return {
-                    sprayingForm: {
-                        entity_uuid: data.entityUuid,
-                        evaluation: data.evaluation
-                    }
-                };
-            }
+            endpoint: SprayingFormProcessor.class
         },
         location: {
             endpoint: LocationFormProcessor.class,
             mapData: function(data) {
-                var result = {
-                    locationForm: {
-                        entity_uuid: data.entityUuid,
-                        entity_ext_id: data.entityExtId,
-                        field_worker_uuid: data.fieldWorkerUuid,
-                        field_worker_ext_id: data.fieldWorkerExtId,
-                        collection_date_time: data.collectionDateTime,
-                        hierarchy_ext_id: data.hierarchyExtId,
-                        hierarchy_uuid: data.hierarchyUuid,
-                        hierarchy_parent_uuid: data.hierarchyParentUuid,
-                        location_ext_id: data.locationExtId,
-                        location_name: data.locationName,
-                        location_type: data.locationType,
-                        sector_name: data.sectorName,
-                        location_building_number: data.locationBuildingNumber,
-                        location_floor_number: data.locationFloorNumber,
-                        description: data.description
-                    }
-                };
+                var result = defaultDataMapper(bindings.location)(data);
                 if (data.location) {
                     var form = result.locationForm, gps = toGPS(data.location);
                     form.latitude = gps.latitude;
@@ -86,13 +60,7 @@ with (imports) {
         duplicate_location: {
             endpoint: DuplicateLocationFormProcessor.class,
             mapData: function(data) {
-                var result = {
-                    duplicateLocationForm: {
-                        entity_uuid: data.entityUuid,
-                        action: data.action,
-                        description: data.description
-                    }
-                };
+                var result = defaultDataMapper(bindings.duplicate_location)(data);
                 if (data.globalPosition) {
                     var form = result.duplicateLocationForm, gps = toGPS(data.globalPosition);
                     form.global_position_lat = gps.latitude;
@@ -103,59 +71,14 @@ with (imports) {
             }
         },
         individual: {
-            endpoint: IndividualFormProcessor.class,
-            mapData: function(data) {
-                return {
-                    individualForm: {
-                        entity_uuid: data.entityUuid,
-                        field_worker_uuid: data.fieldWorkerUuid,
-                        collection_date_time: data.collectionDateTime,
-                        household_ext_id: data.householdExtId,
-                        household_uuid: data.householdUuid,
-                        membership_uuid: data.membershipUuid,
-                        relationship_uuid: data.relationshipUuid,
-                        socialgroup_uuid: data.socialgroupUuid,
-                        individual_ext_id: data.individualExtId,
-                        individual_first_name: data.individualFirstName,
-                        individual_last_name: data.individualLastName,
-                        individual_other_names: data.individualOtherNames,
-                        individual_date_of_birth: data.individualDateOfBirth,
-                        individual_gender: data.individualGender,
-                        individual_relationship_to_head_of_household: data.individualRelationshipToHeadOfHousehold,
-                        individual_phone_number: data.individualPhoneNumber,
-                        individual_other_phone_number: data.individualOtherPhoneNumber,
-                        individual_language_preference: data.individualLanguagePreference,
-                        individual_point_of_contact_name: data.individualPointOfContactName,
-                        individual_point_of_contact_phone_number: data.individualPointOfContactPhoneNumber,
-                        individual_dip: data.individualDip,
-                        individual_member_status: data.individualMemberStatus,
-                        individual_nationality: data.individualNationality
-                    }
-                };
-            }
+            endpoint: IndividualFormProcessor.class
         },
         create_map: {
-            endpoint: CreateMapFormProcessor.class,
-            mapData: function(data) {
-                return {
-                    createMapForm: {
-                        locality_uuid: data.localityUuid,
-                        map_name: data.mapName,
-                    }
-                };
-            }
+            endpoint: CreateMapFormProcessor.class
         },
         create_sector: {
-            endpoint: CreateSectorFormProcessor.class,
-            mapData: function(data) {
-                return {
-                    createSectorForm: {
-                        map_uuid: data.mapUuid,
-                        sector_name: data.sectorName,
-                    }
-                };
-            }
-        },
+            endpoint: CreateSectorFormProcessor.class
+        }
     };
 
     /**
@@ -213,20 +136,44 @@ with (imports) {
      * Generic form mapping function.
      */
     function mapForm(mapFn, data) {
-        return toForm(toXml(mapFn(data)));
+        return xmlToForm(objectToXml(mapFn(data)));
+    }
+
+    /**
+     * Returns the conventional form name for the specified endpoint classes.
+     */
+    function formNameForEndpoint(endpoint) {
+        return endpoint.getSimpleName().replace(
+            /^([A-Z])(.*)Processor$/,
+            function(match, initial, remaining) {
+                return initial.toLowerCase() + remaining;
+            });
+    }
+
+    /**
+     * Returns a conventional data mapping function for the given binding.
+     */
+    function defaultDataMapper(binding) {
+        return function (data) {
+            var result = {};
+            result[formNameForEndpoint(binding.endpoint)] = remapKeys(data, camelCaseToUnderscore);
+            return result;
+        }
     }
 
     /**
      * The default form processing method, used unless a specific one is specified by the binding.
      */
     function defaultProcess(binding, form) {
-        getBean(binding.endpoint).processForm(mapForm(binding.mapData, form.data));
+        var processor = getBean(binding.endpoint);
+        var mappedForm = mapForm(binding.mapData || defaultDataMapper(binding), form.data);
+        processor.processForm(mappedForm);
     }
 
     /**
      * Converts an xml document to an endpoint form using jaxb.
      */
-    function toForm(xml) {
+    function xmlToForm(xml) {
         var reader = new StringReader(xml), source = new StreamSource(reader);
         return jaxb.unmarshal(source);
     }
@@ -234,18 +181,23 @@ with (imports) {
     /**
      * Converts a javascript object to an xml string.
      */
-    function toXml(data) {
+    function objectToXml(data) {
+        function validElementName(name) {
+            return name.match(/^[a-zA-Z_]/) && !name.match(/xml/i) && name.match(/^[a-zA-Z0-9_.-]+$/);
+        }
         var result = '';
-        for (var field in data) {
-            var value = data[field];
-            if (typeof(value) !== 'undefined') {
-                result += '<' + field + '>';
-                if (typeof(value) === 'object') {
-                    result += toXml(value);
-                } else {
-                    result += escapeXml('' + value);
+        for (var key in data) {
+            if (data.hasOwnProperty(key) && validElementName(key)) {
+                var value = data[key];
+                if (typeof(value) !== 'undefined') {
+                    result += '<' + key + '>';
+                    if (typeof(value) === 'object') {
+                        result += objectToXml(value);
+                    } else {
+                        result += escapeXml('' + value);
+                    }
+                    result += '</' + key + '>';
                 }
-                result += '</' + field + '>';
             }
         }
         return result;
@@ -277,5 +229,32 @@ with (imports) {
             altitude: gps[2],
             accuracy: gps[3]
         };
+    }
+
+    /**
+     * Converts a camel-case name like 'ParseCSV' to 'parse_csv'.
+     */
+    function camelCaseToUnderscore(s) {
+        function replacement(whole, captured, offset) {
+            return offset === 0? captured.toLowerCase() : '_' + captured.toLowerCase();
+        }
+        return typeof(s) === 'string'? s.replace(/([A-Z]+)/g, replacement) : s;
+    }
+
+    /**
+     * Converts an object to another object with renamed keys using the supplied function.
+     */
+    function remapKeys(obj, fn) {
+        var result = {};
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                var newKey = fn(key), value = obj[key];
+                if (typeof(newKey) !== 'undefined') {
+                    var finalKey = obj.hasOwnProperty(newKey) ? key : newKey;
+                    result[finalKey] = typeof(value) === 'object' ? remapKeys(value, fn) : value;
+                }
+            }
+        }
+        return result;
     }
 }
