@@ -1,5 +1,6 @@
-package com.github.cimsbioko.server.formproc;
+package com.github.cimsbioko.server.formproc.forms;
 
+import com.github.cimsbioko.server.formproc.ApiError;
 import com.github.cimsbioko.server.service.ErrorService;
 import com.github.cimsbioko.server.util.ErrorUtil;
 import com.github.cimsbioko.server.exception.ConstraintViolations;

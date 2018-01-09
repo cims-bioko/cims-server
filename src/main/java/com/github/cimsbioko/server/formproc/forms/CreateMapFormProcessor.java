@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.formproc;
+package com.github.cimsbioko.server.formproc.forms;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

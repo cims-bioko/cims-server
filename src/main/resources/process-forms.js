@@ -7,8 +7,7 @@ var imports = new JavaImporter(
     java.io,
     javax.xml.transform.stream,
     com.github.cimsbioko.server.service,
-    com.github.cimsbioko.server.formproc,
-    com.github.cimsbioko.server.webapi.rest
+    com.github.cimsbioko.server.formproc.forms
 );
 
 with (imports) {

@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.formproc;
+package com.github.cimsbioko.server.formproc.forms;
 
 import com.github.cimsbioko.server.domain.FieldWorker;
 import com.github.cimsbioko.server.domain.Individual;
