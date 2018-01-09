@@ -173,7 +173,7 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
         individual.setDip(form.individualDip);
         individual.setNationality(form.individualNationality);
         individual.setHomeRole(form.individualRelationshipToHeadOfHousehold);
-        individual.setMemberStatus(form.individualMemberStatus);
+        individual.setStatus(form.individualMemberStatus);
     }
 
     private void createOrSaveIndividual(Individual individual) throws ConstraintViolations {

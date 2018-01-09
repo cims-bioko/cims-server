@@ -62,8 +62,7 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @Column(name = "home_role")
     private String homeRole;
 
-    @Column(name = "member_status")
-    private String memberStatus;
+    private String status;
 
     public String getExtId() {
         return extId;
@@ -186,12 +185,12 @@ public class Individual extends AuditableCollectedEntity implements Serializable
         this.homeRole = homeRole;
     }
 
-    public String getMemberStatus() {
-        return memberStatus;
+    public String getStatus() {
+        return status;
     }
 
-    public void setMemberStatus(String memberStatus) {
-        this.memberStatus = memberStatus;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
