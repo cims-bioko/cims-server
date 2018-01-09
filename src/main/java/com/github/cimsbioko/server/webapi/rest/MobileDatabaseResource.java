@@ -32,6 +32,7 @@ import static com.github.cimsbioko.server.service.TaskService.MOBILEDB_TASK_NAME
 @Controller
 public class MobileDatabaseResource {
 
+    public static final String ACCEPT = "Accept";
     public static final String MOBILEDB_PATH = "/rest/mobiledb";
     public static final String SQLITE_MIME_TYPE = "application/x-sqlite3";
     public static final String MOBILEDB_EXPORT_PATH = "/rest/mobiledb/export";
@@ -49,7 +50,7 @@ public class MobileDatabaseResource {
         String contentHash = taskService.getDescriptor(MOBILEDB_TASK_NAME);
         File cacheFile = fileResolver.resolveMobileDBFile();
         File metadataFile = new File(cacheFile.getParentFile(), cacheFile.getName() + "." + Metadata.FILE_EXT);
-        String accept = request.getHeader(Headers.ACCEPT);
+        String accept = request.getHeader(ACCEPT);
 
         if (request.checkNotModified(contentHash)) {
             return null;
