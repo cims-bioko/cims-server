@@ -25,7 +25,7 @@ public class Exporter {
         this.mapperFactory = mapperFactory;
     }
 
-    public void export(String query, String table, File target) throws SQLException, ClassNotFoundException, IOException {
+    public void export(String query, String table, File target) throws SQLException, IOException {
         try (Connection src = this.src.createConnection(); Statement s = this.src.createStatement(src);
              Connection dst = this.dst.createConnection(target, false); Statement d = this.dst.createStatement(dst);
              ResultSet rs = s.executeQuery(query)) {

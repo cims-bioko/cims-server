@@ -105,7 +105,7 @@ public class MobileDBExportTask implements SyncFileTask {
             if (scratch.renameTo(dest) && metaScratch.renameTo(metaDest)) {
                 taskService.finishTask(MOBILEDB_TASK_NAME, tablesExported, md5);
             }
-        } catch (IOException | SQLException | ClassNotFoundException | NoSuchAlgorithmException e) {
+        } catch (IOException | SQLException | NoSuchAlgorithmException e) {
             log.error("failed to export mobile db", e);
             taskService.finishTask(MOBILEDB_TASK_NAME, tablesExported, e.getMessage());
         }

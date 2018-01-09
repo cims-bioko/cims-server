@@ -61,7 +61,7 @@ public class ExporterTest {
     }
 
     @Test
-    public void testExporter() throws SQLException, IOException, ClassNotFoundException {
+    public void testExporter() throws SQLException, IOException {
         exporter.export("select * from source_table", destTable, file);
         assertTrue(file.exists());
         assertDatabase(file, destTable);
