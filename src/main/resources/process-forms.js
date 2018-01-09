@@ -155,7 +155,7 @@ with (imports) {
     function defaultDataMapper(binding) {
         return function (data) {
             var result = {};
-            result[formNameForEndpoint(binding.endpoint)] = remapKeys(data, camelCaseToUnderscore);
+            result[formNameForEndpoint(binding.endpoint)] = data;
             return result;
         }
     }
@@ -228,32 +228,5 @@ with (imports) {
             altitude: gps[2],
             accuracy: gps[3]
         };
-    }
-
-    /**
-     * Converts a camel-case name like 'ParseCSV' to 'parse_csv'.
-     */
-    function camelCaseToUnderscore(s) {
-        function replacement(whole, captured, offset) {
-            return offset === 0? captured.toLowerCase() : '_' + captured.toLowerCase();
-        }
-        return typeof(s) === 'string'? s.replace(/([A-Z]+)/g, replacement) : s;
-    }
-
-    /**
-     * Converts an object to another object with renamed keys using the supplied function.
-     */
-    function remapKeys(obj, renameFn) {
-        var result = {};
-        for (var key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                var newKey = renameFn(key), value = obj[key];
-                if (typeof(newKey) !== 'undefined') {
-                    var finalKey = obj.hasOwnProperty(newKey) ? key : newKey;
-                    result[finalKey] = typeof(value) === 'object' ? remapKeys(value, renameFn) : value;
-                }
-            }
-        }
-        return result;
     }
 }

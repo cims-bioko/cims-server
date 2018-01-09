@@ -57,7 +57,6 @@ public class SprayingFormProcessor extends AbstractFormProcessor {
         @XmlElement(name = "entity_uuid")
         private String uuid;
 
-        @XmlElement(name = "evaluation")
         private Evaluation evaluation;
     }
 }

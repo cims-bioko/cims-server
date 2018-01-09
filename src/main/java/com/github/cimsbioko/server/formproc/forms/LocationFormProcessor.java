@@ -175,42 +175,29 @@ public class LocationFormProcessor extends AbstractFormProcessor {
 
         public static final String LOG_NAME = "LocationForm";
 
-        //core form fields
         @XmlElement(name = "entity_uuid")
         private String uuid;
 
-        @XmlElement(name = "field_worker_uuid")
         private String fieldWorkerUuid;
 
-        //location form fields
-        @XmlElement(name = "hierarchy_ext_id")
         private String hierarchyExtId;
 
-        @XmlElement(name = "hierarchy_uuid")
         private String hierarchyUuid;
 
-        @XmlElement(name = "hierarchy_parent_uuid")
         private String hierarchyParentUuid;
 
-        @XmlElement(name = "location_ext_id")
         private String locationExtId;
 
-        @XmlElement(name = "location_name")
         private String locationName;
 
-        @XmlElement(name = "location_type")
         private String locationType;
 
-        @XmlElement(name = "sector_name")
         private String sectorName;
 
-        @XmlElement(name = "description")
         private String description;
 
-        @XmlElement(name = "longitude")
         private String longitude;
 
-        @XmlElement(name = "latitude")
         private String latitude;
     }
 }

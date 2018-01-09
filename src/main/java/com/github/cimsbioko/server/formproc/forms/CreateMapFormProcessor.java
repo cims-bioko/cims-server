@@ -37,10 +37,8 @@ public class CreateMapFormProcessor {
 
         public static final String LOG_NAME = "CreateMapForm";
 
-        @XmlElement(name = "locality_uuid")
         private String localityUuid;
 
-        @XmlElement(name = "map_name")
         private String mapName;
     }
 }

@@ -193,68 +193,47 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
 
         private static final long serialVersionUID = 1143017330340385847L;
 
-        //core form fields
         @XmlElement(name = "entity_uuid")
         private String uuid;
 
-        @XmlElement(name = "field_worker_uuid")
         private String fieldWorkerUuid;
 
-        @XmlElement(name = "collection_date_time")
         @XmlJavaTypeAdapter(CalendarAdapter.class)
         private Calendar collectionDateTime;
 
-        //individual form fields
-        @XmlElement(name = "household_ext_id")
         private String householdExtId;
 
-        @XmlElement(name = "household_uuid")
         private String householdUuid;
 
-        @XmlElement(name = "individual_ext_id")
         private String individualExtId;
 
-        @XmlElement(name = "individual_first_name")
         private String individualFirstName;
 
-        @XmlElement(name = "individual_last_name")
         private String individualLastName;
 
-        @XmlElement(name = "individual_other_names")
         private String individualOtherNames;
 
-        @XmlElement(name = "individual_date_of_birth")
         @XmlJavaTypeAdapter(CalendarAdapter.class)
         private Calendar individualDateOfBirth;
 
-        @XmlElement(name = "individual_gender")
         private String individualGender;
 
-        @XmlElement(name = "individual_relationship_to_head_of_household")
         private String individualRelationshipToHeadOfHousehold;
 
-        @XmlElement(name = "individual_phone_number")
         private String individualPhoneNumber;
 
-        @XmlElement(name = "individual_other_phone_number")
         private String individualOtherPhoneNumber;
 
-        @XmlElement(name = "individual_language_preference")
         private String individualLanguagePreference;
 
-        @XmlElement(name = "individual_point_of_contact_name")
         private String individualPointOfContactName;
 
-        @XmlElement(name = "individual_point_of_contact_phone_number")
         private String individualPointOfContactPhoneNumber;
 
-        @XmlElement(name = "individual_dip")
         private int individualDip;
 
-        @XmlElement(name = "individual_nationality")
         private String individualNationality;
 
-        @XmlElement(name = "individual_member_status")
         private String individualMemberStatus;
     }
 }

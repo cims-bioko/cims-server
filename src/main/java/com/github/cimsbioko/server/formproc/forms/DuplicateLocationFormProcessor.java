@@ -70,10 +70,8 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
         @XmlElement(name = "entity_uuid")
         private String uuid;
 
-        @XmlElement(name = "action")
         private Action action;
 
-        @XmlElement(name = "description")
         private String description;
 
         @XmlElement(name = "global_position_lat")

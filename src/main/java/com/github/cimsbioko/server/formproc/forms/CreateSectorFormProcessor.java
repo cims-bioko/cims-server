@@ -37,10 +37,8 @@ public class CreateSectorFormProcessor {
 
         public static final String LOG_NAME = "CreateSectorForm";
 
-        @XmlElement(name = "map_uuid")
         private String mapUuid;
 
-        @XmlElement(name = "sector_name")
         private String sectorName;
     }
 }
