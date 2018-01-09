@@ -15,12 +15,13 @@ import static com.github.cimsbioko.server.FormProcConfig.PROC_PKG;
 @EnableAspectJAutoProxy
 public class FormProcConfig {
 
-    public static final String PROC_PKG = "com.github.cimsbioko.server.formproc";
+    static final String PROC_PKG = "com.github.cimsbioko.server.formproc";
+    static final String FORM_PKG = PROC_PKG + ".forms";
 
     @Bean
     Jaxb2Marshaller formMarshaller(CalendarAdapter calendarAdapter) {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setPackagesToScan(PROC_PKG);
+        marshaller.setPackagesToScan(FORM_PKG);
         marshaller.setAdapters(calendarAdapter);
         return marshaller;
     }
