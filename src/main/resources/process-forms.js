@@ -244,14 +244,14 @@ with (imports) {
     /**
      * Converts an object to another object with renamed keys using the supplied function.
      */
-    function remapKeys(obj, fn) {
+    function remapKeys(obj, renameFn) {
         var result = {};
         for (var key in obj) {
             if (obj.hasOwnProperty(key)) {
-                var newKey = fn(key), value = obj[key];
+                var newKey = renameFn(key), value = obj[key];
                 if (typeof(newKey) !== 'undefined') {
                     var finalKey = obj.hasOwnProperty(newKey) ? key : newKey;
-                    result[finalKey] = typeof(value) === 'object' ? remapKeys(value, fn) : value;
+                    result[finalKey] = typeof(value) === 'object' ? remapKeys(value, renameFn) : value;
                 }
             }
         }
