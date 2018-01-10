@@ -90,7 +90,7 @@ public class User implements Serializable, UuidIdentifiable {
     }
 
     public String getFullName() {
-        return firstName + " " + lastName;
+        return fullName == null? firstName + " " + lastName : fullName;
     }
 
     public void setFullName(String fullName) {
