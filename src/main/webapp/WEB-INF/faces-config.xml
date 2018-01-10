@@ -61,11 +61,6 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>role_assign</from-outcome>
-            <to-view-id>/role/assignroles.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
             <from-outcome>task</from-outcome>
             <to-view-id>/task/index.xhtml</to-view-id>
             <redirect/>

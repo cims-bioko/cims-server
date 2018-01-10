@@ -92,19 +92,11 @@ public class RoleCrudImpl extends EntityCrudImpl<Role, String> implements RoleCr
 
         List<User> usersWithRole = service.findUsersWithRole(selectedRole);
 
-        if (usersWithRole.size() == 0) {
-            return super.delete();
+        if (usersWithRole.size() != 0) {
+            jsfService.addError("Can not remove role with active members");
+            return null;
         } else {
-            // since there are active users assigned this role, they will need to be
-            // reassigned a new role or have the role removed
-            showListing = false;
-            usersAndRoles.clear();
-
-            for (User user : usersWithRole) {
-                usersAndRoles.add(new UserAndRole(user));
-            }
-
-            return "role_assign";
+            return super.delete();
         }
     }
 
