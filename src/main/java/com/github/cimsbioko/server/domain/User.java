@@ -41,6 +41,7 @@ public class User implements Serializable, UuidIdentifiable {
 
     private String description;
 
+    @Searchable
     private String username;
 
     private String password;
