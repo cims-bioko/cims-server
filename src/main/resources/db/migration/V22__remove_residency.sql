@@ -23,7 +23,8 @@ begin
       select 1 from membership m join socialgroup s on m.socialgroup_uuid = s.uuid
       where m.individual_uuid = i.uuid and not m.deleted and not s.deleted)
     and exists (
-      select 1 from residency r where r.individual_uuid = i.uuid and not r.deleted)
+      select 1 from residency r join location l on r.location_uuid = l.uuid
+      where r.individual_uuid = i.uuid and not r.deleted and not l.deleted)
   loop
 
     -- get the individual's residency (required)
