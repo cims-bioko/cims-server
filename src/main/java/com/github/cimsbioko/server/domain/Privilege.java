@@ -20,14 +20,6 @@ public class Privilege implements Serializable {
     public static final String DELETE_ENTITY = "DELETE_ENTITY";
     public static final String VIEW_ENTITY = "VIEW_ENTITY";
 
-
-    public Privilege() {
-    }
-
-    public Privilege(String privilege) {
-        this.privilege = privilege;
-    }
-
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "com.github.cimsbioko.server.idgen.UUIDGenerator")
@@ -35,6 +27,13 @@ public class Privilege implements Serializable {
     private String uuid;
 
     private String privilege;
+
+    public Privilege() {
+    }
+
+    public Privilege(String privilege) {
+        this.privilege = privilege;
+    }
 
     public String getUuid() {
         return uuid;

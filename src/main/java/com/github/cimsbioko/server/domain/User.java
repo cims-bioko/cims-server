@@ -25,35 +25,35 @@ public class User implements Serializable, UuidIdentifiable {
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "com.github.cimsbioko.server.idgen.UUIDGenerator")
     @Column(length = 32)
-    String uuid;
+    private String uuid;
 
     @Searchable
     @Column(name = "first_name")
-    String firstName;
+    private String firstName;
 
     @Searchable
     @Column(name = "last_name")
-    String lastName;
+    private String lastName;
 
     @Column(name = "full_name")
-    String fullName;
+    private String fullName;
 
-    String description;
+    private String description;
 
-    String username;
+    private String username;
 
-    String password;
+    private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles", joinColumns = {
             @JoinColumn(name = "user")}, inverseJoinColumns = @JoinColumn(name = "role"))
-    Set<Role> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
-    boolean deleted = false;
+    private boolean deleted = false;
 
     // this is used for seamless integration with special study
     @Column(name = "last_login")
-    long lastLogin;
+    private long lastLogin;
 
     public User() {
     }

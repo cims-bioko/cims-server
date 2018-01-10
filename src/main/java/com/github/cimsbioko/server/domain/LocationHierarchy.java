@@ -14,21 +14,21 @@ public class LocationHierarchy implements UuidIdentifiable, Serializable {
 
     @Id
     @Column(length = 32)
-    String uuid;
+    private String uuid;
 
     @NotNull
-    String extId;
+    private String extId;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = LocationHierarchy.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "parent")
-    LocationHierarchy parent;
+    private LocationHierarchy parent;
 
     @NotNull
-    String name;
+    private String name;
 
     @ManyToOne
     @JoinColumn(name = "level")
-    LocationHierarchyLevel level;
+    private LocationHierarchyLevel level;
 
     @Override
     public String getUuid() {

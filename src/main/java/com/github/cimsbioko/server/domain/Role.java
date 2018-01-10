@@ -17,14 +17,14 @@ public class Role extends AuditableEntity implements Serializable {
     static final long serialVersionUID = 21L;
 
     @Searchable
-    String name;
+    private String name;
 
-    String description;
+    private String description;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_privileges", joinColumns = {
             @JoinColumn(name = "role")}, inverseJoinColumns = @JoinColumn(name = "privilege"))
-    Set<Privilege> privileges = new HashSet<>();
+    private Set<Privilege> privileges = new HashSet<>();
 
     public String getName() {
         return name;

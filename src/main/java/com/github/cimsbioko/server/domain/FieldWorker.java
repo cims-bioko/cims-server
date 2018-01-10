@@ -15,27 +15,27 @@ public class FieldWorker extends AuditableEntity implements Serializable {
 
     @NotNull
     @Searchable
-    String extId;
+    private String extId;
 
     @Searchable
     @Column(name = "first_name")
-    String firstName;
+    private String firstName;
 
     @Searchable
     @Column(name = "last_name")
-    String lastName;
+    private String lastName;
 
     @Transient
-    String password;
+    private String password;
 
     @Transient
-    String confirmPassword;
+    private String confirmPassword;
 
     @NotNull
     @Column(name = "password_hash")
-    String passwordHash;
+    private String passwordHash;
 
-    int idPrefix;
+    private int idPrefix;
 
 
     public int getIdPrefix() {

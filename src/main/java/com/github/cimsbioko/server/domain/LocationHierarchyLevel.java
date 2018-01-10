@@ -13,12 +13,12 @@ public class LocationHierarchyLevel implements UuidIdentifiable, Serializable {
     private static final long serialVersionUID = -1070569257732332545L;
 
     @Id
-    String uuid;
+    private String uuid;
 
-    int keyId;
+    private int keyId;
 
     @NotNull
-    String name;
+    private String name;
 
     @Override
     public String getUuid() {
