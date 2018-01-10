@@ -12,6 +12,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -53,7 +54,7 @@ public class User implements Serializable, UuidIdentifiable {
 
     // this is used for seamless integration with special study
     @Column(name = "last_login")
-    private long lastLogin;
+    private Timestamp lastLogin;
 
     public User() {
     }
@@ -129,11 +130,11 @@ public class User implements Serializable, UuidIdentifiable {
         this.roles = roles;
     }
 
-    public long getLastLogin() {
+    public Timestamp getLastLogin() {
         return lastLogin;
     }
 
-    public void setLastLogin(long lastLogin) {
+    public void setLastLogin(Timestamp lastLogin) {
         this.lastLogin = lastLogin;
     }
 

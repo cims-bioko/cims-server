@@ -7,7 +7,7 @@
     <role_privileges role="ROLE1" privilege="PRIVILEGE1" />
 
     <users uuid="User 1" first_Name="OpenHDS" last_Name="Administrator" full_name="Administrator"
-          description="Administrator User" username="admin" password="test" last_login="0" deleted="false" />
+          description="Administrator User" username="admin" password="test" last_login="1970-01-01 00:00:00" deleted="false" />
     <user_roles user="User 1" role="ROLE1" />)
 
     <locationhierarchylevel uuid="HierarchyLevel1" keyId="1" name="Level 1" />

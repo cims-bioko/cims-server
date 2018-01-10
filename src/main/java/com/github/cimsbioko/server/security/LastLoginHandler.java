@@ -1,6 +1,8 @@
 package com.github.cimsbioko.server.security;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +31,7 @@ public class LastLoginHandler extends SavedRequestAwareAuthenticationSuccessHand
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         org.springframework.security.core.userdetails.User u = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
         User user = userDao.findByUsername(u.getUsername()).get(0);
-        user.setLastLogin(System.currentTimeMillis());
+        user.setLastLogin(Timestamp.from(Instant.now()));
         userDao.saveOrUpdate(user);
         super.onAuthenticationSuccess(request, response, authentication);
     }
