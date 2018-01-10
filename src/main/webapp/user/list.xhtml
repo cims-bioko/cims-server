@@ -27,21 +27,21 @@
                              width="100%" columnClasses="center,center,center,width3">
                     <h:column headerClass="width1">
                         <f:facet name="header">
-                            <h:outputText value="#{msg.userFirstName}"/>
-                        </f:facet>
-                        <h:outputText value="#{user.firstName}"/>
-                    </h:column>
-                    <h:column headerClass="width1">
-                        <f:facet name="header">
-                            <h:outputText value="#{msg.userLastName}"/>
-                        </f:facet>
-                        <h:outputText value="#{user.lastName}"/>
-                    </h:column>
-                    <h:column headerClass="width1">
-                        <f:facet name="header">
                             <h:outputText value="#{msg.userUsername}"/>
                         </f:facet>
                         <h:outputText value="#{user.username}"/>
+                    </h:column>
+                    <h:column headerClass="width1">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg.userFullName}"/>
+                        </f:facet>
+                        <h:outputText value="#{user.fullName}"/>
+                    </h:column>
+                    <h:column headerClass="width1">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg.userLastLogin}"/>
+                        </f:facet>
+                        <h:outputText value="#{user.lastLogin}"/>
                     </h:column>
                     <h:column headerClass="width3">
                         <f:facet name="header">
