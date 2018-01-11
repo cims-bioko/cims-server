@@ -14,7 +14,7 @@
         <form name="loginForm" action="#{request.contextPath}/loginProcess" method="post">
             <table>
                 <tr>
-                    <td><h:outputText value="Username:"/></td>
+                    <td><h:outputText value="#{msg.username}:"/></td>
                     <td>
                         <c:if test="#{not empty param.login_error}">
                             <c:set var="username" value="#{sessionScope.SPRING_SECURITY_LAST_USERNAME}"/>
@@ -24,11 +24,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><h:outputText value="Password:"/></td>
+                    <td><h:outputText value="#{msg.password}:"/></td>
                     <td><input type="password" name="password"/></td>
                 </tr>
                 <tr>
-                    <td><input name="submit" type="submit" value="Login"/></td>
+                    <td><input name="submit" type="submit" value="#{msg.login}"/></td>
                 </tr>
             </table>
             <br/>
