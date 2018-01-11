@@ -12,12 +12,13 @@ import javax.faces.model.SelectItem;
 import com.github.cimsbioko.server.web.service.JsfService;
 
 public class JsfServiceImpl implements JsfService {
+
     // this field was added because jsf 1.2 does not support the
     // the f:param element within commandButtons
     // Instead, need to use an alternative method which requires
     // a field on a bean
     // refer to: http://forums.sun.com/thread.jspa?threadID=5366506
-    String itemId;
+    private String itemId;
 
     public SelectItem[] getSelectItems(List<?> entities) {
         int size = entities.size();
