@@ -23,7 +23,6 @@
         <property name="jsfService" ref="jsfService"/>
         <property name="entityService" ref="entityService"/>
         <property name="genericDao" ref="genericDao"/>
-        <property name="navMenuBean" ref="navController"/>
     </bean>
 
     <!-- Independent database configuration for test context -->

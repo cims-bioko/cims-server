@@ -12,7 +12,7 @@
         <ul id="menu1" class="menu">
             <li>
                 <h:commandLink action="welcome" value="#{msg.navBarHome}">
-                    <f:setPropertyActionListener target="#{navController.showHome}" value="true"/>
+                    <f:actionListener target="#{navController.showHome}" />
                 </h:commandLink>
             </li>
             <sec:authorize access="hasAuthority('ACESSS_UTILITY_ROUTINES')">
@@ -34,12 +34,9 @@
                     </h:commandLink>
                     <c:if test="#{navController.showConfiguration}">
                         <ul>
-                            <li><h:commandLink value="#{msg.navBarRoleManagement}" action="#{roleCrud.createSetup}"/>
-                            </li>
-                            <li><h:commandLink value="#{msg.navBarUserManagement}" action="#{userCrud.createSetup}"/>
-                            </li>
-                            <li><h:commandLink value="#{msg.navBarFieldWorkers}"
-                                               action="#{fieldWorkerCrud.createSetup}"/></li>
+                            <li><h:commandLink value="#{msg.navBarRoleManagement}" action="#{roleCrud.createSetup}"/></li>
+                            <li><h:commandLink value="#{msg.navBarUserManagement}" action="#{userCrud.createSetup}"/></li>
+                            <li><h:commandLink value="#{msg.navBarFieldWorkers}" action="#{fieldWorkerCrud.createSetup}"/></li>
                         </ul>
                     </c:if>
                 </li>

@@ -20,7 +20,6 @@ import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.Searchable;
 import com.github.cimsbioko.server.web.crud.EntityCrud;
 import com.github.cimsbioko.server.web.service.JsfService;
-import com.github.cimsbioko.server.web.ui.NavigationMenuBean;
 import com.github.cimsbioko.server.web.ui.PagingState;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.AuditableCollectedEntity;
@@ -58,8 +57,6 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 
     List<T> pagedItems;
     HashMap<T, Class<?>> searchableFieldsMap = new HashMap<>();
-    NavigationMenuBean navMenuBean;
-
     String propertyName;
     String searchString;
     List<SelectItem> searchableFieldsList;
@@ -182,8 +179,6 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
         reset(false, true);
         showListing = false;
         entityItem = newInstance();
-        navMenuBean.setNextItem(entityClass.getSimpleName());
-        navMenuBean.addCrumb(entityClass.getSimpleName() + " Create");
         return outcomePrefix + "_create";
     }
 
@@ -220,15 +215,11 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 
     public String detailSetup() {
         showListing = false;
-        navMenuBean.setNextItem(entityClass.getSimpleName());
-        navMenuBean.addCrumb(entityClass.getSimpleName() + " Detail");
         return scalarSetup(outcomePrefix + "_detail");
     }
 
     public String editSetup() {
         showListing = false;
-        navMenuBean.setNextItem(entityClass.getSimpleName());
-        navMenuBean.addCrumb(entityClass.getSimpleName() + " Edit");
         String result = scalarSetup(outcomePrefix + "_edit");
         if (AuditableCollectedEntity.class.isAssignableFrom(entityClass)) {
             // load field worker to avoid lazy load exeptions
@@ -497,9 +488,5 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
      */
     public void setShowListing(boolean showListing) {
         this.showListing = showListing;
-    }
-
-    public void setNavMenuBean(NavigationMenuBean navMenuBean) {
-        this.navMenuBean = navMenuBean;
     }
 }

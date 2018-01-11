@@ -262,7 +262,6 @@
         <property name="jsfService" ref="jsfService"/>
         <property name="entityService" ref="entityService"/>
         <property name="genericDao" ref="genericDao"/>
-        <property name="navMenuBean" ref="navController"/>
     </bean>
 
     <bean id="fieldWorkerCrud" scope="session" parent="baseCrud" class="com.github.cimsbioko.server.web.crud.impl.FieldWorkerCrudImpl">
