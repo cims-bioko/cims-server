@@ -15,5 +15,6 @@ public interface JsfService {
 
     void addError(String msg);
 
+    String getLocalizedString(String key);
 
 }

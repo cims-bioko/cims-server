@@ -1,6 +1,8 @@
 package com.github.cimsbioko.server.web.service.impl;
 
 import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -59,5 +61,19 @@ public class JsfServiceImpl implements JsfService {
         this.itemId = itemId;
     }
 
+    private FacesContext getContext() {
+        return FacesContext.getCurrentInstance();
+    }
+
+    private ResourceBundle getBundle() {
+        return getContext().getApplication().getResourceBundle(FacesContext.getCurrentInstance(), "msg");
+    }
+
+    public String getLocalizedString(String key) {
+        try {
+            return getBundle().getString(key);
+        } catch (MissingResourceException e) {
+            return "???" + key + "??? not found";
+        }
     }
 }

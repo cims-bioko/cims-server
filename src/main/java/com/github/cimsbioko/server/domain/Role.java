@@ -16,7 +16,7 @@ public class Role extends AuditableEntity implements Serializable {
 
     static final long serialVersionUID = 21L;
 
-    @Searchable
+    @Searchable("roleFullName")
     private String name;
 
     private String description;

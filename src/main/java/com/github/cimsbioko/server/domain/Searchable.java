@@ -12,6 +12,6 @@ import static java.lang.annotation.ElementType.FIELD;
  *
  * Documentation: see how_search_works.txt . */
 public @interface Searchable {
-
+    String value();
 }
 

@@ -22,6 +22,8 @@ public class JsfServiceMock implements JsfService {
     }
 
     @Override
+    public String getLocalizedString(String key) {
+        return "whatever";
     }
 
     @Override

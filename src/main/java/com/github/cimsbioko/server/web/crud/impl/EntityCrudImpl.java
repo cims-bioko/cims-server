@@ -457,8 +457,9 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
         List<SelectItem> searchableFieldsList = new ArrayList<>();
         for (Field ff : entityClass.getDeclaredFields()) {
             if (ff.isAnnotationPresent(Searchable.class)) {
+                Searchable s = ff.getAnnotation(Searchable.class);
                 searchableFieldsMap.put((T) ff.getName(), ff.getType());
-                SelectItem it = new SelectItem(ff.getName());
+                SelectItem it = new SelectItem(ff.getName(), jsfService.getLocalizedString(s.value()));
                 searchableFieldsList.add(it);
             }
         }
