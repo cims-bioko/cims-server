@@ -302,11 +302,7 @@
         <constructor-arg type="int" value="${app.spatial.srid}" />
     </bean>
 
-    <bean id="siteProperties"
-          class="com.github.cimsbioko.server.service.impl.SitePropertiesServiceImpl">
-        <property name="locale">
-            <value>${locale}</value>
-        </property>
+    <bean id="siteProperties" class="com.github.cimsbioko.server.service.impl.SitePropertiesServiceImpl">
         <property name="unknownIdentifier">
             <value>${unknownIdentifier}</value>
         </property>

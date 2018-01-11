@@ -2,8 +2,6 @@ package com.github.cimsbioko.server.service;
 
 public interface SitePropertiesService {
 
-    String getLocale();
-
     String getEarliestEnumerationDate();
 
     String getSpecialStudyLocation();

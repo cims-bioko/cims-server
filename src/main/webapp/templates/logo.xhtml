@@ -13,12 +13,10 @@
 <ui:composition>
     <h:form>
         <div class="texta">
-            <h:outputText value="#{siteProperties.locale}"/>
-            <f:loadBundle basename="MessageResource_#{siteProperties.locale}" var="msg"/>
+            <f:loadBundle basename="message" var="msg"/>
             <c:if test="#{currentUser.name != null}">
                 <div>
-                    #{msg.welcome} #{currentUser.name}, <h:outputText value=" "/> <h:outputLink
-                        value="#{request.contextPath}/logoutProcess">#{msg.logout}</h:outputLink>
+                    #{msg.welcome} #{currentUser.name}, <h:outputText value=" "/> <h:outputLink value="#{request.contextPath}/logoutProcess">#{msg.logout}</h:outputLink>
                 </div>
             </c:if>
         </div>

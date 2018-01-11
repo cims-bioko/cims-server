@@ -4,7 +4,6 @@ import com.github.cimsbioko.server.service.SitePropertiesService;
 
 public class SitePropertiesServiceImpl implements SitePropertiesService {
 
-    String locale;
     String earliestEnumerationDate;
     String specialStudyLocation;
     String unknownIdentifier;
@@ -33,14 +32,6 @@ public class SitePropertiesServiceImpl implements SitePropertiesService {
     int minimumAgeOfHouseholdHead;
     int minimumAgeOfMarriage;
     int minimumAgeOfPregnancy;
-
-    public String getLocale() {
-        return locale;
-    }
-
-    public void setLocale(String locale) {
-        this.locale = locale;
-    }
 
     public String getEarliestEnumerationDate() {
         return earliestEnumerationDate;
