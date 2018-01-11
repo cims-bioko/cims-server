@@ -37,30 +37,29 @@ import org.slf4j.LoggerFactory;
 
 public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T, PK> {
 
-    static Logger log = LoggerFactory.getLogger(EntityCrudImpl.class);
+    private static Logger log = LoggerFactory.getLogger(EntityCrudImpl.class);
 
     // This is currently being used to create a new
     // instance of the entity type
-    protected Class<T> entityClass;
+    private Class<T> entityClass;
 
-    String outcomePrefix;
+    private String outcomePrefix;
 
 
     // The current entity (or "backing bean") being worked on
     // wired from the applicationContext.xml file
     protected T entityItem;
 
-    PagingState pager;
-    PagingState filteredPager;
+    private PagingState pager;
+    private PagingState filteredPager;
     protected Dao<T, PK> dao;
-    GenericDao genericDao;
+    private GenericDao genericDao;
 
-    List<T> pagedItems;
-    HashMap<T, Class<?>> searchableFieldsMap = new HashMap<>();
-    String propertyName;
-    String searchString;
-    List<SelectItem> searchableFieldsList;
-    Boolean isSearch = false;
+    private List<T> pagedItems;
+    private HashMap<T, Class<?>> searchableFieldsMap = new HashMap<>();
+    private String propertyName;
+    private String searchString;
+    private Boolean isSearch = false;
 
     // used to convert an entity from a string to object, or
     // object to a string
@@ -455,10 +454,8 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
      */
     @SuppressWarnings("unchecked")
     public List<SelectItem> getSearchableFieldsList() {
-        searchableFieldsList = new ArrayList<>();
-        Field[] f = entityClass.getDeclaredFields();
-
-        for (Field ff : f) {
+        List<SelectItem> searchableFieldsList = new ArrayList<>();
+        for (Field ff : entityClass.getDeclaredFields()) {
             if (ff.isAnnotationPresent(Searchable.class)) {
                 searchableFieldsMap.put((T) ff.getName(), ff.getType());
                 SelectItem it = new SelectItem(ff.getName());
