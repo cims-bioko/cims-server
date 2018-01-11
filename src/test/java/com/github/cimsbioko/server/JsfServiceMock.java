@@ -1,9 +1,7 @@
 package com.github.cimsbioko.server;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import javax.faces.component.UIComponent;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
@@ -24,38 +22,10 @@ public class JsfServiceMock implements JsfService {
     }
 
     @Override
-    public void addErrorForComponent(String msg, String componentId) {
-        errors.add(msg);
     }
 
     @Override
-    public void addMessage(String msg) {
-        errors.add(msg);
-    }
-
-    @Override
-    public <T> List<T> arrayToList(T[] arr) {
-        return null;
-    }
-
-    @Override
-    public List<SelectItem> arrayToSelectItem(Object[] objectArray) {
-        return null;
-    }
-
-    @Override
-    public <T> Set<T> arrayToSet(T[] arr) {
-        return null;
-    }
-
-    @Override
-    public Object[] collectionToArray(Collection<?> c) {
-        return null;
-    }
-
-    @Override
-    public Object getObjViaReqParam(String reqParam, Converter converter,
-                                    UIComponent component) {
+    public Object getObjViaReqParam(String reqParam, Converter converter, UIComponent component) {
         return null;
     }
 
@@ -69,12 +39,4 @@ public class JsfServiceMock implements JsfService {
         return null;
     }
 
-    @Override
-    public <T> List<T> setToList(Set<T> set) {
-        return null;
-    }
-
-    public List<String> getErrors() {
-        return errors;
-    }
 }
