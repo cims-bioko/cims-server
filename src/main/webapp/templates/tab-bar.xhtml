@@ -6,7 +6,7 @@
     <h:form rendered="#{crud != null}">
         <h:commandLink
                 styleClass="amendment-tab #{crud.showListing ? 'amendment-tab-selected' : 'amendment-tab-unselected'}"
-                rendered="#{hideListing != true}" value="Listing" immediate="true">
+                rendered="#{hideListing != true}" value="#{msg.listing}" immediate="true">
             <f:setPropertyActionListener target="#{crud.showListing}" value="true"/>
         </h:commandLink>
         <div style="background-color:#306331;height:.2em;width:100%;margin-bottom:.5em;"/>

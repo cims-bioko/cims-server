@@ -3,29 +3,29 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets" template="/templates/default.xhtml">
 
-    <ui:define name="title">Tasks</ui:define>
+    <ui:define name="title">#{msg.tasks}</ui:define>
 
     <ui:define name="display">
 
         <h:outputText value="#{navController.breadcrumbTrail}"/>
 
-        <h1>Tasks</h1>
+        <h1>#{msg.tasks}</h1>
         <h:messages id="errors" globalOnly="true"/>
         <h:form id="taskForm">
 
-            <h:commandButton action="#{taskBean.startMobileDBTask}" value="Generate Mobile DB"/>
+            <h:commandButton action="#{taskBean.startMobileDBTask}" value="#{msg.genMobileDb}"/>
             <br/>
             <br/>
 
-            <h:outputText value="Next Scheduled Run: "/> <h:outputText value="#{taskBean.nextScheduledRun}"/>
+            <h:outputText value="#{msg.nextRun}: "/> <h:outputText value="#{taskBean.nextScheduledRun}"/>
             <br/>
             <br/>
             <a href="http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger" target="_blank">
-                <h:outputText value="Schedule Format"/></a>
+                <h:outputText value="#{msg.scheduleFormat}"/></a>
             <br/>
             <h:inputText value="#{taskBean.cronSchedule}"/>
-            <h:commandButton action="#{taskBean.scheduleAllTasks}" value="Schedule Tasks"/>
-            <h:commandButton action="#{taskBean.cancelScheduledTasks}" value="Cancel Scheduled"/>
+            <h:commandButton action="#{taskBean.scheduleAllTasks}" value="#{msg.scheduleTasks}"/>
+            <h:commandButton action="#{taskBean.cancelScheduledTasks}" value="#{msg.cancelScheduledTasks}"/>
 
         </h:form>
 
@@ -35,35 +35,35 @@
         <h:dataTable var="task" value="#{taskBean.tasks}" styleClass="openhds-table">
             <h:column>
                 <f:facet name="header">
-                    <h:outputText value="Task Name"/>
+                    <h:outputText value="#{msg.taskName}"/>
                 </f:facet>
 
                 <h:outputText value="#{task.name}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
-                    <h:outputText value="Total Items Processed"/>
+                    <h:outputText value="#{msg.totalItemsProcessed}"/>
                 </f:facet>
 
                 <h:outputText value="#{task.itemCount}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
-                    <h:outputText value="Start Time Stamp"/>
+                    <h:outputText value="#{msg.startTime}"/>
                 </f:facet>
 
                 <h:outputText value="#{task.started}" converter="#{timestampConverter}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
-                    <h:outputText value="End Time Stamp"/>
+                    <h:outputText value="#{msg.endTime}"/>
                 </f:facet>
 
                 <h:outputText value="#{task.finished}" converter="#{timestampConverter}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
-                    <h:outputText value="MD5 Hash"/>
+                    <h:outputText value="#{msg.md5Hash}"/>
                 </f:facet>
 
                <h:outputLink value="#{request.contextPath}/api/rest/mobiledb/export">
