@@ -1,5 +1,10 @@
 package com.github.cimsbioko.server;
 
+import org.apache.catalina.Context;
+import org.apache.catalina.WebResourceRoot;
+import org.apache.catalina.webresources.StandardRoot;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -80,5 +85,18 @@ public class WebConfig {
     @Bean
     public MultipartResolver multipartResolver() {
         return new StandardServletMultipartResolver();
+    }
+
+    @Bean
+    public EmbeddedServletContainerFactory servletContainer() {
+        return new TomcatEmbeddedServletContainerFactory() {
+            @Override
+            protected void postProcessContext(Context ctx) {
+                final int sizeInKB = 32 * 1024;  // default is 10MiB, increase to 32
+                WebResourceRoot resourceRoot = new StandardRoot(ctx);
+                resourceRoot.setCacheMaxSize(sizeInKB);
+                ctx.setResources(resourceRoot);
+            }
+        };
     }
 }
