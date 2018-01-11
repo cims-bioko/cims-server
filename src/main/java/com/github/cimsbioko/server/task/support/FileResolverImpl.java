@@ -7,7 +7,7 @@ import java.io.File;
 import javax.annotation.Resource;
 
 @Component
-public class ServletFileResolver implements FileResolver {
+public class FileResolverImpl implements FileResolver {
 
     @Resource
     File dataDir;
