@@ -102,10 +102,6 @@ public class GenericDaoImpl implements GenericDao {
         return criteria.list();
     }
 
-    public void clear() {
-        getSession().clear();
-    }
-
     @SuppressWarnings("unchecked")
     public <T> List<T> findAllWithOrder(Class<T> entityType, OrderProperty... orderProps) {
         Criteria criteria = getSession().createCriteria(entityType);

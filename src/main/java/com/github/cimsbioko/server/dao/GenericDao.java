@@ -54,8 +54,6 @@ public interface GenericDao {
 
     <T> List<T> findListByProperty(Class<T> entityType, String propertyName, Object value, boolean filterDeleted);
 
-    void clear();
-
     Session getSession();
 
 }
