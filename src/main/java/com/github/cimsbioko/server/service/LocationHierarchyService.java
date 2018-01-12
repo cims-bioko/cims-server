@@ -22,5 +22,11 @@ public interface LocationHierarchyService {
 
     @PreAuthorize("hasAuthority('CREATE_ENTITY')")
     Location generateId(Location entityItem) throws ConstraintViolations;
+
+    @PreAuthorize("hasAuthority('CREATE_ENTITY')")
+    LocationHierarchy createOrFindMap(String localityUuid, String mapName);
+
+    @PreAuthorize("hasAuthority('CREATE_ENTITY')")
+    LocationHierarchy createOrFindSector(String mapUuid, String sectorName);
 }
 

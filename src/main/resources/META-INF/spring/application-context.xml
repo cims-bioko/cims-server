@@ -125,6 +125,7 @@
         <constructor-arg ref="entityService"/>
         <constructor-arg ref="locationIdGenerator"/>
         <constructor-arg ref="locationHierarchyIdGenerator"/>
+        <constructor-arg ref="sessionFactory" />
     </bean>
 
     <bean id="roleService" class="com.github.cimsbioko.server.service.impl.RoleServiceImpl">
