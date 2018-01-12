@@ -27,9 +27,9 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
 
     @Transactional
     public void processForm(Form form) {
-        if (form.uuid != null) {
+        if (form.entityUuid != null) {
 
-            Location location = dao.findByProperty(Location.class, "uuid", form.uuid, true);
+            Location location = dao.findByProperty(Location.class, "uuid", form.entityUuid, true);
 
             if (location != null) {
 
@@ -59,7 +59,7 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
                 }
 
             } else {
-                log.info("location {} does not exist, ignoring", form.uuid);
+                log.info("location {} does not exist, ignoring", form.entityUuid);
             }
         }
     }
@@ -129,8 +129,7 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
 
         public static final String LOG_NAME = "DuplicateLocationForm";
 
-        @XmlElement(name = "entity_uuid")
-        private String uuid;
+        private String entityUuid;
 
         private String entityExtId;
 

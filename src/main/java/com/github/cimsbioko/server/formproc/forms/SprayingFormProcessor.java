@@ -21,9 +21,9 @@ public class SprayingFormProcessor extends AbstractFormProcessor {
 
     @Transactional
     public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form) {
-        if (form.uuid != null) {
+        if (form.entityUuid != null) {
             try {
-                Location location = locationService.getByUuid(form.uuid);
+                Location location = locationService.getByUuid(form.entityUuid);
                 switch (form.evaluation) {
                     case DESTROYED:
                         location.setDeleted(true);
@@ -54,8 +54,7 @@ public class SprayingFormProcessor extends AbstractFormProcessor {
 
         public static final String LOG_NAME = "SprayingForm";
 
-        @XmlElement(name = "entity_uuid")
-        private String uuid;
+        private String entityUuid;
 
         private Evaluation evaluation;
     }

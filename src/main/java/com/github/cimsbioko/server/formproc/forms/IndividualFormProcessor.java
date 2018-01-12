@@ -136,7 +136,7 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
 
     private Individual findOrMakeIndividual(Form form, FieldWorker collectedBy,
                                             Calendar insertTime, ConstraintViolations cv) {
-        Individual individual = individualService.getByUuid(form.uuid);
+        Individual individual = individualService.getByUuid(form.entityUuid);
         if (individual == null) {
             individual = new Individual();
         }
@@ -151,7 +151,7 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
 
     private void copyFormDataToIndividual(Form form, Individual individual) {
         if (individual.getUuid() == null) {
-            individual.setUuid(form.uuid);
+            individual.setUuid(form.entityUuid);
         }
         individual.setExtId(form.individualExtId);
         individual.setFirstName(form.individualFirstName);
@@ -193,8 +193,7 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
 
         private static final long serialVersionUID = 1143017330340385847L;
 
-        @XmlElement(name = "entity_uuid")
-        private String uuid;
+        private String entityUuid;
 
         private String fieldWorkerUuid;
 

@@ -41,9 +41,9 @@ public class LocationFormProcessor extends AbstractFormProcessor {
 
         Location location;
         try {
-            location = locationService.getByUuid(form.uuid);
+            location = locationService.getByUuid(form.entityUuid);
             if (null != location) {
-                cv.addViolations("Location already exists " + form.uuid);
+                cv.addViolations("Location already exists " + form.entityUuid);
                 logError(cv, marshalForm(form), Form.LOG_NAME);
                 return;
             }
@@ -129,7 +129,7 @@ public class LocationFormProcessor extends AbstractFormProcessor {
 
     private void copyFormDataToLocation(Form form, Location location) {
         // fieldWorker, CollectedDateTime, and HierarchyLevel are set outside of this method
-        location.setUuid(form.uuid);
+        location.setUuid(form.entityUuid);
         location.setName(form.locationName);
         location.setType(nullTypeToUrb(form.locationType));
         location.setDescription(form.description);
@@ -175,8 +175,7 @@ public class LocationFormProcessor extends AbstractFormProcessor {
 
         public static final String LOG_NAME = "LocationForm";
 
-        @XmlElement(name = "entity_uuid")
-        private String uuid;
+        private String entityUuid;
 
         private String fieldWorkerUuid;
 
