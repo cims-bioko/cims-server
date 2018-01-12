@@ -37,8 +37,6 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
     @Autowired
     private LocationService locationService;
 
-    // This individual form should cause several CRUDS:
-    // location, individual
     @Transactional
     public void processForm(Form form) throws IOException {
 
