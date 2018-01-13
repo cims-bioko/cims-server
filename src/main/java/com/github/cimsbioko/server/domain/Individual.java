@@ -1,6 +1,8 @@
 package com.github.cimsbioko.server.domain;
 
 import com.github.cimsbioko.server.util.CalendarAdapter;
+import org.hibernate.annotations.Type;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -63,6 +65,9 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     private String homeRole;
 
     private String status;
+
+    @Type(type = "json")
+    private JSONObject attrs;
 
     public String getExtId() {
         return extId;
@@ -191,6 +196,14 @@ public class Individual extends AuditableCollectedEntity implements Serializable
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public JSONObject getAttrs() {
+        return attrs;
+    }
+
+    public void setAttrs(JSONObject attrs) {
+        this.attrs = attrs;
     }
 
     @Override

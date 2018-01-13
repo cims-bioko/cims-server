@@ -1,5 +1,8 @@
 package com.github.cimsbioko.server.domain;
 
+import org.hibernate.annotations.Type;
+import org.json.JSONObject;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -29,6 +32,9 @@ public class LocationHierarchy implements UuidIdentifiable, Serializable {
     @ManyToOne
     @JoinColumn(name = "level")
     private LocationHierarchyLevel level;
+
+    @Type(type = "json")
+    private JSONObject attrs;
 
     @Override
     public String getUuid() {
@@ -70,6 +76,14 @@ public class LocationHierarchy implements UuidIdentifiable, Serializable {
 
     public void setLevel(LocationHierarchyLevel level) {
         this.level = level;
+    }
+
+    public JSONObject getAttrs() {
+        return attrs;
+    }
+
+    public void setAttrs(JSONObject attrs) {
+        this.attrs = attrs;
     }
 
     @Override

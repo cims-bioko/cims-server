@@ -4,6 +4,8 @@ package com.github.cimsbioko.server.domain;
 import com.vividsolutions.jts.geom.Point;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Type;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -43,6 +45,9 @@ public class Location
 
     @OneToMany(mappedBy = "home")
     private List<Individual> residents = new ArrayList<>();
+
+    @Type(type = "json")
+    private JSONObject attrs;
 
     public String getDescription() {
         return description;
@@ -99,6 +104,14 @@ public class Location
     public void addResident(Individual resident) {
         residents.add(resident);
         resident.setHome(this);
+    }
+
+    public JSONObject getAttrs() {
+        return attrs;
+    }
+
+    public void setAttrs(JSONObject attrs) {
+        this.attrs = attrs;
     }
 
     @Override
