@@ -33,6 +33,7 @@ public class SprayingFormProcessor extends AbstractFormProcessor {
                             break;
                         case UNINHABITED:
                             location.getAttrsForUpdate().put("status", "uninhabited");
+                            break;
                     }
                     locationService.save(location);
                 } catch (ConstraintViolations cv) {
