@@ -6,11 +6,8 @@ import com.github.cimsbioko.server.service.refactor.LocationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
@@ -24,7 +21,7 @@ public class SprayingFormProcessor extends AbstractFormProcessor {
     private LocationService locationService;
 
     @Transactional
-    public ResponseEntity<? extends Serializable> processForm(@RequestBody Form form) {
+    public void processForm(Form form) {
         if (form.entityUuid != null) {
             Location location = locationService.getByUuid(form.entityUuid);
             if (location != null) {
@@ -39,13 +36,12 @@ public class SprayingFormProcessor extends AbstractFormProcessor {
                     }
                     locationService.save(location);
                 } catch (ConstraintViolations cv) {
-                    return requestError(cv);
+                    requestError(cv);
                 }
             } else {
                 log.info("location {} does not exist, ignoring", form.entityUuid);
             }
         }
-        return new ResponseEntity<>(form, HttpStatus.CREATED);
     }
 
     @XmlEnum
