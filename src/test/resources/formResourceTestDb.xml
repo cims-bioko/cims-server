@@ -28,22 +28,22 @@
                  password_hash="invalid-password-hash" deleted="false" idPrefix="99"/>
 
     <location uuid="TestLocation2" extId="testLocation2" name="Test Location"
-              hierarchy="hierarchy3" type="RUR" created="2000-12-19" deleted="false"
+              hierarchy="hierarchy3" created="2000-12-19" deleted="false"
               collector="FieldWorker1" />
 
     <location uuid="NONHOUSEHOLDLOCATION" extId="newHouse_id" name="Non-household Location"
-              hierarchy="hierarchy3" type="RUR" created="2000-12-19" deleted="false"
+              hierarchy="hierarchy3" created="2000-12-19" deleted="false"
               collector="FieldWorker1" />
 
     <location uuid="HOUSEHOLDLOCATION" extId="existing_id" name="Household Location"
-              hierarchy="hierarchy3" type="RUR" created="2000-12-19" deleted="false"
+              hierarchy="hierarchy3" created="2000-12-19" deleted="false"
               collector="FieldWorker1" />
 
     <location uuid="TestLocation1" extId="testLocation1" name="Test Location" hierarchy="hierarchy3"
-              type="RUR" created="2000-12-19" deleted="false" collector="UnknownFieldWorker" />
+              created="2000-12-19" deleted="false" collector="UnknownFieldWorker" />
 
     <location uuid="LOCATION1" extId="LOCATION1" name="Location 1" hierarchy="hierarchy3"
-              type="RUR" created="2000-12-19" deleted="false" collector="UnknownFieldWorker" />
+              created="2000-12-19" deleted="false" collector="UnknownFieldWorker" />
 
     <individual uuid="Unknown Individual" extId="UNK" first_Name="Unknown" middle_Name="NULL" last_Name="Unknown"
                 gender="1" dob="1900-12-19" created="2009-12-19" deleted="false" collector="UnknownFieldWorker"

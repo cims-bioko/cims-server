@@ -35,9 +35,6 @@ public class Location
     @JoinColumn(name = "hierarchy")
     private LocationHierarchy hierarchy = new LocationHierarchy();
 
-    @Column(name = "type")
-    private String type;
-
     @Column(name = "global_pos")
     private Point globalPos;
 
@@ -79,14 +76,6 @@ public class Location
 
     public void setHierarchy(LocationHierarchy hierarchy) {
         this.hierarchy = hierarchy;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public Point getGlobalPos() {

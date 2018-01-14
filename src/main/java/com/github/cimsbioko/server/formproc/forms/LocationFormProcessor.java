@@ -131,15 +131,10 @@ public class LocationFormProcessor extends AbstractFormProcessor {
         // fieldWorker, CollectedDateTime, and HierarchyLevel are set outside of this method
         location.setUuid(form.entityUuid);
         location.setName(form.locationName);
-        location.setType(nullTypeToUrb(form.locationType));
         location.setDescription(form.description);
         if (form.latitude != null && form.longitude != null) {
             location.setGlobalPos(makePoint(form.longitude, form.latitude));
         }
-    }
-
-    private static String nullTypeToUrb(String locationType) {
-        return locationType == null ? "URB" : locationType;
     }
 
     private LocationHierarchy createSector(Form form) throws ConstraintViolations {
