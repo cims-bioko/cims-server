@@ -8,6 +8,7 @@ import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.LocationHierarchyService;
 import com.github.cimsbioko.server.service.refactor.FieldWorkerService;
 import com.github.cimsbioko.server.service.refactor.LocationService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -135,6 +136,17 @@ public class LocationFormProcessor extends AbstractFormProcessor {
         if (form.latitude != null && form.longitude != null) {
             location.setGlobalPos(makePoint(form.longitude, form.latitude));
         }
+        if (form.locationType != null) {
+            location.getAttrsForUpdate().put("type", form.locationType);
+        }
+        if (form.housingType != null) {
+            JSONObject attrs = location.getAttrsForUpdate(), housing = new JSONObject();
+            attrs.put("housing", housing);
+            housing.put("type", form.housingType);
+            if ("other".equals(form.housingType)) {
+                housing.put("other", form.housingTypeOther);
+            }
+        }
     }
 
     private LocationHierarchy createSector(Form form) throws ConstraintViolations {
@@ -185,6 +197,10 @@ public class LocationFormProcessor extends AbstractFormProcessor {
         private String locationName;
 
         private String locationType;
+
+        private String housingType;
+
+        private String housingTypeOther;
 
         private String sectorName;
 

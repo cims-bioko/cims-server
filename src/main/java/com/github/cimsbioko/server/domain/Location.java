@@ -103,6 +103,13 @@ public class Location
         this.attrs = attrs;
     }
 
+    public JSONObject getAttrsForUpdate() {
+        if (attrs == null) {
+            attrs = new JSONObject();
+        }
+        return attrs;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) {
