@@ -54,6 +54,7 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
                         break;
                     case NOT_FOUND:
                         handleNotFound(location);
+                        break;
                 }
 
                 if (form.description != null) {
