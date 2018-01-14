@@ -6,16 +6,16 @@ import com.github.cimsbioko.server.service.refactor.LocationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 
-@Controller
-public class SprayingFormProcessor extends AbstractFormProcessor {
+@Component
+public class LocationEvalFormProcessor extends AbstractFormProcessor {
 
-    private static final Logger log = LoggerFactory.getLogger(SprayingFormProcessor.class);
+    private static final Logger log = LoggerFactory.getLogger(LocationEvalFormProcessor.class);
 
     @Autowired
     private LocationService locationService;
@@ -27,6 +27,9 @@ public class SprayingFormProcessor extends AbstractFormProcessor {
             if (location != null) {
                 try {
                     switch (form.evaluation) {
+                        case NOT_FOUND:
+                            location.getAttrsForUpdate().put("status", "not-found");
+                            break;
                         case DESTROYED:
                             location.getAttrsForUpdate().put("status", "destroyed");
                             location.setDeleted(true);
@@ -47,23 +50,25 @@ public class SprayingFormProcessor extends AbstractFormProcessor {
 
     @XmlEnum
     @XmlType
-    public enum SprayingEvaluation {
-        @XmlEnumValue("1")SPRAYED,
-        @XmlEnumValue("2")REFUSED,
-        @XmlEnumValue("3")CLOSED,
-        @XmlEnumValue("4")UNINHABITED,
-        @XmlEnumValue("5")DESTROYED
+    public enum LocationEvaluation {
+        @XmlEnumValue("notfound") NOT_FOUND,
+        @XmlEnumValue("destroyed") DESTROYED,
+        @XmlEnumValue("uninhabited") UNINHABITED,
+        @XmlEnumValue("fullconsent") FULL_CONSENT,
+        @XmlEnumValue("partialconsent") PARTIAL_CONSENT,
+        @XmlEnumValue("refused") REFUSED,
+        @XmlEnumValue("unavailable") UNAVAILABLE
     }
 
-    @XmlRootElement(name = "sprayingForm")
+    @XmlRootElement(name = "locationEvalForm")
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = Form.LOG_NAME)
     public static class Form implements Serializable {
 
-        public static final String LOG_NAME = "SprayingForm";
+        public static final String LOG_NAME = "LocationEvalForm";
 
         private String entityUuid;
 
-        private SprayingEvaluation evaluation;
+        private LocationEvaluation evaluation;
     }
 }

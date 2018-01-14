@@ -77,6 +77,9 @@ with (imports) {
         },
         create_sector: {
             endpoint: CreateSectorFormProcessor.class
+        },
+        location_evaluation: {
+            endpoint: LocationEvalFormProcessor.class
         }
     };
 
