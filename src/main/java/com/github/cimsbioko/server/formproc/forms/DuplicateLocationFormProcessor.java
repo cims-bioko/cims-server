@@ -52,6 +52,8 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
                     case RENUMBER:
                         handleRenumber(form, location);
                         break;
+                    case NOT_FOUND:
+                        handleNotFound(location);
                 }
 
                 if (form.description != null) {
@@ -62,6 +64,10 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
                 log.info("location {} does not exist, ignoring", form.entityUuid);
             }
         }
+    }
+
+    private void handleNotFound(Location location) {
+        location.getAttrsForUpdate().put("status", "not-found");
     }
 
     private void handleRenumber(Form form, Location location) {
