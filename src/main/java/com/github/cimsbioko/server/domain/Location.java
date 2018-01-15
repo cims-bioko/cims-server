@@ -16,9 +16,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "location")
-public class Location
-        extends AuditableCollectedEntity
-        implements Serializable {
+public class Location extends AuditableCollectedEntity implements Serializable {
 
     public final static long serialVersionUID = 169551578162260199L;
 

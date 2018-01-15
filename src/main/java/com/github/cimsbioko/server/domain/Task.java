@@ -15,14 +15,18 @@ public class Task {
     @GenericGenerator(name = "system-uuid", strategy = "com.github.cimsbioko.server.idgen.UUIDGenerator")
     @Column(length = 32)
     String uuid;
+
     private String name;
+
     private long itemCount;
+
     private String descriptor;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar started;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar finished;
-
 
     public String getUuid() {
         return uuid;
