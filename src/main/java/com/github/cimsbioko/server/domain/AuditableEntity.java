@@ -33,7 +33,6 @@ public abstract class AuditableEntity implements UuidIdentifiable, Serializable 
         this.uuid = uuid;
     }
 
-    @XmlTransient
     public boolean isDeleted() {
         return deleted;
     }

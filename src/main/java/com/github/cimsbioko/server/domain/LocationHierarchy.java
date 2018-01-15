@@ -5,12 +5,10 @@ import org.json.JSONObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "locationhierarchy")
-@XmlRootElement
 public class LocationHierarchy implements UuidIdentifiable, Serializable {
 
     private static final long serialVersionUID = -5334850119671675888L;

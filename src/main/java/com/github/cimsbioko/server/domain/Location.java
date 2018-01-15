@@ -10,14 +10,12 @@ import org.json.JSONObject;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "location")
-@XmlRootElement
 public class Location
         extends AuditableCollectedEntity
         implements Serializable {

@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.domain;
 
-import com.github.cimsbioko.server.util.CalendarAdapter;
 import org.hibernate.annotations.Type;
 import org.json.JSONObject;
 
@@ -8,14 +7,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.*;
 
 @Entity
 @Table(name = "individual")
-@XmlRootElement(name = "individual")
 public class Individual extends AuditableCollectedEntity implements Serializable {
 
     public final static long serialVersionUID = 9058114832143454609L;
@@ -109,7 +105,6 @@ public class Individual extends AuditableCollectedEntity implements Serializable
         gender = sex;
     }
 
-    @XmlJavaTypeAdapter(CalendarAdapter.class)
     public Calendar getDob() {
         return dob;
     }

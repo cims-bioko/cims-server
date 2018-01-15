@@ -3,13 +3,11 @@ package com.github.cimsbioko.server.domain;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Calendar;
 
 @Entity
 @Table(name = "error")
-@XmlRootElement(name = "error")
 public class Error implements Serializable {
 
     private static final long serialVersionUID = 2447734552586256198L;
