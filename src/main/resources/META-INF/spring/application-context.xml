@@ -141,26 +141,14 @@
     <!-- Supported fields are LOCATION_NAME, LOCATION_HIERARCHY_ID -->
     <bean id="locationIdScheme" class="com.github.cimsbioko.server.idgen.IdScheme">
         <property name="name" value="Location"/>
-        <property name="prefix">
-            <value>${openhds.locationPrefix}</value>
-        </property>
-        <property name="checkDigit">
-            <value>${openhds.locationCheckDigit}</value>
-        </property>
-        <property name="incrementBound">
-            <value>${openhds.locationIncrementBound}</value>
-        </property>
-        <property name="length">
-            <value>${openhds.locationIdLength}</value>
-        </property>
+        <property name="prefix" value="${openhds.locationPrefix}"/>
+        <property name="checkDigit" value="${openhds.locationCheckDigit}"/>
+        <property name="incrementBound" value="${openhds.locationIncrementBound}"/>
+        <property name="length" value="${openhds.locationIdLength}"/>
         <property name="fields">
             <map>
-                <entry key="LOCATION_NAME">
-                    <value>${openhds.locationNameLength}</value>
-                </entry>
-                <entry key="LOCATION_HIERARCHY_ID">
-                    <value>${openhds.locationHierarchyIdLength}</value>
-                </entry>
+                <entry key="LOCATION_NAME" value="${openhds.locationNameLength}"/>
+                <entry key="LOCATION_HIERARCHY_ID" value="${openhds.locationHierarchyIdLength}"/>
             </map>
         </property>
     </bean>
@@ -169,29 +157,15 @@
     <!-- If CHILD_LOC_NAME is used, CHILD_LOC_NAME_FIRST and CHILD_LOC_NAME_LAST must be as well -->
     <bean id="locationHierarchyIdScheme" class="com.github.cimsbioko.server.idgen.IdScheme">
         <property name="name" value="LocationHierarchy"/>
-        <property name="prefix">
-            <value>${openhds.locationHPrefix}</value>
-        </property>
-        <property name="checkDigit">
-            <value>${openhds.locationHCheckDigit}</value>
-        </property>
-        <property name="incrementBound">
-            <value>${openhds.locationHIncrementBound}</value>
-        </property>
-        <property name="length">
-            <value>${openhds.locationHIdLength}</value>
-        </property>
+        <property name="prefix" value="${openhds.locationHPrefix}"/>
+        <property name="checkDigit" value="${openhds.locationHCheckDigit}"/>
+        <property name="incrementBound" value="${openhds.locationHIncrementBound}"/>
+        <property name="length" value="${openhds.locationHIdLength}"/>
         <property name="fields">
             <map>
-                <entry key="CHILD_LOC_NAME">
-                    <value>${openhds.locationHChildLocNameLength}</value>
-                </entry>
-                <entry key="CHILD_LOC_NAME_FIRST">
-                    <value>${openhds.locationHChildLocFirstNameLength}</value>
-                </entry>
-                <entry key="CHILD_LOC_NAME_LAST">
-                    <value>${openhds.locationHChildLocLastNameLength}</value>
-                </entry>
+                <entry key="CHILD_LOC_NAME" value="${openhds.locationHChildLocNameLength}"/>
+                <entry key="CHILD_LOC_NAME_FIRST" value="${openhds.locationHChildLocFirstNameLength}"/>
+                <entry key="CHILD_LOC_NAME_LAST" value="${openhds.locationHChildLocLastNameLength}"/>
             </map>
         </property>
     </bean>
@@ -199,23 +173,13 @@
     <!-- Supported fields are INDIVIDUAL_FNAME, INDIVIDUAL_MNAME, INDIVIDUAL_LNAME -->
     <bean id="individualIdScheme" class="com.github.cimsbioko.server.idgen.IdScheme">
         <property name="name" value="Individual"/>
-        <property name="prefix">
-            <value>${openhds.individualPrefix}</value>
-        </property>
-        <property name="checkDigit">
-            <value>${openhds.individualCheckDigit}</value>
-        </property>
-        <property name="incrementBound">
-            <value>${openhds.individualIncrementBound}</value>
-        </property>
-        <property name="length">
-            <value>${openhds.individualIdLength}</value>
-        </property>
+        <property name="prefix" value="${openhds.individualPrefix}"/>
+        <property name="checkDigit" value="${openhds.individualCheckDigit}"/>
+        <property name="incrementBound" value="${openhds.individualIncrementBound}"/>
+        <property name="length" value="${openhds.individualIdLength}"/>
         <property name="fields">
             <map>
-                <entry key="LOCATION_PREFIX">
-                    <value>${openhds.locationIdLength}</value>
-                </entry>
+                <entry key="LOCATION_PREFIX" value="${openhds.locationIdLength}"/>
             </map>
         </property>
     </bean>
@@ -223,26 +187,14 @@
     <!-- Supported fields are FIELDWORKER_FNAME, FIELDWORKER_LNAME -->
     <bean id="fieldWorkerIdScheme" class="com.github.cimsbioko.server.idgen.IdScheme">
         <property name="name" value="FieldWorker"/>
-        <property name="prefix">
-            <value>${openhds.fwPrefix}</value>
-        </property>
-        <property name="checkDigit">
-            <value>${openhds.fwCheckDigit}</value>
-        </property>
-        <property name="incrementBound">
-            <value>${openhds.fwIncrementBound}</value>
-        </property>
-        <property name="length">
-            <value>${openhds.fwIdLength}</value>
-        </property>
+        <property name="prefix" value="${openhds.fwPrefix}"/>
+        <property name="checkDigit" value="${openhds.fwCheckDigit}"/>
+        <property name="incrementBound" value="${openhds.fwIncrementBound}"/>
+        <property name="length" value="${openhds.fwIdLength}"/>
         <property name="fields">
             <map>
-                <entry key="FIELDWORKER_FNAME">
-                    <value>${openhds.fwFirstNameLength}</value>
-                </entry>
-                <entry key="FIELDWORKER_LNAME">
-                    <value>${openhds.fwLastNameLength}</value>
-                </entry>
+                <entry key="FIELDWORKER_FNAME" value="${openhds.fwFirstNameLength}"/>
+                <entry key="FIELDWORKER_LNAME" value="${openhds.fwLastNameLength}"/>
             </map>
         </property>
     </bean>
@@ -303,90 +255,34 @@
     </bean>
 
     <bean id="siteProperties" class="com.github.cimsbioko.server.service.impl.SitePropertiesServiceImpl">
-        <property name="unknownIdentifier">
-            <value>${unknownIdentifier}</value>
-        </property>
-        <property name="inmigrationCode">
-            <value>${inmigration}</value>
-        </property>
-        <property name="outmigrationCode">
-            <value>${outmigration}</value>
-        </property>
-        <property name="birthCode">
-            <value>${birth}</value>
-        </property>
-        <property name="deathCode">
-            <value>${death}</value>
-        </property>
-        <property name="enumerationCode">
-            <value>${enumeration}</value>
-        </property>
-        <property name="marriageCode">
-            <value>${marriage}</value>
-        </property>
-        <property name="notApplicableCode">
-            <value>${notApplicable}</value>
-        </property>
-        <property name="liveBirthCode">
-            <value>${liveBirth}</value>
-        </property>
-        <property name="stillBirthCode">
-            <value>${stillBirth}</value>
-        </property>
-        <property name="miscarriageCode">
-            <value>${miscarriage}</value>
-        </property>
-        <property name="abortionCode">
-            <value>${abortion}</value>
-        </property>
-        <property name="maleCode">
-            <value>${male}</value>
-        </property>
-        <property name="femaleCode">
-            <value>${female}</value>
-        </property>
-        <property name="dataStatusWarningCode">
-            <value>${dataStatusWarning}</value>
-        </property>
-        <property name="dataStatusValidCode">
-            <value>${dataStatusValid}</value>
-        </property>
-        <property name="dataStatusFatalCode">
-            <value>${dataStatusFatal}</value>
-        </property>
-        <property name="dataStatusVoidCode">
-            <value>${dataStatusVoid}</value>
-        </property>
-        <property name="dataStatusPendingCode">
-            <value>${dataStatusPending}</value>
-        </property>
-        <property name="dataStatusClosedCode">
-            <value>${dataStatusClosed}</value>
-        </property>
-        <property name="minimumAgeOfParents">
-            <value>${minAgeOfParenthood}</value>
-        </property>
-        <property name="minimumAgeOfHouseholdHead">
-            <value>${minAgeOfHouseholdHead}</value>
-        </property>
-        <property name="minimumAgeOfMarriage">
-            <value>${minAgeOfMarriage}</value>
-        </property>
-        <property name="minimumAgeOfPregnancy">
-            <value>${minAgeOfPregnancy}</value>
-        </property>
-        <property name="yesResponse">
-            <value>${yesResponse}</value>
-        </property>
-        <property name="noResponse">
-            <value>${noResponse}</value>
-        </property>
-        <property name="earliestEnumerationDate">
-            <value>${earliestEnumerationDate}</value>
-        </property>
-        <property name="specialStudyLocation">
-            <value>${openhds.specialStudyLocation}</value>
-        </property>
+        <property name="unknownIdentifier" value="${unknownIdentifier}"/>
+        <property name="inmigrationCode" value="${inmigration}"/>
+        <property name="outmigrationCode" value="${outmigration}"/>
+        <property name="birthCode" value="${birth}"/>
+        <property name="deathCode" value="${death}"/>
+        <property name="enumerationCode" value="${enumeration}"/>
+        <property name="marriageCode" value="${marriage}"/>
+        <property name="notApplicableCode" value="${notApplicable}"/>
+        <property name="liveBirthCode" value="${liveBirth}"/>
+        <property name="stillBirthCode" value="${stillBirth}"/>
+        <property name="miscarriageCode" value="${miscarriage}"/>
+        <property name="abortionCode" value="${abortion}"/>
+        <property name="maleCode" value="${male}"/>
+        <property name="femaleCode" value="${female}"/>
+        <property name="dataStatusWarningCode" value="${dataStatusWarning}"/>
+        <property name="dataStatusValidCode" value="${dataStatusValid}"/>
+        <property name="dataStatusFatalCode" value="${dataStatusFatal}"/>
+        <property name="dataStatusVoidCode" value="${dataStatusVoid}"/>
+        <property name="dataStatusPendingCode" value="${dataStatusPending}"/>
+        <property name="dataStatusClosedCode" value="${dataStatusClosed}"/>
+        <property name="minimumAgeOfParents" value="${minAgeOfParenthood}"/>
+        <property name="minimumAgeOfHouseholdHead" value="${minAgeOfHouseholdHead}"/>
+        <property name="minimumAgeOfMarriage" value="${minAgeOfMarriage}"/>
+        <property name="minimumAgeOfPregnancy" value="${minAgeOfPregnancy}"/>
+        <property name="yesResponse" value="${yesResponse}"/>
+        <property name="noResponse" value="${noResponse}"/>
+        <property name="earliestEnumerationDate" value="${earliestEnumerationDate}"/>
+        <property name="specialStudyLocation" value="${openhds.specialStudyLocation}"/>
     </bean>
 
 </beans>

@@ -17,9 +17,7 @@
     <context:component-scan base-package="com.github.cimsbioko.server.webapi"/>
 
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-        <property name="asyncRequestTimeout">
-            <value>36000000</value>
-        </property>
+        <property name="asyncRequestTimeout" value="36000000"/>
         <property name="messageConverters">
             <array>
                 <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
