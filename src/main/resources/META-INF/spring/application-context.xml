@@ -256,33 +256,6 @@
 
     <bean id="siteProperties" class="com.github.cimsbioko.server.service.impl.SitePropertiesServiceImpl">
         <property name="unknownIdentifier" value="${unknownIdentifier}"/>
-        <property name="inmigrationCode" value="${inmigration}"/>
-        <property name="outmigrationCode" value="${outmigration}"/>
-        <property name="birthCode" value="${birth}"/>
-        <property name="deathCode" value="${death}"/>
-        <property name="enumerationCode" value="${enumeration}"/>
-        <property name="marriageCode" value="${marriage}"/>
-        <property name="notApplicableCode" value="${notApplicable}"/>
-        <property name="liveBirthCode" value="${liveBirth}"/>
-        <property name="stillBirthCode" value="${stillBirth}"/>
-        <property name="miscarriageCode" value="${miscarriage}"/>
-        <property name="abortionCode" value="${abortion}"/>
-        <property name="maleCode" value="${male}"/>
-        <property name="femaleCode" value="${female}"/>
-        <property name="dataStatusWarningCode" value="${dataStatusWarning}"/>
-        <property name="dataStatusValidCode" value="${dataStatusValid}"/>
-        <property name="dataStatusFatalCode" value="${dataStatusFatal}"/>
-        <property name="dataStatusVoidCode" value="${dataStatusVoid}"/>
-        <property name="dataStatusPendingCode" value="${dataStatusPending}"/>
-        <property name="dataStatusClosedCode" value="${dataStatusClosed}"/>
-        <property name="minimumAgeOfParents" value="${minAgeOfParenthood}"/>
-        <property name="minimumAgeOfHouseholdHead" value="${minAgeOfHouseholdHead}"/>
-        <property name="minimumAgeOfMarriage" value="${minAgeOfMarriage}"/>
-        <property name="minimumAgeOfPregnancy" value="${minAgeOfPregnancy}"/>
-        <property name="yesResponse" value="${yesResponse}"/>
-        <property name="noResponse" value="${noResponse}"/>
-        <property name="earliestEnumerationDate" value="${earliestEnumerationDate}"/>
-        <property name="specialStudyLocation" value="${openhds.specialStudyLocation}"/>
     </bean>
 
 </beans>
