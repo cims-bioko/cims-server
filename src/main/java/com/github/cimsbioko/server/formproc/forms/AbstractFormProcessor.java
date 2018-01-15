@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.formproc.forms;
 
-import com.github.cimsbioko.server.formproc.ApiError;
 import com.github.cimsbioko.server.service.ErrorService;
 import com.github.cimsbioko.server.util.ErrorUtil;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
@@ -10,8 +9,6 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.oxm.GenericMarshaller;
 
 import javax.xml.transform.stream.StreamResult;
@@ -30,23 +27,6 @@ public class AbstractFormProcessor {
     @Autowired
     @Qualifier("formMarshaller")
     private GenericMarshaller marshaller;
-
-    protected ResponseEntity<ApiError> requestError(String message) {
-        ApiError error = new ApiError();
-        error.getErrors().add(message);
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
-
-    protected ResponseEntity<ApiError> serverError(String message) {
-        ApiError error = new ApiError();
-        error.getErrors().add(message);
-        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    protected ResponseEntity<ApiError> requestError(ConstraintViolations cv) {
-        return new ResponseEntity<>(new ApiError(cv),
-                HttpStatus.BAD_REQUEST);
-    }
 
     protected void logError(ConstraintViolations cv, String payload, String simpleClassName) {
         Error error = ErrorUtil.createError( payload, simpleClassName, cv.getViolations());

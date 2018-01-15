@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.annotation.*;
+import java.io.IOException;
 import java.io.Serializable;
 
 @Controller
@@ -21,7 +22,7 @@ public class SprayingFormProcessor extends AbstractFormProcessor {
     private LocationService locationService;
 
     @Transactional
-    public void processForm(Form form) {
+    public void processForm(Form form) throws IOException {
         if (form.entityUuid != null) {
             Location location = locationService.getByUuid(form.entityUuid);
             if (location != null) {
@@ -37,7 +38,7 @@ public class SprayingFormProcessor extends AbstractFormProcessor {
                     }
                     locationService.save(location);
                 } catch (ConstraintViolations cv) {
-                    requestError(cv);
+                    logError(cv, marshalForm(form), Form.LOG_NAME);
                 }
             } else {
                 log.info("location {} does not exist, ignoring", form.entityUuid);
