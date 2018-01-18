@@ -48,7 +48,7 @@ public class User implements Serializable, UuidIdentifiable {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles", joinColumns = {
-            @JoinColumn(name = "user")}, inverseJoinColumns = @JoinColumn(name = "role"))
+            @JoinColumn(name = "`user`")}, inverseJoinColumns = @JoinColumn(name = "`role`"))
     private Set<Role> roles = new HashSet<>();
 
     private boolean deleted = false;
