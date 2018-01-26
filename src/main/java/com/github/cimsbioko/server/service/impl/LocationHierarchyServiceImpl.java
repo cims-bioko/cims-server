@@ -73,6 +73,23 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     }
 
     @Override
+    public LocationHierarchy createMap(String localityUuid, String mapUuid, String mapName) {
+        String uuid = sessionFactory.getCurrentSession().doReturningWork(
+                c -> {
+                    try (CallableStatement f = c.prepareCall("{ ? = call create_map(?, ?, ?) }")) {
+                        f.registerOutParameter(1, Types.VARCHAR);
+                        f.setString(2, localityUuid);
+                        f.setString(3, mapUuid);
+                        f.setString(4, mapName);
+                        f.execute();
+                        return f.getString(1);
+                    }
+                }
+        );
+        return entityService.read(LocationHierarchy.class, uuid);
+    }
+
+    @Override
     public LocationHierarchy createOrFindSector(String mapUuid, String sectorName) {
         String uuid = sessionFactory.getCurrentSession().doReturningWork(
                 c -> {
@@ -80,6 +97,23 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
                         f.registerOutParameter(1, Types.VARCHAR);
                         f.setString(2, mapUuid);
                         f.setString(3, sectorName);
+                        f.execute();
+                        return f.getString(1);
+                    }
+                }
+        );
+        return entityService.read(LocationHierarchy.class, uuid);
+    }
+
+    @Override
+    public LocationHierarchy createSector(String mapUuid, String sectorUuid, String sectorName) {
+        String uuid = sessionFactory.getCurrentSession().doReturningWork(
+                c -> {
+                    try (CallableStatement f = c.prepareCall("{ ? = call create_sector(?, ?, ?) }")) {
+                        f.registerOutParameter(1, Types.VARCHAR);
+                        f.setString(2, mapUuid);
+                        f.setString(3, sectorUuid);
+                        f.setString(4, sectorName);
                         f.execute();
                         return f.getString(1);
                     }

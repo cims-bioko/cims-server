@@ -16,7 +16,7 @@ public class CreateMapFormProcessor {
 
     @Transactional
     public void processForm(Form form) {
-        hierService.createOrFindMap(form.localityUuid, form.mapName);
+        hierService.createMap(form.localityUuid, form.mapUuid, form.mapName);
     }
 
     @XmlRootElement(name = "createMapForm")
@@ -27,6 +27,8 @@ public class CreateMapFormProcessor {
         public static final String LOG_NAME = "CreateMapForm";
 
         private String localityUuid;
+
+        private String mapUuid;
 
         private String mapName;
     }

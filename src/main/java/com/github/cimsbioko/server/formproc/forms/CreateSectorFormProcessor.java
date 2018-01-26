@@ -16,7 +16,7 @@ public class CreateSectorFormProcessor {
 
     @Transactional
     public void processForm(Form form) {
-        hierService.createOrFindSector(form.mapUuid, form.sectorName);
+        hierService.createSector(form.mapUuid, form.sectorUuid, form.sectorName);
     }
 
     @XmlRootElement(name = "createSectorForm")
@@ -27,6 +27,8 @@ public class CreateSectorFormProcessor {
         public static final String LOG_NAME = "CreateSectorForm";
 
         private String mapUuid;
+
+        private String sectorUuid;
 
         private String sectorName;
     }
