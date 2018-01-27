@@ -34,7 +34,7 @@ public class WebConfig {
     WebMvcConfigurerAdapter webMvcConfigurerAdapter() {
         return new WebMvcConfigurerAdapter() {
             @Override
-            public void addResourceHandlers (ResourceHandlerRegistry registry){
+            public void addResourceHandlers(ResourceHandlerRegistry registry) {
                 registry.addResourceHandler(CACHED_FILES_PATH + "/**")
                         .addResourceLocations(dataDir.toURI().toString());
             }
