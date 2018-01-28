@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.util;
+package com.github.cimsbioko.server.hibernate;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;

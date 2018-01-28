@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.util;
+package com.github.cimsbioko.server.hibernate;
 
 import org.hibernate.spatial.dialect.h2geodb.GeoDBDialect;
 
