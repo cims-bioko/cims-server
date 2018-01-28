@@ -2,70 +2,56 @@ package com.github.cimsbioko.server.dao.impl;
 
 import com.github.cimsbioko.server.dao.FormSubmissionDao;
 import com.github.cimsbioko.server.domain.FormSubmission;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository("formSubmissionDao")
-public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements FormSubmissionDao {
-
-    private static final String COLUMNS = "instanceId, as_xml, as_json, form_id, form_version, form_binding," +
-            " from_device, collected, submitted, processed, processed_ok";
-    private static final String BASE_QUERY = "select " + COLUMNS + " from form_submission";
-
-    private JdbcTemplate sql;
-
-    private RowMapper<FormSubmission> mapper = (rs, rowNum) -> {
-        String instanceId = rs.getString("instanceId"),
-                xml = rs.getString("as_xml"),
-                json = rs.getString("as_json"),
-                formId = rs.getString("form_id"),
-                formVersion = rs.getString("form_version"),
-                formBinding = rs.getString("form_binding"),
-                deviceId = rs.getString("from_device");
-        Timestamp collected = rs.getTimestamp("collected"),
-                submitted = rs.getTimestamp("submitted"),
-                processed = rs.getTimestamp("processed");
-        Boolean processedOk = (Boolean) rs.getObject("processed_ok");
-        return new FormSubmission(instanceId, xml, json, formId, formVersion, formBinding, deviceId, collected,
-                submitted, processed, processedOk);
-    };
+public class FormSubmissionDaoImpl implements FormSubmissionDao {
 
     @Autowired
-    public FormSubmissionDaoImpl(DataSource ds) {
-        super(ds);
-        sql = new JdbcTemplate(ds);
-    }
+    private SessionFactory sf;
 
     @Override
     public void save(FormSubmission fs) {
-        sql.update("insert into form_submission (" + COLUMNS +
-                        ") values (?,cast(? as xml),cast(? as jsonb),?,?,?,?,?,coalesce(?,current_timestamp),?,?)",
-                fs.getInstanceId(), fs.getXml(), fs.getJson(), fs.getFormId(), fs.getFormVersion(), fs.getFormBinding(),
-                fs.getDeviceId(), fs.getCollected(), fs.getSubmitted(), fs.getProcessed(), fs.getProcessedOk());
+        getCurrentSession().persist(fs);
+    }
+
+    private Session getCurrentSession() {
+        return sf.getCurrentSession();
     }
 
     @Override
     public void delete(String instanceId) {
-        sql.update("delete from form_submission where instanceId = ?", instanceId);
+        getCurrentSession()
+                .createQuery("delete from FormSubmission fs where instanceId = :id")
+                .setParameter("id", instanceId)
+                .executeUpdate();
     }
 
     @Override
     public FormSubmission findById(String instanceId) {
-        return sql.queryForObject(BASE_QUERY + " where instanceId = ?", new Object[]{instanceId}, mapper);
+        return getCurrentSession().get(FormSubmission.class, instanceId);
     }
 
     @Override
     public List<FormSubmission> findUnprocessed(int batchSize) {
-        return sql.query(BASE_QUERY + " where processed is null order by collected asc limit ?", mapper, batchSize);
+        return getCurrentSession()
+                .createQuery("select fs from FormSubmission fs where processed is null order by collected asc")
+                .setMaxResults(batchSize)
+                .getResultList();
     }
 
     @Override
@@ -75,35 +61,49 @@ public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements
 
     @Override
     public List<FormSubmission> find(String form, String version, String binding, String device, Timestamp submittedSince, Integer limit, boolean sortDesc) {
-        StringBuilder where = new StringBuilder("1=1");
-        Collection<Object> args = new ArrayList<>();
+
+        int limitArg = limit != null && limit > 0 && limit < 100 ? limit : 100;
+
+        CriteriaBuilder cb = sf.getCriteriaBuilder();
+        CriteriaQuery<FormSubmission> cq = cb.createQuery(FormSubmission.class);
+        Root<FormSubmission> r = cq.from(FormSubmission.class);
+        List<Predicate> ps = new ArrayList<>(5);
+        Map<String, Object> params = new LinkedHashMap<>();
         if (form != null) {
-            where.append(" and form_id = ?");
-            args.add(form);
+            ps.add(cb.equal(r.get("formId"), cb.parameter(String.class, "form")));
+            params.put("form", form);
         }
         if (version != null) {
-            where.append(" and form_version = ?");
-            args.add(version);
+            ps.add(cb.equal(r.get("formVersion"), cb.parameter(String.class, "version")));
+            params.put("version", version);
         }
         if (binding != null) {
-            where.append(" and form_binding = ?");
-            args.add(binding);
+            ps.add(cb.equal(r.get("formBinding"), cb.parameter(String.class, "binding")));
+            params.put("binding", binding);
         }
         if (device != null) {
-            where.append(" and from_device = ?");
-            args.add(device);
+            ps.add(cb.equal(r.get("deviceId"), cb.parameter(String.class, "device")));
+            params.put("device", device);
         }
         if (submittedSince != null) {
-            where.append(" and submitted ");
-            where.append(sortDesc ? " < " : " > ");
-            where.append("?");
-            args.add(submittedSince);
+            if (sortDesc) {
+                ps.add(cb.lessThan(r.get("submitted"), cb.parameter(Timestamp.class, "submitted")));
+            } else {
+                ps.add(cb.greaterThan(r.get("submitted"), cb.parameter(Timestamp.class, "submitted")));
+            }
+            params.put("submitted", submittedSince);
         }
-        String whereClause = where.length() > 0 ? " where " + where : "";
-        String orderClause = " order by submitted " + (sortDesc ? "desc" : "") + " limit ?";
-        int limitArg = limit != null && limit > 0 && limit < 100 ? limit : 100;
-        args.add(limitArg);
-        return sql.query(BASE_QUERY + whereClause + orderClause, mapper, args.toArray());
+
+        cq.where(ps.toArray(new Predicate[]{}))
+                .orderBy(sortDesc ? cb.desc(r.get("submitted")) : cb.asc(r.get("submitted")));
+
+        TypedQuery<FormSubmission> tq = getCurrentSession().createQuery(cq).setMaxResults(limitArg);
+
+        for (Map.Entry<String, Object> e : params.entrySet()) {
+            tq.setParameter(e.getKey(), e.getValue());
+        }
+
+        return tq.getResultList();
     }
 
     @Override
@@ -111,7 +111,10 @@ public class FormSubmissionDaoImpl extends NamedParameterJdbcTemplate implements
         String instanceId = submission.getInstanceId();
         if (instanceId == null)
             throw new IllegalArgumentException("submission must have an instance id");
-        sql.update("update form_submission set processed = now(), processed_ok = ? where instanceId = ?", processedOk, instanceId);
+        getCurrentSession().createQuery("update FormSubmission set processed = CURRENT_TIMESTAMP, processed_ok = :processedOk where instanceId = :id")
+                .setParameter("processedOk", processedOk)
+                .setParameter("id", instanceId)
+                .executeUpdate();
     }
 
 }

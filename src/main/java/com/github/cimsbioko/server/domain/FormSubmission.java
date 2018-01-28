@@ -3,27 +3,59 @@ package com.github.cimsbioko.server.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.Type;
+import org.jdom2.Document;
+import org.json.JSONObject;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
+@Entity
+@Table(name = "form_submission")
+@DynamicInsert
 public class FormSubmission {
 
+    @Id
+    @Column(name = "instanceid")
     private String instanceId;
+
+    @Column(name = "form_id")
     private String formId;
+
+    @Column(name = "form_version")
     private String formVersion;
+
+    @Column(name = "form_binding")
     private String formBinding;
+
+    @Column(name = "from_device")
     private String deviceId;
 
     @JsonIgnore
-    private String xml, json;
+    @Type(type = "xml")
+    @Column(name = "as_xml")
+    private Document xml;
+
+    @JsonIgnore
+    @Type(type = "json")
+    @Column(name = "as_json")
+    private JSONObject json;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     private Timestamp collected, submitted, processed;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Column(name = "processed_ok")
     private Boolean processedOk;
 
-    public FormSubmission(String instanceId, String xml, String json, String formId, String formVersion,
+    public FormSubmission() {
+    }
+
+    public FormSubmission(String instanceId, Document xml, JSONObject json, String formId, String formVersion,
                           String formBinding, String deviceId, Timestamp collected, Timestamp submitted, Timestamp processed,
                           Boolean processedOk) {
         this.instanceId = instanceId;
@@ -43,11 +75,11 @@ public class FormSubmission {
         return instanceId;
     }
 
-    public String getXml() {
+    public Document getXml() {
         return xml;
     }
 
-    public String getJson() {
+    public JSONObject getJson() {
         return json;
     }
 
@@ -81,5 +113,49 @@ public class FormSubmission {
 
     public Boolean getProcessedOk() {
         return processedOk;
+    }
+
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
+    }
+
+    public void setFormId(String formId) {
+        this.formId = formId;
+    }
+
+    public void setFormVersion(String formVersion) {
+        this.formVersion = formVersion;
+    }
+
+    public void setFormBinding(String formBinding) {
+        this.formBinding = formBinding;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public void setXml(Document xml) {
+        this.xml = xml;
+    }
+
+    public void setJson(JSONObject json) {
+        this.json = json;
+    }
+
+    public void setCollected(Timestamp collected) {
+        this.collected = collected;
+    }
+
+    public void setSubmitted(Timestamp submitted) {
+        this.submitted = submitted;
+    }
+
+    public void setProcessed(Timestamp processed) {
+        this.processed = processed;
+    }
+
+    public void setProcessedOk(Boolean processedOk) {
+        this.processedOk = processedOk;
     }
 }

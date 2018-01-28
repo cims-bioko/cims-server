@@ -1,11 +1,11 @@
 package com.github.cimsbioko.server.service.impl;
 
-import com.github.cimsbioko.server.exception.ExistingSubmissionException;
-import com.github.cimsbioko.server.service.FormSubmissionService;
 import com.github.cimsbioko.server.dao.FormSubmissionDao;
 import com.github.cimsbioko.server.domain.FormSubmission;
-import org.springframework.dao.EmptyResultDataAccessException;
+import com.github.cimsbioko.server.exception.ExistingSubmissionException;
+import com.github.cimsbioko.server.service.FormSubmissionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,23 +19,26 @@ public class FormSubmissionServiceImpl implements FormSubmissionService {
     }
 
     @Override
+    @Transactional
     public FormSubmission recordSubmission(FormSubmission submission) throws ExistingSubmissionException {
         String instanceId = submission.getInstanceId();
-        try {
-            FormSubmission existing = formDao.findById(instanceId);
+        FormSubmission existing = formDao.findById(instanceId);
+        if (existing != null) {
             throw new ExistingSubmissionException("submission with id " + instanceId + " exists", existing);
-        } catch (EmptyResultDataAccessException e) {
+        } else {
             formDao.save(submission);
             return formDao.findById(instanceId);
         }
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<FormSubmission> getUnprocessed(int batchSize) {
         return formDao.findUnprocessed(batchSize);
     }
 
     @Override
+    @Transactional
     public void markProcessed(FormSubmission submission, Boolean processedOk) {
         formDao.markProcessed(submission, processedOk);
     }

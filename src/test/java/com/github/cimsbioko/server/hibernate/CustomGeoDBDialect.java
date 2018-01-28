@@ -7,5 +7,6 @@ import java.sql.Types;
 public class CustomGeoDBDialect extends GeoDBDialect {
     public CustomGeoDBDialect() {
         registerColumnType(Types.OTHER, "other");
+        registerColumnType(Types.SQLXML, "other");
     }
 }

@@ -1,9 +1,9 @@
 package com.github.cimsbioko.server.webapi.odk;
 
-import com.github.cimsbioko.server.exception.ExistingSubmissionException;
-import com.github.cimsbioko.server.service.FormSubmissionService;
 import com.github.cimsbioko.server.dao.FormSubmissionDao;
 import com.github.cimsbioko.server.domain.FormSubmission;
+import com.github.cimsbioko.server.exception.ExistingSubmissionException;
+import com.github.cimsbioko.server.service.FormSubmissionService;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -14,6 +14,7 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,11 +47,13 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import static com.github.cimsbioko.server.util.JDOMUtil.*;
 import static com.github.cimsbioko.server.webapi.odk.ODKFormsResource.ODK_API_PATH;
 import static java.time.Instant.now;
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
@@ -129,8 +133,7 @@ public class ODKFormsResource {
                                          MultipartHttpServletRequest req)
             throws JDOMException, IOException, NoSuchAlgorithmException, URISyntaxException {
 
-        SAXBuilder builder = new SAXBuilder();
-        Document formDoc = builder.build(formXml.getInputStream());
+        Document formDoc = getBuilder().build(formXml.getInputStream());
         Namespace xformsNs = Namespace.getNamespace("http://www.w3.org/2002/xforms"),
                 xhtmlNs = Namespace.getNamespace("http://www.w3.org/1999/xhtml");
 
@@ -148,7 +151,6 @@ public class ODKFormsResource {
             firstInstance.setAttribute(VERSION, version);
         }
 
-        XMLOutputter outputter = new XMLOutputter();
         String formPath = String.format("%1$s/%2$s/%1$s.xml", id, version);
         log.info("storing form at {}", formPath);
 
@@ -156,7 +158,7 @@ public class ODKFormsResource {
         File formDir = formFile.getParentFile();
         formDir.mkdirs();
         try (FileWriter writer = new FileWriter(formFile)) {
-            outputter.output(formDoc, writer);
+            getOutputter().output(formDoc, writer);
         }
 
         Document manifestDoc = new Document();
@@ -191,7 +193,7 @@ public class ODKFormsResource {
 
         File manifestFile = new File(formDir, MEDIA_MANIFEST);
         try (FileWriter writer = new FileWriter(manifestFile)) {
-            outputter.output(manifestDoc, writer);
+            getOutputter().output(manifestDoc, writer);
         }
 
         URI formUrl = new URI(contextRelativeUrl(req, "formUpload"));
@@ -265,8 +267,7 @@ public class ODKFormsResource {
             file.addContent(downloadUrlElem);
         }
 
-        XMLOutputter outputter = new XMLOutputter();
-        byte[] body = outputter.outputString(manifestDoc).getBytes();
+        byte[] body = getOutputter().outputString(manifestDoc).getBytes();
 
         addOpenRosaHeaders(rsp);
         return ResponseEntity
@@ -295,6 +296,7 @@ public class ODKFormsResource {
 
     @GetMapping(value = "/submission/{instanceId}", produces = "application/xml")
     @ResponseBody
+    @Transactional(readOnly = true)
     public ResponseEntity<?> getXMLInstance(@PathVariable String instanceId)
             throws IOException {
         return getInstanceEntity(APPLICATION_XML, instanceId);
@@ -302,6 +304,7 @@ public class ODKFormsResource {
 
     @GetMapping(value = "/submission/{instanceId}", produces = "application/json")
     @ResponseBody
+    @Transactional(readOnly = true)
     public ResponseEntity<?> getJSONInstance(@PathVariable String instanceId)
             throws IOException {
         return getInstanceEntity(APPLICATION_JSON, instanceId);
@@ -311,7 +314,7 @@ public class ODKFormsResource {
             throws IOException {
         try {
             FormSubmission submission = submissionDao.findById(instanceId);
-            String contentString = APPLICATION_JSON.equals(type) ? submission.getJson() : submission.getXml();
+            String contentString = APPLICATION_JSON.equals(type) ? submission.getJson().toString() : stringFromDoc(submission.getXml());
             org.springframework.core.io.Resource contents = new ByteArrayResource(contentString.getBytes());
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(type);
@@ -344,6 +347,7 @@ public class ODKFormsResource {
 
     @GetMapping(value = "/submissions/recent", produces = "application/json")
     @ResponseBody
+    @Transactional(readOnly = true)
     public List<FormSubmission> recentSubmissions(
             @RequestParam(value = "formId", required = false) String form,
             @RequestParam(value = "version", required = false) String version,
@@ -353,7 +357,16 @@ public class ODKFormsResource {
         return submissionDao.findRecent(form, version, binding, device, limit);
     }
 
+    @GetMapping(value = "/submissions/unprocessed", produces = "application/json")
+    @ResponseBody
+    @Transactional(readOnly = true)
+    public List<FormSubmission> unprocessedSubmissions(
+            @RequestParam(value = "limit", required = false, defaultValue = "100") Integer limit) {
+        return submissionDao.findUnprocessed(limit);
+    }
+
     @GetMapping(path = "/view/submissionList")
+    @Transactional(readOnly = true)
     public ResponseEntity<InputStreamResource> submissionList(@RequestParam("formId") String form,
                                                               @RequestParam(value = "cursor", required = false) String cursor,
                                                               @RequestParam(value = "numEntries", required = false) Integer limit) {
@@ -389,6 +402,7 @@ public class ODKFormsResource {
     }
 
     @GetMapping("/view/downloadSubmission")
+    @Transactional(readOnly = true)
     public ResponseEntity<?> downloadSubmission(@RequestParam("formId") String submissionKey, HttpServletRequest req)
             throws JDOMException, IOException {
         String[] info = getInfoFromSubmissionKey(submissionKey);
@@ -418,13 +432,11 @@ public class ODKFormsResource {
         return null;
     }
 
-    private String getSubmissionDescriptor(FormSubmission submission, String submissionBaseUrl)
-            throws JDOMException, IOException {
-        StringBuilder b = new StringBuilder("<submission xmlns=\"http://opendatakit.org/submissions\" " +
-                "xmlns:orx=\"http://openrosa.org/xforms\" >" +
-                "<data>");
-        SAXBuilder builder = new SAXBuilder();
-        Document doc = builder.build(new StringReader(submission.getXml()));
+    private String getSubmissionDescriptor(FormSubmission submission, String submissionBaseUrl) throws IOException {
+        StringBuilder b = new StringBuilder(
+                "<submission xmlns=\"http://opendatakit.org/submissions\" " +
+                        "xmlns:orx=\"http://openrosa.org/xforms\" ><data>");
+        Document doc = submission.getXml();
         Element root = doc.getRootElement();
         String instanceId = submission.getInstanceId();
         if (root.getAttribute(ID) == null) {
@@ -490,13 +502,10 @@ public class ODKFormsResource {
 
         log.info("received submission from device '{}'", deviceId);
 
-        SAXBuilder builder = new SAXBuilder();
-        XMLOutputter xmlout = new XMLOutputter();
-
-        Document xmlDoc = builder.build(xmlFile.getInputStream());
+        Document xmlDoc = getBuilder().build(xmlFile.getInputStream());
 
         if (log.isDebugEnabled()) {
-            log.debug("submitted form:\n{}", xmlout.outputString(xmlDoc));
+            log.debug("submitted form:\n{}", getOutputter().outputString(xmlDoc));
         }
 
         // retrieve or add meta element if it doesn't exist
@@ -565,15 +574,13 @@ public class ODKFormsResource {
             log.warn("failed to parse submission date", e);
         }
 
-        String augmentedXml = xmlout.outputString(xmlDoc);
-
-        String json = toJSONObject(augmentedXml).toString();
+        JSONObject json = toJSONObject(stringFromDoc(xmlDoc));
         log.debug("converted json:\n{}", json);
 
         addOpenRosaHeaders(rsp);
 
         // Create a database record for the submission
-        FormSubmission submission = new FormSubmission(instanceId, augmentedXml, json, id, version, binding,
+        FormSubmission submission = new FormSubmission(instanceId, xmlDoc, json, id, version, binding,
                 deviceId, collected, submitted, processed, null);
         boolean isDuplicateSubmission = false;
         try {
