@@ -87,22 +87,35 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
     }
 
     private void handleMerge(Form form, Location src) {
-        List<Location> candidates = dao.findListByProperty(
-                Location.class, "extId", form.mergeToExtId, true);
-        if (candidates.size() <= 0) {
-            log.info("keeping location {}, location at {} does not exist", src.getUuid(), form.mergeToExtId);
+
+        Location dst;
+        if (form.mergeToUuid != null) {
+            Location candidate = dao.read(Location.class, form.mergeToUuid);
+            dst = candidate.isDeleted() || !form.mergeToExtId.equals(candidate.getExtId()) ? null : candidate;
         } else {
-            Location dst = candidates.get(0);
-            if (src != dst) {
-                src.setDeleted(true);
-                if (hasCoordinates(form)) {
-                    updatePosition(dst, form.latitude, form.longitude);
-                } else if (dst.getGlobalPos() == null ||
-                        (dst.getGlobalPos().getX() == 0 && dst.getGlobalPos().getY() == 0)) {
-                    dst.setGlobalPos(src.getGlobalPos());
-                }
-            }
+            List<Location> candidates = dao.findListByProperty(Location.class, "extId", form.mergeToExtId, true);
+            dst = candidates.size() > 0 ? candidates.get(0) : null;
         }
+
+        if (dst == null) {
+            log.info("failed to find an acceptable merge candidate");
+            return;
+        }
+
+        if (src == dst) {
+            log.info("source and destination are the same");
+            return;
+        }
+
+        // do the merge
+        src.setDeleted(true);
+        if (hasCoordinates(form)) {
+            updatePosition(dst, form.latitude, form.longitude);
+        } else if (dst.getGlobalPos() == null ||
+                (dst.getGlobalPos().getX() == 0 && dst.getGlobalPos().getY() == 0)) {
+            dst.setGlobalPos(src.getGlobalPos());
+        }
+
     }
 
     private void handleGPSOnly(Form form, Location location) {
@@ -158,6 +171,8 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
         private String sectorName;
 
         private String mergeToExtId;
+
+        private String mergeToUuid;
 
         private String newExtId;
     }

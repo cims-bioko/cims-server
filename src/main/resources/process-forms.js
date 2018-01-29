@@ -61,6 +61,11 @@ with (imports) {
             endpoint: DuplicateLocationFormProcessor.class,
             mapData: function(data) {
                 var result = defaultDataMapper(bindings.duplicate_location)(data);
+                // work around sub-path limitations in jaxb
+                if (data.mergeTo) {
+                    data.mergeToUuid = data.mergeTo.uuid;
+                    data.mergeToExtId = data.mergeTo.extId;
+                }
                 if (data.globalPosition) {
                     var form = result.duplicateLocationForm, gps = toGPS(data.globalPosition);
                     form.global_position_lat = gps.latitude;
