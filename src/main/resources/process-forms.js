@@ -66,11 +66,10 @@ with (imports) {
                     data.mergeToUuid = data.mergeTo.uuid;
                     data.mergeToExtId = data.mergeTo.extId;
                 }
+                // extract odk position to parsed latitude/longitude/accuracy fields
                 if (data.globalPosition) {
                     var form = result.duplicateLocationForm, gps = toGPS(data.globalPosition);
-                    form.global_position_lat = gps.latitude;
-                    form.global_position_lng = gps.longitude;
-                    form.global_position_acc = gps.accuracy;
+                    for (var key in gps) { form[key] = gps[key]; }
                 }
                 return result;
             }

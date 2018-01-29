@@ -157,13 +157,10 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
 
         private String description;
 
-        @XmlElement(name = "global_position_lat")
         private String latitude;
 
-        @XmlElement(name = "global_position_lng")
         private String longitude;
 
-        @XmlElement(name = "global_position_acc")
         private String accuracy;
 
         private String mapAreaName;
