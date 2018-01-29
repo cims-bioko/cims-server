@@ -12,7 +12,7 @@ var imports = new JavaImporter(
 
 with (imports) {
 
-    var appCtx, log, jaxb, formService, batchSize = 300;
+    var appCtx, log, jaxb, formService, errorService, batchSize = 300;
 
     /**
      * Convenience function for looking up application objects.
@@ -27,6 +27,7 @@ with (imports) {
     function setApplicationContext(ctx) {
         appCtx = ctx;
         formService = getBean(FormSubmissionService.class);
+        errorService = getBean(ErrorService.class);
         jaxb = getBean('formMarshaller');
     }
 
@@ -95,6 +96,7 @@ with (imports) {
                 processedOk = true;
             } catch (e) {
                 log.error("failed to process submission", e);
+                errorService.logError(submission, e.toString());
                 failures++;
             }
             formService.markProcessed(submission, processedOk);

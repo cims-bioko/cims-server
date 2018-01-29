@@ -22,24 +22,20 @@ public class SprayingFormProcessor extends AbstractFormProcessor {
     private LocationService locationService;
 
     @Transactional
-    public void processForm(Form form) throws IOException {
+    public void processForm(Form form) throws ConstraintViolations {
         if (form.entityUuid != null) {
             Location location = locationService.getByUuid(form.entityUuid);
             if (location != null) {
-                try {
-                    switch (form.evaluation) {
-                        case DESTROYED:
-                            location.getAttrsForUpdate().put("status", "destroyed");
-                            location.setDeleted(true);
-                            break;
-                        case UNINHABITED:
-                            location.getAttrsForUpdate().put("status", "uninhabited");
-                            break;
-                    }
-                    locationService.save(location);
-                } catch (ConstraintViolations cv) {
-                    logError(cv, marshalForm(form), Form.LOG_NAME);
+                switch (form.evaluation) {
+                    case DESTROYED:
+                        location.getAttrsForUpdate().put("status", "destroyed");
+                        location.setDeleted(true);
+                        break;
+                    case UNINHABITED:
+                        location.getAttrsForUpdate().put("status", "uninhabited");
+                        break;
                 }
+                locationService.save(location);
             } else {
                 log.info("location {} does not exist, ignoring", form.entityUuid);
             }
@@ -49,11 +45,11 @@ public class SprayingFormProcessor extends AbstractFormProcessor {
     @XmlEnum
     @XmlType
     public enum SprayingEvaluation {
-        @XmlEnumValue("1")SPRAYED,
-        @XmlEnumValue("2")REFUSED,
-        @XmlEnumValue("3")CLOSED,
-        @XmlEnumValue("4")UNINHABITED,
-        @XmlEnumValue("5")DESTROYED
+        @XmlEnumValue("1") SPRAYED,
+        @XmlEnumValue("2") REFUSED,
+        @XmlEnumValue("3") CLOSED,
+        @XmlEnumValue("4") UNINHABITED,
+        @XmlEnumValue("5") DESTROYED
     }
 
     @XmlRootElement(name = "sprayingForm")

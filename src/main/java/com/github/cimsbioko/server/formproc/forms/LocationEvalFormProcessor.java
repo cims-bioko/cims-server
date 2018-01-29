@@ -22,27 +22,23 @@ public class LocationEvalFormProcessor extends AbstractFormProcessor {
     private LocationService locationService;
 
     @Transactional
-    public void processForm(Form form) throws IOException {
+    public void processForm(Form form) throws ConstraintViolations {
         if (form.entityUuid != null) {
             Location location = locationService.getByUuid(form.entityUuid);
             if (location != null) {
-                try {
-                    switch (form.evaluation) {
-                        case NOT_FOUND:
-                            location.getAttrsForUpdate().put("status", "not-found");
-                            break;
-                        case DESTROYED:
-                            location.getAttrsForUpdate().put("status", "destroyed");
-                            location.setDeleted(true);
-                            break;
-                        case UNINHABITED:
-                            location.getAttrsForUpdate().put("status", "uninhabited");
-                            break;
-                    }
-                    locationService.save(location);
-                } catch (ConstraintViolations cv) {
-                    logError(cv, marshalForm(form), Form.LOG_NAME);
+                switch (form.evaluation) {
+                    case NOT_FOUND:
+                        location.getAttrsForUpdate().put("status", "not-found");
+                        break;
+                    case DESTROYED:
+                        location.getAttrsForUpdate().put("status", "destroyed");
+                        location.setDeleted(true);
+                        break;
+                    case UNINHABITED:
+                        location.getAttrsForUpdate().put("status", "uninhabited");
+                        break;
                 }
+                locationService.save(location);
             } else {
                 log.info("location {} does not exist, ignoring", form.entityUuid);
             }

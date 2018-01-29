@@ -1,7 +1,7 @@
 package com.github.cimsbioko.server.service;
 
-import com.github.cimsbioko.server.domain.Error;
+import com.github.cimsbioko.server.domain.FormSubmission;
 
 public interface ErrorService {
-    Error logError(Error error);
+    void logError(FormSubmission submission, String message);
 }

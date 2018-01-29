@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.bind.annotation.*;
-import java.io.IOException;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
 @Component
@@ -30,14 +32,13 @@ public class LocationFormProcessor extends AbstractFormProcessor {
     private LocationHierarchyService locationHierarchyService;
 
     @Transactional
-    public void processForm(Form form) throws IOException {
+    public void processForm(Form form) throws ConstraintViolations {
 
         ConstraintViolations cv = new ConstraintViolations();
 
         if (form.locationExtId == null) {
             cv.addViolations("No Location ExtId provided");
-            logError(cv, marshalForm(form), Form.LOG_NAME);
-            return;
+            throw cv;
         }
 
         Location location;
@@ -45,8 +46,7 @@ public class LocationFormProcessor extends AbstractFormProcessor {
             location = locationService.getByUuid(form.entityUuid);
             if (null != location) {
                 cv.addViolations("Location already exists " + form.entityUuid);
-                logError(cv, marshalForm(form), Form.LOG_NAME);
-                return;
+                throw cv;
             }
         } catch (Exception e) {
             return;
@@ -58,8 +58,7 @@ public class LocationFormProcessor extends AbstractFormProcessor {
         FieldWorker collectedBy = fieldWorkerService.getByUuid(form.fieldWorkerUuid);
         if (null == collectedBy) {
             cv.addViolations("Field Worker does not exist : " + form.fieldWorkerUuid);
-            logError(cv, marshalForm(form), Form.LOG_NAME);
-            return;
+            throw cv;
         }
         location.setCollector(collectedBy);
 
@@ -79,10 +78,9 @@ public class LocationFormProcessor extends AbstractFormProcessor {
                 }
             }
 
-            if (null == locationHierarchy) {
+            if (locationHierarchy == null) {
                 cv.addViolations("Location Hierarchy does not exist : " + form.hierarchyUuid + " / " + form.hierarchyExtId);
-                logError(cv, marshalForm(form), Form.LOG_NAME);
-                return;
+                throw cv;
             }
         } catch (Exception e) {
             return;
@@ -90,11 +88,8 @@ public class LocationFormProcessor extends AbstractFormProcessor {
 
         location.setHierarchy(locationHierarchy);
 
-        // modify the extId if it matches another location's extId, log the change
-        if (null != locationService.getByExtId(form.locationExtId)) {
+        if (locationService.getByExtId(form.locationExtId) != null) {
             modifyExtId(location, form);
-            cv.addViolations("Location persisted with Modified ExtId: Old = " + form.locationExtId + " New = " + location.getExtId());
-            logError(cv, marshalForm(form), Form.LOG_NAME);
         } else {
             location.setExtId(form.locationExtId);
         }
@@ -103,14 +98,7 @@ public class LocationFormProcessor extends AbstractFormProcessor {
         copyFormDataToLocation(form, location);
 
         // persist the location
-        try {
-            locationService.create(location);
-        } catch (ConstraintViolations e) {
-            logError(cv, marshalForm(form), Form.LOG_NAME);
-            return;
-        } catch (Exception e) {
-            return;
-        }
+        locationService.create(location);
     }
 
     private void modifyExtId(Location location, Form form) {

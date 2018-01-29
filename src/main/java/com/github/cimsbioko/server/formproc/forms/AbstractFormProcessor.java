@@ -1,9 +1,6 @@
 package com.github.cimsbioko.server.formproc.forms;
 
 import com.github.cimsbioko.server.service.ErrorService;
-import com.github.cimsbioko.server.util.ErrorUtil;
-import com.github.cimsbioko.server.exception.ConstraintViolations;
-import com.github.cimsbioko.server.domain.Error;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
@@ -27,11 +24,6 @@ public class AbstractFormProcessor {
     @Autowired
     @Qualifier("formMarshaller")
     private GenericMarshaller marshaller;
-
-    protected void logError(ConstraintViolations cv, String payload, String simpleClassName) {
-        Error error = ErrorUtil.createError( payload, simpleClassName, cv.getViolations());
-        errorService.logError(error);
-    }
 
     protected static Calendar getDateInPast() {
         Calendar inPast = Calendar.getInstance();

@@ -14,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.IOException;
 import java.io.Serializable;
@@ -38,7 +41,7 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
     private LocationService locationService;
 
     @Transactional
-    public void processForm(Form form) throws IOException {
+    public void processForm(Form form) throws IOException, ConstraintViolations {
 
         // Default relationship to head of household is "self"
         if (form.individualRelationshipToHeadOfHousehold == null) {
@@ -53,8 +56,7 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
         FieldWorker collectedBy = fieldWorkerService.getByUuid(form.fieldWorkerUuid);
         if (collectedBy == null) {
             cv.addViolations("Field Worker does not exist");
-            logError(cv, marshalForm(form), Form.LOG_NAME);
-            return;
+            throw cv;
         }
 
         // where are we?
@@ -71,8 +73,7 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
             if (location == null) {
                 String errorMessage = "Location does not exist " + form.householdUuid + " / " + form.householdExtId;
                 cv.addViolations(errorMessage);
-                logError(cv, marshalForm(form), Form.LOG_NAME);
-                return;
+                throw cv;
             }
 
         } catch (Exception e) {
@@ -80,51 +81,33 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
         }
 
         // make a new individual, to be persisted below
-        Individual individual;
-        try {
-            individual = findOrMakeIndividual(form, collectedBy, insertTime, cv);
-            if (cv.hasViolations()) {
-                logError(cv, marshalForm(form), Form.LOG_NAME);
-                return;
-            }
-        } catch (Exception e) {
-            return;
+        Individual individual = findOrMakeIndividual(form, collectedBy, insertTime, cv);
+        if (cv.hasViolations()) {
+            throw cv;
         }
 
         location.addResident(individual);
 
         // change the individual's extId if the server has previously changed the extId of their location/household
         if (!form.householdExtId.equalsIgnoreCase(location.getExtId())) {
-
             updateIndividualExtId(individual, location);
-
-            // log the modification
             cv.addViolations("Individual ExtId updated from " + form.individualExtId + " to " + individual.getExtId());
-            logError(cv, marshalForm(form), Form.LOG_NAME);
+            throw cv;
         }
 
         // log a warning if the individual extId clashes with an existing individual's extId
         if (individualService.getExistingExtIdCount(individual.getExtId()) != 0) {
             cv.addViolations("Warning: Individual ExtId clashes with an existing Individual's extId : " + individual.getExtId());
-            logError(cv, marshalForm(form), Form.LOG_NAME);
+            throw cv;
         }
 
         // persist the individual, used to be for cascading to residency
         // TODO: remove this type of code, since it's probably unnecessary after removing residency
-        try {
-            createOrSaveIndividual(individual);
-        } catch (ConstraintViolations e) {
-            logError(e, marshalForm(form), Form.LOG_NAME);
-            return;
-        } catch (Exception e) {
-            return;
-        }
+        createOrSaveIndividual(individual);
 
         if (form.individualRelationshipToHeadOfHousehold.equals(HEAD_OF_HOUSEHOLD_SELF)) {
             location.setName(individual.getLastName());
         }
-
-        return;
     }
 
     private void updateIndividualExtId(Individual individual, Location location) {

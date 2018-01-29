@@ -1,5 +1,6 @@
 package com.github.cimsbioko.server.domain;
 
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.Calendar;
 
 @Entity
 @Table(name = "error")
+@DynamicInsert
 public class Error implements Serializable {
 
     private static final long serialVersionUID = 2447734552586256198L;
@@ -28,6 +30,10 @@ public class Error implements Serializable {
     private String entityType;
 
     private String message;
+
+    @ManyToOne
+    @JoinColumn(name = "submission")
+    private FormSubmission submission;
 
     public Calendar getCreated() {
         return created;
@@ -67,5 +73,13 @@ public class Error implements Serializable {
 
     public void setEntityType(String entityType) {
         this.entityType = entityType;
+    }
+
+    public FormSubmission getSubmission() {
+        return submission;
+    }
+
+    public void setSubmission(FormSubmission submission) {
+        this.submission = submission;
     }
 }
