@@ -73,8 +73,8 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
 
     private void handleRenumber(Form form, Location location) {
         LocationHierarchy locality = location.getHierarchy().getParent().getParent(),
-        map = hierarchyService.createOrFindMap(locality.getUuid(), form.mapAreaName),
-        sector = hierarchyService.createOrFindSector(map.getUuid(), form.sectorName);
+                map = hierarchyService.createOrFindMap(locality.getUuid(), form.mapAreaName),
+                sector = hierarchyService.createOrFindSector(map.getUuid(), form.sectorName);
         location.setExtId(form.newExtId);
         location.setHierarchy(sector);
         if (hasCoordinates(form)) {
@@ -135,11 +135,11 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
     @XmlEnum
     @XmlType
     public enum Action {
-        @XmlEnumValue("renumber")RENUMBER,
-        @XmlEnumValue("merge")MERGE,
-        @XmlEnumValue("gps-only")GPS_ONLY,
-        @XmlEnumValue("not-found")NOT_FOUND,
-        @XmlEnumValue("remove")REMOVE
+        @XmlEnumValue("renumber") RENUMBER,
+        @XmlEnumValue("merge") MERGE,
+        @XmlEnumValue("gps-only") GPS_ONLY,
+        @XmlEnumValue("not-found") NOT_FOUND,
+        @XmlEnumValue("remove") REMOVE
     }
 
     @XmlRootElement(name = "duplicateLocationForm")
