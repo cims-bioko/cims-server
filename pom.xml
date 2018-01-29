@@ -12,7 +12,7 @@
 
     <groupId>com.github.cims-bioko</groupId>
     <artifactId>cims-server</artifactId>
-    <version>4.2</version>
+    <version>4.3-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>CIMS Server</name>
