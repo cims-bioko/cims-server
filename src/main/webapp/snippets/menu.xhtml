@@ -15,7 +15,7 @@
                     <f:actionListener target="#{navController.showHome}" />
                 </h:commandLink>
             </li>
-            <sec:authorize access="hasAuthority('ACESSS_UTILITY_ROUTINES')">
+            <sec:authorize access="hasAuthority('ACCESS_UTILITY_ROUTINES')">
                 <li>
                     <h:commandLink value="#{msg.navBarUtilityRoutine}" action="welcome">
                         <f:setPropertyActionListener target="#{navController.showUtilities}" value="true"/>
@@ -27,7 +27,7 @@
                     </c:if>
                 </li>
             </sec:authorize>
-            <sec:authorize access="hasAuthority('ACESSS_CONFIGURATION')">
+            <sec:authorize access="hasAuthority('ACCESS_CONFIGURATION')">
                 <li>
                     <h:commandLink value="#{msg.navBarConfiguration}" action="welcome">
                         <f:setPropertyActionListener target="#{navController.showConfiguration}" value="true"/>

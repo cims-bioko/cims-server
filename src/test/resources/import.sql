@@ -5,10 +5,7 @@ INSERT INTO privilege VALUES ('PRIVILEGE3', 'DELETE_ENTITY')
 INSERT INTO privilege VALUES ('PRIVILEGE4', 'VIEW_ENTITY')
 INSERT INTO privilege VALUES ('PRIVILEGE5', 'CREATE_USER')
 INSERT INTO privilege VALUES ('PRIVILEGE6', 'DELETE_USER')
-INSERT INTO privilege VALUES ('PRIVILEGE7', 'ACCESS_BASELINE')
-INSERT INTO privilege VALUES ('PRIVILEGE8', 'ACCESS_UPDATE')
-INSERT INTO privilege VALUES ('PRIVILEGE9', 'ACCESS_AMENDMENT_FORMS')
-INSERT INTO privilege VALUES ('PRIVILEGE11', 'ACESSS_UTILITY_ROUTINES')
+INSERT INTO privilege VALUES ('PRIVILEGE11', 'ACCESS_UTILITY_ROUTINES')
 
 -- Defined  core roles
 INSERT INTO role (uuid, name, description, deleted) VALUES ('ROLE1', 'ADMINISTRATOR', 'Administrator of OpenHDS', false)
@@ -21,15 +18,10 @@ INSERT INTO role_privileges (role, privilege) VALUES ('ROLE1', 'PRIVILEGE3')
 INSERT INTO role_privileges (role, privilege) VALUES ('ROLE1', 'PRIVILEGE4')
 INSERT INTO role_privileges (role, privilege) VALUES ('ROLE1', 'PRIVILEGE5')
 INSERT INTO role_privileges (role, privilege) VALUES ('ROLE1', 'PRIVILEGE6')
-INSERT INTO role_privileges (role, privilege) VALUES ('ROLE1', 'PRIVILEGE7')
-INSERT INTO role_privileges (role, privilege) VALUES ('ROLE1', 'PRIVILEGE8')
-INSERT INTO role_privileges (role, privilege) VALUES ('ROLE1', 'PRIVILEGE9')
-INSERT INTO role_privileges (role, privilege) VALUES ('ROLE1', 'PRIVILEGE10')
 INSERT INTO role_privileges (role, privilege) VALUES ('ROLE1', 'PRIVILEGE11')
 
 INSERT INTO role_privileges (role, privilege) VALUES ('ROLE2', 'PRIVILEGE4')
 INSERT INTO role_privileges (role, privilege) VALUES ('ROLE4', 'PRIVILEGE1')
-INSERT INTO role_privileges (role, privilege) VALUES ('ROLE4', 'PRIVILEGE8')
 
 -- Defined Admin user
 INSERT INTO users (uuid, first_Name, last_Name, full_name, description, username, password, last_login, deleted) VALUES ('User 1', 'FirstName', 'LastName', 'Administrator', 'Administrator User', 'admin', 'test', 0, false)
