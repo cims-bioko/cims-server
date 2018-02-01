@@ -60,6 +60,8 @@ public class SecurityConfig {
                     .sessionCreationPolicy(STATELESS)
                     .and()
                     .authorizeRequests()
+                    .antMatchers("/api/rest/mobiledb/export").hasAuthority("MOBILE_DB_EXPORT")
+                    .antMatchers("/api/rest/mobiledb").hasAuthority("MOBILE_DB_SYNC")
                     .anyRequest().authenticated()
                     .and()
                     .httpBasic()
