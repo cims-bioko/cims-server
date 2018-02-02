@@ -51,10 +51,9 @@ public class LocationEvalFormProcessor extends AbstractFormProcessor {
         @XmlEnumValue("notfound") NOT_FOUND,
         @XmlEnumValue("destroyed") DESTROYED,
         @XmlEnumValue("uninhabited") UNINHABITED,
-        @XmlEnumValue("fullconsent") FULL_CONSENT,
-        @XmlEnumValue("partialconsent") PARTIAL_CONSENT,
+        @XmlEnumValue("unavailable") UNAVAILABLE,
         @XmlEnumValue("refused") REFUSED,
-        @XmlEnumValue("unavailable") UNAVAILABLE
+        @XmlEnumValue("consent") CONSENT
     }
 
     @XmlRootElement(name = "locationEvalForm")
