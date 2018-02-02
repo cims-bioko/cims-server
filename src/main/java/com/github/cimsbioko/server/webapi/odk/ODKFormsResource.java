@@ -1,6 +1,9 @@
 package com.github.cimsbioko.server.webapi.odk;
 
+import com.github.cimsbioko.server.dao.FormDao;
 import com.github.cimsbioko.server.dao.FormSubmissionDao;
+import com.github.cimsbioko.server.domain.Form;
+import com.github.cimsbioko.server.domain.FormId;
 import com.github.cimsbioko.server.domain.FormSubmission;
 import com.github.cimsbioko.server.exception.ExistingSubmissionException;
 import com.github.cimsbioko.server.service.FormSubmissionService;
@@ -47,7 +50,6 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -111,6 +113,9 @@ public class ODKFormsResource {
     @Autowired
     private FormSubmissionDao submissionDao;
 
+    @Autowired
+    private FormDao formDao;
+
     @RequestMapping(value = {"/upload", "/forms", "/formUpload"}, method = RequestMethod.HEAD)
     public void configPush(HttpServletRequest req, HttpServletResponse rsp) {
         addOpenRosaHeaders(rsp);
@@ -150,6 +155,17 @@ public class ODKFormsResource {
             version = DEFAULT_VERSION;
             firstInstance.setAttribute(VERSION, version);
         }
+
+        FormId formId = new FormId(id,version);
+        Form form = formDao.findById(formId);
+        if (form == null) {
+            log.info("uploading new form");
+            form = new Form(formId, formDoc);
+        } else {
+            log.info("updating existing form");
+            form.setXml(formDoc);
+        }
+        formDao.save(form);
 
         String formPath = String.format("%1$s/%2$s/%1$s.xml", id, version);
         log.info("storing form at {}", formPath);
