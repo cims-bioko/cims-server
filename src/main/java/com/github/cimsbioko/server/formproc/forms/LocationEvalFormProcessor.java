@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.annotation.*;
-import java.io.IOException;
 import java.io.Serializable;
 
 @Component
