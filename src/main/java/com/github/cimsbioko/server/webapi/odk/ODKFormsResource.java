@@ -166,6 +166,7 @@ public class ODKFormsResource {
             form.setXml(formDoc);
         }
         formDao.save(form);
+        formDao.exclusiveDownload(form);
 
         String formPath = String.format("%1$s/%2$s/%1$s.xml", id, version);
         log.info("storing form at {}", formPath);

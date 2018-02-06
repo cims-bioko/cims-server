@@ -39,4 +39,14 @@ public class FormDaoImpl implements FormDao {
     public Form findById(FormId id) {
         return getCurrentSession().find(Form.class, id);
     }
+
+    @Override
+    @Transactional
+    public void exclusiveDownload(Form form) {
+        getCurrentSession()
+                .createQuery("update Form f set f.downloads = false where formId.id = :id and formId.version <> :version")
+                .setParameter("id", form.getFormId().getId())
+                .setParameter("version", form.getFormId().getVersion())
+                .executeUpdate();
+    }
 }

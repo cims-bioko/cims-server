@@ -7,4 +7,5 @@ public interface FormDao {
     void save(Form form);
     void delete(FormId id);
     Form findById(FormId id);
+    void exclusiveDownload(Form form);
 }
