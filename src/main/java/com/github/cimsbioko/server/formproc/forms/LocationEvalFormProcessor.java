@@ -25,6 +25,7 @@ public class LocationEvalFormProcessor extends AbstractFormProcessor {
         if (form.entityUuid != null) {
             Location location = locationService.getByUuid(form.entityUuid);
             if (location != null) {
+                location.setDescription(form.description);
                 switch (form.evaluation) {
                     case NOT_FOUND:
                         location.getAttrsForUpdate().put("status", "not-found");
@@ -63,6 +64,8 @@ public class LocationEvalFormProcessor extends AbstractFormProcessor {
         public static final String LOG_NAME = "LocationEvalForm";
 
         private String entityUuid;
+
+        private String description;
 
         private LocationEvaluation evaluation;
     }
