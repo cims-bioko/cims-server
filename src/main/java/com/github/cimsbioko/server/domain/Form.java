@@ -71,6 +71,14 @@ public class Form {
         this.submissions = submissions;
     }
 
+    public Timestamp getUploaded() {
+        return uploaded;
+    }
+
+    public void setUploaded(Timestamp uploaded) {
+        this.uploaded = uploaded;
+    }
+
     public void setLastSubmission(Timestamp lastSubmission) {
         this.lastSubmission = lastSubmission;
     }
