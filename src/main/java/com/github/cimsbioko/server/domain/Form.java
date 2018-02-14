@@ -70,4 +70,12 @@ public class Form {
     public void setSubmissions(boolean submissions) {
         this.submissions = submissions;
     }
+
+    public void setLastSubmission(Timestamp lastSubmission) {
+        this.lastSubmission = lastSubmission;
+    }
+
+    public Timestamp getLastSubmission() {
+        return lastSubmission;
+    }
 }

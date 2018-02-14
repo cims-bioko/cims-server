@@ -8,10 +8,7 @@ import org.hibernate.annotations.Type;
 import org.jdom2.Document;
 import org.json.JSONObject;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
@@ -158,4 +155,5 @@ public class FormSubmission {
     public void setProcessedOk(Boolean processedOk) {
         this.processedOk = processedOk;
     }
+
 }
