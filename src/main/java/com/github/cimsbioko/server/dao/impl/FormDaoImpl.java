@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository("formDao")
 public class FormDaoImpl implements FormDao {
 
@@ -48,5 +50,12 @@ public class FormDaoImpl implements FormDao {
                 .setParameter("id", form.getFormId().getId())
                 .setParameter("version", form.getFormId().getVersion())
                 .executeUpdate();
+    }
+
+    @Override
+    public List<Form> findDownloadable() {
+        return getCurrentSession()
+                .createQuery("select f from Form f where downloads = true", Form.class)
+                .getResultList();
     }
 }
