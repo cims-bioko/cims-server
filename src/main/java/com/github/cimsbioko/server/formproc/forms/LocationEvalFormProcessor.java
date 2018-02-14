@@ -36,6 +36,8 @@ public class LocationEvalFormProcessor extends AbstractFormProcessor {
                     case UNINHABITED:
                         location.getAttrsForUpdate().put("status", "uninhabited");
                         break;
+                    case BAD_DESC:
+                        location.setDescription(form.description);
                 }
                 locationService.save(location);
             } else {
@@ -51,7 +53,8 @@ public class LocationEvalFormProcessor extends AbstractFormProcessor {
         @XmlEnumValue("destroyed") DESTROYED,
         @XmlEnumValue("uninhabited") UNINHABITED,
         @XmlEnumValue("unavailable") UNAVAILABLE,
-        @XmlEnumValue("refused") REFUSED
+        @XmlEnumValue("refused") REFUSED,
+        @XmlEnumValue("baddesc") BAD_DESC
     }
 
     @XmlRootElement(name = "locationEvalForm")
@@ -62,6 +65,8 @@ public class LocationEvalFormProcessor extends AbstractFormProcessor {
         public static final String LOG_NAME = "LocationEvalForm";
 
         private String entityUuid;
+
+        private String description;
 
         private LocationEvaluation evaluation;
     }
