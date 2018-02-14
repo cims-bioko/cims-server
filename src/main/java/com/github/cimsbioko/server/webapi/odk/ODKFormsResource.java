@@ -26,6 +26,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -579,66 +580,91 @@ public class ODKFormsResource {
             rootElem.setAttribute(VERSION, version);
         }
 
-        // Get CIMS-specific binding or fall back on form id
-        String binding = rootElem.getAttributeValue(CIMS_BINDING);
-        if (binding == null) {
-            binding = id;
-        }
-
-        /*
-           Get submission date if supplied. Its presence implies previously submitted/processed (briefcase upload).
-           We can not infer whether the processing failed or succeeded because this CIMS concept is not present in
-           ODK briefcase.
-         */
-        Timestamp submitted = null, processed = null;
-        try {
-            processed = submitted = parseODKSubmitDate(rootElem.getAttributeValue(SUBMISSION_DATE));
-        } catch (ParseException e) {
-            log.warn("failed to parse submission date", e);
-        }
-
-        JSONObject json = toJSONObject(stringFromDoc(xmlDoc));
-        log.debug("converted json:\n{}", json);
+        Form form = formDao.findById(new FormId(id, version));
 
         addOpenRosaHeaders(rsp);
 
-        // Create a database record for the submission
-        FormSubmission submission = new FormSubmission(instanceId, xmlDoc, json, id, version, binding,
-                deviceId, collected, submitted, processed, null);
-        boolean isDuplicateSubmission = false;
-        try {
-            submission = submissionService.recordSubmission(submission);
-        } catch (ExistingSubmissionException e) {
-            log.debug("duplicate submission, only uploading attachments");
-            isDuplicateSubmission = true;
-        }
+        if (form == null) {
+            log.warn("rejected {}, unknown form id={}, version={}", instanceId, id, version);
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .contentType(MediaType.TEXT_XML)
+                    .body(new InputStreamResource(new ByteArrayInputStream(
+                            getFailedSubmissionResponse(String.format("form %s version %s doesn't exist", id, version)).getBytes())));
+        } else if (!form.isSubmissions()) {
+            log.warn("rejected {}, submissions disabled for form id={}, version={}", instanceId, id, version);
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .contentType(MediaType.TEXT_XML)
+                    .body(new InputStreamResource(new ByteArrayInputStream(
+                            getFailedSubmissionResponse(String.format("form %s version %s submissions disabled", id, version)).getBytes())));
+        } else {
 
-        // Create directory to store submission
-        File instanceDir = getSubmissionDir(instanceId);
-        instanceDir.mkdirs();
+            // Get CIMS-specific binding or fall back on form id
+            String binding = rootElem.getAttributeValue(CIMS_BINDING);
+            if (binding == null) {
+                binding = id;
+            }
 
-        // Save uploaded files to the submission directory
-        for (Map.Entry<String, List<MultipartFile>> fileEntry : req.getMultiFileMap().entrySet()) {
-            if (isDuplicateSubmission && XML_SUBMISSION_FILE.equalsIgnoreCase(fileEntry.getKey())) {
-                log.debug("skipping multipart file {}", XML_SUBMISSION_FILE);
-            } else {
-                List<MultipartFile> files = fileEntry.getValue();
-                if (files.size() == 1) {
-                    MultipartFile file = files.get(0);
-                    File dest = new File(instanceDir, file.getOriginalFilename());
-                    file.transferTo(dest);
+            /*
+               Get submission date if supplied. Its presence implies previously submitted/processed (briefcase upload).
+               We can not infer whether the processing failed or succeeded because this CIMS concept is not present in
+               ODK briefcase.
+             */
+            Timestamp submitted = null, processed = null;
+            try {
+                processed = submitted = parseODKSubmitDate(rootElem.getAttributeValue(SUBMISSION_DATE));
+            } catch (ParseException e) {
+                log.warn("failed to parse submission date", e);
+            }
+
+            JSONObject json = toJSONObject(stringFromDoc(xmlDoc));
+            log.debug("converted json:\n{}", json);
+
+            // Create a database record for the submission
+            FormSubmission submission = new FormSubmission(instanceId, xmlDoc, json, id, version, binding,
+                    deviceId, collected, submitted, processed, null);
+            boolean isDuplicateSubmission = false;
+            try {
+                submission = submissionService.recordSubmission(submission);
+            } catch (ExistingSubmissionException e) {
+                log.debug("duplicate submission, only uploading attachments");
+                isDuplicateSubmission = true;
+            }
+
+            // Create directory to store submission
+            File instanceDir = getSubmissionDir(instanceId);
+            instanceDir.mkdirs();
+
+            // Save uploaded files to the submission directory
+            for (Map.Entry<String, List<MultipartFile>> fileEntry : req.getMultiFileMap().entrySet()) {
+                if (isDuplicateSubmission && XML_SUBMISSION_FILE.equalsIgnoreCase(fileEntry.getKey())) {
+                    log.debug("skipping multipart file {}", XML_SUBMISSION_FILE);
                 } else {
-                    log.warn("skipped multipart entry {}, had {} files", fileEntry.getKey(), files.size());
+                    List<MultipartFile> files = fileEntry.getValue();
+                    if (files.size() == 1) {
+                        MultipartFile file = files.get(0);
+                        File dest = new File(instanceDir, file.getOriginalFilename());
+                        file.transferTo(dest);
+                    } else {
+                        log.warn("skipped multipart entry {}, had {} files", fileEntry.getKey(), files.size());
+                    }
                 }
             }
+
+            URI submissionUri = new URI(contextRelativeUrl(req, "submission"));
+
+            return ResponseEntity
+                    .created(submissionUri)
+                    .contentType(MediaType.TEXT_XML)
+                    .body(new InputStreamResource(new ByteArrayInputStream(getSuccessfulSubmissionResponse(submission).getBytes())));
         }
+    }
 
-        URI submissionUri = new URI(contextRelativeUrl(req, "submission"));
-
-        return ResponseEntity
-                .created(submissionUri)
-                .contentType(MediaType.TEXT_XML)
-                .body(new InputStreamResource(new ByteArrayInputStream(getSubmissionResult(submission).getBytes())));
+    private String getFailedSubmissionResponse(String message) {
+        return "<OpenRosaResponse xmlns=\"http://openrosa.org/http/response\">" +
+                "<message>" + message + "</message>" +
+                "</OpenRosaResponse>";
     }
 
     private Element getChild(Element parent, String cname, Namespace... nses) {
@@ -651,12 +677,13 @@ public class ODKFormsResource {
         return null;
     }
 
-    private String getSubmissionResult(FormSubmission fs) {
+    private String getSuccessfulSubmissionResponse(FormSubmission fs) {
         return String.format("<OpenRosaResponse xmlns=\"http://openrosa.org/http/response\">" +
                 "<message>full submission upload was successful!</message>" +
                 "<submissionMetadata xmlns=\"http://www.opendatakit.org/xforms\"" +
                 "id=\"%s\" instanceID=\"%s\" version=\"%s\" submissionDate=\"%s\"/>" +
-                "</OpenRosaResponse>", fs.getFormId(), fs.getInstanceId(), fs.getFormVersion(), formatODKSubmitDate(fs.getSubmitted()));
+                "</OpenRosaResponse>",
+                fs.getFormId(), fs.getInstanceId(), fs.getFormVersion(), formatODKSubmitDate(fs.getSubmitted()));
     }
 
     private String generateInstanceId() {
