@@ -322,16 +322,14 @@ public class ODKFormsResource {
     @GetMapping(value = "/submission/{instanceId}", produces = "application/xml")
     @ResponseBody
     @Transactional(readOnly = true)
-    public ResponseEntity<?> getXMLInstance(@PathVariable String instanceId)
-            throws IOException {
+    public ResponseEntity<?> getXMLInstance(@PathVariable String instanceId) throws IOException {
         return getInstanceEntity(APPLICATION_XML, instanceId);
     }
 
     @GetMapping(value = "/submission/{instanceId}", produces = "application/json")
     @ResponseBody
     @Transactional(readOnly = true)
-    public ResponseEntity<?> getJSONInstance(@PathVariable String instanceId)
-            throws IOException {
+    public ResponseEntity<?> getJSONInstance(@PathVariable String instanceId) throws IOException {
         return getInstanceEntity(APPLICATION_JSON, instanceId);
     }
 
