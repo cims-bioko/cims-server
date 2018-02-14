@@ -156,7 +156,7 @@ public class ODKFormsResource {
             firstInstance.setAttribute(VERSION, version);
         }
 
-        FormId formId = new FormId(id,version);
+        FormId formId = new FormId(id, version);
         Form form = formDao.findById(formId);
         if (form == null) {
             log.info("uploading new form");
@@ -168,10 +168,10 @@ public class ODKFormsResource {
         formDao.save(form);
         formDao.exclusiveDownload(form);
 
-        String formPath = String.format("%1$s/%2$s/%1$s.xml", id, version);
-        log.info("storing form at {}", formPath);
+        String formFilePath = getFormFilePath(id, version);
+        log.info("storing form at {}", formFilePath);
 
-        File formFile = new File(formsDir, formPath);
+        File formFile = new File(formsDir, formFilePath);
         File formDir = formFile.getParentFile();
         formDir.mkdirs();
         try (FileWriter writer = new FileWriter(formFile)) {
@@ -219,6 +219,14 @@ public class ODKFormsResource {
                 .created(formUrl)
                 .contentType(MediaType.TEXT_XML)
                 .body(new InputStreamReader(new ByteArrayInputStream(OR_SUCCESS_MSG)));
+    }
+
+    private String getFormFilePath(String id, String version) {
+        return String.format("%1s/%2$s.xml", getFormDirPath(id, version), id);
+    }
+
+    private String getFormDirPath(String id, String version) {
+        return String.format("%1$s/%2$s", id, version);
     }
 
     private static byte[] OR_SUCCESS_MSG = "<OpenRosaResponse xmlns=\"http://openrosa.org/http/response\"><message>Successful upload.</message></OpenRosaResponse>".getBytes();
