@@ -25,7 +25,7 @@ public class JSONType implements UserType {
 
     @Override
     public boolean equals(Object x, Object y) throws HibernateException {
-        return x == y || x.toString().equals(y.toString());
+        return x == y || (x instanceof JSONObject && y instanceof JSONObject && x.toString().equals(y.toString()));
     }
 
     @Override
