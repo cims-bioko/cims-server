@@ -303,7 +303,7 @@ public class ODKFormsResource {
     }
 
     @DeleteMapping("/forms/{formId:\\w+}/{formVersion:\\d+}")
-    public ResponseEntity<?> deleteForm(@PathVariable String formId, @PathVariable String formVersion) throws IOException {
+    public ResponseEntity<?> deleteForm(@PathVariable String formId, @PathVariable String formVersion) {
         String formPath = String.format("%s/%s", formId, formVersion);
         File formDir = new File(formsDir, formPath);
         if (formDir.exists() && FileSystemUtils.deleteRecursively(formDir)) {
