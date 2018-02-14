@@ -12,35 +12,35 @@ import java.util.List;
 @Service
 public class FormSubmissionServiceImpl implements FormSubmissionService {
 
-    FormSubmissionDao formDao;
+    private FormSubmissionDao submissionDao;
 
-    public FormSubmissionServiceImpl(FormSubmissionDao formDao) {
-        this.formDao = formDao;
+    public FormSubmissionServiceImpl(FormSubmissionDao submissionDao) {
+        this.submissionDao = submissionDao;
     }
 
     @Override
     @Transactional
     public FormSubmission recordSubmission(FormSubmission submission) throws ExistingSubmissionException {
         String instanceId = submission.getInstanceId();
-        FormSubmission existing = formDao.findById(instanceId);
+        FormSubmission existing = submissionDao.findById(instanceId);
         if (existing != null) {
             throw new ExistingSubmissionException("submission with id " + instanceId + " exists", existing);
         } else {
-            formDao.save(submission);
-            return formDao.findById(instanceId);
+            submissionDao.save(submission);
+            return submissionDao.findById(instanceId);
         }
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<FormSubmission> getUnprocessed(int batchSize) {
-        return formDao.findUnprocessed(batchSize);
+        return submissionDao.findUnprocessed(batchSize);
     }
 
     @Override
     @Transactional
     public void markProcessed(FormSubmission submission, Boolean processedOk) {
-        formDao.markProcessed(submission, processedOk);
+        submissionDao.markProcessed(submission, processedOk);
     }
 
 }
