@@ -431,7 +431,7 @@ public class ODKFormsResource {
     @GetMapping("/view/downloadSubmission")
     @Transactional(readOnly = true)
     public ResponseEntity<?> downloadSubmission(@RequestParam("formId") String submissionKey, HttpServletRequest req)
-            throws JDOMException, IOException {
+            throws IOException {
         String[] info = getInfoFromSubmissionKey(submissionKey);
         if (info == null) {
             return ResponseEntity.notFound().build();
