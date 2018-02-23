@@ -84,6 +84,7 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
 
     private void handleRemove(Location location) {
         location.setDeleted(true);
+        location.getAttrsForUpdate().put("status", "voided");
     }
 
     private void handleMerge(Form form, Location src) {
@@ -109,6 +110,9 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
 
         // do the merge
         src.setDeleted(true);
+        src.getAttrsForUpdate().put("status", "merged");
+
+        // also update coordinates if provided in form
         if (hasCoordinates(form)) {
             updatePosition(dst, form.latitude, form.longitude);
         } else if (dst.getGlobalPos() == null ||
