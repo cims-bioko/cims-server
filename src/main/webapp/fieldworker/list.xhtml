@@ -2,6 +2,10 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
+    <!-- Search Widget -->
+    <ui:include src="/search/searchBox.xhtml">
+        <ui:param name="crud" value="#{fieldWorkerCrud}"/>
+    </ui:include>
     <h:form>
         <div style="text-align:right;">
             <div style="float:left;">
@@ -13,11 +17,6 @@
                     <ui:param name="currentCrud" value="#{fieldWorkerCrud}"/>
                 </ui:include>
             </div>
-
-            <!-- Search Widget -->
-            <ui:include src="/search/searchBox.xhtml">
-                <ui:param name="crud" value="#{fieldWorkerCrud}"/>
-            </ui:include>
         </div>
         <div>
             <h:outputText escape="false" value="#{msg.fieldWorkerEmpty}"

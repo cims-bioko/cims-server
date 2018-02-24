@@ -3,6 +3,10 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <!-- Search Widget -->
+    <ui:include src="/search/searchBox.xhtml">
+        <ui:param name="crud" value="#{roleCrud}"/>
+    </ui:include>
     <h:form>
         <div style="text-align:right;">
             <div style="float:left;">
@@ -15,12 +19,6 @@
                 </ui:include>
             </div>
         </div>
-
-        <!-- Search Widget -->
-        <ui:include src="/search/searchBox.xhtml">
-            <ui:param name="crud" value="#{roleCrud}"/>
-        </ui:include>
-
         <div>
             <div class="center">
                 <h:messages errorClass="error" style="width:100%" globalOnly="false"/>
