@@ -1,5 +1,6 @@
 package com.github.cimsbioko.server.idgen;
 
+import java.text.Normalizer;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,7 +71,7 @@ public abstract class Generator<T> extends LuhnValidator {
      */
     final String formatProperString(String string, Integer filter) throws ConstraintViolations {
 
-        String substring = string.substring(0, filter);
+        String substring = removeAccents(string.substring(0, filter));
 
         Pattern pattern = Pattern.compile("[a-zA-Z0-9]+");
         Matcher matcher = pattern.matcher(substring);
@@ -80,6 +81,10 @@ public abstract class Generator<T> extends LuhnValidator {
                     "cannot be specified as part of the Id.");
 
         return substring.trim().toUpperCase();
+    }
+
+    private String removeAccents(String substring) {
+        return Normalizer.normalize(substring, Normalizer.Form.NFD).replaceAll("\\p{M}", "");
     }
 
     /**
