@@ -14,6 +14,9 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
 
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @EnableWebSecurity
@@ -62,6 +65,18 @@ public class SecurityConfig {
                     .authorizeRequests()
                     .antMatchers("/api/rest/mobiledb/export").hasAuthority("MOBILE_DB_EXPORT")
                     .antMatchers("/api/rest/mobiledb").hasAuthority("MOBILE_DB_SYNC")
+                    .antMatchers(POST, "/api/odk/formUpload").hasAuthority("FORM_UPLOAD")
+                    .antMatchers(POST, "/api/odk/forms").hasAuthority("FORM_UPLOAD")
+                    .antMatchers(GET, "/api/odk/forms").hasAuthority("FORM_LIST")
+                    .antMatchers(GET, "/api/odk/formList").hasAuthority("FORM_LIST")
+                    .antMatchers(GET, "/api/odk/forms/**").hasAuthority("FORM_DOWNLOAD")
+                    .antMatchers(GET, "/api/odk/formList/**").hasAuthority("FORM_DOWNLOAD")
+                    .antMatchers(DELETE, "/api/odk/forms/**").hasAuthority("FORM_DELETE")
+                    .antMatchers(POST, "/api/odk/submission").hasAuthority("SUBMISSION_UPLOAD")
+                    .antMatchers(GET, "/api/odk/view/submissionList").hasAuthority("SUBMISSION_LIST")
+                    .antMatchers(GET, "/api/odk/submissions/**").hasAuthority("SUBMISSION_LIST")
+                    .antMatchers(GET, "/api/odk/view/downloadSubmission").hasAuthority("SUBMISSION_DOWNLOAD")
+                    .antMatchers(GET, "/api/odk/submission/**").hasAuthority("SUBMISSION_DOWNLOAD")
                     .anyRequest().authenticated()
                     .and()
                     .httpBasic()
