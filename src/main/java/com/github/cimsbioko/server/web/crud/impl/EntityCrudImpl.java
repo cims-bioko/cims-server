@@ -1,30 +1,28 @@
 package com.github.cimsbioko.server.web.crud.impl;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.github.cimsbioko.server.dao.Dao;
+import com.github.cimsbioko.server.dao.GenericDao;
+import com.github.cimsbioko.server.domain.AuditableCollectedEntity;
+import com.github.cimsbioko.server.domain.Searchable;
+import com.github.cimsbioko.server.exception.ConstraintViolations;
+import com.github.cimsbioko.server.service.EntityService;
+import com.github.cimsbioko.server.web.crud.EntityCrud;
+import com.github.cimsbioko.server.web.service.JsfService;
+import com.github.cimsbioko.server.web.ui.PagingState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
-
-
-import com.github.cimsbioko.server.service.EntityService;
-import com.github.cimsbioko.server.dao.Dao;
-import com.github.cimsbioko.server.dao.GenericDao;
-import com.github.cimsbioko.server.domain.Searchable;
-import com.github.cimsbioko.server.web.crud.EntityCrud;
-import com.github.cimsbioko.server.web.service.JsfService;
-import com.github.cimsbioko.server.web.ui.PagingState;
-import com.github.cimsbioko.server.exception.ConstraintViolations;
-import com.github.cimsbioko.server.domain.AuditableCollectedEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Generic implementation of the EntityCrud interface
@@ -367,17 +365,19 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     }
 
     private long processSearchCriteria() {
-        if (!"java.lang.String".equals(searchableFieldsMap.get(propertyName).getName()))
+        if (!"java.lang.String".equals(searchableFieldsMap.get(propertyName).getName())) {
             return searchForEntitiesById(propertyName, searchableFieldsMap.get(propertyName), searchString, entityClass).size();
-        else
+        } else {
             return dao.getCountByProperty(propertyName, searchString);
+        }
     }
 
     private List<T> generateSearchResults() {
-        if (!"java.lang.String".equals(searchableFieldsMap.get(propertyName).getName()))
+        if (!"java.lang.String".equals(searchableFieldsMap.get(propertyName).getName())) {
             return searchForEntitiesById(propertyName, searchableFieldsMap.get(propertyName), searchString, entityClass);
-
-        return dao.findListByPropertyPagedInsensitive(propertyName, searchString, pager.getPageIndex(), pager.getPageIncrement());
+        } else {
+            return dao.findListByPropertyPagedInsensitive(propertyName, searchString, pager.getPageIndex(), pager.getPageIncrement());
+        }
     }
 
     public String clearSearch() {

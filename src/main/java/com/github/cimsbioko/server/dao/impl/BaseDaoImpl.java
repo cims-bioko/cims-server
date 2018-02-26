@@ -1,9 +1,7 @@
 package com.github.cimsbioko.server.dao.impl;
 
-import java.io.Serializable;
-import java.util.List;
-
 import com.github.cimsbioko.server.dao.Dao;
+import com.github.cimsbioko.server.domain.AuditableEntity;
 import com.github.cimsbioko.server.domain.FieldWorker;
 import com.github.cimsbioko.server.domain.LocationHierarchy;
 import com.github.cimsbioko.server.domain.User;
@@ -13,8 +11,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import com.github.cimsbioko.server.domain.AuditableEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.Serializable;
+import java.util.List;
 
 @SuppressWarnings("unchecked")
 public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK> {
@@ -147,8 +147,8 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK> {
     }
 
     public long getCountByProperty(String propertyName, Object value) {
-        Criteria criteria = getSession().createCriteria(entityType).add(Restrictions.eq(propertyName, value));
-        if (AuditableEntity.class.isAssignableFrom(entityType)) {
+        Criteria criteria = getSession().createCriteria(entityType).add(Restrictions.ilike(propertyName, (String) value, MatchMode.ANYWHERE));
+        if (AuditableEntity.class.isAssignableFrom(entityType) || User.class.isAssignableFrom(entityType)) {
             criteria = addImplicitRestrictions(criteria);
         }
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
