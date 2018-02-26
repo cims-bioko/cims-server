@@ -10,6 +10,7 @@ import com.github.cimsbioko.server.service.TaskService;
 import com.github.cimsbioko.server.task.support.TaskExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 
@@ -25,7 +26,8 @@ public class TaskBean {
 
     private ScheduledFuture scheduledTask;
 
-    private String cronSchedule = "0 0 * * * ?";
+    @Value("${app.task.schedule}")
+    private String cronSchedule;
 
     public TaskBean(TaskExecutor taskExecutor, TaskService taskService, TaskScheduler scheduler,
                     CurrentUser currentUser) {
@@ -58,8 +60,12 @@ public class TaskBean {
 
     public String scheduleAllTasks() {
         cancelScheduled();
-        scheduledTask = scheduler.schedule(new StartTasksExecutor(), new CronTrigger(cronSchedule));
-        log.info("user {} scheduled tasks for schedule {}", currentUser, cronSchedule);
+        if (cronSchedule != null && !cronSchedule.isEmpty()) {
+            scheduledTask = scheduler.schedule(new StartTasksExecutor(), new CronTrigger(cronSchedule));
+            log.info("user {} scheduled tasks for schedule {}", currentUser, cronSchedule);
+        } else {
+            log.info("user {} disabled scheduled tasks", currentUser, cronSchedule);
+        }
         return TASK_VIEW;
     }
 
