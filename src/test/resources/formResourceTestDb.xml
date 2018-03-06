@@ -3,12 +3,12 @@
 <dataset>
 
     <privilege uuid="PRIVILEGE1" privilege="CREATE_ENTITY" />
-    <role uuid="ROLE1" name="ADMINISTRATOR" description="Administrator of OpenHDS" deleted="false" />
+    <role uuid="ROLE1" name="ADMINISTRATOR" description="Administrator of OpenHDS" />
     <role_privileges role="ROLE1" privilege="PRIVILEGE1" />
 
     <users uuid="User 1" first_Name="OpenHDS" last_Name="Administrator" full_name="Administrator"
-          description="Administrator User" username="admin" password="test" last_login="1970-01-01 00:00:00" deleted="false" />
-    <user_roles user="User 1" role="ROLE1" />)
+          description="Administrator User" username="admin" password="test" last_login="1970-01-01 00:00:00" />
+    <user_roles user="User 1" role="ROLE1" />
 
     <locationhierarchylevel uuid="HierarchyLevel1" keyId="1" name="Level 1" />
     <locationhierarchylevel uuid="HierarchyLevel2" keyId="2" name="Level 2" />
@@ -19,50 +19,43 @@
     <locationhierarchy uuid="hierarchy3" name="IFB" extId="IFB" level="HierarchyLevel3" parent="hierarchy2" />
 
     <fieldworker uuid="FWEK1D" extid="FWEK1D" first_name="Test" last_name="FieldWorker"
-                 password_hash="invalid-password-hash" deleted="false" idPrefix="98"/>
+                 password_hash="invalid-password-hash" idPrefix="98"/>
 
     <fieldworker uuid="FieldWorker1" extid="FieldWorker1" first_name="Test" last_name="FieldWorker"
-                 password_hash="invalid-password-hash" deleted="false" idPrefix="98"/>
+                 password_hash="invalid-password-hash" idPrefix="98"/>
 
     <fieldworker uuid="UnknownFieldWorker" extid="UNK" first_name="Unknown" last_name="FieldWorker"
-                 password_hash="invalid-password-hash" deleted="false" idPrefix="99"/>
+                 password_hash="invalid-password-hash" idPrefix="99"/>
 
     <location uuid="TestLocation2" extId="testLocation2" name="Test Location"
-              hierarchy="hierarchy3" created="2000-12-19" deleted="false"
-              collector="FieldWorker1" />
+              hierarchy="hierarchy3" created="2000-12-19" collector="FieldWorker1" />
 
     <location uuid="NONHOUSEHOLDLOCATION" extId="newHouse_id" name="Non-household Location"
-              hierarchy="hierarchy3" created="2000-12-19" deleted="false"
-              collector="FieldWorker1" />
+              hierarchy="hierarchy3" created="2000-12-19" collector="FieldWorker1" />
 
     <location uuid="HOUSEHOLDLOCATION" extId="existing_id" name="Household Location"
-              hierarchy="hierarchy3" created="2000-12-19" deleted="false"
-              collector="FieldWorker1" />
+              hierarchy="hierarchy3" created="2000-12-19" collector="FieldWorker1" />
 
     <location uuid="TestLocation1" extId="testLocation1" name="Test Location" hierarchy="hierarchy3"
-              created="2000-12-19" deleted="false" collector="UnknownFieldWorker" />
+              created="2000-12-19" collector="UnknownFieldWorker" />
 
     <location uuid="LOCATION1" extId="LOCATION1" name="Location 1" hierarchy="hierarchy3"
-              created="2000-12-19" deleted="false" collector="UnknownFieldWorker" />
+              created="2000-12-19" collector="UnknownFieldWorker" />
 
     <individual uuid="Unknown Individual" extId="UNK" first_Name="Unknown" middle_Name="NULL" last_Name="Unknown"
-                gender="1" dob="1900-12-19" created="2009-12-19" deleted="false" collector="UnknownFieldWorker"
-                dip="0"/>
+                gender="1" dob="1900-12-19" created="2009-12-19" collector="UnknownFieldWorker" dip="0"/>
 
     <individual uuid="Individual1" extId="individual1" first_Name="Individual" middle_Name="" last_Name="1"
-                gender="1" dob="1900-12-19" created="2009-12-19" deleted="false" collector="UnknownFieldWorker"
-                dip="1"/>
+                gender="1" dob="1900-12-19" created="2009-12-19" collector="UnknownFieldWorker" dip="1"/>
 
     <individual uuid="Individual2" extId="individual2" first_Name="Individual" middle_Name="" last_Name="2"
-                gender="2" dob="1900-12-19" created="2009-12-19" deleted="false" collector="UnknownFieldWorker" dip="2"/>
+                gender="2" dob="1900-12-19" created="2009-12-19" collector="UnknownFieldWorker" dip="2"/>
 
 
     <individual uuid="PregnantIndividual" extId="Mother-001" first_Name="Pregnant" middle_Name="" last_Name="Individual"
-                gender="Female" dob="1900-12-19" created="2009-12-19" deleted="false"
-                collector="UnknownFieldWorker" dip="1"/>
+                gender="Female" dob="1900-12-19" created="2009-12-19" collector="UnknownFieldWorker" dip="1"/>
 
     <individual uuid="PregnantMale" extId="pregnantMale" first_Name="Pregnant" middle_Name="" last_Name="Male"
-                gender="Male" dob="1900-12-19" created="2009-12-19"
-                deleted="false" collector="UnknownFieldWorker" dip="1"/>
+                gender="Male" dob="1900-12-19" created="2009-12-19" collector="UnknownFieldWorker" dip="1"/>
 
 </dataset>

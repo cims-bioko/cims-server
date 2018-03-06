@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.xml.bind.annotation.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Calendar;
 
 @Controller
 public class SprayingFormProcessor extends AbstractFormProcessor {
@@ -29,7 +30,7 @@ public class SprayingFormProcessor extends AbstractFormProcessor {
                 switch (form.evaluation) {
                     case DESTROYED:
                         location.getAttrsForUpdate().put("status", "destroyed");
-                        location.setDeleted(true);
+                        location.setDeleted(Calendar.getInstance());
                         break;
                     case UNINHABITED:
                         location.getAttrsForUpdate().put("status", "uninhabited");

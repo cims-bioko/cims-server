@@ -13,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -51,7 +52,7 @@ public class User implements Serializable, UuidIdentifiable {
             @JoinColumn(name = "`user`")}, inverseJoinColumns = @JoinColumn(name = "`role`"))
     private Set<Role> roles = new HashSet<>();
 
-    private boolean deleted = false;
+    private Calendar deleted;
 
     // this is used for seamless integration with special study
     @Column(name = "last_login")
@@ -139,11 +140,11 @@ public class User implements Serializable, UuidIdentifiable {
         this.lastLogin = lastLogin;
     }
 
-    public boolean isDeleted() {
+    public Calendar getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(boolean deleted) {
+    public void setDeleted(Calendar deleted) {
         this.deleted = deleted;
     }
 }

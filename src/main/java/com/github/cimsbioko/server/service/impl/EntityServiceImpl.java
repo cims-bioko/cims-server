@@ -58,11 +58,11 @@ public class EntityServiceImpl implements EntityService {
     public <T> void delete(T persistentObject) {
         if (persistentObject instanceof AuditableEntity) {
             AuditableEntity auditable = (AuditableEntity)persistentObject;
-            auditable.setDeleted(true);
+            auditable.setDeleted(Calendar.getInstance());
             genericDao.update(auditable);
         } else if (persistentObject instanceof User) {
             User user = (User)persistentObject;
-            user.setDeleted(true);
+            user.setDeleted(Calendar.getInstance());
             genericDao.update(user);
         } else {
             genericDao.delete(persistentObject);

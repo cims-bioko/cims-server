@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.List;
 
 @Component
@@ -83,7 +84,7 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
     }
 
     private void handleRemove(Location location) {
-        location.setDeleted(true);
+        location.setDeleted(Calendar.getInstance());
         location.getAttrsForUpdate().put("status", "voided");
     }
 
@@ -92,7 +93,7 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
         Location dst;
         if (form.mergeToUuid != null) {
             Location candidate = dao.read(Location.class, form.mergeToUuid);
-            dst = candidate.isDeleted() || !form.mergeToExtId.equals(candidate.getExtId()) ? null : candidate;
+            dst = candidate.getDeleted() != null || !form.mergeToExtId.equals(candidate.getExtId()) ? null : candidate;
         } else {
             List<Location> candidates = dao.findListByProperty(Location.class, "extId", form.mergeToExtId, true);
             dst = candidates.size() > 0 ? candidates.get(0) : null;
@@ -109,7 +110,7 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
         }
 
         // do the merge
-        src.setDeleted(true);
+        src.setDeleted(Calendar.getInstance());
         src.getAttrsForUpdate().put("status", "merged");
 
         // also update coordinates if provided in form

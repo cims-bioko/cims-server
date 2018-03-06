@@ -99,7 +99,7 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK> {
             criteria = addImplicitRestrictions(criteria);
         }
         if (filterDeleted) {
-            criteria = criteria.add(Restrictions.eq("deleted", false));
+            criteria = criteria.add(Restrictions.isNull("deleted"));
         }
         return criteria.list();
     }
@@ -155,7 +155,7 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK> {
     }
 
     protected Criteria addImplicitRestrictions(Criteria criteria) {
-        return criteria.add(Restrictions.eq("deleted", false));
+        return criteria.add(Restrictions.isNull("deleted"));
     }
 
     public void setSessionFactory(SessionFactory sessFact) {

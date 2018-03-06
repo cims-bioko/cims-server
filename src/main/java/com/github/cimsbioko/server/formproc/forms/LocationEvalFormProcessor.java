@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
+import java.util.Calendar;
 
 @Component
 public class LocationEvalFormProcessor extends AbstractFormProcessor {
@@ -31,7 +32,7 @@ public class LocationEvalFormProcessor extends AbstractFormProcessor {
                         break;
                     case DESTROYED:
                         location.getAttrsForUpdate().put("status", "destroyed");
-                        location.setDeleted(true);
+                        location.setDeleted(Calendar.getInstance());
                         break;
                     case UNINHABITED:
                         location.getAttrsForUpdate().put("status", "uninhabited");

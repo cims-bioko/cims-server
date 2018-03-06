@@ -11,6 +11,7 @@ import com.github.cimsbioko.server.util.CalendarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> implements EntityCrudHelper<T> {
@@ -29,7 +30,7 @@ public abstract class AbstractEntityCrudHelperImpl<T extends AuditableEntity> im
     @Transactional
     @Override
     public void delete(T entity) throws IllegalArgumentException {
-        entity.setDeleted(true);
+        entity.setDeleted(Calendar.getInstance());
         genericDao.update(entity);
     }
 

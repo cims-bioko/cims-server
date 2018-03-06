@@ -19,7 +19,7 @@ public abstract class AuditableEntity implements UuidIdentifiable, Serializable 
     @Column(length = 32)
     String uuid;
 
-    protected boolean deleted = false;
+    protected Calendar deleted;
 
     protected Calendar created;
 
@@ -33,12 +33,12 @@ public abstract class AuditableEntity implements UuidIdentifiable, Serializable 
         this.uuid = uuid;
     }
 
-    public boolean isDeleted() {
-        return deleted;
+    public void setDeleted(Calendar deleted) {
+        this.deleted = deleted;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public Calendar getDeleted() {
+        return deleted;
     }
 
     public Calendar getCreated() {

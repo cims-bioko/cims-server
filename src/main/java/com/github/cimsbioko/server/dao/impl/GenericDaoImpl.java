@@ -57,7 +57,7 @@ public class GenericDaoImpl implements GenericDao {
         Criteria criteria = getSession().createCriteria(entityType);
 
         if (filterDeleted) {
-            criteria = criteria.add(Restrictions.eq("deleted", false));
+            criteria = criteria.add(Restrictions.isNull("deleted"));
         }
         return criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
     }
@@ -77,7 +77,7 @@ public class GenericDaoImpl implements GenericDao {
         Criteria criteria = getSession().createCriteria(entityType).add(Restrictions.eq(propertyName, value));
 
         if (filterDeleted) {
-            criteria = criteria.add(Restrictions.eq("deleted", false));
+            criteria = criteria.add(Restrictions.isNull("deleted"));
         }
 
         return (T) criteria.uniqueResult();
@@ -97,7 +97,7 @@ public class GenericDaoImpl implements GenericDao {
                 add(Restrictions.eq(propertyName, value));
 
         if (filterDeleted) {
-            criteria = criteria.add(Restrictions.eq("deleted", false));
+            criteria = criteria.add(Restrictions.isNull("deleted"));
         }
         return criteria.list();
     }

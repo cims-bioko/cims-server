@@ -68,7 +68,7 @@ public class UserCrudImpl extends EntityCrudImpl<User, String> implements UserCr
         List<Role> roles = service.getRoles();
 
         for (Role role : roles) {
-            if (!role.isDeleted())
+            if (role.getDeleted() == null)
                 rolesSelectItems.add(new SelectItem(role.getName()));
         }
         return rolesSelectItems;
