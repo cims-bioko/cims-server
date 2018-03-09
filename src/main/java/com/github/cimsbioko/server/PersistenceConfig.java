@@ -26,6 +26,9 @@ public class PersistenceConfig {
     @Value("${app.hibernate.dialect}")
     private String dialect;
 
+    @Value("${app.search.dir}")
+    private String indexDir;
+
     @Bean
     LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sfb = new LocalSessionFactoryBean();
@@ -35,6 +38,8 @@ public class PersistenceConfig {
         props.setProperty("hibernate.dialect", dialect);
         props.setProperty("javax.persistence.validation.mode", "none");
         props.setProperty("hibernate.hbm2ddl.auto", ddlMode);
+        props.setProperty("hibernate.search.default.directory_provider", "filesystem");
+        props.setProperty("hibernate.search.default.indexBase", indexDir);
         sfb.setHibernateProperties(props);
         return sfb;
     }

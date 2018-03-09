@@ -1,6 +1,8 @@
 package com.github.cimsbioko.server.domain;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +21,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@Indexed
 public class User implements Serializable, UuidIdentifiable {
 
     static final long serialVersionUID = 23L;
@@ -31,10 +34,12 @@ public class User implements Serializable, UuidIdentifiable {
 
     @Searchable("userFirstName")
     @Column(name = "first_name")
+    @Field
     private String firstName;
 
     @Searchable("userLastName")
     @Column(name = "last_name")
+    @Field
     private String lastName;
 
     @Column(name = "full_name")
@@ -43,6 +48,7 @@ public class User implements Serializable, UuidIdentifiable {
     private String description;
 
     @Searchable("username")
+    @Field
     private String username;
 
     private String password;

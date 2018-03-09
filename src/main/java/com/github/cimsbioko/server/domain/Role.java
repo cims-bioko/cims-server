@@ -1,5 +1,8 @@
 package com.github.cimsbioko.server.domain;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,13 +15,16 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "role")
+@Indexed
 public class Role extends AuditableEntity implements Serializable {
 
     static final long serialVersionUID = 21L;
 
     @Searchable("roleFullName")
+    @Field
     private String name;
 
+    @Field
     private String description;
 
     @ManyToMany(fetch = FetchType.EAGER)

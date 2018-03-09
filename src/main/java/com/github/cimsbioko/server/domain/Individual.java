@@ -1,6 +1,8 @@
 package com.github.cimsbioko.server.domain;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.json.JSONObject;
 
 import javax.persistence.*;
@@ -12,22 +14,27 @@ import java.util.*;
 
 @Entity
 @Table(name = "individual")
+@Indexed
 public class Individual extends AuditableCollectedEntity implements Serializable {
 
     public final static long serialVersionUID = 9058114832143454609L;
 
     @NotNull
     @Size(min = 1)
+    @Field
     private String extId;
 
     @NotNull
     @Column(name = "first_name")
+    @Field
     private String firstName;
 
     @Column(name = "middle_name")
+    @Field
     private String middleName;
 
     @Column(name = "last_name")
+    @Field
     private String lastName;
 
     private String gender;
@@ -36,19 +43,23 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @Temporal(TemporalType.DATE)
     private Calendar dob;
 
-    //Project-specific fields
+    @Field
     private String phone1;
 
+    @Field
     private String phone2;
 
     private String language;
 
     @Column(name = "contact_name")
+    @Field
     private String contactName;
 
     @Column(name = "contact_phone")
+    @Field
     private String contactPhone;
 
+    @Field
     private int dip;
 
     private String nationality;

@@ -1,5 +1,8 @@
 package com.github.cimsbioko.server.domain;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -9,20 +12,24 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "fieldworker")
+@Indexed
 public class FieldWorker extends AuditableEntity implements Serializable {
 
     private static final long serialVersionUID = -7550088299362704483L;
 
     @NotNull
     @Searchable("fieldWorkerID")
+    @Field
     private String extId;
 
     @Searchable("fieldWorkerFirstName")
     @Column(name = "first_name")
+    @Field
     private String firstName;
 
     @Searchable("fieldWorkerLastName")
     @Column(name = "last_name")
+    @Field
     private String lastName;
 
     @Transient

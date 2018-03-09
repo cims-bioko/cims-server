@@ -5,6 +5,8 @@ import com.vividsolutions.jts.geom.Point;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Type;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.json.JSONObject;
 
 import javax.persistence.*;
@@ -16,14 +18,17 @@ import java.util.List;
 
 @Entity
 @Table(name = "location")
+@Indexed
 public class Location extends AuditableCollectedEntity implements Serializable {
 
     public final static long serialVersionUID = 169551578162260199L;
 
     @NotNull
     @Size(min = 1)
+    @Field
     private String extId;
 
+    @Field
     private String name;
 
     @ManyToOne
@@ -34,6 +39,7 @@ public class Location extends AuditableCollectedEntity implements Serializable {
     @Column(name = "global_pos")
     private Point globalPos;
 
+    @Field
     private String description;
 
     @OneToMany(mappedBy = "home")

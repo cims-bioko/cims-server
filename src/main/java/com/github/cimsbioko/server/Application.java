@@ -8,7 +8,7 @@ import org.springframework.context.annotation.*;
 @EnableAutoConfiguration
 @ImportResource("classpath:/META-INF/spring/application-context.xml")
 @Import({FileSystemConfig.class, PersistenceConfig.class, FormProcConfig.class, SecurityConfig.class, WebConfig.class,
-        AppVersionConfig.class})
+        AppVersionConfig.class, SearchConfig.class})
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
