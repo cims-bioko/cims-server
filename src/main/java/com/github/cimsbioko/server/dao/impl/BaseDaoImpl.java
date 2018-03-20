@@ -8,7 +8,6 @@ import com.github.cimsbioko.server.domain.User;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,23 +133,6 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK> {
             criteria = addImplicitRestrictions(criteria);
         }
 
-        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-    }
-
-    public List<T> findListByPropertyPagedInsensitive(String propertyName, Object value, int firstResult, int maxResults) {
-        Criteria criteria = getSession().createCriteria(entityType).add(Restrictions.ilike(propertyName, (String) value, MatchMode.ANYWHERE));
-        if (AuditableEntity.class.isAssignableFrom(entityType) || User.class.isAssignableFrom(entityType)) {
-            criteria = addImplicitRestrictions(criteria);
-        }
-        return (List<T>) criteria.setFirstResult(firstResult).setMaxResults(maxResults).
-                setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
-    }
-
-    public long getCountByProperty(String propertyName, Object value) {
-        Criteria criteria = getSession().createCriteria(entityType).add(Restrictions.ilike(propertyName, (String) value, MatchMode.ANYWHERE));
-        if (AuditableEntity.class.isAssignableFrom(entityType) || User.class.isAssignableFrom(entityType)) {
-            criteria = addImplicitRestrictions(criteria);
-        }
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 

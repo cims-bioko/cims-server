@@ -68,9 +68,4 @@ public interface Dao<T, PK extends Serializable> {
      * firstResult and the amount of maxResults
      */
     List<T> findPaged(int maxResults, int firstResult);
-
-    long getCountByProperty(String propertyName, Object value);
-
-    List<T> findListByPropertyPagedInsensitive(String propertyName,
-                                               Object value, int pageIndex, int pageIncrement);
 }
