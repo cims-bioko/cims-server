@@ -228,3 +228,7 @@ a.amendment-tab-unselected {
     border: 1px solid #98BF21;
     padding: 5px 5px 5px;
 }
+
+tr.deleted td.center {
+    text-decoration: line-through;
+}

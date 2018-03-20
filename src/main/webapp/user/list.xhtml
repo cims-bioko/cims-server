@@ -22,7 +22,9 @@
             <h:outputText escape="false" value="#{msg.userEmpty}" rendered="#{userCrud.pager.totalCount == 0}"/>
             <h:panelGroup rendered="#{fn:length(userCrud.pagedItems) > 0}">
                 <h:dataTable value="#{userCrud.pagedItems}" var="user"
-                             width="100%" columnClasses="center,center,center,width3">
+                             columnClasses="center,center,center,width3"
+                             rowClasses="#{userCrud.itemCSSClasses}"
+                             width="100%">
                     <h:column headerClass="width1">
                         <f:facet name="header">
                             <h:outputText value="#{msg.userUsername}"/>

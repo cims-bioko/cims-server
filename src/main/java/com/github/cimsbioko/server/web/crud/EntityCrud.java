@@ -116,4 +116,6 @@ public interface EntityCrud<T, PK extends Serializable> {
     String search();
 
     String clearSearch();
+
+    String getItemCSSClasses();
 }

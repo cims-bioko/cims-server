@@ -17,7 +17,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -354,7 +356,32 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
         return outcomePrefix + "_list";
     }
 
+    @Override
+    public String getItemCSSClasses() {
+        List<String> itemClasses = new ArrayList<>();
+        for (T item : pagedItems) {
+            itemClasses.add(getClassesForItem(item));
+        }
+        return String.join(",", itemClasses);
+    }
 
+    private String getClassesForItem(T item) {
+        for (Class c = item.getClass(); c != Object.class; c = c.getSuperclass()) {
+            try {
+                Field deletedField = c.getDeclaredField("deleted");
+                deletedField.setAccessible(true);
+                if (deletedField.get(item) != null) {
+                    return "deleted";
+                }
+                break; // field was located, abort class hierarchy traversal
+            } catch (NoSuchFieldException e) {
+                /* ignore, continue search in superclass */
+            } catch (IllegalAccessException e) {
+                break; // unable to read field, default
+            }
+        }
+        return "";
+    }
 
     public SelectItem[] getSelectItems() {
         return jsfService.getSelectItems(dao.findAll(true));

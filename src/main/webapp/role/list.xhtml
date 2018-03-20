@@ -26,7 +26,9 @@
             <h:outputText escape="false" value="#{msg.roleEmpty}" rendered="#{roleCrud.pager.totalCount == 0}"/>
             <h:panelGroup rendered="#{fn:length(roleCrud.pagedItems) > 0}">
                 <h:dataTable value="#{roleCrud.pagedItems}" var="role"
-                             width="100%" columnClasses="center,center,width3">
+                             columnClasses="center,center,width3"
+                             rowClasses="#{roleCrud.itemCSSClasses}"
+                             width="100%">
                     <h:column headerClass="width1">
                         <f:facet name="header">
                             <h:outputText value="#{msg.roleFullName}"/>
