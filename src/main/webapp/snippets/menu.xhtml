@@ -34,9 +34,9 @@
                     </h:commandLink>
                     <c:if test="#{navController.showConfiguration}">
                         <ul>
-                            <li><h:commandLink value="#{msg.navBarRoleManagement}" action="#{roleCrud.createSetup}"/></li>
-                            <li><h:commandLink value="#{msg.navBarUserManagement}" action="#{userCrud.createSetup}"/></li>
-                            <li><h:commandLink value="#{msg.navBarFieldWorkers}" action="#{fieldWorkerCrud.createSetup}"/></li>
+                            <li><h:commandLink value="#{msg.navBarRoleManagement}" action="#{roleCrud.listSetup}"/></li>
+                            <li><h:commandLink value="#{msg.navBarUserManagement}" action="#{userCrud.listSetup}"/></li>
+                            <li><h:commandLink value="#{msg.navBarFieldWorkers}" action="#{fieldWorkerCrud.listSetup}"/></li>
                         </ul>
                     </c:if>
                 </li>
