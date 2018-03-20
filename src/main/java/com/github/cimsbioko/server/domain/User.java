@@ -22,7 +22,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @Indexed
-public class User implements Serializable, UuidIdentifiable {
+public class User implements Serializable {
 
     static final long serialVersionUID = 23L;
 
@@ -69,12 +69,10 @@ public class User implements Serializable, UuidIdentifiable {
         setPassword(password);
     }
 
-    @Override
     public String getUuid() {
         return uuid;
     }
 
-    @Override
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }

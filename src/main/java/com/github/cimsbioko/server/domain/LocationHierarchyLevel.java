@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "locationhierarchylevel")
-public class LocationHierarchyLevel implements UuidIdentifiable, Serializable {
+public class LocationHierarchyLevel implements Serializable {
 
     private static final long serialVersionUID = -1070569257732332545L;
 
@@ -20,12 +20,10 @@ public class LocationHierarchyLevel implements UuidIdentifiable, Serializable {
     @NotNull
     private String name;
 
-    @Override
     public String getUuid() {
         return uuid;
     }
 
-    @Override
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }

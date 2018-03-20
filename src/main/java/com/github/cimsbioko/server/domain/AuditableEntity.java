@@ -10,7 +10,7 @@ import java.util.Calendar;
  * An AuditableEntity can be any entity stored in the database that needs to be audited
  */
 @MappedSuperclass
-public abstract class AuditableEntity implements UuidIdentifiable, Serializable {
+public abstract class AuditableEntity implements Serializable {
 
     private static final long serialVersionUID = -4703049354466276068L;
 
@@ -22,12 +22,10 @@ public abstract class AuditableEntity implements UuidIdentifiable, Serializable 
 
     protected Calendar created;
 
-    @Override
     public String getUuid() {
         return uuid;
     }
 
-    @Override
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
