@@ -3,7 +3,6 @@ package com.github.cimsbioko.server.web.crud.impl;
 import com.github.cimsbioko.server.dao.Dao;
 import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.domain.AuditableCollectedEntity;
-import com.github.cimsbioko.server.domain.Searchable;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.EntityService;
 import com.github.cimsbioko.server.web.crud.EntityCrud;
@@ -18,10 +17,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -53,8 +50,6 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     private GenericDao genericDao;
 
     private List<T> pagedItems;
-    private HashMap<T, Class<?>> searchableFieldsMap = new HashMap<>();
-    private String propertyName;
     private String searchString;
     private Boolean isSearch = false;
 
@@ -345,36 +340,22 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
         return outcomePrefix + "_list";
     }
 
-    private long processSearchCriteria() {
-        if (!"java.lang.String".equals(searchableFieldsMap.get(propertyName).getName())) {
-            return searchForEntitiesById(propertyName, searchableFieldsMap.get(propertyName), searchString, entityClass).size();
-        } else {
-            return dao.getCountByProperty(propertyName, searchString);
-        }
+    protected long processSearchCriteria() {
+        return 0;
     }
 
-    private List<T> generateSearchResults() {
-        if (!"java.lang.String".equals(searchableFieldsMap.get(propertyName).getName())) {
-            return searchForEntitiesById(propertyName, searchableFieldsMap.get(propertyName), searchString, entityClass);
-        } else {
-            return dao.findListByPropertyPagedInsensitive(propertyName, searchString, pager.getPageIndex(), pager.getPageIncrement());
-        }
+    protected List<T> generateSearchResults() {
+        return Collections.EMPTY_LIST;
     }
 
     public String clearSearch() {
         isSearch = false;
         searchString = null;
-        propertyName = null;
         reset(true, false);
         return outcomePrefix + "_list";
     }
 
-    @SuppressWarnings("unchecked")
-    public List<T> searchForEntitiesById(String searchPropertyName, Class<?> propertyName, String propertyValue, Class<T> entityClass) {
-        T item = (T) genericDao.findByProperty(propertyName, "extId", propertyValue, true);
-        List<T> list = genericDao.findListByProperty(entityClass, searchPropertyName, item, true);
-        return list;
-    }
+
 
     public SelectItem[] getSelectItems() {
         return jsfService.getSelectItems(dao.findAll(true));
@@ -403,37 +384,12 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
         this.entityService = entityService;
     }
 
-    public String getPropertyName() {
-        return propertyName;
-    }
-
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
-    }
-
     public String getSearchString() {
         return searchString;
     }
 
     public void setSearchString(String searchString) {
         this.searchString = searchString;
-    }
-
-    /*
-     * Used in EL expressions for search box.
-     */
-    @SuppressWarnings("unchecked")
-    public List<SelectItem> getSearchableFieldsList() {
-        List<SelectItem> searchableFieldsList = new ArrayList<>();
-        for (Field ff : entityClass.getDeclaredFields()) {
-            if (ff.isAnnotationPresent(Searchable.class)) {
-                Searchable s = ff.getAnnotation(Searchable.class);
-                searchableFieldsMap.put((T) ff.getName(), ff.getType());
-                SelectItem it = new SelectItem(ff.getName(), jsfService.getLocalizedString(s.value()));
-                searchableFieldsList.add(it);
-            }
-        }
-        return searchableFieldsList;
     }
 
     public GenericDao getGenericDao() {

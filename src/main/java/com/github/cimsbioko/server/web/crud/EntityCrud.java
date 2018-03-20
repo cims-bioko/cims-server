@@ -109,12 +109,6 @@ public interface EntityCrud<T, PK extends Serializable> {
 
     void setSearchString(String searchString);
 
-    String getPropertyName();
-
-    void setPropertyName(String propertyName);
-
-    List<SelectItem> getSearchableFieldsList();
-
     void setShowListing(boolean show);
 
     boolean isShowListing();
