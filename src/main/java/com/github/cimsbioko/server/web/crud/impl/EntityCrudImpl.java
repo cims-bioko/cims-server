@@ -49,7 +49,6 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     protected T entityItem;
 
     private PagingState pager;
-    private PagingState filteredPager;
     protected Dao<T, PK> dao;
     private GenericDao genericDao;
 
@@ -66,13 +65,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     // helper service
     public JsfService jsfService;
 
-    protected EntityFilter<T> entityFilter;
-
     protected boolean showListing = true;
-
-    interface EntityFilter<T> {
-        List<T> getFilteredEntityList(T entityItem);
-    }
 
     /**
      * Service that provides the business logic for creating, editing and deleting entities
@@ -86,7 +79,6 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
         this.entityClass = entityClass;
         this.outcomePrefix = entityClass.getSimpleName().toLowerCase();
         pager = new PagingState();
-        filteredPager = new PagingState();
     }
 
     public void setJsfService(JsfService jsfService) {
@@ -110,17 +102,6 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
             }
         }
         return pager;
-    }
-
-    public PagingState getFilteredPager() {
-        if (filteredPager.getTotalCount() < 0) {
-            if (isSearch) {
-                filteredPager.setTotalCount(processSearchCriteria());
-            } else {
-                filteredPager.setTotalCount(getFilteredPagedItems().size());
-            }
-        }
-        return filteredPager;
     }
 
     /**
@@ -412,17 +393,6 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     }
 
     public void performAudit(T entityItem) {
-    }
-
-    public List<T> getFilteredPagedItems() {
-        if (entityFilter == null) {
-            // filter not setup so can't filter entities
-            // fall back to normal pagedItems
-            return getPagedItems();
-        }
-
-        return entityFilter.getFilteredEntityList(entityItem);
-        //return getPagedItems();
     }
 
     public EntityService getEntityService() {
