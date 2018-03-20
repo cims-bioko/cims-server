@@ -5,20 +5,30 @@ import com.github.cimsbioko.server.domain.AuditableEntity;
 import com.github.cimsbioko.server.domain.FieldWorker;
 import com.github.cimsbioko.server.domain.LocationHierarchy;
 import com.github.cimsbioko.server.domain.User;
+import org.apache.lucene.search.Query;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.search.FullTextQuery;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
+import org.hibernate.search.SearchFactory;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
 public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK> {
 
     Class<T> entityType;
+
+    String [] searchFields;
 
     @Autowired
     SessionFactory sessFact;
@@ -148,4 +158,53 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK> {
         return sessFact.getCurrentSession();
     }
 
+    protected FullTextSession getFullTextSession() {
+        return Search.getFullTextSession(getSession());
+    }
+
+    protected SearchFactory getSearchFactory() {
+        return getFullTextSession().getSearchFactory();
+    }
+
+    protected QueryBuilder getSearchQueryBuilder() {
+        return getSearchFactory().buildQueryBuilder().forEntity(entityType).get();
+    }
+
+    protected String[] getSearchFields() {
+        if (searchFields == null) {
+            List<String> fieldNames = new ArrayList<>();
+            for (Field field : entityType.getDeclaredFields()) {
+                if (field.isAnnotationPresent(org.hibernate.search.annotations.Field.class)) {
+                    fieldNames.add(field.getName());
+                }
+            }
+            searchFields = fieldNames.toArray(new String[]{});
+        }
+        return searchFields;
+    }
+
+    protected Query getSearchQuery(String query) {
+        return getSearchQueryBuilder()
+                .keyword()
+                .fuzzy()
+                .onFields(getSearchFields())
+                .matching(query)
+                .createQuery();
+    }
+
+    protected FullTextQuery getEntitySearchQuery(String query) {
+        return getFullTextSession()
+                .createFullTextQuery(getSearchQuery(query), entityType);
+    }
+
+    public long getSearchCount(String query) {
+        return getEntitySearchQuery(query).getResultSize();
+    }
+
+    public List<T> findBySearch(String query, int first, int max) {
+        return getEntitySearchQuery(query)
+                .setFirstResult(first)
+                .setMaxResults(max)
+                .getResultList();
+    }
 }

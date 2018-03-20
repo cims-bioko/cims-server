@@ -68,4 +68,8 @@ public interface Dao<T, PK extends Serializable> {
      * firstResult and the amount of maxResults
      */
     List<T> findPaged(int maxResults, int firstResult);
+
+    long getSearchCount(String query);
+
+    List<T> findBySearch(String query, int first, int max);
 }

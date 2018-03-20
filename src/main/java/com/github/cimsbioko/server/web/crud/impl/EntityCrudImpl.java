@@ -18,7 +18,6 @@ import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -341,11 +340,11 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     }
 
     protected long processSearchCriteria() {
-        return 0;
+        return dao.getSearchCount(searchString);
     }
 
     protected List<T> generateSearchResults() {
-        return Collections.EMPTY_LIST;
+        return dao.findBySearch(searchString, pager.getPageIndex(), pager.getPageIncrement());
     }
 
     public String clearSearch() {
