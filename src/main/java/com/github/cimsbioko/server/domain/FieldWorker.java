@@ -18,16 +18,13 @@ public class FieldWorker extends AuditableEntity implements Serializable {
     private static final long serialVersionUID = -7550088299362704483L;
 
     @NotNull
-    @Searchable("fieldWorkerID")
     @Field
     private String extId;
 
-    @Searchable("fieldWorkerFirstName")
     @Column(name = "first_name")
     @Field
     private String firstName;
 
-    @Searchable("fieldWorkerLastName")
     @Column(name = "last_name")
     @Field
     private String lastName;

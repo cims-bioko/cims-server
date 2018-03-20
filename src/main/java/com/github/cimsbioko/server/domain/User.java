@@ -32,12 +32,10 @@ public class User implements Serializable, UuidIdentifiable {
     @Column(length = 32)
     private String uuid;
 
-    @Searchable("userFirstName")
     @Column(name = "first_name")
     @Field
     private String firstName;
 
-    @Searchable("userLastName")
     @Column(name = "last_name")
     @Field
     private String lastName;
@@ -47,7 +45,6 @@ public class User implements Serializable, UuidIdentifiable {
 
     private String description;
 
-    @Searchable("username")
     @Field
     private String username;
 
