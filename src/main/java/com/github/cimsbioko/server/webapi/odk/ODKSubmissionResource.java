@@ -171,6 +171,15 @@ public class ODKSubmissionResource {
         return submissionDao.findRecent(form, version, binding, device, limit);
     }
 
+    @GetMapping(value = "/submissions/search", produces = "application/json")
+    @ResponseBody
+    @Transactional(readOnly = true)
+    public List<FormSubmission> recentSubmissions(String query,
+                                                  @RequestParam(value="start", defaultValue = "0") int start,
+                                                  @RequestParam(value="end", defaultValue = "100") int max) {
+        return submissionDao.findBySearch(query, start, max);
+    }
+
     @GetMapping(value = "/submissions/unprocessed", produces = "application/json")
     @ResponseBody
     @Transactional(readOnly = true)

@@ -2,8 +2,14 @@ package com.github.cimsbioko.server.dao.impl;
 
 import com.github.cimsbioko.server.dao.FormSubmissionDao;
 import com.github.cimsbioko.server.domain.FormSubmission;
+import org.apache.lucene.search.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.search.FullTextQuery;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
+import org.hibernate.search.SearchFactory;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +18,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.lang.reflect.Field;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -117,4 +124,47 @@ public class FormSubmissionDaoImpl implements FormSubmissionDao {
                 .executeUpdate();
     }
 
+    private FullTextSession getFullTextSession() {
+        return Search.getFullTextSession(getCurrentSession());
+    }
+
+    private SearchFactory getSearchFactory() {
+        return getFullTextSession().getSearchFactory();
+    }
+
+    private QueryBuilder getSearchQueryBuilder() {
+        return getSearchFactory().buildQueryBuilder().forEntity(FormSubmission.class).get();
+    }
+
+    private String[] getSearchFields() {
+        List<String> fieldNames = new ArrayList<>();
+        for (Field field : FormSubmission.class.getDeclaredFields()) {
+            if (field.isAnnotationPresent(org.hibernate.search.annotations.Field.class)) {
+                fieldNames.add(field.getName());
+            }
+        }
+        return fieldNames.toArray(new String[]{});
+    }
+
+    private Query getSearchQuery(String query) {
+        return getSearchQueryBuilder()
+                .keyword()
+                .fuzzy()
+                .onFields(getSearchFields())
+                .matching(query)
+                .createQuery();
+    }
+
+    private FullTextQuery getEntitySearchQuery(String query) {
+        return getFullTextSession()
+                .createFullTextQuery(getSearchQuery(query), FormSubmission.class);
+    }
+
+
+    public List<FormSubmission> findBySearch(String query, int first, int max) {
+        return getEntitySearchQuery(query)
+                .setFirstResult(first)
+                .setMaxResults(max)
+                .getResultList();
+    }
 }
