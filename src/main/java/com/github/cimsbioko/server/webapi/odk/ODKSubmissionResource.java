@@ -361,11 +361,14 @@ public class ODKSubmissionResource {
         String instanceId = rootElem.getAttributeValue(INSTANCE_ID);
         if (instanceId == null) {
             Element instanceIdElem = metaElem.getChild(INSTANCE_ID, metaElemNs);
-            if (instanceIdElem == null || instanceIdElem.getText().isEmpty()) {
+            if (instanceIdElem == null) {
                 instanceId = generateInstanceId();
                 instanceIdElem = new Element(INSTANCE_ID, metaElemNs);
                 instanceIdElem.setText(instanceId);
                 metaElem.addContent(instanceIdElem);
+            } else if (instanceIdElem.getText().isEmpty()) {
+                instanceId = generateInstanceId();
+                instanceIdElem.setText(instanceId);
             } else {
                 instanceId = instanceIdElem.getText();
             }
