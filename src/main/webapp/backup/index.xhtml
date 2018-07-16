@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets" template="/templates/default.xhtml">
+
+    <ui:define name="title">#{msg.backups}</ui:define>
+
+    <ui:define name="display">
+
+        <h1>#{msg.backups}</h1>
+
+        <h:messages id="errors" globalOnly="true"/>
+
+        <h:form id="backupForm">
+
+            <h:outputLabel value="#{msg.schemaName}" for="schemaName" /><br/>
+            <h:inputText value="#{backupBean.name}" id="schemaName" size="10" required="true">
+                <f:validateRegex pattern="^[\p{Alnum}[_]]+$" />
+            </h:inputText><br/>
+            <h:message for="schemaName" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+            <br/>
+
+            <h:outputLabel value="#{msg.backupDescription}" for="description" /><br/>
+            <h:inputText value="#{backupBean.description}" id="description" size="30" required="true"/><br/>
+            <h:message for="description" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+            <br/>
+
+            <h:commandButton action="#{backupBean.createBackup}" value="#{msg.createBackup}"/>
+
+        </h:form>
+
+        <br/>
+        <br/>
+
+        <h:dataTable var="backup" value="#{backupBean.backups}" rendered="#{not empty backupBean.backups}" styleClass="openhds-table">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="#{msg.schemaName}"/>
+                </f:facet>
+                <h:outputText value="#{backup.name}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="#{msg.backupDescription}"/>
+                </f:facet>
+                <h:outputText value="#{backup.description}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="#{msg.backupCreated}"/>
+                </f:facet>
+                <h:outputText value="#{backup.created}" converter="#{timestampConverter}"/>
+            </h:column>
+        </h:dataTable>
+    </ui:define>
+</ui:composition>

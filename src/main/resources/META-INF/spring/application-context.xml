@@ -247,6 +247,11 @@
         <constructor-arg ref="currentUser"/>
     </bean>
 
+    <bean id="backupBean" class="com.github.cimsbioko.server.web.beans.BackupBean">
+        <constructor-arg ref="backupServiceImpl"/>
+        <constructor-arg ref="jsfService"/>
+    </bean>
+
     <bean id="geometryFactory" class="com.vividsolutions.jts.geom.GeometryFactory">
         <constructor-arg>
             <bean class="com.vividsolutions.jts.geom.PrecisionModel"/>
