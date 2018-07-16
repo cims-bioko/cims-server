@@ -1,15 +1,16 @@
 package com.github.cimsbioko.server.web.service.impl;
 
-import java.util.List;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import com.github.cimsbioko.server.web.service.JsfService;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
-
-import com.github.cimsbioko.server.web.service.JsfService;
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 public class JsfServiceImpl implements JsfService {
 
@@ -48,10 +49,19 @@ public class JsfServiceImpl implements JsfService {
                 component, theId);
     }
 
-    public void addError(String msg) {
-        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                msg, msg);
+    public void addError(String key, Object... params) {
+        FacesMessage facesMsg = getFacesMessage(key, params, FacesMessage.SEVERITY_ERROR);
         FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+    }
+
+    public void addMessage(String key, Object... params) {
+        FacesMessage facesMsg = getFacesMessage(key, params, FacesMessage.SEVERITY_INFO);
+        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+    }
+
+    private FacesMessage getFacesMessage(String key, Object[] params, FacesMessage.Severity severityInfo) {
+        String msg = getMessage(key, params);
+        return new FacesMessage(severityInfo, msg, msg);
     }
 
     public String getItemId() {
@@ -70,11 +80,21 @@ public class JsfServiceImpl implements JsfService {
         return getContext().getApplication().getResourceBundle(FacesContext.getCurrentInstance(), "msg");
     }
 
-    public String getLocalizedString(String key) {
+    public String getMessage(String key, Object... params) {
+
+        String text;
+
         try {
-            return getBundle().getString(key);
+            text = getBundle().getString(key);
         } catch (MissingResourceException e) {
-            return "???" + key + "??? not found";
+            text = "??" + key + "??";
         }
+
+        if (params != null) {
+            MessageFormat mf = new MessageFormat(text);
+            text = mf.format(params, new StringBuffer(), null).toString();
+        }
+
+        return text;
     }
 }

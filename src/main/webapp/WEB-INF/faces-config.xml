@@ -15,6 +15,7 @@
             <base-name>messages</base-name>
             <var>msg</var>
         </resource-bundle>
+        <message-bundle>messages</message-bundle>
     </application>
 
     <lifecycle>

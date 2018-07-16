@@ -13,8 +13,10 @@ public interface JsfService {
 
     Object getObjViaReqParam(String reqParam, Converter converter, UIComponent component);
 
-    void addError(String msg);
+    void addError(String key, Object... params);
 
-    String getLocalizedString(String key);
+    void addMessage(String key, Object... params);
+
+    String getMessage(String key, Object... params);
 
 }

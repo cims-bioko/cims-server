@@ -39,7 +39,7 @@ public class UserCrudImpl extends EntityCrudImpl<User, String> implements UserCr
             roles = null;
             super.create();
         } catch (Exception e) {
-            jsfService.addError(e.getMessage());
+            jsfService.addError("exception.message", e.getLocalizedMessage());
         }
         return null;
     }
@@ -53,7 +53,7 @@ public class UserCrudImpl extends EntityCrudImpl<User, String> implements UserCr
             service.convertAndSetRoles(entityItem, roles);
             entityService.save(entityItem);
         } catch (Exception e) {
-            jsfService.addError(e.getMessage());
+            jsfService.addError("exception.message", e.getLocalizedMessage());
         }
 
         return detailSetup();

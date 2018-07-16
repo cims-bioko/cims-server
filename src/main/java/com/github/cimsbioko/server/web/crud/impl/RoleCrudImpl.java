@@ -59,7 +59,7 @@ public class RoleCrudImpl extends EntityCrudImpl<Role, String> implements RoleCr
             privileges = null;
             super.create();
         } catch (Exception e) {
-            jsfService.addError(e.getMessage());
+            jsfService.addError("exception.message", e.getLocalizedMessage());
         }
         return null;
     }
@@ -72,7 +72,7 @@ public class RoleCrudImpl extends EntityCrudImpl<Role, String> implements RoleCr
             service.convertAndSetPrivileges(entityItem, privileges);
             entityService.save(entityItem);
         } catch (Exception e) {
-            jsfService.addError(e.getMessage());
+            jsfService.addError("exception.message", e.getLocalizedMessage());
         }
 
         return detailSetup();
@@ -84,7 +84,7 @@ public class RoleCrudImpl extends EntityCrudImpl<Role, String> implements RoleCr
 
         if (entityId.equals("ROLE1")) {
             // ROLE1 is the built in administrator role, and should not be deleted
-            jsfService.addError("Cannot delete the Administrator Role");
+            jsfService.addError("exception.deleteadminrole");
             return null;
         }
 
@@ -93,7 +93,7 @@ public class RoleCrudImpl extends EntityCrudImpl<Role, String> implements RoleCr
         List<User> usersWithRole = service.findUsersWithRole(selectedRole);
 
         if (usersWithRole.size() != 0) {
-            jsfService.addError("Can not remove role with active members");
+            jsfService.addError("exception.removeactiverole");
             return null;
         } else {
             return super.delete();

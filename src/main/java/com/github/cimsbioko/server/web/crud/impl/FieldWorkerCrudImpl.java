@@ -26,7 +26,7 @@ public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
             fieldWorkerService.isEligibleForCreation(entityItem, new ConstraintViolations());
             return super.create();
         } catch (ConstraintViolations e) {
-            jsfService.addError(e.getMessage());
+            jsfService.addError("exception.validation", e.getLocalizedMessage());
         }
         return null;
     }
@@ -38,7 +38,7 @@ public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
             }
             return super.edit();
         } catch (ConstraintViolations e) {
-            jsfService.addError(e.getMessage());
+            jsfService.addError("exception.validation", e.getLocalizedMessage());
         }
         return null;
     }

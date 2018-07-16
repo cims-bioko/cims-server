@@ -17,18 +17,21 @@ public class JsfServiceMock implements JsfService {
     List<String> errors = new ArrayList<>();
 
     @Override
-    public void addError(String msg) {
-        errors.add(msg);
-    }
-
-    @Override
-    public String getLocalizedString(String key) {
-        return "whatever";
-    }
-
-    @Override
     public Object getObjViaReqParam(String reqParam, Converter converter, UIComponent component) {
         return null;
+    }
+
+    @Override
+    public void addError(String key, Object... params) {
+    }
+
+    @Override
+    public void addMessage(String key, Object... params) {
+    }
+
+    @Override
+    public String getMessage(String key, Object... params) {
+        return "Whatever";
     }
 
     @Override

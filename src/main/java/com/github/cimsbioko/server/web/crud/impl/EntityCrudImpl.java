@@ -162,19 +162,16 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     public String create() {
         try {
             entityService.create(entityItem);
-        } catch (IllegalArgumentException e) {
-            jsfService.addError(e.getMessage());
-            return null;
         } catch (ConstraintViolations e) {
             for (String msg : e.getViolations()) {
-                jsfService.addError(msg);
+                jsfService.addError("exception.validation", msg);
             }
             return null;
         } catch (SQLException e) {
-            jsfService.addError("Error creating record in database");
+            jsfService.addError("exception.sql", e.getLocalizedMessage());
             return null;
         } catch (Exception e) {
-            jsfService.addError(e.getMessage());
+            jsfService.addError("exception.message", e.getLocalizedMessage());
             return null;
         }
 
@@ -216,7 +213,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
                 || !itemString.equals(itemId)) {
             String outcome = editSetup();
             if ((outcomePrefix + "_edit").equals(outcome)) {
-                jsfService.addError("Could not edit item. Try again.");
+                jsfService.addError("exception.editwtf");
             }
             return outcome;
         }
@@ -230,10 +227,10 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
             }
             return null;
         } catch (SQLException e) {
-            jsfService.addError("Error updating the current entity");
+            jsfService.addError("exception.sql", e.getLocalizedMessage());
             return null;
         } catch (Exception e) {
-            jsfService.addError("Error updating entity");
+            jsfService.addError("exception.message", e.getLocalizedMessage());
             return null;
         }
 
@@ -251,7 +248,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
         try {
             entityService.delete(persistentObject);
         } catch (Exception e) {
-            jsfService.addError("Could not delete the persistent entity");
+            jsfService.addError("exception.delete", e.getLocalizedMessage());
             return null;
         }
 
@@ -264,8 +261,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
         entityItem = (T) jsfService.getObjViaReqParam("itemId", converter, null);
         if (entityItem == null) {
             String itemId = jsfService.getReqParam("itemId");
-            jsfService.addError("The item with id " + itemId
-                    + " no longer exists.");
+            jsfService.addError("exception.missingitem", itemId);
         }
         postSetup();
         return outcome;
