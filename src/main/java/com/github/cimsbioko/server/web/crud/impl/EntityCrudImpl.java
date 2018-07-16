@@ -209,8 +209,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
         String itemString = converter.getAsString(FacesContext.getCurrentInstance(), null, entityItem);
         String itemId = jsfService.getReqParam("itemId");
 
-        if (itemString == null || itemString.length() == 0
-                || !itemString.equals(itemId)) {
+        if (itemString == null || itemString.length() == 0 || !itemString.equals(itemId)) {
             String outcome = editSetup();
             if ((outcomePrefix + "_edit").equals(outcome)) {
                 jsfService.addError("exception.editwtf");

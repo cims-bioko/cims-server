@@ -5,7 +5,6 @@ public class NavigationMenuBean {
     private boolean showUtilities;
     private boolean showConfiguration;
 
-
     public void clear() {
         showUtilities = false;
         showConfiguration = false;

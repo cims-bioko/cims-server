@@ -32,8 +32,7 @@ public class JsfServiceImpl implements JsfService {
     }
 
     public String getReqParam(String name) {
-        String value = FacesContext.getCurrentInstance().getExternalContext()
-                .getRequestParameterMap().get(name);
+        String value = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(name);
 
         if (value == null) {
             return itemId;
@@ -42,11 +41,9 @@ public class JsfServiceImpl implements JsfService {
         return value;
     }
 
-    public Object getObjViaReqParam(String reqParam, Converter converter,
-                                    UIComponent component) {
+    public Object getObjViaReqParam(String reqParam, Converter converter, UIComponent component) {
         String theId = getReqParam(reqParam);
-        return converter.getAsObject(FacesContext.getCurrentInstance(),
-                component, theId);
+        return converter.getAsObject(FacesContext.getCurrentInstance(), component, theId);
     }
 
     public void addError(String key, Object... params) {
