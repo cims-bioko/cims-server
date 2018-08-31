@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<body>
+<ui:composition template="/templates/default.xhtml">
+    <ui:define name="title">#{msg.uploadForm}</ui:define>
+    <ui:define name="extraHeaders">
+        <script src="#{request.contextPath}/resources/scripts/jquery-3.3.1.min.js" />
+        <script>
+
+            function ajaxUpload() {
+
+                var form = $('#uploadForm')[0];
+                var data = new FormData(form);
+
+                $("#uploadSubmit").prop("disabled", true);
+
+                $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: "#{request.contextPath}/api/odk/forms",
+                    data: data,
+                    processData: false, // don't make a query string out of the data
+                    contentType: false,
+                    dataType: "json",
+                    cache: false,
+                    timeout: 600000,
+                    success: function (data) {
+                        $("#result").text("#{msg.uploadSuccess}");
+                        $("#uploadForm").trigger("reset");
+                        $("#uploadSubmit").prop("disabled", false);
+                    },
+                    error: function (rsp) {
+                        $("#result").addClass("error").text("#{msg.uploadFailed}: " + rsp.responseJSON.exception + ' - ' + rsp.responseJSON.message);
+                        $("#uploadSubmit").prop("disabled", false);
+                    }
+                });
+            }
+
+            $(document).ready(function () {
+                $("#uploadSubmit").click(function(event) {
+                    $("#result").removeClass("error").text("");
+                });
+                $("#uploadForm").submit(function (event) {
+                    event.preventDefault();
+                    ajaxUpload();
+                });
+            });
+        </script>
+    </ui:define>
+    <ui:define name="display">
+        <h1>#{msg.uploadForm}</h1>
+        <div id="result" /><br/>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div id="file_uploads">
+                <label for="form_def_file">#{msg.xmlForm}:</label><br/>
+                <input id="form_def_file" type="file" name="form_def_file" required=""/><br/><br/>
+                <label for="media_files">#{msg.mediaFiles}:</label><br/>
+                <input id="media_files" type="file" name="media_files" multiple="" />
+            </div>
+            <br/>
+            <input id="uploadSubmit" type="submit" value="#{msg.upload}"/>
+        </form>
+    </ui:define>
+</ui:composition>
+</body>
+</html>

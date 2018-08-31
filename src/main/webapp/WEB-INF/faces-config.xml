@@ -80,6 +80,11 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>form</from-outcome>
+            <to-view-id>/form/upload.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>user_list</from-outcome>
             <to-view-id>/user/create.xhtml</to-view-id>
             <redirect/>
