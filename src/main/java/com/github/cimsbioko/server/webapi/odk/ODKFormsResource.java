@@ -146,13 +146,17 @@ public class ODKFormsResource {
             } else {
                 for (MultipartFile file : fileEntry.getValue()) {
 
-                    Element mediaFileElem = new Element(MEDIA_FILE, manifestNs);
-                    manifestElem.addContent(mediaFileElem);
-
                     String fileName = file.getOriginalFilename();
+
+                    if (fileName.isEmpty()) {
+                        continue;
+                    }
 
                     File dest = new File(formDir, fileName);
                     file.transferTo(dest);
+
+                    Element mediaFileElem = new Element(MEDIA_FILE, manifestNs);
+                    manifestElem.addContent(mediaFileElem);
 
                     Element fileNameElem = new Element(FILENAME, manifestNs);
                     fileNameElem.setText(fileName);
