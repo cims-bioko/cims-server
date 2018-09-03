@@ -273,10 +273,6 @@ public class ODKFormsResource {
         return ResponseEntity.notFound().build();
     }
 
-    private String schemeSubPath(String instanceId) {
-        return instanceId.replaceFirst(":", "/");
-    }
-
     private void addOpenRosaHeaders(HttpServletResponse rsp) {
         rsp.setHeader("X-OpenRosa-Version", "1.0");
         rsp.setIntHeader("X-OpenRosa-Accept-Content-Length", 10485760);
