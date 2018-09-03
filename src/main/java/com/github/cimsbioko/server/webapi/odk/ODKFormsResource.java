@@ -227,7 +227,7 @@ public class ODKFormsResource {
 
     @GetMapping(path = {"/forms/{formId:\\w+}/{formVersion:\\d+}/manifest",
             "/formList/{formId:\\w+}/{formVersion:\\d+}/manifest"}, produces = "text/xml")
-    public ResponseEntity<InputStreamResource> form(@PathVariable String formId, @PathVariable String formVersion,
+    public ResponseEntity<InputStreamResource> manifest(@PathVariable String formId, @PathVariable String formVersion,
                                                     HttpServletRequest req, HttpServletResponse rsp)
             throws IOException, JDOMException {
 
