@@ -91,7 +91,7 @@ public class ODKFormsResource {
 
     @PostMapping(path = {"/forms", "/formUpload"})
     @ResponseBody
-    public ResponseEntity<?> installForm(@RequestParam(FORM_DEF_FILE) MultipartFile formXml,
+    public ResponseEntity<InputStreamResource> installForm(@RequestParam(FORM_DEF_FILE) MultipartFile formXml,
                                          MultipartHttpServletRequest req)
             throws JDOMException, IOException, NoSuchAlgorithmException, URISyntaxException {
 
@@ -179,7 +179,7 @@ public class ODKFormsResource {
         return ResponseEntity
                 .created(formUrl)
                 .contentType(MediaType.TEXT_XML)
-                .body(new InputStreamReader(new ByteArrayInputStream(OR_SUCCESS_MSG)));
+                .body(new InputStreamResource(new ByteArrayInputStream(OR_SUCCESS_MSG)));
     }
 
     private String getFormFilePath(String id, String version) {
