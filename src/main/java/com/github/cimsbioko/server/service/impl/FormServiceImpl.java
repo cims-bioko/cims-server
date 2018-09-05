@@ -60,8 +60,8 @@ public class FormServiceImpl implements FormService {
     private Map<String, MultipartFile> extractMediaFromUploads(MultiValueMap<String, MultipartFile> uploadedFiles) {
         return uploadedFiles.entrySet()
                 .stream()
-                .filter(e -> FORM_DEF_FILE.equalsIgnoreCase(e.getKey()))
-                .filter(e -> XLSFORM_DEF_FILE.equalsIgnoreCase(e.getKey()))
+                .filter(e -> !FORM_DEF_FILE.equalsIgnoreCase(e.getKey()))
+                .filter(e -> !XLSFORM_DEF_FILE.equalsIgnoreCase(e.getKey()))
                 .flatMap(e -> e.getValue().stream())
                 .filter(f -> !f.getOriginalFilename().isEmpty())
                 .filter(f -> !MEDIA_MANIFEST.equalsIgnoreCase(f.getOriginalFilename()))
