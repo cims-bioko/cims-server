@@ -18,14 +18,13 @@
                 $.ajax({
                     type: "POST",
                     enctype: 'multipart/form-data',
-                    url: "#{request.contextPath}/api/odk/forms",
+                    url: "#{request.contextPath}/forms",
                     data: data,
                     processData: false, // don't make a query string out of the data
                     contentType: false,
-                    dataType: "json",
                     cache: false,
                     timeout: 600000,
-                    success: function (data) {
+                    success: function () {
                         $("#result").text("#{msg.uploadSuccess}");
                         $("#uploadForm").trigger("reset");
                         $("#uploadSubmit").prop("disabled", false);
@@ -54,7 +53,7 @@
         <form id="uploadForm" enctype="multipart/form-data">
             <div id="file_uploads">
                 <label for="form_def_file">#{msg.xmlForm}:</label><br/>
-                <input id="form_def_file" type="file" name="form_def_file" required=""/><br/><br/>
+                <input id="form_def_file" type="file" name="form_def_file" required="" accept="text/xml,application/xml"/><br/><br/>
                 <label for="media_files">#{msg.mediaFiles}:</label><br/>
                 <input id="media_files" type="file" name="media_files" multiple="" />
             </div>

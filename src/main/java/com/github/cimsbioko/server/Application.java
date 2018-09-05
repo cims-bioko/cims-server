@@ -1,5 +1,6 @@
 package com.github.cimsbioko.server;
 
+import com.github.cimsbioko.server.webapi.odk.ODKConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.*;
@@ -8,7 +9,7 @@ import org.springframework.context.annotation.*;
 @EnableAutoConfiguration
 @ImportResource("classpath:/META-INF/spring/application-context.xml")
 @Import({FileSystemConfig.class, PersistenceConfig.class, FormProcConfig.class, SecurityConfig.class, WebConfig.class,
-        AppVersionConfig.class, SearchConfig.class})
+        AppVersionConfig.class, SearchConfig.class, ODKConfig.class})
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

@@ -30,35 +30,23 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.github.cimsbioko.server.util.JDOMUtil.*;
 import static com.github.cimsbioko.server.webapi.odk.Constants.*;
 import static java.time.Instant.now;
-import static org.apache.commons.codec.binary.Hex.encodeHexString;
-import static org.apache.commons.codec.digest.MessageDigestAlgorithms.MD5;
 import static org.json.XML.toJSONObject;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.HttpStatus.OK;
@@ -68,22 +56,12 @@ import static org.springframework.util.StringUtils.isEmpty;
 
 @Controller
 @RequestMapping(ODK_API_PATH)
-public class ODKSubmissionResource {
+public class SubmissionResource {
 
-    private static Logger log = LoggerFactory.getLogger(ODKSubmissionResource.class);
+    private static Logger log = LoggerFactory.getLogger(SubmissionResource.class);
 
-    private static final String INSTANCE_ID = "instanceID";
-    private static final String COLLECTION_DATE_TIME = "collectionDateTime";
-    private static final String SUBMISSION_DATE = "submissionDate";
-    private static final String META = "meta";
-    private static final String CIMS_BINDING = "cims-binding";
-    private static final String XML_SUBMISSION_FILE = "xml_submission_file";
-    private static final String DEVICE_ID = "deviceID";
-    private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
-    private static final String ODK_SUBMIT_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
-
-    @Resource
-    private File submissionsDir;
+    @Autowired
+    SubmissionFileSystem submissionFileSystem;
 
     @Autowired
     private FormSubmissionService submissionService;
@@ -94,31 +72,37 @@ public class ODKSubmissionResource {
     @Autowired
     private FormDao formDao;
 
-    private String contextRelativeUrl(HttpServletRequest req, String... pathSegments) {
-        return UriComponentsBuilder
-                .fromHttpUrl(buildFullRequestUrl(req))
-                .replacePath(req.getContextPath() + req.getServletPath() + ODK_API_PATH)
-                .pathSegment(pathSegments)
-                .query(null)
-                .toUriString();
-    }
+    @Autowired
+    private FileHasher hasher;
+
+    @Autowired
+    EndpointHelper helper;
+
+    @Autowired
+    private SubmissionIdGenerator idGenerator;
+
+    @Autowired
+    private OpenRosaResponseBuilder responseBuilder;
+
+    @Autowired
+    private DateFormatter dateFormatter;
 
     @RequestMapping(value = {"/submission"}, method = RequestMethod.HEAD)
-    public void submissionPreAuth(HttpServletRequest req, HttpServletResponse rsp) {
-        addOpenRosaHeaders(rsp);
-        rsp.setHeader(LOCATION, contextRelativeUrl(req, "submission"));
-        rsp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+    public ResponseEntity submissionPreAuth(HttpServletRequest req) {
+        return ResponseEntity
+                .noContent()
+                .headers(helper.openRosaHeaders())
+                .header(LOCATION, helper.contextRelativeUrl(req, "submission"))
+                .build();
     }
 
     @GetMapping(value = "/submission/{instanceId}", produces = "application/xml")
-    @ResponseBody
     @Transactional(readOnly = true)
     public ResponseEntity<?> getXMLInstance(@PathVariable String instanceId) throws IOException {
         return getInstanceEntity(APPLICATION_XML, instanceId);
     }
 
     @GetMapping(value = "/submission/{instanceId}", produces = "application/json")
-    @ResponseBody
     @Transactional(readOnly = true)
     public ResponseEntity<?> getJSONInstance(@PathVariable String instanceId) throws IOException {
         return getInstanceEntity(APPLICATION_JSON, instanceId);
@@ -142,8 +126,8 @@ public class ODKSubmissionResource {
     @GetMapping(value = "/submission/{idScheme:\\w+}:{instanceId}/{fileName}.{extension}")
     public ResponseEntity<InputStreamResource> getSubmissionFile(@PathVariable String idScheme, @PathVariable String instanceId,
                                                                  @PathVariable String fileName, @PathVariable String extension) throws IOException {
-        String submissionPath = String.format("%s/%s.%s", getSubmissionPath(idScheme, instanceId), fileName, extension);
-        org.springframework.core.io.Resource submissionResource = new FileSystemResource(submissionPath);
+        String filePath = submissionFileSystem.getSubmissionFilePath(idScheme, instanceId, fileName, extension);
+        org.springframework.core.io.Resource submissionResource = new FileSystemResource(filePath);
         return ResponseEntity
                 .ok()
                 .contentLength(submissionResource.contentLength())
@@ -151,13 +135,6 @@ public class ODKSubmissionResource {
                 .body(new InputStreamResource(submissionResource.getInputStream()));
     }
 
-    private File getSubmissionDir(String instanceId) {
-        return new File(submissionsDir, schemeSubPath(instanceId));
-    }
-
-    private String getSubmissionPath(String idScheme, String id) {
-        return String.format("%s/%s/%s", submissionsDir, idScheme, id);
-    }
 
     @GetMapping(value = "/submissions/recent", produces = "application/json")
     @ResponseBody
@@ -175,8 +152,8 @@ public class ODKSubmissionResource {
     @ResponseBody
     @Transactional(readOnly = true)
     public List<FormSubmission> recentSubmissions(String query,
-                                                  @RequestParam(value="start", defaultValue = "0") int start,
-                                                  @RequestParam(value="end", defaultValue = "100") int max) {
+                                                  @RequestParam(value = "start", defaultValue = "0") int start,
+                                                  @RequestParam(value = "end", defaultValue = "100") int max) {
         return submissionDao.findBySearch(query, start, max);
     }
 
@@ -190,21 +167,22 @@ public class ODKSubmissionResource {
 
     @GetMapping(path = "/view/submissionList")
     @Transactional(readOnly = true)
-    public ResponseEntity<InputStreamResource> submissionList(@RequestParam("formId") String form,
-                                                              @RequestParam(value = "cursor", required = false) String cursor,
-                                                              @RequestParam(value = "numEntries", required = false) Integer limit) {
+    public ResponseEntity<ByteArrayResource> submissionList(@RequestParam("formId") String form,
+                                                            @RequestParam(value = "cursor", required = false) String cursor,
+                                                            @RequestParam(value = "numEntries", required = false) Integer limit) {
         Timestamp lastSeen = null;
         if (!isEmpty(cursor)) {
             lastSeen = Timestamp.valueOf(cursor);
         }
-        String contents = getSubmissionIdList(submissionDao.find(form, null, null, null, lastSeen, limit, false), cursor);
+        String chunkList = buildSubmissionChunk(
+                submissionDao.find(form, null, null, null, lastSeen, limit, false), cursor);
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.TEXT_XML)
-                .body(new InputStreamResource(new ByteArrayInputStream(contents.getBytes())));
+                .body(new ByteArrayResource(chunkList.getBytes()));
     }
 
-    private String getSubmissionIdList(List<FormSubmission> submissions, String cursor) {
+    private String buildSubmissionChunk(List<FormSubmission> submissions, String cursor) {
         StringBuilder b = new StringBuilder("<idChunk xmlns=\"http://opendatakit.org/submissions\"><idList>");
         for (FormSubmission s : submissions) {
             b.append("<id>");
@@ -234,28 +212,14 @@ public class ODKSubmissionResource {
         }
         String submissionBaseUrl = String.format("%s/submission",
                 buildFullRequestUrl(req).split("/view/downloadSubmission")[0]);
-        String contents = getSubmissionDescriptor(submissionDao.findById(info[1]), submissionBaseUrl);
+        String contents = buildSubmissionDescriptor(submissionDao.findById(info[1]), submissionBaseUrl);
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.TEXT_XML)
-                .body(new InputStreamResource(new ByteArrayInputStream(contents.getBytes())));
+                .body(new ByteArrayResource(contents.getBytes()));
     }
 
-    private String formatODKSubmitDate(Timestamp t) {
-        if (t != null) {
-            return new SimpleDateFormat(ODK_SUBMIT_DATE_PATTERN).format(t);
-        }
-        return "";
-    }
-
-    private Timestamp parseODKSubmitDate(String s) throws ParseException {
-        if (s != null) {
-            return new Timestamp(new SimpleDateFormat(ODK_SUBMIT_DATE_PATTERN).parse(s).getTime());
-        }
-        return null;
-    }
-
-    private String getSubmissionDescriptor(FormSubmission submission, String submissionBaseUrl) throws IOException {
+    private String buildSubmissionDescriptor(FormSubmission submission, String submissionBaseUrl) throws IOException {
         StringBuilder b = new StringBuilder(
                 "<submission xmlns=\"http://opendatakit.org/submissions\" " +
                         "xmlns:orx=\"http://openrosa.org/xforms\" ><data>");
@@ -272,11 +236,11 @@ public class ODKSubmissionResource {
             root.setAttribute(VERSION, submission.getFormVersion());
         }
         if (root.getAttribute(SUBMISSION_DATE) == null) {
-            root.setAttribute(SUBMISSION_DATE, formatODKSubmitDate(submission.getSubmitted()));
+            root.setAttribute(SUBMISSION_DATE, dateFormatter.formatSubmitDate(submission.getSubmitted()));
         }
         b.append(new XMLOutputter(Format.getRawFormat().setOmitDeclaration(true)).outputString(doc));
         b.append("</data>");
-        File submissionDir = getSubmissionDir(instanceId);
+        File submissionDir = submissionFileSystem.getSubmissionDir(instanceId);
         if (submissionDir.exists()) {
             log.debug("scanning {} for media files", submissionDir);
             Files.walk(submissionDir.toPath())
@@ -289,7 +253,7 @@ public class ODKSubmissionResource {
                             b.append("</fileName>");
                             b.append("<hash>");
                             b.append(MD5_SCHEME);
-                            b.append(getFileHash(path.toFile()));
+                            b.append(hasher.hashFile(path.toFile()));
                             b.append("</hash>");
                             String downloadUrl = String.format("%s/%s/%s",
                                     submissionBaseUrl, instanceId, path.getFileName());
@@ -318,9 +282,9 @@ public class ODKSubmissionResource {
     }
 
     @PostMapping("/submission")
-    public ResponseEntity<?> handleSubmission(@RequestParam(value = DEVICE_ID, defaultValue = "unknown") String deviceId,
-                                              @RequestParam(XML_SUBMISSION_FILE) MultipartFile xmlFile,
-                                              MultipartHttpServletRequest req, HttpServletResponse rsp)
+    public ResponseEntity<ByteArrayResource> handleSubmission(@RequestParam(value = DEVICE_ID, defaultValue = "unknown") String deviceId,
+                                                              @RequestParam(XML_SUBMISSION_FILE) MultipartFile xmlFile,
+                                                              MultipartHttpServletRequest req)
             throws IOException, URISyntaxException, JDOMException {
 
         log.info("received submission from device '{}'", deviceId);
@@ -351,7 +315,7 @@ public class ODKSubmissionResource {
         if (collectionTimeElem == null || collectionTimeElem.getText().isEmpty()) {
             collected = Timestamp.from(now());
             collectionTimeElem = new Element(COLLECTION_DATE_TIME, rootNs);
-            collectionTimeElem.setText(new SimpleDateFormat(DATE_TIME_PATTERN).format(collected));
+            collectionTimeElem.setText(dateFormatter.formatCollectionDate(collected));
             rootElem.addContent(collectionTimeElem);
         } else {
             collected = Timestamp.valueOf(collectionTimeElem.getText());
@@ -362,12 +326,12 @@ public class ODKSubmissionResource {
         if (instanceId == null) {
             Element instanceIdElem = metaElem.getChild(INSTANCE_ID, metaElemNs);
             if (instanceIdElem == null) {
-                instanceId = generateInstanceId();
+                instanceId = idGenerator.generateId();
                 instanceIdElem = new Element(INSTANCE_ID, metaElemNs);
                 instanceIdElem.setText(instanceId);
                 metaElem.addContent(instanceIdElem);
             } else if (instanceIdElem.getText().isEmpty()) {
-                instanceId = generateInstanceId();
+                instanceId = idGenerator.generateId();
                 instanceIdElem.setText(instanceId);
             } else {
                 instanceId = instanceIdElem.getText();
@@ -384,22 +348,22 @@ public class ODKSubmissionResource {
 
         Form form = formDao.findById(new FormId(id, version));
 
-        addOpenRosaHeaders(rsp);
-
         if (form == null) {
             log.warn("rejected {}, unknown form id={}, version={}", instanceId, id, version);
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
+                    .headers(helper.openRosaHeaders())
                     .contentType(MediaType.TEXT_XML)
-                    .body(new InputStreamResource(new ByteArrayInputStream(
-                            getFailedSubmissionResponse(String.format("form %s version %s doesn't exist", id, version)).getBytes())));
+                    .body(new ByteArrayResource(
+                            responseBuilder.response(String.format("form %s version %s doesn't exist", id, version)).getBytes()));
         } else if (!form.isSubmissions()) {
             log.warn("rejected {}, submissions disabled for form id={}, version={}", instanceId, id, version);
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
+                    .headers(helper.openRosaHeaders())
                     .contentType(MediaType.TEXT_XML)
-                    .body(new InputStreamResource(new ByteArrayInputStream(
-                            getFailedSubmissionResponse(String.format("form %s version %s submissions disabled", id, version)).getBytes())));
+                    .body(new ByteArrayResource(
+                            responseBuilder.response(String.format("form %s version %s submissions disabled", id, version)).getBytes()));
         } else {
 
             // Get CIMS-specific binding or fall back on form id
@@ -415,7 +379,7 @@ public class ODKSubmissionResource {
              */
             Timestamp submitted = null, processed = null;
             try {
-                processed = submitted = parseODKSubmitDate(rootElem.getAttributeValue(SUBMISSION_DATE));
+                processed = submitted = dateFormatter.parseSubmitDate(rootElem.getAttributeValue(SUBMISSION_DATE));
             } catch (ParseException e) {
                 log.warn("failed to parse submission date", e);
             }
@@ -435,7 +399,7 @@ public class ODKSubmissionResource {
             }
 
             // Create directory to store submission
-            File instanceDir = getSubmissionDir(instanceId);
+            File instanceDir = submissionFileSystem.getSubmissionDir(instanceId);
             instanceDir.mkdirs();
 
             // Save uploaded files to the submission directory
@@ -454,19 +418,14 @@ public class ODKSubmissionResource {
                 }
             }
 
-            URI submissionUri = new URI(contextRelativeUrl(req, "submission"));
+            URI submissionUri = new URI(helper.contextRelativeUrl(req, "submission"));
 
             return ResponseEntity
                     .created(submissionUri)
+                    .headers(helper.openRosaHeaders())
                     .contentType(MediaType.TEXT_XML)
-                    .body(new InputStreamResource(new ByteArrayInputStream(getSuccessfulSubmissionResponse(submission).getBytes())));
+                    .body(new ByteArrayResource(responseBuilder.submissionResponse(submission).getBytes()));
         }
-    }
-
-    private String getFailedSubmissionResponse(String message) {
-        return "<OpenRosaResponse xmlns=\"http://openrosa.org/http/response\">" +
-                "<message>" + message + "</message>" +
-                "</OpenRosaResponse>";
     }
 
     private Element getChild(Element parent, String cname, Namespace... nses) {
@@ -477,37 +436,5 @@ public class ODKSubmissionResource {
             }
         }
         return null;
-    }
-
-    private String getSuccessfulSubmissionResponse(FormSubmission fs) {
-        return String.format("<OpenRosaResponse xmlns=\"http://openrosa.org/http/response\">" +
-                        "<message>full submission upload was successful!</message>" +
-                        "<submissionMetadata xmlns=\"http://www.opendatakit.org/xforms\"" +
-                        "id=\"%s\" instanceID=\"%s\" version=\"%s\" submissionDate=\"%s\"/>" +
-                        "</OpenRosaResponse>",
-                fs.getFormId(), fs.getInstanceId(), fs.getFormVersion(), formatODKSubmitDate(fs.getSubmitted()));
-    }
-
-    private String generateInstanceId() {
-        return String.format("uuid:%s", UUID.randomUUID());
-    }
-
-    private String schemeSubPath(String instanceId) {
-        return instanceId.replaceFirst(":", "/");
-    }
-
-    private void addOpenRosaHeaders(HttpServletResponse rsp) {
-        rsp.setHeader("X-OpenRosa-Version", "1.0");
-        rsp.setIntHeader("X-OpenRosa-Accept-Content-Length", 10485760);
-    }
-
-    private String getFileHash(File toHash) throws NoSuchAlgorithmException, IOException {
-        try (DigestInputStream in = new DigestInputStream(new FileInputStream(toHash), MessageDigest.getInstance(MD5))) {
-            byte[] buf = new byte[8096];
-            while (in.read(buf) >= 0) {
-                // reading only to compute hash
-            }
-            return MD5_SCHEME + encodeHexString(in.getMessageDigest().digest());
-        }
     }
 }
