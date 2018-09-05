@@ -84,7 +84,7 @@ public class FormsResource {
     public ResponseEntity<ByteArrayResource> uploadForm(@RequestParam(FORM_DEF_FILE) MultipartFile formXml,
                                                         MultipartHttpServletRequest req)
             throws JDOMException, IOException, NoSuchAlgorithmException, URISyntaxException {
-        formService.uploadForm(formXml, req.getMultiFileMap());
+        formService.uploadForm(formXml, null, req.getMultiFileMap());
         return ResponseEntity
                 .created(new URI(helper.contextRelativeUrl(req, "formUpload")))
                 .contentType(MediaType.TEXT_XML)
@@ -106,8 +106,8 @@ public class FormsResource {
             "/formList/{formId:\\w+}/{formVersion:\\d+}/{fileName:[a-zA-Z0-9-_ ]+[.]\\w+}"})
     public ResponseEntity<InputStreamResource> formFile(@PathVariable String formId, @PathVariable String formVersion,
                                                         @PathVariable String fileName) throws IOException {
-        String formFilePath = formFileSystem.getFormFilePath(formId, formVersion, fileName);
-        org.springframework.core.io.Resource formResource = new FileSystemResource(formFilePath);
+        File formFile = formFileSystem.getFormFilePath(formId, formVersion, fileName).toFile();
+        org.springframework.core.io.Resource formResource = new FileSystemResource(formFile);
         return ResponseEntity
                 .ok()
                 .headers(helper.openRosaHeaders())
@@ -121,10 +121,10 @@ public class FormsResource {
     public ResponseEntity<ByteArrayResource> manifest(@PathVariable String formId, @PathVariable String formVersion,
                                                       HttpServletRequest req) throws IOException, JDOMException {
 
-        String manifestPath = formFileSystem.getFormFilePath(formId, formVersion, MEDIA_MANIFEST);
+        File manifestFile = formFileSystem.getFormFilePath(formId, formVersion, MEDIA_MANIFEST).toFile();
 
         SAXBuilder builder = new SAXBuilder();
-        org.springframework.core.io.Resource manifestResource = new FileSystemResource(manifestPath);
+        org.springframework.core.io.Resource manifestResource = new FileSystemResource(manifestFile);
         Document manifestDoc = builder.build(manifestResource.getInputStream());
 
         String formBaseUrl = buildFullRequestUrl(req).replaceFirst("manifest$", "");
@@ -200,7 +200,7 @@ public class FormsResource {
             Path formsPath = formsDir.toPath();
             return formDao.findDownloadable()
                     .stream()
-                    .map(form -> formFileSystem.getFormFilePath(form.getFormId().getId(), form.getFormId().getVersion()))
+                    .map(form -> formFileSystem.getXmlFormPath(form.getFormId().getId(), form.getFormId().getVersion()))
                     .map(formsPath::resolve)
                     .filter(path -> path.toFile().exists())
                     .map(path -> {

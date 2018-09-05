@@ -2,6 +2,8 @@ package com.github.cimsbioko.server.webapi.odk;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class DefaultFormFileSystem implements FormFileSystem {
 
@@ -9,17 +11,21 @@ public class DefaultFormFileSystem implements FormFileSystem {
     private File formsDir;
 
     @Override
-    public String getFormFilePath(String id, String version) {
-        return String.format("%s/%s.xml", getFormDirPath(id, version), id);
+    public Path getXmlFormPath(String id, String version) {
+        return getFormFilePath(id, version, id + ".xml");
     }
 
     @Override
-    public String getFormDirPath(String id, String version) {
-        return String.format("%s/%s", id, version);
+    public Path getXlsformPath(String id, String version) {
+        return getFormFilePath(id, version, id + ".xlsx");
     }
 
     @Override
-    public String getFormFilePath(String id, String version, String filename) {
-        return String.format("%s/%s/%s/%s", formsDir, id, version, filename);
+    public Path getFormDirPath(String id, String version) {
+        return formsDir.toPath().resolve(Paths.get(id, version));
+    }
+
+    public Path getFormFilePath(String id, String version, String filename) {
+        return getFormDirPath(id, version).resolve(filename);
     }
 }

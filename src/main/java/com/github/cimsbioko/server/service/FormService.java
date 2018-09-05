@@ -8,5 +8,6 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 public interface FormService {
-    void uploadForm(MultipartFile formXml, MultiValueMap<String, MultipartFile> uploadedFiles) throws JDOMException, IOException, NoSuchAlgorithmException;
+    void uploadForm(MultipartFile formXml, MultipartFile xlsform, MultiValueMap<String, MultipartFile> uploadedFiles)
+            throws JDOMException, IOException, NoSuchAlgorithmException;
 }

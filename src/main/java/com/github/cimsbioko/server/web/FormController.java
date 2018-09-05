@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 import static com.github.cimsbioko.server.webapi.odk.Constants.FORM_DEF_FILE;
+import static com.github.cimsbioko.server.webapi.odk.Constants.XLSFORM_DEF_FILE;
 
 @RestController
 public class FormController {
@@ -21,8 +22,10 @@ public class FormController {
     private FormService service;
 
     @PostMapping(value = "/forms")
-    public void uploadForm(@RequestParam(FORM_DEF_FILE) MultipartFile xmlForm, MultipartHttpServletRequest req)
+    public void uploadForm(@RequestParam(FORM_DEF_FILE) MultipartFile xmlForm,
+                           @RequestParam(value = XLSFORM_DEF_FILE, required = false) MultipartFile xlsform,
+                           MultipartHttpServletRequest req)
             throws JDOMException, IOException, NoSuchAlgorithmException {
-        service.uploadForm(xmlForm, req.getMultiFileMap());
+        service.uploadForm(xmlForm, xlsform, req.getMultiFileMap());
     }
 }

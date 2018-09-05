@@ -18,10 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.function.Function;
@@ -36,9 +36,6 @@ public class FormServiceImpl implements FormService {
 
     private static final Logger log = LoggerFactory.getLogger(FormServiceImpl.class);
 
-    @Resource
-    private File formsDir;
-
     @Autowired
     private FormDao formDao;
 
@@ -50,11 +47,18 @@ public class FormServiceImpl implements FormService {
 
     @Override
     @Transactional
-    public void uploadForm(MultipartFile formXml, MultiValueMap<String, MultipartFile> uploadedFiles) throws JDOMException, IOException, NoSuchAlgorithmException {
-        File formDir = createOrUpdateForm(formXml);
+    public void uploadForm(MultipartFile formXml, MultipartFile xlsform, MultiValueMap<String, MultipartFile> uploadedFiles) throws JDOMException, IOException, NoSuchAlgorithmException {
+        FormId id = createOrUpdateForm(formXml);
         Map<String, MultipartFile> mediaFiles = extractMediaFromUploads(uploadedFiles);
-        writeMediaFiles(formDir, mediaFiles);
-        writeManifest(formDir, mediaFiles);
+        writeMediaFiles(id, mediaFiles);
+        writeManifest(id, mediaFiles);
+        writeXlsform(id, xlsform);
+    }
+
+    private void writeXlsform(FormId id, MultipartFile xlsform) throws IOException {
+        if (!(xlsform == null || xlsform.getOriginalFilename().isEmpty())) {
+            xlsform.transferTo(formFileSystem.getXlsformPath(id.getId(), id.getVersion()).toFile());
+        }
     }
 
     private Map<String, MultipartFile> extractMediaFromUploads(MultiValueMap<String, MultipartFile> uploadedFiles) {
@@ -68,7 +72,7 @@ public class FormServiceImpl implements FormService {
                 .collect(Collectors.toMap(MultipartFile::getOriginalFilename, Function.identity()));
     }
 
-    private File createOrUpdateForm(MultipartFile formXml) throws JDOMException, IOException {
+    private FormId createOrUpdateForm(MultipartFile formXml) throws JDOMException, IOException {
 
         // make xml into dom object
         Document formDoc = getBuilder().build(formXml.getInputStream());
@@ -111,10 +115,10 @@ public class FormServiceImpl implements FormService {
         formDao.exclusiveDownload(form);
 
         // identify where to store the file on the file system
-        String formFilePath = formFileSystem.getFormFilePath(id, version);
+        Path formFilePath = formFileSystem.getXmlFormPath(id, version);
         log.info("storing form at {}", formFilePath);
 
-        File formFile = new File(formsDir, formFilePath);
+        File formFile = formFilePath.toFile();
         File formDir = formFile.getParentFile();
 
         // ensure the directory exists prior to attempting to write the file
@@ -125,10 +129,13 @@ public class FormServiceImpl implements FormService {
             getOutputter().output(formDoc, writer);
         }
 
-        return formDir;
+        return formId;
     }
 
-    private void writeManifest(File formDir, Map<String, MultipartFile> mediaFiles) throws IOException, NoSuchAlgorithmException {
+    private void writeManifest(FormId formId, Map<String, MultipartFile> mediaFiles) throws IOException, NoSuchAlgorithmException {
+
+        File formDir = formFileSystem.getFormDirPath(formId.getId(), formId.getVersion()).toFile();
+
         // create a new dom object for the form's media manifest
         Document manifestDoc = new Document();
         Namespace manifestNs = Namespace.getNamespace("http://openrosa.org/xforms/xformsManifest");
@@ -161,7 +168,8 @@ public class FormServiceImpl implements FormService {
         }
     }
 
-    private void writeMediaFiles(File formDir, Map<String, MultipartFile> mediaFiles) {
+    private void writeMediaFiles(FormId formId, Map<String, MultipartFile> mediaFiles) {
+        File formDir = formFileSystem.getFormDirPath(formId.getId(), formId.getVersion()).toFile();
         mediaFiles.entrySet().removeIf(e -> {
             File dest = new File(formDir, e.getKey());
             try {
