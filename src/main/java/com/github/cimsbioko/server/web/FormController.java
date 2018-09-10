@@ -28,4 +28,11 @@ public class FormController {
             throws JDOMException, IOException, NoSuchAlgorithmException {
         service.uploadForm(xmlForm, xlsform, req.getMultiFileMap());
     }
+
+    @PostMapping(value = "/forms", params = "!" + FORM_DEF_FILE)
+    public void uploadForm(@RequestParam(value = XLSFORM_DEF_FILE) MultipartFile xlsform,
+                           MultipartHttpServletRequest req)
+            throws JDOMException, IOException, NoSuchAlgorithmException {
+        service.uploadXlsform(xlsform, req.getMultiFileMap());
+    }
 }

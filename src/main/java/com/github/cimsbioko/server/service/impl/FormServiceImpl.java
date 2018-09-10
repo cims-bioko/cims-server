@@ -4,6 +4,7 @@ import com.github.cimsbioko.server.dao.FormDao;
 import com.github.cimsbioko.server.domain.Form;
 import com.github.cimsbioko.server.domain.FormId;
 import com.github.cimsbioko.server.service.FormService;
+import com.github.cimsbioko.server.service.XLSFormService;
 import com.github.cimsbioko.server.webapi.odk.FileHasher;
 import com.github.cimsbioko.server.webapi.odk.FormFileSystem;
 import org.jdom2.Document;
@@ -18,9 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -40,15 +39,29 @@ public class FormServiceImpl implements FormService {
     private FormDao formDao;
 
     @Autowired
-    FileHasher hasher;
+    private FileHasher hasher;
 
     @Autowired
-    FormFileSystem formFileSystem;
+    private FormFileSystem formFileSystem;
+
+    @Autowired
+    private XLSFormService xlsformService;
 
     @Override
     @Transactional
     public void uploadForm(MultipartFile formXml, MultipartFile xlsform, MultiValueMap<String, MultipartFile> uploadedFiles) throws JDOMException, IOException, NoSuchAlgorithmException {
-        FormId id = createOrUpdateForm(formXml);
+        installFormWithMedia(xlsform, uploadedFiles, formXml.getInputStream());
+    }
+
+    @Override
+    public void uploadXlsform(MultipartFile xlsform, MultiValueMap<String, MultipartFile> uploadedFiles) throws JDOMException, IOException, NoSuchAlgorithmException {
+        try (InputStream xmlInput = new FileInputStream(xlsformService.generateXForm(xlsform.getInputStream()))) {
+            installFormWithMedia(xlsform, uploadedFiles, xmlInput);
+        }
+    }
+
+    private void installFormWithMedia(MultipartFile xlsform, MultiValueMap<String, MultipartFile> uploadedFiles, InputStream xmlInput) throws JDOMException, IOException, NoSuchAlgorithmException {
+        FormId id = createOrUpdateForm(xmlInput);
         Map<String, MultipartFile> mediaFiles = extractMediaFromUploads(uploadedFiles);
         writeMediaFiles(id, mediaFiles);
         writeManifest(id, mediaFiles);
@@ -72,10 +85,10 @@ public class FormServiceImpl implements FormService {
                 .collect(Collectors.toMap(MultipartFile::getOriginalFilename, Function.identity()));
     }
 
-    private FormId createOrUpdateForm(MultipartFile formXml) throws JDOMException, IOException {
+    private FormId createOrUpdateForm(InputStream xmlStream) throws JDOMException, IOException {
 
         // make xml into dom object
-        Document formDoc = getBuilder().build(formXml.getInputStream());
+        Document formDoc = getBuilder().build(xmlStream);
 
         // create namespaces to we can unambiguously reference elements using dom api
         Namespace xformsNs = Namespace.getNamespace("http://www.w3.org/2002/xforms"),
