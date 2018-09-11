@@ -67,16 +67,17 @@
         <script src="#{request.contextPath}/resources/scripts/jquery-3.3.1.min.js" />
         <script>
 
-            function upload(form) {
+            function upload($form, relUrl) {
 
-                var data = new FormData(form);
+                var data = new FormData($form[0]);
+                var $button = $form.find(".uploadSubmit");
 
-                $(".uploadSubmit").prop("disabled", true);
+                $button.prop("disabled", true);
 
                 $.ajax({
                     type: "POST",
                     enctype: 'multipart/form-data',
-                    url: "#{request.contextPath}/forms",
+                    url: "#{request.contextPath}" + relUrl,
                     data: data,
                     processData: false, // don't make a query string out of the data
                     contentType: false,
@@ -84,28 +85,17 @@
                     timeout: 600000,
                     success: function () {
                         $("#result").text("#{msg.uploadSuccess}");
-                        $(".uploadForm").trigger("reset");
-                        $(".uploadSubmit").prop("disabled", false);
+                        $form.trigger("reset");
+                        $button.prop("disabled", false);
                     },
                     error: function (rsp) {
                         $("#result").addClass("error").text("#{msg.uploadFailed}: " + rsp.responseJSON.exception + ' - ' + rsp.responseJSON.message);
-                        $(".uploadSubmit").prop("disabled", false);
+                        button.prop("disabled", false);
                     }
                 });
             }
 
             $(document).ready(function () {
-
-                // clear messages when submit buttons are pressed
-                $(".uploadSubmit").click(function(event) {
-                    $("#result").removeClass("error").text("");
-                });
-
-                // submit forms via ajax
-                $(".uploadForm").submit(function (event) {
-                    event.preventDefault(); // prevent normal submit
-                    upload($(this)[0]);
-                });
 
                 // set first tab as active
                 $('#tabs li a:not(:first)').addClass('inactive');
@@ -122,6 +112,22 @@
                         $('#'+ tabId + '-content').fadeIn('slow');
                     }
                 });
+
+                // setup handlers to clear prior results
+                $(".uploadSubmit").click(function(event) {
+                    $("#result").removeClass("error").text("");
+                });
+
+                // setup handlers to submit each form
+                $("#xmlform,#xmlxlsform").submit(function (event) {
+                    event.preventDefault(); // prevent normal submit
+                    upload($(this), '/uploadXmlForm');
+                });
+
+                $("#xlsform").submit(function (event) {
+                    event.preventDefault(); // prevent normal submit
+                    upload($(this), '/uploadXlsForm');
+                });
             });
         </script>
     </ui:define>
@@ -134,7 +140,7 @@
             <li><a id="tab-xls">XLSForm</a></li>
         </ul>
         <div id="tab-xml-content" class="tab-content">
-            <form class="uploadForm" enctype="multipart/form-data">
+            <form id="xmlform" class="uploadForm" enctype="multipart/form-data">
                 <div>
                     <label for="xml_form_def_file">#{msg.xmlForm}:</label><br/>
                     <input id="xml_form_def_file" type="file" name="form_def_file" required="" accept="text/xml,application/xml"/><br/><br/>
@@ -146,7 +152,7 @@
             </form>
         </div>
         <div id="tab-xmlxls-content" class="tab-content">
-            <form class="uploadForm" enctype="multipart/form-data">
+            <form id="xmlxlsform" class="uploadForm" enctype="multipart/form-data">
                 <div>
                     <label for="xmlxls_form_def_file">#{msg.xmlForm}:</label><br/>
                     <input id="xmlxls_form_def_file" type="file" name="form_def_file" required="" accept="text/xml,application/xml"/><br/><br/>
@@ -160,7 +166,7 @@
             </form>
         </div>
         <div id="tab-xls-content" class="tab-content">
-            <form class="uploadForm" enctype="multipart/form-data">
+            <form id="xlsform" class="uploadForm" enctype="multipart/form-data">
                 <div>
                     <label for="xls_xlsform_def_file">#{msg.xlsform}:</label><br/>
                     <input id="xls_xlsform_def_file" type="file" name="xlsform_def_file" required="" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/><br/><br/>

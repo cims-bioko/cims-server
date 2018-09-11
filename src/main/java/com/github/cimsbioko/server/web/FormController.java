@@ -21,7 +21,7 @@ public class FormController {
     @Autowired
     private FormService service;
 
-    @PostMapping(value = "/forms")
+    @PostMapping(value = "/uploadXmlForm")
     public void uploadForm(@RequestParam(FORM_DEF_FILE) MultipartFile xmlForm,
                            @RequestParam(value = XLSFORM_DEF_FILE, required = false) MultipartFile xlsform,
                            MultipartHttpServletRequest req)
@@ -29,7 +29,7 @@ public class FormController {
         service.uploadForm(xmlForm, xlsform, req.getMultiFileMap());
     }
 
-    @PostMapping(value = "/forms", params = "!" + FORM_DEF_FILE)
+    @PostMapping(value = "/uploadXlsForm")
     public void uploadForm(@RequestParam(value = XLSFORM_DEF_FILE) MultipartFile xlsform,
                            MultipartHttpServletRequest req)
             throws JDOMException, IOException, NoSuchAlgorithmException {
