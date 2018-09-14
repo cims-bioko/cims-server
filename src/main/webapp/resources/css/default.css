@@ -33,6 +33,12 @@ body {
     float: left;
     border-right: 1px solid #336633;
     border-bottom: 1px solid #336633;
+    background-color: black;
+}
+
+#navi img#logo {
+    display: block;
+    margin: auto;
 }
 
 /* the position of login status*/
