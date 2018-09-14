@@ -2,39 +2,87 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:sec="http://www.springframework.org/security/tags">
 
 <h:head>
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
-
     <title><ui:insert name="title"/></title>
-
-    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/reset.css"/>
-    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/demos.css"/>
     <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/default.css"/>
-    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/menuStyle.css"/>
     <ui:insert name="extraHeaders"/>
-
 </h:head>
 
 <body>
 <div id="navi">
+
     <div id="headers">
         <h:graphicImage id="n" style="width: 100%" value="/resources/images/logo2.jpg" title="#{msg.logoName}"/>
     </div>
-    <!-- Include the logo composition -->
-    <ui:include src="/templates/logo.xhtml"/>
 
-    <c:if test="#{flowScope == null or flowScope.showNavMenu}">
-        <ui:include src="/snippets/menu.xhtml"/>
-    </c:if>
+    <h:form>
+        <div class="texta">
+            <c:if test="#{currentUser.name != null}">
+                <div>
+                    #{msg.welcome} #{currentUser.name}, <h:outputText value=" "/> <h:outputLink value="#{request.contextPath}/logoutProcess">#{msg.logout}</h:outputLink>
+                </div>
+            </c:if>
+        </div>
+    </h:form>
+    <h:form>
+        <ul id="menu1" class="menu">
+            <li>
+                <h:commandLink action="welcome" value="#{msg.navBarHome}">
+                    <f:actionListener target="#{navController.showHome}" />
+                </h:commandLink>
+            </li>
+            <sec:authorize access="hasAuthority('ACCESS_UTILITY_ROUTINES')">
+                <li>
+                    <h:commandLink value="#{msg.navBarUtilityRoutine}" action="welcome">
+                        <f:setPropertyActionListener target="#{navController.showUtilities}" value="true"/>
+                    </h:commandLink>
+                    <c:if test="#{navController.showUtilities}">
+                        <ul>
+                            <li><h:commandLink value="#{msg.tasks}" action="task"/></li>
+                        </ul>
+                        <ul>
+                            <li><h:commandLink value="#{msg.backups}" action="backup"/></li>
+                        </ul>
+                        <ul>
+                            <li><h:commandLink value="#{msg.forms}" action="form"/></li>
+                        </ul>
+                    </c:if>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasAuthority('ACCESS_CONFIGURATION')">
+                <li>
+                    <h:commandLink value="#{msg.navBarConfiguration}" action="welcome">
+                        <f:setPropertyActionListener target="#{navController.showConfiguration}" value="true"/>
+                    </h:commandLink>
+                    <c:if test="#{navController.showConfiguration}">
+                        <ul>
+                            <li><h:commandLink value="#{msg.navBarRoleManagement}" action="#{roleCrud.listSetup}"/></li>
+                            <li><h:commandLink value="#{msg.navBarUserManagement}" action="#{userCrud.listSetup}"/></li>
+                            <li><h:commandLink value="#{msg.navBarFieldWorkers}" action="#{fieldWorkerCrud.listSetup}"/></li>
+                        </ul>
+                    </c:if>
+                </li>
+            </sec:authorize>
+        </ul>
+    </h:form>
 </div>
 
 <div id="content">
     <c:if test="#{hideTabBar == null or hideTabBar != true}">
-        <ui:include src="/templates/tab-bar.xhtml"/>
+        <h:form rendered="#{crud != null}">
+            <h:commandLink
+                    styleClass="amendment-tab #{crud.showListing ? 'amendment-tab-selected' : 'amendment-tab-unselected'}"
+                    rendered="#{hideListing != true}" value="#{msg.listing}" immediate="true">
+                <f:setPropertyActionListener target="#{crud.showListing}" value="true"/>
+            </h:commandLink>
+            <div style="background-color:#306331;height:.2em;width:100%;margin-bottom:.5em;"/>
+        </h:form>
     </c:if>
-
     <div id="center" class="boxcontent">
         <div style="#{crud.showListing ? '' : 'display:none;'}">
             <ui:insert name="listing"/>

@@ -1,14 +1,8 @@
-/*
-    Document   : main
-    Created on : Mar 17, 2010, 2:44:43 PM
-    Author     : Advocatus
-    Description:
-        Purpose of the stylesheet follows.
-*/
+
+@import url("reset.css");
+@import url("common.css");
 
 body {
-    margin: 0;
-    padding: 0;
     background-color: #DEEBE0;
 }
 
@@ -20,16 +14,14 @@ body {
     color: #440000;
     font-weight: bold;
     font-size: 18px;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
-.error {
-    background-color: yellow;
-    color: red;
+.error, ul#errors li, span.error {
+    display: block;
+    margin: .5em 0em .5em 0em;
+    color: #ff3246;
     font-weight: bold;
     font-size: 12px;
-    font-family: Arial, Helvetica, sans-serif;
-
 }
 
 .center {
@@ -81,11 +73,16 @@ span.title {
 }
 
 #content {
-    font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+    margin: 1em;
     font-size: 12px;
     padding-left: 1em;
     float: left;
     width: 80%;
+}
+
+#content h1:first-child {
+    font-size: 1.5em;
+    margin-bottom: .5em;
 }
 
 .box {
@@ -103,9 +100,7 @@ span.title {
     background-color: #DEEBE0;
     border-bottom: 1px solid #00CC66;
     width: 79%;
-    font-family: Arial, Helvetica, sans-serif;
     min-height: 533px;
-    font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
     font-size: 12px;
 
 }
@@ -232,3 +227,54 @@ a.amendment-tab-unselected {
 tr.deleted td.center {
     text-decoration: line-through;
 }
+
+p {
+    line-height: 1.5em;
+}
+
+ul.menu, ul.menu ul {
+    list-style-type:none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+}
+
+ul.menu a {
+    display: block;
+    text-decoration: none;
+}
+
+ul.menu li {
+    margin-top: 1px;
+}
+
+ul.menu li a {
+    background: #306331;
+    color: #fff;
+    padding: 0.5em;
+}
+
+ul.menu li a:hover {
+    background: #0CA717;
+}
+
+ul.menu li ul li a {
+    background: #BDDFBB;
+    color: #000;
+    padding-left: 20px;
+}
+
+ul.menu li ul li a:hover {
+    background: #B3DFB0;
+    border-left: 5px #000 solid;
+    padding-left: 15px;
+}
+
+.code { border: 1px solid #ccc; list-style-type: decimal-leading-zero; padding: 5px; margin: 0; }
+.code code { display: block; padding: 3px; margin-bottom: 0; }
+.code li { background: #ddd; border: 1px solid #ccc; margin: 0 0 2px 2.2em; }
+.indent1 { padding-left: 1em; }
+.indent2 { padding-left: 2em; }
+.indent3 { padding-left: 3em; }
+.indent4 { padding-left: 4em; }
+.indent5 { padding-left: 5em; }
