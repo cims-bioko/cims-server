@@ -3,27 +3,22 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions">
-    <!-- Search Widget -->
+    <h1>#{msg.roles}</h1>
     <ui:include src="/search/searchBox.xhtml">
         <ui:param name="crud" value="#{roleCrud}"/>
     </ui:include>
     <h:form>
-        <div>
-            <div>
-                <ui:include src="/snippets/paging.xhtml">
-                    <ui:param name="currentCrud" value="#{roleCrud}"/>
-                </ui:include>
-                <h:commandButton immediate="true" action="#{roleCrud.createSetup}" value="#{msg.lblAddNew}" id="button1"/>
-            </div>
-        </div>
-        <div>
+        <ui:include src="/snippets/paging.xhtml">
+            <ui:param name="currentCrud" value="#{roleCrud}"/>
+        </ui:include>
+        <div class="data-table">
             <div class="center">
                 <h:messages errorClass="error" style="width:100%" globalOnly="false"/>
             </div>
             <h:outputText escape="false" value="#{msg.roleEmpty}" rendered="#{roleCrud.pager.totalCount == 0}"/>
             <h:panelGroup rendered="#{fn:length(roleCrud.pagedItems) > 0}">
                 <h:dataTable value="#{roleCrud.pagedItems}" var="role"
-                             columnClasses="center,center,width3"
+                             columnClasses="center,center,actions"
                              rowClasses="#{roleCrud.itemCSSClasses}"
                              width="100%">
                     <h:column headerClass="width1">
@@ -38,7 +33,7 @@
                         </f:facet>
                         <h:outputText value="#{role.description}"/>
                     </h:column>
-                    <h:column headerClass="width3">
+                    <h:column headerClass="actions">
                         <f:facet name="header">
                             <h:outputText escape="false" value=""/>
                         </f:facet>

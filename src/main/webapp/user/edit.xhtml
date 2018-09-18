@@ -21,7 +21,7 @@
         <h1>#{msg.userEdit}</h1>
         <h:messages id="errors" globalOnly="true"/>
         <h:form>
-            <h:panelGrid columns="3">
+            <h:panelGrid columns="3" columnClasses="label,field,">
                 <h:outputText value="#{msg.userFirstName}:"/>
                 <h:inputText id="firstName" value="#{userCrud.item.firstName}" converter="#{defaultStringConverter}"/>
                 <h:message for="firstName" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>

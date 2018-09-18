@@ -2,25 +2,23 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
-    <!-- Search Widget -->
+    <h1>#{msg.fieldworkers}</h1>
     <ui:include src="/search/searchBox.xhtml">
         <ui:param name="crud" value="#{fieldWorkerCrud}"/>
     </ui:include>
     <h:form>
-        <div>
-            <div>
-                <ui:include src="/snippets/paging.xhtml">
-                    <ui:param name="currentCrud" value="#{fieldWorkerCrud}"/>
-                </ui:include>
-                <h:commandButton immediate="true" action="#{fieldWorkerCrud.createSetup}" value="#{msg.lblAddNew}" id="button1"/>
+        <ui:include src="/snippets/paging.xhtml">
+            <ui:param name="currentCrud" value="#{fieldWorkerCrud}"/>
+        </ui:include>
+        <div class="data-table">
+            <div class="center">
+                <h:messages errorClass="error" style="width:100%" globalOnly="false"/>
             </div>
-        </div>
-        <div>
             <h:outputText escape="false" value="#{msg.fieldWorkerEmpty}"
                           rendered="#{fieldWorkerCrud.pager.totalCount == 0}"/>
             <h:panelGroup rendered="#{fieldWorkerCrud.pager.totalCount > 0}">
                 <h:dataTable value="#{fieldWorkerCrud.pagedItems}" var="item"
-                             columnClasses="center,center,center,width3"
+                             columnClasses="center,center,center,actions"
                              rowClasses="#{fieldWorkerCrud.itemCSSClasses}"
                              width="100%">
                     <h:column>

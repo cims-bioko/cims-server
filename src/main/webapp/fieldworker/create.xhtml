@@ -22,7 +22,7 @@
         <h1>#{msg.fieldWorkerCreate}</h1>
         <h:messages id="errors" globalOnly="true"/>
         <h:form id="form">
-            <h:panelGrid columns="3">
+            <h:panelGrid columns="3" columnClasses="label,field,">
 
                 <c:if test="#{fieldWorkerIdGenerator.generated == false}">
                     <h:outputText value="#{msg.fieldWorkerId}:"/>

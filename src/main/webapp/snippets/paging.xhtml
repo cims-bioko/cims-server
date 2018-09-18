@@ -3,28 +3,20 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-    <c:if test="#{currentCrud.pager.pageIndex > 0}">
-        <span class="paging-text paging-element"><h:commandLink styleClass="paging-link" immediate="true"
-                                                                action="#{currentCrud.firstPage}"
-                                                                value="&lt;&lt; #{msg.pagingFirst}"/></span>
-
-        <span class="paging-text paging-element"><h:commandLink styleClass="paging-link" immediate="true"
-                                                                action="#{currentCrud.prev}"
-                                                                value="&lt; #{msg.pagingPrev}"/></span>
-    </c:if>
-
-    <c:if test="#{!currentCrud.pager.onLastPage}">
-        <span class="paging-text paging-element"><h:commandLink styleClass="paging-link" immediate="true"
-                                                                action="#{currentCrud.next}"
-                                                                value="#{msg.pagingNext} >"/></span>
-
-        <span class="paging-text paging-element"><h:commandLink styleClass="paging-link" immediate="true"
-                                                                action="#{currentCrud.lastPage}"
-                                                                value="#{msg.pagingLast} >>"/></span>
-    </c:if>
-
+<div class="pager">
+    <h:commandLink styleClass="paging-element paging-text paging-link" immediate="true" action="#{currentCrud.firstPage}"
+                   disabled="#{!(currentCrud.pager.pageIndex > 0)}" value="&lt;&lt; #{msg.pagingFirst}"/>
+    <h:commandLink styleClass="paging-element paging-text paging-link" immediate="true" action="#{currentCrud.prev}"
+                   disabled="#{!(currentCrud.pager.pageIndex > 0)}" value="&lt; #{msg.pagingPrev}"/>
+    <h:commandLink styleClass="paging-element paging-text paging-link" immediate="true" action="#{currentCrud.next}"
+                   disabled="#{currentCrud.pager.onLastPage}" value="#{msg.pagingNext} >"/>
+    <h:commandLink styleClass="paging-element paging-text paging-link" immediate="true" action="#{currentCrud.lastPage}"
+                   disabled="#{currentCrud.pager.onLastPage}" value="#{msg.pagingLast} >>"/>
     <c:if test="#{currentCrud.pager.totalCount > 0}">
-        <span class="paging-text paging-element">#{msg.pagingShowing} #{currentCrud.pager.pageIndex + 1} - #{currentCrud.pager.lastLogicalIndexOnCurrentPage} #{msg.pagingOf} #{currentCrud.pager.totalCount}</span>
+        <span class="paging-element paging-text">
+            #{msg.pagingShowing} #{currentCrud.pager.pageIndex + 1} - #{currentCrud.pager.lastLogicalIndexOnCurrentPage} #{msg.pagingOf} #{currentCrud.pager.totalCount}
+        </span>
     </c:if>
-
+    <h:commandLink immediate="true" action="#{currentCrud.createSetup}" value="#{msg.lblAddNew}" styleClass="paging-text paging-link"/>
+</div>
 </ui:composition>

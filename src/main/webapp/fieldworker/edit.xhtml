@@ -21,7 +21,7 @@
         <h1>#{msg.fieldWorkerEdit}</h1>
         <h:messages id="errors" globalOnly="true"/>
         <h:form id="form">
-            <h:panelGrid columns="3">
+            <h:panelGrid columns="3" columnClasses="label,field,">
 
                 <h:outputText value="#{msg.fieldWorkerId}:"/>
                 <h:inputText id="extId" value="#{fieldWorkerCrud.item.extId}" converter="#{defaultConverter}"

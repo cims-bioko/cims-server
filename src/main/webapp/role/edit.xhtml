@@ -21,7 +21,7 @@
         <h1>#{msg.roleEdit}</h1>
         <h:messages id="errors" globalOnly="true"/>
         <h:form>
-            <h:panelGrid columns="3">
+            <h:panelGrid columns="3" columnClasses="label,field,">
                 <h:outputText value="#{msg.roleFullName}:"/>
                 <h:inputText id="name" value="#{roleCrud.item.name}" converter="#{defaultConverter}" disabled="true"/>
                 <h:message for="name" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>

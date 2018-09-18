@@ -3,24 +3,22 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions">
-    <!-- Search Widget -->
+    <h1>#{msg.users}</h1>
     <ui:include src="/search/searchBox.xhtml">
         <ui:param name="crud" value="#{userCrud}"/>
     </ui:include>
     <h:form>
-        <div>
-            <div>
-                <ui:include src="/snippets/paging.xhtml">
-                    <ui:param name="currentCrud" value="#{userCrud}"/>
-                </ui:include>
-                <h:commandButton immediate="true" action="#{userCrud.createSetup}" value="#{msg.lblAddNew}" id="button1"/>
+        <ui:include src="/snippets/paging.xhtml">
+            <ui:param name="currentCrud" value="#{userCrud}"/>
+        </ui:include>
+        <div class="data-table">
+            <div class="center">
+                <h:messages errorClass="error" style="width:100%" globalOnly="false"/>
             </div>
-        </div>
-        <div>
             <h:outputText escape="false" value="#{msg.userEmpty}" rendered="#{userCrud.pager.totalCount == 0}"/>
             <h:panelGroup rendered="#{fn:length(userCrud.pagedItems) > 0}">
                 <h:dataTable value="#{userCrud.pagedItems}" var="user"
-                             columnClasses="center,center,center,width3"
+                             columnClasses="center,center,center,actions"
                              rowClasses="#{userCrud.itemCSSClasses}"
                              width="100%">
                     <h:column headerClass="width1">
