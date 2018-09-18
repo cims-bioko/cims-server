@@ -8,14 +8,12 @@
         <ui:param name="crud" value="#{userCrud}"/>
     </ui:include>
     <h:form>
-        <div style="text-align:right;">
-            <div style="float:left;">
-                <h:commandButton immediate="true" action="#{userCrud.createSetup}" value="#{msg.lblAddNew}"
-                                 id="button1"/>
-                <!-- Paging -->
+        <div>
+            <div>
                 <ui:include src="/snippets/paging.xhtml">
                     <ui:param name="currentCrud" value="#{userCrud}"/>
                 </ui:include>
+                <h:commandButton immediate="true" action="#{userCrud.createSetup}" value="#{msg.lblAddNew}" id="button1"/>
             </div>
         </div>
         <div>
