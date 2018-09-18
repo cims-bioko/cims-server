@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
-    <div style="float:right;">
+    <div id="searchBox">
         <h:form>
         <h:inputText id="searchString" value="#{crud.searchString}"/>
         <h:message for="searchString" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
