@@ -29,7 +29,6 @@ body {
 }
 
 #navi {
-    width: 15%;
     float: left;
     border-right: 1px solid #336633;
     border-bottom: 1px solid #336633;
@@ -83,7 +82,6 @@ span.title {
     font-size: 12px;
     padding-left: 1em;
     float: left;
-    width: 80%;
 }
 
 #content h1:first-child {
