@@ -2,7 +2,6 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
-
 <div class="pager">
     <h:commandLink styleClass="paging-element paging-text paging-link" immediate="true" action="#{currentCrud.firstPage}"
                    disabled="#{!(currentCrud.pager.pageIndex > 0)}" value="&lt;&lt; #{msg.pagingFirst}"/>

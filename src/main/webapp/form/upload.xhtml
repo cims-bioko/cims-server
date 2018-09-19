@@ -6,7 +6,6 @@
     <ui:define name="title">#{msg.uploadForm}</ui:define>
     <ui:define name="extraHeaders">
         <style>
-
             #tabs {
                 list-style: none;
                 height: 22px;
@@ -66,7 +65,6 @@
         </style>
         <script src="#{request.contextPath}/resources/scripts/jquery-3.3.1.min.js" />
         <script>
-
             function upload($form, relUrl) {
 
                 var data = new FormData($form[0]);
@@ -177,7 +175,6 @@
                 <input class="uploadSubmit" type="submit" value="#{msg.upload}"/>
             </form>
         </div>
-
     </ui:define>
 </ui:composition>
 </body>
