@@ -1,12 +1,12 @@
 package com.github.cimsbioko.server;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.github.cimsbioko.server.web.service.JsfService;
+
 import javax.faces.component.UIComponent;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
-
-import com.github.cimsbioko.server.web.service.JsfService;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A special JsfService Mock implementation to be used only for testing.

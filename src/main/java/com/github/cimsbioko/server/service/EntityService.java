@@ -1,10 +1,10 @@
 package com.github.cimsbioko.server.service;
 
-import java.sql.SQLException;
-
-import org.hibernate.exception.ConstraintViolationException;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
+
+import java.sql.SQLException;
 
 /**
  * Interface that represents a generic service that can be used to create/read/delete entities in the system

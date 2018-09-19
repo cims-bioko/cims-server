@@ -2,9 +2,8 @@ package com.github.cimsbioko.server.task.support;
 
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-
 import javax.annotation.Resource;
+import java.io.File;
 
 @Component
 public class FileResolverImpl implements FileResolver {

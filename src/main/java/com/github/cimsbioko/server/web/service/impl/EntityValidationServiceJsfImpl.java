@@ -1,16 +1,15 @@
 package com.github.cimsbioko.server.web.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
+import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.EntityValidationService;
 import com.github.cimsbioko.server.web.service.JsfService;
-import com.github.cimsbioko.server.exception.ConstraintViolations;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("unchecked")
 public class EntityValidationServiceJsfImpl<T> implements EntityValidationService<T> {

@@ -1,10 +1,9 @@
 package com.github.cimsbioko.server.task.sqlite;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import javax.sql.DataSource;
 
 /**
  * A {@link Source} implementation that simply delegates to the underlying {@link DataSource}.

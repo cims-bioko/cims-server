@@ -1,8 +1,8 @@
 package com.github.cimsbioko.server.dao;
 
-import java.util.List;
-
 import com.github.cimsbioko.server.domain.User;
+
+import java.util.List;
 
 public interface UserDao extends Dao<User, String> {
 

@@ -1,12 +1,11 @@
 package com.github.cimsbioko.server.domain;
 
-import java.io.Serializable;
-
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * An AuditableCollectedEntity is any entity that is recorded or collected by a Field Worker

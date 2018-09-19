@@ -1,7 +1,7 @@
 package com.github.cimsbioko.server.idgen;
 
-import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.LocationHierarchy;
+import com.github.cimsbioko.server.exception.ConstraintViolations;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;

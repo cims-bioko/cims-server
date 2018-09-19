@@ -1,17 +1,17 @@
 package com.github.cimsbioko.server.security;
 
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.time.Instant;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.github.cimsbioko.server.domain.User;
 import com.github.cimsbioko.server.dao.UserDao;
+import com.github.cimsbioko.server.domain.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.Instant;
 
 /**
  * A custom authentication success handler that records the last login time for a user.

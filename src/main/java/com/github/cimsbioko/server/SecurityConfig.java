@@ -14,9 +14,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
 
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @EnableWebSecurity

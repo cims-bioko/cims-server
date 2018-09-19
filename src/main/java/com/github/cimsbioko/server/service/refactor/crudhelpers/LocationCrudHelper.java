@@ -1,9 +1,9 @@
 package com.github.cimsbioko.server.service.refactor.crudhelpers;
 
-import com.github.cimsbioko.server.idgen.LocationGenerator;
-import com.github.cimsbioko.server.service.refactor.LocationService;
 import com.github.cimsbioko.server.domain.Location;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
+import com.github.cimsbioko.server.idgen.LocationGenerator;
+import com.github.cimsbioko.server.service.refactor.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

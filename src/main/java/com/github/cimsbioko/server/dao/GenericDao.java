@@ -1,8 +1,8 @@
 package com.github.cimsbioko.server.dao;
 
-import java.util.List;
-
 import org.hibernate.Session;
+
+import java.util.List;
 
 public interface GenericDao {
 

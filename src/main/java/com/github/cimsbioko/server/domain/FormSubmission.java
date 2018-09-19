@@ -12,7 +12,10 @@ import org.hibernate.search.annotations.Indexed;
 import org.jdom2.Document;
 import org.json.JSONObject;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
 @Entity

@@ -1,14 +1,13 @@
 package com.github.cimsbioko.server.task.support;
 
+import com.github.cimsbioko.server.service.TaskService;
 import com.github.cimsbioko.server.task.SyncFileTask;
 import com.github.cimsbioko.server.task.TaskContext;
-import com.github.cimsbioko.server.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-
 import javax.annotation.Resource;
+import java.io.File;
 
 @Component("openhdsTaskExecutor")
 public class TaskExecutorImpl implements TaskExecutor {

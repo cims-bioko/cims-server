@@ -1,11 +1,10 @@
 package com.github.cimsbioko.server.util;
 
-import java.util.Calendar;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.Calendar;
 
 /**
  * An adapter for converting between String and Calendar types when posting

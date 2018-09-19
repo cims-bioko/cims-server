@@ -1,13 +1,13 @@
 package com.github.cimsbioko.server.security;
 
-import java.util.List;
-
 import com.github.cimsbioko.server.dao.UserDao;
 import com.github.cimsbioko.server.domain.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Implementation of Spring Security's {@link org.springframework.security.core.userdetails.UserDetailsService}

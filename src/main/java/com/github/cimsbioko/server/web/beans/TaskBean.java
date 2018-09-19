@@ -1,11 +1,7 @@
 package com.github.cimsbioko.server.web.beans;
 
-import java.util.List;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
-import com.github.cimsbioko.server.service.CurrentUser;
 import com.github.cimsbioko.server.domain.Task;
+import com.github.cimsbioko.server.service.CurrentUser;
 import com.github.cimsbioko.server.service.TaskService;
 import com.github.cimsbioko.server.task.support.TaskExecutor;
 import org.slf4j.Logger;
@@ -13,6 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
+
+import java.util.List;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class TaskBean {
 

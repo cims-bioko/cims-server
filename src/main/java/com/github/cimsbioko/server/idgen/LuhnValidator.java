@@ -1,9 +1,9 @@
 package com.github.cimsbioko.server.idgen;
 
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.Set;
-
-import org.springframework.stereotype.Component;
 
 /**
  * The Luhn mod N algorithm generates a check character within the same range

@@ -1,10 +1,9 @@
 package com.github.cimsbioko.server.task.sqlite;
 
 import com.github.batkinson.jrsync.Metadata;
-
+import com.github.cimsbioko.server.service.TaskService;
 import com.github.cimsbioko.server.task.SyncFileTask;
 import com.github.cimsbioko.server.task.TaskContext;
-import com.github.cimsbioko.server.service.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,20 +12,15 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.annotation.Resource;
+import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.annotation.Resource;
-
-import static org.apache.commons.codec.binary.Hex.encodeHexString;
 import static com.github.cimsbioko.server.service.TaskService.MOBILEDB_TASK_NAME;
+import static org.apache.commons.codec.binary.Hex.encodeHexString;
 
 /**
  * Exports an sqlite database usable by the tablet application.

@@ -1,18 +1,14 @@
 package com.github.cimsbioko.server.util;
 
-import java.text.ParseException;
-import java.util.Calendar;
-
-import com.github.cimsbioko.server.util.CalendarAdapter;
-import com.github.cimsbioko.server.util.CalendarUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import java.text.ParseException;
+import java.util.Calendar;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CalendarAdapterTest {

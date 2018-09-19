@@ -1,9 +1,9 @@
 package com.github.cimsbioko.server.web.service;
 
-import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
+import java.util.List;
 
 public interface JsfService {
 

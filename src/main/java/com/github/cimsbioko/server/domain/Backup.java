@@ -3,7 +3,6 @@ package com.github.cimsbioko.server.domain;
 import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Calendar;
 
 

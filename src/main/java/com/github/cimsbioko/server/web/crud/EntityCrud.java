@@ -1,15 +1,14 @@
 package com.github.cimsbioko.server.web.crud;
 
-import java.io.Serializable;
-import java.util.List;
+import com.github.cimsbioko.server.dao.Dao;
+import com.github.cimsbioko.server.web.ui.PagingState;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
-
-import com.github.cimsbioko.server.web.ui.PagingState;
-import com.github.cimsbioko.server.dao.Dao;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Interface that represents the actions the user can take when using

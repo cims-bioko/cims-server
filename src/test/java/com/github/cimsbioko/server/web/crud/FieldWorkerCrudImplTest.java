@@ -1,14 +1,14 @@
 package com.github.cimsbioko.server.web.crud;
 
-import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.WebContextLoader;
+import com.github.cimsbioko.server.dao.GenericDao;
+import com.github.cimsbioko.server.domain.FieldWorker;
+import com.github.cimsbioko.server.service.CurrentUser;
 import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import com.github.cimsbioko.server.service.CurrentUser;
-import com.github.cimsbioko.server.domain.FieldWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mock.web.MockHttpServletRequest;

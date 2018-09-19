@@ -1,8 +1,8 @@
 package com.github.cimsbioko.server.service;
 
-import java.util.List;
-
 import com.github.cimsbioko.server.exception.ConstraintViolations;
+
+import java.util.List;
 
 public interface EntityValidationService<T> {
 

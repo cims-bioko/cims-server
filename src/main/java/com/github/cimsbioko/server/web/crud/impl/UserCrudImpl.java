@@ -1,14 +1,14 @@
 package com.github.cimsbioko.server.web.crud.impl;
 
+import com.github.cimsbioko.server.domain.Role;
+import com.github.cimsbioko.server.domain.User;
+import com.github.cimsbioko.server.service.UserService;
+import com.github.cimsbioko.server.web.crud.UserCrud;
+
+import javax.faces.model.SelectItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import javax.faces.model.SelectItem;
-
-import com.github.cimsbioko.server.domain.Role;
-import com.github.cimsbioko.server.domain.User;
-import com.github.cimsbioko.server.web.crud.UserCrud;
-import com.github.cimsbioko.server.service.UserService;
 
 import static org.hibernate.Hibernate.initialize;
 

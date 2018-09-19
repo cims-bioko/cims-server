@@ -1,19 +1,16 @@
 package com.github.cimsbioko.server.task.support;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-
+import com.github.cimsbioko.server.service.TaskService;
+import com.github.cimsbioko.server.task.SyncFileTask;
 import com.github.cimsbioko.server.task.TaskContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import com.github.cimsbioko.server.task.SyncFileTask;
-import com.github.cimsbioko.server.service.TaskService;
 
 import static com.github.cimsbioko.server.service.TaskService.MOBILEDB_TASK_NAME;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class TaskExecutorImplTest {
 

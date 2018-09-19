@@ -1,17 +1,16 @@
 package com.github.cimsbioko.server.web.cvt;
 
-import java.io.Serializable;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-
 import com.github.cimsbioko.server.dao.Dao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 /**
  * A generic converter capable of transforming an entity into a string, and a

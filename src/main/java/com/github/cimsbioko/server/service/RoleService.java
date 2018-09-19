@@ -1,11 +1,11 @@
 package com.github.cimsbioko.server.service;
 
-import java.util.List;
-
-import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.domain.Privilege;
 import com.github.cimsbioko.server.domain.Role;
 import com.github.cimsbioko.server.domain.User;
+import com.github.cimsbioko.server.exception.ConstraintViolations;
+
+import java.util.List;
 
 public interface RoleService {
 

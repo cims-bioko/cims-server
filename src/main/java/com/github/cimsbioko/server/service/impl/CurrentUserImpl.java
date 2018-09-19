@@ -1,8 +1,5 @@
 package com.github.cimsbioko.server.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import com.github.cimsbioko.server.service.CurrentUser;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,6 +8,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Simple bean that provides access to the current logged in user

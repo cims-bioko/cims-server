@@ -1,14 +1,14 @@
 package com.github.cimsbioko.server.idgen;
 
-import java.text.Normalizer;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.github.cimsbioko.server.dao.GenericDao;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.text.Normalizer;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Brian
