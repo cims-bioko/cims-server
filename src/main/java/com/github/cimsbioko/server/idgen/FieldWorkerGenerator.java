@@ -81,7 +81,7 @@ public class FieldWorkerGenerator extends Generator<FieldWorker> {
 
     // not applicable for field worker
     @Override
-    public String buildNumberWithBound(FieldWorker entityItem, IdScheme scheme) throws ConstraintViolations {
+    public String buildNumberWithBound(FieldWorker entityItem, IdScheme scheme) {
         return null;
     }
 

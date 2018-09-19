@@ -58,7 +58,7 @@ public class GenericWebContextLoader extends AbstractContextLoader {
         };
     }
 
-    public ApplicationContext loadContext(MergedContextConfiguration mergedConfig) throws Exception {
+    public ApplicationContext loadContext(MergedContextConfiguration mergedConfig) {
         GenericWebApplicationContext context = new GenericWebApplicationContext();
         context.getEnvironment().setActiveProfiles(mergedConfig.getActiveProfiles());
         prepareContext(context);
@@ -66,7 +66,7 @@ public class GenericWebContextLoader extends AbstractContextLoader {
         return context;
     }
 
-    public ApplicationContext loadContext(String... locations) throws Exception {
+    public ApplicationContext loadContext(String... locations) {
         // should never be called
         throw new UnsupportedOperationException();
     }

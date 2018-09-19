@@ -78,7 +78,7 @@ public class LocationGenerator extends Generator<Location> {
     }
 
     @Override
-    public String buildNumberWithBound(Location entityItem, IdScheme scheme) throws ConstraintViolations {
+    public String buildNumberWithBound(Location entityItem, IdScheme scheme) {
 
         Location loc = new Location();
 
@@ -94,10 +94,10 @@ public class LocationGenerator extends Generator<Location> {
             result = "";
             String tempExtId = extId;
 
-            while (result.toString().length() < incBoundLength) {
-                if (result.toString().length() + size.toString().length() < incBoundLength)
+            while (result.length() < incBoundLength) {
+                if (result.length() + size.toString().length() < incBoundLength)
                     result += "0";
-                if (result.toString().length() + size.toString().length() == incBoundLength)
+                if (result.length() + size.toString().length() == incBoundLength)
                     result = result.concat(size.toString());
             }
 

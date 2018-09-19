@@ -40,7 +40,7 @@ public class GenericDaoImpl implements GenericDao {
 
     @SuppressWarnings("unchecked")
     public <T> T read(Class<T> entityType, String id) {
-        return (T) getSession().get(entityType, id);
+        return getSession().get(entityType, id);
     }
 
     public <T> void update(T transientObject) {

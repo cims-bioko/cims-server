@@ -68,7 +68,7 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK> {
      * database using the indicated <code>id</code> as primary key
      */
     public T read(PK id) {
-        return (T) getSession().get(entityType, id);
+        return getSession().get(entityType, id);
     }
 
     /**

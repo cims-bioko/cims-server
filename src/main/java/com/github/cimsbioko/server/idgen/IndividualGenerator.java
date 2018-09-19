@@ -77,7 +77,7 @@ public class IndividualGenerator extends Generator<Individual> {
     }
 
     @Override
-    public String buildNumberWithBound(Individual entityItem, IdScheme scheme) throws ConstraintViolations {
+    public String buildNumberWithBound(Individual entityItem, IdScheme scheme) {
 
         Individual tempIndividual = new Individual();
 
@@ -93,10 +93,10 @@ public class IndividualGenerator extends Generator<Individual> {
             result = "";
             String tempExtId = extId;
 
-            while (result.toString().length() < incBoundLength) {
-                if (result.toString().length() + size.toString().length() < incBoundLength)
+            while (result.length() < incBoundLength) {
+                if (result.length() + size.toString().length() < incBoundLength)
                     result += "0";
-                if (result.toString().length() + size.toString().length() == incBoundLength)
+                if (result.length() + size.toString().length() == incBoundLength)
                     result = result.concat(size.toString());
             }
 

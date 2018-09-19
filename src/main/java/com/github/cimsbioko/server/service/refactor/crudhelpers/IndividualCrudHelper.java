@@ -19,7 +19,7 @@ public class IndividualCrudHelper extends AbstractEntityCrudHelperImpl<Individua
     IndividualGenerator individualGenerator;
 
     @Override
-    protected void preCreateSanityChecks(Individual individual) throws ConstraintViolations {
+    protected void preCreateSanityChecks(Individual individual) {
     }
 
     @Override

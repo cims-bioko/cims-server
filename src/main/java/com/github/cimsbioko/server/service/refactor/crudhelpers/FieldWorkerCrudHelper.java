@@ -15,7 +15,7 @@ public class FieldWorkerCrudHelper extends AbstractEntityCrudHelperImpl<FieldWor
     FieldWorkerService fieldWorkerService;
 
     @Override
-    protected void preCreateSanityChecks(FieldWorker fieldWorker) throws ConstraintViolations {
+    protected void preCreateSanityChecks(FieldWorker fieldWorker) {
     }
 
     @Override

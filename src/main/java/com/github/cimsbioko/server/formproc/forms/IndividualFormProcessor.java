@@ -41,7 +41,7 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
     private LocationService locationService;
 
     @Transactional
-    public void processForm(Form form) throws IOException, ConstraintViolations {
+    public void processForm(Form form) throws ConstraintViolations {
 
         // Default relationship to head of household is "self"
         if (form.individualRelationshipToHeadOfHousehold == null) {

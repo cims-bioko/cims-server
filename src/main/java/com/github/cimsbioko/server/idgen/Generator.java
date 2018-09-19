@@ -52,7 +52,7 @@ public abstract class Generator<T> extends LuhnValidator {
         do {
             suffixInt++;
             numberGen = suffixInt.toString();
-            String temp = prefix.toString() + numberGen;
+            String temp = prefix + numberGen;
 
             if (checkDigit) {
                 String resultChar = generateCheckCharacter(temp).toString();

@@ -92,7 +92,7 @@ public class LocationHierarchyGenerator extends Generator<LocationHierarchy> {
 
     // not applicable for location hierarchy
     @Override
-    public String buildNumberWithBound(LocationHierarchy entityItem, IdScheme scheme) throws ConstraintViolations {
+    public String buildNumberWithBound(LocationHierarchy entityItem, IdScheme scheme) {
         return null;
     }
 

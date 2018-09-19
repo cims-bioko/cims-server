@@ -25,7 +25,7 @@ public class EntityValidationServiceJsfImpl<T> implements EntityValidationServic
         List<String> violations = validateType(entityItem);
 
         if (violations.size() > 0) {
-            throw new ConstraintViolations(violations.get(0).toString(), violations);
+            throw new ConstraintViolations(violations.get(0), violations);
         }
     }
 

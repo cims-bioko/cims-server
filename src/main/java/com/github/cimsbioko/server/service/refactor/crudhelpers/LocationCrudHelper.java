@@ -19,7 +19,7 @@ public class LocationCrudHelper extends AbstractEntityCrudHelperImpl<Location> {
     LocationGenerator locationGenerator;
 
     @Override
-    protected void preCreateSanityChecks(Location location) throws ConstraintViolations {
+    protected void preCreateSanityChecks(Location location) {
     }
 
     @Override

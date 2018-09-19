@@ -8,7 +8,6 @@ import com.github.cimsbioko.server.service.LocationHierarchyService;
 import com.github.cimsbioko.server.domain.Location;
 import com.github.cimsbioko.server.domain.LocationHierarchy;
 import com.github.cimsbioko.server.domain.LocationHierarchyLevel;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.sql.CallableStatement;
