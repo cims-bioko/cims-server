@@ -19,7 +19,7 @@
                         <c:if test="#{not empty param.login_error}">
                             <c:set var="username" value="#{sessionScope.SPRING_SECURITY_LAST_USERNAME}"/>
                         </c:if>
-                        <input id="username" type="text" name="username" value="#{username}"/>
+                        <input id="username" name="username" value="#{username}"/>
                         <script>document.getElementById('username').focus();</script>
                     </td>
                 </tr>
