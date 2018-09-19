@@ -18,7 +18,7 @@ body {
 
 .error, ul#errors li, span.error {
     display: block;
-    margin: .5em 0em .5em 0em;
+    margin: .5em 0 .5em 0;
     color: #ff3246;
     font-weight: bold;
     font-size: 12px;
