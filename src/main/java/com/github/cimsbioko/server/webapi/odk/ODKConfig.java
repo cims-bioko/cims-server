@@ -1,7 +1,5 @@
 package com.github.cimsbioko.server.webapi.odk;
 
-import com.github.cimsbioko.server.service.XLSFormService;
-import com.github.cimsbioko.server.service.impl.XLSFormServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
