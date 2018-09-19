@@ -5,15 +5,12 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 <body>
 <ui:composition template="/templates/default.xhtml">
-    <ui:define name="title">Create Field Worker</ui:define>
-
     <ui:param name="crud" value="#{fieldWorkerCrud}"/>
-
+    <ui:define name="title">#{msg.fieldWorkerCreate}</ui:define>
     <ui:define name="listing">
         <ui:include src="list.xhtml"/>
     </ui:define>
     <ui:define name="display">
-
         <h1>#{msg.fieldWorkerCreate}</h1>
         <h:messages id="errors" globalOnly="true"/>
         <h:form id="form">
@@ -38,10 +35,8 @@
                 <h:message for="password" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
                 <h:outputText value="#{msg.fieldWorkerConfirmPassword}:"/>
-                <h:inputSecret id="confirmPassword" value="#{fieldWorkerCrud.item.confirmPassword}"
-                               converter="#{defaultConverter}"/>
+                <h:inputSecret id="confirmPassword" value="#{fieldWorkerCrud.item.confirmPassword}" converter="#{defaultConverter}"/>
                 <h:message for="confirmPassword" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
-
 
             </h:panelGrid>
             <script type="application/javascript">

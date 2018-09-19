@@ -5,19 +5,17 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
 <body>
 <ui:composition template="/templates/default.xhtml">
-    <ui:define name="title">Create User</ui:define>
-
     <ui:param name="crud" value="#{userCrud}"/>
-
+    <ui:define name="title">#{msg.userCreate}</ui:define>
     <ui:define name="listing">
         <ui:include src="list.xhtml"/>
     </ui:define>
     <ui:define name="display">
-
         <h1>#{msg.userCreate}</h1>
         <h:messages id="errors" globalOnly="true"/>
         <h:form id="form">
             <h:panelGrid columns="3" columnClasses="label,field,">
+
                 <h:outputText value="#{msg.userFirstName}:"/>
                 <h:inputText id="firstName" value="#{userCrud.item.firstName}" converter="#{defaultStringConverter}"/>
                 <h:message for="firstName" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>

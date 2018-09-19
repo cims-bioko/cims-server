@@ -3,12 +3,11 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets">
     <div id="searchBox">
         <h:form>
-        <h:inputText id="searchString" value="#{crud.searchString}"/>
-        <h:message for="searchString" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+            <h:inputText id="searchString" value="#{crud.searchString}"/>
+            <h:message for="searchString" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
-        <h:commandButton id="searchNow" action="#{crud.search}" value="#{msg.btnSearch}"/>
-        <h:commandButton action="#{crud.clearSearch}" value="#{msg.btnClearSearch}"/>
+            <h:commandButton id="searchNow" action="#{crud.search}" value="#{msg.btnSearch}"/>
+            <h:commandButton action="#{crud.clearSearch}" value="#{msg.btnClearSearch}"/>
         </h:form>
     </div>
-    <div style="clear:both;" />
 </ui:composition>

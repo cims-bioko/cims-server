@@ -5,33 +5,27 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
 <body>
 <ui:composition template="/templates/default.xhtml">
-    <ui:define name="title">Edit Field Worker</ui:define>
-
     <ui:param name="crud" value="#{fieldWorkerCrud}"/>
-
+    <ui:define name="title">#{msg.fieldWorkerEdit}</ui:define>
     <ui:define name="listing">
         <ui:include src="list.xhtml"/>
     </ui:define>
     <ui:define name="display">
-
         <h1>#{msg.fieldWorkerEdit}</h1>
         <h:messages id="errors" globalOnly="true"/>
         <h:form id="form">
             <h:panelGrid columns="3" columnClasses="label,field,">
 
                 <h:outputText value="#{msg.fieldWorkerId}:"/>
-                <h:inputText id="extId" value="#{fieldWorkerCrud.item.extId}" converter="#{defaultConverter}"
-                             disabled="true"/>
+                <h:inputText id="extId" value="#{fieldWorkerCrud.item.extId}" converter="#{defaultConverter}" disabled="true"/>
                 <h:message for="extId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
                 <h:outputText value="#{msg.fieldWorkerFirstName}:"/>
-                <h:inputText id="name" value="#{fieldWorkerCrud.item.firstName}" title="FieldWorker Name"
-                             converter="#{defaultConverter}"/>
+                <h:inputText id="name" value="#{fieldWorkerCrud.item.firstName}" title="FieldWorker Name" converter="#{defaultConverter}"/>
                 <h:message for="name" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
                 <h:outputText value="#{msg.fieldWorkerLastName}:"/>
-                <h:inputText id="lastname" value="#{fieldWorkerCrud.item.lastName}" title="FieldWorker Surname"
-                             converter="#{defaultConverter}"/>
+                <h:inputText id="lastname" value="#{fieldWorkerCrud.item.lastName}" title="FieldWorker Surname" converter="#{defaultConverter}"/>
                 <h:message for="lastname" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
                 <h:outputText value="#{msg.fieldWorkerPassword}:"/>
@@ -39,8 +33,7 @@
                 <h:message for="password" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
                 <h:outputText value="#{msg.fieldWorkerConfirmPassword}:"/>
-                <h:inputSecret id="confirmPassword" value="#{fieldWorkerCrud.item.confirmPassword}"
-                               converter="#{defaultConverter}"/>
+                <h:inputSecret id="confirmPassword" value="#{fieldWorkerCrud.item.confirmPassword}" converter="#{defaultConverter}"/>
                 <h:message for="confirmPassword" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
             </h:panelGrid>

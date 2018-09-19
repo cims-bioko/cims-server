@@ -5,19 +5,17 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
 <body>
 <ui:composition template="/templates/default.xhtml">
-    <ui:define name="title">Edit User</ui:define>
-
     <ui:param name="crud" value="#{userCrud}"/>
-
+    <ui:define name="title">#{msg.userEdit}</ui:define>
     <ui:define name="listing">
         <ui:include src="list.xhtml"/>
     </ui:define>
     <ui:define name="display">
-
         <h1>#{msg.userEdit}</h1>
         <h:messages id="errors" globalOnly="true"/>
         <h:form>
             <h:panelGrid columns="3" columnClasses="label,field,">
+
                 <h:outputText value="#{msg.userFirstName}:"/>
                 <h:inputText id="firstName" value="#{userCrud.item.firstName}" converter="#{defaultStringConverter}"/>
                 <h:message for="firstName" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
@@ -27,13 +25,11 @@
                 <h:message for="surname" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
                 <h:outputText value="#{msg.userDescription}:"/>
-                <h:inputText id="description" value="#{userCrud.item.description}"
-                             converter="#{defaultStringConverter}"/>
+                <h:inputText id="description" value="#{userCrud.item.description}" converter="#{defaultStringConverter}"/>
                 <h:message for="description" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
                 <h:outputText value="#{msg.userUsername}:"/>
-                <h:inputText id="username" value="#{userCrud.item.username}" disabled="true"
-                             converter="#{defaultStringConverter}"/>
+                <h:inputText id="username" value="#{userCrud.item.username}" disabled="true" converter="#{defaultStringConverter}"/>
                 <h:message for="username" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
                 <h:outputText value="#{msg.userPassword}:"/>

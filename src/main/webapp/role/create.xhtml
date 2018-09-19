@@ -5,15 +5,12 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
 <body>
 <ui:composition template="/templates/default.xhtml">
-    <ui:define name="title">Create Role</ui:define>
-
     <ui:param name="crud" value="#{roleCrud}"/>
-
+    <ui:define name="title">#{msg.roleCreate}</ui:define>
     <ui:define name="listing">
         <ui:include src="list.xhtml"/>
     </ui:define>
     <ui:define name="display">
-
         <h1>#{msg.roleCreate}</h1>
         <h:messages id="errors" globalOnly="true"/>
         <h:form>
@@ -31,7 +28,6 @@
                     <f:selectItems value="#{roleCrud.privilegeSelectItems}"/>
                 </h:selectManyCheckbox>
                 <h:message for="privileges" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
-
             </h:panelGrid>
             <br/>
             <h:commandButton action="#{roleCrud.create}" value="#{msg.lblCreate}"/>
