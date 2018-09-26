@@ -18,6 +18,7 @@ public class LocationHierarchy implements Serializable {
     private String uuid;
 
     @NotNull
+    @Column(name = "extid")
     private String extId;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = LocationHierarchy.class, fetch = FetchType.LAZY)
@@ -101,6 +102,6 @@ public class LocationHierarchy implements Serializable {
         }
 
         final String otherUuid = ((LocationHierarchy) other).getUuid();
-        return null != uuid && null != otherUuid && uuid.equals(otherUuid);
+        return null != uuid && uuid.equals(otherUuid);
     }
 }

@@ -41,43 +41,8 @@
 
     <bean id="xformGenerator" class="com.github.batkinson.jxlsform.xform.DefaultGenerator"/>
 
-    <bean id="taskDao" class="com.github.cimsbioko.server.dao.impl.BaseDaoImpl">
-        <constructor-arg value="com.github.cimsbioko.server.domain.Task"/>
-    </bean>
-
     <bean class="com.github.cimsbioko.server.security.LastLoginHandler">
-        <constructor-arg ref="userDao"/>
-    </bean>
-
-    <bean id="timestampConverter" class="com.github.cimsbioko.server.web.cvt.TimeStampConverter">
-        <constructor-arg value="${dateTimeFormat}"/>
-    </bean>
-
-    <!-- Entity Converters -->
-    <bean id="fieldWorkerConverter" class="com.github.cimsbioko.server.web.cvt.EntityConverterImpl">
-        <constructor-arg ref="fieldWorkerDao"/>
-        <constructor-arg value="com.github.cimsbioko.server.domain.FieldWorker"/>
-        <constructor-arg value="java.lang.String"/>
-    </bean>
-
-    <bean id="roleConverter" class="com.github.cimsbioko.server.web.cvt.EntityConverterImpl">
-        <constructor-arg ref="roleDao"/>
-        <constructor-arg value="com.github.cimsbioko.server.domain.Role"/>
-        <constructor-arg value="java.lang.String"/>
-    </bean>
-
-    <bean id="userConverter" class="com.github.cimsbioko.server.web.cvt.EntityConverterImpl">
-        <constructor-arg ref="userDao"/>
-        <constructor-arg value="com.github.cimsbioko.server.domain.User"/>
-        <constructor-arg value="java.lang.String"/>
-    </bean>
-
-    <bean id="jsfService" class="com.github.cimsbioko.server.web.service.impl.JsfServiceImpl"/>
-
-    <bean id="entityService" class="com.github.cimsbioko.server.service.impl.EntityServiceImpl">
-        <constructor-arg ref="genericDao"/>
-        <constructor-arg ref="calendarUtil"/>
-        <constructor-arg ref="entityValidator"/>
+        <constructor-arg ref="userRepository"/>
     </bean>
 
     <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler" />
@@ -116,8 +81,6 @@
         </property>
     </bean>
 
-    <bean id="currentUser" class="com.github.cimsbioko.server.service.impl.CurrentUserImpl" />
-
     <bean id="roleMapper" class="com.github.cimsbioko.server.security.RoleMapper" />
 
     <bean id="userMapper" class="com.github.cimsbioko.server.security.UserMapper">
@@ -125,21 +88,8 @@
     </bean>
 
     <bean class="com.github.cimsbioko.server.security.UserDetailsService">
-        <property name="userDao" ref="userDao"/>
+        <property name="userRepository" ref="userRepository"/>
         <property name="userMapper" ref="userMapper" />
-    </bean>
-
-    <bean class="com.github.cimsbioko.server.service.impl.LocationHierarchyServiceImpl">
-        <constructor-arg ref="genericDao"/>
-        <constructor-arg ref="entityService"/>
-        <constructor-arg ref="locationIdGenerator"/>
-        <constructor-arg ref="locationHierarchyIdGenerator"/>
-        <constructor-arg ref="sessionFactory" />
-    </bean>
-
-    <bean id="roleService" class="com.github.cimsbioko.server.service.impl.RoleServiceImpl">
-        <constructor-arg ref="roleDao"/>
-        <constructor-arg ref="genericDao"/>
     </bean>
 
     <!-- this should be moved to the formproc java config -->
@@ -206,59 +156,6 @@
                 <entry key="FIELDWORKER_LNAME" value="${openhds.fwLastNameLength}"/>
             </map>
         </property>
-    </bean>
-
-    <bean id="entityValidator" class="com.github.cimsbioko.server.web.service.impl.EntityValidationServiceJsfImpl">
-        <constructor-arg ref="jsfService"/>
-    </bean>
-
-    <bean id="userService" class="com.github.cimsbioko.server.service.impl.UserServiceImpl">
-        <constructor-arg name="genericDao" ref="genericDao"/>
-    </bean>
-
-    <bean id="navController" class="com.github.cimsbioko.server.web.ui.NavigationMenuBean" scope="session">
-        <aop:scoped-proxy/>
-    </bean>
-
-    <bean id="baseCrud" abstract="true">
-        <property name="jsfService" ref="jsfService"/>
-        <property name="entityService" ref="entityService"/>
-        <property name="genericDao" ref="genericDao"/>
-    </bean>
-
-    <bean id="fieldWorkerCrud" scope="session" parent="baseCrud" class="com.github.cimsbioko.server.web.crud.impl.FieldWorkerCrudImpl">
-        <aop:scoped-proxy proxy-target-class="false"/>
-        <constructor-arg value="com.github.cimsbioko.server.domain.FieldWorker"/>
-        <property name="dao" ref="fieldWorkerDao"/>
-        <property name="converter" ref="fieldWorkerConverter"/>
-    </bean>
-
-    <bean id="roleCrud" scope="session" parent="baseCrud" class="com.github.cimsbioko.server.web.crud.impl.RoleCrudImpl">
-        <aop:scoped-proxy proxy-target-class="false"/>
-        <constructor-arg value="com.github.cimsbioko.server.domain.Role"/>
-        <property name="dao" ref="roleDao"/>
-        <property name="converter" ref="roleConverter"/>
-        <property name="service" ref="roleService"/>
-    </bean>
-
-    <bean id="userCrud" scope="session" parent="baseCrud" class="com.github.cimsbioko.server.web.crud.impl.UserCrudImpl">
-        <aop:scoped-proxy proxy-target-class="false"/>
-        <constructor-arg value="com.github.cimsbioko.server.domain.User"/>
-        <property name="dao" ref="userDao"/>
-        <property name="converter" ref="userConverter"/>
-        <property name="service" ref="userService"/>
-    </bean>
-
-    <bean id="taskBean" class="com.github.cimsbioko.server.web.beans.TaskBean" init-method="scheduleAllTasks">
-        <constructor-arg ref="openhdsTaskExecutor"/>
-        <constructor-arg ref="taskServiceImpl"/>
-        <constructor-arg ref="taskScheduler"/>
-        <constructor-arg ref="currentUser"/>
-    </bean>
-
-    <bean id="backupBean" class="com.github.cimsbioko.server.web.beans.BackupBean">
-        <constructor-arg ref="backupServiceImpl"/>
-        <constructor-arg ref="jsfService"/>
     </bean>
 
     <bean id="geometryFactory" class="com.vividsolutions.jts.geom.GeometryFactory">

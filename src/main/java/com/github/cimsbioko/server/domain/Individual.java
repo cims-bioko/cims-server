@@ -21,6 +21,7 @@ public class Individual extends AuditableCollectedEntity implements Serializable
 
     @NotNull
     @Size(min = 1)
+    @Column(name = "extid")
     @Field
     private String extId;
 
@@ -223,6 +224,6 @@ public class Individual extends AuditableCollectedEntity implements Serializable
         }
 
         final String otherUuid = ((Individual) other).getUuid();
-        return null != uuid && null != otherUuid && uuid.equals(otherUuid);
+        return null != uuid && uuid.equals(otherUuid);
     }
 }

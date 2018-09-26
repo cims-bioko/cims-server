@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.security;
 
-import com.github.cimsbioko.server.dao.UserDao;
+import com.github.cimsbioko.server.dao.UserRepository;
 import com.github.cimsbioko.server.domain.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,18 +19,18 @@ import java.util.List;
 @Transactional
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
-    private UserDao userDao;
+    private UserRepository userDao;
     private UserMapper userMapper;
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
-        List<User> users = userDao.findByUsername(username);
-        if (users == null || users.size() == 0) { // no user found by the name
+        User user = userDao.findByUsername(username);
+        if (user == null) { // no user found by the name
             throw new UsernameNotFoundException("user " + username + " was not found");
         }
-        return userMapper.userToUserDetails(users.get(0));
+        return userMapper.userToUserDetails(user);
     }
 
-    public void setUserDao(UserDao userDao) {
+    public void setUserRepository(UserRepository userDao) {
         this.userDao = userDao;
     }
 

@@ -94,17 +94,16 @@ public class SecurityConfig {
                     .headers().disable()
                     .csrf().disable()
                     .authorizeRequests()
-                    .antMatchers("/login.faces", "/resources/**", "logout.faces", "favicon.ico").permitAll()
+                    .antMatchers("/css/**", "/images/**", "/webjars/**", "favicon.ico").permitAll()
                     .anyRequest().authenticated()
                     .and()
                     .formLogin()
-                    .loginPage("/login.faces")
-                    .loginProcessingUrl("/loginProcess")
+                    .loginPage("/login")
+                    .permitAll()
                     .successHandler(authSuccessHandler)
-                    .failureUrl("/login.faces?login_error=1")
                     .and()
                     .logout()
-                    .logoutUrl("/logoutProcess");
+                    .permitAll();
         }
     }
 }

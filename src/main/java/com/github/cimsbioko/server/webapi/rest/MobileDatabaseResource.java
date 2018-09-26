@@ -1,7 +1,6 @@
 package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.batkinson.jrsync.Metadata;
-import com.github.cimsbioko.server.service.TaskService;
 import com.github.cimsbioko.server.task.support.FileResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -18,7 +17,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import static com.github.cimsbioko.server.WebConfig.CACHED_FILES_PATH;
-import static com.github.cimsbioko.server.service.TaskService.MOBILEDB_TASK_NAME;
 
 
 /**
@@ -41,20 +39,12 @@ public class MobileDatabaseResource {
     @Autowired
     private FileResolver fileResolver;
 
-    @Autowired
-    private TaskService taskService;
-
     @RequestMapping(value = MOBILEDB_PATH, method = RequestMethod.GET, produces = {SQLITE_MIME_TYPE, Metadata.MIME_TYPE})
     public String mobileDB(WebRequest request) {
 
-        String contentHash = taskService.getDescriptor(MOBILEDB_TASK_NAME);
         File cacheFile = fileResolver.resolveMobileDBFile();
         File metadataFile = new File(cacheFile.getParentFile(), cacheFile.getName() + "." + Metadata.FILE_EXT);
         String accept = request.getHeader(ACCEPT);
-
-        if (request.checkNotModified(contentHash)) {
-            return null;
-        }
 
         if (accept != null && accept.contains(Metadata.MIME_TYPE) && metadataFile.exists()) {
             return "forward:" + CACHED_FILES_PATH + "/" + metadataFile.getName();

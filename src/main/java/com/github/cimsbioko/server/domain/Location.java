@@ -25,6 +25,7 @@ public class Location extends AuditableCollectedEntity implements Serializable {
 
     @NotNull
     @Size(min = 1)
+    @Column(name = "extid")
     @Field
     private String extId;
 
@@ -123,6 +124,6 @@ public class Location extends AuditableCollectedEntity implements Serializable {
         }
 
         final String otherUuid = ((Location) other).getUuid();
-        return null != uuid && null != otherUuid && uuid.equals(otherUuid);
+        return null != uuid && uuid.equals(otherUuid);
     }
 }

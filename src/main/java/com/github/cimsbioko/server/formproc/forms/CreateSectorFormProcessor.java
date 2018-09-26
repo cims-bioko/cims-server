@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.formproc.forms;
 
-import com.github.cimsbioko.server.service.LocationHierarchyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,12 +13,9 @@ import java.io.Serializable;
 @Component
 public class CreateSectorFormProcessor {
 
-    @Autowired
-    LocationHierarchyService hierService;
-
     @Transactional
     public void processForm(Form form) {
-        hierService.createSector(form.mapUuid, form.sectorUuid, form.sectorName);
+
     }
 
     @XmlRootElement(name = "createSectorForm")

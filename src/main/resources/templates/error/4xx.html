@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head>
-    <title th:text="#{logoName}">Title</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/default.css}" />
+    <title th:text="#{app.name}">CIMS</title>
+    <div th:replace="fragments/header :: header-css"/>
 </head>
-<body align="center"><p th:text="${error}">Client Error</p></body>
+<body>
+    <div th:replace="fragments/header :: header"/>
+    <h1 th:text="${error}">Client Error</h1>
+    <div th:replace="fragments/footer :: footer"/>
+</body>
 </html>

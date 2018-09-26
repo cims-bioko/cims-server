@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.webapi.odk;
 
-import com.github.cimsbioko.server.dao.FormDao;
+import com.github.cimsbioko.server.dao.FormRepository;
 import com.github.cimsbioko.server.service.FormService;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -57,7 +57,7 @@ public class FormsResource {
     private File formsDir;
 
     @Autowired
-    private FormDao formDao;
+    private FormRepository formDao;
 
     @Autowired
     private EndpointHelper helper;

@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.security;
 
-import com.github.cimsbioko.server.dao.UserDao;
+import com.github.cimsbioko.server.dao.UserRepository;
 import com.github.cimsbioko.server.domain.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
@@ -18,10 +18,10 @@ import java.time.Instant;
  */
 public class LastLoginHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
-    private static final String WELCOME_PAGE = "/welcome.faces";
-    private final UserDao userDao;
+    private static final String WELCOME_PAGE = "/";
+    private final UserRepository userDao;
 
-    public LastLoginHandler(UserDao userDao) {
+    public LastLoginHandler(UserRepository userDao) {
         this.userDao = userDao;
         setDefaultTargetUrl(WELCOME_PAGE);
     }
@@ -30,9 +30,9 @@ public class LastLoginHandler extends SavedRequestAwareAuthenticationSuccessHand
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         org.springframework.security.core.userdetails.User u = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
-        User user = userDao.findByUsername(u.getUsername()).get(0);
+        User user = userDao.findByUsername(u.getUsername());
         user.setLastLogin(Timestamp.from(Instant.now()));
-        userDao.saveOrUpdate(user);
+        userDao.save(user);
         super.onAuthenticationSuccess(request, response, authentication);
     }
 }

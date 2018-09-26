@@ -1,7 +1,7 @@
 package com.github.cimsbioko.server.webapi.odk;
 
-import com.github.cimsbioko.server.dao.FormDao;
-import com.github.cimsbioko.server.dao.FormSubmissionDao;
+import com.github.cimsbioko.server.dao.FormRepository;
+import com.github.cimsbioko.server.dao.FormSubmissionRepository;
 import com.github.cimsbioko.server.domain.Form;
 import com.github.cimsbioko.server.domain.FormId;
 import com.github.cimsbioko.server.domain.FormSubmission;
@@ -21,6 +21,8 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -67,10 +69,10 @@ public class SubmissionResource {
     private FormSubmissionService submissionService;
 
     @Autowired
-    private FormSubmissionDao submissionDao;
+    private FormSubmissionRepository submissionDao;
 
     @Autowired
-    private FormDao formDao;
+    private FormRepository formDao;
 
     @Autowired
     private FileHasher hasher;
@@ -111,7 +113,7 @@ public class SubmissionResource {
     private ResponseEntity<?> getInstanceEntity(MediaType type, String instanceId)
             throws IOException {
         try {
-            FormSubmission submission = submissionDao.findById(instanceId);
+            FormSubmission submission = submissionDao.findOne(instanceId);
             String contentString = APPLICATION_JSON.equals(type) ? submission.getJson().toString() : stringFromDoc(submission.getXml());
             org.springframework.core.io.Resource contents = new ByteArrayResource(contentString.getBytes());
             HttpHeaders headers = new HttpHeaders();
@@ -135,36 +137,6 @@ public class SubmissionResource {
                 .body(new InputStreamResource(submissionResource.getInputStream()));
     }
 
-
-    @GetMapping(value = "/submissions/recent", produces = "application/json")
-    @ResponseBody
-    @Transactional(readOnly = true)
-    public List<FormSubmission> recentSubmissions(
-            @RequestParam(value = "formId", required = false) String form,
-            @RequestParam(value = "version", required = false) String version,
-            @RequestParam(value = "formBinding", required = false) String binding,
-            @RequestParam(value = "deviceId", required = false) String device,
-            @RequestParam(value = "limit", required = false) Integer limit) {
-        return submissionDao.findRecent(form, version, binding, device, limit);
-    }
-
-    @GetMapping(value = "/submissions/search", produces = "application/json")
-    @ResponseBody
-    @Transactional(readOnly = true)
-    public List<FormSubmission> recentSubmissions(String query,
-                                                  @RequestParam(value = "start", defaultValue = "0") int start,
-                                                  @RequestParam(value = "end", defaultValue = "100") int max) {
-        return submissionDao.findBySearch(query, start, max);
-    }
-
-    @GetMapping(value = "/submissions/unprocessed", produces = "application/json")
-    @ResponseBody
-    @Transactional(readOnly = true)
-    public List<FormSubmission> unprocessedSubmissions(
-            @RequestParam(value = "limit", required = false, defaultValue = "100") Integer limit) {
-        return submissionDao.findUnprocessed(limit);
-    }
-
     @GetMapping(path = "/view/submissionList")
     @Transactional(readOnly = true)
     public ResponseEntity<ByteArrayResource> submissionList(@RequestParam("formId") String form,
@@ -174,8 +146,9 @@ public class SubmissionResource {
         if (!isEmpty(cursor)) {
             lastSeen = Timestamp.valueOf(cursor);
         }
-        String chunkList = buildSubmissionChunk(
-                submissionDao.find(form, null, null, null, lastSeen, limit, false), cursor);
+        limit = limit == null || limit > 100 || limit <= 0 ? 100 : limit;
+        PageRequest page = new PageRequest(0, limit, Sort.Direction.ASC, "submitted");
+        String chunkList = buildSubmissionChunk(submissionDao.findByFormIdAndSubmittedAfter(form, lastSeen, page), cursor);
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.TEXT_XML)
@@ -212,7 +185,7 @@ public class SubmissionResource {
         }
         String submissionBaseUrl = String.format("%s/submission",
                 buildFullRequestUrl(req).split("/view/downloadSubmission")[0]);
-        String contents = buildSubmissionDescriptor(submissionDao.findById(info[1]), submissionBaseUrl);
+        String contents = buildSubmissionDescriptor(submissionDao.findOne(info[1]), submissionBaseUrl);
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.TEXT_XML)
@@ -346,7 +319,7 @@ public class SubmissionResource {
             rootElem.setAttribute(VERSION, version);
         }
 
-        Form form = formDao.findById(new FormId(id, version));
+        Form form = formDao.findOne(new FormId(id, version));
 
         if (form == null) {
             log.warn("rejected {}, unknown form id={}, version={}", instanceId, id, version);

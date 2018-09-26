@@ -18,6 +18,7 @@ public class FieldWorker extends AuditableEntity implements Serializable {
     private static final long serialVersionUID = -7550088299362704483L;
 
     @NotNull
+    @Column(name = "extid")
     @Field
     private String extId;
 
@@ -39,6 +40,7 @@ public class FieldWorker extends AuditableEntity implements Serializable {
     @Column(name = "password_hash")
     private String passwordHash;
 
+    @Column(name = "idprefix")
     private int idPrefix;
 
 

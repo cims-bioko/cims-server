@@ -1,5 +1,6 @@
 package com.github.cimsbioko.server.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -15,6 +16,7 @@ public class LocationHierarchyLevel implements Serializable {
     @Id
     private String uuid;
 
+    @Column(name = "keyid")
     private int keyId;
 
     @NotNull

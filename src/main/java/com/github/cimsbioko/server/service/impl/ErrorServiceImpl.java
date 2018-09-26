@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.service.impl;
 
-import com.github.cimsbioko.server.dao.ErrorDao;
+import com.github.cimsbioko.server.dao.ErrorRepository;
 import com.github.cimsbioko.server.domain.Error;
 import com.github.cimsbioko.server.domain.FormSubmission;
 import com.github.cimsbioko.server.service.ErrorService;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ErrorServiceImpl implements ErrorService {
 
     @Autowired
-    private ErrorDao errorDao;
+    private ErrorRepository errorDao;
 
     @Override
     @Transactional

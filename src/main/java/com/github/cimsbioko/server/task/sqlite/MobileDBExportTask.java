@@ -1,7 +1,6 @@
 package com.github.cimsbioko.server.task.sqlite;
 
 import com.github.batkinson.jrsync.Metadata;
-import com.github.cimsbioko.server.service.TaskService;
 import com.github.cimsbioko.server.task.SyncFileTask;
 import com.github.cimsbioko.server.task.TaskContext;
 import org.slf4j.Logger;
@@ -19,7 +18,6 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.Properties;
 
-import static com.github.cimsbioko.server.service.TaskService.MOBILEDB_TASK_NAME;
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
 
 /**
@@ -32,8 +30,6 @@ public class MobileDBExportTask implements SyncFileTask {
     private static final int DEFAULT_SYNC_BLOCK_SIZE = 8192;
     private static final String MD5 = "MD5";
 
-    private TaskService taskService;
-
     private Exporter exporter;
 
     private Properties tableQueries;
@@ -43,8 +39,7 @@ public class MobileDBExportTask implements SyncFileTask {
     private org.springframework.core.io.Resource postDdl;
 
     @Autowired
-    public MobileDBExportTask(TaskService taskService, Exporter exporter) {
-        this.taskService = taskService;
+    public MobileDBExportTask(Exporter exporter) {
         this.exporter = exporter;
         tableQueries = new Properties();
     }
@@ -69,7 +64,6 @@ public class MobileDBExportTask implements SyncFileTask {
     @Transactional
     public void run(TaskContext context) {
 
-        taskService.startTask(MOBILEDB_TASK_NAME);
         int tablesExported = 0;
 
         try {
@@ -82,7 +76,6 @@ public class MobileDBExportTask implements SyncFileTask {
             exporter.scriptTarget(preDdl.getInputStream(), scratch);
             for (Map.Entry e : tableQueries.entrySet()) {
                 exporter.export(e.getValue().toString(), e.getKey().toString(), scratch);
-                taskService.updateTaskProgress(MOBILEDB_TASK_NAME, ++tablesExported);
             }
             exporter.scriptTarget(postDdl.getInputStream(), scratch);
 
@@ -97,11 +90,9 @@ public class MobileDBExportTask implements SyncFileTask {
 
             // Complete the process, latching the new file contents and sync metadata
             if (scratch.renameTo(dest) && metaScratch.renameTo(metaDest)) {
-                taskService.finishTask(MOBILEDB_TASK_NAME, tablesExported, md5);
             }
         } catch (IOException | SQLException | NoSuchAlgorithmException e) {
             log.error("failed to export mobile db", e);
-            taskService.finishTask(MOBILEDB_TASK_NAME, tablesExported, e.getMessage());
         }
     }
 

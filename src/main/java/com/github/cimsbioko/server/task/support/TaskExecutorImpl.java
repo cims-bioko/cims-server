@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.task.support;
 
-import com.github.cimsbioko.server.service.TaskService;
 import com.github.cimsbioko.server.task.SyncFileTask;
 import com.github.cimsbioko.server.task.TaskContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,22 +12,17 @@ import java.io.File;
 public class TaskExecutorImpl implements TaskExecutor {
 
     private FileResolver fileResolver;
-    private TaskService taskService;
     private SyncFileTask mobileDBWriter;
 
     @Autowired
-    public TaskExecutorImpl(TaskService taskService, FileResolver fileResolver) {
-        this.taskService = taskService;
+    public TaskExecutorImpl(FileResolver fileResolver) {
         this.fileResolver = fileResolver;
     }
 
     @Override
     public void executeMobileDBTask() {
-        if (taskService.taskShouldRun(TaskService.MOBILEDB_TASK_NAME)) {
-            taskService.startTask(TaskService.MOBILEDB_TASK_NAME);
-            File dbFile = fileResolver.resolveMobileDBFile();
-            mobileDBWriter.run(new TaskContext(dbFile));
-        }
+        File dbFile = fileResolver.resolveMobileDBFile();
+        mobileDBWriter.run(new TaskContext(dbFile));
     }
 
     @Resource(name = "mobileDBWriter")

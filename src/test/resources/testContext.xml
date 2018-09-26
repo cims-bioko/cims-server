@@ -10,19 +10,11 @@
     <import resource="classpath:/META-INF/spring/application-context.xml"/>
     <import resource="classpath:/META-INF/spring/webapi-application-context.xml" />
 
-    <bean class="com.github.cimsbioko.server.PersistenceConfig" />
     <bean class="com.github.cimsbioko.server.SecurityConfig" />
     <bean class="com.github.cimsbioko.server.FormProcConfig" />
 
     <bean id="dataDir" class="java.io.File">
         <constructor-arg value="#{systemProperties['java.io.tmpdir']}/cims-server-test"/>
-    </bean>
-
-    <!-- This bean is here to override the session scoped baseCrud from the application-context -->
-    <bean id="baseCrud" class="com.github.cimsbioko.server.web.crud.impl.EntityCrudImpl" abstract="true">
-        <property name="jsfService" ref="jsfService"/>
-        <property name="entityService" ref="entityService"/>
-        <property name="genericDao" ref="genericDao"/>
     </bean>
 
     <!-- Independent database configuration for test context -->
@@ -35,9 +27,6 @@
             </list>
         </property>
     </bean>
-
-    <!-- JsfService is mocked for tests -->
-    <bean id="jsfService" class="com.github.cimsbioko.server.JsfServiceMock"/>
 
     <!-- Independent data source for test context -->
     <bean id="dataSource" class="com.github.cimsbioko.server.GeoDBTestDataSource" />

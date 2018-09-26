@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.service.impl;
 
-import com.github.cimsbioko.server.dao.FormDao;
+import com.github.cimsbioko.server.dao.FormRepository;
 import com.github.cimsbioko.server.domain.Form;
 import com.github.cimsbioko.server.domain.FormId;
 import com.github.cimsbioko.server.service.FormService;
@@ -36,7 +36,7 @@ public class FormServiceImpl implements FormService {
     private static final Logger log = LoggerFactory.getLogger(FormServiceImpl.class);
 
     @Autowired
-    private FormDao formDao;
+    private FormRepository formDao;
 
     @Autowired
     private FileHasher hasher;
@@ -114,7 +114,7 @@ public class FormServiceImpl implements FormService {
 
         // try to lookup form based on form id and version
         FormId formId = new FormId(id, version);
-        Form form = formDao.findById(formId);
+        Form form = formDao.findOne(formId);
 
         // create or update the form in the database
         if (form == null) {
@@ -125,7 +125,7 @@ public class FormServiceImpl implements FormService {
             log.info("updating existing form");
             form.setXml(formDoc);
         }
-        formDao.exclusiveDownload(form);
+        formDao.exclusiveDownload(id, version);
 
         // identify where to store the file on the file system
         Path formFilePath = formFileSystem.getXmlFormPath(id, version);
