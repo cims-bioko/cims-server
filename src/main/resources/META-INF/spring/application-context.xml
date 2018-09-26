@@ -97,67 +97,6 @@
               script-source="classpath:/process-forms.js"
               script-interfaces="com.github.cimsbioko.server.formproc.FormProcessor" />
 
-    <!-- Supported fields are LOCATION_NAME, LOCATION_HIERARCHY_ID -->
-    <bean id="locationIdScheme" class="com.github.cimsbioko.server.idgen.IdScheme">
-        <property name="name" value="Location"/>
-        <property name="prefix" value="${openhds.locationPrefix}"/>
-        <property name="checkDigit" value="${openhds.locationCheckDigit}"/>
-        <property name="incrementBound" value="${openhds.locationIncrementBound}"/>
-        <property name="length" value="${openhds.locationIdLength}"/>
-        <property name="fields">
-            <map>
-                <entry key="LOCATION_NAME" value="${openhds.locationNameLength}"/>
-                <entry key="LOCATION_HIERARCHY_ID" value="${openhds.locationHierarchyIdLength}"/>
-            </map>
-        </property>
-    </bean>
-
-    <!-- Supported fields are CHILD_LOC_NAME -->
-    <!-- If CHILD_LOC_NAME is used, CHILD_LOC_NAME_FIRST and CHILD_LOC_NAME_LAST must be as well -->
-    <bean id="locationHierarchyIdScheme" class="com.github.cimsbioko.server.idgen.IdScheme">
-        <property name="name" value="LocationHierarchy"/>
-        <property name="prefix" value="${openhds.locationHPrefix}"/>
-        <property name="checkDigit" value="${openhds.locationHCheckDigit}"/>
-        <property name="incrementBound" value="${openhds.locationHIncrementBound}"/>
-        <property name="length" value="${openhds.locationHIdLength}"/>
-        <property name="fields">
-            <map>
-                <entry key="CHILD_LOC_NAME" value="${openhds.locationHChildLocNameLength}"/>
-                <entry key="CHILD_LOC_NAME_FIRST" value="${openhds.locationHChildLocFirstNameLength}"/>
-                <entry key="CHILD_LOC_NAME_LAST" value="${openhds.locationHChildLocLastNameLength}"/>
-            </map>
-        </property>
-    </bean>
-
-    <!-- Supported fields are INDIVIDUAL_FNAME, INDIVIDUAL_MNAME, INDIVIDUAL_LNAME -->
-    <bean id="individualIdScheme" class="com.github.cimsbioko.server.idgen.IdScheme">
-        <property name="name" value="Individual"/>
-        <property name="prefix" value="${openhds.individualPrefix}"/>
-        <property name="checkDigit" value="${openhds.individualCheckDigit}"/>
-        <property name="incrementBound" value="${openhds.individualIncrementBound}"/>
-        <property name="length" value="${openhds.individualIdLength}"/>
-        <property name="fields">
-            <map>
-                <entry key="LOCATION_PREFIX" value="${openhds.locationIdLength}"/>
-            </map>
-        </property>
-    </bean>
-
-    <!-- Supported fields are FIELDWORKER_FNAME, FIELDWORKER_LNAME -->
-    <bean id="fieldWorkerIdScheme" class="com.github.cimsbioko.server.idgen.IdScheme">
-        <property name="name" value="FieldWorker"/>
-        <property name="prefix" value="${openhds.fwPrefix}"/>
-        <property name="checkDigit" value="${openhds.fwCheckDigit}"/>
-        <property name="incrementBound" value="${openhds.fwIncrementBound}"/>
-        <property name="length" value="${openhds.fwIdLength}"/>
-        <property name="fields">
-            <map>
-                <entry key="FIELDWORKER_FNAME" value="${openhds.fwFirstNameLength}"/>
-                <entry key="FIELDWORKER_LNAME" value="${openhds.fwLastNameLength}"/>
-            </map>
-        </property>
-    </bean>
-
     <bean id="geometryFactory" class="com.vividsolutions.jts.geom.GeometryFactory">
         <constructor-arg>
             <bean class="com.vividsolutions.jts.geom.PrecisionModel"/>
