@@ -16,7 +16,7 @@ public class Error implements Serializable {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "com.github.cimsbioko.server.idgen.UUIDGenerator")
+    @GenericGenerator(name = "system-uuid", strategy = "com.github.cimsbioko.server.hibernate.UUIDGenerator")
     @Column(length = 32)
     private String uuid;
 
