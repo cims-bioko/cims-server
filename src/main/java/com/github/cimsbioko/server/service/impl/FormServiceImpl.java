@@ -54,6 +54,7 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
+    @Transactional
     public void uploadXlsform(MultipartFile xlsform, MultiValueMap<String, MultipartFile> uploadedFiles) throws JDOMException, IOException, NoSuchAlgorithmException {
         try (InputStream xmlInput = new FileInputStream(xlsformService.generateXForm(xlsform.getInputStream()))) {
             installFormWithMedia(xlsform, uploadedFiles, xmlInput);
