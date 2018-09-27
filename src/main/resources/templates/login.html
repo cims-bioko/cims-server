@@ -40,9 +40,12 @@
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-xs-6 col-sm-6 col-md-6">
-                            <input type="submit"
-                                   class="btn btn-lg btn-primary btn-block"
-                                   value="Login" th:value="#{login.prompt}"/>
+                            <button type="submit"
+                                   class="btn btn-primary"
+                                   value="Login" th:inline="text">
+                                <span class="oi oi-account-login" aria-hidden="true"></span>
+                                [[#{login.prompt}]]
+                            </button>
                         </div>
                     </div>
                 </fieldset>

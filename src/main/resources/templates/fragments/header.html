@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <link th:href="@{/webjars/bootstrap/4.1.3/css/bootstrap.min.css}" rel="stylesheet"/>
+        <link th:href="@{/webjars/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css}" rel="stylesheet"/>
         <style>
             html, body {
                 height: 100%;
@@ -38,17 +39,24 @@
         </button>
         <div class="collapse navbar-collapse" id="navbar-content" sec:authorize="isAuthenticated()">
             <ul class="navbar-nav mr-auto">
-                <a class="nav-item nav-link" th:href="@{/}" th:text="#{nav.home}">Home</a>
-                <a class="nav-item nav-link" th:href="@{/forms}" th:text="#{nav.forms}">Forms</a>
+                <a class="nav-item nav-link" th:href="@{/}" th:inline="text">
+                    <span class="oi oi-home" aria-hidden="true"></span> [[#{nav.home}]]
+                </a>
+                <a class="nav-item nav-link" th:href="@{/forms}" th:inline="text">
+                    <span class="oi oi-document" aria-hidden="true"></span> [[#{nav.forms}]]
+                </a>
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item dropdown" >
                     <a id="user-dropdown-link" class="nav-link dropdown-toggle" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        <span th:text="#{nav.welcome(${#authentication.name})}">User</span><span class="caret"></span>
+                       aria-haspopup="true" aria-expanded="false" th:inline="text">
+                        <span class="oi oi-person" aria-hidden="true"></span> [[${#authentication.name}]]
+                        <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="user-dropdown-link">
-                        <a class="dropdown-item" th:href="@{/logout}" th:text="#{nav.logout}">Logout</a>
+                        <a class="dropdown-item" th:href="@{/logout}" th:inline="text">
+                            <span class="oi oi-account-logout" aria-hidden="true"></span> [[#{nav.logout}]]
+                        </a>
                     </ul>
                 </li>
             </ul>
