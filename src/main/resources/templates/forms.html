@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+    <title th:text="#{app.name} + ' - ' + #{nav.forms}">CIMS - Forms</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<div id="content" class="container">
+    <h1 th:text="#{nav.forms}" />
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>
