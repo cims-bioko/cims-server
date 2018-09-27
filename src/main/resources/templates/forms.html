@@ -39,7 +39,9 @@
                     <label for="xml_media_files" th:text="#{forms.lbl.mediafiles} + ':'">Media Files</label>
                     <input id="xml_media_files" class="form-control-file" type="file" name="media_files" multiple="" />
                 </div>
-                <button type="submit" class="btn btn-primary" th:value="#{forms.btn.upload}">Submit</button>
+                <button type="submit" class="btn btn-primary" th:inline="text">
+                    <span class="oi oi-data-transfer-upload" aria-hidden="true"></span> [[#{forms.btn.upload}]]
+                </button>
             </form>
         </div>
         <div class="tab-pane fade" id="xmlxlsupload">
@@ -58,7 +60,9 @@
                     <label for="xmlxls_media_files" th:text="#{forms.lbl.mediafiles} + ':'">Media Files</label>
                     <input id="xmlxls_media_files" class="form-control-file" type="file" name="media_files" multiple="" />
                 </div>
-                <button type="submit" class="btn btn-primary" th:value="#{forms.btn.upload}">Submit</button>
+                <button type="submit" class="btn btn-primary" th:inline="text">
+                    <span class="oi oi-data-transfer-upload" aria-hidden="true"></span> [[#{forms.btn.upload}]]
+                </button>
             </form>
         </div>
         <div class="tab-pane fade" id="xlsupload">
@@ -72,7 +76,9 @@
                     <label for="xls_media_files" th:text="#{forms.lbl.mediafiles} + ':'"></label>
                     <input id="xls_media_files" class="form-control-file" type="file" name="media_files" multiple="" />
                 </div>
-                <button type="submit" class="btn btn-primary" th:value="#{forms.btn.upload}">Submit</button>
+                <button type="submit" class="btn btn-primary" th:inline="text">
+                    <span class="oi oi-data-transfer-upload" aria-hidden="true"></span> [[#{forms.btn.upload}]]
+                </button>
             </form>
         </div>
     </div>
