@@ -97,14 +97,14 @@
             cache: false,
             timeout: 0,
             success: function () {
-                $("#result").removeClass('d-none').addClass('alert-success')
-                    .text("[[#{forms.msg.uploadsuccess}]]");
+                $("#result").removeClass('d-none').addClass('alert-success').text([[#{forms.msg.uploadsuccess}]]);
                 $form.trigger("reset");
                 $button.prop("disabled", false);
             },
             error: function (rsp) {
-                $("#result").removeClass('d-none').addClass('alert-danger')
-                    .text("[[#{forms.msg.uploadfailed}]]: " + rsp.responseJSON.exception + ' - ' + rsp.responseJSON.message);
+                $("#result").removeClass('d-none').addClass('alert-danger').text(
+                    [[#{forms.msg.uploadfailed}]] + ': ' + rsp.responseJSON.exception + ' - ' + rsp.responseJSON.message
+                );
                 $button.prop("disabled", false);
             }
         });
