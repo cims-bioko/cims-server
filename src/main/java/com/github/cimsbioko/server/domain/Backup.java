@@ -1,8 +1,11 @@
 package com.github.cimsbioko.server.domain;
 
 import org.hibernate.annotations.Immutable;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Calendar;
 
 
@@ -13,8 +16,11 @@ public class Backup {
 
     @Id
     @Column(name = "schema_name")
+    @NotNull
+    @Pattern(regexp = "[\\p{Alnum}[_]]+")
     private String name;
 
+    @NotEmpty
     private String description;
 
     @Temporal(TemporalType.TIMESTAMP)

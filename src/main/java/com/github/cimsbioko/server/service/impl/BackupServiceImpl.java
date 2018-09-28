@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.service.impl;
 
-import com.github.cimsbioko.server.domain.Backup;
 import com.github.cimsbioko.server.service.BackupService;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.sql.CallableStatement;
-import java.util.List;
 
 @Component
 public class BackupServiceImpl implements BackupService {
@@ -21,7 +19,6 @@ public class BackupServiceImpl implements BackupService {
     public BackupServiceImpl(EntityManager em) {
         this.em = em;
     }
-
 
     @Override
     @Async
