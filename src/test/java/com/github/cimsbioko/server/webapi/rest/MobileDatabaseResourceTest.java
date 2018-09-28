@@ -1,7 +1,7 @@
 package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.cimsbioko.server.WebContextLoader;
-import com.github.cimsbioko.server.task.support.FileResolver;
+import com.github.cimsbioko.server.service.SyncService;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
@@ -53,7 +53,7 @@ public class MobileDatabaseResourceTest {
     private FilterChainProxy springSecurityFilterChain;
 
     @Autowired
-    private FileResolver fileResolver;
+    private SyncService fileResolver;
 
     private MockHttpSession session;
 
@@ -71,14 +71,14 @@ public class MobileDatabaseResourceTest {
     }
 
     private void createTestFiles() throws Exception {
-        File dbFile = fileResolver.resolveMobileDBFile();
+        File dbFile = fileResolver.getSyncFile();
         dbFile.getParentFile().mkdirs();
         dbFile.createNewFile();
     }
 
     @After
     public void tearDown() throws Exception {
-        FileUtils.cleanDirectory(new File(fileResolver.resolveMobileDBFile().getParent()));
+        FileUtils.cleanDirectory(new File(fileResolver.getSyncFile().getParent()));
     }
 
     @Test

@@ -1,8 +1,7 @@
 package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.batkinson.jrsync.Metadata;
-import com.github.cimsbioko.server.task.support.FileResolver;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.cimsbioko.server.service.SyncService;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
@@ -36,13 +35,16 @@ public class MobileDatabaseResource {
     public static final String MOBILEDB_EXPORT_PATH = "/rest/mobiledb/export";
     public static final String INSTALLABLE_FILENAME = "openhds.db";
 
-    @Autowired
-    private FileResolver fileResolver;
+    private SyncService service;
+
+    public MobileDatabaseResource(SyncService service) {
+        this.service = service;
+    }
 
     @RequestMapping(value = MOBILEDB_PATH, method = RequestMethod.GET, produces = {SQLITE_MIME_TYPE, Metadata.MIME_TYPE})
     public String mobileDB(WebRequest request) {
 
-        File cacheFile = fileResolver.resolveMobileDBFile();
+        File cacheFile = service.getSyncFile();
         File metadataFile = new File(cacheFile.getParentFile(), cacheFile.getName() + "." + Metadata.FILE_EXT);
         String accept = request.getHeader(ACCEPT);
 
@@ -55,8 +57,7 @@ public class MobileDatabaseResource {
     @RequestMapping(value = MOBILEDB_EXPORT_PATH, method = RequestMethod.GET)
     public void browserExport(HttpServletResponse response) throws IOException {
 
-        File dbFile = fileResolver.resolveMobileDBFile();
-        FileSystemResource dbFileRes = new FileSystemResource(dbFile);
+        FileSystemResource dbFileRes = new FileSystemResource(service.getSyncFile());
 
         if (!dbFileRes.isReadable()) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND,
