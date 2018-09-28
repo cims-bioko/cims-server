@@ -42,21 +42,21 @@
     <task:executor id="taskExecutor" pool-size="1" queue-capacity="25" />
     <task:scheduler id="taskScheduler" pool-size="1"/>
 
-    <!-- sqlite export -->
-    <bean id="source" class="com.github.cimsbioko.server.task.sqlite.DSSource">
+    <!-- sqliteexport export -->
+    <bean id="source" class="com.github.cimsbioko.server.sqliteexport.DSSource">
         <constructor-arg ref="dataSource"/>
         <constructor-arg value="${app.export.fetchsize}"/>
     </bean>
 
-    <bean id="target" class="com.github.cimsbioko.server.task.sqlite.SqliteTarget" init-method="loadDriver" />
+    <bean id="target" class="com.github.cimsbioko.server.sqliteexport.SqliteTarget" init-method="loadDriver" />
 
-    <bean id="mapperFactory" class="com.github.cimsbioko.server.task.sqlite.SqliteMapperFactory">
+    <bean id="mapperFactory" class="com.github.cimsbioko.server.sqliteexport.SqliteMapperFactory">
         <constructor-arg>
-            <bean class="com.github.cimsbioko.server.task.sqlite.DBTypeExtractor"/>
+            <bean class="com.github.cimsbioko.server.sqliteexport.DBTypeExtractor"/>
         </constructor-arg>
     </bean>
 
-    <bean id="exporter" class="com.github.cimsbioko.server.task.sqlite.Exporter">
+    <bean id="exporter" class="com.github.cimsbioko.server.sqliteexport.Exporter">
         <constructor-arg ref="source" />
         <constructor-arg ref="target" />
         <constructor-arg ref="mapperFactory"/>

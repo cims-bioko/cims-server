@@ -2,7 +2,7 @@ package com.github.cimsbioko.server.service.impl;
 
 import com.github.batkinson.jrsync.Metadata;
 import com.github.cimsbioko.server.service.SyncService;
-import com.github.cimsbioko.server.task.sqlite.Exporter;
+import com.github.cimsbioko.server.sqliteexport.Exporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

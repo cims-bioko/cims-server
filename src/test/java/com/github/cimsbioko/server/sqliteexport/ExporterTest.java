@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.task.sqlite;
+package com.github.cimsbioko.server.sqliteexport;
 
 import org.junit.After;
 import org.junit.Before;
