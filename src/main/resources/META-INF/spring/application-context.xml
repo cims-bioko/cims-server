@@ -23,13 +23,12 @@
     <mvc:annotation-driven />
 
     <context:component-scan base-package="com.github.cimsbioko.server.dao" />
-    <context:component-scan base-package="com.github.cimsbioko.server.idgen"/>
     <context:component-scan base-package="com.github.cimsbioko.server.service"/>
     <context:component-scan base-package="com.github.cimsbioko.server.task" />
     <context:component-scan base-package="com.github.cimsbioko.server.util"/>
     <context:component-scan base-package="com.github.cimsbioko.server.web"/>
 
-    <!-- stuff needed for xlsform conversion -->
+    <!-- xlsform conversion -->
     <bean id="xlsformService" class="com.github.cimsbioko.server.service.impl.XLSFormServiceImpl" />
 
     <bean id="xlsformFactory" class="com.github.batkinson.jxlsform.common.XLSFormFactory"/>
@@ -38,14 +37,12 @@
 
     <bean id="xformGenerator" class="com.github.batkinson.jxlsform.xform.DefaultGenerator"/>
 
-    <bean class="com.github.cimsbioko.server.security.LastLoginHandler">
-        <constructor-arg ref="userRepository"/>
-    </bean>
-
+    <!-- task execution -->
     <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler" />
     <task:executor id="taskExecutor" pool-size="1" queue-capacity="25" />
     <task:scheduler id="taskScheduler" pool-size="1"/>
 
+    <!-- sqlite export -->
     <bean id="source" class="com.github.cimsbioko.server.task.sqlite.DSSource">
         <constructor-arg ref="dataSource"/>
         <constructor-arg value="${app.export.fetchsize}"/>
@@ -78,6 +75,7 @@
         </property>
     </bean>
 
+    <!-- security -->
     <bean id="roleMapper" class="com.github.cimsbioko.server.security.RoleMapper" />
 
     <bean id="userMapper" class="com.github.cimsbioko.server.security.UserMapper">
@@ -89,11 +87,16 @@
         <property name="userMapper" ref="userMapper" />
     </bean>
 
-    <!-- this should be moved to the formproc java config -->
+    <bean class="com.github.cimsbioko.server.security.LastLoginHandler">
+        <constructor-arg ref="userRepository"/>
+    </bean>
+
+    <!-- formproc -->
     <lang:std id="formProcessor"
               script-source="classpath:/process-forms.js"
               script-interfaces="com.github.cimsbioko.server.formproc.FormProcessor" />
 
+    <!-- hibernate geometry -->
     <bean id="geometryFactory" class="com.vividsolutions.jts.geom.GeometryFactory">
         <constructor-arg>
             <bean class="com.vividsolutions.jts.geom.PrecisionModel"/>
@@ -101,6 +104,7 @@
         <constructor-arg type="int" value="${app.spatial.srid}" />
     </bean>
 
+    <!-- not a lot -->
     <bean id="siteProperties" class="com.github.cimsbioko.server.service.impl.SitePropertiesServiceImpl">
         <property name="unknownIdentifier" value="${unknownIdentifier}"/>
     </bean>
