@@ -1,11 +1,10 @@
 package com.github.cimsbioko.server.service.impl;
 
 
+import com.github.batkinson.jxlsform.api.WorkbookFactory;
 import com.github.batkinson.jxlsform.api.XLSFormFactory;
-import com.github.batkinson.jxlsform.poi.WorkbookFactory;
 import com.github.batkinson.jxlsform.xform.Generator;
 import com.github.cimsbioko.server.service.XLSFormService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -14,14 +13,17 @@ import java.io.InputStream;
 
 public class XLSFormServiceImpl implements XLSFormService {
 
-    @Autowired
     private Generator generator;
 
-    @Autowired
     private XLSFormFactory xlsformFactory;
 
-    @Autowired
     private WorkbookFactory workbookFactory;
+
+    public XLSFormServiceImpl(Generator generator, XLSFormFactory xlsformFactory, WorkbookFactory workbookFactory) {
+        this.generator = generator;
+        this.xlsformFactory = xlsformFactory;
+        this.workbookFactory = workbookFactory;
+    }
 
     @Override
     public File generateXForm(InputStream xlsxInput) throws IOException {

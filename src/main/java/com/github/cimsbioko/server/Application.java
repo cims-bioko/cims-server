@@ -1,5 +1,6 @@
 package com.github.cimsbioko.server;
 
+import com.github.cimsbioko.XLSFormConfig;
 import com.github.cimsbioko.server.webapi.odk.ODKConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -11,7 +12,7 @@ import org.springframework.context.annotation.ImportResource;
 @EnableAutoConfiguration
 @ImportResource("classpath:/META-INF/spring/application-context.xml")
 @Import({FileSystemConfig.class, FormProcConfig.class, SecurityConfig.class, WebConfig.class,
-        AppVersionConfig.class, SearchConfig.class, ODKConfig.class})
+        AppVersionConfig.class, SearchConfig.class, ODKConfig.class, XLSFormConfig.class})
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

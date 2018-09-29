@@ -24,18 +24,8 @@
 
     <context:component-scan base-package="com.github.cimsbioko.server.dao" />
     <context:component-scan base-package="com.github.cimsbioko.server.service"/>
-    <context:component-scan base-package="com.github.cimsbioko.server.task" />
     <context:component-scan base-package="com.github.cimsbioko.server.util"/>
     <context:component-scan base-package="com.github.cimsbioko.server.web"/>
-
-    <!-- xlsform conversion -->
-    <bean id="xlsformService" class="com.github.cimsbioko.server.service.impl.XLSFormServiceImpl" />
-
-    <bean id="xlsformFactory" class="com.github.batkinson.jxlsform.common.XLSFormFactory"/>
-
-    <bean id="poiWorkbookFactory" class="com.github.batkinson.jxlsform.poi.WorkbookFactory"/>
-
-    <bean id="xformGenerator" class="com.github.batkinson.jxlsform.xform.DefaultGenerator"/>
 
     <!-- task execution -->
     <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler" />
