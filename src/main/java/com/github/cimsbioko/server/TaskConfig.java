@@ -9,7 +9,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
+import org.springframework.security.core.context.SecurityContextHolder;
 
+import javax.annotation.PostConstruct;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -17,6 +19,11 @@ import java.util.concurrent.Executors;
 @EnableAsync
 @EnableScheduling
 public class TaskConfig implements AsyncConfigurer, SchedulingConfigurer {
+
+    @PostConstruct
+    void setupSecurityPropagation() {
+        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+    }
 
     @Override
     public Executor getAsyncExecutor() {

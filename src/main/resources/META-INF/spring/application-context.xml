@@ -26,17 +26,6 @@
 
     <util:properties id="exportQueries" location="classpath:export-queries.properties"/>
 
-    <!-- allow async tasks to inherit security context, make service method calls -->
-    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="targetClass" value="org.springframework.security.core.context.SecurityContextHolder"/>
-        <property name="targetMethod" value="setStrategyName"/>
-        <property name="arguments">
-            <list>
-                <value>MODE_INHERITABLETHREADLOCAL</value>
-            </list>
-        </property>
-    </bean>
-
     <!-- formproc -->
     <lang:std id="formProcessor"
               script-source="classpath:/process-forms.js"
