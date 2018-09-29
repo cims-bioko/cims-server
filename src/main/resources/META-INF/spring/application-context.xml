@@ -32,26 +32,6 @@
     <task:executor id="taskExecutor" pool-size="1" queue-capacity="25" />
     <task:scheduler id="taskScheduler" pool-size="1"/>
 
-    <!-- sqliteexport export -->
-    <bean id="source" class="com.github.cimsbioko.server.sqliteexport.DSSource">
-        <constructor-arg ref="dataSource"/>
-        <constructor-arg value="${app.export.fetchsize}"/>
-    </bean>
-
-    <bean id="target" class="com.github.cimsbioko.server.sqliteexport.SqliteTarget" init-method="loadDriver" />
-
-    <bean id="mapperFactory" class="com.github.cimsbioko.server.sqliteexport.SqliteMapperFactory">
-        <constructor-arg>
-            <bean class="com.github.cimsbioko.server.sqliteexport.DBTypeExtractor"/>
-        </constructor-arg>
-    </bean>
-
-    <bean id="exporter" class="com.github.cimsbioko.server.sqliteexport.Exporter">
-        <constructor-arg ref="source" />
-        <constructor-arg ref="target" />
-        <constructor-arg ref="mapperFactory"/>
-    </bean>
-
     <util:properties id="exportQueries" location="classpath:export-queries.properties"/>
 
     <!-- allow async tasks to inherit security context, make service method calls -->
