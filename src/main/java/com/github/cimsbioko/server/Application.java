@@ -11,7 +11,8 @@ import org.springframework.context.annotation.ImportResource;
 @EnableAutoConfiguration
 @ImportResource("classpath:/META-INF/spring/application-context.xml")
 @Import({FileSystemConfig.class, FormProcConfig.class, SecurityConfig.class, WebConfig.class,
-        AppVersionConfig.class, SearchConfig.class, ODKConfig.class, XLSFormConfig.class, SqliteExportConfig.class})
+        AppVersionConfig.class, SearchConfig.class, ODKConfig.class, XLSFormConfig.class, SqliteExportConfig.class,
+        TaskConfig.class})
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
