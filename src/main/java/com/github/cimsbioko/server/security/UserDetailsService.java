@@ -7,8 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 /**
  * Implementation of Spring Security's {@link org.springframework.security.core.userdetails.UserDetailsService}
  * Looks up a user based on username and returns a {@link UserDetails} instance that is

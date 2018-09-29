@@ -1,5 +1,10 @@
 package com.github.cimsbioko.server;
 
+import com.github.cimsbioko.server.dao.UserRepository;
+import com.github.cimsbioko.server.security.LastLoginHandler;
+import com.github.cimsbioko.server.security.RoleMapper;
+import com.github.cimsbioko.server.security.UserDetailsService;
+import com.github.cimsbioko.server.security.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +13,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
@@ -20,6 +24,29 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+
+    @Bean
+    public RoleMapper roleMapper() {
+        return new RoleMapper();
+    }
+
+    @Bean
+    public UserMapper userMapper() {
+        return new UserMapper(roleMapper());
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService(UserRepository userRepo) {
+        UserDetailsService service = new UserDetailsService();
+        service.setUserMapper(userMapper());
+        service.setUserRepository(userRepo);
+        return service;
+    }
+
+    @Bean
+    LastLoginHandler lastLoginHandler(UserRepository userRepo) {
+        return new LastLoginHandler(userRepo);
+    }
 
     @Bean
     public DigestAuthenticationEntryPoint digestEntryPoint() {

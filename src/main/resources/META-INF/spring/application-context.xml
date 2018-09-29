@@ -75,22 +75,6 @@
         </property>
     </bean>
 
-    <!-- security -->
-    <bean id="roleMapper" class="com.github.cimsbioko.server.security.RoleMapper" />
-
-    <bean id="userMapper" class="com.github.cimsbioko.server.security.UserMapper">
-        <constructor-arg ref="roleMapper" />
-    </bean>
-
-    <bean class="com.github.cimsbioko.server.security.UserDetailsService">
-        <property name="userRepository" ref="userRepository"/>
-        <property name="userMapper" ref="userMapper" />
-    </bean>
-
-    <bean class="com.github.cimsbioko.server.security.LastLoginHandler">
-        <constructor-arg ref="userRepository"/>
-    </bean>
-
     <!-- formproc -->
     <lang:std id="formProcessor"
               script-source="classpath:/process-forms.js"
