@@ -50,9 +50,4 @@
         <constructor-arg type="int" value="${app.spatial.srid}" />
     </bean>
 
-    <!-- not a lot -->
-    <bean id="siteProperties" class="com.github.cimsbioko.server.service.impl.SitePropertiesServiceImpl">
-        <property name="unknownIdentifier" value="${unknownIdentifier}"/>
-    </bean>
-
 </beans>
