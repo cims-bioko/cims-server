@@ -1,4 +1,4 @@
-package com.github.cimsbioko;
+package com.github.cimsbioko.server;
 
 import com.github.cimsbioko.server.sqliteexport.*;
 import org.springframework.beans.factory.annotation.Value;
