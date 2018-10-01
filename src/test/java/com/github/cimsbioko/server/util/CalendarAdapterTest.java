@@ -10,7 +10,6 @@ import java.util.Calendar;
 
 import static org.junit.Assert.*;
 
-@RunWith(SpringRunner.class)
 public class CalendarAdapterTest {
 
     private CalendarAdapter calendarAdapter;

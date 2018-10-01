@@ -10,7 +10,6 @@ import java.util.Calendar;
 
 import static org.junit.Assert.assertNotNull;
 
-@RunWith(SpringRunner.class)
 public class CalendarUtilTest {
 
     private CalendarUtil util;
