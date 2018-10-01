@@ -2,20 +2,16 @@ package com.github.cimsbioko.server.service.impl;
 
 import com.github.cimsbioko.server.service.BackupService;
 import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.sql.CallableStatement;
 
-@Component
 public class BackupServiceImpl implements BackupService {
 
     private EntityManager em;
 
-    @Autowired
     public BackupServiceImpl(EntityManager em) {
         this.em = em;
     }

@@ -5,9 +5,7 @@ import com.github.cimsbioko.server.service.SyncService;
 import com.github.cimsbioko.server.sqliteexport.Exporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -22,7 +20,6 @@ import static org.apache.commons.codec.binary.Hex.encodeHexString;
 /**
  * Implements mobile database generation support.
  */
-@Service
 public class SyncServiceImpl implements SyncService {
 
     private static final Logger log = LoggerFactory.getLogger(SyncServiceImpl.class);
@@ -39,7 +36,6 @@ public class SyncServiceImpl implements SyncService {
 
     private org.springframework.core.io.Resource postDdl;
 
-    @Autowired
     public SyncServiceImpl(Exporter exporter) {
         this.exporter = exporter;
         tableQueries = new Properties();

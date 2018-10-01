@@ -8,14 +8,12 @@ import com.github.cimsbioko.server.domain.FormSubmission;
 import com.github.cimsbioko.server.exception.ExistingSubmissionException;
 import com.github.cimsbioko.server.service.FormSubmissionService;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 
-@Service
 public class FormSubmissionServiceImpl implements FormSubmissionService {
 
     private FormSubmissionRepository submissionDao;

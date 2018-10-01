@@ -13,8 +13,6 @@ import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,22 +28,24 @@ import static com.github.cimsbioko.server.util.JDOMUtil.getBuilder;
 import static com.github.cimsbioko.server.util.JDOMUtil.getOutputter;
 import static com.github.cimsbioko.server.webapi.odk.Constants.*;
 
-@Service
 public class FormServiceImpl implements FormService {
 
     private static final Logger log = LoggerFactory.getLogger(FormServiceImpl.class);
 
-    @Autowired
     private FormRepository formDao;
 
-    @Autowired
     private FileHasher hasher;
 
-    @Autowired
     private FormFileSystem formFileSystem;
 
-    @Autowired
     private XLSFormService xlsformService;
+
+    public FormServiceImpl(FormRepository repo, FileHasher hasher, FormFileSystem fs, XLSFormService xlsformService) {
+        this.formDao = repo;
+        this.hasher = hasher;
+        this.formFileSystem = fs;
+        this.xlsformService = xlsformService;
+    }
 
     @Override
     @Transactional
