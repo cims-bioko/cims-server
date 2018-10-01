@@ -3,7 +3,9 @@ package com.github.cimsbioko.server.config;
 import org.apache.catalina.Context;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.webresources.StandardRoot;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.MimeMappings;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,6 +51,16 @@ public class WebConfig {
                 resourceRoot.setCacheMaxSize(sizeInKB);
                 ctx.setResources(resourceRoot);
             }
+        };
+    }
+
+    @Bean
+    public EmbeddedServletContainerCustomizer apiMimeTypeExtender() {
+        return container -> {
+            MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
+            mappings.add("db", "application/x-sqlite3");
+            mappings.add("jrsmd", "application/vnd.jrsync+jrsmd");
+            container.setMimeMappings(mappings);
         };
     }
 }
