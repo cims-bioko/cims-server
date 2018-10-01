@@ -20,7 +20,7 @@ import static java.util.Arrays.asList;
 @RequestMapping(ROUND_FORM_PATH)
 public class RoundResource {
 
-    public static final String ROUND_FORM_PATH = "/rest/rounds";
+    public static final String ROUND_FORM_PATH = "/api/rest/rounds";
 
     private final Rounds result;
 

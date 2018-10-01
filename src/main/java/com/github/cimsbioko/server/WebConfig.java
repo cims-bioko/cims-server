@@ -5,17 +5,14 @@ import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.webresources.StandardRoot;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
-import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.annotation.Resource;
-import javax.servlet.MultipartConfigElement;
 import java.io.File;
 
 @Configuration
@@ -35,18 +32,6 @@ public class WebConfig {
                         .addResourceLocations(dataDir.toURI().toString());
             }
         };
-    }
-
-    @Bean
-    ServletRegistrationBean apiServletRegistration() {
-        ServletRegistrationBean reg = new ServletRegistrationBean();
-        reg.setName("webApis");
-        reg.setServlet(new DispatcherServlet());
-        reg.addInitParameter("contextConfigLocation", "classpath:/META-INF/spring/webapi-application-context.xml");
-        reg.setLoadOnStartup(1);
-        reg.addUrlMappings("/api/*");
-        reg.setMultipartConfig(new MultipartConfigElement(""));
-        return reg;
     }
 
     @Bean

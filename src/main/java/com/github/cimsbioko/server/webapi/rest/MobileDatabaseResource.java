@@ -30,9 +30,9 @@ import static com.github.cimsbioko.server.WebConfig.CACHED_FILES_PATH;
 public class MobileDatabaseResource {
 
     public static final String ACCEPT = "Accept";
-    public static final String MOBILEDB_PATH = "/rest/mobiledb";
+    public static final String MOBILEDB_PATH = "/api/rest/mobiledb";
     public static final String SQLITE_MIME_TYPE = "application/x-sqlite3";
-    public static final String MOBILEDB_EXPORT_PATH = "/rest/mobiledb/export";
+    public static final String MOBILEDB_EXPORT_PATH = "/api/rest/mobiledb/export";
     public static final String INSTALLABLE_FILENAME = "openhds.db";
 
     private SyncService service;

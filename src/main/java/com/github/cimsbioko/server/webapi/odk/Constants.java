@@ -3,7 +3,7 @@ package com.github.cimsbioko.server.webapi.odk;
 public class Constants {
 
     /* shared by form and submission endpoints */
-    public static final String ODK_API_PATH = "/odk";
+    public static final String ODK_API_PATH = "/api/odk";
     public static final String DEFAULT_VERSION = "1";
     public static final String MD5_SCHEME = "md5:";
     public static final String ID = "id";
