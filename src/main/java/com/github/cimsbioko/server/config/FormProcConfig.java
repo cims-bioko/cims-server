@@ -5,6 +5,7 @@ import com.github.cimsbioko.server.formproc.FormProcessor;
 import com.github.cimsbioko.server.formproc.FormProcessorLoggingPostProcessor;
 import com.github.cimsbioko.server.formproc.ScheduledProcessing;
 import com.github.cimsbioko.server.formproc.forms.*;
+import com.github.cimsbioko.server.service.LocationHierarchyService;
 import com.github.cimsbioko.server.util.CalendarAdapter;
 import com.github.cimsbioko.server.util.CalendarUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,13 +56,13 @@ public class FormProcConfig {
     }
 
     @Bean
-    CreateMapFormProcessor createMapFormProcessor() {
-        return new CreateMapFormProcessor();
+    CreateMapFormProcessor createMapFormProcessor(LocationHierarchyService service) {
+        return new CreateMapFormProcessor(service);
     }
 
     @Bean
-    CreateSectorFormProcessor createSectorFormProcessor() {
-        return new CreateSectorFormProcessor();
+    CreateSectorFormProcessor createSectorFormProcessor(LocationHierarchyService service) {
+        return new CreateSectorFormProcessor(service);
     }
 
     @Bean

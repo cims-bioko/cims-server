@@ -1,5 +1,6 @@
 package com.github.cimsbioko.server.formproc.forms;
 
+import com.github.cimsbioko.server.service.LocationHierarchyService;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -10,9 +11,14 @@ import java.io.Serializable;
 
 public class CreateSectorFormProcessor {
 
-    @Transactional
-    public void processForm(Form form) {
+    LocationHierarchyService service;
 
+    public CreateSectorFormProcessor(LocationHierarchyService service) {
+        this.service = service;
+    }
+
+    public void processForm(Form form) {
+        service.createSector(form.mapUuid, form.sectorUuid, form.sectorName);
     }
 
     @XmlRootElement(name = "createSectorForm")

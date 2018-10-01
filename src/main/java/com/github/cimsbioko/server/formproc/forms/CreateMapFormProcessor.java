@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.formproc.forms;
 
-import org.springframework.transaction.annotation.Transactional;
+import com.github.cimsbioko.server.service.LocationHierarchyService;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -10,8 +10,14 @@ import java.io.Serializable;
 
 public class CreateMapFormProcessor {
 
-    @Transactional
+    private LocationHierarchyService service;
+
+    public CreateMapFormProcessor(LocationHierarchyService service) {
+        this.service = service;
+    }
+
     public void processForm(Form form) {
+        service.createMap(form.localityUuid, form.mapUuid, form.mapName);
     }
 
     @XmlRootElement(name = "createMapForm")

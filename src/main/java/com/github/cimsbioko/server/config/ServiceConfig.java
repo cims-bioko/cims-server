@@ -3,6 +3,7 @@ package com.github.cimsbioko.server.config;
 import com.github.cimsbioko.server.dao.ErrorRepository;
 import com.github.cimsbioko.server.dao.FormRepository;
 import com.github.cimsbioko.server.dao.FormSubmissionRepository;
+import com.github.cimsbioko.server.dao.LocationHierarchyRepository;
 import com.github.cimsbioko.server.service.*;
 import com.github.cimsbioko.server.service.impl.*;
 import com.github.cimsbioko.server.sqliteexport.Exporter;
@@ -29,6 +30,11 @@ public class ServiceConfig {
     @Bean
     public FormService formService(FormRepository repo, FileHasher hasher, FormFileSystem fs, XLSFormService xlsformService) {
         return new FormServiceImpl(repo, hasher, fs, xlsformService);
+    }
+
+    @Bean
+    public LocationHierarchyService locationHierarchyService(EntityManager em, LocationHierarchyRepository repo) {
+        return new LocationHierarchyServiceImpl(em, repo);
     }
 
     @Bean
