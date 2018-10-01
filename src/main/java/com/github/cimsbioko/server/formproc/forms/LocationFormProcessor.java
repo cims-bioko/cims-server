@@ -1,7 +1,6 @@
 package com.github.cimsbioko.server.formproc.forms;
 
 import com.github.cimsbioko.server.exception.ConstraintViolations;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -10,7 +9,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
-@Component
 public class LocationFormProcessor extends AbstractFormProcessor {
 
     @Transactional

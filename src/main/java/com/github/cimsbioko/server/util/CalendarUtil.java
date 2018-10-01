@@ -2,8 +2,6 @@ package com.github.cimsbioko.server.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -11,16 +9,22 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-@Component
 public class CalendarUtil {
 
     private static final Logger log = LoggerFactory.getLogger(CalendarUtil.class);
 
-    @Value("${dateFormat:yyyy-MM-dd}")
-    private String dateFormat = "yyyy-MM-dd";
+    private String dateFormat;
+    private String dateTimeFormat;
 
-    @Value("${dateTimeFormat:yyyy-MM-dd HH:mm:ss}")
-    private String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+    public CalendarUtil() {
+        dateFormat = "yyyy-MM-dd";
+        dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+    }
+
+    public CalendarUtil(String dateFormat, String dateTimeFormat) {
+        this.dateFormat = dateFormat;
+        this.dateTimeFormat = dateTimeFormat;
+    }
 
     private Calendar strictParse(String dateString, String format) throws ParseException {
         DateFormat formatter = new SimpleDateFormat(format);

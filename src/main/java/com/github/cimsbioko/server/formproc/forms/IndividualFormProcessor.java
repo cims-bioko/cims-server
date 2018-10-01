@@ -4,7 +4,6 @@ import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.util.CalendarAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -15,7 +14,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.Calendar;
 
-@Component
 public class IndividualFormProcessor extends AbstractFormProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(IndividualFormProcessor.class);

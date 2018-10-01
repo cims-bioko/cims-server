@@ -3,13 +3,11 @@ package com.github.cimsbioko.server.formproc.forms;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 
-@Component
 public class LocationEvalFormProcessor extends AbstractFormProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(LocationEvalFormProcessor.class);

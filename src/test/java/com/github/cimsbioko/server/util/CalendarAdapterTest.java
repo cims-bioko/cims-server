@@ -24,7 +24,7 @@ public class CalendarAdapterTest {
     @Before
     public void setup() throws ParseException {
         util = new CalendarUtil();
-        calendarAdapter = new CalendarAdapter();
+        calendarAdapter = new CalendarAdapter(util);
         date = getMockDate();
         dateTime = getMockDateTime();
     }

@@ -1,7 +1,5 @@
 package com.github.cimsbioko.server.formproc.forms;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -10,7 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
-@Component
 public class CreateSectorFormProcessor {
 
     @Transactional
