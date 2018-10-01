@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server;
+package com.github.cimsbioko.server.config;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;

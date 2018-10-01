@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server;
+package com.github.cimsbioko.server.config;
 
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;

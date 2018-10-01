@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server;
+package com.github.cimsbioko.server.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

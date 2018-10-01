@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import static com.github.cimsbioko.server.WebConfig.CACHED_FILES_PATH;
+import static com.github.cimsbioko.server.config.WebConfig.CACHED_FILES_PATH;
 
 
 /**

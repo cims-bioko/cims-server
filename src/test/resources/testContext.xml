@@ -9,8 +9,8 @@
 
     <import resource="classpath:/META-INF/spring/webapi-application-context.xml" />
 
-    <bean class="com.github.cimsbioko.server.SecurityConfig" />
-    <bean class="com.github.cimsbioko.server.FormProcConfig" />
+    <bean class="com.github.cimsbioko.server.config.SecurityConfig" />
+    <bean class="com.github.cimsbioko.server.config.FormProcConfig" />
 
     <bean id="dataDir" class="java.io.File">
         <constructor-arg value="#{systemProperties['java.io.tmpdir']}/cims-server-test"/>

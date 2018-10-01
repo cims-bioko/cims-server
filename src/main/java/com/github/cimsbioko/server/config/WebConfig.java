@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server;
+package com.github.cimsbioko.server.config;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.WebResourceRoot;

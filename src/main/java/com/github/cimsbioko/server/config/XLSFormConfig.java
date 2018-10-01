@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server;
+package com.github.cimsbioko.server.config;
 
 import com.github.batkinson.jxlsform.api.WorkbookFactory;
 import com.github.batkinson.jxlsform.api.XLSFormFactory;
