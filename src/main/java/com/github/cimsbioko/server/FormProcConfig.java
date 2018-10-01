@@ -24,7 +24,7 @@ public class FormProcConfig {
     private static final String FORM_PKG = PROC_PKG + ".forms";
 
     @Bean
-    CalendarUtil calendarUtil(@Value("${dateFormat:yyyy-MM-dd}") String dateFormat, @Value("${dateTimeFormat:yyyy-MM-dd HH:mm:ss}")String dateTimeFormat) {
+    CalendarUtil calendarUtil(@Value("${dateFormat:yyyy-MM-dd}") String dateFormat, @Value("${dateTimeFormat:yyyy-MM-dd HH:mm:ss}") String dateTimeFormat) {
         return new CalendarUtil(dateFormat, dateTimeFormat);
     }
 
@@ -44,7 +44,7 @@ public class FormProcConfig {
     /**
      * This is satisfied by a javascript bean loaded by the xml config
      */
-   @Bean
+    @Bean
     ScheduledProcessing scheduledProcessing(FormProcessor processor) {
         return new ScheduledProcessing(processor);
     }
