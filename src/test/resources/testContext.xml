@@ -7,7 +7,6 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <import resource="classpath:/META-INF/spring/application-context.xml"/>
     <import resource="classpath:/META-INF/spring/webapi-application-context.xml" />
 
     <bean class="com.github.cimsbioko.server.SecurityConfig" />

@@ -1,11 +1,10 @@
 package com.github.cimsbioko.server;
 
 
+import com.github.cimsbioko.server.formproc.FormProcessor;
+import com.github.cimsbioko.server.formproc.ScheduledProcessing;
 import com.github.cimsbioko.server.util.CalendarAdapter;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.*;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 import static com.github.cimsbioko.server.FormProcConfig.PROC_PKG;
@@ -13,6 +12,7 @@ import static com.github.cimsbioko.server.FormProcConfig.PROC_PKG;
 @Configuration
 @ComponentScan(PROC_PKG)
 @EnableAspectJAutoProxy
+@ImportResource("classpath:/META-INF/spring/formproc-application-context.xml")
 public class FormProcConfig {
 
     static final String PROC_PKG = "com.github.cimsbioko.server.formproc";
@@ -26,4 +26,8 @@ public class FormProcConfig {
         return marshaller;
     }
 
+    @Bean
+    ScheduledProcessing scheduledProcessing(FormProcessor processor) {
+        return new ScheduledProcessing(processor);
+    }
 }
