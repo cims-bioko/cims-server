@@ -16,7 +16,7 @@ import static com.github.cimsbioko.server.FormProcConfig.PROC_PKG;
 public class FormProcConfig {
 
     static final String PROC_PKG = "com.github.cimsbioko.server.formproc";
-    static final String FORM_PKG = PROC_PKG + ".forms";
+    private static final String FORM_PKG = PROC_PKG + ".forms";
 
     @Bean
     Jaxb2Marshaller formMarshaller(CalendarAdapter calendarAdapter) {
