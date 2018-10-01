@@ -94,6 +94,11 @@
             <artifactId>jdom2</artifactId>
         </dependency>
         <dependency>
+            <!-- optional jdom2 dep, required for xpath -->
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
         </dependency>
