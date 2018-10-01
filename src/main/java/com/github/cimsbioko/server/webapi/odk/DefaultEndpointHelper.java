@@ -13,7 +13,7 @@ public class DefaultEndpointHelper implements EndpointHelper {
     public String contextRelativeUrl(HttpServletRequest req, String... pathSegments) {
         return UriComponentsBuilder
                 .fromHttpUrl(buildFullRequestUrl(req))
-                .replacePath(req.getContextPath() + req.getServletPath() + ODK_API_PATH)
+                .replacePath(req.getContextPath() + ODK_API_PATH)
                 .pathSegment(pathSegments)
                 .query(null)
                 .toUriString();
