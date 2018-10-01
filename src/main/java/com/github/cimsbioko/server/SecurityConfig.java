@@ -1,10 +1,7 @@
 package com.github.cimsbioko.server;
 
 import com.github.cimsbioko.server.dao.UserRepository;
-import com.github.cimsbioko.server.security.LastLoginHandler;
-import com.github.cimsbioko.server.security.RoleMapper;
-import com.github.cimsbioko.server.security.UserDetailsService;
-import com.github.cimsbioko.server.security.UserMapper;
+import com.github.cimsbioko.server.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,6 +38,11 @@ public class SecurityConfig {
         service.setUserMapper(userMapper());
         service.setUserRepository(userRepo);
         return service;
+    }
+
+    @Bean
+    RunAsUserAspect runAsUserAspect(UserDetailsService userDetailsService){
+        return new RunAsUserAspect(userDetailsService);
     }
 
     @Bean

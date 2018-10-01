@@ -1,5 +1,6 @@
 package com.github.cimsbioko.server.formproc;
 
+import com.github.cimsbioko.server.security.RunAsUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;

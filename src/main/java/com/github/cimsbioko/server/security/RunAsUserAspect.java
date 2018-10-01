@@ -1,11 +1,10 @@
-package com.github.cimsbioko.server.formproc;
+package com.github.cimsbioko.server.security;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -19,13 +18,15 @@ import org.springframework.stereotype.Component;
  * and it should automatically be proxied and invoked with this behavior when called.
  */
 @Aspect
-@Component
 public class RunAsUserAspect {
 
     private static final Logger log = LoggerFactory.getLogger(RunAsUserAspect.class);
 
-    @Autowired
-    UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
+
+    public RunAsUserAspect(UserDetailsService service) {
+        this.userDetailsService = service;
+    }
 
     @Around("@annotation(annotation))")
     Object runAsUser(ProceedingJoinPoint joinPoint, RunAsUser annotation) throws Throwable {
