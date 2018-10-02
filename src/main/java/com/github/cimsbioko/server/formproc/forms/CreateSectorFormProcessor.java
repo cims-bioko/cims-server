@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 public class CreateSectorFormProcessor {
 
-    LocationHierarchyService service;
+    private LocationHierarchyService service;
 
     public CreateSectorFormProcessor(LocationHierarchyService service) {
         this.service = service;
