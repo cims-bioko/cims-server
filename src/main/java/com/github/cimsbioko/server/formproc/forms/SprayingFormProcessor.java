@@ -1,22 +1,44 @@
 package com.github.cimsbioko.server.formproc.forms;
 
-import com.github.cimsbioko.server.exception.ConstraintViolations;
+import com.github.cimsbioko.server.dao.LocationRepository;
+import com.github.cimsbioko.server.domain.Location;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
+import java.util.Calendar;
 
-@Controller
 public class SprayingFormProcessor extends AbstractFormProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(SprayingFormProcessor.class);
 
-    @Transactional
-    public void processForm(Form form) throws ConstraintViolations {
+    private LocationRepository repo;
 
+    public SprayingFormProcessor(LocationRepository repo) {
+        this.repo = repo;
+    }
+
+    @Transactional
+    public void processForm(Form form) {
+        if (form.entityUuid != null) {
+            Location location = repo.findOne(form.entityUuid);
+            if (location != null) {
+                switch (form.evaluation) {
+                    case DESTROYED:
+                        location.getAttrsForUpdate().put("status", "destroyed");
+                        location.setDeleted(Calendar.getInstance());
+                        break;
+                    case UNINHABITED:
+                        location.getAttrsForUpdate().put("status", "uninhabited");
+                        break;
+                }
+                repo.save(location);
+            } else {
+                log.info("location {} does not exist, ignoring", form.entityUuid);
+            }
+        }
     }
 
     @XmlEnum

@@ -85,4 +85,9 @@ public class FormProcConfig {
     LocationFormProcessor locationFormProcessor() {
         return new LocationFormProcessor();
     }
+
+    @Bean
+    SprayingFormProcessor sprayingFormProcessor(LocationRepository repo) {
+        return new SprayingFormProcessor(repo);
+    }
 }
