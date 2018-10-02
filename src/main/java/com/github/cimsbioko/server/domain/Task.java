@@ -18,6 +18,7 @@ public class Task {
 
     private String name;
 
+    @Column(name = "itemcount")
     private long itemCount;
 
     private String descriptor;
