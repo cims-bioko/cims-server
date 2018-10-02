@@ -77,8 +77,8 @@ public class FormProcConfig {
     }
 
     @Bean
-    LocationEvalFormProcessor locationEvalFormProcessor() {
-        return new LocationEvalFormProcessor();
+    LocationEvalFormProcessor locationEvalFormProcessor(LocationRepository repo) {
+        return new LocationEvalFormProcessor(repo);
     }
 
     @Bean
