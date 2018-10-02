@@ -1,16 +1,15 @@
 package com.github.cimsbioko.server.config;
 
-import com.github.cimsbioko.server.dao.ErrorRepository;
-import com.github.cimsbioko.server.dao.FormRepository;
-import com.github.cimsbioko.server.dao.FormSubmissionRepository;
-import com.github.cimsbioko.server.dao.LocationHierarchyRepository;
+import com.github.cimsbioko.server.dao.*;
 import com.github.cimsbioko.server.service.*;
 import com.github.cimsbioko.server.service.impl.*;
 import com.github.cimsbioko.server.sqliteexport.Exporter;
 import com.github.cimsbioko.server.webapi.odk.FileHasher;
 import com.github.cimsbioko.server.webapi.odk.FormFileSystem;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.TaskScheduler;
 
 import javax.persistence.EntityManager;
 
@@ -43,7 +42,7 @@ public class ServiceConfig {
     }
 
     @Bean
-    public SyncService syncService(Exporter sqliteExporter) {
-        return new SyncServiceImpl(sqliteExporter);
+    public SyncService syncService(TaskRepository repo, Exporter sqliteExporter, TaskScheduler scheduler, @Value("${app.task.schedule}") String schedule) {
+        return new SyncServiceImpl(repo, sqliteExporter, scheduler, schedule);
     }
 }

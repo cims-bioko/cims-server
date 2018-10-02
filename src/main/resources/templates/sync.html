@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+    <title th:text="#{app.name} + ' - ' + #{nav.sync}">CIMS - Sync</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<div id="content" class="container">
+    <h1 th:text="#{nav.sync}"></h1>
+    <p th:inline="text">[[${nextRun} ? #{sync.msg.nextrun(${nextRun})} : #{sync.msg.nonextrun}]]</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Started</th>
+                <th>Ended</th>
+                <th>Content</th>
+                <th>Items</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td th:text="${#calendars.format(task.started)}"></td>
+                <td th:text="${#calendars.format(task.finished)}"></td>
+                <td th:text="${task.descriptor}"></td>
+                <td th:text="${task.itemCount}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>
