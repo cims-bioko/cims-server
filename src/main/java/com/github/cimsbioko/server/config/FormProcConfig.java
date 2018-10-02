@@ -1,6 +1,7 @@
 package com.github.cimsbioko.server.config;
 
 
+import com.github.cimsbioko.server.dao.LocationRepository;
 import com.github.cimsbioko.server.formproc.FormProcessor;
 import com.github.cimsbioko.server.formproc.FormProcessorLoggingPostProcessor;
 import com.github.cimsbioko.server.formproc.ScheduledProcessing;
@@ -66,8 +67,8 @@ public class FormProcConfig {
     }
 
     @Bean
-    DuplicateLocationFormProcessor duplicateLocationFormProcessor() {
-        return new DuplicateLocationFormProcessor();
+    DuplicateLocationFormProcessor duplicateLocationFormProcessor(LocationRepository locRepo, LocationHierarchyService hierService) {
+        return new DuplicateLocationFormProcessor(locRepo, hierService);
     }
 
     @Bean

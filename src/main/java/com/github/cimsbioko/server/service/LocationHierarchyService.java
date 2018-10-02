@@ -9,6 +9,12 @@ public interface LocationHierarchyService {
     LocationHierarchy createMap(String localityUuid, String mapUuid, String mapName);
 
     @PreAuthorize("hasAuthority('CREATE_ENTITY')")
+    LocationHierarchy createOrFindMap(String localityUuid, String mapName);
+
+    @PreAuthorize("hasAuthority('CREATE_ENTITY')")
     LocationHierarchy createSector(String mapUuid, String sectorUuid, String sectorName);
+
+    @PreAuthorize("hasAuthority('CREATE_ENTITY')")
+    LocationHierarchy createOrFindSector(String mapUuid, String sectorName);
 
 }

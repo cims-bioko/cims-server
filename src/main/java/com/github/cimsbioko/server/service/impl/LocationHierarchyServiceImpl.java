@@ -20,10 +20,14 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
         this.repo = repo;
     }
 
+    private Session getSession() {
+        return em.unwrap(Session.class);
+    }
+
     @Override
     @Transactional
     public LocationHierarchy createMap(String localityUuid, String mapUuid, String mapName) {
-        String uuid = em.unwrap(Session.class).doReturningWork(
+        String uuid = getSession().doReturningWork(
                 c -> {
                     try (CallableStatement f = c.prepareCall("{ ? = call create_map(?, ?, ?) }")) {
                         f.registerOutParameter(1, Types.VARCHAR);
@@ -40,14 +44,48 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 
     @Override
     @Transactional
+    public LocationHierarchy createOrFindMap(String localityUuid, String mapName) {
+        String uuid = getSession().doReturningWork(
+                c -> {
+                    try (CallableStatement f = c.prepareCall("{ ? = call create_map(?, ?) }")) {
+                        f.registerOutParameter(1, Types.VARCHAR);
+                        f.setString(2, localityUuid);
+                        f.setString(3, mapName);
+                        f.execute();
+                        return f.getString(1);
+                    }
+                }
+        );
+        return repo.findOne(uuid);
+    }
+
+    @Override
+    @Transactional
     public LocationHierarchy createSector(String mapUuid, String sectorUuid, String sectorName) {
-        String uuid = em.unwrap(Session.class).doReturningWork(
+        String uuid = getSession().doReturningWork(
                 c -> {
                     try (CallableStatement f = c.prepareCall("{ ? = call create_sector(?, ?, ?) }")) {
                         f.registerOutParameter(1, Types.VARCHAR);
                         f.setString(2, mapUuid);
                         f.setString(3, sectorUuid);
                         f.setString(4, sectorName);
+                        f.execute();
+                        return f.getString(1);
+                    }
+                }
+        );
+        return repo.findOne(uuid);
+    }
+
+    @Override
+    @Transactional
+    public LocationHierarchy createOrFindSector(String mapUuid, String sectorName) {
+        String uuid = getSession().doReturningWork(
+                c -> {
+                    try (CallableStatement f = c.prepareCall("{ ? = call create_sector(?, ?) }")) {
+                        f.registerOutParameter(1, Types.VARCHAR);
+                        f.setString(2, mapUuid);
+                        f.setString(3, sectorName);
                         f.execute();
                         return f.getString(1);
                     }
