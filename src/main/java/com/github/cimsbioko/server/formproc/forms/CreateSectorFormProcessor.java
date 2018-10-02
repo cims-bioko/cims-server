@@ -1,7 +1,6 @@
 package com.github.cimsbioko.server.formproc.forms;
 
 import com.github.cimsbioko.server.service.LocationHierarchyService;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
