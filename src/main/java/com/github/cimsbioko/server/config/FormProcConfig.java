@@ -1,10 +1,7 @@
 package com.github.cimsbioko.server.config;
 
 
-import com.github.cimsbioko.server.dao.FieldWorkerRepository;
-import com.github.cimsbioko.server.dao.LocationHierarchyLevelRepository;
-import com.github.cimsbioko.server.dao.LocationHierarchyRepository;
-import com.github.cimsbioko.server.dao.LocationRepository;
+import com.github.cimsbioko.server.dao.*;
 import com.github.cimsbioko.server.formproc.FormProcessor;
 import com.github.cimsbioko.server.formproc.FormProcessorLoggingPostProcessor;
 import com.github.cimsbioko.server.formproc.ScheduledProcessing;
@@ -75,8 +72,8 @@ public class FormProcConfig {
     }
 
     @Bean
-    IndividualFormProcessor individualFormProcessor() {
-        return new IndividualFormProcessor();
+    IndividualFormProcessor individualFormProcessor(FieldWorkerRepository fwRepo, LocationRepository locRepo, IndividualRepository indivRepo) {
+        return new IndividualFormProcessor(fwRepo, locRepo, indivRepo);
     }
 
     @Bean
