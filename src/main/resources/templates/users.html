@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+    <title th:text="#{app.name} + ' - ' + #{nav.users}">CIMS - Users</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<div id="content" class="container">
+    <h1 th:text="#{nav.users}">Users</h1>
+
+    <div class="text-center" th:if="${#lists.isEmpty(users)}" th:text="#{users.msg.none}">No users found</div>
+
+    <th:block th:if="${users.totalPages > 0}">
+    <nav>
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${!users.hasPrevious()}? disabled">
+                <a class="page-link" th:href="${users.hasPrevious()}? @{/users(p=${users.previousPageable().pageNumber})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>
+            </li>
+            <li class="page-item" th:classappend="${users.number == pn}? active" th:each="pn:${#numbers.sequence(0, users.totalPages - 1)}">
+                <a class="page-link" th:href="${users.number == pn}? '#' : @{/users(p=${pn})}" th:text="${pn+1}">1</a>
+            </li>
+            <li class="page-item" th:classappend="${!users.hasNext()}? disabled">
+                <a class="page-link" th:href="${users.hasNext()}? @{/users(p=${users.nextPageable().pageNumber})} : '#'" th:text="#{pager.lbl.next}">Next</a>
+            </li>
+        </ul>
+    </nav>
+    <table class="table">
+        <thead>
+        <tr>
+            <th th:text="#{users.lbl.username}">Username</th>
+            <th th:text="#{users.lbl.fullName}">Full Name</th>
+            <th th:text="#{users.lbl.lastLogin}">Last Login</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:each="u:${users}">
+                <td th:text="${u.username}">Username</td>
+                <td th:text="${u.fullName}">Full Name</td>
+                <td th:text="${u.lastLogin != null? #dates.format(u.lastLogin) : ''}">2018-12-01 14:12:12.289</td>
+            </tr>
+        </tbody>
+    </table>
+    </th:block>
+
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>
