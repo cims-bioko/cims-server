@@ -50,9 +50,7 @@
         </thead>
         <tbody>
             <tr th:if="${backups.empty}">
-                <tr>
-                    <td colspan="3">No backups found</td>
-                </tr>
+                <td colspan="3" th:text="#{backups.msg.none}">No backups found</td>
             </tr>
             <th:block th:each="b:${backups}">
             <tr>
@@ -63,7 +61,6 @@
             </th:block>
         </tbody>
     </table>
-
 </div>
 <div th:replace="fragments/footer :: footer"/>
 </body>
