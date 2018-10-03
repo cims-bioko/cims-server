@@ -9,79 +9,131 @@
 
 <div id="content" class="container">
     <h1 th:text="#{nav.forms}">Forms</h1>
-    <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" href="#xmlupload" role="tab" data-toggle="tab">
-                <span th:text="#{forms.tab.xml}">XML</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#xmlxlsupload" role="tab" data-toggle="tab">
-                <span th:text="#{forms.tab.xmlplusxlsform}">XML + XLSForm</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#xlsupload" role="tab" data-toggle="tab">
-                <span th:text="#{forms.tab.xlsform}">XLSForm</span>
-            </a>
-        </li>
-    </ul>
-    <div class="tab-content form-uploads pt-3">
-        <div id="result" class="d-none alert" role="alert"></div>
-        <div class="tab-pane fade show active" id="xmlupload">
-            <form id="xmlform" th:action="@{/uploadXmlForm}" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="xml_form_def_file" th:text="#{forms.lbl.xmlform} + ':'">XML Form</label>
-                    <input id="xml_form_def_file" class="form-control-file" type="file" name="form_def_file"
-                           accept="text/xml,application/xml" required="" />
+    <div class="btn btn-primary" data-toggle="modal" data-target="#addform" th:inline="text"><span class="oi oi-plus"></span> [[#{forms.btn.addform}]]</div>
+    <div class="modal fade" id="addform">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" th:text="#{forms.btn.addform}">Add Form</div>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label for="xml_media_files" th:text="#{forms.lbl.mediafiles} + ':'">Media Files</label>
-                    <input id="xml_media_files" class="form-control-file" type="file" name="media_files" multiple="" />
+                <div class="modal-body">
+                    <div id="result" class="d-none alert" role="alert"></div>
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#xmlupload" role="tab" data-toggle="tab">
+                                <span th:text="#{forms.tab.xml}">XML</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#xmlxlsupload" role="tab" data-toggle="tab">
+                                <span th:text="#{forms.tab.xmlplusxlsform}">XML + XLSForm</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#xlsupload" role="tab" data-toggle="tab">
+                                <span th:text="#{forms.tab.xlsform}">XLSForm</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content form-uploads pt-3">
+                        <div class="tab-pane fade show active" id="xmlupload">
+                            <form id="xmlform" th:action="@{/uploadXmlForm}" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="xml_form_def_file" th:text="#{forms.lbl.xmlform} + ':'">XML Form</label>
+                                    <input id="xml_form_def_file" class="form-control-file" type="file" name="form_def_file"
+                                           accept="text/xml,application/xml" required="" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="xml_media_files" th:text="#{forms.lbl.mediafiles} + ':'">Media Files</label>
+                                    <input id="xml_media_files" class="form-control-file" type="file" name="media_files" multiple="" />
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="xmlxlsupload">
+                            <form id="xmlxlsform" th:action="@{/uploadXmlForm}" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="xmlxls_form_def_file" th:text="#{forms.lbl.xmlform} + ':'">XML Form</label>
+                                    <input id="xmlxls_form_def_file" class="form-control-file" type="file" name="form_def_file"
+                                           accept="text/xml,application/xml" required=""/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="xmlxls_xlsform_def_file" th:text="#{forms.lbl.xlsform} + ':'">XLSForm</label>
+                                    <input id="xmlxls_xlsform_def_file" class="form-control-file" type="file" name="xlsform_def_file"
+                                           accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required=""/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="xmlxls_media_files" th:text="#{forms.lbl.mediafiles} + ':'">Media Files</label>
+                                    <input id="xmlxls_media_files" class="form-control-file" type="file" name="media_files" multiple="" />
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="xlsupload">
+                            <form id="xlsform" th:action="@{/uploadXlsForm}" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="xls_xlsform_def_file" th:text="#{forms.lbl.xlsform} + ':'"></label>
+                                    <input id="xls_xlsform_def_file" class="form-control-file" type="file" name="xlsform_def_file"
+                                           accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required=""/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="xls_media_files" th:text="#{forms.lbl.mediafiles} + ':'"></label>
+                                    <input id="xls_media_files" class="form-control-file" type="file" name="media_files" multiple="" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary" th:inline="text">
-                    <span class="oi oi-data-transfer-upload" aria-hidden="true"></span> [[#{forms.btn.upload}]]
-                </button>
-            </form>
-        </div>
-        <div class="tab-pane fade" id="xmlxlsupload">
-            <form id="xmlxlsform" th:action="@{/uploadXmlForm}" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="xmlxls_form_def_file" th:text="#{forms.lbl.xmlform} + ':'">XML Form</label>
-                    <input id="xmlxls_form_def_file" class="form-control-file" type="file" name="form_def_file"
-                           accept="text/xml,application/xml" required=""/>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{forms.btn.close}">Close</button>
+                    <button type="submit" class="btn btn-primary" th:inline="text">
+                        <span class="oi oi-data-transfer-upload" aria-hidden="true"></span> [[#{forms.btn.upload}]]
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label for="xmlxls_xlsform_def_file" th:text="#{forms.lbl.xlsform} + ':'">XLSForm</label>
-                    <input id="xmlxls_xlsform_def_file" class="form-control-file" type="file" name="xlsform_def_file"
-                           accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required=""/>
-                </div>
-                <div class="form-group">
-                    <label for="xmlxls_media_files" th:text="#{forms.lbl.mediafiles} + ':'">Media Files</label>
-                    <input id="xmlxls_media_files" class="form-control-file" type="file" name="media_files" multiple="" />
-                </div>
-                <button type="submit" class="btn btn-primary" th:inline="text">
-                    <span class="oi oi-data-transfer-upload" aria-hidden="true"></span> [[#{forms.btn.upload}]]
-                </button>
-            </form>
-        </div>
-        <div class="tab-pane fade" id="xlsupload">
-            <form id="xlsform" th:action="@{/uploadXlsForm}" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="xls_xlsform_def_file" th:text="#{forms.lbl.xlsform} + ':'"></label>
-                    <input id="xls_xlsform_def_file" class="form-control-file" type="file" name="xlsform_def_file"
-                           accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required=""/>
-                </div>
-                <div class="form-group">
-                    <label for="xls_media_files" th:text="#{forms.lbl.mediafiles} + ':'"></label>
-                    <input id="xls_media_files" class="form-control-file" type="file" name="media_files" multiple="" />
-                </div>
-                <button type="submit" class="btn btn-primary" th:inline="text">
-                    <span class="oi oi-data-transfer-upload" aria-hidden="true"></span> [[#{forms.btn.upload}]]
-                </button>
-            </form>
+            </div>
         </div>
     </div>
+
+    <div class="text-center" th:if="${#lists.isEmpty(forms)}" th:text="#{users.msg.none}">No users found</div>
+    <th:block th:if="${forms.totalPages > 0}">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${!forms.hasPrevious()}? disabled">
+                    <a class="page-link" th:href="${forms.hasPrevious()}? @{/forms(p=${forms.previousPageable().pageNumber})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>
+                </li>
+                <li class="page-item" th:classappend="${forms.number == pn}? active" th:each="pn:${#numbers.sequence(0, forms.totalPages - 1)}">
+                    <a class="page-link" th:href="${forms.number == pn}? '#' : @{/forms(p=${pn})}" th:text="${pn+1}">1</a>
+                </li>
+                <li class="page-item" th:classappend="${!forms.hasNext()}? disabled">
+                    <a class="page-link" th:href="${forms.hasNext()}? @{/forms(p=${forms.nextPageable().pageNumber})} : '#'" th:text="#{pager.lbl.next}">Next</a>
+                </li>
+            </ul>
+        </nav>
+        <table class="table">
+            <thead>
+            <tr>
+                <th th:text="#{forms.lbl.id}">Id</th>
+                <th th:text="#{forms.lbl.version}">Version</th>
+                <th class="d-none d-md-table-cell" th:text="#{forms.lbl.downloads}">Downloads</th>
+                <th class="d-none d-lg-table-cell" th:text="#{forms.lbl.submissions}">Submission</th>
+                <th class="d-none d-xl-table-cell" th:text="#{forms.lbl.uploaded}">Uploaded</th>
+                <th class="d-none d-xl-table-cell" th:text="#{forms.lbl.lastSubmission}">Last Submission</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="f:${forms}">
+                <td th:text="${f.formId.id}">Id</td>
+                <td th:text="${f.formId.version}">Version</td>
+                <td class="d-none d-md-table-cell" th:text="${f.downloads}"></td>
+                <td class="d-none d-lg-table-cell" th:text="${f.submissions}">Username</td>
+                <td class="d-none d-xl-table-cell" th:text="${f.uploaded != null? #dates.format(f.uploaded) : ''}">Last Login</td>
+                <td class="d-none d-xl-table-cell" th:text="${f.lastSubmission != null? #dates.format(f.lastSubmission) : ''}">Last Submission</td>
+            </tr>
+            </tbody>
+        </table>
+    </th:block>
+
 </div>
 <div th:replace="fragments/footer :: footer"/>
 <script th:inline="javascript">
@@ -89,7 +141,7 @@
 
         var data = new FormData($form[0]);
         var action = $form.attr('action');
-        var $button = $form.find("button[type='submit']");
+        var $button = $form.parents('.modal').find(":submit");
 
         $button.prop("disabled", true);
 
@@ -105,25 +157,43 @@
             success: function () {
                 $("#result").removeClass('d-none').addClass('alert-success').text([[#{forms.msg.uploadsuccess}]]);
                 $form.trigger("reset");
-                $button.prop("disabled", false);
             },
             error: function (rsp) {
                 $("#result").removeClass('d-none').addClass('alert-danger').text(
                     [[#{forms.msg.uploadfailed}]] + ': ' + rsp.responseJSON.exception + ' - ' + rsp.responseJSON.message
                 );
+            },
+            complete: function() {
                 $button.prop("disabled", false);
             }
         });
     }
 
-    $(document).ready(function () {
-        $(".form-uploads .btn[type='submit']").click(function () {
-            $("#result").addClass("d-none").text(''); // ensure alerts are cleared
+    $(function () {
+        // adds invisible buttons to 'add form' forms (native validation)
+        $("#addform form .form-group:last-child")
+            .after('<button type="submit" class="invisible"/>');
+
+        // click handler for 'add form' dialog
+        $("#addform .btn[type='submit']").click(function () {
+            // ensure alerts are cleared when submitting
+            $("#result").addClass("d-none").text('');
+            // validate and submit the active tab's form
+            $("#addform .active form").each(function() {
+               $(this).find(':submit').click(); // triggers html5 validations
+            });
         });
+
+        // replace default form submission with ajax submission
         $(".form-uploads form").submit(function (event) {
             event.preventDefault(); // prevent normal form submission
             upload($(this));
         });
+
+        // reload the page when 'add form' modal is closed
+        $('#addform').on('hidden.bs.modal', function () {
+            location.reload(true);
+        })
     });
 </script>
 </body>
