@@ -3,6 +3,14 @@
 <head>
     <div th:replace="fragments/header :: header-css"/>
     <title th:text="#{app.name} + ' - ' + #{nav.forms}">CIMS - Forms</title>
+    <style>
+        table .oi-check {
+            color: darkgreen;
+        }
+        table .oi-circle-x {
+            color: darkred;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="fragments/header :: header"/>
@@ -125,9 +133,9 @@
             <tr th:each="f:${forms}">
                 <td th:text="${f.formId.id}">Id</td>
                 <td th:text="${f.formId.version}">Version</td>
-                <td class="d-none d-md-table-cell" th:text="${f.downloads}"></td>
-                <td class="d-none d-lg-table-cell" th:text="${f.submissions}">Username</td>
-                <td class="d-none d-xl-table-cell" th:text="${f.uploaded != null? #dates.format(f.uploaded) : ''}">Last Login</td>
+                <td class="d-none d-md-table-cell text-center align-middle" th:classappend="${f.downloads}? 'oi oi-check' : 'oi oi-circle-x'"></td>
+                <td class="d-none d-lg-table-cell text-center align-middle" th:classappend="${f.submissions}? 'oi oi-check' : 'oi oi-circle-x'"></td>
+                <td class="d-none d-xl-table-cell" th:text="${f.uploaded != null? #dates.format(f.uploaded) : ''}">Uploaded</td>
                 <td class="d-none d-xl-table-cell" th:text="${f.lastSubmission != null? #dates.format(f.lastSubmission) : ''}">Last Submission</td>
             </tr>
             </tbody>
