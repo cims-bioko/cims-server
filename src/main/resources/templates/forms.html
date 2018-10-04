@@ -95,7 +95,7 @@
         </div>
     </div>
 
-    <div class="text-center" th:if="${#lists.isEmpty(forms)}" th:text="#{users.msg.none}">No users found</div>
+    <div class="text-center" th:if="${#lists.isEmpty(forms)}" th:text="#{forms.msg.none}">No forms found</div>
     <th:block th:if="${forms.totalPages > 0}">
         <nav>
             <ul class="pagination justify-content-center">
