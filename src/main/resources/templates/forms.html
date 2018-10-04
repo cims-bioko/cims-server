@@ -97,7 +97,7 @@
 
     <div class="text-center" th:if="${#lists.isEmpty(forms)}" th:text="#{forms.msg.none}">No forms found</div>
     <th:block th:if="${forms.totalPages > 0}">
-        <nav>
+        <nav th:if="${forms.totalPages > 1}">
             <ul class="pagination justify-content-center">
                 <li class="page-item" th:classappend="${!forms.hasPrevious()}? disabled">
                     <a class="page-link" th:href="${forms.hasPrevious()}? @{/forms(p=${forms.previousPageable().pageNumber})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>

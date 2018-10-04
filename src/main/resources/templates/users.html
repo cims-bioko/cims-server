@@ -12,7 +12,7 @@
     <div class="text-center" th:if="${#lists.isEmpty(users)}" th:text="#{users.msg.none}">No users found</div>
 
     <th:block th:if="${users.totalPages > 0}">
-    <nav>
+    <nav th:if="${users.totalPages > 1}">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${!users.hasPrevious()}? disabled">
                 <a class="page-link" th:href="${users.hasPrevious()}? @{/users(p=${users.previousPageable().pageNumber})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>
