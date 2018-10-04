@@ -40,6 +40,21 @@
         </button>
     </form>
 
+    <div class="text-center" th:if="${#lists.isEmpty(backups)}" th:text="#{backups.msg.none}">No users found</div>
+    <th:block th:if="${backups.totalPages > 0}">
+    <nav th:if="${backups.totalPages > 1}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${!backups.hasPrevious()}? disabled">
+                <a class="page-link" th:href="${backups.hasPrevious()}? @{/backups(p=${backups.previousPageable().pageNumber})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>
+            </li>
+            <li class="page-item" th:classappend="${backups.number == pn}? active" th:each="pn:${#numbers.sequence(0, backups.totalPages - 1)}">
+                <a class="page-link" th:href="${backups.number == pn}? '#' : @{/backups(p=${pn})}" th:text="${pn+1}">1</a>
+            </li>
+            <li class="page-item" th:classappend="${!backups.hasNext()}? disabled">
+                <a class="page-link" th:href="${backups.hasNext()}? @{/backups(p=${backups.nextPageable().pageNumber})} : '#'" th:text="#{pager.lbl.next}">Next</a>
+            </li>
+        </ul>
+    </nav>
     <table class="table" th:if="${backups}">
         <thead>
             <tr>
@@ -49,9 +64,6 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:if="${backups.empty}">
-                <td colspan="3" th:text="#{backups.msg.none}">No backups found</td>
-            </tr>
             <th:block th:each="b:${backups}">
             <tr>
                 <td th:text="${b.name}">Name</td>
@@ -61,6 +73,7 @@
             </th:block>
         </tbody>
     </table>
+    </th:block>
 </div>
 <div th:replace="fragments/footer :: footer"/>
 </body>
