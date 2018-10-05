@@ -102,8 +102,7 @@
             </div>
         </div>
     </div>
-
-    <div class="text-center" th:if="${#lists.isEmpty(forms)}" th:text="#{forms.msg.none}">No forms found</div>
+    <div class="text-center" th:unless="${forms.totalElements > 0}" th:text="#{forms.msg.none}">No forms found</div>
     <th:block th:if="${forms.totalPages > 0}">
         <nav th:if="${forms.totalPages > 1}">
             <ul class="pagination justify-content-center">
@@ -141,7 +140,6 @@
             </tbody>
         </table>
     </th:block>
-
 </div>
 <div th:replace="fragments/footer :: footer"/>
 <script th:inline="javascript">

@@ -8,9 +8,7 @@
 <div th:replace="fragments/header :: header"/>
 <div id="content" class="container">
     <h1 th:text="#{nav.users}">Users</h1>
-
-    <div class="text-center" th:if="${#lists.isEmpty(users)}" th:text="#{users.msg.none}">No users found</div>
-
+    <div class="text-center" th:unless="${users.totalElements > 0}" th:text="#{users.msg.none}">No users found</div>
     <th:block th:if="${users.totalPages > 0}">
     <nav th:if="${users.totalPages > 1}">
         <ul class="pagination justify-content-center">
@@ -42,7 +40,6 @@
         </tbody>
     </table>
     </th:block>
-
 </div>
 <div th:replace="fragments/footer :: footer"/>
 </body>
