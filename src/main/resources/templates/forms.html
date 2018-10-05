@@ -187,9 +187,7 @@
             // ensure alerts are cleared when submitting
             $("#result").addClass("d-none").text('');
             // validate and submit the active tab's form
-            $("#addform .active form").each(function() {
-               $(this).find(':submit').click(); // triggers html5 validations
-            });
+            $("#addform .active form :submit").click(); // triggers html5 validations
         });
 
         // replace default form submission with ajax submission
