@@ -177,7 +177,7 @@
         });
     }
 
-    $(function () {
+    $(function() {
         // adds invisible buttons to 'add form' forms (native validation)
         $("#addform form .form-group:last-child")
             .after('<button type="submit" class="invisible"/>');
@@ -201,7 +201,7 @@
         // reload the page when 'add form' modal is closed
         $('#addform').on('hidden.bs.modal', function () {
             location.reload(true);
-        })
+        });
     });
 </script>
 </body>
