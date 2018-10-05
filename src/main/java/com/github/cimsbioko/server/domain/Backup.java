@@ -17,7 +17,7 @@ public class Backup {
     @Id
     @Column(name = "schema_name")
     @NotNull
-    @Pattern(regexp = "[\\p{Alnum}[_]]+")
+    @Pattern(regexp = "[\\p{Alnum}_]+")
     private String name;
 
     @NotEmpty
