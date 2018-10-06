@@ -32,6 +32,13 @@
 
     <repositories>
         <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
             <id>boundless</id>
             <url>http://repo.boundlessgeo.com/main/</url>
             <snapshots>
