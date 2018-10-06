@@ -9,38 +9,53 @@
 <div id="content" class="container">
 
     <h1 th:text="#{nav.backups}">Backups</h1>
+    <div class="btn btn-primary" data-toggle="modal" data-target="#createbackup" th:inline="text"><span class="oi oi-plus"></span> [[#{backups.btn.create}]]</div>
+    <div class="modal fade" id="createbackup">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{backups.ttl.create}">Create Backup</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="col col-xs-12 col-sm-10 col-md-8 pb-4" id="backupform" th:action="@{/backups}" novalidate="">
+                        <div class="alert alert-dismissible alert-danger fade show d-none" role="alert" data-dismiss="alert">
+                            <span th:text="#{input.msg.errors}">There are errors. Please try again.</span>
+                            <button type="button" class="close" data-dismiss="alert">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="alert alert-dismissible alert-success fade show d-none" role="alert" data-dismiss="alert">
+                            <span th:text="#{input.msg.errors}">There are errors. Please try again.</span>
+                            <button type="button" class="close" data-dismiss="alert">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" th:text="#{backups.lbl.name} + ':'"></label>
+                            <input id="name" class="form-control" required=""/>
+                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{backups.lbl.name})}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="description" th:text="#{backups.lbl.description} + ':'"></label>
+                            <input id="description" class="form-control" required="" />
+                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{backups.lbl.description})}"></span>
+                        </div>
+                    </form>
 
-    <form class="col col-xs-12 col-sm-10 col-md-8 pb-4" id="backupform" th:action="@{/backups}" th:object="${backup}" method="post">
-        <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger alert-dismissible fade show" role="alert" data-dismiss="alert">
-            <span th:text="#{input.msg.errors}">There are errors. Please try again.</span>
-            <button type="button" class="close" data-dismiss="alert" data-th-attr="aria-label=#{alert.close}">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div th:if="${queued}">
-            <div class="alert alert-info alert-dismissible fade show" role="alert" data-dismiss="alert">
-                <span th:text="#{backups.msg.queued}">A backup job has been queued.</span>
-                <button type="button" class="close" data-dismiss="alert" data-th-attr="aria-label=#{alert.close}">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{backups.btn.close}">Close</button>
+                    <button type="submit" class="btn btn-primary" th:inline="text">
+                        <span class="oi oi-plus" aria-hidden="true"></span> [[#{backups.btn.create}]]
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            <label for="name" th:text="#{backups.lbl.name} + ':'"></label>
-            <input id="name" class="form-control" th:errorclass="is-invalid" th:field="*{name}" required=""/>
-            <span th:if="${#fields.hasErrors('name')}" class="small invalid-feedback" th:errors="*{name}">Name Error</span>
-        </div>
-        <div class="form-group">
-            <label for="description" th:text="#{backups.lbl.description} + ':'"></label>
-            <input id="description" class="form-control" th:errorclass="is-invalid" th:field="*{description}" required="" />
-            <span th:if="${#fields.hasErrors('description')}" class="small invalid-feedback" th:errors="*{description}">Description Error</span>
-        </div>
-        <button type="submit" class="btn btn-primary" th:inline="text">
-            <span class="oi oi-plus" aria-hidden="true"></span> [[#{backups.btn.create}]]
-        </button>
-    </form>
-
-    <div class="text-center" th:if="${#lists.isEmpty(backups)}" th:text="#{backups.msg.none}">No users found</div>
+    </div>
+    <div class="text-center" th:unless="${backups.totalElements > 0}" th:text="#{backups.msg.none}">No backups found</div>
     <th:block th:if="${backups.totalPages > 0}">
     <nav th:if="${backups.totalPages > 1}">
         <ul class="pagination justify-content-center">
@@ -76,5 +91,74 @@
     </th:block>
 </div>
 <div th:replace="fragments/footer :: footer"/>
+<script>
+    var $modal = $('#createbackup'),
+        $form = $modal.find('#backupform'),
+        $submitBtn = $modal.find(':submit');
+
+    $submitBtn.on('click', function() {
+       $form.trigger('submit'); // necessary since button is not member of form
+    });
+
+    $form.on('submit', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $(this).trigger('validation');
+    }).on('validation', function(e) {
+        $(this).find('.invalid-feedback.server').remove();
+        $(this).find('.is-invalid, .is-valid').removeClass('is-invalid is-valid');
+        $(this).find('.invalid-feedback:not(.server)').removeClass('d-none');
+        if (this.checkValidity() === false) {
+            $(this).trigger('validation-failed');
+        } else {
+            $(this).trigger('validation-success');
+        }
+    }).on('validation-failed', function(e) {
+        $(this).addClass('was-validated');
+    }).on('validation-success', function(e) {
+        var $f = $(this);
+        $f.trigger('upload-prepare');
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: $f.attr('action'),
+            data: JSON.stringify({
+                name: $f.find('#name').val(),
+                description: $f.find('#description').val()
+            }),
+            dataType: 'json',
+            success: function (rsp) {
+                $f.trigger({type: 'upload-success', response: rsp.responseJSON});
+            },
+            error: function (rsp) {
+                $f.trigger({type: 'upload-failed', response: rsp.responseJSON});
+            },
+            complete: function(rsp) {
+                $f.trigger({type: 'upload-complete', response: rsp.responseJSON});
+            }
+        });
+    });
+
+    $modal.on("upload-prepare", function() {
+        $form.removeClass('was-validated');
+        $form.find('.invalid-feedback:not(.server)').addClass('d-none');
+        $submitBtn.prop("disabled", true);
+    }).on("upload-success", function(e) {
+        $modal.modal("hide");
+        $form.trigger("reset");
+        console.log(e);
+    }).on("upload-failed", function(e) {
+        $.each(e.response.fieldErrors, function(fieldname, errors) {
+            var $field = $form.find('#'+fieldname);
+            $field.addClass('is-invalid');
+            var $group = $field.parent('.form-group');
+            $.each(errors, function(i, error) {
+                $group.append('<span class="small invalid-feedback server">' + error + '</span>');
+            });
+        });
+    }).on("upload-complete", function(e) {
+        $submitBtn.prop("disabled", false);
+    });
+</script>
 </body>
 </html>
