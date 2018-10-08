@@ -146,7 +146,6 @@
     }).on("upload-success", function(e) {
         $modal.modal("hide");
         $form.trigger("reset");
-        console.log(e);
     }).on("upload-failed", function(e) {
         $.each(e.response.fieldErrors, function(fieldname, errors) {
             var $field = $form.find('#'+fieldname);
