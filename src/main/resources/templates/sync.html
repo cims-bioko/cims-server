@@ -20,8 +20,8 @@
         </thead>
         <tbody>
             <tr>
-                <td th:text="${#calendars.format(task.started)}"></td>
-                <td th:text="${#calendars.format(task.finished)}"></td>
+                <td th:text="${task.started != null? #calendars.format(task.started) : ''}"></td>
+                <td th:text="${task.finished != null?  #calendars.format(task.finished) : ''}"></td>
                 <td th:text="${task.descriptor}"></td>
                 <td th:text="${task.itemCount}"></td>
             </tr>
