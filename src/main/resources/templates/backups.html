@@ -104,10 +104,12 @@
         e.preventDefault();
         e.stopPropagation();
         $(this).trigger('validation');
-    }).on('validation', function(e) {
+    }).on('validation-prepare', function(e) {
         $(this).find('.invalid-feedback.server').remove();
         $(this).find('.is-invalid, .is-valid').removeClass('is-invalid is-valid');
         $(this).find('.invalid-feedback:not(.server)').removeClass('d-none');
+    }).on('validation', function(e) {
+        $(this).trigger('validation-prepare');
         if (this.checkValidity() === false) {
             $(this).trigger('validation-failed');
         } else {
