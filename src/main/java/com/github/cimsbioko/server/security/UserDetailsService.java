@@ -21,7 +21,7 @@ public class UserDetailsService implements org.springframework.security.core.use
     private UserMapper userMapper;
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
-        User user = userDao.findByUsername(username);
+        User user = userDao.findByUsernameAndDeletedIsNull(username);
         if (user == null) { // no user found by the name
             throw new UsernameNotFoundException("user " + username + " was not found");
         }

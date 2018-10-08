@@ -13,10 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.*;
-import java.util.stream.Stream;
 
-import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Controller
@@ -63,40 +60,5 @@ public class BackupsController {
 
     private String resolveMessage(String key, Locale locale, Object... args) {
         return messages.getMessage(key, args, locale);
-    }
-
-    static class AjaxResult {
-
-        private List<String> messages = new ArrayList<>();
-        private List<String> errors = new ArrayList<>();
-        private Map<String, List<String>> fieldErrors = new HashMap<>();
-
-        AjaxResult addMessage(String message) {
-            messages.add(message);
-            return this;
-        }
-
-        AjaxResult addError(String error) {
-            errors.add(error);
-            return this;
-        }
-
-        AjaxResult addFieldError(String field, String error) {
-            fieldErrors.merge(field, singletonList(error),
-                    (a, b) -> Stream.concat(a.stream(), b.stream()).collect(toList()));
-            return this;
-        }
-
-        public List<String> getMessages() {
-            return messages;
-        }
-
-        public List<String> getErrors() {
-            return errors;
-        }
-
-        public Map<String, List<String>> getFieldErrors() {
-            return fieldErrors;
-        }
     }
 }

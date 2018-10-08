@@ -8,6 +8,66 @@
 <div th:replace="fragments/header :: header"/>
 <div id="content" class="container">
     <h1 th:text="#{nav.users}">Users</h1>
+    <div class="btn btn-primary" data-toggle="modal" data-target="#createuser" th:inline="text"><span class="oi oi-plus"></span> [[#{users.btn.create}]]</div>
+    <div class="modal fade" id="createuser">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{users.ttl.create}">Create User</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="userform" th:action="@{/users}" novalidate="">
+                        <div class="form-group">
+                            <label for="firstName" th:text="#{users.lbl.firstName} + ':'"></label>
+                            <input id="firstName" class="form-control"/>
+                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.firstName})}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName" th:text="#{users.lbl.lastName} + ':'"></label>
+                            <input id="lastName" class="form-control"/>
+                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.lastName})}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="description" th:text="#{users.lbl.description} + ':'"></label>
+                            <input id="description" class="form-control"/>
+                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.description})}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" th:text="#{users.lbl.username} + ':'"></label>
+                            <input id="username" class="form-control" required=""/>
+                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.username})}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" th:text="#{users.lbl.password} + ':'"></label>
+                            <input id="password" type="password" class="form-control" required=""/>
+                            <span class="small invalid-feedback" th:text="#{users.msg.passwordsInvalid}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="passwordConfirmed" th:text="#{users.lbl.passwordConfirmed} + ':'"></label>
+                            <input id="passwordConfirmed" type="password" class="form-control" required=""/>
+                            <span class="small invalid-feedback" th:text="#{users.msg.passwordsInvalid}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="roles" th:text="#{users.lbl.roles} + ':'"></label>
+                            <select id="roles" class="form-control" required="" multiple="">
+                                <option th:each="r:${roles}" th:value="${r.uuid}" th:text="${r.name}"></option>
+                            </select>
+                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.roles})}"></span>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{users.btn.close}">Close</button>
+                    <button type="submit" class="btn btn-primary" th:inline="text">
+                        <span class="oi oi-plus" aria-hidden="true"></span> [[#{users.btn.create}]]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="text-center" th:unless="${users.totalElements > 0}" th:text="#{users.msg.none}">No users found</div>
     <th:block th:if="${users.totalPages > 0}">
     <nav th:if="${users.totalPages > 1}">
@@ -42,5 +102,104 @@
     </th:block>
 </div>
 <div th:replace="fragments/footer :: footer"/>
+<script>
+//<![CDATA[
+    var $modal = $('#createuser'),
+        $form = $modal.find('#userform'),
+        $submitBtn = $modal.find(':submit');
+
+    var $password = $('#password'), $confirmPassword = $('#passwordConfirmed');
+
+    function passwordsMatch() {
+        return $password.val() === $confirmPassword.val();
+    }
+
+    function validatePassword() {
+        var match = passwordsMatch();
+        $([$password, $confirmPassword]).each(function (idx, $ctl) {
+            $ctl[0].setCustomValidity(match? '' : "password don't match"); // sets pseudo-class ':(in)valid'
+        });
+    }
+    $('#password, #passwordConfirmed').keyup(validatePassword);
+
+    $submitBtn.on('click', function() {
+        $form.trigger('submit'); // necessary since button is not member of form
+    });
+
+    // setup form events
+    $form.on('submit', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $(this).trigger('validation');
+    }).on('validation-prepare', function() {
+        $(this).find('.invalid-feedback.server').remove();
+        $(this).find('.is-invalid, .is-valid').removeClass('is-invalid is-valid');
+        $(this).find('.invalid-feedback:not(.server)').removeClass('d-none');
+    }).on('validation', function() {
+        $(this).trigger('validation-prepare');
+        if (this.checkValidity() && passwordsMatch()) {
+            $(this).trigger('validation-success');
+        } else {
+            $(this).trigger('validation-failed');
+        }
+    }).on('validation-failed', function() {
+        $(this).addClass('was-validated');
+    }).on('validation-success', function() {
+        var $f = $(this);
+        $f.trigger('upload-prepare');
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: $f.attr('action'),
+            data: JSON.stringify({
+                firstName: $f.find('#firstName').val(),
+                lastName: $f.find('#lastName').val(),
+                description: $f.find('#description').val(),
+                username: $f.find('#username').val(),
+                password: $f.find('#password').val(),
+                roles: $f.find('#roles').val()
+            }),
+            dataType: 'json',
+            success: function (jsonrsp) {
+                $f.trigger({type: 'upload-success', response: jsonrsp});
+            },
+            error: function (rsp) {
+                $f.trigger({type: 'upload-failed', response: rsp.responseJSON});
+            },
+            complete: function(rsp) {
+                $f.trigger({type: 'upload-complete', response: rsp.responseJSON});
+            }
+        });
+    });
+
+    $modal.on('validation-prepare', function() {
+        $(this).find('.modal-body .alert').remove();
+    }).on('upload-prepare', function() {
+        $form.removeClass('was-validated');
+        $form.find('.invalid-feedback:not(.server)').addClass('d-none');
+        $submitBtn.prop("disabled", true);
+    }).on('upload-success', function(e) {
+        $.each(e.response.messages, function(idx, msg) {
+            $modal.find('.modal-body').prepend(
+                '<div class="alert alert-dismissible alert-success fade show" role="alert" data-dismiss="alert">' +
+                "<span>" + msg + "</span>" +
+                '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                "</div>");
+        });
+        $form.trigger("reset");
+    }).on('upload-failed', function(e) {
+        $.each(e.response.fieldErrors, function(fieldname, errors) {
+            var $field = $form.find('#'+fieldname);
+            $field.addClass('is-invalid');
+            var $group = $field.parent('.form-group');
+            $.each(errors, function(i, error) {
+                $group.append('<span class="small invalid-feedback server">' + error + '</span>');
+            });
+        });
+    }).on('upload-complete', function() {
+        $submitBtn.prop("disabled", false);
+    });
+//]]>
+</script>
 </body>
 </html>

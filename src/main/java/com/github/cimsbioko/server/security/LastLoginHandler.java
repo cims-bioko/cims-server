@@ -30,7 +30,7 @@ public class LastLoginHandler extends SavedRequestAwareAuthenticationSuccessHand
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         org.springframework.security.core.userdetails.User u = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
-        User user = userDao.findByUsername(u.getUsername());
+        User user = userDao.findByUsernameAndDeletedIsNull(u.getUsername());
         user.setLastLogin(Timestamp.from(Instant.now()));
         userDao.save(user);
         super.onAuthenticationSuccess(request, response, authentication);
