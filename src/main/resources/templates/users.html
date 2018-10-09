@@ -198,7 +198,10 @@
         });
     }).on('upload-complete', function() {
         $submitBtn.prop("disabled", false);
+    }).on('hidden.bs.modal', function () {
+        location.reload(true);
     });
+
 //]]>
 </script>
 </body>
