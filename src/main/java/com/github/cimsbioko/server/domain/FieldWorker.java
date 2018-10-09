@@ -7,6 +7,8 @@ import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
@@ -33,19 +35,23 @@ public class FieldWorker implements Serializable {
     private Calendar created;
 
     @NotNull
+    @Pattern(regexp = "FW[A-Z][A-Z][1-9][0-9]*")
     @Column(name = "extid")
     @Field
     private String extId;
 
     @Column(name = "first_name")
     @Field
+    @Size(min = 1, max = 255)
     private String firstName;
 
     @Column(name = "last_name")
     @Field
+    @Size(min = 1, max = 255)
     private String lastName;
 
     @NotNull
+    @Size(min = 60, max = 60)
     @Column(name = "password_hash")
     private String passwordHash;
 
