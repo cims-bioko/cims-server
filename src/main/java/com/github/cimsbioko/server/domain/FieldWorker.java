@@ -1,21 +1,30 @@
 package com.github.cimsbioko.server.domain;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Objects;
 
 @Entity
 @Table(name = "fieldworker")
 @Indexed
-public class FieldWorker extends AuditableEntity implements Serializable {
+public class FieldWorker implements Serializable {
 
     private static final long serialVersionUID = -7550088299362704483L;
+
+    @Id
+    @Column(length = 32)
+    private String uuid;
+
+    private Calendar deleted;
+
+    @CreationTimestamp
+    private Calendar created;
 
     @NotNull
     @Column(name = "extid")
@@ -39,6 +48,30 @@ public class FieldWorker extends AuditableEntity implements Serializable {
     @NotNull
     @Column(name = "password_hash")
     private String passwordHash;
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setDeleted(Calendar deleted) {
+        this.deleted = deleted;
+    }
+
+    public Calendar getDeleted() {
+        return deleted;
+    }
+
+    public Calendar getCreated() {
+        return created;
+    }
+
+    public void setCreated(Calendar created) {
+        this.created = created;
+    }
 
     public String getExtId() {
         return extId;
@@ -100,5 +133,10 @@ public class FieldWorker extends AuditableEntity implements Serializable {
 
         final String otherUuid = ((FieldWorker) other).getUuid();
         return null != uuid && null != otherUuid && uuid.equals(otherUuid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(uuid);
     }
 }

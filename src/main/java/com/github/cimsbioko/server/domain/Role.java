@@ -1,19 +1,30 @@
 package com.github.cimsbioko.server.domain;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "role")
 @Indexed
-public class Role extends AuditableEntity implements Serializable {
+public class Role implements Serializable {
 
     static final long serialVersionUID = 21L;
+
+    @Id
+    @Column(length = 32)
+    private String uuid;
+
+    private Calendar deleted;
+
+    @CreationTimestamp
+    private Calendar created;
 
     @Field
     private String name;
@@ -25,6 +36,30 @@ public class Role extends AuditableEntity implements Serializable {
     @JoinTable(name = "role_privileges", joinColumns = {
             @JoinColumn(name = "role")}, inverseJoinColumns = @JoinColumn(name = "privilege"))
     private Set<Privilege> privileges = new HashSet<>();
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setDeleted(Calendar deleted) {
+        this.deleted = deleted;
+    }
+
+    public Calendar getDeleted() {
+        return deleted;
+    }
+
+    public Calendar getCreated() {
+        return created;
+    }
+
+    public void setCreated(Calendar created) {
+        this.created = created;
+    }
 
     public String getName() {
         return name;
@@ -68,7 +103,6 @@ public class Role extends AuditableEntity implements Serializable {
         hash = 37 * hash + (this.uuid != null ? this.uuid.hashCode() : 0);
         return hash;
     }
-
 
     @Override
     public String toString() {

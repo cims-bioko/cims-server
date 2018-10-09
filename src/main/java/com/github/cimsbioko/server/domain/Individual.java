@@ -1,5 +1,6 @@
 package com.github.cimsbioko.server.domain;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -11,13 +12,23 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Objects;
 
 @Entity
 @Table(name = "individual")
 @Indexed
-public class Individual extends AuditableCollectedEntity implements Serializable {
+public class Individual implements Serializable {
 
     public final static long serialVersionUID = 9058114832143454609L;
+
+    @Id
+    @Column(length = 32)
+    private String uuid;
+
+    private Calendar deleted;
+
+    @CreationTimestamp
+    private Calendar created;
 
     @NotNull
     @Size(min = 1)
@@ -69,6 +80,11 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @JoinColumn(name = "home")
     private Location home;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = FieldWorker.class)
+    @JoinColumn(name = "collector")
+    protected FieldWorker collector;
+
     @Column(name = "home_role")
     private String homeRole;
 
@@ -76,6 +92,30 @@ public class Individual extends AuditableCollectedEntity implements Serializable
 
     @Type(type = "json")
     private JSONObject attrs;
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setDeleted(Calendar deleted) {
+        this.deleted = deleted;
+    }
+
+    public Calendar getDeleted() {
+        return deleted;
+    }
+
+    public Calendar getCreated() {
+        return created;
+    }
+
+    public void setCreated(Calendar created) {
+        this.created = created;
+    }
 
     public String getExtId() {
         return extId;
@@ -189,6 +229,14 @@ public class Individual extends AuditableCollectedEntity implements Serializable
         this.home = home;
     }
 
+    public FieldWorker getCollector() {
+        return collector;
+    }
+
+    public void setCollector(FieldWorker collector) {
+        this.collector = collector;
+    }
+
     public String getHomeRole() {
         return homeRole;
     }
@@ -225,5 +273,10 @@ public class Individual extends AuditableCollectedEntity implements Serializable
 
         final String otherUuid = ((Individual) other).getUuid();
         return null != uuid && uuid.equals(otherUuid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(uuid);
     }
 }

@@ -4,6 +4,7 @@ package com.github.cimsbioko.server.domain;
 import com.vividsolutions.jts.geom.Point;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -14,14 +15,25 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "location")
 @Indexed
-public class Location extends AuditableCollectedEntity implements Serializable {
+public class Location implements Serializable {
 
     public final static long serialVersionUID = 169551578162260199L;
+
+    @Id
+    @Column(length = 32)
+    private String uuid;
+
+    private Calendar deleted;
+
+    @CreationTimestamp
+    private Calendar created;
 
     @NotNull
     @Size(min = 1)
@@ -37,6 +49,11 @@ public class Location extends AuditableCollectedEntity implements Serializable {
     @JoinColumn(name = "hierarchy")
     private LocationHierarchy hierarchy = new LocationHierarchy();
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = FieldWorker.class)
+    @JoinColumn(name = "collector")
+    private FieldWorker collector;
+
     @Column(name = "global_pos")
     private Point globalPos;
 
@@ -48,6 +65,30 @@ public class Location extends AuditableCollectedEntity implements Serializable {
 
     @Type(type = "json")
     private JSONObject attrs;
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setDeleted(Calendar deleted) {
+        this.deleted = deleted;
+    }
+
+    public Calendar getDeleted() {
+        return deleted;
+    }
+
+    public Calendar getCreated() {
+        return created;
+    }
+
+    public void setCreated(Calendar created) {
+        this.created = created;
+    }
 
     public String getDescription() {
         return description;
@@ -79,6 +120,14 @@ public class Location extends AuditableCollectedEntity implements Serializable {
 
     public void setHierarchy(LocationHierarchy hierarchy) {
         this.hierarchy = hierarchy;
+    }
+
+    public FieldWorker getCollector() {
+        return collector;
+    }
+
+    public void setCollector(FieldWorker collector) {
+        this.collector = collector;
     }
 
     public Point getGlobalPos() {
@@ -125,5 +174,10 @@ public class Location extends AuditableCollectedEntity implements Serializable {
 
         final String otherUuid = ((Location) other).getUuid();
         return null != uuid && uuid.equals(otherUuid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(uuid);
     }
 }
