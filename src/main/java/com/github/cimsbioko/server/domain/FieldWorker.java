@@ -1,6 +1,7 @@
 package com.github.cimsbioko.server.domain;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
@@ -18,6 +19,8 @@ public class FieldWorker implements Serializable {
     private static final long serialVersionUID = -7550088299362704483L;
 
     @Id
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "com.github.cimsbioko.server.hibernate.UUIDGenerator")
     @Column(length = 32)
     private String uuid;
 
