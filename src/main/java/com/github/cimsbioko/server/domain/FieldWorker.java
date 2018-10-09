@@ -11,6 +11,9 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
 
+import static org.mindrot.jbcrypt.BCrypt.gensalt;
+import static org.mindrot.jbcrypt.BCrypt.hashpw;
+
 @Entity
 @Table(name = "fieldworker")
 @Indexed
@@ -94,6 +97,9 @@ public class FieldWorker implements Serializable {
         this.lastName = lastName;
     }
 
+    @Transient
+    public void setPassword(String raw) {
+        setPasswordHash(hashpw(raw, gensalt(12)));
     }
 
     public String getPasswordHash() {
