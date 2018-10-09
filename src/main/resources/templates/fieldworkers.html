@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+    <title th:text="#{app.name} + ' - ' + #{nav.fieldworkers}">CIMS - Fieldworkers</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<div id="content" class="container">
+    <h1 th:text="#{nav.fieldworkers}">Fieldworkers</h1>
+    <div class="btn btn-primary" data-toggle="modal" data-target="#createfieldworker" th:inline="text"><span class="oi oi-plus"></span> [[#{fieldworkers.btn.create}]]</div>
+    <div class="modal fade" id="createfieldworker">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{fieldworkers.ttl.create}">Create Fieldworker</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="fieldworkerform" th:action="@{/fieldworkers}" novalidate="">
+                        <div class="form-group">
+                            <label for="firstName" th:text="#{fieldworkers.lbl.firstName} + ':'"></label>
+                            <input id="firstName" class="form-control" required=""/>
+                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{fieldworkers.lbl.firstName})}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName" th:text="#{fieldworkers.lbl.lastName} + ':'"></label>
+                            <input id="lastName" class="form-control" required=""/>
+                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{fieldworkers.lbl.lastName})}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="id" th:text="#{fieldworkers.lbl.extId} + ':'"></label>
+                            <input id="id" class="form-control" pattern="FW[A-Z][A-Z][1-9][0-9]*" required=""/>
+                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{fieldworkers.lbl.extId})}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" th:text="#{fieldworkers.lbl.password} + ':'"></label>
+                            <input id="password" type="password" class="form-control" required=""/>
+                            <span class="small invalid-feedback" th:text="#{fieldworkers.msg.passwordsInvalid}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="passwordConfirmed" th:text="#{fieldworkers.lbl.passwordConfirmed} + ':'"></label>
+                            <input id="passwordConfirmed" type="password" class="form-control" required=""/>
+                            <span class="small invalid-feedback" th:text="#{fieldworkers.msg.passwordsInvalid}"></span>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{fieldworkers.btn.close}">Close</button>
+                    <button type="submit" class="btn btn-primary" th:inline="text">
+                        <span class="oi oi-plus" aria-hidden="true"></span> [[#{fieldworkers.btn.create}]]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center" th:unless="${fieldworkers.totalElements > 0}" th:text="#{fieldworkers.msg.none}">No fieldworkers found</div>
+    <th:block th:if="${fieldworkers.totalPages > 0}">
+    <nav th:if="${fieldworkers.totalPages > 1}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${!fieldworkers.hasPrevious()}? disabled">
+                <a class="page-link" th:href="${fieldworkers.hasPrevious()}? @{/fieldworkers(p=${fieldworkers.previousPageable().pageNumber})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>
+            </li>
+            <li class="page-item" th:classappend="${fieldworkers.number == pn}? active" th:each="pn:${#numbers.sequence(0, fieldworkers.totalPages - 1)}">
+                <a class="page-link" th:href="${fieldworkers.number == pn}? '#' : @{/fieldworkers(p=${pn})}" th:text="${pn+1}">1</a>
+            </li>
+            <li class="page-item" th:classappend="${!fieldworkers.hasNext()}? disabled">
+                <a class="page-link" th:href="${fieldworkers.hasNext()}? @{/fieldworkers(p=${fieldworkers.nextPageable().pageNumber})} : '#'" th:text="#{pager.lbl.next}">Next</a>
+            </li>
+        </ul>
+    </nav>
+    <table class="table">
+        <thead>
+        <tr>
+            <th th:text="#{fieldworkers.lbl.extId}">ID</th>
+            <th th:text="#{fieldworkers.lbl.firstName}">First Name</th>
+            <th th:text="#{fieldworkers.lbl.lastName}">Last Name</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:each="u:${fieldworkers}">
+                <td th:text="${u.extId}">ID</td>
+                <td th:text="${u.firstName}">First Name</td>
+                <td th:text="${u.lastName}">Last Name</td>
+            </tr>
+        </tbody>
+    </table>
+    </th:block>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+<script>
+//<![CDATA[
+    var $modal = $('#createfieldworker'),
+        $form = $modal.find('#fieldworkerform'),
+        $submitBtn = $modal.find(':submit');
+
+    var $password = $('#password'), $confirmPassword = $('#passwordConfirmed');
+
+    function passwordsMatch() {
+        return $password.val() === $confirmPassword.val();
+    }
+
+    function validatePassword() {
+        var match = passwordsMatch();
+        $([$password, $confirmPassword]).each(function (idx, $ctl) {
+            $ctl[0].setCustomValidity(match? '' : "password don't match"); // sets pseudo-class ':(in)valid'
+        });
+    }
+    $('#password, #passwordConfirmed').keyup(validatePassword);
+
+    var $firstName = $('#firstName'), $lastName = $('#lastName');
+
+    function genId(fn, ln) {
+        return 'FW' + (fn && fn.length >= 1? fn[0] : '?') + (ln && ln.length >= 1? ln[0] : '?') + '1';
+    }
+
+    function updateSampleId() {
+        $('#id').val(genId($firstName.val(), $lastName.val()));
+    }
+
+    $('#firstName, #lastName').keyup(updateSampleId);
+
+    $submitBtn.on('click', function() {
+        $form.trigger('submit'); // necessary since button is not member of form
+    });
+
+    // setup form events
+    $form.on('submit', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $(this).trigger('validation');
+    }).on('validation-prepare', function() {
+        $(this).find('.invalid-feedback.server').remove();
+        $(this).find('.is-invalid, .is-valid').removeClass('is-invalid is-valid');
+        $(this).find('.invalid-feedback:not(.server)').removeClass('d-none');
+    }).on('validation', function() {
+        $(this).trigger('validation-prepare');
+        if (this.checkValidity() && passwordsMatch()) {
+            $(this).trigger('validation-success');
+        } else {
+            $(this).trigger('validation-failed');
+        }
+    }).on('validation-failed', function() {
+        $(this).addClass('was-validated');
+    }).on('validation-success', function() {
+        var $f = $(this);
+        $f.trigger('upload-prepare');
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: $f.attr('action'),
+            data: JSON.stringify({
+                id: $f.find('#id').val(),
+                firstName: $f.find('#firstName').val(),
+                lastName: $f.find('#lastName').val(),
+                password: $f.find('#password').val(),
+            }),
+            dataType: 'json',
+            success: function (jsonrsp) {
+                $f.trigger({type: 'upload-success', response: jsonrsp});
+            },
+            error: function (rsp) {
+                $f.trigger({type: 'upload-failed', response: rsp.responseJSON});
+            },
+            complete: function(rsp) {
+                $f.trigger({type: 'upload-complete', response: rsp.responseJSON});
+            }
+        });
+    });
+
+    $modal.on('validation-prepare', function() {
+        $(this).find('.modal-body .alert').remove();
+    }).on('upload-prepare', function() {
+        $form.removeClass('was-validated');
+        $form.find('.invalid-feedback:not(.server)').addClass('d-none');
+        $submitBtn.prop("disabled", true);
+    }).on('upload-success', function(e) {
+        $.each(e.response.messages, function(idx, msg) {
+            $modal.find('.modal-body').prepend(
+                '<div class="alert alert-dismissible alert-success fade show" role="alert" data-dismiss="alert">' +
+                "<span>" + msg + "</span>" +
+                '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                "</div>");
+        });
+        $form.trigger("reset");
+    }).on('upload-failed', function(e) {
+        $.each(e.response.fieldErrors, function(fieldname, errors) {
+            var $field = $form.find('#'+fieldname);
+            $field.addClass('is-invalid');
+            var $group = $field.parent('.form-group');
+            $.each(errors, function(i, error) {
+                $group.append('<span class="small invalid-feedback server">' + error + '</span>');
+            });
+        });
+    }).on('upload-complete', function() {
+        $submitBtn.prop("disabled", false);
+    }).on('hidden.bs.modal', function () {
+        location.reload(true);
+    });
+//]]>
+</script>
+</body>
+</html>
