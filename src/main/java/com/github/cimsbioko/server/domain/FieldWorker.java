@@ -132,7 +132,7 @@ public class FieldWorker implements Serializable {
         }
 
         final String otherUuid = ((FieldWorker) other).getUuid();
-        return null != uuid && null != otherUuid && uuid.equals(otherUuid);
+        return null != uuid && uuid.equals(otherUuid);
     }
 
     @Override
