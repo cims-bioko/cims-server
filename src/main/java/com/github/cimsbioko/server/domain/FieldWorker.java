@@ -42,12 +42,6 @@ public class FieldWorker implements Serializable {
     @Field
     private String lastName;
 
-    @Transient
-    private String password;
-
-    @Transient
-    private String confirmPassword;
-
     @NotNull
     @Column(name = "password_hash")
     private String passwordHash;
@@ -100,20 +94,6 @@ public class FieldWorker implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
     }
 
     public String getPasswordHash() {
