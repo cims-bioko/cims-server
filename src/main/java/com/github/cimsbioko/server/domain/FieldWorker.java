@@ -40,18 +40,6 @@ public class FieldWorker extends AuditableEntity implements Serializable {
     @Column(name = "password_hash")
     private String passwordHash;
 
-    @Column(name = "idprefix")
-    private int idPrefix;
-
-
-    public int getIdPrefix() {
-        return idPrefix;
-    }
-
-    public void setIdPrefix(int idPrefix) {
-        this.idPrefix = idPrefix;
-    }
-
     public String getExtId() {
         return extId;
     }

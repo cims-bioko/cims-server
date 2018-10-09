@@ -35,8 +35,8 @@ INSERT INTO user_roles (user, role) VALUES ('User 3', 'ROLE2')
 INSERT INTO locationhierarchy(uuid,name,extId,level,parent) VALUES('hierarchy_root','', 'HIERARCHY_ROOT', NULL,NULL)
 
 -- Field Worker
-INSERT INTO fieldworker (uuid, extid, first_name, last_name, password_hash, deleted, idPrefix) VALUES ('UnknownFieldWorker','UNK', 'Unknown', 'FieldWorker', 'invalid-password-hash', false, 56);
-INSERT INTO fieldworker (uuid, extid, first_name, last_name, password_hash, deleted, idPrefix) VALUES ('FieldWorker1','FWEK1D', 'Editha', 'Kaweza', 'invalid-password-hash', false, 65)
+INSERT INTO fieldworker (uuid, extid, first_name, last_name, password_hash, deleted) VALUES ('UnknownFieldWorker','UNK', 'Unknown', 'FieldWorker', 'invalid-password-hash', false);
+INSERT INTO fieldworker (uuid, extid, first_name, last_name, password_hash, deleted) VALUES ('FieldWorker1','FWEK1D', 'Editha', 'Kaweza', 'invalid-password-hash', false)
 
 -- Unknown Individual: This should always be pre-populated
 INSERT INTO individual(uuid,extId,first_Name,middle_Name,last_Name,gender,dob,created,deleted,collector,phone1,phone2,language,contactName,contactPhone,dip) VALUES('Unknown Individual','UNK','Unknown',NULL,'UNKNOWN','M', '1900-12-19','2009-12-19',false,'UnknownFieldWorker','123-456-7890','123-456-7890','Spanish','Bob Johnson','123-456-7890','23')

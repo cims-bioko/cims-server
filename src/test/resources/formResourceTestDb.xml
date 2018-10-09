@@ -19,13 +19,13 @@
     <locationhierarchy uuid="hierarchy3" name="IFB" extId="IFB" level="HierarchyLevel3" parent="hierarchy2" />
 
     <fieldworker uuid="FWEK1D" extid="FWEK1D" first_name="Test" last_name="FieldWorker"
-                 password_hash="invalid-password-hash" idPrefix="98"/>
+                 password_hash="invalid-password-hash"/>
 
     <fieldworker uuid="FieldWorker1" extid="FieldWorker1" first_name="Test" last_name="FieldWorker"
-                 password_hash="invalid-password-hash" idPrefix="98"/>
+                 password_hash="invalid-password-hash"/>
 
     <fieldworker uuid="UnknownFieldWorker" extid="UNK" first_name="Unknown" last_name="FieldWorker"
-                 password_hash="invalid-password-hash" idPrefix="99"/>
+                 password_hash="invalid-password-hash"/>
 
     <location uuid="TestLocation2" extId="testLocation2" name="Test Location"
               hierarchy="hierarchy3" created="2000-12-19" collector="FieldWorker1" />
