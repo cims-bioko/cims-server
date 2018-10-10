@@ -2,14 +2,18 @@ package com.github.cimsbioko.server.service;
 
 import com.github.cimsbioko.server.domain.Task;
 
+import java.io.File;
 import java.util.Optional;
 
 public interface SyncService {
+    File getOutput();
+    Optional<String> getSchedule();
     void scheduleTask(String schedule);
-    boolean cancelTask();
+    void resumeSchedule();
+    void cancelTask();
     boolean isTaskScheduled();
     boolean isTaskRunning();
-    boolean requestTaskRun();
+    void requestTaskRun();
     Task getTask();
     Optional<Long> getMinutesToNextRun();
 }

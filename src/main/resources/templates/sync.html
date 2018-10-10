@@ -11,6 +11,23 @@
         <h1 class="col col-auto">
             <span class="oi oi-loop-square" aria-hidden="true"></span> <span th:text="#{nav.sync}"></span>
         </h1>
+        <div class="col">
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group mr-2">
+                    <a class="btn btn-primary" th:classappend="${not scheduled}? disabled" th:href="@{/sync/pause}">
+                        <span class="oi oi-media-pause"></span> <span th:text="#{sync.btn.pause}">Pause</span>
+                    </a>
+                    <a class="btn btn-primary" th:classappend="${scheduled or schedule.empty}? disabled" th:href="@{/sync/start}">
+                        <span class="oi oi-media-play"></span> <span th:text="#{sync.btn.resume}">Resume</span>
+                    </a>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-primary" th:classappend="${running}? disabled" th:href="@{/sync/run}">
+                        <span class="oi oi-flash"></span> <span th:text="#{sync.btn.build}">Build Now</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col">
@@ -24,18 +41,23 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th th:text="#{sync.lbl.started}">Started</th>
-                        <th th:text="#{sync.lbl.finished}">Ended</th>
+                        <th class="d-none d-lg-table-cell" th:text="#{sync.lbl.started}">Started</th>
+                        <th class="d-none d-sm-table-cell" th:text="#{sync.lbl.finished}">Ended</th>
                         <th th:text="#{sync.lbl.descriptor}">Content</th>
-                        <th th:text="#{sync.lbl.itemCount}">Items</th>
+                        <th class="d-none d-xl-table-cell" th:text="#{sync.lbl.itemCount}">Items</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td th:text="${task.started != null? #calendars.format(task.started) : ''}"></td>
-                        <td th:text="${task.finished != null?  #calendars.format(task.finished) : ''}"></td>
-                        <td th:text="${task.descriptor}"></td>
-                        <td th:text="${task.itemCount}"></td>
+                        <td class="align-middle d-none d-lg-table-cell" th:text="${task.started != null? #calendars.format(task.started) : ''}"></td>
+                        <td class="align-middle d-none d-sm-table-cell" th:text="${task.finished != null?  #calendars.format(task.finished) : ''}"></td>
+                        <td class="align-middle" th:inline="text">
+                            <a class="btn btn-primary" th:classappend="${not downloadable}? disabled" th:href="@{/sync/export}">
+                                <span class="oi oi-data-transfer-download"></span>
+                            </a>
+                            [[${task.descriptor}]]
+                        </td>
+                        <td class="align-middle d-none d-xl-table-cell" th:text="${task.itemCount}"></td>
                     </tr>
                 </tbody>
             </table>

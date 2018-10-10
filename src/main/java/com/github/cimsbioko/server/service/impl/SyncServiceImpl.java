@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.util.Calendar;
 import java.util.Optional;
 import java.util.concurrent.ScheduledFuture;
@@ -45,7 +46,7 @@ public class SyncServiceImpl implements SyncService {
     }
 
     @PostConstruct
-    void initialStartup() {
+    public void resumeSchedule() {
         scheduleTask(schedule);
     }
 
@@ -72,27 +73,34 @@ public class SyncServiceImpl implements SyncService {
         t.setDescriptor(e.getContentHash());
     }
 
+    @Override
+    public File getOutput() {
+        return generator.getTarget();
+    }
+
+    @Override
+    public Optional<String> getSchedule() {
+        return Optional.ofNullable(schedule);
+    }
+
     public void scheduleTask(String schedule) {
-        if (isTaskScheduled()) {
-            log.info("cancelling db export task");
-            cancelTask();
-        }
+        cancelTask();
         log.info("scheduling mobile db export task, schedule {}", schedule);
-        scheduledTask = Optional.ofNullable(schedule)
+        this.schedule = Optional.ofNullable(schedule)
                 .filter(s -> !s.trim().isEmpty())
+                .orElse(null);
+        scheduledTask = Optional.ofNullable(this.schedule)
                 .map(CronTrigger::new)
                 .map(t -> scheduler.schedule(this::requestTaskRun, t))
                 .orElse(null);
     }
 
-    public boolean cancelTask() {
-        log.info("canceling mobile database export task");
+    public void cancelTask() {
         if (isTaskScheduled()) {
+            log.info("canceling mobile db export task");
             scheduledTask.cancel(false);
-            return true;
-        } else {
-            return false;
         }
+        scheduledTask = null;
     }
 
     @Override
@@ -108,12 +116,10 @@ public class SyncServiceImpl implements SyncService {
     }
 
     @Override
-    public boolean requestTaskRun() {
+    public void requestTaskRun() {
         if (isTaskRunning()) {
-            return false;
         } else {
             generator.generateMobileDb();
-            return true;
         }
     }
 
