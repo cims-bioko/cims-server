@@ -14,19 +14,18 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"/>
-
 <div id="content" class="container">
     <div class="row align-items-center">
         <h1 class="col col-auto">
             <span class="oi oi-document" aria-hidden="true"></span> <span th:text="#{nav.forms}"></span>
         </h1>
         <div class="col">
-             <div class="btn btn-primary" data-toggle="modal" data-target="#addform" th:inline="text"><span class="oi oi-plus"></span> [[#{forms.btn.addform}]]</div>
+             <div class="btn btn-primary" data-toggle="modal" data-target="#addform" th:inline="text"><span class="oi oi-plus"></span> [[#{forms.btn.add}]]</div>
             <div class="modal fade" id="addform">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" th:text="#{forms.btn.addform}">Add Form</h5>
+                    <h5 class="modal-title" th:text="#{forms.ttl.addform}">Add Form</h5>
                     <button type="button" class="close" data-dismiss="modal">
                         <span aria-hidden="true">&times;</span>
                     </button>
