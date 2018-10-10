@@ -14,7 +14,9 @@
     </div>
     <div class="row">
         <div class="col">
-            <p class="text-center" th:inline="text">[[${nextRun} ? #{sync.msg.nextrun(${nextRun})} : #{sync.msg.nonextrun}]]</p>
+            <p class="text-center" th:inline="text">
+                [[${nextRun} != null? #{sync.msg.nextrun(${nextRun})} : #{sync.msg.nonextrun}]]
+            </p>
         </div>
     </div>
     <div class="row">

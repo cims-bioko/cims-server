@@ -7,6 +7,7 @@ import com.github.cimsbioko.server.sqliteexport.Exporter;
 import com.github.cimsbioko.server.webapi.odk.FileHasher;
 import com.github.cimsbioko.server.webapi.odk.FormFileSystem;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
@@ -42,7 +43,12 @@ public class ServiceConfig {
     }
 
     @Bean
-    public SyncService syncService(TaskRepository repo, Exporter sqliteExporter, TaskScheduler scheduler, @Value("${app.task.schedule}") String schedule) {
-        return new SyncServiceImpl(repo, sqliteExporter, scheduler, schedule);
+    public SyncService syncService(TaskRepository repo, TaskScheduler scheduler, MobileDbGenerator generator, @Value("${app.task.schedule}") String schedule) {
+        return new SyncServiceImpl(repo, scheduler, generator, schedule);
+    }
+
+    @Bean
+    public MobileDbGenerator mobileDbGenerator(Exporter sqliteExporter, ApplicationEventPublisher eventPublisher) {
+        return new MobileDbGeneratorImpl(sqliteExporter, eventPublisher);
     }
 }
