@@ -7,26 +7,38 @@
 <body>
 <div th:replace="fragments/header :: header"/>
 <div id="content" class="container">
-    <h1 th:text="#{nav.sync}"></h1>
-    <p th:inline="text">[[${nextRun} ? #{sync.msg.nextrun(${nextRun})} : #{sync.msg.nonextrun}]]</p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th th:text="#{sync.lbl.started}">Started</th>
-                <th th:text="#{sync.lbl.finished}">Ended</th>
-                <th th:text="#{sync.lbl.descriptor}">Content</th>
-                <th th:text="#{sync.lbl.itemCount}">Items</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td th:text="${task.started != null? #calendars.format(task.started) : ''}"></td>
-                <td th:text="${task.finished != null?  #calendars.format(task.finished) : ''}"></td>
-                <td th:text="${task.descriptor}"></td>
-                <td th:text="${task.itemCount}"></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row align-items-center">
+        <h1 class="col col-auto">
+            <span class="oi oi-loop-square" aria-hidden="true"></span> <span th:text="#{nav.sync}"></span>
+        </h1>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p class="text-center" th:inline="text">[[${nextRun} ? #{sync.msg.nextrun(${nextRun})} : #{sync.msg.nonextrun}]]</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th th:text="#{sync.lbl.started}">Started</th>
+                        <th th:text="#{sync.lbl.finished}">Ended</th>
+                        <th th:text="#{sync.lbl.descriptor}">Content</th>
+                        <th th:text="#{sync.lbl.itemCount}">Items</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="${task.started != null? #calendars.format(task.started) : ''}"></td>
+                        <td th:text="${task.finished != null?  #calendars.format(task.finished) : ''}"></td>
+                        <td th:text="${task.descriptor}"></td>
+                        <td th:text="${task.itemCount}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 <div th:replace="fragments/footer :: footer"/>
 </body>

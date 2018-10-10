@@ -7,98 +7,116 @@
 <body>
 <div th:replace="fragments/header :: header"/>
 <div id="content" class="container">
-    <h1 th:text="#{nav.users}">Users</h1>
-    <div class="btn btn-primary" data-toggle="modal" data-target="#createuser" th:inline="text"><span class="oi oi-plus"></span> [[#{users.btn.create}]]</div>
-    <div class="modal fade" id="createuser">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" th:text="#{users.ttl.create}">Create User</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="userform" th:action="@{/users}" novalidate="">
-                        <div class="form-group">
-                            <label for="firstName" th:text="#{users.lbl.firstName} + ':'"></label>
-                            <input id="firstName" class="form-control"/>
-                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.firstName})}"></span>
+    <div class="row align-items-center">
+        <h1 class="col col-auto">
+            <span class="oi oi-person" aria-hidden="true"></span> <span th:text="#{nav.users}"></span>
+        </h1>
+        <div class="col">
+            <div class="btn btn-primary" data-toggle="modal" data-target="#createuser" th:inline="text"><span class="oi oi-plus"></span> [[#{users.btn.create}]]</div>
+            <div class="modal fade" id="createuser">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" th:text="#{users.ttl.create}">Create User</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <label for="lastName" th:text="#{users.lbl.lastName} + ':'"></label>
-                            <input id="lastName" class="form-control"/>
-                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.lastName})}"></span>
+                        <div class="modal-body">
+                            <form id="userform" th:action="@{/users}" novalidate="">
+                                <div class="form-group">
+                                    <label for="firstName" th:text="#{users.lbl.firstName} + ':'"></label>
+                                    <input id="firstName" class="form-control"/>
+                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.firstName})}"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName" th:text="#{users.lbl.lastName} + ':'"></label>
+                                    <input id="lastName" class="form-control"/>
+                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.lastName})}"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="description" th:text="#{users.lbl.description} + ':'"></label>
+                                    <input id="description" class="form-control"/>
+                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.description})}"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" th:text="#{users.lbl.username} + ':'"></label>
+                                    <input id="username" class="form-control" required=""/>
+                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.username})}"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" th:text="#{users.lbl.password} + ':'"></label>
+                                    <input id="password" type="password" class="form-control" required=""/>
+                                    <span class="small invalid-feedback" th:text="#{users.msg.passwordsInvalid}"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="passwordConfirmed" th:text="#{users.lbl.passwordConfirmed} + ':'"></label>
+                                    <input id="passwordConfirmed" type="password" class="form-control" required=""/>
+                                    <span class="small invalid-feedback" th:text="#{users.msg.passwordsInvalid}"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="roles" th:text="#{users.lbl.roles} + ':'"></label>
+                                    <select id="roles" class="form-control" required="" multiple="">
+                                        <option th:each="r:${roles}" th:value="${r.uuid}" th:text="${r.name}"></option>
+                                    </select>
+                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.roles})}"></span>
+                                </div>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <label for="description" th:text="#{users.lbl.description} + ':'"></label>
-                            <input id="description" class="form-control"/>
-                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.description})}"></span>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{users.btn.close}">Close</button>
+                            <button type="submit" class="btn btn-primary" th:inline="text">
+                                <span class="oi oi-plus" aria-hidden="true"></span> [[#{users.btn.create}]]
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <label for="username" th:text="#{users.lbl.username} + ':'"></label>
-                            <input id="username" class="form-control" required=""/>
-                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.username})}"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="password" th:text="#{users.lbl.password} + ':'"></label>
-                            <input id="password" type="password" class="form-control" required=""/>
-                            <span class="small invalid-feedback" th:text="#{users.msg.passwordsInvalid}"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="passwordConfirmed" th:text="#{users.lbl.passwordConfirmed} + ':'"></label>
-                            <input id="passwordConfirmed" type="password" class="form-control" required=""/>
-                            <span class="small invalid-feedback" th:text="#{users.msg.passwordsInvalid}"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="roles" th:text="#{users.lbl.roles} + ':'"></label>
-                            <select id="roles" class="form-control" required="" multiple="">
-                                <option th:each="r:${roles}" th:value="${r.uuid}" th:text="${r.name}"></option>
-                            </select>
-                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.roles})}"></span>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{users.btn.close}">Close</button>
-                    <button type="submit" class="btn btn-primary" th:inline="text">
-                        <span class="oi oi-plus" aria-hidden="true"></span> [[#{users.btn.create}]]
-                    </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="text-center" th:unless="${users.totalElements > 0}" th:text="#{users.msg.none}">No users found</div>
+    <div class="row" th:unless="${users.totalElements > 0}">
+        <div class="col">
+            <p class="text-center" th:text="#{users.msg.none}">No users found</p>
+        </div>
+    </div>
     <th:block th:if="${users.totalPages > 0}">
-    <nav th:if="${users.totalPages > 1}">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" th:classappend="${!users.hasPrevious()}? disabled">
-                <a class="page-link" th:href="${users.hasPrevious()}? @{/users(p=${users.previousPageable().pageNumber})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>
-            </li>
-            <li class="page-item" th:classappend="${users.number == pn}? active" th:each="pn:${#numbers.sequence(0, users.totalPages - 1)}">
-                <a class="page-link" th:href="${users.number == pn}? '#' : @{/users(p=${pn})}" th:text="${pn+1}">1</a>
-            </li>
-            <li class="page-item" th:classappend="${!users.hasNext()}? disabled">
-                <a class="page-link" th:href="${users.hasNext()}? @{/users(p=${users.nextPageable().pageNumber})} : '#'" th:text="#{pager.lbl.next}">Next</a>
-            </li>
-        </ul>
-    </nav>
-    <table class="table">
-        <thead>
-        <tr>
-            <th th:text="#{users.lbl.username}">Username</th>
-            <th th:text="#{users.lbl.fullName}">Full Name</th>
-            <th th:text="#{users.lbl.lastLogin}">Last Login</th>
-        </tr>
-        </thead>
-        <tbody>
-            <tr th:each="u:${users}">
-                <td th:text="${u.username}">Username</td>
-                <td th:text="${u.fullName}">Full Name</td>
-                <td th:text="${u.lastLogin != null? #dates.format(u.lastLogin) : ''}">2018-12-01 14:12:12.289</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row" th:if="${users.totalPages > 1}">
+        <div class="col">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${!users.hasPrevious()}? disabled">
+                        <a class="page-link" th:href="${users.hasPrevious()}? @{/users(p=${users.previousPageable().pageNumber})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>
+                    </li>
+                    <li class="page-item" th:classappend="${users.number == pn}? active" th:each="pn:${#numbers.sequence(0, users.totalPages - 1)}">
+                        <a class="page-link" th:href="${users.number == pn}? '#' : @{/users(p=${pn})}" th:text="${pn+1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${!users.hasNext()}? disabled">
+                        <a class="page-link" th:href="${users.hasNext()}? @{/users(p=${users.nextPageable().pageNumber})} : '#'" th:text="#{pager.lbl.next}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th th:text="#{users.lbl.username}">Username</th>
+                    <th th:text="#{users.lbl.fullName}">Full Name</th>
+                    <th th:text="#{users.lbl.lastLogin}">Last Login</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="u:${users}">
+                        <td th:text="${u.username}">Username</td>
+                        <td th:text="${u.fullName}">Full Name</td>
+                        <td th:text="${u.lastLogin != null? #dates.format(u.lastLogin) : ''}">2018-12-01 14:12:12.289</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
     </th:block>
 </div>
 <div th:replace="fragments/footer :: footer"/>
@@ -201,7 +219,6 @@
     }).on('hidden.bs.modal', function () {
         location.reload(true);
     });
-
 //]]>
 </script>
 </body>

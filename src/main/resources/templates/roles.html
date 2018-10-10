@@ -7,76 +7,94 @@
 <body>
 <div th:replace="fragments/header :: header"/>
 <div id="content" class="container">
-    <h1 th:text="#{nav.roles}">Roles</h1>
-    <div class="btn btn-primary" data-toggle="modal" data-target="#createrole" th:inline="text"><span class="oi oi-plus"></span> [[#{roles.btn.create}]]</div>
-    <div class="modal fade" id="createrole">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" th:text="#{roles.ttl.create}">Create Role</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="roleform" th:action="@{/roles}" novalidate="">
-                        <div class="form-group">
-                            <label for="name" th:text="#{roles.lbl.name} + ':'"></label>
-                            <input id="name" class="form-control" required=""/>
-                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{roles.lbl.name})}"></span>
+    <div class="row align-items-center">
+        <h1 class="col-auto">
+            <span class="oi oi-people" aria-hidden="true"></span> <span th:text="#{nav.roles}"></span>
+        </h1>
+        <div class="col">
+            <div class="btn btn-primary" data-toggle="modal" data-target="#createrole" th:inline="text"><span class="oi oi-plus"></span> [[#{roles.btn.create}]]</div>
+            <div class="modal fade" id="createrole">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" th:text="#{roles.ttl.create}">Create Role</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <label for="description" th:text="#{roles.lbl.description} + ':'"></label>
-                            <input id="description" class="form-control"/>
-                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{roles.lbl.description})}"></span>
+                        <div class="modal-body">
+                            <form id="roleform" th:action="@{/roles}" novalidate="">
+                                <div class="form-group">
+                                    <label for="name" th:text="#{roles.lbl.name} + ':'"></label>
+                                    <input id="name" class="form-control" required=""/>
+                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{roles.lbl.name})}"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="description" th:text="#{roles.lbl.description} + ':'"></label>
+                                    <input id="description" class="form-control"/>
+                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{roles.lbl.description})}"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="privileges" th:text="#{roles.lbl.privileges} + ':'"></label>
+                                    <select id="privileges" class="form-control" required="" multiple="">
+                                        <option th:each="p:${privileges}" th:value="${p.uuid}" th:text="${p.privilege}"></option>
+                                    </select>
+                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{roles.lbl.privileges})}"></span>
+                                </div>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <label for="privileges" th:text="#{roles.lbl.privileges} + ':'"></label>
-                            <select id="privileges" class="form-control" required="" multiple="">
-                                <option th:each="p:${privileges}" th:value="${p.uuid}" th:text="${p.privilege}"></option>
-                            </select>
-                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{roles.lbl.privileges})}"></span>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{roles.btn.close}">Close</button>
+                            <button type="submit" class="btn btn-primary" th:inline="text">
+                                <span class="oi oi-plus" aria-hidden="true"></span> [[#{roles.btn.create}]]
+                            </button>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{roles.btn.close}">Close</button>
-                    <button type="submit" class="btn btn-primary" th:inline="text">
-                        <span class="oi oi-plus" aria-hidden="true"></span> [[#{roles.btn.create}]]
-                    </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="text-center" th:unless="${roles.totalElements > 0}" th:text="#{roles.msg.none}">No roles found</div>
+    <div class="row" th:unless="${roles.totalElements > 0}">
+        <div class="col">
+            <p class="text-center" th:text="#{roles.msg.none}">No roles found</p>
+        </div>
+    </div>
     <th:block th:if="${roles.totalPages > 0}">
-    <nav th:if="${roles.totalPages > 1}">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" th:classappend="${!roles.hasPrevious()}? disabled">
-                <a class="page-link" th:href="${roles.hasPrevious()}? @{/roles(p=${roles.previousPageable().pageNumber})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>
-            </li>
-            <li class="page-item" th:classappend="${roles.number == pn}? active" th:each="pn:${#numbers.sequence(0, roles.totalPages - 1)}">
-                <a class="page-link" th:href="${roles.number == pn}? '#' : @{/roles(p=${pn})}" th:text="${pn+1}">1</a>
-            </li>
-            <li class="page-item" th:classappend="${!roles.hasNext()}? disabled">
-                <a class="page-link" th:href="${roles.hasNext()}? @{/roles(p=${roles.nextPageable().pageNumber})} : '#'" th:text="#{pager.lbl.next}">Next</a>
-            </li>
-        </ul>
-    </nav>
-    <table class="table">
-        <thead>
-        <tr>
-            <th th:text="#{roles.lbl.name}">Name</th>
-            <th th:text="#{roles.lbl.description}">Description</th>
-        </tr>
-        </thead>
-        <tbody>
-            <tr th:each="r:${roles}">
-                <td th:text="${r.name}">Name</td>
-                <td th:text="${r.description}">Description</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row" th:if="${roles.totalPages > 1}">
+        <div class="col">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${!roles.hasPrevious()}? disabled">
+                        <a class="page-link" th:href="${roles.hasPrevious()}? @{/roles(p=${roles.previousPageable().pageNumber})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>
+                    </li>
+                    <li class="page-item" th:classappend="${roles.number == pn}? active" th:each="pn:${#numbers.sequence(0, roles.totalPages - 1)}">
+                        <a class="page-link" th:href="${roles.number == pn}? '#' : @{/roles(p=${pn})}" th:text="${pn+1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${!roles.hasNext()}? disabled">
+                        <a class="page-link" th:href="${roles.hasNext()}? @{/roles(p=${roles.nextPageable().pageNumber})} : '#'" th:text="#{pager.lbl.next}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th th:text="#{roles.lbl.name}">Name</th>
+                        <th th:text="#{roles.lbl.description}">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="r:${roles}">
+                        <td th:text="${r.name}">Name</td>
+                        <td th:text="${r.description}">Description</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
     </th:block>
 </div>
 <div th:replace="fragments/footer :: footer"/>
@@ -162,7 +180,6 @@
     }).on('hidden.bs.modal', function () {
         location.reload(true);
     });
-
 //]]>
 </script>
 </body>

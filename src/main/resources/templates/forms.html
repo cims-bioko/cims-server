@@ -16,9 +16,13 @@
 <div th:replace="fragments/header :: header"/>
 
 <div id="content" class="container">
-    <h1 th:text="#{nav.forms}">Forms</h1>
-    <div class="btn btn-primary" data-toggle="modal" data-target="#addform" th:inline="text"><span class="oi oi-plus"></span> [[#{forms.btn.addform}]]</div>
-    <div class="modal fade" id="addform">
+    <div class="row align-items-center">
+        <h1 class="col col-auto">
+            <span class="oi oi-document" aria-hidden="true"></span> <span th:text="#{nav.forms}"></span>
+        </h1>
+        <div class="col">
+             <div class="btn btn-primary" data-toggle="modal" data-target="#addform" th:inline="text"><span class="oi oi-plus"></span> [[#{forms.btn.addform}]]</div>
+            <div class="modal fade" id="addform">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -102,43 +106,57 @@
             </div>
         </div>
     </div>
-    <div class="text-center" th:unless="${forms.totalElements > 0}" th:text="#{forms.msg.none}">No forms found</div>
+        </div>
+    </div>
+    <div class="row" th:unless="${forms.totalElements > 0}" >
+        <div class="col">
+            <p class="text-center" th:text="#{forms.msg.none}">No forms found</p>
+        </div>
+    </div>
     <th:block th:if="${forms.totalPages > 0}">
-        <nav th:if="${forms.totalPages > 1}">
-            <ul class="pagination justify-content-center">
-                <li class="page-item" th:classappend="${!forms.hasPrevious()}? disabled">
-                    <a class="page-link" th:href="${forms.hasPrevious()}? @{/forms(p=${forms.previousPageable().pageNumber})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>
-                </li>
-                <li class="page-item" th:classappend="${forms.number == pn}? active" th:each="pn:${#numbers.sequence(0, forms.totalPages - 1)}">
-                    <a class="page-link" th:href="${forms.number == pn}? '#' : @{/forms(p=${pn})}" th:text="${pn+1}">1</a>
-                </li>
-                <li class="page-item" th:classappend="${!forms.hasNext()}? disabled">
-                    <a class="page-link" th:href="${forms.hasNext()}? @{/forms(p=${forms.nextPageable().pageNumber})} : '#'" th:text="#{pager.lbl.next}">Next</a>
-                </li>
-            </ul>
-        </nav>
-        <table class="table">
-            <thead>
-            <tr>
-                <th th:text="#{forms.lbl.id}">Id</th>
-                <th th:text="#{forms.lbl.version}">Version</th>
-                <th class="d-none d-md-table-cell" th:text="#{forms.lbl.downloads}">Downloads</th>
-                <th class="d-none d-lg-table-cell" th:text="#{forms.lbl.submissions}">Submission</th>
-                <th class="d-none d-xl-table-cell" th:text="#{forms.lbl.uploaded}">Uploaded</th>
-                <th class="d-none d-xl-table-cell" th:text="#{forms.lbl.lastSubmission}">Last Submission</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="f:${forms}">
-                <td th:text="${f.formId.id}">Id</td>
-                <td th:text="${f.formId.version}">Version</td>
-                <td class="d-none d-md-table-cell text-center align-middle" th:classappend="${f.downloads}? 'oi oi-check' : 'oi oi-circle-x'"></td>
-                <td class="d-none d-lg-table-cell text-center align-middle" th:classappend="${f.submissions}? 'oi oi-check' : 'oi oi-circle-x'"></td>
-                <td class="d-none d-xl-table-cell" th:text="${f.uploaded != null? #dates.format(f.uploaded) : ''}">Uploaded</td>
-                <td class="d-none d-xl-table-cell" th:text="${f.lastSubmission != null? #dates.format(f.lastSubmission) : ''}">Last Submission</td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="row" th:if="${forms.totalPages > 1}">
+        <div class="col">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${!forms.hasPrevious()}? disabled">
+                        <a class="page-link" th:href="${forms.hasPrevious()}? @{/forms(p=${forms.previousPageable().pageNumber})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>
+                    </li>
+                    <li class="page-item" th:classappend="${forms.number == pn}? active" th:each="pn:${#numbers.sequence(0, forms.totalPages - 1)}">
+                        <a class="page-link" th:href="${forms.number == pn}? '#' : @{/forms(p=${pn})}" th:text="${pn+1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${!forms.hasNext()}? disabled">
+                        <a class="page-link" th:href="${forms.hasNext()}? @{/forms(p=${forms.nextPageable().pageNumber})} : '#'" th:text="#{pager.lbl.next}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th th:text="#{forms.lbl.id}">Id</th>
+                    <th th:text="#{forms.lbl.version}">Version</th>
+                    <th class="d-none d-md-table-cell" th:text="#{forms.lbl.downloads}">Downloads</th>
+                    <th class="d-none d-lg-table-cell" th:text="#{forms.lbl.submissions}">Submission</th>
+                    <th class="d-none d-xl-table-cell" th:text="#{forms.lbl.uploaded}">Uploaded</th>
+                    <th class="d-none d-xl-table-cell" th:text="#{forms.lbl.lastSubmission}">Last Submission</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="f:${forms}">
+                    <td th:text="${f.formId.id}">Id</td>
+                    <td th:text="${f.formId.version}">Version</td>
+                    <td class="d-none d-md-table-cell text-center align-middle" th:classappend="${f.downloads}? 'oi oi-check' : 'oi oi-circle-x'"></td>
+                    <td class="d-none d-lg-table-cell text-center align-middle" th:classappend="${f.submissions}? 'oi oi-check' : 'oi oi-circle-x'"></td>
+                    <td class="d-none d-xl-table-cell" th:text="${f.uploaded != null? #dates.format(f.uploaded) : ''}">Uploaded</td>
+                    <td class="d-none d-xl-table-cell" th:text="${f.lastSubmission != null? #dates.format(f.lastSubmission) : ''}">Last Submission</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
     </th:block>
 </div>
 <div th:replace="fragments/footer :: footer"/>

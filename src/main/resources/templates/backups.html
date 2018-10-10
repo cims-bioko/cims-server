@@ -7,74 +7,89 @@
 <body>
 <div th:replace="fragments/header :: header"/>
 <div id="content" class="container">
-
-    <h1 th:text="#{nav.backups}">Backups</h1>
-    <div class="btn btn-primary" data-toggle="modal" data-target="#createbackup" th:inline="text"><span class="oi oi-plus"></span> [[#{backups.btn.create}]]</div>
-    <div class="modal fade" id="createbackup">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" th:text="#{backups.ttl.create}">Create Backup</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="backupform" th:action="@{/backups}" novalidate="">
-                        <div class="form-group">
-                            <label for="name" th:text="#{backups.lbl.name} + ':'"></label>
-                            <input id="name" class="form-control" required=""/>
-                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{backups.lbl.name})}"></span>
+    <div class="row align-items-center">
+        <h1 class="col col-auto">
+            <span class="oi oi-shield" aria-hidden="true"></span> <span th:text="#{nav.backups}">Backups</span>
+        </h1>
+        <div class="col">
+            <div class="btn btn-primary" data-toggle="modal" data-target="#createbackup" th:inline="text"><span class="oi oi-plus"></span> [[#{backups.btn.create}]]</div>
+            <div class="modal fade" id="createbackup">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" th:text="#{backups.ttl.create}">Create Backup</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <label for="description" th:text="#{backups.lbl.description} + ':'"></label>
-                            <input id="description" class="form-control" required="" />
-                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{backups.lbl.description})}"></span>
+                        <div class="modal-body">
+                            <form id="backupform" th:action="@{/backups}" novalidate="">
+                                <div class="form-group">
+                                    <label for="name" th:text="#{backups.lbl.name} + ':'"></label>
+                                    <input id="name" class="form-control" required=""/>
+                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{backups.lbl.name})}"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="description" th:text="#{backups.lbl.description} + ':'"></label>
+                                    <input id="description" class="form-control" required="" />
+                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{backups.lbl.description})}"></span>
+                                </div>
+                            </form>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{backups.btn.close}">Close</button>
-                    <button type="submit" class="btn btn-primary" th:inline="text">
-                        <span class="oi oi-plus" aria-hidden="true"></span> [[#{backups.btn.create}]]
-                    </button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{backups.btn.close}">Close</button>
+                            <button type="submit" class="btn btn-primary" th:inline="text">
+                                <span class="oi oi-plus" aria-hidden="true"></span> [[#{backups.btn.create}]]
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="text-center" th:unless="${backups.totalElements > 0}" th:text="#{backups.msg.none}">No backups found</div>
+    <div class="row" th:unless="${backups.totalElements > 0}">
+        <div class="col">
+            <p class="text-center" th:text="#{backups.msg.none}">No backups found</p>
+        </div>
+    </div>
     <th:block th:if="${backups.totalPages > 0}">
-    <nav th:if="${backups.totalPages > 1}">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" th:classappend="${!backups.hasPrevious()}? disabled">
-                <a class="page-link" th:href="${backups.hasPrevious()}? @{/backups(p=${backups.previousPageable().pageNumber})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>
-            </li>
-            <li class="page-item" th:classappend="${backups.number == pn}? active" th:each="pn:${#numbers.sequence(0, backups.totalPages - 1)}">
-                <a class="page-link" th:href="${backups.number == pn}? '#' : @{/backups(p=${pn})}" th:text="${pn+1}">1</a>
-            </li>
-            <li class="page-item" th:classappend="${!backups.hasNext()}? disabled">
-                <a class="page-link" th:href="${backups.hasNext()}? @{/backups(p=${backups.nextPageable().pageNumber})} : '#'" th:text="#{pager.lbl.next}">Next</a>
-            </li>
-        </ul>
-    </nav>
-    <table class="table" th:if="${backups}">
-        <thead>
+    <div class="row" th:if="${backups.totalPages > 1}">
+        <div class="col">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${!backups.hasPrevious()}? disabled">
+                        <a class="page-link" th:href="${backups.hasPrevious()}? @{/backups(p=${backups.previousPageable().pageNumber})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>
+                    </li>
+                    <li class="page-item" th:classappend="${backups.number == pn}? active" th:each="pn:${#numbers.sequence(0, backups.totalPages - 1)}">
+                        <a class="page-link" th:href="${backups.number == pn}? '#' : @{/backups(p=${pn})}" th:text="${pn+1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${!backups.hasNext()}? disabled">
+                        <a class="page-link" th:href="${backups.hasNext()}? @{/backups(p=${backups.nextPageable().pageNumber})} : '#'" th:text="#{pager.lbl.next}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <table class="col table" th:if="${backups}">
+            <thead>
             <tr>
                 <th th:text="#{backups.lbl.name}">Name</th>
                 <th th:text="#{backups.lbl.description}">Description</th>
                 <th th:text="#{backups.lbl.created}">Created</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <th:block th:each="b:${backups}">
-            <tr>
-                <td th:text="${b.name}">Name</td>
-                <td th:text="${b.description}">Description</td>
-                <td th:text="${#calendars.format(b.created)}">Description</td>
-            </tr>
+                <tr>
+                    <td th:text="${b.name}">Name</td>
+                    <td th:text="${b.description}">Description</td>
+                    <td th:text="${#calendars.format(b.created)}">Description</td>
+                </tr>
             </th:block>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
     </th:block>
 </div>
 <div th:replace="fragments/footer :: footer"/>

@@ -7,86 +7,104 @@
 <body>
 <div th:replace="fragments/header :: header"/>
 <div id="content" class="container">
-    <h1 th:text="#{nav.fieldworkers}">Fieldworkers</h1>
-    <div class="btn btn-primary" data-toggle="modal" data-target="#createfieldworker" th:inline="text"><span class="oi oi-plus"></span> [[#{fieldworkers.btn.create}]]</div>
-    <div class="modal fade" id="createfieldworker">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" th:text="#{fieldworkers.ttl.create}">Create Fieldworker</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="fieldworkerform" th:action="@{/fieldworkers}" novalidate="">
-                        <div class="form-group">
-                            <label for="firstName" th:text="#{fieldworkers.lbl.firstName} + ':'"></label>
-                            <input id="firstName" class="form-control" required=""/>
-                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{fieldworkers.lbl.firstName})}"></span>
+    <div class="row align-items-center">
+        <h1 class="col col-auto">
+            <span class="oi oi-person" aria-hidden="true"></span> <span th:text="#{nav.fieldworkers}">Fieldworkers</span>
+        </h1>
+        <div class="col">
+            <div class="btn btn-primary" data-toggle="modal" data-target="#createfieldworker" th:inline="text"><span class="oi oi-plus"></span> [[#{fieldworkers.btn.create}]]</div>
+            <div class="modal fade" id="createfieldworker">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" th:text="#{fieldworkers.ttl.create}">Create Fieldworker</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <label for="lastName" th:text="#{fieldworkers.lbl.lastName} + ':'"></label>
-                            <input id="lastName" class="form-control" required=""/>
-                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{fieldworkers.lbl.lastName})}"></span>
+                        <div class="modal-body">
+                            <form id="fieldworkerform" th:action="@{/fieldworkers}" novalidate="">
+                                <div class="form-group">
+                                    <label for="firstName" th:text="#{fieldworkers.lbl.firstName} + ':'"></label>
+                                    <input id="firstName" class="form-control" required=""/>
+                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{fieldworkers.lbl.firstName})}"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName" th:text="#{fieldworkers.lbl.lastName} + ':'"></label>
+                                    <input id="lastName" class="form-control" required=""/>
+                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{fieldworkers.lbl.lastName})}"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="id" th:text="#{fieldworkers.lbl.extId} + ':'"></label>
+                                    <input id="id" class="form-control" pattern="FW[A-Z][A-Z][1-9][0-9]*" required=""/>
+                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{fieldworkers.lbl.extId})}"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" th:text="#{fieldworkers.lbl.password} + ':'"></label>
+                                    <input id="password" type="password" class="form-control" required=""/>
+                                    <span class="small invalid-feedback" th:text="#{fieldworkers.msg.passwordsInvalid}"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="passwordConfirmed" th:text="#{fieldworkers.lbl.passwordConfirmed} + ':'"></label>
+                                    <input id="passwordConfirmed" type="password" class="form-control" required=""/>
+                                    <span class="small invalid-feedback" th:text="#{fieldworkers.msg.passwordsInvalid}"></span>
+                                </div>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <label for="id" th:text="#{fieldworkers.lbl.extId} + ':'"></label>
-                            <input id="id" class="form-control" pattern="FW[A-Z][A-Z][1-9][0-9]*" required=""/>
-                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{fieldworkers.lbl.extId})}"></span>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{fieldworkers.btn.close}">Close</button>
+                            <button type="submit" class="btn btn-primary" th:inline="text">
+                                <span class="oi oi-plus" aria-hidden="true"></span> [[#{fieldworkers.btn.create}]]
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <label for="password" th:text="#{fieldworkers.lbl.password} + ':'"></label>
-                            <input id="password" type="password" class="form-control" required=""/>
-                            <span class="small invalid-feedback" th:text="#{fieldworkers.msg.passwordsInvalid}"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="passwordConfirmed" th:text="#{fieldworkers.lbl.passwordConfirmed} + ':'"></label>
-                            <input id="passwordConfirmed" type="password" class="form-control" required=""/>
-                            <span class="small invalid-feedback" th:text="#{fieldworkers.msg.passwordsInvalid}"></span>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{fieldworkers.btn.close}">Close</button>
-                    <button type="submit" class="btn btn-primary" th:inline="text">
-                        <span class="oi oi-plus" aria-hidden="true"></span> [[#{fieldworkers.btn.create}]]
-                    </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="text-center" th:unless="${fieldworkers.totalElements > 0}" th:text="#{fieldworkers.msg.none}">No fieldworkers found</div>
+    <div class="row" th:unless="${fieldworkers.totalElements > 0}">
+        <div class="col">
+            <p class="text-center" th:text="#{fieldworkers.msg.none}">No fieldworkers found</p>
+        </div>
+    </div>
     <th:block th:if="${fieldworkers.totalPages > 0}">
-    <nav th:if="${fieldworkers.totalPages > 1}">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" th:classappend="${!fieldworkers.hasPrevious()}? disabled">
-                <a class="page-link" th:href="${fieldworkers.hasPrevious()}? @{/fieldworkers(p=${fieldworkers.previousPageable().pageNumber})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>
-            </li>
-            <li class="page-item" th:classappend="${fieldworkers.number == pn}? active" th:each="pn:${#numbers.sequence(0, fieldworkers.totalPages - 1)}">
-                <a class="page-link" th:href="${fieldworkers.number == pn}? '#' : @{/fieldworkers(p=${pn})}" th:text="${pn+1}">1</a>
-            </li>
-            <li class="page-item" th:classappend="${!fieldworkers.hasNext()}? disabled">
-                <a class="page-link" th:href="${fieldworkers.hasNext()}? @{/fieldworkers(p=${fieldworkers.nextPageable().pageNumber})} : '#'" th:text="#{pager.lbl.next}">Next</a>
-            </li>
-        </ul>
-    </nav>
-    <table class="table">
-        <thead>
-        <tr>
-            <th th:text="#{fieldworkers.lbl.extId}">ID</th>
-            <th th:text="#{fieldworkers.lbl.firstName}">First Name</th>
-            <th th:text="#{fieldworkers.lbl.lastName}">Last Name</th>
-        </tr>
-        </thead>
-        <tbody>
-            <tr th:each="u:${fieldworkers}">
-                <td th:text="${u.extId}">ID</td>
-                <td th:text="${u.firstName}">First Name</td>
-                <td th:text="${u.lastName}">Last Name</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row" th:if="${fieldworkers.totalPages > 1}">
+        <div class="col">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${!fieldworkers.hasPrevious()}? disabled">
+                        <a class="page-link" th:href="${fieldworkers.hasPrevious()}? @{/fieldworkers(p=${fieldworkers.previousPageable().pageNumber})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>
+                    </li>
+                    <li class="page-item" th:classappend="${fieldworkers.number == pn}? active" th:each="pn:${#numbers.sequence(0, fieldworkers.totalPages - 1)}">
+                        <a class="page-link" th:href="${fieldworkers.number == pn}? '#' : @{/fieldworkers(p=${pn})}" th:text="${pn+1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${!fieldworkers.hasNext()}? disabled">
+                        <a class="page-link" th:href="${fieldworkers.hasNext()}? @{/fieldworkers(p=${fieldworkers.nextPageable().pageNumber})} : '#'" th:text="#{pager.lbl.next}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th th:text="#{fieldworkers.lbl.extId}">ID</th>
+                    <th th:text="#{fieldworkers.lbl.firstName}">First Name</th>
+                    <th th:text="#{fieldworkers.lbl.lastName}">Last Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="u:${fieldworkers}">
+                    <td th:text="${u.extId}">ID</td>
+                    <td th:text="${u.firstName}">First Name</td>
+                    <td th:text="${u.lastName}">Last Name</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
     </th:block>
 </div>
 <div th:replace="fragments/footer :: footer"/>
