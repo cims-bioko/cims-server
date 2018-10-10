@@ -79,6 +79,7 @@
 </div>
 <div th:replace="fragments/footer :: footer"/>
 <script>
+//<![CDATA[
     var $modal = $('#createbackup'),
         $form = $modal.find('#backupform'),
         $submitBtn = $modal.find(':submit');
@@ -154,6 +155,7 @@
     }).on('upload-complete', function(e) {
         $submitBtn.prop("disabled", false);
     });
+//]]>
 </script>
 </body>
 </html>
