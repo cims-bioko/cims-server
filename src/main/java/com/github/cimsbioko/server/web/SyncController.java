@@ -1,6 +1,5 @@
 package com.github.cimsbioko.server.web;
 
-import com.github.cimsbioko.server.dao.TaskRepository;
 import com.github.cimsbioko.server.service.SyncService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +10,7 @@ public class SyncController {
 
     private SyncService syncService;
 
-    public SyncController(TaskRepository repo, SyncService syncService) {
+    public SyncController(SyncService syncService) {
         this.syncService = syncService;
     }
 
