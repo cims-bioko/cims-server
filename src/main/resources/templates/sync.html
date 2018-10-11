@@ -23,7 +23,7 @@
                 </div>
                 <div class="btn-group">
                     <a class="btn btn-primary" th:classappend="${running}? disabled" th:href="@{/sync/run}">
-                        <span class="oi oi-flash"></span> <span th:text="#{sync.btn.build}">Build Now</span>
+                        <span class="oi oi-bolt"></span> <span th:text="#{sync.btn.build}">Build Now</span>
                     </a>
                 </div>
             </div>
@@ -32,7 +32,7 @@
     <div class="row">
         <div class="col">
             <p class="text-center" th:inline="text">
-                [[${nextRun} != null? #{sync.msg.nextrun(${nextRun})} : #{sync.msg.nonextrun}]]
+                <span class="oi oi-timer"></span> [[${nextRun} != null? #{sync.msg.nextrun(${nextRun})} : #{sync.msg.nonextrun}]]
             </p>
         </div>
     </div>
