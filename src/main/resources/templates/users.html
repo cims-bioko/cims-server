@@ -107,17 +107,25 @@
         <div class="col">
             <table class="table">
                 <thead>
-                <tr>
-                    <th th:text="#{users.lbl.username}">Username</th>
-                    <th th:text="#{users.lbl.fullName}">Full Name</th>
-                    <th th:text="#{users.lbl.lastLogin}">Last Login</th>
-                </tr>
+                    <tr>
+                        <th th:text="#{users.lbl.username}">Username</th>
+                        <th th:text="#{users.lbl.fullName}">Full Name</th>
+                        <th th:text="#{users.lbl.lastLogin}">Last Login</th>
+                        <th class="text-center" th:text="#{table.lbl.actions}"></th>
+                    </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="u:${users}">
-                        <td th:text="${u.username}">Username</td>
-                        <td th:text="${u.fullName}">Full Name</td>
-                        <td th:text="${u.lastLogin != null? #dates.format(u.lastLogin) : ''}">2018-12-01 14:12:12.289</td>
+                    <tr th:each="u:${users}" th:classappend="${u.deleted != null}? deleted">
+                        <td class="align-middle" th:text="${u.username}">Username</td>
+                        <td class="align-middle" th:text="${u.fullName}">Full Name</td>
+                        <td class="align-middle" th:text="${u.lastLogin != null? #dates.format(u.lastLogin) : ''}">2018-12-01 14:12:12.289</td>
+                        <td class="align-middle text-center">
+                            <div class="btn-group">
+                                <span class="btn btn-outline-primary oi oi-info disabled pr-3 pl-3"></span>
+                                <span class="btn btn-outline-primary oi oi-pencil disabled"></span>
+                                <span class="btn btn-outline-primary oi oi-trash disabled"></span>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>

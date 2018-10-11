@@ -102,13 +102,21 @@
                     <th th:text="#{fieldworkers.lbl.extId}">ID</th>
                     <th th:text="#{fieldworkers.lbl.firstName}">First Name</th>
                     <th th:text="#{fieldworkers.lbl.lastName}">Last Name</th>
+                    <th class="text-center" th:text="#{table.lbl.actions}"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="u:${fieldworkers}">
-                    <td th:text="${u.extId}">ID</td>
-                    <td th:text="${u.firstName}">First Name</td>
-                    <td th:text="${u.lastName}">Last Name</td>
+                    <td class="align-middle" th:text="${u.extId}">ID</td>
+                    <td class="align-middle" th:text="${u.firstName}">First Name</td>
+                    <td class="align-middle" th:text="${u.lastName}">Last Name</td>
+                    <td class="align-middle text-center">
+                        <div class="btn-group">
+                            <span class="btn btn-outline-primary oi oi-info disabled pr-3 pl-3"></span>
+                            <span class="btn btn-outline-primary oi oi-pencil disabled"></span>
+                            <span class="btn btn-outline-primary oi oi-trash disabled"></span>
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>

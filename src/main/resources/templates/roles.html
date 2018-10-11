@@ -84,12 +84,20 @@
                     <tr>
                         <th th:text="#{roles.lbl.name}">Name</th>
                         <th th:text="#{roles.lbl.description}">Description</th>
+                        <th class="text-center" th:text="#{table.lbl.actions}"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="r:${roles}">
-                        <td th:text="${r.name}">Name</td>
-                        <td th:text="${r.description}">Description</td>
+                        <td class="align-middle" th:text="${r.name}">Name</td>
+                        <td class="align-middle" th:text="${r.description}">Description</td>
+                        <td class="align-middle text-center">
+                            <div class="btn-group">
+                                <span class="btn btn-outline-primary oi oi-info disabled pr-3 pl-3"></span>
+                                <span class="btn btn-outline-primary oi oi-pencil disabled"></span>
+                                <span class="btn btn-outline-primary oi oi-trash disabled"></span>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
