@@ -24,43 +24,50 @@
                         </div>
                         <div class="modal-body">
                             <form id="userform" th:action="@{/users}" novalidate="">
-                                <div class="form-group">
-                                    <label for="firstName" th:text="#{users.lbl.firstName} + ':'"></label>
-                                    <input id="firstName" class="form-control"/>
-                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.firstName})}"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label for="lastName" th:text="#{users.lbl.lastName} + ':'"></label>
-                                    <input id="lastName" class="form-control"/>
-                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.lastName})}"></span>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6">
+                                        <label for="firstName" th:text="#{users.lbl.firstName} + ':'"></label>
+                                        <input id="firstName" class="form-control"/>
+                                        <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.firstName})}"></span>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6">
+                                        <label for="lastName" th:text="#{users.lbl.lastName} + ':'"></label>
+                                        <input id="lastName" class="form-control"/>
+                                        <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.lastName})}"></span>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="description" th:text="#{users.lbl.description} + ':'"></label>
                                     <input id="description" class="form-control"/>
                                     <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.description})}"></span>
                                 </div>
-                                <div class="form-group">
-                                    <label for="username" th:text="#{users.lbl.username} + ':'"></label>
-                                    <input id="username" class="form-control" required=""/>
-                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.username})}"></span>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6">
+                                        <label for="username" th:text="#{users.lbl.username} + ':'"></label>
+                                        <input id="username" class="form-control" required=""/>
+                                        <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.username})}"></span>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6">
+                                        <label for="roles" th:text="#{users.lbl.roles} + ':'"></label>
+                                        <select id="roles" class="form-control" required="" multiple="">
+                                            <option th:each="r:${roles}" th:value="${r.uuid}" th:text="${r.name}"></option>
+                                        </select>
+                                        <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.roles})}"></span>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="password" th:text="#{users.lbl.password} + ':'"></label>
-                                    <input id="password" type="password" class="form-control" required=""/>
-                                    <span class="small invalid-feedback" th:text="#{users.msg.passwordsInvalid}"></span>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6">
+                                        <label for="password" th:text="#{users.lbl.password} + ':'"></label>
+                                        <input id="password" type="password" class="form-control" required=""/>
+                                        <span class="small invalid-feedback" th:text="#{users.msg.passwordsInvalid}"></span>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6">
+                                        <label for="passwordConfirmed" th:text="#{users.lbl.passwordConfirmed} + ':'"></label>
+                                        <input id="passwordConfirmed" type="password" class="form-control" required=""/>
+                                        <span class="small invalid-feedback" th:text="#{users.msg.passwordsInvalid}"></span>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="passwordConfirmed" th:text="#{users.lbl.passwordConfirmed} + ':'"></label>
-                                    <input id="passwordConfirmed" type="password" class="form-control" required=""/>
-                                    <span class="small invalid-feedback" th:text="#{users.msg.passwordsInvalid}"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label for="roles" th:text="#{users.lbl.roles} + ':'"></label>
-                                    <select id="roles" class="form-control" required="" multiple="">
-                                        <option th:each="r:${roles}" th:value="${r.uuid}" th:text="${r.name}"></option>
-                                    </select>
-                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{users.lbl.roles})}"></span>
-                                </div>
+
                             </form>
                         </div>
                         <div class="modal-footer">

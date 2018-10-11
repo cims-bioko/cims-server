@@ -24,30 +24,39 @@
                         </div>
                         <div class="modal-body">
                             <form id="fieldworkerform" th:action="@{/fieldworkers}" novalidate="">
-                                <div class="form-group">
-                                    <label for="firstName" th:text="#{fieldworkers.lbl.firstName} + ':'"></label>
-                                    <input id="firstName" class="form-control" required=""/>
-                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{fieldworkers.lbl.firstName})}"></span>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-4">
+                                        <label for="firstName" th:text="#{fieldworkers.lbl.firstName} + ':'"></label>
+                                        <input id="firstName" class="form-control" required=""/>
+                                        <span class="small invalid-feedback" th:text="#{input.msg.required(#{fieldworkers.lbl.firstName})}"></span>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-5">
+                                        <label for="lastName" th:text="#{fieldworkers.lbl.lastName} + ':'"></label>
+                                        <input id="lastName" class="form-control" required=""/>
+                                        <span class="small invalid-feedback" th:text="#{input.msg.required(#{fieldworkers.lbl.lastName})}"></span>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label for="id" th:text="#{fieldworkers.lbl.extId} + ':'"></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">FW</span>
+                                            </div>
+                                            <input id="id" class="form-control" pattern="[A-Z][A-Z][1-9][0-9]*" required=""/>
+                                            <span class="small invalid-feedback" th:text="#{input.msg.required(#{fieldworkers.lbl.extId})}"></span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="lastName" th:text="#{fieldworkers.lbl.lastName} + ':'"></label>
-                                    <input id="lastName" class="form-control" required=""/>
-                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{fieldworkers.lbl.lastName})}"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label for="id" th:text="#{fieldworkers.lbl.extId} + ':'"></label>
-                                    <input id="id" class="form-control" pattern="FW[A-Z][A-Z][1-9][0-9]*" required=""/>
-                                    <span class="small invalid-feedback" th:text="#{input.msg.required(#{fieldworkers.lbl.extId})}"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password" th:text="#{fieldworkers.lbl.password} + ':'"></label>
-                                    <input id="password" type="password" class="form-control" required=""/>
-                                    <span class="small invalid-feedback" th:text="#{fieldworkers.msg.passwordsInvalid}"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label for="passwordConfirmed" th:text="#{fieldworkers.lbl.passwordConfirmed} + ':'"></label>
-                                    <input id="passwordConfirmed" type="password" class="form-control" required=""/>
-                                    <span class="small invalid-feedback" th:text="#{fieldworkers.msg.passwordsInvalid}"></span>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6">
+                                        <label for="password" th:text="#{fieldworkers.lbl.password} + ':'"></label>
+                                        <input id="password" type="password" class="form-control" required=""/>
+                                        <span class="small invalid-feedback" th:text="#{fieldworkers.msg.passwordsInvalid}"></span>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6">
+                                        <label for="passwordConfirmed" th:text="#{fieldworkers.lbl.passwordConfirmed} + ':'"></label>
+                                        <input id="passwordConfirmed" type="password" class="form-control" required=""/>
+                                        <span class="small invalid-feedback" th:text="#{fieldworkers.msg.passwordsInvalid}"></span>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -131,7 +140,7 @@
     var $firstName = $('#firstName'), $lastName = $('#lastName');
 
     function genId(fn, ln) {
-        return 'FW' + (fn && fn.length >= 1? fn[0] : '?') + (ln && ln.length >= 1? ln[0] : '?') + '1';
+        return (fn && fn.length >= 1? fn[0] : '?') + (ln && ln.length >= 1? ln[0] : '?') + '1';
     }
 
     function updateSampleId() {
@@ -170,7 +179,7 @@
             contentType: 'application/json',
             url: $f.attr('action'),
             data: JSON.stringify({
-                id: $f.find('#id').val(),
+                id: 'FW' + $f.find('#id').val(),
                 firstName: $f.find('#firstName').val(),
                 lastName: $f.find('#lastName').val(),
                 password: $f.find('#password').val(),
