@@ -90,7 +90,6 @@ public class SecurityConfig {
                     .sessionCreationPolicy(STATELESS)
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/api/rest/mobiledb/export").hasAuthority("MOBILE_DB_EXPORT")
                     .antMatchers("/api/rest/mobiledb").hasAuthority("MOBILE_DB_SYNC")
                     .antMatchers(POST, "/api/odk/formUpload").hasAuthority("FORM_UPLOAD")
                     .antMatchers(POST, "/api/odk/forms").hasAuthority("FORM_UPLOAD")
