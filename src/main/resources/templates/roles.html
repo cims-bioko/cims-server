@@ -140,7 +140,7 @@
         $(this).addClass('was-validated');
     }).on('validation-success', function() {
         var $f = $(this);
-        $f.trigger('upload-prepare');
+        $f.trigger('action-prepare');
         $.ajax({
             type: 'POST',
             contentType: 'application/json',
@@ -152,24 +152,24 @@
             }),
             dataType: 'json',
             success: function (jsonrsp) {
-                $f.trigger({type: 'upload-success', response: jsonrsp});
+                $f.trigger({type: 'action-success', response: jsonrsp});
             },
             error: function (rsp) {
-                $f.trigger({type: 'upload-failed', response: rsp.responseJSON});
+                $f.trigger({type: 'action-failed', response: rsp.responseJSON});
             },
             complete: function(rsp) {
-                $f.trigger({type: 'upload-complete', response: rsp.responseJSON});
+                $f.trigger({type: 'action-complete', response: rsp.responseJSON});
             }
         });
     });
 
     $modal.on('validation-prepare', function() {
         $(this).find('.modal-body .alert').remove();
-    }).on('upload-prepare', function() {
+    }).on('action-prepare', function() {
         $form.removeClass('was-validated');
         $form.find('.invalid-feedback:not(.server)').addClass('d-none');
         $submitBtn.prop("disabled", true);
-    }).on('upload-success', function(e) {
+    }).on('action-success', function(e) {
         $.each(e.response.messages, function(idx, msg) {
             $modal.find('.modal-body').prepend(
                 '<div class="alert alert-dismissible alert-success fade show" role="alert" data-dismiss="alert">' +
@@ -178,7 +178,7 @@
                 "</div>");
         });
         $form.trigger("reset");
-    }).on('upload-failed', function(e) {
+    }).on('action-failed', function(e) {
         $.each(e.response.fieldErrors, function(fieldname, errors) {
             var $field = $form.find('#'+fieldname);
             $field.addClass('is-invalid');
@@ -187,7 +187,7 @@
                 $group.append('<span class="small invalid-feedback server">' + error + '</span>');
             });
         });
-    }).on('upload-complete', function() {
+    }).on('action-complete', function() {
         $submitBtn.prop("disabled", false);
     }).on('hidden.bs.modal', function () {
         location.reload(true);
