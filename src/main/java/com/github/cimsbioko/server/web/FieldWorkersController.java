@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Calendar;
 import java.util.Locale;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -57,6 +58,70 @@ public class FieldWorkersController {
                         .addMessage(resolveMessage("fieldworkers.msg.created", locale, fw.getExtId())));
     }
 
+    @GetMapping("/fieldworker/{uuid}")
+    @ResponseBody
+    public FieldWorkerForm loadFieldworker(@PathVariable("uuid") String uuid) {
+        FieldWorker f = repo.findOne(uuid);
+        FieldWorkerForm result = new FieldWorkerForm();
+        result.setId(f.getExtId());
+        result.setFirstName(f.getFirstName());
+        result.setLastName(f.getLastName());
+        return result;
+    }
+
+
+    @PutMapping("/fieldworker/{uuid}")
+    @ResponseBody
+    public ResponseEntity<?> updateFieldworker(@PathVariable("uuid") String uuid, @Valid @RequestBody FieldWorkerForm form, Locale locale) {
+
+        FieldWorker f = repo.findOne(uuid);
+
+        if (f == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new AjaxResult()
+                            .addError(resolveMessage("input.msg.errors", locale))
+                            .addFieldError("uuid",
+                                    resolveMessage("fieldworkers.msg.existsnot", locale, form.getId())));
+        }
+
+        f.setExtId(form.getId());
+        f.setFirstName(form.getFirstName());
+        f.setLastName(form.getLastName());
+        if (form.getPassword() != null) {
+            f.setPassword(form.getPassword());
+        }
+        repo.save(f);
+        return ResponseEntity
+                .ok(new AjaxResult()
+                        .addMessage(
+                                resolveMessage("fieldworkers.msg.updated", locale, f.getExtId())));
+    }
+
+    @DeleteMapping("/fieldworker/{uuid}")
+    @ResponseBody
+    public ResponseEntity<?> deleteFieldworker(@PathVariable("uuid") String uuid, Locale locale) {
+
+        FieldWorker f = repo.findOne(uuid);
+
+        if (f == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new AjaxResult()
+                            .addError(resolveMessage("input.msg.errors", locale))
+                            .addFieldError("uuid",
+                                    resolveMessage("fieldworkers.msg.existsnot", locale, uuid)));
+        }
+
+        f.setDeleted(Calendar.getInstance());
+        repo.save(f);
+
+        return ResponseEntity
+                .ok(new AjaxResult()
+                        .addMessage(
+                                resolveMessage("fieldworkers.msg.deleted", locale, uuid)));
+    }
+
     @ExceptionHandler
     @ResponseStatus(BAD_REQUEST)
     @ResponseBody
@@ -89,7 +154,6 @@ public class FieldWorkersController {
         @NotNull
         @Size(min = 1)
         private String lastName;
-        @NotNull
         @Size(min = 8, max = 255)
         private String password;
 
