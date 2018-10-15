@@ -89,16 +89,17 @@ public class UsersController {
     @ResponseBody
     public ResponseEntity<?> updateUser(@PathVariable("uuid") String uuid, @Valid @RequestBody UserForm form, Locale locale) {
 
-        if (userRepo.findByUsernameAndDeletedIsNull(form.getUsername()) == null) {
+        User u = userRepo.findOne(uuid);
+
+        if (u == null) {
             return ResponseEntity
                     .badRequest()
                     .body(new AjaxResult()
                             .addError(resolveMessage("input.msg.errors", locale))
-                            .addFieldError("username",
+                            .addFieldError("uuid",
                                     resolveMessage("users.msg.existsnot", locale, form.getUsername())));
         }
 
-        User u = userRepo.findOne(uuid);
         u.setFirstName(form.getFirstName());
         u.setLastName(form.getLastName());
         u.setDescription(form.getDescription());
