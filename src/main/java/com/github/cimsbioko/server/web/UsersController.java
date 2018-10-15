@@ -2,6 +2,7 @@ package com.github.cimsbioko.server.web;
 
 import com.github.cimsbioko.server.dao.RoleRepository;
 import com.github.cimsbioko.server.dao.UserRepository;
+import com.github.cimsbioko.server.domain.Role;
 import com.github.cimsbioko.server.domain.User;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
@@ -71,6 +72,48 @@ public class UsersController {
                                 resolveMessage("users.msg.created", locale, u.getUsername())));
     }
 
+    @GetMapping("/user/{uuid}")
+    @ResponseBody
+    public UserForm loadUser(@PathVariable("uuid") String uuid) {
+        User u = userRepo.findOne(uuid);
+        UserForm result = new UserForm();
+        result.setFirstName(u.getFirstName());
+        result.setLastName(u.getLastName());
+        result.setDescription(u.getDescription());
+        result.setUsername(u.getUsername());
+        result.setRoles(u.getRoles().stream().map(Role::getUuid).toArray(String[]::new));
+        return result;
+    }
+
+    @PutMapping("/user/{uuid}")
+    @ResponseBody
+    public ResponseEntity<?> updateUser(@PathVariable("uuid") String uuid, @Valid @RequestBody UserForm form, Locale locale) {
+
+        if (userRepo.findByUsernameAndDeletedIsNull(form.getUsername()) == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new AjaxResult()
+                            .addError(resolveMessage("input.msg.errors", locale))
+                            .addFieldError("username",
+                                    resolveMessage("users.msg.existsnot", locale, form.getUsername())));
+        }
+
+        User u = userRepo.findOne(uuid);
+        u.setFirstName(form.getFirstName());
+        u.setLastName(form.getLastName());
+        u.setDescription(form.getDescription());
+        u.setUsername(form.getUsername());
+        if (form.getPassword() != null) {
+            u.setPassword(form.getPassword());
+        }
+        u.setRoles(roleRepo.findByUuidIn(Arrays.stream(form.getRoles()).collect(Collectors.toSet())));
+        userRepo.save(u);
+        return ResponseEntity
+                .ok(new AjaxResult()
+                        .addMessage(
+                                resolveMessage("users.msg.updated", locale, u.getUsername())));
+    }
+
     @ExceptionHandler
     @ResponseStatus(BAD_REQUEST)
     @ResponseBody
@@ -91,7 +134,6 @@ public class UsersController {
         return messages.getMessage(key, args, locale);
     }
 
-
     static class UserForm {
 
         private String firstName;
@@ -100,7 +142,6 @@ public class UsersController {
         @NotNull
         @Size(max = 255)
         private String username;
-        @NotNull
         @Size(min = 8, max = 255)
         private String password;
         @NotNull
@@ -139,12 +180,11 @@ public class UsersController {
             this.username = username;
         }
 
-        @NotNull
         public String getPassword() {
             return password;
         }
 
-        public void setPassword(@NotNull String password) {
+        public void setPassword(String password) {
             this.password = password;
         }
 
