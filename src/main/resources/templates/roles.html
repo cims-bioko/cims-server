@@ -12,8 +12,8 @@
             <span class="oi oi-people" aria-hidden="true"></span> <span th:text="#{nav.roles}"></span>
         </h1>
         <div class="col">
-            <div class="btn btn-primary" data-toggle="modal" data-target="#createrole" th:inline="text"><span class="oi oi-plus"></span> [[#{roles.btn.create}]]</div>
-            <div class="modal fade" id="createrole">
+            <div class="btn btn-primary" data-toggle="modal" data-target="#rolemodal" th:inline="text"><span class="oi oi-plus"></span> [[#{roles.btn.create}]]</div>
+            <div class="modal fade" id="rolemodal">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -23,7 +23,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form id="roleform" th:action="@{/roles}" novalidate="">
+                            <form id="roleform" novalidate="">
                                 <div class="form-group">
                                     <label for="name" th:text="#{roles.lbl.name} + ':'"></label>
                                     <input id="name" class="form-control" required=""/>
@@ -93,9 +93,11 @@
                         <td class="align-middle" th:text="${r.description}">Description</td>
                         <td class="align-middle text-center">
                             <div class="btn-group">
-                                <span class="btn btn-outline-primary oi oi-info disabled pr-3 pl-3"></span>
-                                <span class="btn btn-outline-primary oi oi-pencil disabled"></span>
-                                <span class="btn btn-outline-primary oi oi-trash disabled"></span>
+                                <span class="btn btn-outline-primary oi oi-info pr-3 pl-3" data-toggle="modal" data-target="#rolemodal"
+                                      th:attr="data-entity=${r.uuid},data-action=none,data-title=#{roles.ttl.view}"></span>
+                                <span class="btn btn-outline-primary oi oi-pencil" data-toggle="modal" data-target="#rolemodal"
+                                      th:attr="data-entity=${r.uuid},data-title=#{roles.ttl.edit},data-action=edit,data-action-label=#{roles.btn.save},data-action-icon=pencil"></span>
+                                <span id="delete" th:attr="data-entity=${r.uuid}" class="btn btn-outline-primary oi oi-trash"></span>
                             </div>
                         </td>
                     </tr>
@@ -106,9 +108,11 @@
     </th:block>
 </div>
 <div th:replace="fragments/footer :: footer"/>
-<script>
+<script th:inline="javascript">
+    var createUrl = /*[[@{/roles}]]*/ 'create-url-placeholder',
+        entityUrl = /*[[@{/role}]]*/ 'update-url-placeholder';
 //<![CDATA[
-    var $modal = $('#createrole'),
+    var $modal = $('#rolemodal'),
         $form = $modal.find('#roleform'),
         $submitBtn = $modal.find(':submit');
 
@@ -140,7 +144,7 @@
         $.ajax({
             type: 'POST',
             contentType: 'application/json',
-            url: $f.attr('action'),
+            url: createUrl,
             data: JSON.stringify({
                 name: $f.find('#name').val(),
                 description: $f.find('#description').val(),
@@ -187,6 +191,16 @@
         $submitBtn.prop("disabled", false);
     }).on('hidden.bs.modal', function () {
         location.reload(true);
+    });
+
+    $('span#delete.btn').click(function() {
+        $.ajax({
+            type: 'DELETE',
+            url: entityUrl + '/' + $(this).data('entity'),
+            success: function() {
+                location.reload(true);
+            }
+        });
     });
 //]]>
 </script>

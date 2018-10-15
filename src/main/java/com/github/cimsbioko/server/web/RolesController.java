@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
@@ -65,6 +66,30 @@ public class RolesController {
                 .ok(new AjaxResult()
                         .addMessage(
                                 resolveMessage("roles.msg.created", locale, r.getName())));
+    }
+
+    @DeleteMapping("/role/{uuid}")
+    @ResponseBody
+    public ResponseEntity<?> deleteRole(@PathVariable("uuid") String uuid, Locale locale) {
+
+        Role r = roleRepo.findOne(uuid);
+
+        if (r == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new AjaxResult()
+                            .addError(resolveMessage("input.msg.errors", locale))
+                            .addFieldError("uuid",
+                                    resolveMessage("roles.msg.existsnot", locale, uuid)));
+        }
+
+        r.setDeleted(Calendar.getInstance());
+        roleRepo.save(r);
+
+        return ResponseEntity
+                .ok(new AjaxResult()
+                        .addMessage(
+                                resolveMessage("roles.msg.deleted", locale, uuid)));
     }
 
     @ExceptionHandler
