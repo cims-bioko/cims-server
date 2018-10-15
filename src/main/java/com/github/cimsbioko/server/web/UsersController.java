@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
@@ -113,6 +114,30 @@ public class UsersController {
                 .ok(new AjaxResult()
                         .addMessage(
                                 resolveMessage("users.msg.updated", locale, u.getUsername())));
+    }
+
+    @DeleteMapping("/user/{uuid}")
+    @ResponseBody
+    public ResponseEntity<?> deleteUser(@PathVariable("uuid") String uuid, Locale locale) {
+
+        User u = userRepo.findOne(uuid);
+
+        if (u == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new AjaxResult()
+                            .addError(resolveMessage("input.msg.errors", locale))
+                            .addFieldError("uuid",
+                                    resolveMessage("users.msg.existsnot", locale, uuid)));
+        }
+
+        u.setDeleted(Calendar.getInstance());
+        userRepo.save(u);
+
+        return ResponseEntity
+                .ok(new AjaxResult()
+                        .addMessage(
+                                resolveMessage("users.msg.deleted", locale, uuid)));
     }
 
     @ExceptionHandler

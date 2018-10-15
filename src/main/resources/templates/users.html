@@ -126,7 +126,7 @@
                                       th:attr="data-entity=${u.uuid},data-action=none,data-title=#{users.ttl.view}"></span>
                                 <span class="btn btn-outline-primary oi oi-pencil" data-toggle="modal" data-target="#usermodal"
                                       th:attr="data-entity=${u.uuid},data-title=#{users.ttl.edit},data-action=edit,data-action-label=#{users.btn.save},data-action-icon=pencil"></span>
-                                <span class="btn btn-outline-primary oi oi-trash disabled"></span>
+                                <span id="delete" th:attr="data-entity=${u.uuid}" class="btn btn-outline-primary oi oi-trash"></span>
                             </div>
                         </td>
                     </tr>
@@ -287,6 +287,16 @@
         if ($form.data('action') === 'create') {
             location.reload(true); // create doesn't close modal, refresh on hide
         }
+    });
+
+    $('span#delete.btn').click(function() {
+        $.ajax({
+            type: 'DELETE',
+            url: entityUrl + '/' + $(this).data('entity'),
+            success: function() {
+                location.reload(true);
+            }
+        });
     });
 //]]>
 </script>
