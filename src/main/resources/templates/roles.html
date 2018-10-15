@@ -12,7 +12,10 @@
             <span class="oi oi-people" aria-hidden="true"></span> <span th:text="#{nav.roles}"></span>
         </h1>
         <div class="col">
-            <div class="btn btn-primary" data-toggle="modal" data-target="#rolemodal" th:inline="text"><span class="oi oi-plus"></span> [[#{roles.btn.create}]]</div>
+            <div class="btn btn-primary" data-toggle="modal" data-target="#rolemodal"
+                 th:attr="data-title=#{roles.ttl.create},data-action=create,data-action-label=#{roles.btn.create},data-action-icon=plus" th:inline="text">
+                <span class="oi oi-plus"></span> [[#{roles.btn.create}]]
+            </div>
             <div class="modal fade" id="rolemodal">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -44,7 +47,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{roles.btn.close}">Close</button>
+                            <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{roles.btn.close}">Close</button>
                             <button type="submit" class="btn btn-primary" th:inline="text">
                                 <span class="oi oi-plus" aria-hidden="true"></span> [[#{roles.btn.create}]]
                             </button>
@@ -142,9 +145,9 @@
         var $f = $(this);
         $f.trigger('action-prepare');
         $.ajax({
-            type: 'POST',
+            type: $f.data('action') === 'create'? 'POST' : 'PUT',
             contentType: 'application/json',
-            url: createUrl,
+            url: $f.data('action') === 'create'? createUrl : entityUrl + '/' + $f.data('entity'),
             data: JSON.stringify({
                 name: $f.find('#name').val(),
                 description: $f.find('#description').val(),
@@ -170,14 +173,18 @@
         $form.find('.invalid-feedback:not(.server)').addClass('d-none');
         $submitBtn.prop("disabled", true);
     }).on('action-success', function(e) {
-        $.each(e.response.messages, function(idx, msg) {
-            $modal.find('.modal-body').prepend(
-                '<div class="alert alert-dismissible alert-success fade show" role="alert" data-dismiss="alert">' +
-                "<span>" + msg + "</span>" +
-                '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
-                "</div>");
-        });
-        $form.trigger("reset");
+        if ($form.data('action') === 'create') {
+            $.each(e.response.messages, function(idx, msg) {
+                $modal.find('.modal-body').prepend(
+                    '<div class="alert alert-dismissible alert-success fade show" role="alert" data-dismiss="alert">' +
+                    "<span>" + msg + "</span>" +
+                    '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                    "</div>");
+            });
+            $form.trigger("reset");
+        } else {
+            location.reload(true);
+        }
     }).on('action-failed', function(e) {
         $.each(e.response.fieldErrors, function(fieldname, errors) {
             var $field = $form.find('#'+fieldname);
@@ -189,6 +196,41 @@
         });
     }).on('action-complete', function() {
         $submitBtn.prop("disabled", false);
+    }).on('show.bs.modal', function(e) {
+
+        var $toggle = $(e.relatedTarget), $closeBtn = $('#close'),
+            action = $toggle.data('action'), title = $toggle.data('title'), entity = $toggle.data('entity');
+
+        $modal.find('.modal-title').text(title);
+
+        if (action !== 'none') {
+            $closeBtn.removeClass('btn-primary').addClass('btn-secondary');
+            $form.data('action', action);
+            $submitBtn.removeClass('d-none');
+            $submitBtn.html('<span class="oi oi-' + $toggle.data('action-icon') + '" aria-hidden="true"></span> '
+                + $toggle.data('action-label'));
+            $form.find('.form-control').prop('disabled', false);
+        } else {
+            $closeBtn.removeClass('btn-secondary').addClass('btn-primary');
+            $submitBtn.addClass('d-none');
+            $form.find('.form-control').prop('disabled', true);
+        }
+
+        if (entity) {
+            $form.data('entity', entity);
+            $form.trigger('load-entity');
+        }
+    }).on('load-entity', function() {
+        $.ajax({
+            type: 'GET',
+            url: entityUrl + '/' + $form.data('entity'),
+            dataType: 'json',
+            success: function (data) {
+                $.each(['name', 'description', 'privileges'], function(i,v) {
+                    $form.find('#'+v).val(data[v]);
+                });
+            }
+        });
     }).on('hidden.bs.modal', function () {
         location.reload(true);
     });

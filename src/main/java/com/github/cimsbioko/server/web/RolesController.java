@@ -2,6 +2,7 @@ package com.github.cimsbioko.server.web;
 
 import com.github.cimsbioko.server.dao.PrivilegeRepository;
 import com.github.cimsbioko.server.dao.RoleRepository;
+import com.github.cimsbioko.server.domain.Privilege;
 import com.github.cimsbioko.server.domain.Role;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
@@ -66,6 +67,42 @@ public class RolesController {
                 .ok(new AjaxResult()
                         .addMessage(
                                 resolveMessage("roles.msg.created", locale, r.getName())));
+    }
+
+    @GetMapping("/role/{uuid}")
+    @ResponseBody
+    public RoleForm loadRole(@PathVariable("uuid") String uuid) {
+        Role r = roleRepo.findOne(uuid);
+        RoleForm result = new RoleForm();
+        result.setName(r.getName());
+        result.setDescription(r.getDescription());
+        result.setPrivileges(r.getPrivileges().stream().map(Privilege::getUuid).toArray(String[]::new));
+        return result;
+    }
+
+    @PutMapping("/role/{uuid}")
+    @ResponseBody
+    public ResponseEntity<?> updateRole(@PathVariable("uuid") String uuid, @Valid @RequestBody RoleForm form, Locale locale) {
+
+        Role r = roleRepo.findOne(uuid);
+
+        if (r == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new AjaxResult()
+                            .addError(resolveMessage("input.msg.errors", locale))
+                            .addFieldError("uuid",
+                                    resolveMessage("roles.msg.existsnot", locale, form.getName())));
+        }
+
+        r.setName(form.getName());
+        r.setDescription(form.getDescription());
+        r.setPrivileges(privRepo.findByUuidIn(Arrays.stream(form.getPrivileges()).collect(Collectors.toSet())));
+        roleRepo.save(r);
+        return ResponseEntity
+                .ok(new AjaxResult()
+                        .addMessage(
+                                resolveMessage("roles.msg.updated", locale, r.getName())));
     }
 
     @DeleteMapping("/role/{uuid}")
