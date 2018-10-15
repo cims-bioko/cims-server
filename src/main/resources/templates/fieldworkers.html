@@ -12,8 +12,8 @@
             <span class="oi oi-person" aria-hidden="true"></span> <span th:text="#{nav.fieldworkers}">Fieldworkers</span>
         </h1>
         <div class="col">
-            <div class="btn btn-primary" data-toggle="modal" data-target="#createfieldworker" th:inline="text"><span class="oi oi-plus"></span> [[#{fieldworkers.btn.create}]]</div>
-            <div class="modal fade" id="createfieldworker">
+            <div class="btn btn-primary" data-toggle="modal" data-target="#fieldworkermodal" th:inline="text"><span class="oi oi-plus"></span> [[#{fieldworkers.btn.create}]]</div>
+            <div class="modal fade" id="fieldworkermodal">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -127,7 +127,7 @@
 <div th:replace="fragments/footer :: footer"/>
 <script>
 //<![CDATA[
-    var $modal = $('#createfieldworker'),
+    var $modal = $('#fieldworkermodal'),
         $form = $modal.find('#fieldworkerform'),
         $submitBtn = $modal.find(':submit');
 
