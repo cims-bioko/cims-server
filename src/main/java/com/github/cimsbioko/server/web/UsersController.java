@@ -7,6 +7,7 @@ import com.github.cimsbioko.server.domain.User;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -36,6 +37,7 @@ public class UsersController {
         this.messages = messages;
     }
 
+    @PreAuthorize("hasAuthority('VIEW_USERS')")
     @GetMapping("/users")
     public ModelAndView users(@RequestParam(name = "p", defaultValue = "0") Integer page) {
         ModelAndView modelAndView = new ModelAndView("users");
@@ -44,6 +46,7 @@ public class UsersController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('CREATE_USERS')")
     @PostMapping("/users")
     @ResponseBody
     public ResponseEntity<AjaxResult> createUser(@Valid @RequestBody UserForm userForm, Locale locale) {
@@ -72,6 +75,7 @@ public class UsersController {
                                 resolveMessage("users.msg.created", locale, u.getUsername())));
     }
 
+    @PreAuthorize("hasAuthority('VIEW_USERS')")
     @GetMapping("/user/{uuid}")
     @ResponseBody
     public UserForm loadUser(@PathVariable("uuid") String uuid) {
@@ -85,6 +89,7 @@ public class UsersController {
         return result;
     }
 
+    @PreAuthorize("hasAuthority('EDIT_USERS')")
     @PutMapping("/user/{uuid}")
     @ResponseBody
     public ResponseEntity<?> updateUser(@PathVariable("uuid") String uuid, @Valid @RequestBody UserForm form, Locale locale) {
@@ -115,6 +120,7 @@ public class UsersController {
                                 resolveMessage("users.msg.updated", locale, u.getUsername())));
     }
 
+    @PreAuthorize("hasAuthority('DELETE_USERS')")
     @DeleteMapping("/user/{uuid}")
     @ResponseBody
     public ResponseEntity<?> deleteUser(@PathVariable("uuid") String uuid, Locale locale) {

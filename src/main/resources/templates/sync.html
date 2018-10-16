@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <div th:replace="fragments/header :: header-css"/>
     <title th:text="#{app.name} + ' - ' + #{nav.sync}">CIMS - Sync</title>
@@ -11,7 +12,7 @@
         <h1 class="col col-auto">
             <span class="oi oi-loop-square" aria-hidden="true"></span> <span th:text="#{nav.sync}"></span>
         </h1>
-        <div class="col">
+        <div class="col" sec:authorize="hasAuthority('MANAGE_SYNC')">
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group mr-2">
                     <a class="btn btn-primary" th:classappend="${not scheduled}? disabled" th:href="@{/sync/pause}">
@@ -52,7 +53,8 @@
                         <td class="align-middle d-none d-lg-table-cell" th:text="${task.started != null? #calendars.format(task.started) : ''}"></td>
                         <td class="align-middle d-none d-sm-table-cell" th:text="${task.finished != null?  #calendars.format(task.finished) : ''}"></td>
                         <td class="align-middle" th:inline="text">
-                            <a class="btn btn-primary" th:classappend="${not downloadable}? disabled" th:href="@{/sync/export}">
+                            <a class="btn btn-primary" sec:authorize="hasAuthority('EXPORT_SYNC')"
+                               th:classappend="${not downloadable}? disabled" th:href="@{/sync/export}">
                                 <span class="oi oi-data-transfer-download"></span>
                             </a>
                             [[${task.descriptor}]]

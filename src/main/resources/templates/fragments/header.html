@@ -45,22 +45,22 @@
                 <a class="nav-item nav-link" th:href="@{/}" th:inline="text">
                     <span class="oi oi-home" aria-hidden="true"></span> [[#{nav.home}]]
                 </a>
-                <a class="nav-item nav-link" th:href="@{/forms}" th:inline="text">
+                <a class="nav-item nav-link" sec:authorize="hasAuthority('VIEW_FORMS')" th:href="@{/forms}" th:inline="text">
                     <span class="oi oi-document" aria-hidden="true"></span> [[#{nav.forms}]]
                 </a>
-                <a class="nav-item nav-link" th:href="@{/sync}" th:inline="text">
+                <a class="nav-item nav-link" sec:authorize="hasAuthority('VIEW_SYNC')" th:href="@{/sync}" th:inline="text">
                     <span class="oi oi-loop-square" aria-hidden="true"></span> [[#{nav.sync}]]
                 </a>
-                <a class="nav-item nav-link" th:href="@{/backups}" th:inline="text">
+                <a class="nav-item nav-link" sec:authorize="hasAuthority('VIEW_BACKUPS')" th:href="@{/backups}" th:inline="text">
                     <span class="oi oi-shield" aria-hidden="true"></span> [[#{nav.backups}]]
                 </a>
-                <a class="nav-item nav-link" th:href="@{/users}" th:inline="text">
+                <a class="nav-item nav-link" sec:authorize="hasAuthority('VIEW_USERS')" th:href="@{/users}" th:inline="text">
                     <span class="oi oi-person" aria-hidden="true"></span> [[#{nav.users}]]
                 </a>
-                <a class="nav-item nav-link" th:href="@{/roles}" th:inline="text">
+                <a class="nav-item nav-link" sec:authorize="hasAuthority('VIEW_ROLES')" th:href="@{/roles}" th:inline="text">
                     <span class="oi oi-people" aria-hidden="true"></span> [[#{nav.roles}]]
                 </a>
-                <a class="nav-item nav-link" th:href="@{/fieldworkers}" th:inline="text">
+                <a class="nav-item nav-link" sec:authorize="hasAuthority('VIEW_FIELDWORKERS')" th:href="@{/fieldworkers}" th:inline="text">
                     <span class="oi oi-person" aria-hidden="true"></span> [[#{nav.fieldworkers}]]
                 </a>
             </ul>

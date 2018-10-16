@@ -2,6 +2,7 @@ package com.github.cimsbioko.server.web;
 
 import com.github.cimsbioko.server.service.SyncService;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ public class SyncController {
         this.service = service;
     }
 
+    @PreAuthorize("hasAuthority('VIEW_SYNC')")
     @GetMapping("/sync")
     public ModelAndView sync() {
         ModelAndView result = new ModelAndView("sync");
@@ -33,18 +35,21 @@ public class SyncController {
         return result;
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_SYNC')")
     @GetMapping("/sync/pause")
     public String pause() {
         service.cancelTask();
         return "redirect:/sync";
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_SYNC')")
     @GetMapping("/sync/start")
     public String start() {
         service.resumeSchedule();
         return "redirect:/sync";
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_SYNC')")
     @GetMapping("/sync/run")
     public String run() {
         service.requestTaskRun();
@@ -53,6 +58,7 @@ public class SyncController {
 
     private static final String INSTALLABLE_FILENAME = "openhds.db";
 
+    @PreAuthorize("hasAuthority('EXPORT_SYNC')")
     @GetMapping("/sync/export")
     public void downloadDb(HttpServletResponse response) throws IOException {
 

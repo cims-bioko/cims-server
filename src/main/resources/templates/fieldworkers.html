@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <div th:replace="fragments/header :: header-css"/>
     <title th:text="#{app.name} + ' - ' + #{nav.fieldworkers}">CIMS - Fieldworkers</title>
@@ -13,7 +14,10 @@
         </h1>
         <div class="col">
             <div class="btn btn-primary" data-toggle="modal" data-target="#fieldworkermodal"
-                 th:attr="data-title=#{fieldworkers.ttl.create},data-action=create,data-action-label=#{fieldworkers.btn.create},data-action-icon=plus" th:inline="text"><span class="oi oi-plus"></span> [[#{fieldworkers.btn.create}]]</div>
+                 th:attr="data-title=#{fieldworkers.ttl.create},data-action=create,data-action-label=#{fieldworkers.btn.create},data-action-icon=plus" th:inline="text"
+                 sec:authorize="hasAuthority('CREATE_FIELDWORKERS')">
+                <span class="oi oi-plus"></span> [[#{fieldworkers.btn.create}]]
+            </div>
             <div class="modal fade" id="fieldworkermodal">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -116,8 +120,10 @@
                             <span class="btn btn-outline-primary oi oi-info pr-3 pl-3" data-toggle="modal" data-target="#fieldworkermodal"
                                   th:attr="data-entity=${u.uuid},data-action=none,data-title=#{fieldworkers.ttl.view}"></span>
                             <span class="btn btn-outline-primary oi oi-pencil" data-toggle="modal" data-target="#fieldworkermodal"
-                                  th:attr="data-entity=${u.uuid},data-title=#{fieldworkers.ttl.edit},data-action=edit,data-action-label=#{fieldworkers.btn.save},data-action-icon=pencil"></span>
-                            <span id="delete" th:attr="data-entity=${u.uuid}" class="btn btn-outline-primary oi oi-trash"></span>
+                                  th:attr="data-entity=${u.uuid},data-title=#{fieldworkers.ttl.edit},data-action=edit,data-action-label=#{fieldworkers.btn.save},data-action-icon=pencil"
+                                  sec:authorize="hasAuthority('EDIT_FIELDWORKERS')"></span>
+                            <span id="delete" th:attr="data-entity=${u.uuid}" class="btn btn-outline-primary oi oi-trash"
+                                  sec:authorize="hasAuthority('DELETE_FIELDWORKERS')"></span>
                         </div>
                     </td>
                 </tr>

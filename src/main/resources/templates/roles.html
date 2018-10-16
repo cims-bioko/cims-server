@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <div th:replace="fragments/header :: header-css"/>
     <title th:text="#{app.name} + ' - ' + #{nav.roles}">CIMS - Roles</title>
@@ -13,7 +14,8 @@
         </h1>
         <div class="col">
             <div class="btn btn-primary" data-toggle="modal" data-target="#rolemodal"
-                 th:attr="data-title=#{roles.ttl.create},data-action=create,data-action-label=#{roles.btn.create},data-action-icon=plus" th:inline="text">
+                 th:attr="data-title=#{roles.ttl.create},data-action=create,data-action-label=#{roles.btn.create},data-action-icon=plus" th:inline="text"
+                 sec:authorize="hasAuthority('CREATE_ROLES')">
                 <span class="oi oi-plus"></span> [[#{roles.btn.create}]]
             </div>
             <div class="modal fade" id="rolemodal">
@@ -99,8 +101,10 @@
                                 <span class="btn btn-outline-primary oi oi-info pr-3 pl-3" data-toggle="modal" data-target="#rolemodal"
                                       th:attr="data-entity=${r.uuid},data-action=none,data-title=#{roles.ttl.view}"></span>
                                 <span class="btn btn-outline-primary oi oi-pencil" data-toggle="modal" data-target="#rolemodal"
-                                      th:attr="data-entity=${r.uuid},data-title=#{roles.ttl.edit},data-action=edit,data-action-label=#{roles.btn.save},data-action-icon=pencil"></span>
-                                <span id="delete" th:attr="data-entity=${r.uuid}" class="btn btn-outline-primary oi oi-trash"></span>
+                                      th:attr="data-entity=${r.uuid},data-title=#{roles.ttl.edit},data-action=edit,data-action-label=#{roles.btn.save},data-action-icon=pencil"
+                                      sec:authorize="hasAuthority('EDIT_ROLES')"></span>
+                                <span id="delete" th:attr="data-entity=${r.uuid}" class="btn btn-outline-primary oi oi-trash"
+                                      sec:authorize="hasAuthority('DELETE_ROLES')"></span>
                             </div>
                         </td>
                     </tr>

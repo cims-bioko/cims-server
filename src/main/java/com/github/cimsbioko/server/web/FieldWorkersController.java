@@ -5,6 +5,7 @@ import com.github.cimsbioko.server.domain.FieldWorker;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,12 +32,14 @@ public class FieldWorkersController {
         this.messages = messages;
     }
 
+    @PreAuthorize("hasAuthority('VIEW_FIELDWORKERS')")
     @GetMapping("/fieldworkers")
     public ModelAndView fieldworkers(@RequestParam(name = "p", defaultValue = "0") Integer page) {
         return new ModelAndView("fieldworkers",
                 "fieldworkers", repo.findByDeletedIsNull(new PageRequest(page, 10)));
     }
 
+    @PreAuthorize("hasAuthority('CREATE_FIELDWORKERS')")
     @PostMapping("/fieldworkers")
     @ResponseBody
     public ResponseEntity<AjaxResult> createFieldworker(@Valid @RequestBody FieldWorkerForm form, Locale locale) {
@@ -58,6 +61,7 @@ public class FieldWorkersController {
                         .addMessage(resolveMessage("fieldworkers.msg.created", locale, fw.getExtId())));
     }
 
+    @PreAuthorize("hasAuthority('VIEW_FIELDWORKERS')")
     @GetMapping("/fieldworker/{uuid}")
     @ResponseBody
     public FieldWorkerForm loadFieldworker(@PathVariable("uuid") String uuid) {
@@ -69,7 +73,7 @@ public class FieldWorkersController {
         return result;
     }
 
-
+    @PreAuthorize("hasAuthority('EDIT_FIELDWORKERS')")
     @PutMapping("/fieldworker/{uuid}")
     @ResponseBody
     public ResponseEntity<?> updateFieldworker(@PathVariable("uuid") String uuid, @Valid @RequestBody FieldWorkerForm form, Locale locale) {
@@ -98,6 +102,7 @@ public class FieldWorkersController {
                                 resolveMessage("fieldworkers.msg.updated", locale, f.getExtId())));
     }
 
+    @PreAuthorize("hasAuthority('DELETE_FIELDWORKERS')")
     @DeleteMapping("/fieldworker/{uuid}")
     @ResponseBody
     public ResponseEntity<?> deleteFieldworker(@PathVariable("uuid") String uuid, Locale locale) {

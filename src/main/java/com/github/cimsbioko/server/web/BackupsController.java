@@ -5,6 +5,7 @@ import com.github.cimsbioko.server.domain.Backup;
 import com.github.cimsbioko.server.service.BackupService;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,11 +30,13 @@ public class BackupsController {
         this.messages = messages;
     }
 
+    @PreAuthorize("hasAuthority('VIEW_BACKUPS')")
     @GetMapping("/backups")
     public ModelAndView backups(@RequestParam(name = "p", defaultValue = "0") Integer page) {
         return new ModelAndView("backups", "backups", repo.findAll(new PageRequest(page, 10)));
     }
 
+    @PreAuthorize("hasAuthority('CREATE_BACKUPS')")
     @PostMapping("/backups")
     @ResponseBody
     public AjaxResult createBackup(@Valid @RequestBody Backup backup, Locale locale) {

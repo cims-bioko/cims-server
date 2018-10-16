@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <div th:replace="fragments/header :: header-css"/>
     <title th:text="#{app.name} + ' - ' + #{nav.backups}">CIMS - Backups</title>
@@ -11,7 +12,7 @@
         <h1 class="col col-auto">
             <span class="oi oi-shield" aria-hidden="true"></span> <span th:text="#{nav.backups}">Backups</span>
         </h1>
-        <div class="col">
+        <div class="col" sec:authorize="hasAuthority('CREATE_BACKUPS')">
             <div class="btn btn-primary" data-toggle="modal" data-target="#createbackup" th:inline="text"><span class="oi oi-plus"></span> [[#{backups.btn.create}]]</div>
             <div class="modal fade" id="createbackup">
                 <div class="modal-dialog">

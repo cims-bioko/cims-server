@@ -7,6 +7,7 @@ import com.github.cimsbioko.server.domain.Role;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -36,6 +37,7 @@ public class RolesController {
         this.messages = messages;
     }
 
+    @PreAuthorize("hasAuthority('VIEW_ROLES')")
     @GetMapping("/roles")
     public ModelAndView roles(@RequestParam(name = "p", defaultValue = "0") Integer page) {
         ModelAndView modelAndView = new ModelAndView("roles");
@@ -44,6 +46,7 @@ public class RolesController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('CREATE_ROLES')")
     @PostMapping("/roles")
     @ResponseBody
     public ResponseEntity<AjaxResult> createRole(@Valid @RequestBody RoleForm form, Locale locale) {
@@ -69,6 +72,7 @@ public class RolesController {
                                 resolveMessage("roles.msg.created", locale, r.getName())));
     }
 
+    @PreAuthorize("hasAuthority('VIEW_ROLES')")
     @GetMapping("/role/{uuid}")
     @ResponseBody
     public RoleForm loadRole(@PathVariable("uuid") String uuid) {
@@ -80,6 +84,7 @@ public class RolesController {
         return result;
     }
 
+    @PreAuthorize("hasAuthority('EDIT_ROLES')")
     @PutMapping("/role/{uuid}")
     @ResponseBody
     public ResponseEntity<?> updateRole(@PathVariable("uuid") String uuid, @Valid @RequestBody RoleForm form, Locale locale) {
@@ -105,6 +110,7 @@ public class RolesController {
                                 resolveMessage("roles.msg.updated", locale, r.getName())));
     }
 
+    @PreAuthorize("hasAuthority('DELETE_ROLES')")
     @DeleteMapping("/role/{uuid}")
     @ResponseBody
     public ResponseEntity<?> deleteRole(@PathVariable("uuid") String uuid, Locale locale) {
