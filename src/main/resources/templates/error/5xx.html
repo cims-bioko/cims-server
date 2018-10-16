@@ -6,7 +6,9 @@
 </head>
 <body>
     <div th:replace="fragments/header :: header"/>
-    <div id="content"><h1 th:text="${error}">Server Error</h1></div>
+    <div id="content" class="container">
+        <h1 th:inline="text"><span class="oi oi-warning"></span> [[${error}]]</h1>
+    </div>
     <div th:replace="fragments/footer :: footer"/>
 </body>
 </html>
