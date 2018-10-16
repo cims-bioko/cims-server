@@ -10,4 +10,5 @@ import java.util.Set;
 public interface RoleRepository extends PagingAndSortingRepository<Role, String> {
     Set<Role> findByUuidIn(Set<String> uuids);
     Page<Role> findByDeletedIsNull(Pageable pageable);
+    Set<Role> findByDeletedIsNull();
 }

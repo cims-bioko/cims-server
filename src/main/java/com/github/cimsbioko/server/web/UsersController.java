@@ -38,10 +38,9 @@ public class UsersController {
 
     @GetMapping("/users")
     public ModelAndView users(@RequestParam(name = "p", defaultValue = "0") Integer page) {
-        // FIXME: only show non-deleted
         ModelAndView modelAndView = new ModelAndView("users");
         modelAndView.addObject("users", userRepo.findByDeletedIsNull(new PageRequest(page, 10)));
-        modelAndView.addObject("roles", roleRepo.findAll());
+        modelAndView.addObject("roles", roleRepo.findByDeletedIsNull());
         return modelAndView;
     }
 
