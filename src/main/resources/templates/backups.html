@@ -12,8 +12,8 @@
         <h1 class="col col-auto">
             <span class="oi oi-shield" aria-hidden="true"></span> <span th:text="#{nav.backups}">Backups</span>
         </h1>
-        <div class="col" sec:authorize="hasAuthority('CREATE_BACKUPS')">
-            <div class="btn btn-primary" data-toggle="modal" data-target="#backupmodal" th:inline="text"><span class="oi oi-plus"></span> [[#{backups.btn.create}]]</div>
+        <div class="col">
+            <div class="btn btn-primary" data-toggle="modal" data-target="#backupmodal" sec:authorize="hasAuthority('CREATE_BACKUPS')" th:inline="text"><span class="oi oi-plus"></span> [[#{backups.btn.create}]]</div>
             <div class="modal fade" id="backupmodal">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -24,7 +24,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form id="backupform" th:action="@{/backups}" novalidate="">
+                            <form id="backupform" novalidate="">
                                 <div class="form-group">
                                     <label for="name" th:text="#{backups.lbl.name} + ':'"></label>
                                     <input id="name" class="form-control" required=""/>
@@ -38,7 +38,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{backups.btn.close}">Close</button>
+                            <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{backups.btn.close}">Close</button>
                             <button type="submit" class="btn btn-primary" th:inline="text">
                                 <span class="oi oi-plus" aria-hidden="true"></span> [[#{backups.btn.create}]]
                             </button>
@@ -78,6 +78,7 @@
                 <th th:text="#{backups.lbl.name}">Name</th>
                 <th th:text="#{backups.lbl.description}">Description</th>
                 <th th:text="#{backups.lbl.created}">Created</th>
+                <th class="text-center" th:text="#{table.lbl.actions}"></th>
             </tr>
             </thead>
             <tbody>
@@ -86,6 +87,17 @@
                     <td th:text="${b.name}">Name</td>
                     <td th:text="${b.description}">Description</td>
                     <td th:text="${#calendars.format(b.created)}">Description</td>
+                    <td class="align-middle text-center">
+                        <div class="btn-group">
+                            <span class="btn btn-outline-primary oi oi-info pr-3 pl-3" data-toggle="modal" data-target="#backupmodal"
+                                  th:attr="data-entity=${b.name},data-action=none,data-title=#{backups.ttl.view}"></span>
+                            <span class="btn btn-outline-primary oi oi-pencil" data-toggle="modal" data-target="#backupmodal"
+                                  th:attr="data-entity=${b.name},data-title=#{backups.ttl.edit},data-action=edit,data-action-label=#{backups.btn.save},data-action-icon=pencil"
+                                  sec:authorize="hasAuthority('EDIT_BACKUPS')"></span>
+                            <span id="delete" th:attr="data-entity=${b.name}" class="btn btn-outline-primary oi oi-trash"
+                                  sec:authorize="hasAuthority('DELETE_BACKUPS')"></span>
+                        </div>
+                    </td>
                 </tr>
             </th:block>
             </tbody>
@@ -94,7 +106,9 @@
     </th:block>
 </div>
 <div th:replace="fragments/footer :: footer"/>
-<script>
+<script th:inline="javascript">
+    var createUrl = /*[[@{/backups}]]*/ 'create-url-placeholder',
+        entityUrl = /*[[@{/backup}]]*/ 'update-url-placeholder';
 //<![CDATA[
     var $modal = $('#backupmodal'),
         $form = $modal.find('#backupform'),
@@ -123,43 +137,47 @@
         $(this).addClass('was-validated');
     }).on('validation-success', function(e) {
         var $f = $(this);
-        $f.trigger('upload-prepare');
+        $f.trigger('action-prepare');
         $.ajax({
-            type: 'POST',
+            type: $f.data('action') === 'create'? 'POST' : 'PUT',
             contentType: 'application/json',
-            url: $f.attr('action'),
+            url: $f.data('action') === 'create'? createUrl : entityUrl + '/' + $f.data('entity'),
             data: JSON.stringify({
                 name: $f.find('#name').val(),
                 description: $f.find('#description').val()
             }),
             dataType: 'json',
             success: function (jsonrsp) {
-                $f.trigger({type: 'upload-success', response: jsonrsp});
+                $f.trigger({type: 'action-success', response: jsonrsp});
             },
             error: function (rsp) {
-                $f.trigger({type: 'upload-failed', response: rsp.responseJSON});
+                $f.trigger({type: 'action-failed', response: rsp.responseJSON});
             },
             complete: function(rsp) {
-                $f.trigger({type: 'upload-complete', response: rsp.responseJSON});
+                $f.trigger({type: 'action-complete', response: rsp.responseJSON});
             }
         });
     });
 
-    $modal.on('upload-prepare', function() {
+    $modal.on('action-prepare', function() {
         $form.removeClass('was-validated');
         $form.find('.invalid-feedback:not(.server)').addClass('d-none');
         $submitBtn.prop("disabled", true);
-    }).on('upload-success', function(e) {
-        $.each(e.response.messages, function(idx, msg) {
-            $('#content').prepend(
-                '<div class="row"><div class="col"><div class="alert alert-dismissible alert-success fade show" role="alert" data-dismiss="alert">' +
-                "<span>" + msg + "</span>" +
-                '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
-                "</div></div></div>");
-        });
-        $(this).modal("hide");
-        $form.trigger("reset");
-    }).on('upload-failed', function(e) {
+    }).on('action-success', function(e) {
+        if ($form.data('action') === 'edit') {
+            location.reload(true);
+        } else {
+            $.each(e.response.messages, function (idx, msg) {
+                $('#content').prepend(
+                    '<div class="row"><div class="col"><div class="alert alert-dismissible alert-success fade show" role="alert" data-dismiss="alert">' +
+                    "<span>" + msg + "</span>" +
+                    '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                    "</div></div></div>");
+            });
+            $(this).modal("hide");
+            $form.trigger("reset");
+        }
+    }).on('action-failed', function(e) {
         $.each(e.response.fieldErrors, function(fieldname, errors) {
             var $field = $form.find('#'+fieldname);
             $field.addClass('is-invalid');
@@ -168,8 +186,53 @@
                 $group.append('<span class="small invalid-feedback server">' + error + '</span>');
             });
         });
-    }).on('upload-complete', function(e) {
+    }).on('action-complete', function(e) {
         $submitBtn.prop("disabled", false);
+    }).on('show.bs.modal', function(e) {
+
+        var $toggle = $(e.relatedTarget), $closeBtn = $('#close'),
+            action = $toggle.data('action'), title = $toggle.data('title'), entity = $toggle.data('entity');
+
+        $modal.find('.modal-title').text(title);
+
+        if (action !== 'none') {
+            $closeBtn.removeClass('btn-primary').addClass('btn-secondary');
+            $form.data('action', action);
+            $submitBtn.removeClass('d-none');
+            $submitBtn.html('<span class="oi oi-' + $toggle.data('action-icon') + '" aria-hidden="true"></span> '
+                + $toggle.data('action-label'));
+            $form.find('.form-control').prop('disabled', false);
+        } else {
+            $closeBtn.removeClass('btn-secondary').addClass('btn-primary');
+            $submitBtn.addClass('d-none');
+            $form.find('.form-control').prop('disabled', true);
+        }
+
+        if (entity) {
+            $form.data('entity', entity);
+            $form.trigger('load-entity');
+        }
+    }).on('load-entity', function() {
+        $.ajax({
+            type: 'GET',
+            url: entityUrl + '/' + $form.data('entity'),
+            dataType: 'json',
+            success: function (data) {
+                $.each(['name','description'], function(i,v) {
+                    $form.find('#'+v).val(data[v]);
+                });
+            }
+        });
+    });
+
+    $('span#delete.btn').click(function() {
+        $.ajax({
+            type: 'DELETE',
+            url: entityUrl + '/' + $(this).data('entity'),
+            success: function() {
+                location.reload(true);
+            }
+        });
     });
 //]]>
 </script>

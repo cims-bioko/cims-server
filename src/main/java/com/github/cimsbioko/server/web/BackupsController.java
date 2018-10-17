@@ -5,6 +5,7 @@ import com.github.cimsbioko.server.domain.Backup;
 import com.github.cimsbioko.server.service.BackupService;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -43,6 +44,35 @@ public class BackupsController {
         service.createBackup(backup.getName(), backup.getDescription());
         return new AjaxResult()
                 .addMessage(resolveMessage("backups.msg.queued", locale));
+    }
+
+    @PreAuthorize("hasAuthority('VIEW_BACKUPS')")
+    @GetMapping("/backup/{name}")
+    @ResponseBody
+    public Backup loadBackup(@PathVariable("name") String name) {
+        return repo.findOne(name);
+    }
+
+    @PreAuthorize("hasAuthority('EDIT_BACKUPS')")
+    @PutMapping("/backup/{name}")
+    @ResponseBody
+    public ResponseEntity<?> updateBackup(@PathVariable("name") String name, @Valid @RequestBody Backup backup, Locale locale) {
+        service.updateBackup(name, backup);
+        return ResponseEntity
+                .ok(new AjaxResult()
+                        .addMessage(
+                                resolveMessage("backups.msg.updated", locale, name)));
+    }
+
+    @PreAuthorize("hasAuthority('DELETE_BACKUPS')")
+    @DeleteMapping("/backup/{name}")
+    @ResponseBody
+    public ResponseEntity<?> deleteBackup(@PathVariable("name") String name, Locale locale) {
+        service.deleteBackup(name);
+        return ResponseEntity
+                .ok(new AjaxResult()
+                        .addMessage(
+                                resolveMessage("backups.msg.deleted", locale, name)));
     }
 
     @ExceptionHandler
