@@ -3,10 +3,9 @@ package com.github.cimsbioko.server.config;
 import org.apache.catalina.Context;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.webresources.StandardRoot;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
-import org.springframework.boot.context.embedded.MimeMappings;
-import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.MimeMappings;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartResolver;
@@ -42,8 +41,8 @@ public class WebConfig {
     }
 
     @Bean
-    public EmbeddedServletContainerFactory servletContainer() {
-        return new TomcatEmbeddedServletContainerFactory() {
+    public TomcatServletWebServerFactory servletContainer() {
+        return new TomcatServletWebServerFactory() {
             @Override
             protected void postProcessContext(Context ctx) {
                 final int sizeInKB = 32 * 1024;  // default is 10MiB, increase to 32
@@ -55,7 +54,7 @@ public class WebConfig {
     }
 
     @Bean
-    public EmbeddedServletContainerCustomizer apiMimeTypeExtender() {
+    public WebServerFactoryCustomizer<TomcatServletWebServerFactory> apiMimeTypeExtender() {
         return container -> {
             MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
             mappings.add("db", "application/x-sqlite3");
