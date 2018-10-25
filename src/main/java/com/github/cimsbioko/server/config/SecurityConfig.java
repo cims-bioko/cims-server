@@ -40,7 +40,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    RunAsUserAspect runAsUserAspect(UserDetailsService userDetailsService){
+    RunAsUserAspect runAsUserAspect(UserDetailsService userDetailsService) {
         return new RunAsUserAspect(userDetailsService);
     }
 
