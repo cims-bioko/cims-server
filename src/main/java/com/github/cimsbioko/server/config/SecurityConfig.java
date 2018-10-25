@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
 
@@ -72,19 +71,11 @@ public class SecurityConfig {
     @Order(1)
     public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
-        @Autowired
-        DigestAuthenticationFilter digestFilter;
-
-        @Autowired
-        DigestAuthenticationEntryPoint digestAuthEndpoint;
-
         protected void configure(HttpSecurity http) throws Exception {
-            http
-                    .antMatcher("/api/**")
+            http.antMatcher("/api/**")
                     .headers().disable()
                     .csrf().disable()
                     .exceptionHandling()
-                    .authenticationEntryPoint(digestAuthEndpoint)
                     .and()
                     .sessionManagement()
                     .sessionCreationPolicy(STATELESS)
@@ -104,9 +95,7 @@ public class SecurityConfig {
                     .antMatchers(GET, "/api/odk/submission/**").hasAuthority("ODK_SUBMISSION_DOWNLOAD")
                     .anyRequest().authenticated()
                     .and()
-                    .httpBasic()
-                    .and()
-                    .addFilterAfter(digestFilter, BasicAuthenticationFilter.class);
+                    .httpBasic();
         }
     }
 
