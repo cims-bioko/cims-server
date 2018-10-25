@@ -79,7 +79,8 @@ public class UsersController {
     @GetMapping("/user/{uuid}")
     @ResponseBody
     public UserForm loadUser(@PathVariable("uuid") String uuid) {
-        User u = userRepo.findOne(uuid);
+        // FIXME: Use optional rather than null
+        User u = userRepo.findById(uuid).orElse(null);
         UserForm result = new UserForm();
         result.setFirstName(u.getFirstName());
         result.setLastName(u.getLastName());
@@ -94,7 +95,8 @@ public class UsersController {
     @ResponseBody
     public ResponseEntity<?> updateUser(@PathVariable("uuid") String uuid, @Valid @RequestBody UserForm form, Locale locale) {
 
-        User u = userRepo.findOne(uuid);
+        // FIXME: Use optional rather than null
+        User u = userRepo.findById(uuid).orElse(null);
 
         if (u == null) {
             return ResponseEntity
@@ -125,7 +127,8 @@ public class UsersController {
     @ResponseBody
     public ResponseEntity<?> deleteUser(@PathVariable("uuid") String uuid, Locale locale) {
 
-        User u = userRepo.findOne(uuid);
+        // FIXME: Use optional rather than null
+        User u = userRepo.findById(uuid).orElse(null);
 
         if (u == null) {
             return ResponseEntity

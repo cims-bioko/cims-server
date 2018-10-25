@@ -50,7 +50,8 @@ public class BackupsController {
     @GetMapping("/backup/{name}")
     @ResponseBody
     public Backup loadBackup(@PathVariable("name") String name) {
-        return repo.findOne(name);
+        // FIXME: Use optional rather than null
+        return repo.findById(name).orElse(null);
     }
 
     @PreAuthorize("hasAuthority('EDIT_BACKUPS')")

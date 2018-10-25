@@ -115,7 +115,8 @@ public class FormServiceImpl implements FormService {
 
         // try to lookup form based on form id and version
         FormId formId = new FormId(id, version);
-        Form form = formDao.findOne(formId);
+        // FIXME: Use optional rather than null
+        Form form = formDao.findById(formId).orElse(null);
 
         // create or update the form in the database
         if (form == null) {

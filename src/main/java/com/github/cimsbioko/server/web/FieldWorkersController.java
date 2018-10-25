@@ -65,7 +65,8 @@ public class FieldWorkersController {
     @GetMapping("/fieldworker/{uuid}")
     @ResponseBody
     public FieldWorkerForm loadFieldworker(@PathVariable("uuid") String uuid) {
-        FieldWorker f = repo.findOne(uuid);
+        // FIXME: Use optional rather than null
+        FieldWorker f = repo.findById(uuid).orElse(null);
         FieldWorkerForm result = new FieldWorkerForm();
         result.setId(f.getExtId());
         result.setFirstName(f.getFirstName());
@@ -78,7 +79,8 @@ public class FieldWorkersController {
     @ResponseBody
     public ResponseEntity<?> updateFieldworker(@PathVariable("uuid") String uuid, @Valid @RequestBody FieldWorkerForm form, Locale locale) {
 
-        FieldWorker f = repo.findOne(uuid);
+        // FIXME: Use optional rather than null
+        FieldWorker f = repo.findById(uuid).orElse(null);
 
         if (f == null) {
             return ResponseEntity
@@ -107,7 +109,8 @@ public class FieldWorkersController {
     @ResponseBody
     public ResponseEntity<?> deleteFieldworker(@PathVariable("uuid") String uuid, Locale locale) {
 
-        FieldWorker f = repo.findOne(uuid);
+        // FIXME: Use optional rather than null
+        FieldWorker f = repo.findById(uuid).orElse(null);
 
         if (f == null) {
             return ResponseEntity

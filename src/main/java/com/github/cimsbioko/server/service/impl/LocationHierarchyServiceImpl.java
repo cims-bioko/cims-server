@@ -39,7 +39,8 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
                     }
                 }
         );
-        return repo.findOne(uuid);
+        // FIXME: Use optional rather than null
+        return repo.findById(uuid).orElse(null);
     }
 
     @Override
@@ -56,7 +57,8 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
                     }
                 }
         );
-        return repo.findOne(uuid);
+        // FIXME: Use optional rather than null
+        return repo.findById(uuid).orElse(null);
     }
 
     @Override
@@ -74,7 +76,8 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
                     }
                 }
         );
-        return repo.findOne(uuid);
+        // FIXME: Use optional rather than null
+        return repo.findById(uuid).orElse(null);
     }
 
     @Override
@@ -91,6 +94,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
                     }
                 }
         );
-        return repo.findOne(uuid);
+        // FIXME: Use optional rather than null
+        return repo.findById(uuid).orElse(null);
     }
 }

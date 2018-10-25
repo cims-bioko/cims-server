@@ -44,7 +44,8 @@ public class LocationFormProcessor extends AbstractFormProcessor {
 
         Location location;
         try {
-            location = locRepo.findOne(form.entityUuid);
+            // FIXME: use optional rather than null
+            location = locRepo.findById(form.entityUuid).orElse(null);
             if (location != null) {
                 cv.addViolations("Location already exists " + form.entityUuid);
                 throw cv;
@@ -56,7 +57,8 @@ public class LocationFormProcessor extends AbstractFormProcessor {
         location = new Location();
 
         // collected by whom?
-        FieldWorker collectedBy = fwRepo.findOne(form.fieldWorkerUuid);
+        // FIXME: use optional rather than null
+        FieldWorker collectedBy = fwRepo.findById(form.fieldWorkerUuid).orElse(null);
         if (null == collectedBy) {
             cv.addViolations("Field Worker does not exist : " + form.fieldWorkerUuid);
             throw cv;
@@ -73,7 +75,8 @@ public class LocationFormProcessor extends AbstractFormProcessor {
             if (uuid == null) {
                 locationHierarchy = hierRepo.findByExtId(form.hierarchyExtId);
             } else {
-                locationHierarchy = hierRepo.findOne(uuid);
+                // FIXME: Use optional rather than null
+                locationHierarchy = hierRepo.findById(uuid).orElse(null);
                 if (null == locationHierarchy) {
                     locationHierarchy = createSector(form);
                 }
@@ -145,7 +148,8 @@ public class LocationFormProcessor extends AbstractFormProcessor {
         locationHierarchy.setName(form.sectorName);
 
         String parentUuid = form.hierarchyParentUuid;
-        LocationHierarchy parent = hierRepo.findOne(parentUuid);
+        // FIXME: Use optional rather than null
+        LocationHierarchy parent = hierRepo.findById(parentUuid).orElse(null);
         if (parent == null) {
             throw new ConstraintViolations("Could not find location hierarchy parent with UUID " + parentUuid);
         }

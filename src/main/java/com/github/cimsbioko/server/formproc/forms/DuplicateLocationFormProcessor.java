@@ -29,7 +29,8 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
     public void processForm(Form form) {
         if (form.entityUuid != null) {
 
-            Location location = locRepo.findOne(form.entityUuid); // don't find if location is deleted? or just ignore?
+            // FIXME: after spring-data upgrade, we can and should use Optional
+            Location location = locRepo.findById(form.entityUuid).orElse(null); // don't find if location is deleted? or just ignore?
 
             if (location != null) {
 
@@ -98,7 +99,7 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
         // could improve on this, but it's likely moving into campaign configuration
         Location dst;
         if (form.mergeToUuid != null) {
-            dst = Optional.ofNullable(locRepo.findOne(form.mergeToUuid))
+            dst = locRepo.findById(form.mergeToUuid)
                     .filter(l -> l.getDeleted() == null && !form.mergeToExtId.equals(l.getExtId()))
                     .orElse(null);
         } else {

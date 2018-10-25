@@ -76,7 +76,8 @@ public class RolesController {
     @GetMapping("/role/{uuid}")
     @ResponseBody
     public RoleForm loadRole(@PathVariable("uuid") String uuid) {
-        Role r = roleRepo.findOne(uuid);
+        // FIXME: Use optional rather than null
+        Role r = roleRepo.findById(uuid).orElse(null);
         RoleForm result = new RoleForm();
         result.setName(r.getName());
         result.setDescription(r.getDescription());
@@ -89,7 +90,8 @@ public class RolesController {
     @ResponseBody
     public ResponseEntity<?> updateRole(@PathVariable("uuid") String uuid, @Valid @RequestBody RoleForm form, Locale locale) {
 
-        Role r = roleRepo.findOne(uuid);
+        // FIXME: Use optional rather than null
+        Role r = roleRepo.findById(uuid).orElse(null);
 
         if (r == null) {
             return ResponseEntity
@@ -115,7 +117,8 @@ public class RolesController {
     @ResponseBody
     public ResponseEntity<?> deleteRole(@PathVariable("uuid") String uuid, Locale locale) {
 
-        Role r = roleRepo.findOne(uuid);
+        // FIXME: Use optional rather than null
+        Role r = roleRepo.findById(uuid).orElse(null);
 
         if (r == null) {
             return ResponseEntity

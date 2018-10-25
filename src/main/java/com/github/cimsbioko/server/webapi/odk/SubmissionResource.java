@@ -113,7 +113,8 @@ public class SubmissionResource {
     private ResponseEntity<?> getInstanceEntity(MediaType type, String instanceId)
             throws IOException {
         try {
-            FormSubmission submission = submissionDao.findOne(instanceId);
+            // FIXME: Use optional rather than null
+            FormSubmission submission = submissionDao.findById(instanceId).orElse(null);
             String contentString = APPLICATION_JSON.equals(type) ? submission.getJson().toString() : stringFromDoc(submission.getXml());
             org.springframework.core.io.Resource contents = new ByteArrayResource(contentString.getBytes());
             HttpHeaders headers = new HttpHeaders();
@@ -185,7 +186,8 @@ public class SubmissionResource {
         }
         String submissionBaseUrl = String.format("%s/submission",
                 buildFullRequestUrl(req).split("/view/downloadSubmission")[0]);
-        String contents = buildSubmissionDescriptor(submissionDao.findOne(info[1]), submissionBaseUrl);
+        // FIXME: Use optional rather than null
+        String contents = buildSubmissionDescriptor(submissionDao.findById(info[1]).orElse(null), submissionBaseUrl);
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.TEXT_XML)
@@ -319,7 +321,8 @@ public class SubmissionResource {
             rootElem.setAttribute(VERSION, version);
         }
 
-        Form form = formDao.findOne(new FormId(id, version));
+        // FIXME: Use optional rather than null
+        Form form = formDao.findById(new FormId(id, version)).orElse(null);
 
         if (form == null) {
             log.warn("rejected {}, unknown form id={}, version={}", instanceId, id, version);

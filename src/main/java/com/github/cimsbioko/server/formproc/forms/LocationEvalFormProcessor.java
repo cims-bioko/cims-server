@@ -23,7 +23,8 @@ public class LocationEvalFormProcessor extends AbstractFormProcessor {
     @Transactional
     public void processForm(Form form) {
         if (form.entityUuid != null) {
-            Location location = repo.findOne(form.entityUuid);
+            // FIXME: use optional rather than null
+            Location location = repo.findById(form.entityUuid).orElse(null);
             if (location != null) {
                 switch (form.evaluation) {
                     case NOT_FOUND:

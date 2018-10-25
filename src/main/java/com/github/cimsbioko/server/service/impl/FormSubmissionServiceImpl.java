@@ -28,14 +28,17 @@ public class FormSubmissionServiceImpl implements FormSubmissionService {
     @Transactional
     public FormSubmission recordSubmission(FormSubmission submission) throws ExistingSubmissionException {
         String instanceId = submission.getInstanceId();
-        FormSubmission existing = submissionDao.findOne(instanceId);
+        // FIXME: Use optional rather than null
+        FormSubmission existing = submissionDao.findById(instanceId).orElse(null);
         if (existing != null) {
             throw new ExistingSubmissionException("submission with id " + instanceId + " exists", existing);
         } else {
             submissionDao.save(submission);
-            Form form = formDao.findOne(new FormId(submission.getFormId(), submission.getFormVersion()));
+            // FIXME: Use optional rather than null
+            Form form = formDao.findById(new FormId(submission.getFormId(), submission.getFormVersion())).orElse(null);
             form.setLastSubmission(Timestamp.from(Instant.now()));
-            return submissionDao.findOne(instanceId);
+            // FIXME: Use optional rather than null
+            return submissionDao.findById(instanceId).orElse(null);
         }
     }
 

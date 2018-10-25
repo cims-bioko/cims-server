@@ -50,7 +50,8 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
 
         // collected by whom?
         ConstraintViolations cv = new ConstraintViolations();
-        FieldWorker collectedBy = fwRepo.findOne(form.fieldWorkerUuid);
+        // FIXME: use optional rather than null
+        FieldWorker collectedBy = fwRepo.findById(form.fieldWorkerUuid).orElse(null);
         if (collectedBy == null) {
             cv.addViolations("Field Worker does not exist");
             throw cv;
@@ -62,7 +63,8 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
             // Get location by uuid.
             // Fall back on extId if uuid is missing, which allows us to re-process older forms.
             if (form.householdUuid != null) {
-                location = locRepo.findOne(form.householdUuid);
+                // FIXME: use optional rather than null
+                location = locRepo.findById(form.householdUuid).orElse(null);
             } else {
                 location = locRepo.findByExtIdAndDeletedIsNull(form.householdExtId)
                         .stream().findFirst().orElse(null);
@@ -115,11 +117,7 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
 
     private Individual findOrMakeIndividual(Form form, FieldWorker collectedBy,
                                             Calendar insertTime) {
-        Individual individual = indivRepo.findOne(form.entityUuid);
-        if (individual == null) {
-            individual = new Individual();
-        }
-
+        Individual individual = indivRepo.findById(form.entityUuid).orElse(new Individual());
         individual.setCollector(collectedBy);
         individual.setCreated(insertTime);
 
