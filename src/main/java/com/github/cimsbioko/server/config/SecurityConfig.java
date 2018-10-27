@@ -11,8 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
-import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
 
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
@@ -47,24 +45,6 @@ public class SecurityConfig {
     @Bean
     LastLoginHandler lastLoginHandler(UserRepository userRepo) {
         return new LastLoginHandler(userRepo);
-    }
-
-    @Bean
-    public DigestAuthenticationEntryPoint digestEntryPoint() {
-        DigestAuthenticationEntryPoint entryPoint = new DigestAuthenticationEntryPoint();
-        entryPoint.setRealmName("CIMS API");
-        entryPoint.setKey("cims-dig-it");
-        entryPoint.setNonceValiditySeconds(10);
-        return entryPoint;
-    }
-
-    @Bean
-    public DigestAuthenticationFilter digestAuthFilter(DigestAuthenticationEntryPoint entryPoint,
-                                                       UserDetailsService userDetailsService) {
-        DigestAuthenticationFilter filter = new DigestAuthenticationFilter();
-        filter.setUserDetailsService(userDetailsService);
-        filter.setAuthenticationEntryPoint(entryPoint);
-        return filter;
     }
 
     @Configuration
