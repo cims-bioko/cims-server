@@ -1,5 +1,5 @@
 update
-  cims.users
+  users
 set
   password = concat('{noop}', password)
 where
