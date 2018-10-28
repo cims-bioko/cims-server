@@ -2,10 +2,12 @@ package com.github.cimsbioko.server.web;
 
 import com.github.cimsbioko.server.dao.FieldWorkerRepository;
 import com.github.cimsbioko.server.domain.FieldWorker;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -26,9 +28,11 @@ public class FieldWorkersController {
 
     private FieldWorkerRepository repo;
     private MessageSource messages;
+    private PasswordEncoder encoder;
 
-    public FieldWorkersController(FieldWorkerRepository repo, MessageSource messages) {
+    public FieldWorkersController(FieldWorkerRepository repo, @Qualifier("fieldworkerPasswordEncoder") PasswordEncoder encoder, MessageSource messages) {
         this.repo = repo;
+        this.encoder = encoder;
         this.messages = messages;
     }
 
@@ -54,7 +58,7 @@ public class FieldWorkersController {
         fw.setExtId(form.getId());
         fw.setFirstName(form.getFirstName());
         fw.setLastName(form.getLastName());
-        fw.setPassword(form.getPassword());
+        fw.setPasswordHash(encoder.encode(form.getPassword()));
         fw = repo.save(fw);
         return ResponseEntity
                 .ok(new AjaxResult()
@@ -95,7 +99,7 @@ public class FieldWorkersController {
         f.setFirstName(form.getFirstName());
         f.setLastName(form.getLastName());
         if (form.getPassword() != null) {
-            f.setPassword(form.getPassword());
+            f.setPasswordHash(encoder.encode(form.getPassword()));
         }
         repo.save(f);
         return ResponseEntity

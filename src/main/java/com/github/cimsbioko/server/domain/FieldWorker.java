@@ -103,11 +103,6 @@ public class FieldWorker implements Serializable {
         this.lastName = lastName;
     }
 
-    @Transient
-    public void setPassword(String raw) {
-        setPasswordHash(hashpw(raw, gensalt(12)));
-    }
-
     public String getPasswordHash() {
         return passwordHash;
     }

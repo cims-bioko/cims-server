@@ -8,6 +8,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,11 +30,13 @@ public class UsersController {
 
     private UserRepository userRepo;
     private RoleRepository roleRepo;
+    private PasswordEncoder encoder;
     private MessageSource messages;
 
-    public UsersController(UserRepository userRepo, RoleRepository roleRepo, MessageSource messages) {
+    public UsersController(UserRepository userRepo, RoleRepository roleRepo, PasswordEncoder encoder, MessageSource messages) {
         this.userRepo = userRepo;
         this.roleRepo = roleRepo;
+        this.encoder = encoder;
         this.messages = messages;
     }
 
@@ -65,7 +68,7 @@ public class UsersController {
         u.setLastName(userForm.getLastName());
         u.setDescription(userForm.getDescription());
         u.setUsername(userForm.getUsername());
-        u.setPassword(userForm.getPassword());
+        u.setPassword(encoder.encode(userForm.getPassword()));
         u.setRoles(roleRepo.findByUuidIn(Arrays.stream(userForm.getRoles()).collect(Collectors.toSet())));
         u = userRepo.save(u);
 
@@ -112,7 +115,7 @@ public class UsersController {
         u.setDescription(form.getDescription());
         u.setUsername(form.getUsername());
         if (form.getPassword() != null) {
-            u.setPassword(form.getPassword());
+            u.setPassword(encoder.encode(form.getPassword()));
         }
         u.setRoles(roleRepo.findByUuidIn(Arrays.stream(form.getRoles()).collect(Collectors.toSet())));
         userRepo.save(u);
