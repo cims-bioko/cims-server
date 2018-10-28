@@ -2,12 +2,12 @@ package com.github.cimsbioko.server.config;
 
 import com.github.cimsbioko.server.dao.UserRepository;
 import com.github.cimsbioko.server.security.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -61,8 +61,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    LastLoginHandler lastLoginHandler(UserRepository userRepo) {
-        return new LastLoginHandler(userRepo);
+    AuthSuccessHandler lastLoginHandler(UserRepository userRepo) {
+        return new AuthSuccessHandler(userRepo, delegatingPasswordEncoder());
     }
 
     @Configuration
@@ -100,12 +100,24 @@ public class SecurityConfig {
     @Configuration
     public static class FormWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
-        @Autowired
-        AuthenticationSuccessHandler authSuccessHandler;
+        private final AuthenticationSuccessHandler authSuccessHandler;
+        private final UserDetailsService detailsService;
+        private final PasswordEncoder encoder;
+
+        public FormWebSecurityConfigurerAdapter(AuthenticationSuccessHandler successHandler, UserDetailsService detailsService, PasswordEncoder encoder) {
+            this.authSuccessHandler = successHandler;
+            this.detailsService = detailsService;
+            this.encoder = encoder;
+        }
+
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.eraseCredentials(false)
+                    .userDetailsService(detailsService)
+                    .passwordEncoder(encoder);
+        }
 
         protected void configure(HttpSecurity http) throws Exception {
-            http
-                    .headers().disable()
+            http.headers().disable()
                     .csrf().disable()
                     .authorizeRequests()
                     .antMatchers("/css/**", "/images/**", "/webjars/**", "favicon.ico").permitAll()
@@ -113,8 +125,8 @@ public class SecurityConfig {
                     .and()
                     .formLogin()
                     .loginPage("/login")
-                    .permitAll()
                     .successHandler(authSuccessHandler)
+                    .permitAll()
                     .and()
                     .logout()
                     .permitAll();
