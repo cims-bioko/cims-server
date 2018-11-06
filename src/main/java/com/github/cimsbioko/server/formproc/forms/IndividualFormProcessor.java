@@ -105,14 +105,11 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
         individual.setExtId(location.getExtId() + individualSuffixSequence);
     }
 
-    private Individual findOrMakeIndividual(Form form, FieldWorker collectedBy,
-                                            Calendar insertTime) {
+    private Individual findOrMakeIndividual(Form form, FieldWorker collectedBy, Calendar insertTime) {
         Individual individual = indivRepo.findById(form.entityUuid).orElse(new Individual());
         individual.setCollector(collectedBy);
         individual.setCreated(insertTime);
-
         copyFormDataToIndividual(form, individual);
-
         return individual;
     }
 
