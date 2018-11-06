@@ -49,12 +49,10 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
         Calendar insertTime = Calendar.getInstance();
 
         // collected by whom?
-        ConstraintViolations cv = new ConstraintViolations();
         // FIXME: use optional rather than null
         FieldWorker collectedBy = fwRepo.findById(form.fieldWorkerUuid).orElse(null);
         if (collectedBy == null) {
-            cv.addViolations("Field Worker does not exist");
-            throw cv;
+            throw new ConstraintViolations("Field Worker does not exist: " + form.fieldWorkerUuid);
         }
 
         // where are we?
@@ -71,9 +69,7 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
             }
 
             if (location == null) {
-                String errorMessage = "Location does not exist " + form.householdUuid + " / " + form.householdExtId;
-                cv.addViolations(errorMessage);
-                throw cv;
+                throw new ConstraintViolations("Location does not exist: " + form.householdUuid + " / " + form.householdExtId);
             }
 
         } catch (Exception e) {
@@ -82,23 +78,17 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
 
         // make a new individual, to be persisted below
         Individual individual = findOrMakeIndividual(form, collectedBy, insertTime);
-        if (cv.hasViolations()) {
-            throw cv;
-        }
-
         location.addResident(individual);
 
         // change the individual's extId if the server has previously changed the extId of their location/household
         if (!form.householdExtId.equalsIgnoreCase(location.getExtId())) {
             updateIndividualExtId(individual, location);
-            cv.addViolations("Individual ExtId updated from " + form.individualExtId + " to " + individual.getExtId());
-            throw cv;
+            throw new ConstraintViolations("Individual ExtId updated from " + form.individualExtId + " to " + individual.getExtId());
         }
 
         // log a warning if the individual extId clashes with an existing individual's extId
         if (!indivRepo.findByExtIdAndDeletedIsNull(individual.getExtId()).isEmpty()) {
-            cv.addViolations("Warning: Individual ExtId clashes with an existing Individual's extId : " + individual.getExtId());
-            throw cv;
+            throw new ConstraintViolations("Warning: Individual ExtId clashes with an existing Individual's extId : " + individual.getExtId());
         }
 
         // persist the individual, used to be for cascading to residency

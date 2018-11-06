@@ -35,11 +35,8 @@ public class LocationFormProcessor extends AbstractFormProcessor {
     @Transactional
     public void processForm(Form form) throws ConstraintViolations {
 
-        ConstraintViolations cv = new ConstraintViolations();
-
         if (form.locationExtId == null) {
-            cv.addViolations("No Location ExtId provided");
-            throw cv;
+            throw new ConstraintViolations("No Location ExtId provided");
         }
 
         Location location;
@@ -47,8 +44,7 @@ public class LocationFormProcessor extends AbstractFormProcessor {
             // FIXME: use optional rather than null
             location = locRepo.findById(form.entityUuid).orElse(null);
             if (location != null) {
-                cv.addViolations("Location already exists " + form.entityUuid);
-                throw cv;
+                throw new ConstraintViolations("Location already exists " + form.entityUuid);
             }
         } catch (Exception e) {
             return;
@@ -60,8 +56,7 @@ public class LocationFormProcessor extends AbstractFormProcessor {
         // FIXME: use optional rather than null
         FieldWorker collectedBy = fwRepo.findById(form.fieldWorkerUuid).orElse(null);
         if (null == collectedBy) {
-            cv.addViolations("Field Worker does not exist : " + form.fieldWorkerUuid);
-            throw cv;
+            throw new ConstraintViolations("Field Worker does not exist: " + form.fieldWorkerUuid);
         }
         location.setCollector(collectedBy);
 
@@ -83,8 +78,7 @@ public class LocationFormProcessor extends AbstractFormProcessor {
             }
 
             if (locationHierarchy == null) {
-                cv.addViolations("Location Hierarchy does not exist : " + form.hierarchyUuid + " / " + form.hierarchyExtId);
-                throw cv;
+                throw new ConstraintViolations("Location Hierarchy does not exist : " + form.hierarchyUuid + " / " + form.hierarchyExtId);
             }
         } catch (Exception e) {
             return;
