@@ -51,14 +51,14 @@ public class RolesController {
     @ResponseBody
     public ResponseEntity<AjaxResult> createRole(@Valid @RequestBody RoleForm form, Locale locale) {
 
-//        if (userRepo.findByUsernameAndDeletedIsNull(userForm.getUsername()) != null) {
-//            return ResponseEntity
-//                    .badRequest()
-//                    .body(new AjaxResult()
-//                            .addError(resolveMessage("input.msg.errors", locale))
-//                            .addFieldError("username",
-//                                    resolveMessage("users.msg.exists", locale, userForm.getUsername())));
-//        }
+        if (roleRepo.findByNameAndDeletedIsNull(form.getName()).isPresent()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new AjaxResult()
+                            .addError(resolveMessage("input.msg.errors", locale))
+                            .addFieldError("name",
+                                    resolveMessage("roles.msg.exists", locale, form.getName())));
+        }
 
         Role r = new Role();
         r.setName(form.getName());
