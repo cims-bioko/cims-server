@@ -36,7 +36,7 @@ public class FormsController {
     @PreAuthorize("hasAuthority('VIEW_FORMS')")
     @GetMapping("/forms")
     public ModelAndView forms(@RequestParam(name = "p", defaultValue = "0") Integer page) {
-        return new ModelAndView("forms", "forms", repo.findAll(new PageRequest(page, 10)));
+        return new ModelAndView("forms", "forms", repo.findAll(PageRequest.of(page, 10)));
     }
 
     @PreAuthorize("hasAuthority('FORM_UPLOAD')")

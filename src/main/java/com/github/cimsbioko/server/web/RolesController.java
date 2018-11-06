@@ -41,7 +41,7 @@ public class RolesController {
     @GetMapping("/roles")
     public ModelAndView roles(@RequestParam(name = "p", defaultValue = "0") Integer page) {
         ModelAndView modelAndView = new ModelAndView("roles");
-        modelAndView.addObject("roles", roleRepo.findByDeletedIsNull(new PageRequest(page, 10)));
+        modelAndView.addObject("roles", roleRepo.findByDeletedIsNull(PageRequest.of(page, 10)));
         modelAndView.addObject("privileges", privRepo.findAll());
         return modelAndView;
     }

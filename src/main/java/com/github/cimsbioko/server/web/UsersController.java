@@ -44,7 +44,7 @@ public class UsersController {
     @GetMapping("/users")
     public ModelAndView users(@RequestParam(name = "p", defaultValue = "0") Integer page) {
         ModelAndView modelAndView = new ModelAndView("users");
-        modelAndView.addObject("users", userRepo.findByDeletedIsNull(new PageRequest(page, 10)));
+        modelAndView.addObject("users", userRepo.findByDeletedIsNull(PageRequest.of(page, 10)));
         modelAndView.addObject("roles", roleRepo.findByDeletedIsNull());
         return modelAndView;
     }

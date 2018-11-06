@@ -45,7 +45,7 @@ public class FormSubmissionServiceImpl implements FormSubmissionService {
     @Override
     @Transactional(readOnly = true)
     public List<FormSubmission> getUnprocessed(int batchSize) {
-        return submissionDao.findByProcessedNullOrderByCollected(new PageRequest(0, batchSize));
+        return submissionDao.findByProcessedNullOrderByCollected(PageRequest.of(0, batchSize));
     }
 
     @Override

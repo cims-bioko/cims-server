@@ -148,7 +148,7 @@ public class SubmissionResource {
             lastSeen = Timestamp.valueOf(cursor);
         }
         limit = limit == null || limit > 100 || limit <= 0 ? 100 : limit;
-        PageRequest page = new PageRequest(0, limit, Sort.Direction.ASC, "submitted");
+        PageRequest page = PageRequest.of(0, limit, Sort.by(Sort.Direction.ASC, "submitted"));
         String chunkList = buildSubmissionChunk(submissionDao.findByFormIdAndSubmittedAfter(form, lastSeen, page), cursor);
         return ResponseEntity
                 .ok()

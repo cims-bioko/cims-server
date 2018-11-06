@@ -40,7 +40,7 @@ public class FieldWorkersController {
     @GetMapping("/fieldworkers")
     public ModelAndView fieldworkers(@RequestParam(name = "p", defaultValue = "0") Integer page) {
         return new ModelAndView("fieldworkers",
-                "fieldworkers", repo.findByDeletedIsNull(new PageRequest(page, 10)));
+                "fieldworkers", repo.findByDeletedIsNull(PageRequest.of(page, 10)));
     }
 
     @PreAuthorize("hasAuthority('CREATE_FIELDWORKERS')")

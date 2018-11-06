@@ -34,7 +34,7 @@ public class BackupsController {
     @PreAuthorize("hasAuthority('VIEW_BACKUPS')")
     @GetMapping("/backups")
     public ModelAndView backups(@RequestParam(name = "p", defaultValue = "0") Integer page) {
-        return new ModelAndView("backups", "backups", repo.findAll(new PageRequest(page, 10)));
+        return new ModelAndView("backups", "backups", repo.findAll(PageRequest.of(page, 10)));
     }
 
     @PreAuthorize("hasAuthority('CREATE_BACKUPS')")
