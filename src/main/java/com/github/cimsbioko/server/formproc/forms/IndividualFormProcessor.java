@@ -91,8 +91,7 @@ public class IndividualFormProcessor extends AbstractFormProcessor {
             throw new ConstraintViolations("Warning: Individual ExtId clashes with an existing Individual's extId : " + individual.getExtId());
         }
 
-        // persist the individual, used to be for cascading to residency
-        // TODO: remove this type of code, since it's probably unnecessary after removing residency
+        // persist the individual, since it may have been created if not present
         individual = indivRepo.save(individual);
 
         if (form.individualRelationshipToHeadOfHousehold.equals(HEAD_OF_HOUSEHOLD_SELF)) {
