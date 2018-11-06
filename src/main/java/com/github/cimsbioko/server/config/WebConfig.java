@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -25,8 +25,8 @@ public class WebConfig {
     File dataDir;
 
     @Bean
-    WebMvcConfigurerAdapter webMvcConfigurerAdapter() {
-        return new WebMvcConfigurerAdapter() {
+    WebMvcConfigurer webMvcConfigurerAdapter() {
+        return new WebMvcConfigurer() {
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
                 registry.addResourceHandler(CACHED_FILES_PATH + "/**")
