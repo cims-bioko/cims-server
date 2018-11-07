@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface FieldWorkerRepository extends PagingAndSortingRepository<FieldWorker, String> {
+public interface FieldWorkerRepository extends PagingAndSortingRepository<FieldWorker, String>, FieldworkerSearch {
 
     Page<FieldWorker> findByDeletedIsNull(Pageable pageable);
 

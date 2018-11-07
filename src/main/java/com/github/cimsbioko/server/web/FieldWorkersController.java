@@ -38,9 +38,13 @@ public class FieldWorkersController {
 
     @PreAuthorize("hasAuthority('VIEW_FIELDWORKERS')")
     @GetMapping("/fieldworkers")
-    public ModelAndView fieldworkers(@RequestParam(name = "p", defaultValue = "0") Integer page) {
-        return new ModelAndView("fieldworkers",
-                "fieldworkers", repo.findByDeletedIsNull(PageRequest.of(page, 10)));
+    public ModelAndView fieldworkers(@RequestParam(name = "p", defaultValue = "0") Integer page,
+                                     @RequestParam(name = "q", defaultValue = "") String query) {
+        PageRequest pageObj = PageRequest.of(page, 10);
+        ModelAndView mav = new ModelAndView("fieldworkers");
+        mav.addObject("fieldworkers", query.isEmpty() ? repo.findByDeletedIsNull(pageObj) : repo.findBySearch(query, pageObj));
+        mav.addObject("query", query);
+        return mav;
     }
 
     @PreAuthorize("hasAuthority('CREATE_FIELDWORKERS')")
@@ -132,6 +136,32 @@ public class FieldWorkersController {
                 .ok(new AjaxResult()
                         .addMessage(
                                 resolveMessage("fieldworkers.msg.deleted", locale, uuid)));
+    }
+
+    @PreAuthorize("hasAuthority('RESTORE_FIELDWORKERS')")
+    @PutMapping("/fieldworker/restore/{uuid}")
+    @ResponseBody
+    public ResponseEntity<?> restoreFieldworker(@PathVariable("uuid") String uuid, Locale locale) {
+
+        // FIXME: Use optional rather than null
+        FieldWorker f = repo.findById(uuid).orElse(null);
+
+        if (f == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new AjaxResult()
+                            .addError(resolveMessage("input.msg.errors", locale))
+                            .addFieldError("uuid",
+                                    resolveMessage("fieldworkers.msg.existsnot", locale, uuid)));
+        }
+
+        f.setDeleted(null);
+        repo.save(f);
+
+        return ResponseEntity
+                .ok(new AjaxResult()
+                        .addMessage(
+                                resolveMessage("fieldworkers.msg.restored", locale, uuid)));
     }
 
     @ExceptionHandler

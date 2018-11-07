@@ -4,6 +4,11 @@
 <head>
     <div th:replace="fragments/header :: header-css"/>
     <title th:text="#{app.name} + ' - ' + #{nav.fieldworkers}">CIMS - Fieldworkers</title>
+    <style>
+        tr.deleted td {
+            text-decoration-line: line-through;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="fragments/header :: header"/>
@@ -75,6 +80,16 @@
                 </div>
             </div>
         </div>
+        <div class="col">
+            <form>
+                <div class="input-group">
+                    <input class="form-control" name="q" th:value="${query}" th:placeholder="#{fieldworkers.ph.search}"/>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-primary"><span class="oi oi-magnifying-glass"></span></button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
     <div class="row" th:unless="${fieldworkers.totalElements > 0}">
         <div class="col">
@@ -111,19 +126,21 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="u:${fieldworkers}">
+                <tr th:each="u:${fieldworkers}" th:classappend="${u.deleted}? deleted">
                     <td class="align-middle" th:text="${u.extId}">ID</td>
                     <td class="align-middle" th:text="${u.firstName}">First Name</td>
                     <td class="align-middle" th:text="${u.lastName}">Last Name</td>
                     <td class="align-middle text-center">
                         <div class="btn-group">
-                            <span class="btn btn-outline-primary oi oi-info pr-3 pl-3" data-toggle="modal" data-target="#fieldworkermodal"
-                                  th:attr="data-entity=${u.uuid},data-action=none,data-title=#{fieldworkers.ttl.view}"></span>
-                            <span class="btn btn-outline-primary oi oi-pencil" data-toggle="modal" data-target="#fieldworkermodal"
+                            <button class="btn btn-outline-primary oi oi-info pr-3 pl-3" data-toggle="modal" data-target="#fieldworkermodal"
+                                  th:attr="data-entity=${u.uuid},data-action=none,data-title=#{fieldworkers.ttl.view}" th:disabled="${u.deleted}"></button>
+                            <button class="btn btn-outline-primary oi oi-pencil" data-toggle="modal" data-target="#fieldworkermodal"
                                   th:attr="data-entity=${u.uuid},data-title=#{fieldworkers.ttl.edit},data-action=edit,data-action-label=#{fieldworkers.btn.save},data-action-icon=pencil"
-                                  sec:authorize="hasAuthority('EDIT_FIELDWORKERS')"></span>
-                            <span id="delete" th:attr="data-entity=${u.uuid}" class="btn btn-outline-primary oi oi-trash"
-                                  sec:authorize="hasAuthority('DELETE_FIELDWORKERS')"></span>
+                                  sec:authorize="hasAuthority('EDIT_FIELDWORKERS')" th:disabled="${u.deleted}"></button>
+                            <button id="delete" th:unless="${u.deleted}" th:attr="data-entity=${u.uuid}" class="btn btn-outline-primary oi oi-trash"
+                                  sec:authorize="hasAuthority('DELETE_FIELDWORKERS')"></button>
+                            <button id="undelete" th:if="${u.deleted}" th:attr="data-entity=${u.uuid}" class="btn btn-outline-primary oi oi-action-undo"
+                                    sec:authorize="hasAuthority('RESTORE_FIELDWORKERS')"></button>
                         </div>
                     </td>
                 </tr>
@@ -297,10 +314,20 @@
         }
     });
 
-    $('span#delete.btn').click(function() {
+    $('button#delete.btn').click(function() {
         $.ajax({
             type: 'DELETE',
             url: entityUrl + '/' + $(this).data('entity'),
+            success: function() {
+                location.reload(true);
+            }
+        });
+    });
+
+    $('button#undelete.btn').click(function() {
+        $.ajax({
+            type: 'PUT',
+            url: entityUrl + '/restore/' + $(this).data('entity'),
             success: function() {
                 location.reload(true);
             }
