@@ -13,9 +13,6 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
 
-import static org.mindrot.jbcrypt.BCrypt.gensalt;
-import static org.mindrot.jbcrypt.BCrypt.hashpw;
-
 @Entity
 @Table(name = "fieldworker")
 @Indexed
