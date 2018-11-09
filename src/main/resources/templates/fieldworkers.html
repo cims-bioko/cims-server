@@ -97,13 +97,13 @@
             <nav>
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${!fieldworkers.hasPrevious()}? disabled">
-                        <a class="page-link" th:href="${fieldworkers.hasPrevious()}? @{/fieldworkers(p=${fieldworkers.previousPageable().pageNumber})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>
+                        <a class="page-link" th:href="${fieldworkers.hasPrevious()}? @{/fieldworkers(p=${fieldworkers.previousPageable().pageNumber},q=${query})} : '#'" th:text="#{pager.lbl.previous}">Previous</a>
                     </li>
                     <li class="page-item" th:classappend="${fieldworkers.number == pn}? active" th:each="pn:${#numbers.sequence(0, fieldworkers.totalPages - 1)}">
-                        <a class="page-link" th:href="${fieldworkers.number == pn}? '#' : @{/fieldworkers(p=${pn})}" th:text="${pn+1}">1</a>
+                        <a class="page-link" th:href="${fieldworkers.number == pn}? '#' : @{/fieldworkers(p=${pn},q=${query})}" th:text="${pn+1}">1</a>
                     </li>
                     <li class="page-item" th:classappend="${!fieldworkers.hasNext()}? disabled">
-                        <a class="page-link" th:href="${fieldworkers.hasNext()}? @{/fieldworkers(p=${fieldworkers.nextPageable().pageNumber})} : '#'" th:text="#{pager.lbl.next}">Next</a>
+                        <a class="page-link" th:href="${fieldworkers.hasNext()}? @{/fieldworkers(p=${fieldworkers.nextPageable().pageNumber},q=${query})} : '#'" th:text="#{pager.lbl.next}">Next</a>
                     </li>
                 </ul>
             </nav>
