@@ -5,10 +5,10 @@
     <div th:replace="fragments/header :: header-css"/>
     <title th:text="#{app.name} + ' - ' + #{nav.forms}">CIMS - Forms</title>
     <style>
-        table .oi-check {
+        td > .oi-check {
             color: darkgreen;
         }
-        table .oi-circle-x {
+        td > .oi-circle-x {
             color: darkred;
         }
     </style>
@@ -149,16 +149,28 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="f:${forms}" th:with="id=${f.formId.id},version=${f.formId.version}">
+                <tr th:each="f:${forms}"
+                    th:with="id=${f.formId.id},version=${f.formId.version}"
+                    th:attr="data-id=${id},data-version=${version},data-downloads=${f.downloads},data-submissions=${f.submissions}">
                     <td class="align-middle" th:text="${id}">Id</td>
                     <td class="align-middle" th:text="${version}">Version</td>
                     <td sec:authorize="hasAuthority('EXPORT_FORMS')">
-                        <a class="btn btn-primary" th:href="@{'/forms/export/'+${id}+'/'+${version}}">
+                        <a class="btn" th:href="@{'/forms/export/'+${id}+'/'+${version}}">
                             <span class="oi oi-data-transfer-download"></span>
                         </a>
                     </td>
-                    <td class="d-none d-md-table-cell text-center align-middle" th:classappend="${f.downloads}? 'oi oi-check' : 'oi oi-circle-x'"></td>
-                    <td class="d-none d-lg-table-cell text-center align-middle" th:classappend="${f.submissions}? 'oi oi-check' : 'oi oi-circle-x'"></td>
+                    <td class="d-none d-md-table-cell text-center align-middle">
+                        <span th:classappend="${f.downloads}? 'oi oi-check' : 'oi oi-circle-x'" sec:authorize="!hasAuthority('MANAGE_FORMS')"></span>
+                        <button class="btn btn-outline-primary manage-button" data-action="toggle-downloads" sec:authorize="hasAuthority('MANAGE_FORMS')">
+                            <span th:classappend="${f.downloads}? 'oi oi-check' : 'oi oi-circle-x'"></span>
+                        </button>
+                    </td>
+                    <td class="d-none d-lg-table-cell text-center align-middle">
+                        <span th:classappend="${f.submissions}? 'oi oi-check' : 'oi oi-circle-x'" sec:authorize="!hasAuthority('MANAGE_FORMS')"></span>
+                        <button class="btn btn-outline-primary manage-button" data-action="toggle-submissions" sec:authorize="hasAuthority('MANAGE_FORMS')">
+                            <span th:classappend="${f.submissions}? 'oi oi-check' : 'oi oi-circle-x'"></span>
+                        </button>
+                    </td>
                     <td class="d-none d-xl-table-cell align-middle" th:text="${f.uploaded != null? #dates.format(f.uploaded) : ''}">Uploaded</td>
                     <td class="d-none d-xl-table-cell align-middle" th:text="${f.lastSubmission != null? #dates.format(f.lastSubmission) : ''}">Last Submission</td>
                 </tr>
@@ -170,8 +182,10 @@
 </div>
 <div th:replace="fragments/footer :: footer"/>
 <script th:inline="javascript">
+//<![CDATA[
 
     const $progress = $('.progress-bar');
+    const baseUrl = /*[[@{/forms}]]*/ 'forms-url-placeholder';
 
     $progress.on('progress', function(e, amount){
         $(this).prop('aria-valuenow', amount).css('width', amount + '%');
@@ -222,30 +236,50 @@
         });
     }
 
-    $(function() {
-        // adds invisible buttons to 'add form' forms (native validation)
-        $("#addform form .form-group:last-child")
-            .after('<button type="submit" class="invisible"/>');
 
-        // click handler for 'add form' dialog
-        $("#addform .btn[type='submit']").click(function () {
-            // ensure alerts are cleared when submitting
-            $("#result").addClass("d-none").text('');
-            // validate and submit the active tab's form
-            $("#addform .active form :submit").click(); // triggers html5 validations
-        });
+    // adds invisible buttons to 'add form' forms (native validation)
+    $("#addform form .form-group:last-child")
+        .after('<button type="submit" class="invisible"/>');
 
-        // replace default form submission with ajax submission
-        $(".form-uploads form").submit(function (event) {
-            event.preventDefault(); // prevent normal form submission
-            upload($(this));
-        });
+    // click handler for 'add form' dialog
+    $("#addform .btn[type='submit']").click(function () {
+        // ensure alerts are cleared when submitting
+        $("#result").addClass("d-none").text('');
+        // validate and submit the active tab's form
+        $("#addform .active form :submit").click(); // triggers html5 validations
+    });
 
-        // reload the page when 'add form' modal is closed
-        $('#addform').on('hidden.bs.modal', function () {
-            location.reload(true);
+    // replace default form submission with ajax submission
+    $(".form-uploads form").submit(function (event) {
+        event.preventDefault(); // prevent normal form submission
+        upload($(this));
+    });
+
+    // reload the page when 'add form' modal is closed
+    $('#addform').on('hidden.bs.modal', function () {
+        location.reload(true);
+    });
+
+    $('.manage-button').on('click', function(e) {
+        e.preventDefault();
+        var $button = $(this);
+        var $row = $button.parents('tr');
+        var action = $button.data('action');
+        var data = {
+            submissions: action === 'toggle-submissions'? !$row.data('submissions') : $row.data('submissions'),
+            downloads: action === 'toggle-downloads'? !$row.data('downloads') : $row.data('downloads')
+        };
+        $.ajax({
+            type: 'PATCH',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            url: baseUrl + '/manage/' + $row.data('id') + '/' + $row.data('version'),
+            complete: function() {
+                location.reload(true);
+            }
         });
     });
+//]]>
 </script>
 </body>
 </html>

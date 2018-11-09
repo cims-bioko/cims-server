@@ -62,4 +62,33 @@ public class FormsController {
         response.setHeader("Content-Disposition", String.format("attachment; filename=%s-%s.zip", id, version));
         service.exportToStream(id, version, response.getOutputStream());
     }
+
+    @PreAuthorize("hasAuthority('MANAGE_FORMS')")
+    @PatchMapping("/forms/manage/{id}/{version}")
+    @ResponseBody
+    public void manageForm(@PathVariable("id") String id, @PathVariable("version") String version, @RequestBody ManageForm form) {
+        service.manageForm(id, version, form.isDownloads(), form.isSubmissions());
+    }
+
+    static class ManageForm {
+
+        boolean downloads;
+        boolean submissions;
+
+        public boolean isDownloads() {
+            return downloads;
+        }
+
+        public void setDownloads(boolean downloads) {
+            this.downloads = downloads;
+        }
+
+        public boolean isSubmissions() {
+            return submissions;
+        }
+
+        public void setSubmissions(boolean submissions) {
+            this.submissions = submissions;
+        }
+    }
 }

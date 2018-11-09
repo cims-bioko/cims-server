@@ -84,6 +84,24 @@ public class FormServiceImpl implements FormService {
         }
     }
 
+    @Override
+    @Transactional
+    public void manageForm(String id, String version, boolean downloads, boolean submissions) {
+        formDao.findById(new FormId(id, version)).ifPresent((form) -> {
+            if (form.isSubmissions() != submissions) {
+                form.setSubmissions(submissions);
+            }
+            if (form.isDownloads() != downloads) {
+                if (downloads) {
+                    form.setDownloads(true);
+                    formDao.exclusiveDownload(id, version);
+                } else {
+                    form.setDownloads(false);
+                }
+            }
+        });
+    }
+
     private void installFormWithMedia(MultipartFile xlsform, MultiValueMap<String, MultipartFile> uploadedFiles, InputStream xmlInput) throws JDOMException, IOException, NoSuchAlgorithmException {
         FormId id = createOrUpdateForm(xmlInput);
         Map<String, MultipartFile> mediaFiles = extractMediaFromUploads(uploadedFiles);
