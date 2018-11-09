@@ -141,6 +141,7 @@
                 <tr>
                     <th th:text="#{forms.lbl.id}">Id</th>
                     <th th:text="#{forms.lbl.version}">Version</th>
+                    <th sec:authorize="hasAuthority('EXPORT_FORMS')"></th>
                     <th class="d-none d-md-table-cell text-center" th:text="#{forms.lbl.downloads}">Downloads</th>
                     <th class="d-none d-lg-table-cell text-center" th:text="#{forms.lbl.submissions}">Submission</th>
                     <th class="d-none d-xl-table-cell" th:text="#{forms.lbl.uploaded}">Uploaded</th>
@@ -148,13 +149,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="f:${forms}">
-                    <td th:text="${f.formId.id}">Id</td>
-                    <td th:text="${f.formId.version}">Version</td>
+                <tr th:each="f:${forms}" th:with="id=${f.formId.id},version=${f.formId.version}">
+                    <td class="align-middle" th:text="${id}">Id</td>
+                    <td class="align-middle" th:text="${version}">Version</td>
+                    <td sec:authorize="hasAuthority('EXPORT_FORMS')">
+                        <a class="btn btn-primary" th:href="@{'/forms/export/'+${id}+'/'+${version}}">
+                            <span class="oi oi-data-transfer-download"></span>
+                        </a>
+                    </td>
                     <td class="d-none d-md-table-cell text-center align-middle" th:classappend="${f.downloads}? 'oi oi-check' : 'oi oi-circle-x'"></td>
                     <td class="d-none d-lg-table-cell text-center align-middle" th:classappend="${f.submissions}? 'oi oi-check' : 'oi oi-circle-x'"></td>
-                    <td class="d-none d-xl-table-cell" th:text="${f.uploaded != null? #dates.format(f.uploaded) : ''}">Uploaded</td>
-                    <td class="d-none d-xl-table-cell" th:text="${f.lastSubmission != null? #dates.format(f.lastSubmission) : ''}">Last Submission</td>
+                    <td class="d-none d-xl-table-cell align-middle" th:text="${f.uploaded != null? #dates.format(f.uploaded) : ''}">Uploaded</td>
+                    <td class="d-none d-xl-table-cell align-middle" th:text="${f.lastSubmission != null? #dates.format(f.lastSubmission) : ''}">Last Submission</td>
                 </tr>
                 </tbody>
             </table>

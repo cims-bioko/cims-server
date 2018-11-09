@@ -7,14 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
@@ -54,5 +52,14 @@ public class FormsController {
     public void uploadForm(@RequestParam(value = XLSFORM_DEF_FILE) MultipartFile xlsform, MultipartHttpServletRequest req)
             throws JDOMException, IOException, NoSuchAlgorithmException {
         service.uploadXlsform(xlsform, req.getMultiFileMap());
+    }
+
+    @PreAuthorize("hasAuthority('EXPORT_FORMS')")
+    @GetMapping("/forms/export/{id}/{version}")
+    public void exportForm(@PathVariable("id") String id, @PathVariable("version") String version,
+                           HttpServletResponse response) throws IOException {
+        response.setContentType("application/zip");
+        response.setHeader("Content-Disposition", String.format("attachment; filename=%s-%s.zip", id, version));
+        service.exportToStream(id, version, response.getOutputStream());
     }
 }

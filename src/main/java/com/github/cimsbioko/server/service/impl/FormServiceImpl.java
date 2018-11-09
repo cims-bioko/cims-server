@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -23,6 +24,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import static com.github.cimsbioko.server.util.JDOMUtil.getBuilder;
 import static com.github.cimsbioko.server.util.JDOMUtil.getOutputter;
@@ -58,6 +61,26 @@ public class FormServiceImpl implements FormService {
     public void uploadXlsform(MultipartFile xlsform, MultiValueMap<String, MultipartFile> uploadedFiles) throws JDOMException, IOException, NoSuchAlgorithmException {
         try (InputStream xmlInput = new FileInputStream(xlsformService.generateXForm(xlsform.getInputStream()))) {
             installFormWithMedia(xlsform, uploadedFiles, xmlInput);
+        }
+    }
+
+    @Override
+    public void exportToStream(String id, String version, OutputStream outputStream) throws IOException {
+        File formDir = formFileSystem.getFormDirPath(id, version).toFile();
+        if (formDir.exists() && formDir.isDirectory()) {
+            try (ZipOutputStream zOut = new ZipOutputStream(outputStream)) {
+                for (File file : formDir.listFiles((f) -> !f.isHidden())) {
+                    try (FileInputStream fileIn = new FileInputStream(file)) {
+                        ZipEntry e = new ZipEntry(file.getName());
+                        e.setSize(file.length());
+                        e.setTime(file.lastModified());
+                        zOut.putNextEntry(e);
+                        StreamUtils.copy(fileIn, zOut);
+                    }
+                }
+                zOut.closeEntry();
+                zOut.finish();
+            }
         }
     }
 
