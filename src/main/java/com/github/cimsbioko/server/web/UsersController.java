@@ -42,11 +42,14 @@ public class UsersController {
 
     @PreAuthorize("hasAuthority('VIEW_USERS')")
     @GetMapping("/users")
-    public ModelAndView users(@RequestParam(name = "p", defaultValue = "0") Integer page) {
-        ModelAndView modelAndView = new ModelAndView("users");
-        modelAndView.addObject("users", userRepo.findByDeletedIsNull(PageRequest.of(page, 10)));
-        modelAndView.addObject("roles", roleRepo.findByDeletedIsNull());
-        return modelAndView;
+    public ModelAndView users(@RequestParam(name = "p", defaultValue = "0") Integer page,
+                              @RequestParam(name = "q", defaultValue = "") String query) {
+        ModelAndView mav = new ModelAndView("users");
+        PageRequest pageObj = PageRequest.of(page, 10);
+        mav.addObject("users", query.isEmpty() ? userRepo.findByDeletedIsNull(pageObj) : userRepo.findBySearch(query, pageObj));
+        mav.addObject("roles", roleRepo.findByDeletedIsNull());
+        mav.addObject("query", query);
+        return mav;
     }
 
     @PreAuthorize("hasAuthority('CREATE_USERS')")
@@ -149,6 +152,32 @@ public class UsersController {
                 .ok(new AjaxResult()
                         .addMessage(
                                 resolveMessage("users.msg.deleted", locale, uuid)));
+    }
+
+    @PreAuthorize("hasAuthority('RESTORE_USERS')")
+    @PutMapping("/user/restore/{uuid}")
+    @ResponseBody
+    public ResponseEntity<?> restoreUser(@PathVariable("uuid") String uuid, Locale locale) {
+
+        // FIXME: Use optional rather than null
+        User u = userRepo.findById(uuid).orElse(null);
+
+        if (u == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new AjaxResult()
+                            .addError(resolveMessage("input.msg.errors", locale))
+                            .addFieldError("uuid",
+                                    resolveMessage("users.msg.existsnot", locale, uuid)));
+        }
+
+        u.setDeleted(null);
+        userRepo.save(u);
+
+        return ResponseEntity
+                .ok(new AjaxResult()
+                        .addMessage(
+                                resolveMessage("users.msg.restored", locale, uuid)));
     }
 
     @ExceptionHandler

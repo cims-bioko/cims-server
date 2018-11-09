@@ -82,6 +82,16 @@
                 </div>
             </div>
         </div>
+        <div class="col">
+            <form>
+                <div class="input-group">
+                    <input class="form-control" name="q" th:value="${query}" th:placeholder="#{users.ph.search}"/>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-primary"><span class="oi oi-magnifying-glass"></span></button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
     <div class="row" th:unless="${users.totalElements > 0}">
         <div class="col">
@@ -124,13 +134,15 @@
                         <td class="align-middle" th:text="${u.lastLogin != null? #dates.format(u.lastLogin) : ''}">2018-12-01 14:12:12.289</td>
                         <td class="align-middle text-center">
                             <div class="btn-group">
-                                <span class="btn btn-outline-primary oi oi-info pr-3 pl-3" data-toggle="modal" data-target="#usermodal"
-                                      th:attr="data-entity=${u.uuid},data-action=none,data-title=#{users.ttl.view}"></span>
-                                <span class="btn btn-outline-primary oi oi-pencil" data-toggle="modal" data-target="#usermodal"
+                                <button class="btn btn-outline-primary oi oi-info pr-3 pl-3" data-toggle="modal" data-target="#usermodal"
+                                      th:attr="data-entity=${u.uuid},data-action=none,data-title=#{users.ttl.view}"></button>
+                                <button class="btn btn-outline-primary oi oi-pencil" data-toggle="modal" data-target="#usermodal"
                                       th:attr="data-entity=${u.uuid},data-title=#{users.ttl.edit},data-action=edit,data-action-label=#{users.btn.save},data-action-icon=pencil"
-                                      sec:authorize="hasAuthority('EDIT_USERS')"></span>
-                                <span id="delete" th:attr="data-entity=${u.uuid}" class="btn btn-outline-primary oi oi-trash"
-                                      sec:authorize="hasAuthority('DELETE_USERS')"></span>
+                                      sec:authorize="hasAuthority('EDIT_USERS')"></button>
+                                <button id="delete" th:unless="${u.deleted}" th:attr="data-entity=${u.uuid}" class="btn btn-outline-primary oi oi-trash"
+                                      sec:authorize="hasAuthority('DELETE_USERS')"></button>
+                                <button id="undelete" th:if="${u.deleted}" th:attr="data-entity=${u.uuid}" class="btn btn-outline-primary oi oi-action-undo"
+                                        sec:authorize="hasAuthority('RESTORE_USERS')"></button>
                             </div>
                         </td>
                     </tr>
@@ -293,10 +305,20 @@
         }
     });
 
-    $('span#delete.btn').click(function() {
+    $('button#delete.btn').click(function() {
         $.ajax({
             type: 'DELETE',
             url: entityUrl + '/' + $(this).data('entity'),
+            success: function() {
+                location.reload(true);
+            }
+        });
+    });
+
+    $('button#undelete.btn').click(function() {
+        $.ajax({
+            type: 'PUT',
+            url: entityUrl + '/restore/' + $(this).data('entity'),
             success: function() {
                 location.reload(true);
             }
