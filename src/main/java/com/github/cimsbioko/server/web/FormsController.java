@@ -5,6 +5,7 @@ import com.github.cimsbioko.server.service.FormService;
 import org.jdom2.JDOMException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class FormsController {
     @PreAuthorize("hasAuthority('VIEW_FORMS')")
     @GetMapping("/forms")
     public ModelAndView forms(@RequestParam(name = "p", defaultValue = "0") Integer page) {
-        return new ModelAndView("forms", "forms", repo.findAll(PageRequest.of(page, 10)));
+        return new ModelAndView("forms", "forms", repo.findAll(PageRequest.of(page, 10, Sort.by("formId"))));
     }
 
     @PreAuthorize("hasAuthority('FORM_UPLOAD')")
