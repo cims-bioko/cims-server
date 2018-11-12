@@ -41,6 +41,10 @@ public class MobileDatabaseResource {
         File metadataFile = new File(cacheFile.getParentFile(), cacheFile.getName() + "." + Metadata.FILE_EXT);
         String accept = request.getHeader(ACCEPT);
 
+        if (request.checkNotModified(service.getTask().getDescriptor())) {
+            return null;
+        }
+
         if (accept != null && accept.contains(Metadata.MIME_TYPE) && metadataFile.exists()) {
             return "forward:" + CACHED_FILES_PATH + "/" + metadataFile.getName();
         }
