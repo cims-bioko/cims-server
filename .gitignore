@@ -7,5 +7,4 @@
 .DS_Store
 
 # Maven
-log/
 target/
