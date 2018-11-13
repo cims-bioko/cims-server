@@ -10,7 +10,6 @@
         <version>5.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.github.cims-bioko</groupId>
     <artifactId>cims-server-core</artifactId>
 
     <name>CIMS Server :: Core</name>
