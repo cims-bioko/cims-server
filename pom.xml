@@ -28,8 +28,8 @@
     </scm>
 
     <modules>
-      <module>cims-server-ui</module>
-      <module>cims-server-core</module>
+      <module>ui</module>
+      <module>core</module>
     </modules>
 
 </project>
