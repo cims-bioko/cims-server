@@ -120,7 +120,7 @@ public class SecurityConfig {
             http.headers().disable()
                     .csrf().disable()
                     .authorizeRequests()
-                    .antMatchers("/css/**", "/images/**", "/webjars/**", "favicon.ico").permitAll()
+                    .antMatchers("/css/**", "/img/**", "/webjars/**", "favicon.ico").permitAll()
                     .anyRequest().authenticated()
                     .and()
                     .formLogin()
