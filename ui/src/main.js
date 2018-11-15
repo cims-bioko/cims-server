@@ -1,5 +1,13 @@
 import Vue from 'vue'
 import App from './App.vue'
+import Home from './components/Home.vue'
+import Forms from './components/Forms.vue'
+import Sync from './components/Sync.vue'
+import Backups from './components/Backups.vue'
+import Users from './components/Users.vue'
+import Roles from './components/Roles.vue'
+import Fieldworkers from './components/Fieldworkers.vue'
+
 import VueRouter from 'vue-router'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -13,14 +21,6 @@ Vue.use(BootstrapVue)
 
 library.add(faHome, faFileAlt, faSync, faBusinessTime, faUser, faUsers)
 Vue.component('fa-icon', FontAwesomeIcon)
-
-const Home = { name: 'home', render: (e) => e('h1', 'Home') }
-const Forms = { name: 'forms', render: (e) => e('h1', 'Forms') }
-const Sync = { name: 'sync', render: (e) => e('h1', 'Sync') }
-const Backups = { name: 'backups', render: (e) => e('h1', 'Backups') }
-const Users = { name: 'users', render: (e) => e('h1', 'Users') }
-const Roles = { name: 'roles', render: (e) => e('h1', 'Roles') }
-const Fieldworkers = { name: 'roles', render: (e) => e('h1', 'Fieldworkers') }
 
 const router = new VueRouter({
   routes: [
