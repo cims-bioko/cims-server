@@ -13,13 +13,13 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faHome, faFileAlt, faSync, faBusinessTime, faUser, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faFileAlt, faSync, faBusinessTime, faUser, faUsers, faPlay, faPause, faBolt, faStopwatch, faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
 
-library.add(faHome, faFileAlt, faSync, faBusinessTime, faUser, faUsers)
+library.add(faHome, faFileAlt, faSync, faBusinessTime, faUser, faUsers, faPlay, faPause, faBolt, faStopwatch, faDownload)
 Vue.component('fa-icon', FontAwesomeIcon)
 
 const router = new VueRouter({

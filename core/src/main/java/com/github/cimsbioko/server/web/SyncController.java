@@ -6,10 +6,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -24,43 +26,47 @@ public class SyncController {
 
     @PreAuthorize("hasAuthority('VIEW_SYNC')")
     @GetMapping("/sync")
-    public ModelAndView sync() {
-        ModelAndView result = new ModelAndView("sync");
-        result.addObject("nextRun", service.getMinutesToNextRun().orElse(null));
-        result.addObject("task", service.getTask());
-        result.addObject("scheduled", service.isTaskScheduled());
-        result.addObject("schedule", service.getSchedule().map(String::trim).orElse(""));
-        result.addObject("running", service.isTaskRunning());
-        result.addObject("downloadable", service.getOutput().canRead());
+    @ResponseBody
+    public Map<String, Object> syncStatus() {
+        Map<String, Object> result = new HashMap<>();
+        result.put("nextRun", service.getMinutesToNextRun().orElse(null));
+        result.put("task", service.getTask());
+        result.put("scheduled", service.isTaskScheduled());
+        result.put("schedule", service.getSchedule().map(String::trim).orElse(""));
+        result.put("running", service.isTaskRunning());
+        result.put("downloadable", service.getOutput().canRead());
         return result;
     }
 
     @PreAuthorize("hasAuthority('MANAGE_SYNC')")
     @GetMapping("/sync/pause")
-    public String pause() {
+    @ResponseBody
+    public Map<String, Object> pause() {
         service.cancelTask();
-        return "redirect:/sync";
+        return syncStatus();
     }
 
     @PreAuthorize("hasAuthority('MANAGE_SYNC')")
     @GetMapping("/sync/start")
-    public String start() {
+    @ResponseBody
+    public Map<String, Object> start() {
         service.resumeSchedule();
-        return "redirect:/sync";
+        return syncStatus();
     }
 
     @PreAuthorize("hasAuthority('MANAGE_SYNC')")
     @GetMapping("/sync/run")
-    public String run() {
+    @ResponseBody
+    public Map<String, Object> run() {
         service.requestTaskRun();
-        return "redirect:/sync";
+        return syncStatus();
     }
-
-    private static final String INSTALLABLE_FILENAME = "openhds.db";
 
     @PreAuthorize("hasAuthority('EXPORT_SYNC')")
     @GetMapping("/sync/export")
     public void downloadDb(HttpServletResponse response) throws IOException {
+
+        String filename = "openhds.db";
 
         FileSystemResource dbFileRes = new FileSystemResource(service.getOutput());
 
@@ -69,9 +75,9 @@ public class SyncController {
                     "Unable to find mobiledb file. Try generating it from the tasks menu.");
         } else {
             response.setContentType("application/zip");
-            response.setHeader("Content-Disposition", "attachment; filename=" + INSTALLABLE_FILENAME + ".zip");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + ".zip\"");
             try (ZipOutputStream zOut = new ZipOutputStream(response.getOutputStream())) {
-                ZipEntry e = new ZipEntry(INSTALLABLE_FILENAME);
+                ZipEntry e = new ZipEntry(filename);
                 e.setSize(dbFileRes.contentLength());
                 e.setTime(System.currentTimeMillis());
                 zOut.putNextEntry(e);

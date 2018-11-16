@@ -17,7 +17,6 @@
 </template>
 
 <script>
-    import 'vue-awesome/icons/home'
     export default {
         name: 'app-header'
     }
