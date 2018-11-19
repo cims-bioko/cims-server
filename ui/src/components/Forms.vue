@@ -1,5 +1,7 @@
 <template>
-    <h1><fa-icon icon="file-alt"/> Forms</h1>
+    <b-container>
+        <h1><fa-icon icon="file-alt"/> Forms</h1>
+    </b-container>
 </template>
 
 <script>

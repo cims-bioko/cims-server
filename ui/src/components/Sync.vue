@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <b-container>
         <b-row class="align-items-center">
             <h1 class="col col-auto">
                 <fa-icon icon="sync"/> Sync
@@ -56,7 +56,7 @@
                 </table>
             </b-col>
         </b-row>
-    </div>
+    </b-container>
 </template>
 
 <script>
