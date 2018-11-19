@@ -122,9 +122,6 @@ public class MobileDbGeneratorImpl implements MobileDbGenerator {
     }
 }
 
-interface MobileDbGeneratorEvent {
-}
-
 class MobileDbGeneratorStarted implements MobileDbGeneratorEvent {
 }
 
