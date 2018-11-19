@@ -61,7 +61,6 @@
 
 <script>
     import axios from 'axios'
-    import moment from 'moment'
     import SockJS from 'sockjs-client'
     import Stomp from 'webstomp-client'
 
@@ -106,13 +105,6 @@
         mounted() {
             this.update()
             this.wsconnect()
-        },
-        filters: {
-            formatDate(v) {
-                if (v) {
-                    return moment(v).utcOffset(v).format('MM/DD/YYYY hh:mm:ss z')
-                }
-            }
         }
     }
 </script>

@@ -15,12 +15,14 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faHome, faFileAlt, faSync, faBusinessTime, faUser, faUsers, faPlay, faPause, faBolt, faStopwatch, faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import moment from 'moment'
 
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
 
 library.add(faHome, faFileAlt, faSync, faBusinessTime, faUser, faUsers, faPlay, faPause, faBolt, faStopwatch, faDownload)
 Vue.component('fa-icon', FontAwesomeIcon)
+Vue.filter('formatDate', v => {if (v) { return moment(v).utcOffset(v).format('MM/DD/YYYY hh:mm:ss z') }})
 
 const router = new VueRouter({
   routes: [
