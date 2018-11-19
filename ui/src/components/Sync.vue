@@ -62,6 +62,8 @@
 <script>
     import axios from 'axios'
     import moment from 'moment'
+    import SockJS from 'sockjs-client'
+    import Stomp from 'webstomp-client'
 
     export default {
         name: 'sync',
