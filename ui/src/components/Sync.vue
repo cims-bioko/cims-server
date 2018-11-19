@@ -98,7 +98,7 @@
         filters: {
             formatDate(v) {
                 if (v) {
-                    return moment().zone(v).format('MM/DD/YYYY hh:mm:ss z')
+                    return moment(v).utcOffset(v).format('MM/DD/YYYY hh:mm:ss z')
                 }
             }
         }
