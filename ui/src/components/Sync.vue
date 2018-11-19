@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div class="row align-items-center">
+        <b-row class="align-items-center">
             <h1 class="col col-auto">
                 <fa-icon icon="sync"/> Sync
             </h1>
-            <div class="col">
+            <b-col class="col">
                 <b-button-toolbar>
                     <b-button-group class="mr-2">
                         <b-button variant="primary" @click="pause" :class="{disabled: !status.scheduled}">
@@ -20,17 +20,17 @@
                         </b-button>
                     </b-button-group>
                 </b-button-toolbar>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
+            </b-col>
+        </b-row>
+        <b-row>
+            <b-col>
                 <p class="text-center">
                     <fa-icon icon="stopwatch"/> Next run: {{ nextRunFormatted }}
                 </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
+            </b-col>
+        </b-row>
+        <b-row>
+            <b-col>
                 <table class="table">
                     <thead>
                     <tr>
@@ -54,8 +54,8 @@
                     </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
+            </b-col>
+        </b-row>
     </div>
 </template>
 
