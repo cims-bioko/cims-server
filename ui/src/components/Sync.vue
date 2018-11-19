@@ -5,27 +5,27 @@
                 <fa-icon icon="sync"/> Sync
             </h1>
             <div class="col">
-                <div class="btn-toolbar" role="toolbar">
-                    <div class="btn-group mr-2">
-                        <a class="btn btn-primary" href="#" @click="pause" :class="{disabled: !status.scheduled}">
+                <b-button-toolbar>
+                    <b-button-group class="mr-2">
+                        <b-button variant="primary" @click="pause" :class="{disabled: !status.scheduled}">
                             <fa-icon icon="pause"/> Pause
-                        </a>
-                        <a class="btn btn-primary" href="#" @click="start" :class="{disabled: status.scheduled || !status.schedule}">
+                        </b-button>
+                        <b-button variant="primary" @click="start" :class="{disabled: status.scheduled || !status.schedule}">
                             <fa-icon icon="play"/> Resume
-                        </a>
-                    </div>
-                    <div class="btn-group">
-                        <a class="btn btn-primary" href="#" @click="build" :class="{disabled: status.running}">
+                        </b-button>
+                    </b-button-group>
+                    <b-button-group>
+                        <b-button variant="primary" @click="build" :class="{disabled: status.running}">
                             <fa-icon icon="bolt"/> Build Now
-                        </a>
-                    </div>
-                </div>
+                        </b-button>
+                    </b-button-group>
+                </b-button-toolbar>
             </div>
         </div>
         <div class="row">
             <div class="col">
                 <p class="text-center">
-                    <fa-icon icon="stopwatch"/> Next run: {{ status.nextRun || 'none' }}
+                    <fa-icon icon="stopwatch"/> Next run: {{ nextRunFormatted }}
                 </p>
             </div>
         </div>
@@ -74,6 +74,11 @@
                 }
             }
         },
+        computed: {
+            nextRunFormatted() {
+                return this.status.nextRun? `${this.status.nextRun} minutes` : 'none'
+            }
+        },
         methods: {
             update(data) {
                 if (data) {
@@ -90,10 +95,17 @@
             },
             pause() {
                 axios.get('/sync/pause').then(rsp => this.update(rsp.data))
+            },
+            wsconnect() {
+                const socket = new SockJS('/stomp');
+                const stomp = Stomp.over(socket, {version: Stomp.VERSIONS.V1_2, debug: null});
+                stomp.connect({},
+                    () => stomp.subscribe('/topic/syncstatus', msg => this.update(JSON.parse(msg.body))))
             }
         },
         mounted() {
             this.update()
+            this.wsconnect()
         },
         filters: {
             formatDate(v) {
