@@ -54,7 +54,9 @@ public class SyncServiceImpl implements SyncService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void onExportStarted(MobileDbGeneratorStarted e) {
         running = true;
-        getTask().setStarted(Calendar.getInstance());
+        Task t = getTask();
+        t.setStarted(Calendar.getInstance());
+        t.setFinished(null);
     }
 
 
