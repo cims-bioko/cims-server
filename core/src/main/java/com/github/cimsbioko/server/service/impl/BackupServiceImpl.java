@@ -3,6 +3,7 @@ package com.github.cimsbioko.server.service.impl;
 import com.github.cimsbioko.server.domain.Backup;
 import com.github.cimsbioko.server.service.BackupService;
 import org.hibernate.Session;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,15 +14,23 @@ public class BackupServiceImpl implements BackupService {
 
     private EntityManager em;
 
-    public BackupServiceImpl(EntityManager em) {
+    private ApplicationEventPublisher eventPublisher;
+
+    public BackupServiceImpl(EntityManager em, ApplicationEventPublisher publisher) {
         this.em = em;
+        this.eventPublisher = publisher;
     }
 
     @Override
     @Async
     @Transactional
     public void createBackup(String name, String description) {
-        callProcedure("{ call backup_data(current_schema(), ?, ?) }", name, description);
+        try {
+            callProcedure("{ call backup_data(current_schema(), ?, ?) }", name, description);
+            eventPublisher.publishEvent(new BackupCreatedEvent(name));
+        } catch (Exception cause) {
+            eventPublisher.publishEvent(new BackupFailedEvent(name, cause));
+        }
     }
 
     @Override

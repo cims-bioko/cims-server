@@ -18,8 +18,8 @@ import javax.persistence.EntityManager;
 public class ServiceConfig {
 
     @Bean
-    public BackupService backupService(EntityManager em) {
-        return new BackupServiceImpl(em);
+    public BackupService backupService(EntityManager em, ApplicationEventPublisher publisher) {
+        return new BackupServiceImpl(em, publisher);
     }
 
     @Bean

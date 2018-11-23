@@ -6,7 +6,7 @@ Vue.use(VueRouter)
 import Home from './components/Home.vue'
 import Forms from './components/Forms.vue'
 import Sync from './components/Sync.vue'
-import Backups from './components/Backups.vue'
+import BackupsPage from './components/backups/BackupsPage.vue'
 import Users from './components/Users.vue'
 import Roles from './components/Roles.vue'
 import Fieldworkers from './components/Fieldworkers.vue'
@@ -16,7 +16,7 @@ export default new VueRouter({
         { name: 'home', path: '/', component: Home },
         { name: 'forms', path: '/forms', component: Forms },
         { name: 'sync', path: '/sync', component: Sync },
-        { name: 'backups', path: '/backups', component: Backups },
+        { name: 'backups', path: '/backups', component: BackupsPage },
         { name: 'users', path: '/users', component: Users },
         { name: 'roles', path: '/roles', component: Roles },
         { name: 'fieldworkers', path: '/fieldworkers', component: Fieldworkers },

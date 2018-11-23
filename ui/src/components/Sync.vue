@@ -63,7 +63,6 @@
     import axios from 'axios'
     import SockJS from 'sockjs-client'
     import Stomp from 'webstomp-client'
-
     export default {
         name: 'sync',
         data() {
@@ -96,15 +95,23 @@
                 axios.get('/sync/pause').then(rsp => this.update(rsp.data))
             },
             wsconnect() {
-                const socket = new SockJS('/stomp');
-                const stomp = Stomp.over(socket, {version: Stomp.VERSIONS.V1_2, debug: null});
+                let socket = new SockJS('/stomp')
+                let stomp = Stomp.over(socket, {version: Stomp.VERSIONS.V1_2, debug: null})
                 stomp.connect({},
-                    () => stomp.subscribe('/topic/syncstatus', msg => this.update(JSON.parse(msg.body))))
+                    () => {
+                        this.stomp = stomp
+                        stomp.subscribe('/topic/syncstatus', msg => this.update(JSON.parse(msg.body)))
+                    })
             }
         },
         mounted() {
             this.update()
             this.wsconnect()
+        },
+        beforeDestroy() {
+            if (this.stomp) {
+                this.stomp.disconnect()
+            }
         }
     }
 </script>
