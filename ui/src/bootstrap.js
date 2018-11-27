@@ -1,6 +1,23 @@
 import Vue from 'vue'
-import BootstrapVue from 'bootstrap-vue'
+
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-Vue.use(BootstrapVue)
+import {Alert, Button, ButtonGroup, ButtonToolbar, Card, Form, FormFile, FormGroup, FormInput, FormRadio, Layout, Modal, Navbar, Pagination, Progress, Table} from 'bootstrap-vue/es/components'
+
+Vue.use(Alert)
+Vue.use(Button)
+Vue.use(ButtonGroup)
+Vue.use(ButtonToolbar)
+Vue.use(Card)
+Vue.use(Form)
+Vue.use(FormFile)
+Vue.use(FormGroup)
+Vue.use(FormInput)
+Vue.use(FormRadio)
+Vue.use(Layout)
+Vue.use(Modal)
+Vue.use(Navbar)
+Vue.use(Pagination)
+Vue.use(Progress)
+Vue.use(Table)

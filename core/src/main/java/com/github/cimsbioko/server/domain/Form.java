@@ -1,5 +1,6 @@
 package com.github.cimsbioko.server.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.Type;
 import org.jdom2.Document;
@@ -20,6 +21,7 @@ public class Form {
 
     @Type(type = "xml")
     @Column(name = "as_xml")
+    @JsonIgnore
     private Document xml;
 
     private boolean downloads = true;

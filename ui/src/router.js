@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 import Home from './components/Home.vue'
-import Forms from './components/Forms.vue'
+import FormsPage from './components/forms/FormsPage.vue'
 import Sync from './components/Sync.vue'
 import BackupsPage from './components/backups/BackupsPage.vue'
 import Users from './components/Users.vue'
@@ -14,7 +14,7 @@ import Fieldworkers from './components/Fieldworkers.vue'
 export default new VueRouter({
     routes: [
         { name: 'home', path: '/', component: Home },
-        { name: 'forms', path: '/forms', component: Forms },
+        { name: 'forms', path: '/forms', component: FormsPage },
         { name: 'sync', path: '/sync', component: Sync },
         { name: 'backups', path: '/backups', component: BackupsPage },
         { name: 'users', path: '/users', component: Users },

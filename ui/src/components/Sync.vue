@@ -1,10 +1,10 @@
 <template>
     <b-container>
         <b-row class="align-items-center">
-            <h1 class="col col-auto">
-                <fa-icon icon="sync"/> Sync
-            </h1>
-            <b-col class="col">
+            <b-col class="col-auto">
+                <h1><fa-icon icon="sync"/> Sync</h1>
+            </b-col>
+            <b-col>
                 <b-button-toolbar>
                     <b-button-group class="mr-2">
                         <b-button variant="primary" @click="pause" :class="{disabled: !status.scheduled}">
@@ -31,29 +31,16 @@
         </b-row>
         <b-row>
             <b-col>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th class="d-none d-lg-table-cell">Started</th>
-                        <th class="d-none d-sm-table-cell">Ended</th>
-                        <th>Content</th>
-                        <th class="d-none d-xl-table-cell">Items</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td class="align-middle d-none d-lg-table-cell">{{ status.task.started | formatDate }}</td>
-                        <td class="align-middle d-none d-sm-table-cell">{{ status.task.finished | formatDate }}</td>
-                        <td class="align-middle">
-                            <a class="btn btn-primary" href="/sync/export" download :class="{disabled: !status.downloadable}">
-                                <fa-icon icon="download"/>
-                            </a>
-                            {{ status.task.descriptor }}
-                        </td>
-                        <td class="align-middle d-none d-xl-table-cell">{{ status.task.itemCount }}</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <b-table :items="[status.task]" :fields="fields" >
+                    <template slot="started" slot-scope="data">{{ data.value | formatDate }}</template>
+                    <template slot="finished" slot-scope="data">{{ data.value | formatDate }}</template>
+                    <template slot="descriptor" slot-scope="data">
+                        <b-button variant="primary" :class="{disabled: !status.downloadable}" href="/sync/export" download>
+                            <fa-icon icon="download"/>
+                        </b-button>
+                        {{ data.value }}
+                    </template>
+                </b-table>
             </b-col>
         </b-row>
     </b-container>
@@ -67,7 +54,16 @@
         name: 'sync',
         data() {
             return {
+                fields: [
+                    {key: 'started', label: 'Started', tdClass: 'align-middle'},
+                    {key: 'finished', label: 'Finished', tdClass: 'align-middle'},
+                    {key: 'descriptor', label: 'Content', tdClass: 'align-middle'},
+                    {key: 'itemCount', label: 'Items', tdClass: 'align-middle'}
+                ],
                 status: {
+                    scheduled: false,
+                    running: false,
+                    downloadable: false,
                     task: {}
                 }
             }
@@ -78,30 +74,33 @@
             }
         },
         methods: {
-            update(data) {
+            async update(data) {
                 if (data) {
                     this.status = data
                 } else {
-                    axios.get('/sync').then(rsp => this.status = rsp.data)
+                    let rsp = await axios.get('/sync')
+                    this.status = rsp.data
                 }
             },
-            build() {
-                axios.get('/sync/run').then(rsp => this.update(rsp.data))
+            async build() {
+                let rsp = await axios.get('/sync/run')
+                this.update(rsp.data)
             },
-            start() {
-                axios.get('/sync/start').then(rsp => this.update(rsp.data))
+            async start() {
+                let rsp = await axios.get('/sync/start')
+                this.update(rsp.data)
             },
-            pause() {
-                axios.get('/sync/pause').then(rsp => this.update(rsp.data))
+            async pause() {
+                let rsp = await axios.get('/sync/pause')
+                this.update(rsp.data)
             },
             wsconnect() {
                 let socket = new SockJS('/stomp')
                 let stomp = Stomp.over(socket, {version: Stomp.VERSIONS.V1_2, debug: null})
-                stomp.connect({},
-                    () => {
-                        this.stomp = stomp
-                        stomp.subscribe('/topic/syncstatus', msg => this.update(JSON.parse(msg.body)))
-                    })
+                stomp.connect({}, () => {
+                    this.stomp = stomp
+                    stomp.subscribe('/topic/syncstatus', msg => this.update(JSON.parse(msg.body)))
+                })
             }
         },
         mounted() {

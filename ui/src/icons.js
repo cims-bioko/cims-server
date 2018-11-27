@@ -1,12 +1,11 @@
 import Vue from 'vue'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import { faHome, faFileAlt, faSync, faBusinessTime, faUser, faUsers, faPlay, faPause, faBolt, faStopwatch, faDownload,
-    faTrashAlt, faEdit, faPlus } from '@fortawesome/free-solid-svg-icons'
+    faTrashAlt, faEdit, faPlus, faCheck, faTimes, faUpload } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faHome, faFileAlt, faSync, faBusinessTime, faUser, faUsers, faPlay, faPause, faBolt, faStopwatch,
-    faDownload, faTrashAlt, faEdit, faPlus)
-
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+    faDownload, faTrashAlt, faEdit, faPlus, faCheck, faTimes, faUpload)
 
 Vue.component('fa-icon', FontAwesomeIcon)
