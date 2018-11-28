@@ -1,5 +1,6 @@
 package com.github.cimsbioko.server.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.search.annotations.Field;
@@ -50,6 +51,7 @@ public class FieldWorker implements Serializable {
     @NotNull
     @Size(min = 60, max = 60)
     @Column(name = "password_hash")
+    @JsonIgnore
     private String passwordHash;
 
     public String getUuid() {

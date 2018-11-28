@@ -9,7 +9,7 @@ import Sync from './components/Sync.vue'
 import BackupsPage from './components/backups/BackupsPage.vue'
 import Users from './components/Users.vue'
 import Roles from './components/Roles.vue'
-import Fieldworkers from './components/Fieldworkers.vue'
+import Fieldworkers from './components/fieldworkers/FieldworkersPage.vue'
 
 export default new VueRouter({
     routes: [

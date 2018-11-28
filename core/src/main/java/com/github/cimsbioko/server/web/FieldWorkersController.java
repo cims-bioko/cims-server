@@ -4,6 +4,7 @@ import com.github.cimsbioko.server.dao.FieldWorkerRepository;
 import com.github.cimsbioko.server.domain.FieldWorker;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -38,28 +38,26 @@ public class FieldWorkersController {
 
     @PreAuthorize("hasAuthority('VIEW_FIELDWORKERS')")
     @GetMapping("/fieldworkers")
-    public ModelAndView fieldworkers(@RequestParam(name = "p", defaultValue = "0") Integer page,
-                                     @RequestParam(name = "q", defaultValue = "") String query) {
+    @ResponseBody
+    public Page<FieldWorker> fieldworkers(@RequestParam(name = "p", defaultValue = "0") Integer page,
+                                          @RequestParam(name = "q", defaultValue = "") String query) {
         PageRequest pageObj = PageRequest.of(page, 10);
-        ModelAndView mav = new ModelAndView("fieldworkers");
-        mav.addObject("fieldworkers", query.isEmpty() ? repo.findByDeletedIsNull(pageObj) : repo.findBySearch(query, pageObj));
-        mav.addObject("query", query);
-        return mav;
+        return query.isEmpty() ? repo.findByDeletedIsNull(pageObj) : repo.findBySearch(query, pageObj);
     }
 
     @PreAuthorize("hasAuthority('CREATE_FIELDWORKERS')")
     @PostMapping("/fieldworkers")
     @ResponseBody
     public ResponseEntity<AjaxResult> createFieldworker(@Valid @RequestBody FieldWorkerForm form, Locale locale) {
-        if (repo.idExists(form.getId())) {
+        if (repo.idExists(form.getExtId())) {
             return ResponseEntity
                     .badRequest()
                     .body(new AjaxResult()
                             .addError(resolveMessage("input.msg.errors", locale))
-                            .addFieldError("id", resolveMessage("fieldworkers.msg.idexists", locale)));
+                            .addFieldError("extId", resolveMessage("fieldworkers.msg.idexists", locale)));
         }
         FieldWorker fw = new FieldWorker();
-        fw.setExtId(form.getId());
+        fw.setExtId(form.getExtId());
         fw.setFirstName(form.getFirstName());
         fw.setLastName(form.getLastName());
         fw.setPasswordHash(encoder.encode(form.getPassword()));
@@ -76,7 +74,7 @@ public class FieldWorkersController {
         // FIXME: Use optional rather than null
         FieldWorker f = repo.findById(uuid).orElse(null);
         FieldWorkerForm result = new FieldWorkerForm();
-        result.setId(f.getExtId());
+        result.setExtId(f.getExtId());
         result.setFirstName(f.getFirstName());
         result.setLastName(f.getLastName());
         return result;
@@ -96,10 +94,18 @@ public class FieldWorkersController {
                     .body(new AjaxResult()
                             .addError(resolveMessage("input.msg.errors", locale))
                             .addFieldError("uuid",
-                                    resolveMessage("fieldworkers.msg.existsnot", locale, form.getId())));
+                                    resolveMessage("fieldworkers.msg.existsnot", locale, form.getExtId())));
         }
 
-        f.setExtId(form.getId());
+        if (repo.idExists(form.getExtId())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new AjaxResult()
+                            .addError(resolveMessage("input.msg.errors", locale))
+                            .addFieldError("extId", resolveMessage("fieldworkers.msg.idexists", locale)));
+        }
+
+        f.setExtId(form.getExtId());
         f.setFirstName(form.getFirstName());
         f.setLastName(form.getLastName());
         if (form.getPassword() != null) {
@@ -189,7 +195,7 @@ public class FieldWorkersController {
 
         @NotNull
         @Pattern(regexp = "FW[A-Z][A-Z][1-9][0-9]*")
-        private String id;
+        private String extId;
         @NotNull
         @Size(min = 1)
         private String firstName;
@@ -199,12 +205,12 @@ public class FieldWorkersController {
         @Size(min = 8, max = 255)
         private String password;
 
-        public String getId() {
-            return id;
+        public String getExtId() {
+            return extId;
         }
 
-        public void setId(String id) {
-            this.id = id;
+        public void setExtId(String extId) {
+            this.extId = extId;
         }
 
         public String getFirstName() {
