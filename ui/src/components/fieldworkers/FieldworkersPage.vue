@@ -55,24 +55,14 @@
     import EditDialog from './EditDialog'
     import SearchBox from './SearchBox'
     import axios from 'axios'
-
-    function tdClasses(item) {
-        let classes = ['align-middle']
-        window.console.log(item)
-        if (item.deleted) {
-            classes.push('deleted')
-        }
-        return classes
-    }
-
     export default {
         name: 'fieldworkers-page',
         data() {
             return {
                 fields: [
-                    {key: 'extId', label: 'Id', tdClass: tdClasses},
-                    {key: 'firstName', tdClass: tdClasses},
-                    {key: 'lastName', tdClass: tdClasses},
+                    {key: 'extId', label: 'Id', tdClass: 'align-middle'},
+                    {key: 'firstName', tdClass: 'align-middle'},
+                    {key: 'lastName', tdClass: 'align-middle'},
                     {key: 'actions', tdClass: 'align-middle'},
                 ],
                 errors: [],
