@@ -5,14 +5,15 @@ import com.github.cimsbioko.server.dao.RoleRepository;
 import com.github.cimsbioko.server.domain.Privilege;
 import com.github.cimsbioko.server.domain.Role;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -39,11 +40,16 @@ public class RolesController {
 
     @PreAuthorize("hasAuthority('VIEW_ROLES')")
     @GetMapping("/roles")
-    public ModelAndView roles(@RequestParam(name = "p", defaultValue = "0") Integer page) {
-        ModelAndView modelAndView = new ModelAndView("roles");
-        modelAndView.addObject("roles", roleRepo.findByDeletedIsNull(PageRequest.of(page, 10)));
-        modelAndView.addObject("privileges", privRepo.findAll());
-        return modelAndView;
+    @ResponseBody
+    public Page<Role> roles(@RequestParam(name = "p", defaultValue = "0") Integer page) {
+        return roleRepo.findByDeletedIsNull(PageRequest.of(page, 10));
+    }
+
+    @PreAuthorize("hasAuthority('VIEW_ROLES')")
+    @GetMapping("/privileges")
+    @ResponseBody
+    public Iterable<Privilege> privileges() {
+        return privRepo.findAll(Sort.by("privilege"));
     }
 
     @PreAuthorize("hasAuthority('CREATE_ROLES')")

@@ -8,7 +8,7 @@ import FormsPage from './components/forms/FormsPage.vue'
 import Sync from './components/Sync.vue'
 import BackupsPage from './components/backups/BackupsPage.vue'
 import Users from './components/Users.vue'
-import Roles from './components/Roles.vue'
+import Roles from './components/roles/RolesPage.vue'
 import Fieldworkers from './components/fieldworkers/FieldworkersPage.vue'
 
 export default new VueRouter({

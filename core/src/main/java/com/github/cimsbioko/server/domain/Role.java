@@ -1,5 +1,6 @@
 package com.github.cimsbioko.server.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.search.annotations.Field;
@@ -38,6 +39,7 @@ public class Role implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_privileges", joinColumns = {
             @JoinColumn(name = "role")}, inverseJoinColumns = @JoinColumn(name = "privilege"))
+    @JsonIgnore
     private Set<Privilege> privileges = new HashSet<>();
 
     public String getUuid() {
