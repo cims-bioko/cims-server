@@ -29,7 +29,7 @@
 <script>
     import axios from 'axios'
     export default {
-        name: 'forms-upload-dialog',
+        name: 'form-upload-dialog',
         data() {
             return {
                 selectedUploadType: 'xml',

@@ -34,7 +34,7 @@
 <script>
     import axios from 'axios'
     export default {
-        name: 'backup-edit-dialog',
+        name: 'fieldworker-edit-dialog',
         props: {
             firstName: {
                 type: String
