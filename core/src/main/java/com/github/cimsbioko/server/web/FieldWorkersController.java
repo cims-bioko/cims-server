@@ -97,7 +97,7 @@ public class FieldWorkersController {
                                     resolveMessage("fieldworkers.msg.existsnot", locale, form.getExtId())));
         }
 
-        if (repo.idExists(form.getExtId())) {
+        if (!f.getExtId().equals(form.getExtId()) && repo.idExists(form.getExtId())) {
             return ResponseEntity
                     .badRequest()
                     .body(new AjaxResult()
