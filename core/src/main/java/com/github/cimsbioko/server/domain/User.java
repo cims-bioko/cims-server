@@ -1,5 +1,6 @@
 package com.github.cimsbioko.server.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -40,11 +41,13 @@ public class User implements Serializable {
     @Field
     private String username;
 
+    @JsonIgnore
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles", joinColumns = {
             @JoinColumn(name = "`user`")}, inverseJoinColumns = @JoinColumn(name = "`role`"))
+    @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
     private Calendar deleted;

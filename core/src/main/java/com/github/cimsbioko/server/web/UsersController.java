@@ -5,15 +5,17 @@ import com.github.cimsbioko.server.dao.UserRepository;
 import com.github.cimsbioko.server.domain.Role;
 import com.github.cimsbioko.server.domain.User;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -42,14 +44,18 @@ public class UsersController {
 
     @PreAuthorize("hasAuthority('VIEW_USERS')")
     @GetMapping("/users")
-    public ModelAndView users(@RequestParam(name = "p", defaultValue = "0") Integer page,
-                              @RequestParam(name = "q", defaultValue = "") String query) {
-        ModelAndView mav = new ModelAndView("users");
+    @ResponseBody
+    public Page<User> users(@RequestParam(name = "p", defaultValue = "0") Integer page,
+                            @RequestParam(name = "q", defaultValue = "") String query) {
         PageRequest pageObj = PageRequest.of(page, 10);
-        mav.addObject("users", query.isEmpty() ? userRepo.findByDeletedIsNull(pageObj) : userRepo.findBySearch(query, pageObj));
-        mav.addObject("roles", roleRepo.findByDeletedIsNull());
-        mav.addObject("query", query);
-        return mav;
+        return query.isEmpty() ? userRepo.findByDeletedIsNull(pageObj) : userRepo.findBySearch(query, pageObj);
+    }
+
+    @PreAuthorize("hasAuthority('VIEW_USERS')")
+    @GetMapping("/users/availableRoles")
+    @ResponseBody
+    public Iterable<Role> roles() {
+        return roleRepo.findByDeletedIsNull(Sort.by("name"));
     }
 
     @PreAuthorize("hasAuthority('CREATE_USERS')")
@@ -84,6 +90,7 @@ public class UsersController {
     @PreAuthorize("hasAuthority('VIEW_USERS')")
     @GetMapping("/user/{uuid}")
     @ResponseBody
+    @Transactional
     public UserForm loadUser(@PathVariable("uuid") String uuid) {
         // FIXME: Use optional rather than null
         User u = userRepo.findById(uuid).orElse(null);
@@ -111,6 +118,15 @@ public class UsersController {
                             .addError(resolveMessage("input.msg.errors", locale))
                             .addFieldError("uuid",
                                     resolveMessage("users.msg.existsnot", locale, form.getUsername())));
+        }
+
+        if (!u.getUsername().equals(form.getUsername()) && userRepo.findByUsernameAndDeletedIsNull(form.getUsername()) != null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new AjaxResult()
+                            .addError(resolveMessage("input.msg.errors", locale))
+                            .addFieldError("username",
+                                    resolveMessage("users.msg.exists", locale, form.getUsername())));
         }
 
         u.setFirstName(form.getFirstName());

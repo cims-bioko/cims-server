@@ -7,7 +7,7 @@ import Home from './components/Home.vue'
 import FormsPage from './components/forms/FormsPage.vue'
 import Sync from './components/Sync.vue'
 import BackupsPage from './components/backups/BackupsPage.vue'
-import Users from './components/Users.vue'
+import Users from './components/users/UsersPage.vue'
 import Roles from './components/roles/RolesPage.vue'
 import Fieldworkers from './components/fieldworkers/FieldworkersPage.vue'
 
