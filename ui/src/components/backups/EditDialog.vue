@@ -66,7 +66,7 @@
                 let name = this.scratch.name
                 if (!name) {
                     this.addFieldError('name', 'Name is required.')
-                } else if (!name.match(/^[a-z][a-z0-9_]/)) {
+                } else if (!name.match(/^[a-z][a-z0-9_]*$/)) {
                     this.addFieldError('name', 'Name must consist of lowercase letters, digits and \'_\'' +
                         ' and must start with a letter.')
                 }
