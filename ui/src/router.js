@@ -3,22 +3,22 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-import Home from './components/Home.vue'
+import HomePage from './components/HomePage.vue'
 import FormsPage from './components/forms/FormsPage.vue'
-import Sync from './components/Sync.vue'
+import SyncPage from './components/SyncPage.vue'
 import BackupsPage from './components/backups/BackupsPage.vue'
-import Users from './components/users/UsersPage.vue'
-import Roles from './components/roles/RolesPage.vue'
-import Fieldworkers from './components/fieldworkers/FieldworkersPage.vue'
+import UsersPage from './components/users/UsersPage.vue'
+import RolesPage from './components/roles/RolesPage.vue'
+import FieldworkersPage from './components/fieldworkers/FieldworkersPage.vue'
 
 export default new VueRouter({
     routes: [
-        { name: 'home', path: '/', component: Home },
+        { name: 'home', path: '/', component: HomePage },
         { name: 'forms', path: '/forms', component: FormsPage },
-        { name: 'sync', path: '/sync', component: Sync },
+        { name: 'sync', path: '/sync', component: SyncPage },
         { name: 'backups', path: '/backups', component: BackupsPage },
-        { name: 'users', path: '/users', component: Users },
-        { name: 'roles', path: '/roles', component: Roles },
-        { name: 'fieldworkers', path: '/fieldworkers', component: Fieldworkers },
+        { name: 'users', path: '/users', component: UsersPage },
+        { name: 'roles', path: '/roles', component: RolesPage },
+        { name: 'fieldworkers', path: '/fieldworkers', component: FieldworkersPage },
     ]
 });

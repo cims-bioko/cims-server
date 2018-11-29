@@ -51,7 +51,7 @@
     import SockJS from 'sockjs-client'
     import Stomp from 'webstomp-client'
     export default {
-        name: 'sync',
+        name: 'sync-page',
         data() {
             return {
                 fields: [
