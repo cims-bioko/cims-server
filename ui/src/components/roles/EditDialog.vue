@@ -12,7 +12,7 @@
                 <b-form-input v-model="scratch.description" :state="descriptionState" @input="validate"/>
             </b-form-group>
             <b-form-group label="Privileges" :invalid-feedback="privilegesError" :state="privilegesState">
-                <b-form-select multiple v-model="scratch.privileges" :options="availablePrivileges" :state="privilegesState"/>
+                <b-form-select multiple v-model="scratch.privileges" :options="availablePrivileges" :state="privilegesState" @input="validate"/>
             </b-form-group>
         </b-form>
         <template slot="modal-ok"><fa-icon icon="edit"/> Update</template>

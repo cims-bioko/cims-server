@@ -7,21 +7,21 @@
         <b-form ref="form" @submit.stop.prevent novalidate>
             <b-form-row>
                 <b-form-group label="First Name" class="col-12 col-sm-6" :invalid-feedback="firstNameError" :state="firstNameState">
-                    <b-form-input v-model="firstName" :state="firstNameState"/>
+                    <b-form-input v-model="firstName" :state="firstNameState" @input="validate"/>
                 </b-form-group>
                 <b-form-group label="Last Name" class="col-12 col-sm-6" :invalid-feedback="lastNameError" :state="lastNameState">
-                    <b-form-input v-model="lastName" :state="lastNameState"/>
+                    <b-form-input v-model="lastName" :state="lastNameState" @input="validate"/>
                 </b-form-group>
             </b-form-row>
             <b-form-group label="Description" :invalid-feedback="descriptionError" :state="descriptionState">
-                <b-form-input v-model="description" :state="descriptionState"/>
+                <b-form-input v-model="description" :state="descriptionState" @input="validate"/>
             </b-form-group>
             <b-form-row>
                 <b-form-group label="Username" class="col-12 col-sm-6" :invalid-feedback="usernameError" :state="usernameState">
-                    <b-form-input v-model="username" :state="usernameState"/>
+                    <b-form-input v-model="username" :state="usernameState" @input="validate"/>
                 </b-form-group>
                 <b-form-group label="Roles" class="col-12 col-sm-6" :invalid-feedback="rolesError" :state="rolesState">
-                    <b-form-select multiple v-model="roles" :options="availableRoles" :state="rolesState"/>
+                    <b-form-select multiple v-model="roles" :options="availableRoles" :state="rolesState" @input="validate"/>
                 </b-form-group>
             </b-form-row>
             <b-form-row>

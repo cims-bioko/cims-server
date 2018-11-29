@@ -6,13 +6,13 @@
         </template>
         <b-form ref="form" @submit.stop.prevent novalidate>
             <b-form-group label="Name" :invalid-feedback="nameError" :state="nameState">
-                <b-form-input v-model="name" :state="nameState"/>
+                <b-form-input v-model="name" :state="nameState" @input="validate"/>
             </b-form-group>
             <b-form-group label="Description" :invalid-feedback="descriptionError" :state="descriptionState">
-                <b-form-input v-model="description" :state="descriptionState"/>
+                <b-form-input v-model="description" :state="descriptionState" @input="validate"/>
             </b-form-group>
-            <b-form-group label="Privileges" :insvalid-feedback="privilegesError" :state="privilegesState">
-                <b-form-select multiple v-model="privileges" :options="availablePrivileges" :state="privilegesState"/>
+            <b-form-group label="Privileges" :invalid-feedback="privilegesError" :state="privilegesState">
+                <b-form-select multiple v-model="privileges" :options="availablePrivileges" :state="privilegesState" @input="validate"/>
             </b-form-group>
         </b-form>
         <template slot="modal-ok"><fa-icon icon="plus"/> Create</template>
