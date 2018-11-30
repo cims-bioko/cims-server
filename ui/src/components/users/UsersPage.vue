@@ -35,7 +35,7 @@
                     </template>
                     <template slot="actions" slot-scope="data">
                         <b-button-group>
-                            <b-button variant="outline-primary" @click="editItem(data.index)">
+                            <b-button variant="outline-primary" @click="editItem(data.index)" :disabled="data.item.deleted">
                                 <fa-icon icon="edit"/>
                             </b-button>
                             <b-button v-if="!data.item.deleted" variant="outline-primary" @click="deleteItem(data.item.uuid)">
