@@ -17,7 +17,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         name: 'backup-edit-dialog',
         props: {
@@ -84,7 +83,7 @@
                 if (this.validate()) {
                     try {
                         let data = {name: this.scratch.name, description: this.scratch.description}
-                        let response = await axios.put(`/backup/${this.name}`, data)
+                        let response = await this.$xhr.put(`/backup/${this.name}`, data)
                         this.hide()
                         this.$emit('ok', response.data)
                     } catch (err) {

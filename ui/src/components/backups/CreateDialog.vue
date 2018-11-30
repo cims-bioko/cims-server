@@ -17,7 +17,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         name: 'backup-create-dialog',
         data() {
@@ -72,7 +71,7 @@
                 if (this.validate()) {
                     try {
                         let data = {name: this.name, description: this.description}
-                        let response = await axios.post('/backups', data)
+                        let response = await this.$xhr.post('/backups', data)
                         this.hide()
                         this.$emit('ok', response.data)
                     } catch (err) {

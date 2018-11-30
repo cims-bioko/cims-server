@@ -47,7 +47,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     import SockJS from 'sockjs-client'
     import Stomp from 'webstomp-client'
     export default {
@@ -78,20 +77,20 @@
                 if (data) {
                     this.status = data
                 } else {
-                    let rsp = await axios.get('/sync')
+                    let rsp = await this.$xhr.get('/sync')
                     this.status = rsp.data
                 }
             },
             async build() {
-                let rsp = await axios.get('/sync/run')
+                let rsp = await this.$xhr.get('/sync/run')
                 this.update(rsp.data)
             },
             async start() {
-                let rsp = await axios.get('/sync/start')
+                let rsp = await this.$xhr.get('/sync/start')
                 this.update(rsp.data)
             },
             async pause() {
-                let rsp = await axios.get('/sync/pause')
+                let rsp = await this.$xhr.get('/sync/pause')
                 this.update(rsp.data)
             },
             wsconnect() {

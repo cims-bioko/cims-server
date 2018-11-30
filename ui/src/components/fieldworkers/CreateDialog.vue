@@ -32,7 +32,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         name: 'fieldworker-create-dialog',
         data() {
@@ -134,7 +133,7 @@
             async submit(e) {
                 if (this.validate()) {
                     try {
-                        let response = await axios.post('/fieldworkers', this.buildData())
+                        let response = await this.$xhr.post('/fieldworkers', this.buildData())
                         this.hide()
                         this.$emit('ok', response.data)
                     } catch (err) {

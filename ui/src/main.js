@@ -4,6 +4,9 @@ import Router from './router'
 import './icons'
 import './filters'
 import './bootstrap'
+import Axios from './axios'
+
+Vue.use(Axios)
 
 new Vue({
   render: h => h(App),

@@ -54,7 +54,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     import CreateDialog from './CreateDialog'
     import EditDialog from './EditDialog'
     import SearchBox from '../SearchBox'
@@ -84,7 +83,7 @@
                 if (this.searchQuery) {
                     params.q = this.searchQuery
                 }
-                let rsp = await axios.get('/users', {params: params})
+                let rsp = await this.$xhr.get('/users', {params: params})
                 let data = rsp.data
                 this.items = data.content
                 this.totalItems = data.totalElements
@@ -117,17 +116,17 @@
                 this.reloadPage()
             },
             async deleteItem(uuid) {
-                let response = await axios.delete(`/user/${uuid}`)
+                let response = await this.$xhr.delete(`/user/${uuid}`)
                 this.showMessages(response.data.messages)
                 this.reloadPage()
             },
             async restoreItem(uuid) {
-                let response = await axios.put(`/user/restore/${uuid}`)
+                let response = await this.$xhr.put(`/user/restore/${uuid}`)
                 this.showMessages(response.data.messages)
                 this.reloadPage()
             },
             async fetchRoles() {
-                let response = await axios.get('/users/availableRoles')
+                let response = await this.$xhr.get('/users/availableRoles')
                 this.availableRoles = response.data.map(
                     role => ({'text': role.name, 'value': role.uuid})
                 )

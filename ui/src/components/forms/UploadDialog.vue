@@ -27,7 +27,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         name: 'form-upload-dialog',
         data() {
@@ -103,7 +102,7 @@
             },
             async upload(formData) {
                 try {
-                    let rsp = await axios.post(this.uploadAction, formData, {
+                    let rsp = await this.$xhr.post(this.uploadAction, formData, {
                         onUploadProgress: (pe) => {
                             this.progress = pe.lengthComputable ? Math.round((pe.loaded * 100) / pe.total) : 100
                         }

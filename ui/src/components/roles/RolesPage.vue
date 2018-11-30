@@ -45,7 +45,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     import CreateDialog from './CreateDialog'
     import EditDialog from './EditDialog'
     export default {
@@ -73,7 +72,7 @@
                 if (this.searchQuery) {
                     params.q = this.searchQuery
                 }
-                let rsp = await axios.get('/roles', {params: params})
+                let rsp = await this.$xhr.get('/roles', {params: params})
                 let data = rsp.data
                 this.items = data.content
                 this.totalItems = data.totalElements
@@ -106,12 +105,12 @@
                 this.reloadPage()
             },
             async deleteItem(uuid) {
-                let response = await axios.delete(`/role/${uuid}`)
+                let response = await this.$xhr.delete(`/role/${uuid}`)
                 this.showMessages(response.data.messages)
                 this.reloadPage()
             },
             async fetchPrivileges() {
-                let response = await axios.get('/privileges')
+                let response = await this.$xhr.get('/privileges')
                 this.availablePrivileges = response.data.map(
                     priv => ({'text': priv.privilege, 'value': priv.uuid})
                 )

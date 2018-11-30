@@ -43,7 +43,6 @@
 
 <script>
     import UploadDialog from './UploadDialog'
-    import axios from 'axios'
     export default {
         name: 'forms-page',
         data() {
@@ -64,7 +63,7 @@
         },
         methods: {
             async loadPage(page) {
-                let rsp = await axios.get('/forms', {params: {p: page - 1}})
+                let rsp = await this.$xhr.get('/forms', {params: {p: page - 1}})
                 let data = rsp.data
                 this.items = data.content
                 this.totalItems = data.totalElements
@@ -79,7 +78,7 @@
             },
             async manageForm(formId, downloads, submissions) {
                 let data = {downloads, submissions}, config = {transformResponse: []}
-                await axios.patch(`/forms/manage/${formId.id}/${formId.version}`, data, config)
+                await this.$xhr.patch(`/forms/manage/${formId.id}/${formId.version}`, data, config)
                 this.reloadPage()
             },
             toggleDownload({formId, downloads, submissions}) {

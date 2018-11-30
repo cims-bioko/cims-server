@@ -46,7 +46,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     import CreateDialog from './CreateDialog'
     import EditDialog from './EditDialog'
     import SockJS from 'sockjs-client'
@@ -71,7 +70,7 @@
         },
         methods: {
             async loadPage(page) {
-                let response = await axios.get('/backups', {params: {p: page - 1}})
+                let response = await this.$xhr.get('/backups', {params: {p: page - 1}})
                 let data = response.data
                 this.items = data.content
                 this.totalItems = data.totalElements
@@ -85,7 +84,7 @@
                 this.loadPage(this.currentPage)
             },
             async deleteItem(name) {
-                let response = await axios.delete(`/backup/${name}`)
+                let response = await this.$xhr.delete(`/backup/${name}`)
                 this.showMessages(response.data.messages)
                 this.reloadPage()
             },

@@ -32,7 +32,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         name: 'fieldworker-edit-dialog',
         props: {
@@ -150,7 +149,7 @@
             async submit(e) {
                 if (this.validate()) {
                     try {
-                        let response = await axios.put(`/fieldworker/${this.uuid}`, this.buildData())
+                        let response = await this.$xhr.put(`/fieldworker/${this.uuid}`, this.buildData())
                         this.hide()
                         this.$emit('ok', response.data)
                     } catch (err) {

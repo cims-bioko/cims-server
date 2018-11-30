@@ -54,7 +54,6 @@
     import CreateDialog from './CreateDialog'
     import EditDialog from './EditDialog'
     import SearchBox from '../SearchBox'
-    import axios from 'axios'
     export default {
         name: 'fieldworkers-page',
         data() {
@@ -78,7 +77,7 @@
             async loadPage(page) {
                 let params = {p: page - 1}
                 if (this.searchQuery) { params.q = this.searchQuery }
-                let rsp = await axios.get('/fieldworkers', {params: params})
+                let rsp = await this.$xhr.get('/fieldworkers', {params: params})
                 let data = rsp.data
                 this.items = data.content
                 this.totalItems = data.totalElements
@@ -111,12 +110,12 @@
                 this.reloadPage()
             },
             async deleteItem(uuid) {
-                let response = await axios.delete(`/fieldworker/${uuid}`)
+                let response = await this.$xhr.delete(`/fieldworker/${uuid}`)
                 this.showMessages(response.data.messages)
                 this.reloadPage()
             },
             async restoreItem(uuid) {
-                let response = await axios.put(`/fieldworker/restore/${uuid}`)
+                let response = await this.$xhr.put(`/fieldworker/restore/${uuid}`)
                 this.showMessages(response.data.messages)
                 this.reloadPage()
             },

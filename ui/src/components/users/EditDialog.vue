@@ -38,7 +38,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         name: 'user-edit-dialog',
         props: {
@@ -133,7 +132,7 @@
             async submit(e) {
                 if (this.validate()) {
                     try {
-                        let response = await axios.put(`/user/${this.uuid}`, this.buildData())
+                        let response = await this.$xhr.put(`/user/${this.uuid}`, this.buildData())
                         this.hide()
                         this.$emit('ok', response.data)
                     } catch (err) {
@@ -148,7 +147,7 @@
                 }
             },
             async loadUser(uuid) {
-                let response = await axios.get(`/user/${uuid}`)
+                let response = await this.$xhr.get(`/user/${uuid}`)
                 this.scratch = response.data
             }
         },

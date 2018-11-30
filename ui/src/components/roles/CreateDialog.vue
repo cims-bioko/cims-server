@@ -20,7 +20,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         name: 'role-create-dialog',
         props: {
@@ -89,7 +88,7 @@
             async submit(e) {
                 if (this.validate()) {
                     try {
-                        let response = await axios.post('/roles', this.buildData())
+                        let response = await this.$xhr.post('/roles', this.buildData())
                         this.hide()
                         this.$emit('ok', response.data)
                     } catch (err) {
