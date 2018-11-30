@@ -1,7 +1,4 @@
-import Vue from 'vue'
 import VueRouter from 'vue-router'
-
-Vue.use(VueRouter)
 
 import HomePage from './components/HomePage.vue'
 import FormsPage from './components/forms/FormsPage.vue'
@@ -11,7 +8,7 @@ import UsersPage from './components/users/UsersPage.vue'
 import RolesPage from './components/roles/RolesPage.vue'
 import FieldworkersPage from './components/fieldworkers/FieldworkersPage.vue'
 
-export default new VueRouter({
+export const Router = new VueRouter({
     routes: [
         { name: 'home', path: '/', component: HomePage },
         { name: 'forms', path: '/forms', component: FormsPage },
@@ -21,4 +18,6 @@ export default new VueRouter({
         { name: 'roles', path: '/roles', component: RolesPage },
         { name: 'fieldworkers', path: '/fieldworkers', component: FieldworkersPage },
     ]
-});
+})
+
+export default VueRouter
