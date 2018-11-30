@@ -1,5 +1,6 @@
 package com.github.cimsbioko.server.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.cimsbioko.server.dao.UserRepository;
 import com.github.cimsbioko.server.security.*;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import static org.springframework.http.HttpMethod.GET;
@@ -65,6 +67,11 @@ public class SecurityConfig {
         return new AuthSuccessHandler(userRepo, delegatingPasswordEncoder());
     }
 
+    @Bean
+    AuthenticationEntryPoint ajaxAwareSecurityEndpoint(ObjectMapper mapper) {
+        return new AjaxAwareAuthenticationEntryPoint("/login", mapper);
+    }
+
     @Configuration
     @Order(1)
     public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
@@ -101,11 +108,15 @@ public class SecurityConfig {
     public static class FormWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
         private final AuthenticationSuccessHandler authSuccessHandler;
+        private final AuthenticationEntryPoint authEntryPoint;
         private final UserDetailsService detailsService;
         private final PasswordEncoder encoder;
 
-        public FormWebSecurityConfigurerAdapter(AuthenticationSuccessHandler successHandler, UserDetailsService detailsService, PasswordEncoder encoder) {
+        public FormWebSecurityConfigurerAdapter(AuthenticationSuccessHandler successHandler,
+                                                AuthenticationEntryPoint entryPoint,
+                                                UserDetailsService detailsService, PasswordEncoder encoder) {
             this.authSuccessHandler = successHandler;
+            this.authEntryPoint = entryPoint;
             this.detailsService = detailsService;
             this.encoder = encoder;
         }
@@ -122,6 +133,9 @@ public class SecurityConfig {
                     .authorizeRequests()
                     .antMatchers("/css/**", "/img/**", "/webjars/**", "favicon.ico").permitAll()
                     .anyRequest().authenticated()
+                    .and()
+                    .exceptionHandling()
+                    .authenticationEntryPoint(authEntryPoint)
                     .and()
                     .formLogin()
                     .loginPage("/login")
