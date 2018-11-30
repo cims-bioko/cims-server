@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-// used by server to identify requests from axios and send 403 (handled by interceptor below)
+// identify axios requests so server sends 403s
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'
 
-// force browser navigation if a request gets a 403 redirect
+// force browser navigation when 403 with location payload is received
 axios.interceptors.response.use(
     (response) => response,
     (error) => {
