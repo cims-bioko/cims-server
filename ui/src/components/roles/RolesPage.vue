@@ -35,8 +35,8 @@
                             <b-button v-if="!data.item.deleted" variant="outline-primary" @click="deleteItem(data.item.uuid)">
                                 <fa-icon icon="trash-alt"/>
                             </b-button>
-                            <edit-dialog :ref="`editDialog${data.index}`" v-bind="data.item" :available-privileges="availablePrivileges" @ok="itemEdited"/>
                         </b-button-group>
+                        <edit-dialog :ref="`editDialog${data.index}`" v-bind="data.item" :available-privileges="availablePrivileges" @ok="itemEdited"/>
                     </template>
                 </b-table>
             </b-col>
