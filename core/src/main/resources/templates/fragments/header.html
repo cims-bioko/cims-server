@@ -1,5 +1,4 @@
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:fragment="header-css" th:remove="tag">
         <meta charset="utf-8"/>
@@ -22,12 +21,6 @@
                 width: 3rem;
                 height: 3rem;
             }
-            .modal .alert {
-                word-wrap: break-word;
-            }
-            tr.deleted td {
-                text-decoration-line: line-through;
-            }
         </style>
     </div>
 </head>
@@ -38,50 +31,6 @@
             <img th:src="@{/img/logo.svg}" class="img-fluid" th:alt="#{app.logo.alt}" alt="CIMS Logo" />
             <span th:text="#{app.name}">CIMS Server</span>
         </a>
-        <button class="navbar-toggler" sec:authorize="isAuthenticated()" type="button"
-                data-toggle="collapse" data-target="#navbar-content"
-                aria-controls="navbar-content" aria-expanded="false" data-th-attr="aria-label=#{nav.toggle}">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbar-content" sec:authorize="isAuthenticated()">
-            <ul class="navbar-nav mr-auto">
-                <a class="nav-item nav-link" th:href="@{/}" th:inline="text">
-                    <span class="oi oi-home" aria-hidden="true"></span> [[#{nav.home}]]
-                </a>
-                <a class="nav-item nav-link" sec:authorize="hasAuthority('VIEW_FORMS')" th:href="@{/forms}" th:inline="text">
-                    <span class="oi oi-document" aria-hidden="true"></span> [[#{nav.forms}]]
-                </a>
-                <a class="nav-item nav-link" sec:authorize="hasAuthority('VIEW_SYNC')" th:href="@{/sync}" th:inline="text">
-                    <span class="oi oi-loop-square" aria-hidden="true"></span> [[#{nav.sync}]]
-                </a>
-                <a class="nav-item nav-link" sec:authorize="hasAuthority('VIEW_BACKUPS')" th:href="@{/backups}" th:inline="text">
-                    <span class="oi oi-shield" aria-hidden="true"></span> [[#{nav.backups}]]
-                </a>
-                <a class="nav-item nav-link" sec:authorize="hasAuthority('VIEW_USERS')" th:href="@{/users}" th:inline="text">
-                    <span class="oi oi-person" aria-hidden="true"></span> [[#{nav.users}]]
-                </a>
-                <a class="nav-item nav-link" sec:authorize="hasAuthority('VIEW_ROLES')" th:href="@{/roles}" th:inline="text">
-                    <span class="oi oi-people" aria-hidden="true"></span> [[#{nav.roles}]]
-                </a>
-                <a class="nav-item nav-link" sec:authorize="hasAuthority('VIEW_FIELDWORKERS')" th:href="@{/fieldworkers}" th:inline="text">
-                    <span class="oi oi-person" aria-hidden="true"></span> [[#{nav.fieldworkers}]]
-                </a>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item dropdown" >
-                    <a id="user-dropdown-link" class="nav-link dropdown-toggle" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false" th:inline="text">
-                        <span class="oi oi-person" aria-hidden="true"></span> [[${#authentication.name}]]
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="user-dropdown-link">
-                        <a class="dropdown-item" th:href="@{/logout}" th:inline="text">
-                            <span class="oi oi-account-logout" aria-hidden="true"></span> [[#{nav.logout}]]
-                        </a>
-                    </ul>
-                </li>
-            </ul>
-        </div>
     </header>
 </div>
 </body>
