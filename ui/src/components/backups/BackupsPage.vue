@@ -14,7 +14,7 @@
             <b-col class="col-auto">
                 <h1><fa-icon icon="business-time"/> Backups</h1>
             </b-col>
-            <b-col>
+            <b-col v-if="$can('CREATE_BACKUPS')">
                 <b-button variant="primary" @click="createItem"><fa-icon icon="plus"/> Create</b-button>
                 <create-dialog ref="createDialog" @ok="itemCreated"/>
             </b-col>
@@ -30,14 +30,14 @@
                     <template slot="created" slot-scope="data">{{ data | formatDate }}</template>
                     <template slot="actions" slot-scope="data">
                         <b-button-group>
-                            <b-button variant="outline-primary" @click="editItem(data.index)">
+                            <b-button v-if="$can('EDIT_BACKUPS')" variant="outline-primary" @click="editItem(data.index)">
                                 <fa-icon icon="edit"/>
                             </b-button>
-                            <b-button variant="outline-primary" @click="deleteItem(data.item.name)">
+                            <b-button v-if="$can('DELETE_BACKUPS')" variant="outline-primary" @click="deleteItem(data.item.name)">
                                 <fa-icon icon="trash-alt"/>
                             </b-button>
                         </b-button-group>
-                        <edit-dialog :ref="`editDialog${data.index}`" v-bind="data.item" @ok="itemEdited"/>
+                        <edit-dialog :ref="`editDialog${data.index}`" v-bind="data.item" @ok="itemEdited" v-if="$can('EDIT_BACKUPS')"/>
                     </template>
                 </b-table>
             </b-col>

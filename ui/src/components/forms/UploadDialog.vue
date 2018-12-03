@@ -5,9 +5,9 @@
         <b-alert variant="success" v-if="message" :show="5">{{message}}</b-alert>
         <b-progress v-if="inProgress" :value="progress" striped animated/>
         <b-form ref="form" v-show="!inProgress" @submit.stop.prevent novalidate>
-            <b-form-group label="Upload Type">
+            <b-form-group label="Upload Type" v-if="permittedUploadTypes.length > 1">
                 <b-form-radio-group button-variant="outline-secondary" buttons
-                                    v-model="selectedUploadType" :options="uploadTypes" @change="validated=null"/>
+                                    v-model="selectedUploadType" :options="permittedUploadTypes" @change="validated=null"/>
             </b-form-group>
             <b-form-group label="XML" :invalid-feedback="xmlError" :state="xmlState">
                 <b-form-file ref="xmlInput" v-model="xmlFile" :disabled="!isXmlUpload"
@@ -49,7 +49,7 @@
         },
         methods: {
             reset() {
-                this.selectedUploadType = 'xml'
+                this.selectedUploadType = this.permittedUploadTypes[0].value
                 this.validated = null
                 this.message = null
                 this.error = null
@@ -125,6 +125,11 @@
             }
         },
         computed: {
+            permittedUploadTypes() {
+                return this.uploadTypes.filter(type =>
+                    this.$can('FORM_UPLOAD') && type.value.startsWith('xml') ||
+                    this.$can('FORM_UPLOAD_XLS') && type.value.startsWith('xls'))
+            },
             isXmlUpload() {
                 return (this.selectedUploadType || '').includes('xml')
             },

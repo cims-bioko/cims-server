@@ -1,7 +1,7 @@
 <template>
     <b-container>
         <b-row>
-            <b-col class="col-lg-4 mb-4">
+            <b-col class="col-lg-4 mb-4" v-if="$can('VIEW_FORMS')">
                 <b-card>
                     <h1 class="card-title"><fa-icon icon="file-alt"/> Forms</h1>
                     <p class="card-text">
@@ -10,7 +10,7 @@
                     <b-button variant="info" :to="{name:'forms'}">Go to Forms</b-button>
                 </b-card>
             </b-col>
-            <b-col class="col-lg-4 mb-4">
+            <b-col class="col-lg-4 mb-4" v-if="$can('VIEW_SYNC')">
                 <b-card>
                     <h1 class="card-title"><fa-icon icon="sync"/> Sync</h1>
                     <p class="card-text">
@@ -19,7 +19,7 @@
                     <b-button variant="info" :to="{name:'sync'}">Go to Sync</b-button>
                 </b-card>
             </b-col>
-            <b-col class="col-lg-4 mb-4">
+            <b-col class="col-lg-4 mb-4" v-if="$can('VIEW_BACKUPS')">
                 <b-card>
                     <h1 class="card-title"><fa-icon icon="business-time" /> Backups</h1>
                     <p class="card-text">
@@ -28,7 +28,7 @@
                     <b-button variant="info" :to="{name:'backups'}">Go to Backups</b-button>
                 </b-card>
             </b-col>
-            <b-col class="col-lg-4 mb-4">
+            <b-col class="col-lg-4 mb-4" v-if="$can('VIEW_USERS')">
                 <b-card>
                     <h1 class="card-title"><fa-icon icon="user" /> Users</h1>
                     <p class="card-text">
@@ -37,7 +37,7 @@
                     <b-button variant="info" :to="{name:'users'}">Go to Users</b-button>
                 </b-card>
             </b-col>
-            <b-col class="col-lg-4 mb-4">
+            <b-col class="col-lg-4 mb-4" v-if="$can('VIEW_ROLES')">
                 <b-card>
                     <h1 class="card-title"><fa-icon icon="users" /> Roles</h1>
                     <p class="card-text">
@@ -46,7 +46,7 @@
                     <b-button variant="info" :to="{name:'roles'}">Go to Roles</b-button>
                 </b-card>
             </b-col>
-            <b-col class="col-lg-4 mb-4">
+            <b-col class="col-lg-4 mb-4" v-if="$can('VIEW_FIELDWORKERS')">
                 <b-card>
                     <h1 class="card-title"><fa-icon icon="user" /> Fieldworkers</h1>
                     <p class="card-text">

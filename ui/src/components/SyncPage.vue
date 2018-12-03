@@ -4,7 +4,7 @@
             <b-col class="col-auto">
                 <h1><fa-icon icon="sync"/> Sync</h1>
             </b-col>
-            <b-col>
+            <b-col v-if="$can('MANAGE_SYNC')">
                 <b-button-toolbar>
                     <b-button-group class="mr-2">
                         <b-button variant="primary" @click="pause" :class="{disabled: !status.scheduled}">
@@ -35,7 +35,7 @@
                     <template slot="started" slot-scope="data">{{ data.value | formatDate }}</template>
                     <template slot="finished" slot-scope="data">{{ data.value | formatDate }}</template>
                     <template slot="descriptor" slot-scope="data">
-                        <b-button variant="primary" :class="{disabled: !status.downloadable}" href="/sync/export" download>
+                        <b-button v-if="$can('EXPORT_SYNC')" variant="primary" :class="{disabled: !status.downloadable}" href="/sync/export" download>
                             <fa-icon icon="download"/>
                         </b-button>
                         {{ data.value }}

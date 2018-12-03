@@ -14,7 +14,7 @@
             <b-col class="col-auto">
                 <h1><fa-icon icon="user"/> Users</h1>
             </b-col>
-            <b-col>
+            <b-col v-if="$can('CREATE_USERS')">
                 <b-button variant="primary" @click="createItem"><fa-icon icon="plus"/> Create</b-button>
                 <create-dialog ref="createDialog" :available-roles="availableRoles" @ok="itemCreated" />
             </b-col>
@@ -35,17 +35,17 @@
                     </template>
                     <template slot="actions" slot-scope="data">
                         <b-button-group>
-                            <b-button variant="outline-primary" @click="editItem(data.index)" :disabled="data.item.deleted">
+                            <b-button v-if="$can('EDIT_USERS')" variant="outline-primary" @click="editItem(data.index)" :disabled="data.item.deleted">
                                 <fa-icon icon="edit"/>
                             </b-button>
-                            <b-button v-if="!data.item.deleted" variant="outline-primary" @click="deleteItem(data.item.uuid)">
+                            <b-button v-if="$can('DELETE_USERS') && !data.item.deleted" variant="outline-primary" @click="deleteItem(data.item.uuid)">
                                 <fa-icon icon="trash-alt"/>
                             </b-button>
-                            <b-button v-if="data.item.deleted" variant="outline-primary" @click="restoreItem(data.item.uuid)">
+                            <b-button v-if="$can('RESTORE_USERS') && data.item.deleted" variant="outline-primary" @click="restoreItem(data.item.uuid)">
                                 <fa-icon icon="undo-alt"/>
                             </b-button>
                         </b-button-group>
-                        <edit-dialog :ref="`editDialog${data.index}`" :available-roles="availableRoles" v-bind="data.item" @ok="itemEdited"/>
+                        <edit-dialog v-if="$can('EDIT_USERS')" :ref="`editDialog${data.index}`" :available-roles="availableRoles" v-bind="data.item" @ok="itemEdited"/>
                     </template>
                 </b-table>
             </b-col>

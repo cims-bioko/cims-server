@@ -14,7 +14,7 @@
             <b-col class="col-auto">
                 <h1><fa-icon icon="user"/> Fieldworkers</h1>
             </b-col>
-            <b-col>
+            <b-col v-if="$can('CREATE_FIELDWORKERS')">
                 <b-button variant="primary" @click="createItem"><fa-icon icon="plus"/> Create</b-button>
                 <create-dialog ref="createDialog" @ok="itemCreated"/>
             </b-col>
@@ -32,17 +32,17 @@
                 <b-table :items="decoratedItems" :fields="fields" show-empty>
                     <template slot="actions" slot-scope="data">
                         <b-button-group>
-                            <b-button variant="outline-primary" @click="editItem(data.index)" :disabled="data.item.deleted">
+                            <b-button v-if="$can('EDIT_FIELDWORKERS')" variant="outline-primary" @click="editItem(data.index)" :disabled="data.item.deleted">
                                 <fa-icon icon="edit"/>
                             </b-button>
-                            <b-button v-if="!data.item.deleted" variant="outline-primary" @click="deleteItem(data.item.uuid)">
+                            <b-button v-if="!data.item.deleted && $can('DELETE_FIELDWORKERS')" variant="outline-primary" @click="deleteItem(data.item.uuid)">
                                 <fa-icon icon="trash-alt"/>
                             </b-button>
-                            <b-button v-if="data.item.deleted" variant="outline-primary" @click="restoreItem(data.item.uuid)">
+                            <b-button v-if="data.item.deleted && $can('RESTORE_FIELDWORKERS')" variant="outline-primary" @click="restoreItem(data.item.uuid)">
                                 <fa-icon icon="undo-alt"/>
                             </b-button>
                         </b-button-group>
-                        <edit-dialog :ref="`editDialog${data.index}`" v-bind="data.item" @ok="itemEdited"/>
+                        <edit-dialog v-if="$can('EDIT_FIELDWORKERS') && !data.item.deleted" :ref="`editDialog${data.index}`" v-bind="data.item" @ok="itemEdited"/>
                     </template>
                 </b-table>
             </b-col>

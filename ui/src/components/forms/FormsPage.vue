@@ -4,7 +4,7 @@
             <b-col class="col-auto">
                 <h1><fa-icon icon="file-alt"/> Forms</h1>
             </b-col>
-            <b-col>
+            <b-col v-if="$can('FORM_UPLOAD') || $can('FORM_UPLOAD_XLS')">
                 <b-button variant="primary" @click="showUploadDialog"><fa-icon icon="plus"/> Add</b-button>
                 <upload-dialog ref="uploadDialog" @formUploaded="formUploaded"/>
             </b-col>
@@ -19,17 +19,17 @@
                 <b-table :items="items" :fields="fields" show-empty>
                     <template slot="formId.version" slot-scope="data">
                         {{data.value}}
-                        <b-button variant="primary" :href="`/forms/export/${data.item.formId.id}/${data.value}`" download>
+                        <b-button v-if="$can('EXPORT_FORMS')" variant="primary" :href="`/forms/export/${data.item.formId.id}/${data.value}`" download>
                             <fa-icon icon="download"/>
                         </b-button>
                     </template>
                     <template slot="downloads" slot-scope="data">
-                        <b-button variant="outline-primary" @click="toggleDownload(data.item)">
+                        <b-button :disabled="!$can('MANAGE_FORMS')" variant="outline-primary" @click="toggleDownload(data.item)">
                             <fa-icon :icon="data.value? 'check' : 'times'"/>
                         </b-button>
                     </template>
                     <template slot="submissions" slot-scope="data">
-                        <b-button variant="outline-primary" @click="toggleSubmission(data.item)">
+                        <b-button :disabled="!$can('MANAGE_FORMS')" variant="outline-primary" @click="toggleSubmission(data.item)">
                             <fa-icon :icon="data.value? 'check' : 'times'"/>
                         </b-button>
                     </template>

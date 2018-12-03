@@ -14,7 +14,7 @@
             <b-col class="col-auto">
                 <h1><fa-icon icon="users"/> Roles</h1>
             </b-col>
-            <b-col>
+            <b-col v-if="$can('CREATE_ROLES')">
                 <b-button variant="primary" @click="createItem"><fa-icon icon="plus"/> Create</b-button>
                 <create-dialog ref="createDialog" @ok="itemCreated" :available-privileges="availablePrivileges"/>
             </b-col>
@@ -29,10 +29,10 @@
                 <b-table :items="items" :fields="fields" show-empty>
                     <template slot="actions" slot-scope="data">
                         <b-button-group>
-                            <b-button variant="outline-primary" @click="editItem(data.index)">
+                            <b-button v-if="$can('EDIT_ROLES')" variant="outline-primary" @click="editItem(data.index)">
                                 <fa-icon icon="edit"/>
                             </b-button>
-                            <b-button v-if="!data.item.deleted" variant="outline-primary" @click="deleteItem(data.item.uuid)">
+                            <b-button v-if="$can('DELETE_ROLES')" variant="outline-primary" @click="deleteItem(data.item.uuid)">
                                 <fa-icon icon="trash-alt"/>
                             </b-button>
                         </b-button-group>
