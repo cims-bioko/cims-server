@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <app-header />
+        <app-header @logout="logout"/>
         <app-content />
         <app-footer />
     </div>
@@ -12,6 +12,11 @@
     import AppFooter from './components/AppFooter'
     export default {
         name: 'app',
+        methods: {
+            logout() {
+                window.location = '/logout'
+            }
+        },
         components: {
             AppHeader,
             AppContent,
