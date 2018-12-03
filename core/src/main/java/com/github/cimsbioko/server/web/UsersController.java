@@ -10,6 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -40,6 +41,16 @@ public class UsersController {
         this.roleRepo = roleRepo;
         this.encoder = encoder;
         this.messages = messages;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/whoami")
+    @ResponseBody
+    public Map<String, Object> info(@AuthenticationPrincipal UserDetails user) {
+        Map<String, Object> info = new HashMap<>();
+        info.put("username", user.getUsername());
+        info.put("permissions", user.getAuthorities().stream().map(GrantedAuthority::getAuthority));
+        return info;
     }
 
     @PreAuthorize("hasAuthority('VIEW_USERS')")
