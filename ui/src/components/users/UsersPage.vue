@@ -12,14 +12,14 @@
         </b-row>
         <b-row class="align-items-center">
             <b-col class="col-auto">
-                <h1><fa-icon icon="user"/> Users</h1>
+                <h1><fa-icon icon="user"/> {{$t('nav.users')}}</h1>
             </b-col>
             <b-col v-if="$can('CREATE_USERS')">
-                <b-button variant="primary" @click="createItem"><fa-icon icon="plus"/> Create</b-button>
+                <b-button variant="primary" @click="createItem"><fa-icon icon="plus"/> {{$t('users.create')}}</b-button>
                 <create-dialog ref="createDialog" :available-roles="availableRoles" @ok="itemCreated" />
             </b-col>
             <b-col>
-                <search-box placeholder="Search by name or username" v-model="searchQuery" @search="search" />
+                <search-box :placeholder="$t('users.searchph')" v-model="searchQuery" @search="search" />
             </b-col>
         </b-row>
         <b-row v-if="totalItems > pageSize">
@@ -30,9 +30,7 @@
         <b-row>
             <b-col>
                 <b-table :items="decoratedItems" :fields="fields" show-empty>
-                    <template slot="lastLogin" slot-scope="data">
-                        {{ data.value | formatDate }}
-                    </template>
+                    <template slot="lastLogin" slot-scope="data">{{data.value|formatDateTime}}</template>
                     <template slot="actions" slot-scope="data">
                         <b-button-group>
                             <b-button v-if="$can('EDIT_USERS')" variant="outline-primary" @click="editItem(data.index)" :disabled="data.item.deleted">
@@ -62,10 +60,10 @@
         data() {
             return {
                 fields: [
-                    {key: 'username', tdClass: 'align-middle'},
-                    {key: 'fullName', tdClass: 'align-middle'},
-                    {key: 'lastLogin', tdClass: 'align-middle'},
-                    {key: 'actions', tdClass: 'align-middle'}
+                    {key: 'username', label: this.$t('users.username'), tdClass: 'align-middle'},
+                    {key: 'fullName', label: this.$t('users.fullName'), tdClass: 'align-middle'},
+                    {key: 'lastLogin', label: this.$t('users.lastLogin'), tdClass: 'align-middle'},
+                    {key: 'actions', label: this.$t('users.actions'), tdClass: 'align-middle'}
                 ],
                 errors: [],
                 messages: [],

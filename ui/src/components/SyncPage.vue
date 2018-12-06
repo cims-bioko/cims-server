@@ -2,21 +2,21 @@
     <b-container>
         <b-row class="align-items-center">
             <b-col class="col-auto">
-                <h1><fa-icon icon="sync"/> Sync</h1>
+                <h1><fa-icon icon="sync"/> {{$t('nav.sync')}}</h1>
             </b-col>
             <b-col v-if="$can('MANAGE_SYNC')">
                 <b-button-toolbar>
                     <b-button-group class="mr-2">
-                        <b-button variant="primary" @click="pause" :class="{disabled: !status.scheduled}">
-                            <fa-icon icon="pause"/> Pause
+                        <b-button variant="primary" @click="pause" :disabled="!status.scheduled">
+                            <fa-icon icon="pause"/> {{$t("sync.btn.pause")}}
                         </b-button>
-                        <b-button variant="primary" @click="start" :class="{disabled: status.scheduled || !status.schedule}">
-                            <fa-icon icon="play"/> Resume
+                        <b-button variant="primary" @click="start" :disabled="status.scheduled || !status.schedule">
+                            <fa-icon icon="play"/> {{$t("sync.btn.resume")}}
                         </b-button>
                     </b-button-group>
                     <b-button-group>
-                        <b-button variant="primary" @click="build" :class="{disabled: status.running}">
-                            <fa-icon icon="bolt"/> Build Now
+                        <b-button variant="primary" @click="build" :disabled="status.running">
+                            <fa-icon icon="bolt"/> {{$t("sync.btn.build")}}
                         </b-button>
                     </b-button-group>
                 </b-button-toolbar>
@@ -25,15 +25,15 @@
         <b-row>
             <b-col>
                 <p class="text-center">
-                    <fa-icon icon="stopwatch"/> Next run: {{ nextRunFormatted }}
+                    <fa-icon icon="stopwatch"/> {{ nextRunFormatted }}
                 </p>
             </b-col>
         </b-row>
         <b-row>
             <b-col>
                 <b-table :items="[status.task]" :fields="fields" >
-                    <template slot="started" slot-scope="data">{{ data.value | formatDate }}</template>
-                    <template slot="finished" slot-scope="data">{{ data.value | formatDate }}</template>
+                    <template slot="started" slot-scope="data">{{data.value | formatDateTime}}</template>
+                    <template slot="finished" slot-scope="data">{{data.value | formatDateTime}}</template>
                     <template slot="descriptor" slot-scope="data">
                         <b-button v-if="$can('EXPORT_SYNC')" variant="primary" :class="{disabled: !status.downloadable}" href="/sync/export" download>
                             <fa-icon icon="download"/>
@@ -54,10 +54,10 @@
         data() {
             return {
                 fields: [
-                    {key: 'started', label: 'Started', tdClass: 'align-middle'},
-                    {key: 'finished', label: 'Finished', tdClass: 'align-middle'},
-                    {key: 'descriptor', label: 'Content', tdClass: 'align-middle'},
-                    {key: 'itemCount', label: 'Items', tdClass: 'align-middle'}
+                    {key: 'started', label: this.$t('sync.task.started'), tdClass: 'align-middle'},
+                    {key: 'finished', label: this.$t('sync.task.finished'), tdClass: 'align-middle'},
+                    {key: 'descriptor', label: this.$t('sync.task.descriptor'), tdClass: 'align-middle'},
+                    {key: 'itemCount', label: this.$t('sync.task.itemCount'), tdClass: 'align-middle'}
                 ],
                 status: {
                     scheduled: false,
@@ -69,7 +69,9 @@
         },
         computed: {
             nextRunFormatted() {
-                return this.status.nextRun? `${this.status.nextRun} minutes` : 'none'
+                return this.status.scheduled?
+                    this.$tc('sync.nextRun.msg', this.status.nextRun) :
+                    this.$t('sync.nextRun.none')
             }
         },
         methods: {

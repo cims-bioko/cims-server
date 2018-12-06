@@ -12,10 +12,10 @@
         </b-row>
         <b-row class="align-items-center">
             <b-col class="col-auto">
-                <h1><fa-icon icon="business-time"/> Backups</h1>
+                <h1><fa-icon icon="business-time"/> {{$t('nav.backups')}}</h1>
             </b-col>
             <b-col v-if="$can('CREATE_BACKUPS')">
-                <b-button variant="primary" @click="createItem"><fa-icon icon="plus"/> Create</b-button>
+                <b-button variant="primary" @click="createItem"><fa-icon icon="plus"/> {{$t('backups.create')}}</b-button>
                 <create-dialog ref="createDialog" @ok="itemCreated"/>
             </b-col>
         </b-row>
@@ -27,7 +27,7 @@
         <b-row>
             <b-col>
                 <b-table :items="items" :fields="fields" show-empty>
-                    <template slot="created" slot-scope="data">{{ data | formatDate }}</template>
+                    <template slot="created" slot-scope="data">{{data.value|formatDateTime}}</template>
                     <template slot="actions" slot-scope="data">
                         <b-button-group>
                             <b-button v-if="$can('EDIT_BACKUPS')" variant="outline-primary" @click="editItem(data.index)">
@@ -55,10 +55,10 @@
         data() {
             return {
                 fields: [
-                    {key: 'name', tdClass: 'align-middle'},
-                    {key: 'description', tdClass: 'align-middle'},
-                    {key: 'created', tdClass: 'align-middle'},
-                    {key: 'actions', tdClass: 'align-middle'}
+                    {key: 'name', label: this.$t('backups.name'), tdClass: 'align-middle'},
+                    {key: 'description', label: this.$t('backups.description'), tdClass: 'align-middle'},
+                    {key: 'created', label: this.$t('backups.created'), tdClass: 'align-middle'},
+                    {key: 'actions', label: this.$t('backups.actions'), tdClass: 'align-middle'}
                 ],
                 errors: [],
                 messages: [],
@@ -118,10 +118,10 @@
             },
             handleMessage(msg) {
                 if (msg.status === 'created') {
-                    this.messages.push(`Creation of backup ${msg.backup} finished successfully.`);
+                    this.messages.push(this.$t("backups.success", [msg.backup]));
                     this.reloadPage()
                 } else if (msg.status === 'error') {
-                    this.errors.push(`Creation of backup ${msg.backup} failed. Error: ${msg.errorMessage}`)
+                    this.errors.push(this.$t("backups.error", [msg.backup, msg.errorMessage]))
                 }
             }
         },

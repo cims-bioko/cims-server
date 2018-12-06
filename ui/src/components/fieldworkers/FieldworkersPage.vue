@@ -12,14 +12,14 @@
         </b-row>
         <b-row class="align-items-center">
             <b-col class="col-auto">
-                <h1><fa-icon icon="user"/> Fieldworkers</h1>
+                <h1><fa-icon icon="user"/> {{$t('nav.fieldworkers')}}</h1>
             </b-col>
             <b-col v-if="$can('CREATE_FIELDWORKERS')">
-                <b-button variant="primary" @click="createItem"><fa-icon icon="plus"/> Create</b-button>
+                <b-button variant="primary" @click="createItem"><fa-icon icon="plus"/> {{$t('fieldworkers.create')}}</b-button>
                 <create-dialog ref="createDialog" @ok="itemCreated"/>
             </b-col>
             <b-col>
-                <search-box placeholder="Search by name or fieldworker id" v-model="searchQuery" @search="search" />
+                <search-box :placeholder="$t('fieldworkers.searchph')" v-model="searchQuery" @search="search" />
             </b-col>
         </b-row>
         <b-row v-if="totalItems > pageSize">
@@ -59,10 +59,10 @@
         data() {
             return {
                 fields: [
-                    {key: 'extId', label: 'Id', tdClass: 'align-middle'},
-                    {key: 'firstName', tdClass: 'align-middle'},
-                    {key: 'lastName', tdClass: 'align-middle'},
-                    {key: 'actions', tdClass: 'align-middle'},
+                    {key: 'extId', label: this.$t("fieldworkers.id"), tdClass: 'align-middle'},
+                    {key: 'firstName', label: this.$t("fieldworkers.firstName"), tdClass: 'align-middle'},
+                    {key: 'lastName', label: this.$t("fieldworkers.lastName"), tdClass: 'align-middle'},
+                    {key: 'actions', label: this.$t("fieldworkers.actions"), tdClass: 'align-middle'},
                 ],
                 errors: [],
                 messages: [],

@@ -1,18 +1,18 @@
 <template>
     <b-modal ref="modal" @show="initData" @hidden="initData" @ok.prevent="submit">
-        <template slot="modal-title">Edit Backup</template>
+        <template slot="modal-title">{{$t('backups.editmodal.title')}}</template>
         <template v-for="(error, index) of errors">
             <b-alert variant="danger" :key="index" :show="5">{{error}}</b-alert>
         </template>
         <b-form ref="form" @submit.stop.prevent novalidate>
-            <b-form-group label="Name" :invalid-feedback="nameError" :state="nameState">
+            <b-form-group :label="$t('backups.name')" :invalid-feedback="nameError" :state="nameState">
                 <b-form-input v-model="scratch.name" :state="nameState" @input="validate"/>
             </b-form-group>
-            <b-form-group label="Description" :invalid-feedback="descriptionError" :state="descriptionState">
+            <b-form-group :label="$t('backups.description')" :invalid-feedback="descriptionError" :state="descriptionState">
                 <b-form-input v-model="scratch.description" :state="descriptionState" @input="validate"/>
             </b-form-group>
         </b-form>
-        <template slot="modal-ok"><fa-icon icon="edit"/> Update</template>
+        <template slot="modal-ok"><fa-icon icon="edit"/> {{$t('backups.update')}}</template>
     </b-modal>
 </template>
 
@@ -64,15 +64,14 @@
             validateName() {
                 let name = this.scratch.name
                 if (!name) {
-                    this.addFieldError('name', 'Name is required.')
+                    this.addFieldError('name', this.$t('backups.namereq'))
                 } else if (!name.match(/^[a-z][a-z0-9_]*$/)) {
-                    this.addFieldError('name', 'Name must consist of lowercase letters, digits and \'_\'' +
-                        ' and must start with a letter.')
+                    this.addFieldError('name', this.$t('backups.namefmt'))
                 }
             },
             validateDescription() {
                 if (!this.scratch.description) {
-                    this.addFieldError('description', 'Description is required.')
+                    this.addFieldError('description', this.$t('backups.descreq'))
                 }
             },
             addFieldError(field, error) {

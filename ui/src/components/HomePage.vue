@@ -3,56 +3,44 @@
         <b-row>
             <b-col class="col-lg-4 mb-4" v-if="$can('VIEW_FORMS')">
                 <b-card>
-                    <h1 class="card-title"><fa-icon icon="file-alt"/> Forms</h1>
-                    <p class="card-text">
-                        Upload and publish ODK-based data collection forms for use with the mobile app.
-                    </p>
-                    <b-button variant="info" :to="{name:'forms'}">Go to Forms</b-button>
+                    <h1 class="card-title"><fa-icon icon="file-alt"/> {{$t('nav.forms')}}</h1>
+                    <p class="card-text">{{$t('home.forms.desc')}}</p>
+                    <b-button variant="info" :to="{name:'forms'}">{{$t('home.forms.btn')}}</b-button>
                 </b-card>
             </b-col>
             <b-col class="col-lg-4 mb-4" v-if="$can('VIEW_SYNC')">
                 <b-card>
-                    <h1 class="card-title"><fa-icon icon="sync"/> Sync</h1>
-                    <p class="card-text">
-                        Inspect and interact with the process that provides automatic data updates for the mobile app.
-                    </p>
-                    <b-button variant="info" :to="{name:'sync'}">Go to Sync</b-button>
+                    <h1 class="card-title"><fa-icon icon="sync"/> {{$t('nav.sync')}}</h1>
+                    <p class="card-text">{{$t('home.sync.desc')}}</p>
+                    <b-button variant="info" :to="{name:'sync'}">{{$t('home.sync.btn')}}</b-button>
                 </b-card>
             </b-col>
             <b-col class="col-lg-4 mb-4" v-if="$can('VIEW_BACKUPS')">
                 <b-card>
-                    <h1 class="card-title"><fa-icon icon="business-time" /> Backups</h1>
-                    <p class="card-text">
-                        Create and manage historical snapshots via backups of the entire CIMS Server database.
-                    </p>
-                    <b-button variant="info" :to="{name:'backups'}">Go to Backups</b-button>
+                    <h1 class="card-title"><fa-icon icon="business-time" /> {{$t('nav.backups')}}</h1>
+                    <p class="card-text">{{$t('home.backups.desc')}}</p>
+                    <b-button variant="info" :to="{name:'backups'}">{{$t('home.backups.btn')}}</b-button>
                 </b-card>
             </b-col>
             <b-col class="col-lg-4 mb-4" v-if="$can('VIEW_USERS')">
                 <b-card>
-                    <h1 class="card-title"><fa-icon icon="user" /> Users</h1>
-                    <p class="card-text">
-                        Create and manage user accounts for CIMS Server (supervisor accounts for the mobile app).
-                    </p>
-                    <b-button variant="info" :to="{name:'users'}">Go to Users</b-button>
+                    <h1 class="card-title"><fa-icon icon="user" /> {{$t('nav.users')}}</h1>
+                    <p class="card-text">{{$t('home.users.desc')}}</p>
+                    <b-button variant="info" :to="{name:'users'}">{{$t('home.users.btn')}}</b-button>
                 </b-card>
             </b-col>
             <b-col class="col-lg-4 mb-4" v-if="$can('VIEW_ROLES')">
                 <b-card>
-                    <h1 class="card-title"><fa-icon icon="users" /> Roles</h1>
-                    <p class="card-text">
-                        Create and managed security roles for CIMS Server. Privileges are granted to users by roles.
-                    </p>
-                    <b-button variant="info" :to="{name:'roles'}">Go to Roles</b-button>
+                    <h1 class="card-title"><fa-icon icon="users" /> {{$t('nav.roles')}}</h1>
+                    <p class="card-text">{{$t('home.roles.desc')}}</p>
+                    <b-button variant="info" :to="{name:'roles'}">{{$t('home.roles.btn')}}</b-button>
                 </b-card>
             </b-col>
             <b-col class="col-lg-4 mb-4" v-if="$can('VIEW_FIELDWORKERS')">
                 <b-card>
-                    <h1 class="card-title"><fa-icon icon="user" /> Fieldworkers</h1>
-                    <p class="card-text">
-                        Create and manage off-line user accounts for fieldworkers collecting data using the mobile app.
-                    </p>
-                    <b-button variant="info" :to="{name:'fieldworkers'}">Go to Fieldworkers</b-button>
+                    <h1 class="card-title"><fa-icon icon="user" /> {{$t('nav.fieldworkers')}}</h1>
+                    <p class="card-text">{{$t('home.fieldworkers.desc')}}</p>
+                    <b-button variant="info" :to="{name:'fieldworkers'}">{{$t('home.fieldworkers.btn')}}</b-button>
                 </b-card>
             </b-col>
         </b-row>

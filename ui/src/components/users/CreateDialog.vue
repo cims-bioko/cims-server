@@ -1,39 +1,39 @@
 <template>
     <b-modal ref="modal" v-model="visible" @show="clearData" @ok.prevent="submit" no-enforce-focus>
-        <template slot="modal-title">Create User</template>
+        <template slot="modal-title">{{$t('users.createmodal.title')}}</template>
         <template v-for="(error, index) of errors">
             <b-alert variant="danger" :key="index" :show="5">{{error}}</b-alert>
         </template>
         <b-form ref="form" @submit.stop.prevent novalidate>
             <b-form-row>
-                <b-form-group label="First Name" class="col-12 col-sm-6" :invalid-feedback="firstNameError" :state="firstNameState">
+                <b-form-group :label="$t('users.firstName')" class="col-12 col-sm-6" :invalid-feedback="firstNameError" :state="firstNameState">
                     <b-form-input v-model="firstName" :state="firstNameState" @input="validate"/>
                 </b-form-group>
-                <b-form-group label="Last Name" class="col-12 col-sm-6" :invalid-feedback="lastNameError" :state="lastNameState">
+                <b-form-group :label="$t('users.lastName')" class="col-12 col-sm-6" :invalid-feedback="lastNameError" :state="lastNameState">
                     <b-form-input v-model="lastName" :state="lastNameState" @input="validate"/>
                 </b-form-group>
             </b-form-row>
-            <b-form-group label="Description" :invalid-feedback="descriptionError" :state="descriptionState">
+            <b-form-group :label="$t('users.description')" :invalid-feedback="descriptionError" :state="descriptionState">
                 <b-form-input v-model="description" :state="descriptionState" @input="validate"/>
             </b-form-group>
             <b-form-row>
-                <b-form-group label="Username" class="col-12 col-sm-6" :invalid-feedback="usernameError" :state="usernameState">
+                <b-form-group :label="$t('users.username')" class="col-12 col-sm-6" :invalid-feedback="usernameError" :state="usernameState">
                     <b-form-input v-model="username" :state="usernameState" @input="validate"/>
                 </b-form-group>
-                <b-form-group label="Roles" class="col-12 col-sm-6" :invalid-feedback="rolesError" :state="rolesState">
+                <b-form-group :label="$t('users.roles')" class="col-12 col-sm-6" :invalid-feedback="rolesError" :state="rolesState">
                     <b-form-select multiple v-model="roles" :options="availableRoles" :state="rolesState" @input="validate"/>
                 </b-form-group>
             </b-form-row>
             <b-form-row>
-                <b-form-group label="Password" class="col-12 col-sm-6" :invalid-feedback="passwordError" :state="passwordState">
+                <b-form-group :label="$t('users.password')" class="col-12 col-sm-6" :invalid-feedback="passwordError" :state="passwordState">
                     <b-form-input type="password" v-model="password" :state="passwordState" @input="validate"/>
                 </b-form-group>
-                <b-form-group label="Confirm Password" class="col-12 col-sm-6" :invalid-feedback="passwordConfirmedError" :state="passwordConfirmedState">
+                <b-form-group :label="$t('users.passwordConfirmed')" class="col-12 col-sm-6" :invalid-feedback="passwordConfirmedError" :state="passwordConfirmedState">
                     <b-form-input type="password" v-model="passwordConfirmed" :state="passwordConfirmedState" @input="validate"/>
                 </b-form-group>
             </b-form-row>
         </b-form>
-        <template slot="modal-ok"><fa-icon icon="plus"/> Create</template>
+        <template slot="modal-ok"><fa-icon icon="plus"/> {{$t('roles.create')}}</template>
     </b-modal>
 </template>
 
@@ -93,25 +93,25 @@
             },
             validateUsername() {
                 if (!this.username) {
-                    this.addFieldError('username', 'Username is required.')
+                    this.addFieldError('username', this.$t('users.userreq'))
                 }
             },
             validateRoles() {
                 if (this.roles.length <= 0) {
-                    this.addFieldError('roles', 'At least one role is required.')
+                    this.addFieldError('roles', this.$t('users.rolereq'))
                 }
             },
             validatePassword() {
                 if (!this.password) {
-                    this.addFieldError('password', 'Password is required.')
+                    this.addFieldError('password', this.$t('users.passwdreq'))
                 } else {
                     if (this.password !== this.passwordConfirmed) {
-                        this.addFieldError('passwordConfirmed', 'Passwords do not match.')
+                        this.addFieldError('passwordConfirmed', this.$t('users.passwdmatch'))
                     }
                     if (this.password.length < 8) {
-                        this.addFieldError('password', 'Password is too short.')
+                        this.addFieldError('password', this.$t('users.passwdshort'))
                     } else if (this.password.length > 255) {
-                        this.addFieldError('password', 'Password is too long.')
+                        this.addFieldError('password', this.$t('users.passwdlong'))
                     }
                 }
             },

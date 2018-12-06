@@ -2,10 +2,10 @@
     <b-container>
         <b-row class="align-items-center">
             <b-col class="col-auto">
-                <h1><fa-icon icon="file-alt"/> Forms</h1>
+                <h1><fa-icon icon="file-alt"/> {{$t('nav.forms')}}</h1>
             </b-col>
             <b-col v-if="$can('FORM_UPLOAD') || $can('FORM_UPLOAD_XLS')">
-                <b-button variant="primary" @click="showUploadDialog"><fa-icon icon="plus"/> Add</b-button>
+                <b-button variant="primary" @click="showUploadDialog"><fa-icon icon="plus"/> {{$t('forms.add')}}</b-button>
                 <upload-dialog ref="uploadDialog" @formUploaded="formUploaded"/>
             </b-col>
         </b-row>
@@ -33,8 +33,8 @@
                             <fa-icon :icon="data.value? 'check' : 'times'"/>
                         </b-button>
                     </template>
-                    <template slot="uploaded" slot-scope="data">{{ data.value | formatDate }}</template>
-                    <template slot="lastSubmission" slot-scope="data">{{ data.value | formatDate }}</template>
+                    <template slot="uploaded" slot-scope="data">{{data.value|formatDateTime}}</template>
+                    <template slot="lastSubmission" slot-scope="data">{{data.value|formatDateTime}}</template>
                 </b-table>
             </b-col>
         </b-row>
@@ -48,12 +48,12 @@
         data() {
             return {
                 fields: [
-                    {key: 'formId.id', label: 'Id', tdClass: 'align-middle'},
-                    {key: 'formId.version', label: 'Version', tdClass: 'align-middle'},
-                    {key: 'downloads', tdClass: 'align-middle text-center', thClass: 'text-center'},
-                    {key: 'submissions', tdClass: 'align-middle text-center', thClass: 'text-center'},
-                    {key: 'uploaded', tdClass: 'align-middle text-center', thClass: 'text-center'},
-                    {key: 'lastSubmission', tdClass: 'align-middle text-center', thClass: 'text-center'},
+                    {key: 'formId.id', label: this.$t('forms.id'), tdClass: 'align-middle'},
+                    {key: 'formId.version', label: this.$t('forms.version'), tdClass: 'align-middle'},
+                    {key: 'downloads', label: this.$t('forms.downloads'), tdClass: 'align-middle text-center', thClass: 'text-center'},
+                    {key: 'submissions', label: this.$t('forms.submissions'), tdClass: 'align-middle text-center', thClass: 'text-center'},
+                    {key: 'uploaded', label: this.$t('forms.uploaded'), tdClass: 'align-middle text-center', thClass: 'text-center'},
+                    {key: 'lastSubmission', label: this.$t('forms.lastSubmission'), tdClass: 'align-middle text-center', thClass: 'text-center'},
                 ],
                 totalItems: 0,
                 pageSize: 0,

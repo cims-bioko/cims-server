@@ -12,10 +12,10 @@
         </b-row>
         <b-row class="align-items-center">
             <b-col class="col-auto">
-                <h1><fa-icon icon="users"/> Roles</h1>
+                <h1><fa-icon icon="users"/> {{$t('nav.roles')}}</h1>
             </b-col>
             <b-col v-if="$can('CREATE_ROLES')">
-                <b-button variant="primary" @click="createItem"><fa-icon icon="plus"/> Create</b-button>
+                <b-button variant="primary" @click="createItem"><fa-icon icon="plus"/> {{$t('roles.create')}}</b-button>
                 <create-dialog ref="createDialog" @ok="itemCreated" :available-privileges="availablePrivileges"/>
             </b-col>
         </b-row>
@@ -52,9 +52,9 @@
         data() {
             return {
                 fields: [
-                    {key: 'name', tdClass: 'align-middle'},
-                    {key: 'description', tdClass: 'align-middle'},
-                    {key: 'actions', tdClass: 'align-middle'},
+                    {key: 'name', label: this.$t('roles.name'), tdClass: 'align-middle'},
+                    {key: 'description', label: this.$t('roles.description'), tdClass: 'align-middle'},
+                    {key: 'actions', label: this.$t('roles.actions'), tdClass: 'align-middle'},
                 ],
                 errors: [],
                 messages: [],

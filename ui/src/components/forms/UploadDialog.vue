@@ -1,11 +1,11 @@
 <template>
     <b-modal ref="modal" @show="reset" @ok.prevent="submit" :ok-disabled="inProgress">
-        <template slot="modal-title">Upload Form</template>
+        <template slot="modal-title">{{$t('forms.uploadmodal.title')}}</template>
         <b-alert variant="danger" v-if="error" :show="5">{{error}}</b-alert>
         <b-alert variant="success" v-if="message" :show="5">{{message}}</b-alert>
         <b-progress v-if="inProgress" :value="progress" striped animated/>
         <b-form ref="form" v-show="!inProgress" @submit.stop.prevent novalidate>
-            <b-form-group label="Upload Type" v-if="permittedUploadTypes.length > 1">
+            <b-form-group :label="$t('forms.uploadType')" v-if="permittedUploadTypes.length > 1">
                 <b-form-radio-group button-variant="outline-secondary" buttons
                                     v-model="selectedUploadType" :options="permittedUploadTypes" @change="validated=null"/>
             </b-form-group>
@@ -17,12 +17,12 @@
                 <b-form-file ref="xlsformInput" v-model="xlsformFile" :disabled="!isXlsformUpload"
                         accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" :state="xlsformState"/>
             </b-form-group>
-            <b-form-group label="Media Files">
+            <b-form-group :label="$t('forms.mediaFiles')">
                 <b-form-file ref="mediaFilesInput" v-model="mediaFiles" multiple/>
             </b-form-group>
         </b-form>
-        <template slot="modal-ok"><fa-icon icon="upload"/> Upload</template>
-        <template slot="modal-cancel">Close</template>
+        <template slot="modal-ok"><fa-icon icon="upload"/> {{$t('forms.upload')}}</template>
+        <template slot="modal-cancel">{{$t('forms.uploadmodal.close')}}</template>
     </b-modal>
 </template>
 
@@ -83,10 +83,10 @@
                 this.message = null
                 this.fieldErrors = {}
                 if (this.isXmlUpload && !this.xmlFile) {
-                    this.addFieldError('form_def_file', 'XML form is required.')
+                    this.addFieldError('form_def_file', this.$t('forms.xmlreq'))
                 }
                 if (this.isXlsformUpload && !this.xlsformFile) {
-                    this.addFieldError('xlsform_def_file', 'XLSForm is required.')
+                    this.addFieldError('xlsform_def_file', this.$t('forms.xlsreq'))
                 }
                 this.validated = Object.keys(this.fieldErrors).length === 0
                 return this.validated
@@ -115,12 +115,12 @@
             },
             uploadSuccess() {
                 this.reset()
-                this.message = 'Upload succeeded'
+                this.message = this.$t('forms.success')
                 this.$emit('formUploaded')
             },
             uploadError(err) {
                 if (err.response.status === 400) {
-                    this.error = 'Upload failed'
+                    this.error = this.$t('forms.failed')
                 }
             }
         },

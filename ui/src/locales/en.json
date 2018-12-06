@@ -1,0 +1,167 @@
+{
+  "app": {
+    "name": "CIMS Server",
+    "copyright": "© Medical Care Development International 2018"
+  },
+  "nav": {
+    "home": "Home",
+    "forms": "Forms",
+    "sync": "Sync",
+    "backups": "Backups",
+    "users": "Users",
+    "roles": "Roles",
+    "fieldworkers": "Fieldworkers",
+    "logout": "Logout"
+  },
+  "home": {
+    "forms": {
+      "desc": "Upload and publish ODK-based data collection forms for use with the mobile app.",
+      "btn": "Go to Forms"
+    },
+    "sync": {
+      "desc": "Inspect and interact with the process that provides automatic data updates for the mobile app.",
+      "btn": "Go to Sync"
+    },
+    "backups": {
+      "desc": "Create and manage historical snapshots via backups of the entire CIMS Server database.",
+      "btn": "Go to Backups"
+    },
+    "users": {
+      "desc": "Create and manage user accounts for CIMS Server (supervisor accounts for the mobile app).",
+      "btn": "Go to Users"
+    },
+    "roles": {
+      "desc": "Create and managed security roles for CIMS Server. Privileges are granted to users by roles.",
+      "btn": "Go to Roles"
+    },
+    "fieldworkers": {
+      "desc": "Create and manage off-line user accounts for fieldworkers collecting data using the mobile app.",
+      "btn": "Go to Fieldworkers"
+    }
+  },
+  "sync": {
+    "btn": {
+      "pause": "Pause",
+      "resume": "Resume",
+      "build": "Build Now"
+    },
+    "nextRun": {
+      "lbl": "Next Run:",
+      "none": "@:sync.nextRun.lbl none",
+      "msg": "@:sync.nextRun.lbl now | @:sync.nextRun.lbl {n} minute | @:sync.nextRun.lbl {n} minutes"
+    },
+    "task": {
+      "started": "Started",
+      "finished": "Finished",
+      "descriptor": "Content",
+      "itemCount": "Items"
+    }
+  },
+  "backups": {
+    "create": "Create",
+    "update": "Update",
+    "name": "Name",
+    "description": "Description",
+    "created": "Created",
+    "actions": "Actions",
+    "success": "Creation of backup {0} finished successfully.",
+    "error": "Creation of backup {0} failed. Error: {1}",
+    "createmodal": {
+      "title": "Create Backup"
+    },
+    "editmodal": {
+      "title": "Edit Backup"
+    },
+    "namereq": "Name is required.",
+    "namefmt": "Name must consist of lowercase letters, digits and '_' and must start with a letter.",
+    "descreq": "Description is required."
+  },
+  "fieldworkers": {
+    "create": "Create",
+    "update": "Update",
+    "searchph": "Search by name or fieldworker id",
+    "createmodal": {
+      "title": "Create Fieldworker"
+    },
+    "editmodal": {
+      "title": "Edit Fieldworker"
+    },
+    "id": "ID",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "actions": "Actions",
+    "password": "Password",
+    "passwordConfirmed": "Confirm Password",
+    "idreq": "ID is required.",
+    "fnamereq": "First name is required.",
+    "lnamereq": "Last name is required.",
+    "passwdreq": "Password is required.",
+    "idfmt": "Invalid ID format.",
+    "passwdmatch": "Passwords do not match.",
+    "passwdlong": "Password is too long.",
+    "passwdshort": "Password is too short."
+  },
+  "forms": {
+    "add": "Add",
+    "upload": "Upload",
+    "id": "ID",
+    "version": "Version",
+    "downloads": "Downloads",
+    "submissions": "Submissions",
+    "uploaded": "Uploaded",
+    "lastSubmission": "Last Submission",
+    "uploadType": "Upload Type",
+    "mediaFiles": "Media Files",
+    "uploadmodal": {
+      "title": "Upload Form",
+      "close": "Close"
+    },
+    "xmlreq": "XML form is required.",
+    "xlsreq": "XLSForm is required.",
+    "success": "Upload succeeded",
+    "failed": "Upload failed"
+  },
+  "roles": {
+    "create": "Create",
+    "update": "Update",
+    "name": "Name",
+    "description": "Description",
+    "privileges": "Privilege",
+    "actions": "Actions",
+    "createmodal": {
+      "title": "Create Role"
+    },
+    "editmodal": {
+      "title": "Edit Role"
+    },
+    "namereq": "Name is required.",
+    "privreq": "At least one privilege is required."
+  },
+  "users": {
+    "create": "Create",
+    "update": "Update",
+    "searchph": "Search by name or username",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "fullName": "Full Name",
+    "lastLogin": "Last Login",
+    "actions": "Actions",
+    "description": "Description",
+    "username": "Username",
+    "roles": "Roles",
+    "password": "Password",
+    "passwordConfirmed": "Confirm Password",
+    "createmodal": {
+      "title": "Create User"
+    },
+    "editmodal": {
+      "title": "Edit User"
+    },
+    "userreq": "Username is required.",
+    "rolereq": "At least one role is required.",
+    "passwdreq": "Password is required.",
+    "passwdmatch": "Passwords do not match.",
+    "passwdshort": "Password is too short.",
+    "passwdlong": "Password is too long."
+  }
+}

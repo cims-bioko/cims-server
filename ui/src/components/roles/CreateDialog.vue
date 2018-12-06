@@ -1,21 +1,21 @@
 <template>
     <b-modal ref="modal" v-model="visible" @show="clearData" @ok.prevent="submit">
-        <template slot="modal-title">Create Role</template>
+        <template slot="modal-title">{{$t('roles.createmodal.title')}}</template>
         <template v-for="(error, index) of errors">
             <b-alert variant="danger" :key="index" :show="5">{{error}}</b-alert>
         </template>
         <b-form ref="form" @submit.stop.prevent novalidate>
-            <b-form-group label="Name" :invalid-feedback="nameError" :state="nameState">
+            <b-form-group :label="$t('roles.name')" :invalid-feedback="nameError" :state="nameState">
                 <b-form-input v-model="name" :state="nameState" @input="validate"/>
             </b-form-group>
-            <b-form-group label="Description" :invalid-feedback="descriptionError" :state="descriptionState">
+            <b-form-group :label="$t('roles.description')" :invalid-feedback="descriptionError" :state="descriptionState">
                 <b-form-input v-model="description" :state="descriptionState" @input="validate"/>
             </b-form-group>
-            <b-form-group label="Privileges" :invalid-feedback="privilegesError" :state="privilegesState">
+            <b-form-group :label="$t('roles.privileges')" :invalid-feedback="privilegesError" :state="privilegesState">
                 <b-form-select multiple v-model="privileges" :options="availablePrivileges" :state="privilegesState" @input="validate"/>
             </b-form-group>
         </b-form>
-        <template slot="modal-ok"><fa-icon icon="plus"/> Create</template>
+        <template slot="modal-ok"><fa-icon icon="plus"/> {{$t('roles.create')}}</template>
     </b-modal>
 </template>
 
@@ -66,12 +66,12 @@
             },
             validateName() {
                 if (!this.name) {
-                    this.addFieldError('name', 'First name is required.')
+                    this.addFieldError('name', this.$t('roles.namereq'))
                 }
             },
             validatePrivileges() {
                 if (this.privileges.length <= 0) {
-                    this.addFieldError('privileges', 'At least one privilege is required.')
+                    this.addFieldError('privileges', this.$t('roles.privreq'))
                 }
             },
             addFieldError(field, error) {

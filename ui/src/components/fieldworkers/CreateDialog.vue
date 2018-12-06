@@ -1,33 +1,33 @@
 <template>
     <b-modal ref="modal" v-model="visible" @show="clearData" @ok.prevent="submit" no-enforce-focus>
-        <template slot="modal-title">Create Fieldworker</template>
+        <template slot="modal-title">{{$t('fieldworkers.createmodal.title')}}</template>
         <template v-for="(error, index) of errors">
             <b-alert variant="danger" :key="index" :show="5">{{error}}</b-alert>
         </template>
         <b-form ref="form" @submit.stop.prevent novalidate>
             <b-form-row>
-                <b-form-group label="First Name" class="col-12 col-sm-4" :invalid-feedback="firstNameError" :state="firstNameState">
+                <b-form-group :label="$t('fieldworkers.firstName')" class="col-12 col-sm-4" :invalid-feedback="firstNameError" :state="firstNameState">
                     <b-form-input v-model="firstName" :state="firstNameState" @input="nameUpdated"/>
                 </b-form-group>
-                <b-form-group label="Last Name" class="col-12 col-sm-5" :invalid-feedback="lastNameError" :state="lastNameState">
+                <b-form-group :label="$t('fieldworkers.lastName')" class="col-12 col-sm-5" :invalid-feedback="lastNameError" :state="lastNameState">
                     <b-form-input v-model="lastName" :state="lastNameState" @input="nameUpdated"/>
                 </b-form-group>
-                <b-form-group label="ID" class="col-sm-3" :invalid-feedback="extIdError" :state="extIdState">
+                <b-form-group :label="$t('fieldworkers.id')" class="col-sm-3" :invalid-feedback="extIdError" :state="extIdState">
                     <b-input-group :prepend="idPrefix">
                         <b-form-input v-model="extId" :state="extIdState" @input="validate" @change="idUpdated"/>
                     </b-input-group>
                 </b-form-group>
             </b-form-row>
             <b-form-row>
-                <b-form-group label="Password" class="col-12 col-sm-6" :invalid-feedback="passwordError" :state="passwordState">
+                <b-form-group :label="$t('fieldworkers.password')" class="col-12 col-sm-6" :invalid-feedback="passwordError" :state="passwordState">
                     <b-form-input type="password" v-model="password" :state="passwordState" @input="validate"/>
                 </b-form-group>
-                <b-form-group label="Confirm Password" class="col-12 col-sm-6" :invalid-feedback="passwordConfirmedError" :state="passwordConfirmedState">
+                <b-form-group :label="$t('fieldworkers.passwordConfirmed')" class="col-12 col-sm-6" :invalid-feedback="passwordConfirmedError" :state="passwordConfirmedState">
                     <b-form-input type="password" v-model="passwordConfirmed" :state="passwordConfirmedState" @input="validate"/>
                 </b-form-group>
             </b-form-row>
         </b-form>
-        <template slot="modal-ok"><fa-icon icon="plus"/> Create</template>
+        <template slot="modal-ok"><fa-icon icon="plus"/> {{$t('fieldworkers.create')}}</template>
     </b-modal>
 </template>
 
@@ -89,32 +89,32 @@
             },
             validateFirstName() {
                 if (!this.firstName) {
-                    this.addFieldError('firstName', 'First name is required.')
+                    this.addFieldError('firstName', this.$t('fieldworkers.fnamereq'))
                 }
             },
             validateLastName() {
                 if (!this.lastName) {
-                    this.addFieldError('lastName', 'Last name is required.')
+                    this.addFieldError('lastName', this.$t('fieldworkers.lnamereq'))
                 }
             },
             validateExtId() {
                 if (!this.extId) {
-                    this.addFieldError('extId', 'ID is required.')
+                    this.addFieldError('extId', this.$t('fieldworkers.idreq'))
                 } else if (!this.extId.match(/^[A-Z][A-Z][1-9][0-9]*$/)) {
-                    this.addFieldError('extId', 'Invalid ID format.')
+                    this.addFieldError('extId', this.$t('fieldworkers.idfmt'))
                 }
             },
             validatePassword() {
                 if (!this.password) {
-                    this.addFieldError('password', 'Password is required.')
+                    this.addFieldError('password', this.$t('fieldworkers.passwdreq'))
                 } else {
                     if (this.password !== this.passwordConfirmed) {
-                        this.addFieldError('passwordConfirmed', 'Passwords do not match.')
+                        this.addFieldError('passwordConfirmed', this.$t('fieldworkers.passwdmatch'))
                     }
                     if (this.password.length < 8) {
-                        this.addFieldError('password', 'Password is too short.')
+                        this.addFieldError('password', this.$t('fieldworkers.passwdshort'))
                     } else if (this.password.length > 255) {
-                        this.addFieldError('password', 'Password is too long.')
+                        this.addFieldError('password', this.$t('fieldworkers.passwdlong'))
                     }
                 }
             },

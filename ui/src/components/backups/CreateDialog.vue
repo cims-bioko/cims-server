@@ -1,18 +1,18 @@
 <template>
     <b-modal ref="modal" @show="clearData" @hidden="clearData" @ok.prevent="submit">
-        <template slot="modal-title">Create Backup</template>
+        <template slot="modal-title">{{$t("backups.createmodal.title")}}</template>
         <template v-for="(error, index) of errors">
             <b-alert variant="danger" :key="index" :show="5">{{error}}</b-alert>
         </template>
         <b-form ref="form" @submit.stop.prevent novalidate>
-            <b-form-group label="Name" :invalid-feedback="nameError" :state="nameState">
+            <b-form-group :label="$t('backups.name')" :invalid-feedback="nameError" :state="nameState">
                 <b-form-input v-model="name" :state="nameState" @input="validate"/>
             </b-form-group>
-            <b-form-group label="Description" :invalid-feedback="descriptionError" :state="descriptionState">
+            <b-form-group :label="$t('backups.description')" :invalid-feedback="descriptionError" :state="descriptionState">
                 <b-form-input v-model="description" :state="descriptionState" @input="validate"/>
             </b-form-group>
         </b-form>
-        <template slot="modal-ok"><fa-icon icon="plus"/> Create</template>
+        <template slot="modal-ok"><fa-icon icon="plus"/> {{$t("backups.create")}}</template>
     </b-modal>
 </template>
 
@@ -52,15 +52,14 @@
             },
             validateName() {
                 if (!this.name) {
-                    this.addFieldError('name', 'Name is required.')
+                    this.addFieldError('name', this.$t('backups.namereq'))
                 } else if (!this.name.match(/^[a-z][a-z0-9_]*$/)) {
-                    this.addFieldError('name', 'Name must consist of lowercase letters, digits and \'_\'' +
-                        ' and must start with a letter.')
+                    this.addFieldError('name', this.$t('backups.namefmt'))
                 }
             },
             validateDescription() {
                 if (!this.description) {
-                    this.addFieldError('description', 'Description is required.')
+                    this.addFieldError('description', this.$t('backups.descreq'))
                 }
             },
             addFieldError(field, error) {
