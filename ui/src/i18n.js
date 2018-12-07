@@ -57,16 +57,16 @@ function findLocaleForBrowser() {
 
 export const locale = findLocaleForBrowser()
 
-const dateTimeFormats = {
-    'en': {
-        short: {
-            year: 'numeric', month: 'short', day: 'numeric'
-        },
-        long: {
-            year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'
-        }
+const dateOptions = {
+    short: {
+        year: 'numeric', month: 'short', day: 'numeric'
+    },
+    long: {
+        year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'
     }
 }
+
+const dateTimeFormats = { en: dateOptions, es: dateOptions }
 
 export const i18n = new VueI18n({
     messages,
