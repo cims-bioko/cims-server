@@ -16,6 +16,7 @@
             </b-form-group>
         </b-form>
         <template slot="modal-ok"><fa-icon icon="plus"/> {{$t('roles.create')}}</template>
+        <template slot="modal-cancel">{{$t('modal.cancel')}}</template>
     </b-modal>
 </template>
 

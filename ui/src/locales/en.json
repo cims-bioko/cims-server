@@ -13,6 +13,12 @@
     "fieldworkers": "Fieldworkers",
     "logout": "Logout"
   },
+  "table": {
+    "empty": "There are no records to show"
+  },
+  "modal": {
+    "cancel": "Cancelar"
+  },
   "home": {
     "forms": {
       "desc": "Upload and publish ODK-based data collection forms for use with the mobile app.",

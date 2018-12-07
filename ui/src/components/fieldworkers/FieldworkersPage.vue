@@ -29,7 +29,7 @@
         </b-row>
         <b-row>
             <b-col>
-                <b-table :items="decoratedItems" :fields="fields" show-empty>
+                <b-table :items="decoratedItems" :fields="fields" show-empty :empty-text="$t('table.empty')">
                     <template slot="actions" slot-scope="data">
                         <b-button-group>
                             <b-button v-if="$can('EDIT_FIELDWORKERS')" variant="outline-primary" @click="editItem(data.index)" :disabled="data.item.deleted">

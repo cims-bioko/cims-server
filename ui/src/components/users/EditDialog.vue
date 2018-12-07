@@ -34,6 +34,7 @@
             </b-form-row>
         </b-form>
         <template slot="modal-ok"><fa-icon icon="edit"/> {{$t('users.update')}}</template>
+        <template slot="modal-cancel">{{$t('modal.cancel')}}</template>
     </b-modal>
 </template>
 

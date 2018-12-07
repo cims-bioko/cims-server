@@ -26,7 +26,7 @@
         </b-row>
         <b-row>
             <b-col>
-                <b-table :items="items" :fields="fields" show-empty>
+                <b-table :items="items" :fields="fields" show-empty :empty-text="$t('table.empty')">
                     <template slot="created" slot-scope="data">{{data.value|formatDateTime}}</template>
                     <template slot="actions" slot-scope="data">
                         <b-button-group>

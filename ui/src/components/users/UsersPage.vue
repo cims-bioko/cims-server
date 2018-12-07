@@ -29,7 +29,7 @@
         </b-row>
         <b-row>
             <b-col>
-                <b-table :items="decoratedItems" :fields="fields" show-empty>
+                <b-table :items="decoratedItems" :fields="fields" show-empty :empty-text="$t('table.empty')">
                     <template slot="lastLogin" slot-scope="data">{{data.value|formatDateTime}}</template>
                     <template slot="actions" slot-scope="data">
                         <b-button-group>

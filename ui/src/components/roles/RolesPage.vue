@@ -26,7 +26,7 @@
         </b-row>
         <b-row>
             <b-col>
-                <b-table :items="items" :fields="fields" show-empty>
+                <b-table :items="items" :fields="fields" show-empty :empty-text="$t('table.empty')">
                     <template slot="actions" slot-scope="data">
                         <b-button-group>
                             <b-button v-if="$can('EDIT_ROLES')" variant="outline-primary" @click="editItem(data.index)">

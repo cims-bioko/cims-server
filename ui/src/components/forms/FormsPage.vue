@@ -16,7 +16,7 @@
         </b-row>
         <b-row>
             <b-col>
-                <b-table :items="items" :fields="fields" show-empty>
+                <b-table :items="items" :fields="fields" show-empty :empty-text="$t('table.empty')">
                     <template slot="formId.version" slot-scope="data">
                         {{data.value}}
                         <b-button v-if="$can('EXPORT_FORMS')" variant="primary" :href="`/forms/export/${data.item.formId.id}/${data.value}`" download>
