@@ -52,3 +52,14 @@
         name: 'home-page'
     }
 </script>
+
+<style scoped>
+    .card-body p {
+        min-height: 6rem;
+    }
+    .card-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
