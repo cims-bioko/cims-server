@@ -1,12 +1,12 @@
 import VueRouter from 'vue-router'
 
-import HomePage from './components/HomePage.vue'
-import FormsPage from './components/forms/FormsPage.vue'
-import SyncPage from './components/SyncPage.vue'
-import BackupsPage from './components/backups/BackupsPage.vue'
-import UsersPage from './components/users/UsersPage.vue'
-import RolesPage from './components/roles/RolesPage.vue'
-import FieldworkersPage from './components/fieldworkers/FieldworkersPage.vue'
+const HomePage = () => import('./components/HomePage.vue')
+const FormsPage = () => import('./components/forms/FormsPage.vue')
+const SyncPage = () => import('./components/SyncPage.vue')
+const BackupsPage = () => import('./components/backups/BackupsPage.vue')
+const UsersPage = () => import('./components/users/UsersPage.vue')
+const RolesPage = () => import('./components/roles/RolesPage.vue')
+const FieldworkersPage = () => import('./components/fieldworkers/FieldworkersPage.vue')
 
 export const Router = new VueRouter({
     routes: [
