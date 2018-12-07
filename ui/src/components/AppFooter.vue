@@ -7,9 +7,14 @@
 </template>
 
 <script>
-export default {
-    name: 'app-footer'
-}
+    import bRow from 'bootstrap-vue/es/components/layout/row'
+    import bCol from 'bootstrap-vue/es/components/layout/col'
+    export default {
+        name: 'app-footer',
+        components: {
+            bRow, bCol
+        }
+    }
 </script>
 
 <style scoped>

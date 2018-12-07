@@ -18,6 +18,11 @@
 </template>
 
 <script>
+    import bModal from 'bootstrap-vue/es/components/modal/modal'
+    import bAlert from 'bootstrap-vue/es/components/alert/alert'
+    import bForm from 'bootstrap-vue/es/components/form/form'
+    import bFormGroup from 'bootstrap-vue/es/components/form-group/form-group'
+    import bFormInput from 'bootstrap-vue/es/components/form-input/form-input'
     export default {
         name: 'backup-edit-dialog',
         props: {
@@ -111,6 +116,9 @@
             descriptionError() {
                 return (this.fieldErrors['description'] || []).join(' ')
             }
+        },
+        components: {
+            bModal, bAlert, bForm, bFormGroup, bFormInput
         }
     }
 </script>

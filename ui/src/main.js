@@ -3,14 +3,15 @@ import App from './App.vue'
 import VueRouter, {Router} from './router'
 import Icons from './icons'
 import Filters from './filters'
-import BootstrapVue from './bootstrap'
 import Axios from './axios'
 import User from './user'
 import i18n from './i18n'
 
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 Vue.use(VueRouter)
 Vue.use(Axios)
-Vue.use(BootstrapVue)
 Vue.use(Filters)
 Vue.use(Icons)
 Vue.use(User)

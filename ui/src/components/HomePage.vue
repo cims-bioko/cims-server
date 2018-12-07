@@ -48,8 +48,16 @@
 </template>
 
 <script>
+    import bContainer from 'bootstrap-vue/es/components/layout/container'
+    import bRow from 'bootstrap-vue/es/components/layout/row'
+    import bCol from 'bootstrap-vue/es/components/layout/col'
+    import bCard from 'bootstrap-vue/es/components/card/card'
+    import bButton from 'bootstrap-vue/es/components/button/button'
     export default {
-        name: 'home-page'
+        name: 'home-page',
+        components: {
+            bContainer, bRow, bCol, bCard, bButton
+        }
     }
 </script>
 

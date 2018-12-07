@@ -33,6 +33,13 @@
 </template>
 
 <script>
+    import bModal from 'bootstrap-vue/es/components/modal/modal'
+    import bAlert from 'bootstrap-vue/es/components/alert/alert'
+    import bForm from 'bootstrap-vue/es/components/form/form'
+    import bFormRow from 'bootstrap-vue/es/components/form/form-row'
+    import bFormGroup from 'bootstrap-vue/es/components/form-group/form-group'
+    import bFormInput from 'bootstrap-vue/es/components/form-input/form-input'
+    import bInputGroup from 'bootstrap-vue/es/components/input-group/input-group'
     export default {
         name: 'fieldworker-edit-dialog',
         props: {
@@ -200,6 +207,9 @@
                 let initial = (s) => (s || 'X').charAt(0)
                 return `${initial(this.scratch.firstName)}${initial(this.scratch.lastName)}1`
             }
+        },
+        components: {
+            bModal, bAlert, bForm, bFormGroup, bFormInput, bFormRow, bInputGroup
         }
     }
 </script>

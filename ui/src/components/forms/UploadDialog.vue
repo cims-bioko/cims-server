@@ -27,6 +27,13 @@
 </template>
 
 <script>
+    import bModal from 'bootstrap-vue/es/components/modal/modal'
+    import bAlert from 'bootstrap-vue/es/components/alert/alert'
+    import bProgress from 'bootstrap-vue/es/components/progress/progress'
+    import bForm from 'bootstrap-vue/es/components/form/form'
+    import bFormGroup from 'bootstrap-vue/es/components/form-group/form-group'
+    import bFormRadioGroup from 'bootstrap-vue/es/components/form-radio/form-radio-group'
+    import bFormFile from 'bootstrap-vue/es/components/form-file/form-file'
     export default {
         name: 'form-upload-dialog',
         data() {
@@ -154,6 +161,9 @@
             xlsformError() {
                 return (this.fieldErrors['xlsform_def_file'] || []).join(' ')
             }
+        },
+        components: {
+            bModal, bAlert, bProgress, bForm, bFormGroup, bFormRadioGroup, bFormFile
         }
     }
 </script>

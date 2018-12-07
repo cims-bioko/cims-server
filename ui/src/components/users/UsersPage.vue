@@ -52,6 +52,14 @@
 </template>
 
 <script>
+    import bContainer from 'bootstrap-vue/es/components/layout/container'
+    import bRow from 'bootstrap-vue/es/components/layout/row'
+    import bCol from 'bootstrap-vue/es/components/layout/col'
+    import bAlert from 'bootstrap-vue/es/components/alert/alert'
+    import bButton from 'bootstrap-vue/es/components/button/button'
+    import bPagination from 'bootstrap-vue/es/components/pagination/pagination'
+    import bTable from 'bootstrap-vue/es/components/table/table'
+    import bButtonGroup from 'bootstrap-vue/es/components/button-group/button-group'
     import CreateDialog from './CreateDialog'
     import EditDialog from './EditDialog'
     import SearchBox from '../SearchBox'
@@ -144,9 +152,8 @@
             }
         },
         components: {
-            CreateDialog,
-            EditDialog,
-            SearchBox
+            bContainer, bRow, bCol, bAlert, bButton, bPagination, bTable, bButtonGroup,
+            CreateDialog, EditDialog, SearchBox
         }
     }
 </script>

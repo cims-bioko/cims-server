@@ -47,6 +47,13 @@
 </template>
 
 <script>
+    import bContainer from 'bootstrap-vue/es/components/layout/container'
+    import bRow from 'bootstrap-vue/es/components/layout/row'
+    import bCol from 'bootstrap-vue/es/components/layout/col'
+    import bButtonToolbar from 'bootstrap-vue/es/components/button-toolbar/button-toolbar'
+    import bButtonGroup from 'bootstrap-vue/es/components/button-group/button-group'
+    import bButton from 'bootstrap-vue/es/components/button/button'
+    import bTable from 'bootstrap-vue/es/components/table/table'
     import SockJS from 'sockjs-client'
     import Stomp from 'webstomp-client'
     export default {
@@ -112,6 +119,9 @@
             if (this.stomp) {
                 this.stomp.disconnect()
             }
+        },
+        components: {
+            bContainer, bRow, bCol, bButtonToolbar, bButtonGroup, bButton, bTable
         }
     }
 </script>

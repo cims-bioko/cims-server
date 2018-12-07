@@ -21,6 +21,12 @@
 </template>
 
 <script>
+    import bModal from 'bootstrap-vue/es/components/modal/modal'
+    import bAlert from 'bootstrap-vue/es/components/alert/alert'
+    import bForm from 'bootstrap-vue/es/components/form/form'
+    import bFormGroup from 'bootstrap-vue/es/components/form-group/form-group'
+    import bFormInput from 'bootstrap-vue/es/components/form-input/form-input'
+    import bFormSelect from 'bootstrap-vue/es/components/form-select/form-select'
     export default {
         name: 'role-create-dialog',
         props: {
@@ -123,6 +129,9 @@
             privilegesError() {
                 return (this.fieldErrors.privileges || []).join(' ')
             }
+        },
+        components: {
+            bModal, bAlert, bForm, bFormGroup, bFormInput, bFormSelect
         }
     }
 </script>

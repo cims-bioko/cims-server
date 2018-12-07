@@ -10,6 +10,11 @@
 </template>
 
 <script>
+    import bForm from 'bootstrap-vue/es/components/form/form'
+    import bInputGroup from 'bootstrap-vue/es/components/input-group/input-group'
+    import bFormInput from 'bootstrap-vue/es/components/form-input/form-input'
+    import bInputGroupAppend from 'bootstrap-vue/es/components/input-group/input-group-append'
+    import bButton from 'bootstrap-vue/es/components/button/button'
     export default {
         name: 'search-box',
         props: {
@@ -20,6 +25,9 @@
             search() {
                 this.$emit('search', this.value)
             }
+        },
+        components: {
+            bForm, bInputGroup, bFormInput, bInputGroupAppend, bButton
         }
     }
 </script>

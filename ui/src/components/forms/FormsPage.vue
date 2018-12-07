@@ -42,6 +42,12 @@
 </template>
 
 <script>
+    import bContainer from 'bootstrap-vue/es/components/layout/container'
+    import bRow from 'bootstrap-vue/es/components/layout/row'
+    import bCol from 'bootstrap-vue/es/components/layout/col'
+    import bButton from 'bootstrap-vue/es/components/button/button'
+    import bPagination from 'bootstrap-vue/es/components/pagination/pagination'
+    import bTable from 'bootstrap-vue/es/components/table/table'
     import UploadDialog from './UploadDialog'
     export default {
         name: 'forms-page',
@@ -98,6 +104,7 @@
             this.reloadPage()
         },
         components: {
+            bContainer, bRow, bCol, bButton, bPagination, bTable,
             UploadDialog
         }
     }
