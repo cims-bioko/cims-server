@@ -1,0 +1,172 @@
+{
+  "app": {
+    "name": "Servidor CIMS"
+  },
+  "nav": {
+    "home": "Inicio",
+    "forms": "Formularios",
+    "sync": "Sincronización",
+    "backups": "Copias de Seguridad",
+    "users": "Usuarios",
+    "roles": "Roles",
+    "fieldworkers": "Trabajadores de Campo",
+    "logout": "Cerrar Sesión"
+  },
+  "table": {
+    "empty": "No hay registros para mostrar"
+  },
+  "modal": {
+    "cancel": "Cancelar"
+  },
+  "home": {
+    "forms": {
+      "desc": "Cargue y publique formularios de recopilación de datos basados en ODK para usar con la aplicación móvil.",
+      "btn": "Ir a @:nav.forms"
+    },
+    "sync": {
+      "desc": "Inspeccione e interactúe con el proceso que proporciona actualizaciones automáticas de datos para la aplicación móvil.",
+      "btn": "Ir a @:nav.sync"
+    },
+    "backups": {
+      "desc": "Cree y administre instantáneas históricas a través de copias de seguridad de toda la base de datos del servidor CIMS.",
+      "btn": "Ir a @:nav.backups"
+    },
+    "users": {
+      "desc": "Cree y administre cuentas de usuario para el servidor CIMS (cuentas de supervisor para la aplicación móvil).",
+      "btn": "Ir a @:nav.users"
+    },
+    "roles": {
+      "desc": "Cree y administre roles de seguridad para el servidor CIMS. Los privilegios se otorgan a los usuarios por roles.",
+      "btn": "Ir a @:nav.roles"
+    },
+    "fieldworkers": {
+      "desc": "Cree y administre cuentas de usuario desconectado para los trabajadores de campo que recopilan datos mediante la aplicación móvil.",
+      "btn": "Ir a @:nav.fieldworkers"
+    }
+  },
+  "sync": {
+    "btn": {
+      "pause": "Pausar",
+      "resume": "Resumir",
+      "build": "Construir Ahora"
+    },
+    "nextRun": {
+      "lbl": "Siguiente ejecución:",
+      "none": "@:sync.nextRun.lbl ninguna",
+      "msg": "@:sync.nextRun.lbl ahora | @:sync.nextRun.lbl {n} minuto | @:sync.nextRun.lbl {n} minutos"
+    },
+    "task": {
+      "started": "Comenzó",
+      "finished": "Finalizado",
+      "descriptor": "Contenido",
+      "itemCount": "Artículos"
+    }
+  },
+  "backups": {
+    "create": "Crear",
+    "update": "Actualizar",
+    "name": "Nombre",
+    "description": "Descripción",
+    "created": "Creado",
+    "actions": "Acciones",
+    "success": "La creación de la copia de seguridad {0} terminó con éxito.",
+    "error": "La creación de la copia de seguridad {0} ha fallado. Error: {1}",
+    "createmodal": {
+      "title": "Crear Copia de Seguridad"
+    },
+    "editmodal": {
+      "title": "Editar Copia de Seguridad"
+    },
+    "namereq": "Se requiere el nombre.",
+    "namefmt": "El nombre debe constar de letras minúsculas, dígitos y '_' y debe comenzar con una letra.",
+    "descreq": "Se requiere descripción."
+  },
+  "fieldworkers": {
+    "create": "Crear",
+    "update": "Actualizar",
+    "searchph": "Búsqueda por nombre o ID",
+    "createmodal": {
+      "title": "Crear Trabajador de Campo"
+    },
+    "editmodal": {
+      "title": "Editar Trabajador de Campo"
+    },
+    "id": "ID",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "actions": "Acciones",
+    "password": "Contraseña",
+    "passwordConfirmed": "Confirmar Contraseña",
+    "idreq": "Se requiere ID.",
+    "fnamereq": "Se requiere nombre.",
+    "lnamereq": "Se requiere apellido.",
+    "passwdreq": "Se requiere contraseña.",
+    "idfmt": "Formato de ID no válido.",
+    "passwdmatch": "Las contraseñas no coinciden.",
+    "passwdlong": "La contraseña es demasiado larga.",
+    "passwdshort": "La contraseña es demasiado corta."
+  },
+  "forms": {
+    "add": "Añadir",
+    "upload": "Subir",
+    "id": "ID",
+    "version": "Versión",
+    "downloads": "Descargas",
+    "submissions": "Sumisiones",
+    "uploaded": "Subido a",
+    "lastSubmission": "Último Envío",
+    "uploadType": "Tipo de Carga",
+    "mediaFiles": "Archivos Multimedia",
+    "uploadmodal": {
+      "title": "Subir un Formulario",
+      "close": "Cerrar"
+    },
+    "xmlreq": "Se requiere formulario XML.",
+    "xlsreq": "Se requiere XLSForm.",
+    "success": "Subida exitosa",
+    "failed": "Subida fallida"
+  },
+  "roles": {
+    "create": "Crear",
+    "update": "Actualizar",
+    "name": "Nombre",
+    "description": "Descripción",
+    "privileges": "Privilegios",
+    "actions": "Acciones",
+    "createmodal": {
+      "title": "Crear Rol"
+    },
+    "editmodal": {
+      "title": "Editar Rol"
+    },
+    "namereq": "Se requiere el nombre.",
+    "privreq": "Se requiere al menos un privilegio."
+  },
+  "users": {
+    "create": "Crear",
+    "update": "Actualizar",
+    "searchph": "Búsqueda por nombre o nombre de usuario",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "fullName": "Nombre completo",
+    "lastLogin": "Último Acceso",
+    "actions": "Acciones",
+    "description": "Descripción",
+    "username": "Nombre de Usuario",
+    "roles": "Roles",
+    "password": "Contraseña",
+    "passwordConfirmed": "Confirmar Contraseña",
+    "createmodal": {
+      "title": "Crear Usuario"
+    },
+    "editmodal": {
+      "title": "Editar Usuario"
+    },
+    "userreq": "Se requiere nombre de usuario.",
+    "rolereq": "Se requiere al menos un rol.",
+    "passwdreq": "Se requiere contraseña.",
+    "passwdmatch": "Las contraseñas no coinciden.",
+    "passwdshort": "La contraseña es demasiado corta.",
+    "passwdlong": "La contraseña es demasiado larga."
+  }
+}
