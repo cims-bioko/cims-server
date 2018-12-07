@@ -31,7 +31,7 @@
         </b-row>
         <b-row>
             <b-col>
-                <b-table :items="[status.task]" :fields="fields" >
+                <b-table :items="[status.task]" :fields="fields">
                     <template slot="started" slot-scope="data">{{data.value | formatDateTime}}</template>
                     <template slot="finished" slot-scope="data">{{data.value | formatDateTime}}</template>
                     <template slot="descriptor" slot-scope="data">
