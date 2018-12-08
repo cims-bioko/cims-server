@@ -1,4 +1,6 @@
 import VueRouter from 'vue-router'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 const HomePage = () => import('./components/HomePage.vue')
 const FormsPage = () => import('./components/forms/FormsPage.vue')
@@ -18,6 +20,17 @@ export const Router = new VueRouter({
         { name: 'roles', path: '/roles', component: RolesPage },
         { name: 'fieldworkers', path: '/fieldworkers', component: FieldworkersPage },
     ]
+})
+
+Router.beforeEach((to, from, next) => {
+    if (to.name) {
+        NProgress.start()
+    }
+    next()
+})
+
+Router.afterEach(() => {
+    NProgress.done()
 })
 
 export default VueRouter
