@@ -5,6 +5,7 @@ EXPOSE 8080
 
 VOLUME "/app-storage/data"
 VOLUME "/app-storage/forms"
+VOLUME "/app-storage/search"
 VOLUME "/app-storage/submissions"
 VOLUME "/app-storage/logs"
 
