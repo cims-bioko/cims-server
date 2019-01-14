@@ -55,7 +55,7 @@
             return {
                 fields: [
                     {key: 'formId.id', label: this.$t('forms.id'), tdClass: 'align-middle'},
-                    {key: 'formId.version', label: this.$t('forms.version'), tdClass: 'align-middle'},
+                    {key: 'formId.version', label: this.$t('forms.version'), tdClass: 'align-middle text-right', thClass: 'text-center'},
                     {key: 'downloads', label: this.$t('forms.downloads'), tdClass: 'align-middle text-center', thClass: 'text-center'},
                     {key: 'submissions', label: this.$t('forms.submissions'), tdClass: 'align-middle text-center', thClass: 'text-center'},
                     {key: 'uploaded', label: this.$t('forms.uploaded'), tdClass: 'align-middle text-center', thClass: 'text-center'},
