@@ -11,4 +11,5 @@ import java.util.List;
 public interface FormSubmissionRepository extends PagingAndSortingRepository<FormSubmission, String> {
     List<FormSubmission> findByProcessedNullOrderByCollected(Pageable pageable);
     List<FormSubmission> findByFormIdAndSubmittedAfter(String formId, Timestamp submitted, Pageable pageable);
+    List<FormSubmission> findByFormId(String formId, Pageable pageable);
 }

@@ -143,13 +143,15 @@ public class SubmissionResource {
     public ResponseEntity<ByteArrayResource> submissionList(@RequestParam("formId") String form,
                                                             @RequestParam(value = "cursor", required = false) String cursor,
                                                             @RequestParam(value = "numEntries", required = false) Integer limit) {
-        Timestamp lastSeen = null;
-        if (!isEmpty(cursor)) {
-            lastSeen = Timestamp.valueOf(cursor);
-        }
         limit = limit == null || limit > 100 || limit <= 0 ? 100 : limit;
         PageRequest page = PageRequest.of(0, limit, Sort.by(Sort.Direction.ASC, "submitted"));
-        String chunkList = buildSubmissionChunk(submissionDao.findByFormIdAndSubmittedAfter(form, lastSeen, page), cursor);
+        List<FormSubmission> chunk;
+        if (isEmpty(cursor)) {
+            chunk = submissionDao.findByFormId(form, page);
+        } else {
+            chunk = submissionDao.findByFormIdAndSubmittedAfter(form, Timestamp.valueOf(cursor), page);
+        }
+        String chunkList = buildSubmissionChunk(chunk, cursor);
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.TEXT_XML)
