@@ -86,11 +86,19 @@ public class SyncServiceImpl implements SyncService {
     }
 
     public void scheduleTask(String schedule) {
+
         cancelTask();
-        log.info("scheduling mobile db export task, schedule {}", schedule);
+
         this.schedule = Optional.ofNullable(schedule)
                 .filter(s -> !s.trim().isEmpty())
                 .orElse(null);
+
+        if (this.schedule != null) {
+            log.info("scheduling mobile db export task, schedule '{}'", this.schedule);
+        } else {
+            log.info("mobile db export task disabled by user settings");
+        }
+
         scheduledTask = Optional.ofNullable(this.schedule)
                 .map(CronTrigger::new)
                 .map(t -> scheduler.schedule(this::requestTaskRun, t))
