@@ -19,8 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @EnableWebSecurity
@@ -86,18 +84,6 @@ public class SecurityConfig {
                     .sessionCreationPolicy(STATELESS)
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/api/rest/mobiledb").hasAuthority("MOBILE_SYNC")
-                    .antMatchers(POST, "/api/odk/formUpload").hasAuthority("ODK_FORM_UPLOAD")
-                    .antMatchers(POST, "/api/odk/forms").hasAuthority("ODK_FORM_UPLOAD")
-                    .antMatchers(GET, "/api/odk/forms").hasAuthority("ODK_FORM_LIST")
-                    .antMatchers(GET, "/api/odk/formList").hasAuthority("ODK_FORM_LIST")
-                    .antMatchers(GET, "/api/odk/forms/**").hasAuthority("ODK_FORM_DOWNLOAD")
-                    .antMatchers(GET, "/api/odk/formList/**").hasAuthority("ODK_FORM_DOWNLOAD")
-                    .antMatchers(POST, "/api/odk/submission").hasAuthority("ODK_SUBMISSION_UPLOAD")
-                    .antMatchers(GET, "/api/odk/view/submissionList").hasAuthority("ODK_SUBMISSION_LIST")
-                    .antMatchers(GET, "/api/odk/submissions/**").hasAuthority("ODK_SUBMISSION_LIST")
-                    .antMatchers(GET, "/api/odk/view/downloadSubmission").hasAuthority("ODK_SUBMISSION_DOWNLOAD")
-                    .antMatchers(GET, "/api/odk/submission/**").hasAuthority("ODK_SUBMISSION_DOWNLOAD")
                     .anyRequest().authenticated()
                     .and()
                     .httpBasic();

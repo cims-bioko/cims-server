@@ -27,6 +27,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -100,12 +101,14 @@ public class SubmissionResource {
 
     @GetMapping(value = "/submission/{instanceId}", produces = "application/xml")
     @Transactional(readOnly = true)
+    @PreAuthorize("hasAuthority('ODK_SUBMISSION_DOWNLOAD')")
     public ResponseEntity<?> getXMLInstance(@PathVariable String instanceId) throws IOException {
         return getInstanceEntity(APPLICATION_XML, instanceId);
     }
 
     @GetMapping(value = "/submission/{instanceId}", produces = "application/json")
     @Transactional(readOnly = true)
+    @PreAuthorize("hasAuthority('ODK_SUBMISSION_DOWNLOAD')")
     public ResponseEntity<?> getJSONInstance(@PathVariable String instanceId) throws IOException {
         return getInstanceEntity(APPLICATION_JSON, instanceId);
     }
@@ -127,6 +130,7 @@ public class SubmissionResource {
     }
 
     @GetMapping(value = "/submission/{idScheme:\\w+}:{instanceId}/{fileName}.{extension}")
+    @PreAuthorize("hasAuthority('ODK_SUBMISSION_DOWNLOAD')")
     public ResponseEntity<InputStreamResource> getSubmissionFile(@PathVariable String idScheme, @PathVariable String instanceId,
                                                                  @PathVariable String fileName, @PathVariable String extension) throws IOException {
         String filePath = submissionFileSystem.getSubmissionFilePath(idScheme, instanceId, fileName, extension);
@@ -140,6 +144,7 @@ public class SubmissionResource {
 
     @GetMapping(path = "/view/submissionList")
     @Transactional(readOnly = true)
+    @PreAuthorize("hasAuthority('ODK_SUBMISSION_LIST')")
     public ResponseEntity<ByteArrayResource> submissionList(@RequestParam("formId") String form,
                                                             @RequestParam(value = "cursor", required = false) String cursor,
                                                             @RequestParam(value = "numEntries", required = false) Integer limit) {
@@ -180,6 +185,7 @@ public class SubmissionResource {
 
     @GetMapping("/view/downloadSubmission")
     @Transactional(readOnly = true)
+    @PreAuthorize("hasAuthority('ODK_SUBMISSION_DOWNLOAD')")
     public ResponseEntity<?> downloadSubmission(@RequestParam("formId") String submissionKey, HttpServletRequest req)
             throws IOException {
         String[] info = getInfoFromSubmissionKey(submissionKey);
@@ -259,6 +265,7 @@ public class SubmissionResource {
     }
 
     @PostMapping("/submission")
+    @PreAuthorize("hasAuthority('ODK_SUBMISSION_UPLOAD')")
     public ResponseEntity<ByteArrayResource> handleSubmission(@RequestParam(value = DEVICE_ID, defaultValue = "unknown") String deviceId,
                                                               @RequestParam(XML_SUBMISSION_FILE) MultipartFile xmlFile,
                                                               MultipartHttpServletRequest req)

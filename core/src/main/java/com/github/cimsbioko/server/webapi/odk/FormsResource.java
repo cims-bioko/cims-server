@@ -18,6 +18,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -81,6 +82,7 @@ public class FormsResource {
     }
 
     @PostMapping(path = {"/forms", "/formUpload"})
+    @PreAuthorize("hasAuthority('ODK_FORM_UPLOAD')")
     public ResponseEntity<ByteArrayResource> uploadForm(@RequestParam(FORM_DEF_FILE) MultipartFile formXml,
                                                         MultipartHttpServletRequest req)
             throws JDOMException, IOException, NoSuchAlgorithmException, URISyntaxException {
@@ -91,7 +93,8 @@ public class FormsResource {
                 .body(new ByteArrayResource(responseBuilder.response("Successful upload").getBytes()));
     }
 
-    @GetMapping(path = {"/forms", "formList"})
+    @GetMapping(path = {"/forms", "/formList"})
+    @PreAuthorize("hasAuthority('ODK_FORM_LIST')")
     public ResponseEntity<ByteArrayResource> formList(HttpServletRequest req) {
         String formList = buildFormList(downloadableForms(), buildFullRequestUrl(req));
         return ResponseEntity
@@ -104,6 +107,7 @@ public class FormsResource {
 
     @GetMapping(path = {"/forms/{formId:\\w+}/{formVersion:\\d+}/{fileName:[a-zA-Z0-9-_ ]+[.]\\w+}",
             "/formList/{formId:\\w+}/{formVersion:\\d+}/{fileName:[a-zA-Z0-9-_ ]+[.]\\w+}"})
+    @PreAuthorize("hasAuthority('ODK_FORM_DOWNLOAD')")
     public ResponseEntity<InputStreamResource> formFile(@PathVariable String formId, @PathVariable String formVersion,
                                                         @PathVariable String fileName) throws IOException {
         File formFile = formFileSystem.getFormFilePath(formId, formVersion, fileName).toFile();
@@ -118,6 +122,7 @@ public class FormsResource {
 
     @GetMapping(path = {"/forms/{formId:\\w+}/{formVersion:\\d+}/manifest",
             "/formList/{formId:\\w+}/{formVersion:\\d+}/manifest"}, produces = "text/xml")
+    @PreAuthorize("hasAuthority('ODK_FORM_DOWNLOAD')")
     public ResponseEntity<ByteArrayResource> manifest(@PathVariable String formId, @PathVariable String formVersion,
                                                       HttpServletRequest req) throws IOException, JDOMException {
 

@@ -3,6 +3,7 @@ package com.github.cimsbioko.server.webapi.rest;
 import com.github.batkinson.jrsync.Metadata;
 import com.github.cimsbioko.server.service.MobileDbGenerator;
 import com.github.cimsbioko.server.service.SyncService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +36,7 @@ public class MobileDatabaseResource {
     }
 
     @RequestMapping(value = MOBILEDB_PATH, method = RequestMethod.GET, produces = {SQLITE_MIME_TYPE, Metadata.MIME_TYPE})
+    @PreAuthorize("hasAuthority('MOBILE_SYNC')")
     public String mobileDB(WebRequest request) {
 
         File cacheFile = service.getOutput();
