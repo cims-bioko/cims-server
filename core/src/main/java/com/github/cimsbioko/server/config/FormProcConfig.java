@@ -86,9 +86,4 @@ public class FormProcConfig {
                                                 LocationHierarchyLevelRepository hierLevelRepo, FieldWorkerRepository fwRepo) {
         return new LocationFormProcessor(locRepo, hierRepo, hierLevelRepo, fwRepo);
     }
-
-    @Bean
-    SprayingFormProcessor sprayingFormProcessor(LocationRepository repo) {
-        return new SprayingFormProcessor(repo);
-    }
 }
