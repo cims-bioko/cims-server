@@ -42,9 +42,6 @@ with (imports) {
      * Metadata for adapting raw odk form submissions to form processors.
      */
     var bindings = {
-        spraying: {
-            endpoint: SprayingFormProcessor.class
-        },
         location: {
             endpoint: LocationFormProcessor.class,
             mapData: function(data) {
