@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Optional;
 
 public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
 
