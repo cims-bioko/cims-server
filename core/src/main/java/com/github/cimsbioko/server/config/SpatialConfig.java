@@ -16,7 +16,7 @@ public class SpatialConfig {
 
     @Bean
     public GeometryFactory geometryFactory(@Value("${app.spatial.srid}") int spatialSrid) {
-        return new GeometryFactory(precisionModel());
+        return new GeometryFactory(precisionModel(), spatialSrid);
     }
 
 }
