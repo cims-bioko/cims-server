@@ -61,6 +61,9 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
                     case NOT_FOUND:
                         handleNotFound(location);
                         break;
+                    case DESTROYED:
+                        handleDestroyed(location);
+                        break;
                 }
 
                 if (form.description != null) {
@@ -71,6 +74,15 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
                 log.info("location {} does not exist, ignoring", form.entityUuid);
             }
         }
+    }
+
+    private void removeWithStatus(Location location, String status) {
+        location.setDeleted(Calendar.getInstance());
+        location.getAttrsForUpdate().put("status", status);
+    }
+
+    private void handleDestroyed(Location location) {
+        removeWithStatus(location, "destroyed");
     }
 
     private void handleNotFound(Location location) {
@@ -152,6 +164,7 @@ public class DuplicateLocationFormProcessor extends AbstractFormProcessor {
         @XmlEnumValue("merge") MERGE,
         @XmlEnumValue("gps-only") GPS_ONLY,
         @XmlEnumValue("not-found") NOT_FOUND,
+        @XmlEnumValue("destroyed") DESTROYED,
         @XmlEnumValue("remove") REMOVE
     }
 
