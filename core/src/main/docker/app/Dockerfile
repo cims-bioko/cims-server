@@ -6,9 +6,7 @@ EXPOSE 8080
 COPY app/ /app
 COPY application.properties /
 
-VOLUME "/app-storage/data"
-VOLUME "/app-storage/forms"
-VOLUME "/app-storage/search"
-VOLUME "/app-storage/submissions"
+VOLUME "/shared-storage"
+VOLUME "/app-storage"
 
 CMD java -jar app/${jarFilename}
