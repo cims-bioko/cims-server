@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -110,7 +111,7 @@ public class FormServiceImpl implements FormService {
         FormId id = createOrUpdateForm(xmlInput);
         Map<String, MultipartFile> mediaFiles = extractMediaFromUploads(uploadedFiles);
         writeMediaFiles(id, mediaFiles);
-        writeManifest(id, mediaFiles);
+        writeManifest(id, mediaFiles.keySet());
         writeXlsform(id, xlsform);
     }
 
@@ -192,7 +193,7 @@ public class FormServiceImpl implements FormService {
         return formId;
     }
 
-    private void writeManifest(FormId formId, Map<String, MultipartFile> mediaFiles) throws IOException, NoSuchAlgorithmException {
+    private void writeManifest(FormId formId, Collection<String> mediaFileNames) throws IOException, NoSuchAlgorithmException {
 
         File formDir = formFileSystem.getFormDirPath(formId.getId(), formId.getVersion()).toFile();
 
@@ -202,9 +203,9 @@ public class FormServiceImpl implements FormService {
         Element manifestElem = new Element(MANIFEST, manifestNs);
         manifestDoc.setRootElement(manifestElem);
 
-        for (Map.Entry<String, MultipartFile> mediaFileEntry : mediaFiles.entrySet()) {
+        for (String mediaFileName : mediaFileNames) {
 
-            File mediaFile = new File(formDir, mediaFileEntry.getKey());
+            File mediaFile = new File(formDir, mediaFileName);
 
             // add mediaFile element to the manifest for the file
             Element mediaFileElem = new Element(MEDIA_FILE, manifestNs);
