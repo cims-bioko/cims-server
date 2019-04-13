@@ -1,36 +1,59 @@
 package com.github.cimsbioko.server.service.impl;
 
 
-import com.github.batkinson.jxlsform.api.WorkbookFactory;
-import com.github.batkinson.jxlsform.api.XLSFormFactory;
-import com.github.batkinson.jxlsform.xform.Generator;
 import com.github.cimsbioko.server.service.XLSFormService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.URI;
+import java.util.zip.ZipFile;
+
+import static org.springframework.util.StreamUtils.copy;
 
 public class XLSFormServiceImpl implements XLSFormService {
 
-    private Generator generator;
+    private static MediaType EXCEL = MediaType.parseMediaType("application/vnd.ms-excel");
+    private static MediaType ZIP = MediaType.parseMediaType("application/zip");
 
-    private XLSFormFactory xlsformFactory;
+    private RestTemplate template;
 
-    private WorkbookFactory workbookFactory;
+    @Value("${app.convert.url}")
+    private URI convertUri;
 
-    public XLSFormServiceImpl(Generator generator, XLSFormFactory xlsformFactory, WorkbookFactory workbookFactory) {
-        this.generator = generator;
-        this.xlsformFactory = xlsformFactory;
-        this.workbookFactory = workbookFactory;
+    public XLSFormServiceImpl(RestTemplate restTemplate) {
+        template = restTemplate;
     }
 
     @Override
-    public File generateXForm(InputStream xlsxInput) throws IOException {
-        File tempFile = File.createTempFile("xform", "xml");
-        try (FileWriter formWriter = new FileWriter(tempFile)) {
-            generator.generateXForm(xlsformFactory.create(workbookFactory.create(xlsxInput)), formWriter);
-            return tempFile;
+    public ZipFile convertXLSForm(InputStream xlsxInput) throws IOException {
+        ResponseEntity<Resource> result = template.exchange(
+                RequestEntity.post(convertUri)
+                        .accept(ZIP)
+                        .contentType(EXCEL)
+                        .body(new InputStreamResource(xlsxInput)),
+                Resource.class);
+
+        HttpStatus status = result.getStatusCode();
+
+        if (status.is2xxSuccessful()) {
+            if (result.hasBody()) {
+                File temp = File.createTempFile("convertxls", ".zip");
+                try (FileOutputStream out = new FileOutputStream(temp)) {
+                    copy(result.getBody().getInputStream(), out);
+                    return new ZipFile(temp);
+                }
+            } else {
+                throw new RuntimeException("conversion service sent empty response body");
+            }
+        } else {
+            throw new RuntimeException("conversion failed, received " + status);
         }
     }
 

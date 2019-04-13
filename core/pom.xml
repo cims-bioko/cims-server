@@ -73,11 +73,6 @@
         </dependency>
         <dependency>
             <groupId>com.github.batkinson</groupId>
-            <artifactId>jxlsform</artifactId>
-            <version>0.9</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.batkinson</groupId>
             <artifactId>jrsync</artifactId>
             <version>1.4.3</version>
         </dependency>

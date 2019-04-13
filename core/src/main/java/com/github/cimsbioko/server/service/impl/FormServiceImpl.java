@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 import static com.github.cimsbioko.server.util.JDOMUtil.getBuilder;
@@ -59,7 +60,10 @@ public class FormServiceImpl implements FormService {
     @Override
     @Transactional
     public void uploadXlsform(MultipartFile xlsform, MultiValueMap<String, MultipartFile> uploadedFiles) throws JDOMException, IOException, NoSuchAlgorithmException {
-        try (InputStream xmlInput = new FileInputStream(xlsformService.generateXForm(xlsform.getInputStream()))) {
+        ZipEntry xformEntry = new ZipEntry("form.xml");
+        try (InputStream xlsInput = xlsform.getInputStream();
+                ZipFile converted = xlsformService.convertXLSForm(xlsInput);
+                InputStream xmlInput = converted.getInputStream(xformEntry)) {
             installFormWithMedia(xlsform, uploadedFiles, xmlInput);
         }
     }
