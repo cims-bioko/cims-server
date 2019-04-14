@@ -14,6 +14,7 @@ import org.jdom2.Namespace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,9 +23,11 @@ import java.io.*;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -32,10 +35,12 @@ import java.util.zip.ZipOutputStream;
 import static com.github.cimsbioko.server.util.JDOMUtil.getBuilder;
 import static com.github.cimsbioko.server.util.JDOMUtil.getOutputter;
 import static com.github.cimsbioko.server.webapi.odk.Constants.*;
+import static org.springframework.util.FileCopyUtils.copy;
 
 public class FormServiceImpl implements FormService {
 
     private static final Logger log = LoggerFactory.getLogger(FormServiceImpl.class);
+    public static final String CONVERTED_XML_NAME = "form.xml";
 
     private FormRepository formDao;
 
@@ -61,11 +66,9 @@ public class FormServiceImpl implements FormService {
     @Override
     @Transactional
     public void uploadXlsform(MultipartFile xlsform, MultiValueMap<String, MultipartFile> uploadedFiles) throws JDOMException, IOException, NoSuchAlgorithmException {
-        ZipEntry xformEntry = new ZipEntry("form.xml");
         try (InputStream xlsInput = xlsform.getInputStream();
-                ZipFile converted = xlsformService.convertXLSForm(xlsInput);
-                InputStream xmlInput = converted.getInputStream(xformEntry)) {
-            installFormWithMedia(xlsform, uploadedFiles, xmlInput);
+             ZipFile converted = xlsformService.convertXLSForm(xlsInput)) {
+            installConvertedFormWithMedia(xlsform, uploadedFiles, converted);
         }
     }
 
@@ -107,10 +110,47 @@ public class FormServiceImpl implements FormService {
         });
     }
 
+    private void installConvertedFormWithMedia(MultipartFile xlsform, MultiValueMap<String, MultipartFile> uploadedFiles, ZipFile converted)
+            throws JDOMException, IOException, NoSuchAlgorithmException {
+        try (InputStream xmlInput = converted.getInputStream(new ZipEntry(CONVERTED_XML_NAME))) {
+            FormId id = createOrUpdateForm(xmlInput);
+            Map<String, MultipartFile> uploadedMedia = extractMediaFromUploads(uploadedFiles);
+            writeUploadedMediaFiles(id, uploadedMedia);
+            List<String> writtenConverted = writeConvertedMediaFiles(id, converted);
+            Collection<String> writtenMedia = Stream
+                    .concat(uploadedMedia.keySet().stream(), writtenConverted.stream())
+                    .collect(Collectors.toList());
+            writeManifest(id, writtenMedia);
+            writeXlsform(id, xlsform);
+        }
+    }
+
+    private List<String> writeConvertedMediaFiles(FormId formId, ZipFile converted) {
+
+        File formDir = formFileSystem.getFormDirPath(formId.getId(), formId.getVersion()).toFile();
+
+        List<ZipEntry> media = converted
+                .stream()
+                .filter(e -> !e.isDirectory() && !CONVERTED_XML_NAME.equalsIgnoreCase(e.getName()))
+                .collect(Collectors.toList());
+
+        media.removeIf(e -> {
+            File dest = new File(formDir, e.getName());
+            try (FileOutputStream out = new FileOutputStream(dest)) {
+                copy(converted.getInputStream(e), out);
+                return false;
+            } catch (IOException e1) {
+                return true;
+            }
+        });
+
+        return media.stream().map(ZipEntry::getName).collect(Collectors.toList());
+    }
+
     private void installFormWithMedia(MultipartFile xlsform, MultiValueMap<String, MultipartFile> uploadedFiles, InputStream xmlInput) throws JDOMException, IOException, NoSuchAlgorithmException {
         FormId id = createOrUpdateForm(xmlInput);
         Map<String, MultipartFile> mediaFiles = extractMediaFromUploads(uploadedFiles);
-        writeMediaFiles(id, mediaFiles);
+        writeUploadedMediaFiles(id, mediaFiles);
         writeManifest(id, mediaFiles.keySet());
         writeXlsform(id, xlsform);
     }
@@ -229,7 +269,7 @@ public class FormServiceImpl implements FormService {
         }
     }
 
-    private void writeMediaFiles(FormId formId, Map<String, MultipartFile> mediaFiles) {
+    private void writeUploadedMediaFiles(FormId formId, Map<String, MultipartFile> mediaFiles) {
         File formDir = formFileSystem.getFormDirPath(formId.getId(), formId.getVersion()).toFile();
         mediaFiles.entrySet().removeIf(e -> {
             File dest = new File(formDir, e.getKey());
