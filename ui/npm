@@ -1,0 +1,7 @@
+#!/bin/bash
+
+##
+# Invoke npm using the local directory's installation
+##
+./node/node ./node/node_modules/npm/bin/npm-cli.js "$@"
+
