@@ -126,8 +126,14 @@
                 this.$emit('formUploaded')
             },
             uploadError(err) {
-                if (err.response.status >= 400) {
-                    this.error = this.$t('forms.failed')
+                let rsp = err.response
+                if (rsp.status >= 400) {
+                    let msg = this.$t('forms.failed')
+                    if (rsp.status === 400 && rsp.data.output) {
+                        let output = rsp.data.output
+                        msg += output.reduce((acc,cur) => acc + '\n' + cur.message, ':\n')
+                    }
+                    this.error = msg
                 }
             }
         },

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -56,8 +57,14 @@ public class FormsController {
     @ResponseBody
     public ResponseEntity uploadForm(@RequestParam(value = XLSFORM_DEF_FILE) MultipartFile xlsform, MultipartHttpServletRequest req)
             throws JDOMException, IOException, NoSuchAlgorithmException {
-        service.uploadXlsform(xlsform, req.getMultiFileMap());
-        return ResponseEntity.noContent().build();
+        try {
+            service.uploadXlsform(xlsform, req.getMultiFileMap());
+            return ResponseEntity.noContent().build();
+        } catch (HttpClientErrorException e) {
+            return ResponseEntity
+                    .status(e.getRawStatusCode())
+                    .body(e.getResponseBodyAsByteArray());
+        }
     }
 
     @PreAuthorize("hasAuthority('EXPORT_FORMS')")
