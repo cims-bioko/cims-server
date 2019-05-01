@@ -126,7 +126,7 @@
                 this.$emit('formUploaded')
             },
             uploadError(err) {
-                if (err.response.status === 400) {
+                if (err.response.status >= 400) {
                     this.error = this.$t('forms.failed')
                 }
             }
