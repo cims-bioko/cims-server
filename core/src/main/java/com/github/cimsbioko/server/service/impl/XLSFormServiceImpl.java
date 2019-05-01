@@ -33,12 +33,12 @@ public class XLSFormServiceImpl implements XLSFormService {
 
     @Override
     public ZipFile convertXLSForm(InputStream xlsxInput) throws IOException {
+
         ResponseEntity<Resource> result = template.exchange(
                 RequestEntity.post(convertUri)
                         .accept(ZIP)
                         .contentType(EXCEL)
-                        .body(new InputStreamResource(xlsxInput)),
-                Resource.class);
+                        .body(new InputStreamResource(xlsxInput)), Resource.class);
 
         HttpStatus status = result.getStatusCode();
 
