@@ -38,11 +38,11 @@
         name: 'form-upload-dialog',
         data() {
             return {
-                selectedUploadType: 'xml',
+                selectedUploadType: 'xlsform',
                 uploadTypes: [
-                    { text: 'XML', value: 'xml' },
+                    { text: 'XLSForm', value: 'xlsform'},
                     { text: 'XML + XLSForm', value: 'xml+xlsform' },
-                    { text: 'XLSForm', value: 'xlsform'}
+                    { text: 'XML', value: 'xml' }
                 ],
                 validated: null,
                 message: null,
