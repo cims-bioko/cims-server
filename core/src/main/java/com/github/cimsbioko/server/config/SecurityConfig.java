@@ -52,7 +52,7 @@ public class SecurityConfig {
     @Bean
     @Qualifier("fieldworkerPasswordEncoder")
     public PasswordEncoder fieldworkerPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(4);
     }
 
     @Bean
