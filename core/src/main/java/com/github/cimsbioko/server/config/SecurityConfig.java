@@ -1,13 +1,18 @@
 package com.github.cimsbioko.server.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.cimsbioko.server.dao.DeviceRepository;
 import com.github.cimsbioko.server.dao.UserRepository;
 import com.github.cimsbioko.server.security.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,8 +23,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import static org.springframework.boot.autoconfigure.security.SecurityProperties.BASIC_AUTH_ORDER;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @EnableWebSecurity
@@ -71,9 +76,30 @@ public class SecurityConfig {
         return new AjaxAwareAuthenticationEntryPoint("/login", mapper);
     }
 
+    @Bean
+    DeviceAuthenticationProvider deviceAuthProvider(DeviceRepository repo) {
+        return new DeviceAuthenticationProvider(repo);
+    }
+
     @Configuration
-    @Order(BASIC_AUTH_ORDER)
-    public static class ApiBasicAuthConfigurationAdapter extends WebSecurityConfigurerAdapter {
+    @Order(1)
+    public static class ApiDeviceAuthConfigurationAdapter extends WebSecurityConfigurerAdapter {
+
+        private final DeviceAuthenticationProvider deviceAuthProvider;
+        private final UserDetailsService detailsService;
+
+        public ApiDeviceAuthConfigurationAdapter(DeviceAuthenticationProvider deviceAuthProvider,
+                                                 UserDetailsService detailsService) {
+            this.deviceAuthProvider = deviceAuthProvider;
+            this.detailsService = detailsService;
+        }
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.authenticationProvider(deviceAuthProvider);
+            auth.userDetailsService(detailsService);
+        }
+
         protected void configure(HttpSecurity http) throws Exception {
             http.antMatcher("/api/**")
                     .headers().disable()
@@ -86,6 +112,7 @@ public class SecurityConfig {
                     .authorizeRequests()
                     .anyRequest().authenticated()
                     .and()
+                    .addFilterBefore(new DeviceAuthenticationFilter(), BasicAuthenticationFilter.class)
                     .httpBasic();
         }
     }

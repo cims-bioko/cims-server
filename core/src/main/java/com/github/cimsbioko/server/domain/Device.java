@@ -28,4 +28,27 @@ public class Device {
     @NotNull
     private String token;
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Timestamp getCreated() {
+        return created;
+    }
+
+    public Timestamp getDeleted() {
+        return deleted;
+    }
+
+    public String getToken() {
+        return token;
+    }
 }
