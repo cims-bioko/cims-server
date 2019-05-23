@@ -78,7 +78,7 @@ public class SecurityConfig {
 
     @Bean
     DeviceAuthenticationProvider deviceAuthProvider(DeviceRepository repo) {
-        return new DeviceAuthenticationProvider(repo);
+        return new DeviceAuthenticationProvider(repo, roleMapper());
     }
 
     @Configuration

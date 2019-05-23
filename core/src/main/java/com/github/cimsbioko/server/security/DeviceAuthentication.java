@@ -6,7 +6,6 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 import java.util.Optional;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.unmodifiableCollection;
 
@@ -26,8 +25,8 @@ public class DeviceAuthentication implements Authentication {
         this.authenticated = false;
     }
 
-    DeviceAuthentication(String device, String details, GrantedAuthority... authorities) {
-        this.authorities = unmodifiableCollection(asList(authorities));
+    DeviceAuthentication(String device, String details, Collection<? extends GrantedAuthority> authorities) {
+        this.authorities = unmodifiableCollection(authorities);
         this.credentials = null;
         this.details = details;
         this.device = device;

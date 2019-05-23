@@ -6,17 +6,20 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.transaction.annotation.Transactional;
 
 public class DeviceAuthenticationProvider implements AuthenticationProvider {
 
     private final DeviceRepository repo;
+    private final RoleMapper roleMapper;
 
-    public DeviceAuthenticationProvider(DeviceRepository repo) {
+    public DeviceAuthenticationProvider(DeviceRepository repo, RoleMapper roleMapper) {
         this.repo = repo;
+        this.roleMapper = roleMapper;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
         if (!supports(authentication.getClass())) {
@@ -28,9 +31,7 @@ public class DeviceAuthenticationProvider implements AuthenticationProvider {
         Device device = repo.findByToken(auth.getCredentials())
                 .orElseThrow(() -> new BadCredentialsException("bad credentials"));
 
-        return new DeviceAuthentication(device.getName(), device.getDescription(),
-                new SimpleGrantedAuthority("ROLE_DEVICE"),
-                new SimpleGrantedAuthority("ODK_FORM_LIST"));
+        return new DeviceAuthentication(device.getName(), device.getDescription(), roleMapper.rolesToAuthorities(device.getRoles()));
     }
 
     @Override
