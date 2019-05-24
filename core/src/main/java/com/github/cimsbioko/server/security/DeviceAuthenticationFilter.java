@@ -17,11 +17,13 @@ public class DeviceAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-            String authorizationValue = request.getHeader("Authorization");
+        String authorizationValue = request.getHeader("Authorization");
+        if (authorizationValue != null) {
             Matcher authMatcher = AUTH_PATTERN.matcher(authorizationValue);
             if (authMatcher.lookingAt()) {
                 SecurityContextHolder.getContext().setAuthentication(new DeviceAuthentication(authMatcher.group(1)));
             }
+        }
         filterChain.doFilter(request, response);
     }
 }
