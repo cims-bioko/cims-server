@@ -81,7 +81,7 @@ public class Individual implements Serializable {
     private Location home;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = FieldWorker.class)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "collector")
     protected FieldWorker collector;
 

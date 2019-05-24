@@ -21,7 +21,7 @@ public class LocationHierarchy implements Serializable {
     @Column(name = "extid")
     private String extId;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = LocationHierarchy.class, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinColumn(name = "parent")
     private LocationHierarchy parent;
 

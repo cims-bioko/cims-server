@@ -50,7 +50,7 @@ public class Location implements Serializable {
     private LocationHierarchy hierarchy = new LocationHierarchy();
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = FieldWorker.class)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "collector")
     private FieldWorker collector;
 
