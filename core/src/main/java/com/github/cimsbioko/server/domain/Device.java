@@ -37,6 +37,11 @@ public class Device {
     @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator")
+    private User creator;
+
     public String getUuid() {
         return uuid;
     }
