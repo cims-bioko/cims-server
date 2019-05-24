@@ -52,6 +52,12 @@ public class SecurityConfig {
     }
 
     @Bean
+    @Qualifier("deviceTokenEncoder")
+    public TokenHasher tokenHasher() {
+        return new ShaTokenHasher();
+    }
+
+    @Bean
     @Qualifier("fieldworkerPasswordEncoder")
     public PasswordEncoder fieldworkerPasswordEncoder() {
         return new BCryptPasswordEncoder(4);
@@ -74,7 +80,7 @@ public class SecurityConfig {
 
     @Bean
     DeviceAuthenticationProvider deviceAuthProvider(DeviceRepository repo) {
-        return new DeviceAuthenticationProvider(repo, roleMapper());
+        return new DeviceAuthenticationProvider(repo, roleMapper(), tokenHasher());
     }
 
     @Configuration

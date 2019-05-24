@@ -7,5 +7,5 @@ import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 public interface DeviceRepository extends PagingAndSortingRepository<Device, String> {
-    Optional<Device> findByToken(@NotNull String token);
+    Optional<Device> findByTokenHash(@NotNull String tokenHash);
 }

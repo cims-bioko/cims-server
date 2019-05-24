@@ -12,10 +12,12 @@ public class DeviceAuthenticationProvider implements AuthenticationProvider {
 
     private final DeviceRepository repo;
     private final RoleMapper roleMapper;
+    private final TokenHasher hasher;
 
-    public DeviceAuthenticationProvider(DeviceRepository repo, RoleMapper roleMapper) {
+    public DeviceAuthenticationProvider(DeviceRepository repo, RoleMapper roleMapper, TokenHasher hasher) {
         this.repo = repo;
         this.roleMapper = roleMapper;
+        this.hasher = hasher;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class DeviceAuthenticationProvider implements AuthenticationProvider {
 
         DeviceAuthentication auth = (DeviceAuthentication) authentication;
 
-        Device device = repo.findByToken(auth.getCredentials())
+        Device device = repo.findByTokenHash(hasher.hash(auth.getCredentials()))
                 .orElseThrow(() -> new BadCredentialsException("bad credentials"));
 
         return new DeviceAuthentication(device.getName(), device.getDescription(), roleMapper.rolesToAuthorities(device.getRoles()));

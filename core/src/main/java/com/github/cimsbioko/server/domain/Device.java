@@ -29,7 +29,8 @@ public class Device {
     private Timestamp deleted;
 
     @NotNull
-    private String token;
+    @Column(name = "token_hash")
+    private String tokenHash;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "device_roles", joinColumns = {
@@ -62,8 +63,8 @@ public class Device {
         return deleted;
     }
 
-    public String getToken() {
-        return token;
+    public String getTokenHash() {
+        return tokenHash;
     }
 
     public Set<Role> getRoles() {
