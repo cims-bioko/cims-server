@@ -27,7 +27,7 @@ public class DeviceAuthenticationProvider implements AuthenticationProvider {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         if (!supports(authentication.getClass())) {
             return null;
@@ -38,6 +38,7 @@ public class DeviceAuthenticationProvider implements AuthenticationProvider {
                 .filter(token -> now.before(token.getExpires()))
                 .flatMap(deviceRepo::findByToken)
                 .orElseThrow(() -> new BadCredentialsException("bad credentials"));
+        device.setLastLogin(now);
         return new DeviceAuthentication(device.getName(), device.getDescription(), roleMapper.rolesToAuthorities(device.getRoles()));
     }
 

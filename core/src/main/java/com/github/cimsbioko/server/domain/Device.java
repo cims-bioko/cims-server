@@ -46,6 +46,9 @@ public class Device {
     @JoinColumn(name = "creator")
     private User creator;
 
+    @Column(name = "last_login")
+    private Timestamp lastLogin;
+
     public String getUuid() {
         return uuid;
     }
@@ -68,5 +71,13 @@ public class Device {
 
     public Set<Role> getRoles() {
         return roles;
+    }
+
+    public Timestamp getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Timestamp lastLogin) {
+        this.lastLogin = lastLogin;
     }
 }
