@@ -2,6 +2,7 @@ package com.github.cimsbioko.server.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.cimsbioko.server.dao.DeviceRepository;
+import com.github.cimsbioko.server.dao.TokenRepository;
 import com.github.cimsbioko.server.dao.UserRepository;
 import com.github.cimsbioko.server.security.*;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -79,8 +80,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    DeviceAuthenticationProvider deviceAuthProvider(DeviceRepository repo) {
-        return new DeviceAuthenticationProvider(repo, roleMapper(), tokenHasher());
+    DeviceAuthenticationProvider deviceAuthProvider(DeviceRepository deviceRepo, TokenRepository tokenRepo) {
+        return new DeviceAuthenticationProvider(deviceRepo, tokenRepo, roleMapper(), tokenHasher());
     }
 
     @Configuration
