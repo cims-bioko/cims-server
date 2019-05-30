@@ -9,6 +9,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+
 public class DeviceAuthenticationProvider implements AuthenticationProvider {
 
     private final DeviceRepository deviceRepo;
@@ -29,8 +32,10 @@ public class DeviceAuthenticationProvider implements AuthenticationProvider {
         if (!supports(authentication.getClass())) {
             return null;
         }
+        Timestamp now = Timestamp.from(Instant.now());
         DeviceAuthentication auth = (DeviceAuthentication) authentication;
         Device device = tokenRepo.findById(hasher.hash(auth.getCredentials()))
+                .filter(token -> now.before(token.getExpires()))
                 .flatMap(deviceRepo::findByToken)
                 .orElseThrow(() -> new BadCredentialsException("bad credentials"));
         return new DeviceAuthentication(device.getName(), device.getDescription(), roleMapper.rolesToAuthorities(device.getRoles()));
