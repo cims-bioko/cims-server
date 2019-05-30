@@ -52,7 +52,6 @@ public class User implements Serializable {
 
     private Calendar deleted;
 
-    // this is used for seamless integration with special study
     @Column(name = "last_login")
     private Timestamp lastLogin;
 
