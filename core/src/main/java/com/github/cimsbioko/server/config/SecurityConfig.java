@@ -80,26 +80,26 @@ public class SecurityConfig {
     }
 
     @Bean
-    DeviceAuthenticationProvider deviceAuthProvider(DeviceRepository deviceRepo, TokenRepository tokenRepo) {
-        return new DeviceAuthenticationProvider(deviceRepo, tokenRepo, roleMapper(), tokenHasher());
+    TokenAuthenticationProvider tokenAuthProvider(DeviceRepository deviceRepo, UserRepository userRepo, TokenRepository tokenRepo) {
+        return new TokenAuthenticationProvider(deviceRepo, userRepo, tokenRepo, roleMapper(), tokenHasher());
     }
 
     @Configuration
     @Order(1)
-    public static class ApiDeviceAuthConfigurationAdapter extends WebSecurityConfigurerAdapter {
+    public static class ApiTokenAuthConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
-        private final DeviceAuthenticationProvider deviceAuthProvider;
+        private final TokenAuthenticationProvider tokenAuthProvider;
         private final UserDetailsService detailsService;
 
-        public ApiDeviceAuthConfigurationAdapter(DeviceAuthenticationProvider deviceAuthProvider,
-                                                 UserDetailsService detailsService) {
-            this.deviceAuthProvider = deviceAuthProvider;
+        public ApiTokenAuthConfigurationAdapter(TokenAuthenticationProvider tokenAuthProvider,
+                                                UserDetailsService detailsService) {
+            this.tokenAuthProvider = tokenAuthProvider;
             this.detailsService = detailsService;
         }
 
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.authenticationProvider(deviceAuthProvider);
+            auth.authenticationProvider(tokenAuthProvider);
             auth.userDetailsService(detailsService);
         }
 
@@ -115,7 +115,7 @@ public class SecurityConfig {
                     .authorizeRequests()
                     .anyRequest().authenticated()
                     .and()
-                    .addFilterBefore(new DeviceAuthenticationFilter(), BasicAuthenticationFilter.class)
+                    .addFilterBefore(new TokenAuthenticationFilter(), BasicAuthenticationFilter.class)
                     .httpBasic();
         }
     }

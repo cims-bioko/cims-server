@@ -9,7 +9,7 @@ import java.util.Optional;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.unmodifiableCollection;
 
-public class DeviceAuthentication implements Authentication {
+public class TokenAuthentication implements Authentication {
 
     private final Collection<? extends GrantedAuthority> authorities;
     private final String credentials;
@@ -17,7 +17,7 @@ public class DeviceAuthentication implements Authentication {
     private final String device;
     private final boolean authenticated;
 
-    DeviceAuthentication(String credentials) {
+    TokenAuthentication(String credentials) {
         this.authorities = null;
         this.credentials = credentials;
         this.details = null;
@@ -25,7 +25,7 @@ public class DeviceAuthentication implements Authentication {
         this.authenticated = false;
     }
 
-    DeviceAuthentication(String device, String details, Collection<? extends GrantedAuthority> authorities) {
+    TokenAuthentication(String device, String details, Collection<? extends GrantedAuthority> authorities) {
         this.authorities = unmodifiableCollection(authorities);
         this.credentials = null;
         this.details = details;

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DeviceAuthenticationFilter extends OncePerRequestFilter {
+public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Pattern AUTH_PATTERN = Pattern.compile("Bearer\\s+(\\S+)");
 
@@ -21,7 +21,7 @@ public class DeviceAuthenticationFilter extends OncePerRequestFilter {
         if (authorizationValue != null) {
             Matcher authMatcher = AUTH_PATTERN.matcher(authorizationValue);
             if (authMatcher.lookingAt()) {
-                SecurityContextHolder.getContext().setAuthentication(new DeviceAuthentication(authMatcher.group(1)));
+                SecurityContextHolder.getContext().setAuthentication(new TokenAuthentication(authMatcher.group(1)));
             }
         }
         filterChain.doFilter(request, response);

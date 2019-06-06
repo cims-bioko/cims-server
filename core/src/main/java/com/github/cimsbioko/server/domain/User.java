@@ -52,6 +52,11 @@ public class User implements Serializable {
 
     private Calendar deleted;
 
+    @OneToMany
+    @JoinTable(name = "user_tokens", joinColumns = {
+            @JoinColumn(name = "`user`")}, inverseJoinColumns = {@JoinColumn(name = "token")})
+    private Set<AccessToken> tokens = new HashSet<>();
+
     @Column(name = "last_login")
     private Timestamp lastLogin;
 
@@ -141,5 +146,13 @@ public class User implements Serializable {
 
     public void setDeleted(Calendar deleted) {
         this.deleted = deleted;
+    }
+
+    public Set<AccessToken> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(Set<AccessToken> tokens) {
+        this.tokens = tokens;
     }
 }
