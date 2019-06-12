@@ -17,15 +17,11 @@ public class SecureTokenGenerator implements TokenGenerator {
     private final Base32 encoder;
     private final int bytes;
 
-    public SecureTokenGenerator() {
-        this(16);
-    }
-
-    private SecureTokenGenerator(int length) {
-        if (length % 8 != 0) {
+    public SecureTokenGenerator(int bits) {
+        if (bits % 8 != 0) {
             throw new IllegalArgumentException("length should be a multiple of 8");
         }
-        this.bytes = (length / 8) * 5;
+        this.bytes = (bits / 8) * 5;
         this.random = new SecureRandom();
         encoder = new Base32();
     }

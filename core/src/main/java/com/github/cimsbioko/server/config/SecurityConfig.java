@@ -84,6 +84,11 @@ public class SecurityConfig {
         return new TokenAuthenticationProvider(deviceRepo, userRepo, tokenRepo, roleMapper(), tokenHasher());
     }
 
+    @Bean
+    TokenGenerator inviteCodeGenerator() {
+        return new SecureTokenGenerator(16);
+    }
+
     @Configuration
     @Order(1)
     public static class ApiTokenAuthConfigurationAdapter extends WebSecurityConfigurerAdapter {
