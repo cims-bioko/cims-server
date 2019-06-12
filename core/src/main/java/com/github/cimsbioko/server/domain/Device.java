@@ -66,6 +66,10 @@ public class Device {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Timestamp getCreated() {
         return created;
     }
@@ -88,6 +92,10 @@ public class Device {
 
     public AccessToken getToken() {
         return token;
+    }
+
+    public void setToken(AccessToken token) {
+        this.token = token;
     }
 
     public Set<Role> getRoles() {
