@@ -30,6 +30,11 @@ public class Device {
     private Timestamp created;
 
     @NotNull
+    private String secret;
+
+    private Timestamp secretExpires;
+
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "token")
     @JsonIgnore
@@ -63,6 +68,22 @@ public class Device {
 
     public Timestamp getCreated() {
         return created;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    public Timestamp getSecretExpires() {
+        return secretExpires;
+    }
+
+    public void setSecretExpires(Timestamp secretExpires) {
+        this.secretExpires = secretExpires;
     }
 
     public AccessToken getToken() {
