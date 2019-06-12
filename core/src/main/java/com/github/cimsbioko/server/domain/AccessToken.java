@@ -19,10 +19,12 @@ public class AccessToken {
 
     private Timestamp expires;
 
-    public AccessToken() {
+    public AccessToken(String value) {
+        this(value, null);
     }
 
-    public AccessToken(Timestamp expires) {
+    public AccessToken(String value, Timestamp expires) {
+        this.value = value;
         this.expires = expires;
     }
 
