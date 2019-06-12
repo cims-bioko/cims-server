@@ -1,10 +1,8 @@
 package com.github.cimsbioko.server.domain;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
@@ -14,12 +12,9 @@ import java.sql.Timestamp;
 public class AccessToken {
 
     @Id
-    @GeneratedValue(generator = "access-token")
-    @GenericGenerator(name = "access-token", strategy = "com.github.cimsbioko.server.hibernate.TokenGenerator")
     private String value;
 
     @CreationTimestamp
-
     private Timestamp created;
 
     private Timestamp expires;
