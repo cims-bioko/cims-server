@@ -39,4 +39,8 @@ public class AccessToken {
     public Timestamp getExpires() {
         return expires;
     }
+
+    public void setExpires(Timestamp expires) {
+        this.expires = expires;
+    }
 }
