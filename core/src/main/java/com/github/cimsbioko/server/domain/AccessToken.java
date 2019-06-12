@@ -19,6 +19,9 @@ public class AccessToken {
 
     private Timestamp expires;
 
+    protected AccessToken() {
+    }
+
     public AccessToken(String value) {
         this(value, null);
     }
