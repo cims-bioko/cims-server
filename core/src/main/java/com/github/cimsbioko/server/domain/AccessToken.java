@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.Instant;
 
 @Entity
 @Table(name = "access_token")
@@ -23,7 +25,7 @@ public class AccessToken {
     }
 
     public AccessToken(String value) {
-        this(value, null);
+        this(value, Timestamp.from(Instant.now().plus(Duration.ofDays(30))));
     }
 
     public AccessToken(String value, Timestamp expires) {

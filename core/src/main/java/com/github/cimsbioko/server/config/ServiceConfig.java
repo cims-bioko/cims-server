@@ -1,6 +1,8 @@
 package com.github.cimsbioko.server.config;
 
 import com.github.cimsbioko.server.dao.*;
+import com.github.cimsbioko.server.security.TokenGenerator;
+import com.github.cimsbioko.server.security.TokenHasher;
 import com.github.cimsbioko.server.service.*;
 import com.github.cimsbioko.server.service.impl.*;
 import com.github.cimsbioko.server.sqliteexport.Exporter;
@@ -45,6 +47,11 @@ public class ServiceConfig {
     @Bean
     public SyncService syncService(TaskRepository repo, TaskScheduler scheduler, MobileDbGenerator generator, @Value("${app.task.schedule}") String schedule) {
         return new SyncServiceImpl(repo, scheduler, generator, schedule);
+    }
+
+    @Bean
+    public DeviceService deviceService(DeviceRepository deviceRepo, TokenRepository tokenRepo, TokenGenerator tokenGen, TokenHasher tokenHasher) {
+        return new DeviceServiceImpl(deviceRepo, tokenRepo, tokenGen, tokenHasher);
     }
 
     @Bean

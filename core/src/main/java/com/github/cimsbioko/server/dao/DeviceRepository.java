@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface DeviceRepository extends PagingAndSortingRepository<Device, String> {
     Optional<Device> findByToken(@NotNull AccessToken token);
+    Optional<Device> findByName(@NotNull String name);
 }
