@@ -149,7 +149,8 @@ public class SecurityConfig {
         }
 
         protected void configure(HttpSecurity http) throws Exception {
-            http.headers().disable()
+            http.regexMatcher("^((?!\\/api\\/).)*$")
+                    .headers().disable()
                     .csrf().disable()
                     .authorizeRequests()
                     .antMatchers("/css/**", "/img/**", "/webjars/**", "/favicon.ico", "/error").permitAll()
