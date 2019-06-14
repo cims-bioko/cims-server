@@ -55,6 +55,7 @@ public class User implements Serializable {
     @OneToMany
     @JoinTable(name = "user_tokens", joinColumns = {
             @JoinColumn(name = "`user`")}, inverseJoinColumns = {@JoinColumn(name = "token")})
+    @JsonIgnore
     private Set<AccessToken> tokens = new HashSet<>();
 
     @Column(name = "last_login")
