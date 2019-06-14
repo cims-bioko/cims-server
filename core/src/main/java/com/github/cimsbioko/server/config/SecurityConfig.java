@@ -112,8 +112,6 @@ public class SecurityConfig {
             http.antMatcher("/api/**")
                     .headers().disable()
                     .csrf().disable()
-                    .exceptionHandling()
-                    .and()
                     .sessionManagement()
                     .sessionCreationPolicy(STATELESS)
                     .and()
