@@ -121,7 +121,8 @@ public class SecurityConfig {
                     .anyRequest().authenticated()
                     .and()
                     .addFilterBefore(new TokenAuthenticationFilter(), BasicAuthenticationFilter.class)
-                    .httpBasic();
+                    .httpBasic()
+                    .realmName("CIMS API");
         }
     }
 
