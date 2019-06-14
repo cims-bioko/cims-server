@@ -53,12 +53,6 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Qualifier("deviceTokenEncoder")
-    public TokenHasher tokenHasher() {
-        return new ShaTokenHasher();
-    }
-
-    @Bean
     @Qualifier("fieldworkerPasswordEncoder")
     public PasswordEncoder fieldworkerPasswordEncoder() {
         return new BCryptPasswordEncoder(4);
@@ -80,17 +74,64 @@ public class SecurityConfig {
     }
 
     @Bean
+    TokenGenerator tokenGenerator() {
+        return new SecureTokenGenerator(16);
+    }
+
+    @Bean
+    public TokenHasher tokenHasher() {
+        return new ShaTokenHasher();
+    }
+
+    @Bean
     TokenAuthenticationProvider tokenAuthProvider(DeviceRepository deviceRepo, UserRepository userRepo, TokenRepository tokenRepo) {
         return new TokenAuthenticationProvider(deviceRepo, userRepo, tokenRepo, roleMapper(), tokenHasher());
     }
 
     @Bean
-    TokenGenerator inviteCodeGenerator() {
-        return new SecureTokenGenerator(16);
+    DeviceDetailsService deviceDetailsService(DeviceRepository deviceRepo, DeviceMapper deviceMapper) {
+        return new DeviceDetailsService(deviceRepo, deviceMapper);
+    }
+
+    @Bean
+    DeviceMapper deviceMapper() {
+        return new DeviceMapper();
     }
 
     @Configuration
     @Order(1)
+    public static class DeviceBasicAuthConfigurationAdapter extends WebSecurityConfigurerAdapter {
+
+        private final TokenHasher tokenHasher;
+        private final DeviceDetailsService deviceDetailsService;
+
+        public DeviceBasicAuthConfigurationAdapter(TokenHasher tokenHasher, DeviceDetailsService deviceDetailsService) {
+            this.tokenHasher = tokenHasher;
+            this.deviceDetailsService = deviceDetailsService;
+        }
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.userDetailsService(deviceDetailsService).passwordEncoder(new SHAPasswordEncoder(tokenHasher));
+        }
+
+        protected void configure(HttpSecurity http) throws Exception {
+            http.antMatcher("/api/device/**")
+                    .headers().disable()
+                    .csrf().disable()
+                    .sessionManagement()
+                    .sessionCreationPolicy(STATELESS)
+                    .and()
+                    .authorizeRequests()
+                    .anyRequest().authenticated()
+                    .and()
+                    .httpBasic()
+                    .realmName("CIMS Device API");
+        }
+    }
+
+    @Configuration
+    @Order(2)
     public static class ApiTokenAuthConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
         private final TokenAuthenticationProvider tokenAuthProvider;
