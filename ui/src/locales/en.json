@@ -11,6 +11,7 @@
     "users": "Users",
     "roles": "Roles",
     "fieldworkers": "Fieldworkers",
+    "devices": "Devices",
     "logout": "Logout"
   },
   "table": {
@@ -169,5 +170,21 @@
     "passwdmatch": "Passwords do not match.",
     "passwdshort": "Password is too short.",
     "passwdlong": "Password is too long."
+  },
+  "devices": {
+    "create": "Create",
+    "update": "Update",
+    "searchph": "Search by name or description",
+    "name": "Name",
+    "lastLogin": "Last Login",
+    "actions": "Actions",
+    "description": "Description",
+    "createmodal": {
+      "title": "Create Device"
+    },
+    "editmodal": {
+      "title": "Edit Device"
+    },
+    "namereq": "Name is required."
   }
 }

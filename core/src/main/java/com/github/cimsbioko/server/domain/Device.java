@@ -3,6 +3,8 @@ package com.github.cimsbioko.server.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,6 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "device")
+@Indexed
 public class Device {
 
     @Id
@@ -21,20 +24,23 @@ public class Device {
     private String uuid;
 
     @NotNull
+    @Field
     private String name;
 
     @NotNull
+    @Field
     private String description;
 
     @CreationTimestamp
     private Timestamp created;
+
+    private Timestamp deleted;
 
     @NotNull
     private String secret;
 
     private Timestamp secretExpires;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "token")
     @JsonIgnore
@@ -49,10 +55,15 @@ public class Device {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator")
+    @JsonIgnore
     private User creator;
 
     @Column(name = "last_login")
     private Timestamp lastLogin;
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getUuid() {
         return uuid;
@@ -72,6 +83,14 @@ public class Device {
 
     public Timestamp getCreated() {
         return created;
+    }
+
+    public Timestamp getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Timestamp deleted) {
+        this.deleted = deleted;
     }
 
     public String getSecret() {
@@ -100,6 +119,14 @@ public class Device {
 
     public Set<Role> getRoles() {
         return roles;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 
     public Timestamp getLastLogin() {

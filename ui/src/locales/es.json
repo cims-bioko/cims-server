@@ -10,6 +10,7 @@
     "users": "Usuarios",
     "roles": "Roles",
     "fieldworkers": "Trabajadores de Campo",
+    "devices": "Dispositivos",
     "logout": "Cerrar Sesión"
   },
   "table": {
@@ -168,5 +169,21 @@
     "passwdmatch": "Las contraseñas no coinciden.",
     "passwdshort": "La contraseña es demasiado corta.",
     "passwdlong": "La contraseña es demasiado larga."
+  },
+  "devices": {
+    "create": "Crear",
+    "update": "Actualizar",
+    "searchph": "Búsqueda por nombre",
+    "name": "Nombre",
+    "lastLogin": "Último Acceso",
+    "actions": "Acciones",
+    "description": "Descripción",
+    "createmodal": {
+      "title": "Crear Dispositivo"
+    },
+    "editmodal": {
+      "title": "Editar Dispositivo"
+    },
+    "namereq": "Se requiere nombre."
   }
 }

@@ -1,7 +1,5 @@
 package com.github.cimsbioko.server.service;
 
-import com.github.cimsbioko.server.domain.Device;
-
 import java.util.Map;
 
 public interface DeviceService {

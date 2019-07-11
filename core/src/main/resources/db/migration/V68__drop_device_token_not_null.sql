@@ -1,0 +1,1 @@
+alter table device alter column token drop not null;
