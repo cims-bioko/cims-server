@@ -33,13 +33,8 @@
 </template>
 
 <script>
-    import bModal from 'bootstrap-vue/es/components/modal/modal'
-    import bAlert from 'bootstrap-vue/es/components/alert/alert'
-    import bForm from 'bootstrap-vue/es/components/form/form'
-    import bFormRow from 'bootstrap-vue/es/components/form/form-row'
-    import bFormGroup from 'bootstrap-vue/es/components/form-group/form-group'
-    import bFormInput from 'bootstrap-vue/es/components/form-input/form-input'
-    import bInputGroup from 'bootstrap-vue/es/components/input-group/input-group'
+
+    import {BModal, BAlert, BForm, BFormRow, BFormGroup, BFormInput, BInputGroup} from 'bootstrap-vue'
     export default {
         name: 'fieldworker-create-dialog',
         data() {
@@ -193,7 +188,7 @@
             }
         },
         components: {
-            bModal, bAlert, bForm, bFormGroup, bFormInput, bFormRow, bInputGroup
+            BModal, BAlert, BForm, BFormGroup, BFormInput, BFormRow, BInputGroup
         }
     }
 </script>

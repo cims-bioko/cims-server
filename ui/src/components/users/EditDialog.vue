@@ -39,13 +39,7 @@
 </template>
 
 <script>
-    import bModal from 'bootstrap-vue/es/components/modal/modal'
-    import bAlert from 'bootstrap-vue/es/components/alert/alert'
-    import bForm from 'bootstrap-vue/es/components/form/form'
-    import bFormGroup from 'bootstrap-vue/es/components/form-group/form-group'
-    import bFormInput from 'bootstrap-vue/es/components/form-input/form-input'
-    import bFormRow from 'bootstrap-vue/es/components/form/form-row'
-    import bFormSelect from 'bootstrap-vue/es/components/form-select/form-select'
+    import {BModal, BAlert, BForm, BFormGroup, BFormInput, BFormRow, BFormSelect} from 'bootstrap-vue'
     export default {
         name: 'user-edit-dialog',
         props: {
@@ -204,7 +198,7 @@
             }
         },
         components: {
-            bModal, bAlert, bForm, bFormGroup, bFormInput, bFormRow, bFormSelect
+            BModal, BAlert, BForm, BFormGroup, BFormInput, BFormRow, BFormSelect
         }
     }
 </script>
