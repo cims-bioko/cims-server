@@ -13,6 +13,9 @@
             <b-form-group :label="$t('devices.description')" :invalid-feedback="descriptionError" :state="descriptionState">
                 <b-form-input v-model="scratch.description" :state="descriptionState" @input="validate"/>
             </b-form-group>
+            <b-form-group>
+                <b-form-checkbox v-model="resetSecret">{{$t('devices.resetSecret')}}</b-form-checkbox>
+            </b-form-group>
         </b-form>
         <template slot="modal-ok"><fa-icon icon="edit"/> {{$t('devices.update')}}</template>
         <template slot="modal-cancel">{{$t('modal.cancel')}}</template>
@@ -36,6 +39,7 @@
                     name: '',
                     description: ''
                 },
+                resetSecret: false,
                 validated: null,
                 errors: [],
                 fieldErrors: {}
@@ -44,6 +48,7 @@
         methods: {
             async initData() {
                 await this.loadDevice(this.uuid)
+                this.resetSecret = false
                 this.validated = null
                 this.errors = []
                 this.fieldErrors = {}
@@ -76,7 +81,8 @@
                 let s = this.scratch
                 return {
                     name: s.name,
-                    description: s.description
+                    description: s.description,
+                    resetSecret: this.resetSecret
                 }
             },
             async submit(e) {

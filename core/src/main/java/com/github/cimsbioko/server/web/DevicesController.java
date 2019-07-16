@@ -24,7 +24,9 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Locale;
+import java.util.Optional;
 
+import static java.lang.Boolean.FALSE;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Controller
@@ -53,7 +55,7 @@ public class DevicesController {
     public Page<Device> devices(@RequestParam(name = "p", defaultValue = "0") Integer page,
                                 @RequestParam(name = "q", defaultValue = "") String query) {
         PageRequest pageObj = PageRequest.of(page, 10);
-        return query.isEmpty()? deviceRepo.findByDeletedIsNull(pageObj) : deviceRepo.findBySearch(query, pageObj);
+        return query.isEmpty() ? deviceRepo.findByDeletedIsNull(pageObj) : deviceRepo.findBySearch(query, pageObj);
     }
 
     @PreAuthorize("hasAuthority('CREATE_DEVICES')")
@@ -124,13 +126,23 @@ public class DevicesController {
                                     resolveMessage("devices.msg.exists", locale, form.getName())));
         }
 
+
+        final AjaxResult result = new AjaxResult();
+
         d.setName(form.getName());
         d.setDescription(form.getDescription());
+
+        if (form.getResetSecret()) {
+            String initialSecret = tokenGen.generate();
+            d.setSecret(hasher.hash(initialSecret));
+            result.addMessage(resolveMessage("devices.msg.updatedWithSecret", locale, d.getName(), initialSecret));
+        } else {
+            result.addMessage(resolveMessage("devices.msg.updated", locale, d.getName()));
+        }
+
         deviceRepo.save(d);
-        return ResponseEntity
-                .ok(new AjaxResult()
-                        .addMessage(
-                                resolveMessage("devices.msg.updated", locale, d.getName())));
+
+        return ResponseEntity.ok(result);
     }
 
     @PreAuthorize("hasAuthority('DELETE_DEVICES')")
@@ -211,6 +223,7 @@ public class DevicesController {
         private String name;
         @NotNull
         private String description;
+        private Boolean resetSecret;
 
         public String getName() {
             return name;
@@ -226,6 +239,14 @@ public class DevicesController {
 
         public void setDescription(String description) {
             this.description = description;
+        }
+
+        public Boolean getResetSecret() {
+            return Optional.ofNullable(resetSecret).orElse(FALSE);
+        }
+
+        public void setResetSecret(Boolean resetSecret) {
+            this.resetSecret = resetSecret;
         }
     }
 }

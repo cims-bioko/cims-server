@@ -179,6 +179,7 @@
     "lastLogin": "Last Login",
     "actions": "Actions",
     "description": "Description",
+    "resetSecret": "Reset secret",
     "createmodal": {
       "title": "Create Device"
     },

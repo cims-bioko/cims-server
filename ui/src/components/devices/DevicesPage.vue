@@ -12,7 +12,7 @@
         </b-row>
         <b-row class="align-items-center">
             <b-col class="col-auto">
-                <h1><fa-icon icon="device"/> {{$t('nav.devices')}}</h1>
+                <h1><fa-icon icon="tablet-alt"/> {{$t('nav.devices')}}</h1>
             </b-col>
             <b-col v-if="$can('CREATE_DEVICES')">
                 <b-button variant="primary" @click="createItem"><fa-icon icon="plus"/> {{$t('devices.create')}}</b-button>

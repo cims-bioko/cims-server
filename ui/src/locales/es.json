@@ -178,6 +178,7 @@
     "lastLogin": "Último Acceso",
     "actions": "Acciones",
     "description": "Descripción",
+    "resetSecret": "Restablecer secreto",
     "createmodal": {
       "title": "Crear Dispositivo"
     },
