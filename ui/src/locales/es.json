@@ -43,6 +43,10 @@
     "fieldworkers": {
       "desc": "Cree y administre cuentas de usuario desconectado para los trabajadores de campo que recopilan datos mediante la aplicación móvil.",
       "btn": "Ir a @:nav.fieldworkers"
+    },
+    "devices": {
+      "desc": "Cree y administre identidades para dispositivos móviles compartidos.",
+      "btn": "Ir a @:nav.devices"
     }
   },
   "sync": {

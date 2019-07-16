@@ -44,6 +44,10 @@
     "fieldworkers": {
       "desc": "Create and manage off-line user accounts for fieldworkers collecting data using the mobile app.",
       "btn": "Go to Fieldworkers"
+    },
+    "devices": {
+      "desc": "Create and manage identities for shared mobile devices.",
+      "btn": "Go to Devices"
     }
   },
   "sync": {
