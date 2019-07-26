@@ -193,7 +193,7 @@ public class SecurityConfig {
                     .headers().disable()
                     .csrf().disable()
                     .authorizeRequests()
-                    .antMatchers("/css/**", "/img/**", "/webjars/**", "/favicon.ico", "/error").permitAll()
+                    .antMatchers("/css/**", "/js/**", "/img/**", "/webjars/**", "/favicon.ico", "/error").permitAll()
                     .anyRequest().authenticated()
                     .and()
                     .exceptionHandling()
