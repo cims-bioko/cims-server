@@ -190,5 +190,8 @@
       "title": "Editar Dispositivo"
     },
     "namereq": "Se requiere nombre."
+  },
+  "qrcode": {
+    "title": "Configuración para dispositivo '{0}'"
   }
 }

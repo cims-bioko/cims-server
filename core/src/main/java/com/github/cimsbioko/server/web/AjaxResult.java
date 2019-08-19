@@ -14,6 +14,7 @@ class AjaxResult {
     private List<String> messages = new ArrayList<>();
     private List<String> errors = new ArrayList<>();
     private Map<String, List<String>> fieldErrors = new HashMap<>();
+    private Map<String, String> data = new HashMap<>();
 
     AjaxResult addMessage(String message) {
         messages.add(message);
@@ -31,6 +32,11 @@ class AjaxResult {
         return this;
     }
 
+    AjaxResult addData(String field, String value) {
+        data.put(field, value);
+        return this;
+    }
+
     public List<String> getMessages() {
         return messages;
     }
@@ -41,5 +47,9 @@ class AjaxResult {
 
     public Map<String, List<String>> getFieldErrors() {
         return fieldErrors;
+    }
+
+    public Map<String, String> getData() {
+        return data;
     }
 }

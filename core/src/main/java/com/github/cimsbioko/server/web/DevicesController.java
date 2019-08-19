@@ -135,7 +135,10 @@ public class DevicesController {
         if (form.getResetSecret()) {
             String initialSecret = tokenGen.generate();
             d.setSecret(hasher.hash(initialSecret));
-            result.addMessage(resolveMessage("devices.msg.updatedWithSecret", locale, d.getName(), initialSecret));
+            result
+                    .addData("device", d.getName())
+                    .addData("secret", initialSecret)
+                    .addMessage(resolveMessage("devices.msg.updatedWithSecret", locale, d.getName(), initialSecret));
         } else {
             result.addMessage(resolveMessage("devices.msg.updated", locale, d.getName()));
         }

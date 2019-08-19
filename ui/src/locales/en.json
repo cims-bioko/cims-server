@@ -191,5 +191,8 @@
       "title": "Edit Device"
     },
     "namereq": "Name is required."
+  },
+  "qrcode": {
+    "title": "Configuration for device '{0}'"
   }
 }

@@ -42,8 +42,13 @@
                             <b-button v-if="$can('RESTORE_DEVICES') && data.item.deleted" variant="outline-primary" @click="restoreItem(data.item.uuid)">
                                 <fa-icon icon="undo-alt"/>
                             </b-button>
+                            <b-button v-if="$can('VIEW_MOBILE_CONFIG_CODES') && hasSecret(data.item.name)" variant="outline-primary" @click="showQrcode(data.index)">
+                                <fa-icon icon="qrcode"/>
+                            </b-button>
                         </b-button-group>
                         <edit-dialog v-if="$can('EDIT_DEVICES')" :ref="`editDialog${data.index}`" v-bind="data.item" @ok="itemEdited"/>
+                        <qr-code-dialog v-if="$can('VIEW_MOBILE_CONFIG_CODES') && hasSecret(data.item.name)" :ref="`qrcodeDialog${data.index}`"
+                                        :name="data.item.name" :secret="getSecret(data.item.name)" />
                     </template>
                 </b-table>
             </b-col>
@@ -63,6 +68,7 @@
     import CreateDialog from './CreateDialog'
     import EditDialog from './EditDialog'
     import SearchBox from '../SearchBox'
+    import QrCodeDialog from './QrCodeDialog'
     export default {
         name: 'devices-page',
         data() {
@@ -110,8 +116,21 @@
                 this.$refs[`editDialog${index}`].show()
             },
             itemEdited(rsp) {
+                this.saveSecret(rsp.data)
                 this.showMessages(rsp.messages)
                 this.reloadPage()
+            },
+            saveSecret(data) {
+                sessionStorage.setItem(`ds-${data.device}`, `${data.secret}`)
+            },
+            getSecret(device) {
+                return sessionStorage.getItem(`ds-${device}`)
+            },
+            hasSecret(device) {
+                return sessionStorage.getItem(`ds-${device}`) != null
+            },
+            showQrcode(index) {
+                this.$refs[`qrcodeDialog${index}`].show()
             },
             createItem() {
                 this.$refs.createDialog.show()
@@ -145,7 +164,7 @@
         },
         components: {
             bContainer, bRow, bCol, bAlert, bButton, bPagination, bTable, bButtonGroup,
-            CreateDialog, EditDialog, SearchBox
+            CreateDialog, EditDialog, SearchBox, QrCodeDialog
         }
     }
 </script>
