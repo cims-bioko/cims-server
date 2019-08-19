@@ -37,8 +37,10 @@ public class Device {
     private Timestamp deleted;
 
     @NotNull
+    @JsonIgnore
     private String secret;
 
+    @JsonIgnore
     private Timestamp secretExpires;
 
     @ManyToOne(fetch = FetchType.LAZY)
