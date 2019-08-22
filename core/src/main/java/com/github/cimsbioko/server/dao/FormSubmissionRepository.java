@@ -12,4 +12,5 @@ public interface FormSubmissionRepository extends PagingAndSortingRepository<For
     List<FormSubmission> findByProcessedNullOrderByCollected(Pageable pageable);
     List<FormSubmission> findByFormIdAndSubmittedAfter(String formId, Timestamp submitted, Pageable pageable);
     List<FormSubmission> findByFormId(String formId, Pageable pageable);
+    long deleteByFormIdAndFormVersion(String formId, String formVersion);
 }

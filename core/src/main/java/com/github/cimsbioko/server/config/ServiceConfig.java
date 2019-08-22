@@ -30,8 +30,8 @@ public class ServiceConfig {
     }
 
     @Bean
-    public FormService formService(FormRepository repo, FileHasher hasher, FormFileSystem fs, XLSFormService xlsformService) {
-        return new FormServiceImpl(repo, hasher, fs, xlsformService);
+    public FormService formService(FormRepository repo, FormSubmissionRepository submissionRepo, FileHasher hasher, FormFileSystem fs, XLSFormService xlsformService) {
+        return new FormServiceImpl(repo, submissionRepo, hasher, fs, xlsformService);
     }
 
     @Bean

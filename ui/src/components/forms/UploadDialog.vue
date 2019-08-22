@@ -27,13 +27,7 @@
 </template>
 
 <script>
-    import bModal from 'bootstrap-vue/es/components/modal/modal'
-    import bAlert from 'bootstrap-vue/es/components/alert/alert'
-    import bProgress from 'bootstrap-vue/es/components/progress/progress'
-    import bForm from 'bootstrap-vue/es/components/form/form'
-    import bFormGroup from 'bootstrap-vue/es/components/form-group/form-group'
-    import bFormRadioGroup from 'bootstrap-vue/es/components/form-radio/form-radio-group'
-    import bFormFile from 'bootstrap-vue/es/components/form-file/form-file'
+    import {BModal, BAlert, BProgress, BForm, BFormGroup, BFormRadioGroup, BFormFile} from 'bootstrap-vue'
     export default {
         name: 'form-upload-dialog',
         data() {
@@ -169,7 +163,7 @@
             }
         },
         components: {
-            bModal, bAlert, bProgress, bForm, bFormGroup, bFormRadioGroup, bFormFile
+            BModal, BAlert, BProgress, BForm, BFormGroup, BFormRadioGroup, BFormFile
         }
     }
 </script>

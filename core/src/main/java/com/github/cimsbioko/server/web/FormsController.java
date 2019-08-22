@@ -5,6 +5,7 @@ import com.github.cimsbioko.server.domain.Form;
 import com.github.cimsbioko.server.service.FormService;
 import org.jdom2.JDOMException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 
 import static com.github.cimsbioko.server.webapi.odk.Constants.FORM_DEF_FILE;
 import static com.github.cimsbioko.server.webapi.odk.Constants.XLSFORM_DEF_FILE;
@@ -28,11 +30,13 @@ public class FormsController {
 
     private FormRepository repo;
     private FormService service;
+    private MessageSource messages;
 
     @Autowired
-    public FormsController(FormRepository repo, FormService service) {
+    public FormsController(FormRepository repo, FormService service, MessageSource messages) {
         this.repo = repo;
         this.service = service;
+        this.messages = messages;
     }
 
     @PreAuthorize("hasAuthority('VIEW_FORMS')")
@@ -65,6 +69,20 @@ public class FormsController {
                     .status(e.getRawStatusCode())
                     .body(e.getResponseBodyAsByteArray());
         }
+    }
+
+    @PreAuthorize("hasAuthority('WIPE_FORM_SUBMISSIONS')")
+    @DeleteMapping("/forms/submissions/{id}/{version}")
+    @ResponseBody
+    public ResponseEntity<AjaxResult> wipeSubmissions(@PathVariable("id") String id,
+                                                      @PathVariable("version") String version, Locale locale) {
+        service.wipeSubmissions(id, version);
+        return ResponseEntity.ok(new AjaxResult()
+                .addMessage(resolveMessage("forms.msg.submissionswiped", locale, id, version)));
+    }
+
+    private String resolveMessage(String key, Locale locale, Object... args) {
+        return messages.getMessage(key, args, locale);
     }
 
     @PreAuthorize("hasAuthority('EXPORT_FORMS')")

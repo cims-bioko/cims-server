@@ -112,6 +112,9 @@
     "passwdshort": "La contraseña es demasiado corta."
   },
   "forms": {
+    "label": "Formulario",
+    "nameFormat": "{0} ({1})",
+    "actions": "Acciones",
     "add": "Añadir",
     "upload": "Subir",
     "id": "ID",
@@ -125,6 +128,12 @@
     "uploadmodal": {
       "title": "Subir un Formulario",
       "close": "Cerrar"
+    },
+    "resetmodal": {
+      "title": "Eliminar Envíos de Formularios",
+      "desc": "¿Eliminar todos los envíos para '{0}' versión '{1}'?",
+      "delete": "Eliminar",
+      "cancel": "Cancelar"
     },
     "xmlreq": "Se requiere formulario XML.",
     "xlsreq": "Se requiere XLSForm.",

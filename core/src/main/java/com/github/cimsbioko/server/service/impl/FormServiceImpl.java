@@ -1,6 +1,7 @@
 package com.github.cimsbioko.server.service.impl;
 
 import com.github.cimsbioko.server.dao.FormRepository;
+import com.github.cimsbioko.server.dao.FormSubmissionRepository;
 import com.github.cimsbioko.server.domain.Form;
 import com.github.cimsbioko.server.domain.FormId;
 import com.github.cimsbioko.server.service.FormService;
@@ -43,14 +44,17 @@ public class FormServiceImpl implements FormService {
 
     private FormRepository formDao;
 
+    private FormSubmissionRepository submissionDao;
+
     private FileHasher hasher;
 
     private FormFileSystem formFileSystem;
 
     private XLSFormService xlsformService;
 
-    public FormServiceImpl(FormRepository repo, FileHasher hasher, FormFileSystem fs, XLSFormService xlsformService) {
+    public FormServiceImpl(FormRepository repo, FormSubmissionRepository submissionDao, FileHasher hasher, FormFileSystem fs, XLSFormService xlsformService) {
         this.formDao = repo;
+        this.submissionDao = submissionDao;
         this.hasher = hasher;
         this.formFileSystem = fs;
         this.xlsformService = xlsformService;
@@ -106,6 +110,16 @@ public class FormServiceImpl implements FormService {
                     form.setDownloads(false);
                 }
             }
+        });
+    }
+
+    @Override
+    @Transactional
+    public void wipeSubmissions(String id, String version) {
+        formDao.findById(new FormId(id, version)).ifPresent((form) -> {
+            log.info("wiping submissions for {} version {}", id, version);
+            log.info("removed {} submissions", submissionDao.deleteByFormIdAndFormVersion(id, version));
+            form.setLastSubmission(null);
         });
     }
 

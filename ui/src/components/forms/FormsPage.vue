@@ -1,5 +1,12 @@
 <template>
     <b-container>
+        <b-row>
+            <b-col>
+                <template v-for="(message, index) of messages">
+                    <b-alert variant="success" :show="15" :key="`message-${index}`" fade>{{message}}</b-alert>
+                </template>
+            </b-col>
+        </b-row>
         <b-row class="align-items-center">
             <b-col class="col-auto">
                 <h1><fa-icon icon="file-alt"/> {{$t('nav.forms')}}</h1>
@@ -17,11 +24,8 @@
         <b-row>
             <b-col>
                 <b-table :items="items" :fields="fields" show-empty :empty-text="$t('table.empty')">
-                    <template slot="formId.version" slot-scope="data">
-                        {{data.value}}
-                        <b-button v-if="$can('EXPORT_FORMS')" variant="primary" :href="`/forms/export/${data.item.formId.id}/${data.value}`" download>
-                            <fa-icon icon="download"/>
-                        </b-button>
+                    <template slot="formId" slot-scope="data">
+                        {{$t("forms.nameFormat", [data.value.id, data.value.version])}}
                     </template>
                     <template slot="downloads" slot-scope="data">
                         <b-button :disabled="!$can('MANAGE_FORMS')" variant="outline-primary" @click="toggleDownload(data.item)">
@@ -35,6 +39,19 @@
                     </template>
                     <template slot="uploaded" slot-scope="data">{{data.value|formatDateTime}}</template>
                     <template slot="lastSubmission" slot-scope="data">{{data.value|formatDateTime}}</template>
+                    <template slot="actions" slot-scope="data">
+                        <b-button-group>
+                            <b-button v-if="$can('EXPORT_FORMS')" variant="outline-primary" :href="`/forms/export/${data.item.formId.id}/${data.item.formId.version}`" download>
+                                <fa-icon icon="download"/>
+                            </b-button>
+                            <b-button v-if="$can('WIPE_FORM_SUBMISSIONS')" variant="outline-primary" @click="showResetDialog(data.index)">
+                                <fa-icon icon="folder-minus"/>
+                            </b-button>
+                        </b-button-group>
+                        <form-reset-dialog v-if="$can('WIPE_FORM_SUBMISSIONS')" :ref="`resetDialog${data.index}`"
+                                           :id="data.item.formId.id" :version="data.item.formId.version"
+                                           @ok="formReset"/>
+                    </template>
                 </b-table>
             </b-col>
         </b-row>
@@ -42,29 +59,26 @@
 </template>
 
 <script>
-    import bContainer from 'bootstrap-vue/es/components/layout/container'
-    import bRow from 'bootstrap-vue/es/components/layout/row'
-    import bCol from 'bootstrap-vue/es/components/layout/col'
-    import bButton from 'bootstrap-vue/es/components/button/button'
-    import bPagination from 'bootstrap-vue/es/components/pagination/pagination'
-    import bTable from 'bootstrap-vue/es/components/table/table'
+    import {BAlert, BContainer, BRow, BCol, BButton, BButtonGroup, BPagination, BTable} from 'bootstrap-vue'
     import UploadDialog from './UploadDialog'
+    import FormResetDialog from './ResetDialog'
     export default {
         name: 'forms-page',
         data() {
             return {
                 fields: [
-                    {key: 'formId.id', label: this.$t('forms.id'), tdClass: 'align-middle', thClass: 'text-center'},
-                    {key: 'formId.version', label: this.$t('forms.version'), tdClass: 'align-middle text-right', thClass: 'text-center'},
+                    {key: 'formId', label: this.$t('forms.label'), tdClass: 'align-middle', thClass: 'text-center'},
+                    {key: 'actions', label: this.$t('forms.actions'), tdClass: 'align-middle text-center', thClass: 'text-center'},
                     {key: 'downloads', label: this.$t('forms.downloads'), tdClass: 'align-middle text-center', thClass: 'text-center'},
                     {key: 'submissions', label: this.$t('forms.submissions'), tdClass: 'align-middle text-center', thClass: 'text-center'},
                     {key: 'uploaded', label: this.$t('forms.uploaded'), tdClass: 'align-middle text-center', thClass: 'text-center'},
-                    {key: 'lastSubmission', label: this.$t('forms.lastSubmission'), tdClass: 'align-middle text-center', thClass: 'text-center'},
+                    {key: 'lastSubmission', label: this.$t('forms.lastSubmission'), tdClass: 'align-middle text-center', thClass: 'text-center'}
                 ],
                 totalItems: 0,
                 pageSize: 0,
                 currentPage: 1,
-                items: []
+                items: [],
+                messages: []
             }
         },
         methods: {
@@ -98,14 +112,25 @@
             },
             formUploaded() {
                 this.reloadPage()
-            }
+            },
+            showResetDialog(index) {
+                this.$refs[`resetDialog${index}`].show()
+            },
+            formReset(rsp) {
+                this.showMessages(rsp.messages)
+                this.reloadPage()
+            },
+            showMessages(messages) {
+                // ensures same message triggers new alert
+                this.messages = []
+                this.$nextTick(() => this.messages = messages || [])
+            },
         },
         mounted() {
             this.reloadPage()
         },
         components: {
-            bContainer, bRow, bCol, bButton, bPagination, bTable,
-            UploadDialog
+            BAlert, BContainer, BRow, BCol, BButton, BButtonGroup, BPagination, BTable, UploadDialog, FormResetDialog
         }
     }
 </script>

@@ -14,4 +14,5 @@ public interface FormService {
     void uploadXlsform(MultipartFile xlsform, MultiValueMap<String,MultipartFile> multiFileMap) throws IOException, NoSuchAlgorithmException, JDOMException;
     void exportToStream(String id, String version, OutputStream outputStream) throws IOException;
     void manageForm(String id, String version, boolean downloads, boolean submissions);
+    void wipeSubmissions(String id, String version);
 }

@@ -113,6 +113,9 @@
     "passwdshort": "Password is too short."
   },
   "forms": {
+    "label": "Form",
+    "nameFormat": "{0} ({1})",
+    "actions": "Actions",
     "add": "Add",
     "upload": "Upload",
     "id": "ID",
@@ -126,6 +129,12 @@
     "uploadmodal": {
       "title": "Upload Form",
       "close": "Close"
+    },
+    "resetmodal": {
+      "title": "Wipe Form Submissions",
+      "desc": "Delete all submissions for '{0}' version '{1}'?",
+      "delete": "Delete",
+      "cancel": "Cancel"
     },
     "xmlreq": "XML form is required.",
     "xlsreq": "XLSForm is required.",
