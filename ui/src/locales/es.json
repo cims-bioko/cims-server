@@ -202,6 +202,8 @@
   },
   "qrcode": {
     "title": "Configuración para dispositivo '{0}'",
-    "onetime": "Advertencia: el código es válido para un solo uso."
+    "onetime": "Advertencia: el código es válido para un solo uso.",
+    "hide": "Esconder",
+    "forget": "Olvidar"
   }
 }

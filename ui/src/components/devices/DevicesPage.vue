@@ -48,7 +48,7 @@
                         </b-button-group>
                         <edit-dialog v-if="$can('EDIT_DEVICES')" :ref="`editDialog${data.index}`" v-bind="data.item" @ok="itemEdited"/>
                         <qr-code-dialog v-if="$can('VIEW_MOBILE_CONFIG_CODES') && hasSecret(data.item.name)" :ref="`qrcodeDialog${data.index}`"
-                                        :name="data.item.name" :secret="getSecret(data.item.name)" />
+                                        :name="data.item.name" :secret="getSecret(data.item.name)" @forget="clearSecret" />
                     </template>
                 </b-table>
             </b-col>
@@ -128,6 +128,10 @@
             },
             hasSecret(device) {
                 return sessionStorage.getItem(`ds-${device}`) != null
+            },
+            clearSecret(device) {
+                sessionStorage.removeItem(`ds-${device}`);
+                this.reloadPage();
             },
             showQrcode(index) {
                 this.$refs[`qrcodeDialog${index}`].show()

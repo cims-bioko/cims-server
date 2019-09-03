@@ -203,6 +203,8 @@
   },
   "qrcode": {
     "title": "Configuration for device '{0}'",
-    "onetime": "Warning: code is valid for a single use only."
+    "onetime": "Warning: code is valid for a single use only.",
+    "hide": "Hide",
+    "forget": "Forget"
   }
 }
