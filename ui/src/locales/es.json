@@ -201,6 +201,7 @@
     "namereq": "Se requiere nombre."
   },
   "qrcode": {
-    "title": "Configuración para dispositivo '{0}'"
+    "title": "Configuración para dispositivo '{0}'",
+    "onetime": "Advertencia: el código es válido para un solo uso."
   }
 }
