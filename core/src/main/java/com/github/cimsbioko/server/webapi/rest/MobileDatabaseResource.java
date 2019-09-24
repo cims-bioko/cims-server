@@ -1,7 +1,6 @@
 package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.batkinson.jrsync.Metadata;
-import com.github.cimsbioko.server.service.MobileDbGenerator;
 import com.github.cimsbioko.server.service.SyncService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
