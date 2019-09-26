@@ -9,6 +9,7 @@ const BackupsPage = () => import('./components/backups/BackupsPage.vue')
 const UsersPage = () => import('./components/users/UsersPage.vue')
 const RolesPage = () => import('./components/roles/RolesPage.vue')
 const DevicesPage = () => import('./components/devices/DevicesPage.vue')
+const CampaignsPage = () => import('./components/campaigns/CampaignsPage.vue')
 const FieldworkersPage = () => import('./components/fieldworkers/FieldworkersPage.vue')
 
 export const Router = new VueRouter({
@@ -20,6 +21,7 @@ export const Router = new VueRouter({
         { name: 'users', path: '/users', component: UsersPage },
         { name: 'roles', path: '/roles', component: RolesPage },
         { name: 'devices', path: '/devices', component: DevicesPage },
+        { name: 'campaigns', path: '/campaigns', component: CampaignsPage },
         { name: 'fieldworkers', path: '/fieldworkers', component: FieldworkersPage },
     ]
 })

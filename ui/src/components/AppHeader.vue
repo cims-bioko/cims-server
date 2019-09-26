@@ -14,6 +14,7 @@
                 <b-nav-item v-if="$can('VIEW_ROLES')" :to="{name:'roles'}"><fa-icon icon="users"/> {{$t('nav.roles')}}</b-nav-item>
                 <b-nav-item v-if="$can('VIEW_FIELDWORKERS')" :to="{name:'fieldworkers'}"><fa-icon icon="user"/> {{$t('nav.fieldworkers')}}</b-nav-item>
                 <b-nav-item v-if="$can('VIEW_DEVICES')" :to="{name:'devices'}"><fa-icon icon="tablet-alt"/> {{$t('nav.devices')}}</b-nav-item>
+                <b-nav-item v-if="$can('VIEW_CAMPAIGNS')" :to="{name:'campaigns'}"><fa-icon icon="shuttle-van"/> {{$t('nav.campaigns')}}</b-nav-item>
             </b-navbar-nav>
             <b-navbar-nav v-if="$user.username" >
                 <b-nav-item-dropdown right>

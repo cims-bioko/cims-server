@@ -50,6 +50,13 @@
                     <b-button variant="info" :to="{name:'devices'}">{{$t('home.devices.btn')}}</b-button>
                 </b-card>
             </b-col>
+            <b-col class="col-lg-4 mb-4" v-if="$can('VIEW_CAMPAIGNS')">
+                <b-card>
+                    <h1 class="card-title"><fa-icon icon="shuttle-van" /> {{$t('nav.campaigns')}}</h1>
+                    <p class="card-text">{{$t('home.campaigns.desc')}}</p>
+                    <b-button variant="info" :to="{name:'campaigns'}">{{$t('home.campaigns.btn')}}</b-button>
+                </b-card>
+            </b-col>
         </b-row>
     </b-container>
 </template>

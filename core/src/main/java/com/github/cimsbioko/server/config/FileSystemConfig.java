@@ -18,6 +18,9 @@ public class FileSystemConfig {
     @Value("${app.submissions.dir}")
     File submissionsDir;
 
+    @Value("${app.campaigns.dir}")
+    File campaignsDir;
+
     @Bean
     File dataDir() {
         dataDir.mkdirs();
@@ -36,4 +39,9 @@ public class FileSystemConfig {
         return submissionsDir;
     }
 
+    @Bean
+    File campaignsDir() {
+        campaignsDir.mkdirs();
+        return campaignsDir;
+    }
 }

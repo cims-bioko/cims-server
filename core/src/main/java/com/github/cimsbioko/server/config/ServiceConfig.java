@@ -58,4 +58,9 @@ public class ServiceConfig {
     public MobileDbGenerator mobileDbGenerator(Exporter sqliteExporter, ApplicationEventPublisher eventPublisher) {
         return new MobileDbGeneratorImpl(sqliteExporter, eventPublisher);
     }
+
+    @Bean
+    public CampaignService campaignService() {
+        return new CampaignServiceImpl();
+    }
 }

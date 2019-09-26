@@ -12,6 +12,7 @@
     "roles": "Roles",
     "fieldworkers": "Fieldworkers",
     "devices": "Devices",
+    "campaigns": "Campaigns",
     "logout": "Logout"
   },
   "table": {
@@ -48,6 +49,10 @@
     "devices": {
       "desc": "Create and manage identities for shared mobile devices.",
       "btn": "Go to Devices"
+    },
+    "campaigns": {
+      "desc": "Create, configure, and manage campaign definitions for customizing mobile data collection.",
+      "btn": "Go to Campaigns"
     }
   },
   "sync": {
@@ -206,5 +211,15 @@
     "onetime": "Warning: code is valid for a single use only.",
     "hide": "Hide",
     "forget": "Forget"
+  },
+  "campaigns": {
+    "upload": "Upload",
+    "uploadmodal": {
+      "title": "Upload Campaign '{0}'",
+      "close": "Close"
+    },
+    "zip": "Campaign zip",
+    "zipreq": "Campaign zip file is required.",
+    "success": "Uploaded succeeded."
   }
 }

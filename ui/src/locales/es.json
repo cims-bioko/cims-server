@@ -11,6 +11,7 @@
     "roles": "Roles",
     "fieldworkers": "Trabajadores de Campo",
     "devices": "Dispositivos",
+    "campaigns": "Campañas",
     "logout": "Cerrar Sesión"
   },
   "table": {
@@ -47,6 +48,10 @@
     "devices": {
       "desc": "Cree y administre identidades para dispositivos móviles compartidos.",
       "btn": "Ir a @:nav.devices"
+    },
+    "campaigns": {
+      "desc": "Cree, configure y administre definiciones de campaña para personalizar la recopilación de datos móviles.",
+      "btn": "Ir a @:nav.campaigns"
     }
   },
   "sync": {
@@ -205,5 +210,15 @@
     "onetime": "Advertencia: el código es válido para un solo uso.",
     "hide": "Esconder",
     "forget": "Olvidar"
+  },
+  "campaigns": {
+    "upload": "Subir",
+    "uploadmodal": {
+      "title": "Subir Campaña '{0}'",
+      "close": "Cerrar"
+    },
+    "zip": "Zip de campaña",
+    "zipreq": "Se requiere el archivo zip de la campaña.",
+    "success": "Subido con éxito."
   }
 }
