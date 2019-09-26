@@ -171,7 +171,7 @@ public class FormsResource {
     /**
      * Represents all of the required information for a form definition from the OpenRosa form list API.
      */
-    private class OpenRosaFormDef {
+    private static class OpenRosaFormDef {
 
         String id, name, version, hash, path, manifestPath;
 
