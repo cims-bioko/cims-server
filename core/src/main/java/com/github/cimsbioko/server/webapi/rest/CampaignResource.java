@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.context.request.WebRequest;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,17 +30,22 @@ public class CampaignResource {
 
     @PreAuthorize("hasAuthority('DOWNLOAD_CAMPAIGNS')")
     @GetMapping("/api/rest/campaign")
-    public ResponseEntity<InputStreamResource> downloadCampaign() throws IOException, NoSuchAlgorithmException {
+    public ResponseEntity<InputStreamResource> downloadCampaign(WebRequest request) throws IOException, NoSuchAlgorithmException {
         Optional<File> maybeCampaignFile = service.getCampaignFile(null);
         if (maybeCampaignFile.isPresent()) {
             File file = maybeCampaignFile.get();
-            Resource resource = new FileSystemResource(file);
-            return ResponseEntity
-                    .ok()
-                    .eTag(fileHasher.hashFile(file))
-                    .contentLength(resource.contentLength())
-                    .contentType(MediaType.parseMediaType("application/zip"))
-                    .body(new InputStreamResource(resource.getInputStream()));
+            String descriptor = fileHasher.hashFile(file);
+            if (request.checkNotModified(descriptor)) {
+                return null;
+            } else {
+                Resource resource = new FileSystemResource(file);
+                return ResponseEntity
+                        .ok()
+                        .eTag(descriptor)
+                        .contentLength(resource.contentLength())
+                        .contentType(MediaType.parseMediaType("application/zip"))
+                        .body(new InputStreamResource(resource.getInputStream()));
+            }
         }
         return ResponseEntity.notFound().build();
     }
