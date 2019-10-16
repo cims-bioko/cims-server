@@ -1,12 +1,16 @@
 package com.github.cimsbioko.server.service.impl;
 
 import com.github.batkinson.jrsync.Metadata;
+import com.github.cimsbioko.server.scripting.DatabaseExport;
+import com.github.cimsbioko.server.scripting.JsConfig;
 import com.github.cimsbioko.server.service.MobileDbGenerator;
 import com.github.cimsbioko.server.sqliteexport.Exporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +19,6 @@ import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.Map;
-import java.util.Properties;
 
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
 
@@ -33,18 +36,31 @@ public class MobileDbGeneratorImpl implements MobileDbGenerator {
 
     private Exporter exporter;
 
-    private Properties tableQueries;
-
-    private org.springframework.core.io.Resource preDdl;
-
-    private org.springframework.core.io.Resource postDdl;
+    private JsConfig config;
 
     private ApplicationEventPublisher eventPublisher;
 
     public MobileDbGeneratorImpl(Exporter exporter, ApplicationEventPublisher eventPublisher) {
         this.exporter = exporter;
-        tableQueries = new Properties();
         this.eventPublisher = eventPublisher;
+    }
+
+    @EventListener
+    @Order
+    public void onCampaignUnload(CampaignUnloaded event) {
+        log.info("unloading {}", event.getName());
+        if (event.getName() == null) {
+            config = null;
+        }
+    }
+
+    @EventListener
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    public void onCampaignLoad(CampaignLoaded event) {
+        log.info("loading {}", event.getName());
+        if (event.getName() == null) {
+            config = event.getConfig();
+        }
     }
 
     @Override
@@ -55,21 +71,6 @@ public class MobileDbGeneratorImpl implements MobileDbGenerator {
     @Resource(name = "dataDir")
     public void setDataDir(File dataDir) {
         this.dataDir = dataDir;
-    }
-
-    @Resource(name = "exportQueries")
-    public void setTableQueries(Properties tableQueries) {
-        this.tableQueries = tableQueries;
-    }
-
-    @Value("classpath:/pre-export.sql")
-    public void setPreDdl(org.springframework.core.io.Resource scriptStream) {
-        preDdl = scriptStream;
-    }
-
-    @Value("classpath:/post-export.sql")
-    public void setPostDdl(org.springframework.core.io.Resource scriptStream) {
-        postDdl = scriptStream;
     }
 
     @Async
@@ -88,6 +89,22 @@ public class MobileDbGeneratorImpl implements MobileDbGenerator {
 
         int tablesProcessed = 0;
 
+        // do nothing if there is no config loaded
+        if (config == null) {
+            log.warn("aborting mobile db generation, no config");
+            return;
+        }
+
+        DatabaseExport export = config.getDatabaseExport();
+
+        // do nothing if there is no export defined in config (unlikely, since this is only scheduled from one)
+        if (export == null) {
+            log.warn("aborting mobile db generation, no export defined in config");
+            return;
+        }
+
+        Map<String, String> tableQueries = export.exportQueries();
+
         eventPublisher.publishEvent(new MobileDbGeneratorStarted());
 
         File scratch = new File(dest.getParentFile(), dest.getName() + ".tmp");
@@ -95,13 +112,25 @@ public class MobileDbGeneratorImpl implements MobileDbGenerator {
         File metaScratch = new File(dest.getParentFile(), metaDest.getName() + ".tmp");
 
         eventPublisher.publishEvent(new MobileDbGeneratorUpdate());
-        // Export each of the queries as a table in the target database file
-        exporter.scriptTarget(preDdl.getInputStream(), scratch);
-        for (Map.Entry e : tableQueries.entrySet()) {
-            exporter.export(e.getValue().toString(), e.getKey().toString(), scratch);
+
+        // run each of the export's init scripts in order
+        for (String initScriptName : export.initScripts()) {
+            log.debug("executing init script {} on {}", initScriptName, scratch);
+            exporter.scriptTarget(config.getResource(initScriptName), scratch);
+        }
+
+        // export each of the queries as a table in the target database file
+        for (Map.Entry<String, String> e : tableQueries.entrySet()) {
+            log.debug("executing query '{}' on {}", e.getValue(), scratch);
+            exporter.export(e.getValue(), e.getKey(), scratch);
             eventPublisher.publishEvent(new MobileDbGeneratorUpdate(++tablesProcessed));
         }
-        exporter.scriptTarget(postDdl.getInputStream(), scratch);
+
+        // run each of the export's post scripts in order
+        for (String postScriptName : export.postScripts()) {
+            log.debug("executing post script {} on {}", postScriptName, scratch);
+            exporter.scriptTarget(config.getResource(postScriptName), scratch);
+        }
 
         // Generate sync metadata
         try (InputStream in = new FileInputStream(scratch)) {

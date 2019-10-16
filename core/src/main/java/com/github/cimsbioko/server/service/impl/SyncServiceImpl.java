@@ -7,12 +7,13 @@ import com.github.cimsbioko.server.service.SyncService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Optional;
@@ -38,14 +39,32 @@ public class SyncServiceImpl implements SyncService {
 
     private boolean running;
 
-    public SyncServiceImpl(TaskRepository repo, TaskScheduler scheduler, MobileDbGenerator generator, String schedule) {
+    public SyncServiceImpl(TaskRepository repo, TaskScheduler scheduler, MobileDbGenerator generator) {
         this.repo = repo;
         this.scheduler = scheduler;
         this.generator = generator;
-        this.schedule = schedule;
     }
 
-    @PostConstruct
+    @EventListener
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    public void onCampaignUnload(CampaignUnloaded event) {
+        log.info("unloading {}", event.getName());
+        if (event.getName() == null) {
+            cancelTask();
+            schedule = null;
+        }
+    }
+
+    @EventListener
+    @Order
+    public void onCampaignLoad(CampaignLoaded event) {
+        log.info("loading {}", event.getName());
+        if (event.getName() == null) {
+            schedule = event.getConfig().getDatabaseExport().exportSchedule();
+            resumeSchedule();
+        }
+    }
+
     public void resumeSchedule() {
         scheduleTask(schedule);
     }
@@ -127,8 +146,7 @@ public class SyncServiceImpl implements SyncService {
 
     @Override
     public void requestTaskRun() {
-        if (isTaskRunning()) {
-        } else {
+        if (!isTaskRunning()) {
             generator.generateMobileDb();
         }
     }

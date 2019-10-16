@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
 
 import javax.persistence.EntityManager;
+import java.io.File;
 
 @Configuration
 public class ServiceConfig {
@@ -45,8 +46,8 @@ public class ServiceConfig {
     }
 
     @Bean
-    public SyncService syncService(TaskRepository repo, TaskScheduler scheduler, MobileDbGenerator generator, @Value("${app.task.schedule}") String schedule) {
-        return new SyncServiceImpl(repo, scheduler, generator, schedule);
+    public SyncService syncService(TaskRepository repo, TaskScheduler scheduler, MobileDbGenerator generator) {
+        return new SyncServiceImpl(repo, scheduler, generator);
     }
 
     @Bean
@@ -60,7 +61,7 @@ public class ServiceConfig {
     }
 
     @Bean
-    public CampaignService campaignService() {
-        return new CampaignServiceImpl();
+    public CampaignServiceImpl campaignService(File campaignsDir, ApplicationEventPublisher publisher) {
+        return new CampaignServiceImpl(campaignsDir, publisher);
     }
 }
