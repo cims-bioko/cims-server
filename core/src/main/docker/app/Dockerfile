@@ -1,4 +1,4 @@
-FROM cimsbioko/oracle-java8-awsrds-ssl
+FROM cimsbioko/openjdk-8-awsrds-ssl:CA-2019
 LABEL maintainer="brent.atkinson@gmail.com"
 
 EXPOSE 8080
