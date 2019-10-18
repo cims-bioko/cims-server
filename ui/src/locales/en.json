@@ -220,6 +220,7 @@
     },
     "zip": "Campaign zip",
     "zipreq": "Campaign zip file is required.",
-    "success": "Uploaded succeeded."
+    "success": "Uploaded succeeded.",
+    "failed": "Upload failed."
   }
 }

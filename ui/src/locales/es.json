@@ -219,6 +219,7 @@
     },
     "zip": "Zip de campaña",
     "zipreq": "Se requiere el archivo zip de la campaña.",
-    "success": "Subido con éxito."
+    "success": "Subido con éxito.",
+    "failed": "Subida fallida."
   }
 }
