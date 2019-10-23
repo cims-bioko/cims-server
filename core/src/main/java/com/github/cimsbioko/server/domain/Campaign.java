@@ -28,6 +28,8 @@ public class Campaign {
     @CreationTimestamp
     private Timestamp created;
 
+    private Timestamp disabled;
+
     private Timestamp deleted;
 
     private Timestamp start;
@@ -55,4 +57,99 @@ public class Campaign {
     @JsonIgnore
     private Set<Device> devices = new HashSet<>();
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public Timestamp getCreated() {
+        return created;
+    }
+
+    public void setCreated(Timestamp created) {
+        this.created = created;
+    }
+
+    public Timestamp getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(Timestamp disabled) {
+        this.disabled = disabled;
+    }
+
+    public Timestamp getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Timestamp deleted) {
+        this.deleted = deleted;
+    }
+
+    public Timestamp getStart() {
+        return start;
+    }
+
+    public void setStart(Timestamp start) {
+        this.start = start;
+    }
+
+    public Timestamp getEnd() {
+        return end;
+    }
+
+    public void setEnd(Timestamp end) {
+        this.end = end;
+    }
+
+    public Set<User> getMembers() {
+        return members;
+    }
+
+    public void setMembers(Set<User> members) {
+        this.members = members;
+    }
+
+    public Set<Form> getForms() {
+        return forms;
+    }
+
+    public void setForms(Set<Form> forms) {
+        this.forms = forms;
+    }
+
+    public Set<Device> getDevices() {
+        return devices;
+    }
+
+    public void setDevices(Set<Device> devices) {
+        this.devices = devices;
+    }
 }
