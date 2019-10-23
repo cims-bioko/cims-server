@@ -28,19 +28,13 @@
 </template>
 
 <script>
-    import bNavbar from 'bootstrap-vue/es/components/navbar/navbar'
-    import bNavbarNav from 'bootstrap-vue/es/components/navbar/navbar-nav'
-    import bNavbarBrand from 'bootstrap-vue/es/components/navbar/navbar-brand'
-    import bNavbarToggle from 'bootstrap-vue/es/components/navbar/navbar-toggle'
-    import bCollapse from 'bootstrap-vue/es/components/collapse/collapse'
-    import bDropdownItem from 'bootstrap-vue/es/components/dropdown/dropdown-item'
-    import bNavItem from 'bootstrap-vue/es/components/nav/nav-item'
-    import bNavItemDropdown from 'bootstrap-vue/es/components/nav/nav-item-dropdown'
+    import {
+        BNavbar, BNavbarNav, BNavbarBrand, BNavbarToggle, BCollapse, BDropdownItem, BNavItem, BNavItemDropdown
+    } from 'bootstrap-vue'
     export default {
         name: 'app-header',
         components: {
-            bNavbar, bNavbarNav, bNavbarBrand, bNavbarToggle,
-            bCollapse, bNavItem, bNavItemDropdown, bDropdownItem
+            BNavbar, BNavbarNav, BNavbarBrand, BNavbarToggle, BCollapse, BNavItem, BNavItemDropdown, BDropdownItem
         }
     }
 </script>

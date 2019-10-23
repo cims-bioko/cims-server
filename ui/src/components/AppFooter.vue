@@ -7,12 +7,11 @@
 </template>
 
 <script>
-    import bRow from 'bootstrap-vue/es/components/layout/row'
-    import bCol from 'bootstrap-vue/es/components/layout/col'
+    import {BRow, BCol} from 'bootstrap-vue'
     export default {
         name: 'app-footer',
         components: {
-            bRow, bCol
+            BRow, BCol
         }
     }
 </script>
