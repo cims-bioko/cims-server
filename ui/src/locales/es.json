@@ -5,7 +5,6 @@
   "nav": {
     "home": "Inicio",
     "forms": "Formularios",
-    "sync": "Sincronización",
     "backups": "Copias de Seguridad",
     "users": "Usuarios",
     "roles": "Roles",
@@ -24,10 +23,6 @@
     "forms": {
       "desc": "Cargue y publique formularios de recopilación de datos basados en ODK para usar con la aplicación móvil.",
       "btn": "Ir a @:nav.forms"
-    },
-    "sync": {
-      "desc": "Inspeccione e interactúe con el proceso que proporciona actualizaciones automáticas de datos para la aplicación móvil.",
-      "btn": "Ir a @:nav.sync"
     },
     "backups": {
       "desc": "Cree y administre instantáneas históricas a través de copias de seguridad de toda la base de datos del servidor CIMS.",
@@ -52,24 +47,6 @@
     "campaigns": {
       "desc": "Cree, configure y administre definiciones de campaña para personalizar la recopilación de datos móviles.",
       "btn": "Ir a @:nav.campaigns"
-    }
-  },
-  "sync": {
-    "btn": {
-      "pause": "Pausar",
-      "resume": "Resumir",
-      "build": "Construir Ahora"
-    },
-    "nextRun": {
-      "lbl": "Siguiente ejecución:",
-      "none": "@:sync.nextRun.lbl ninguna",
-      "msg": "@:sync.nextRun.lbl ahora | @:sync.nextRun.lbl {n} minuto | @:sync.nextRun.lbl {n} minutos"
-    },
-    "task": {
-      "started": "Comenzó",
-      "finished": "Finalizado",
-      "descriptor": "Contenido",
-      "itemCount": "Artículos"
     }
   },
   "backups": {

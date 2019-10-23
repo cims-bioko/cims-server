@@ -6,7 +6,6 @@
   "nav": {
     "home": "Home",
     "forms": "Forms",
-    "sync": "Sync",
     "backups": "Backups",
     "users": "Users",
     "roles": "Roles",
@@ -25,10 +24,6 @@
     "forms": {
       "desc": "Upload and publish ODK-based data collection forms for use with the mobile app.",
       "btn": "Go to Forms"
-    },
-    "sync": {
-      "desc": "Inspect and interact with the process that provides automatic data updates for the mobile app.",
-      "btn": "Go to Sync"
     },
     "backups": {
       "desc": "Create and manage historical snapshots via backups of the entire CIMS Server database.",
@@ -53,24 +48,6 @@
     "campaigns": {
       "desc": "Create, configure, and manage campaign definitions for customizing mobile data collection.",
       "btn": "Go to Campaigns"
-    }
-  },
-  "sync": {
-    "btn": {
-      "pause": "Pause",
-      "resume": "Resume",
-      "build": "Build Now"
-    },
-    "nextRun": {
-      "lbl": "Next Run:",
-      "none": "@:sync.nextRun.lbl none",
-      "msg": "@:sync.nextRun.lbl now | @:sync.nextRun.lbl {n} minute | @:sync.nextRun.lbl {n} minutes"
-    },
-    "task": {
-      "started": "Started",
-      "finished": "Finished",
-      "descriptor": "Content",
-      "itemCount": "Items"
     }
   },
   "backups": {

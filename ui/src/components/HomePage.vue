@@ -8,13 +8,6 @@
                     <b-button variant="info" :to="{name:'forms'}">{{$t('home.forms.btn')}}</b-button>
                 </b-card>
             </b-col>
-            <b-col class="col-lg-4 mb-4" v-if="$can('VIEW_SYNC')">
-                <b-card>
-                    <h1 class="card-title"><fa-icon icon="sync"/> {{$t('nav.sync')}}</h1>
-                    <p class="card-text">{{$t('home.sync.desc')}}</p>
-                    <b-button variant="info" :to="{name:'sync'}">{{$t('home.sync.btn')}}</b-button>
-                </b-card>
-            </b-col>
             <b-col class="col-lg-4 mb-4" v-if="$can('VIEW_BACKUPS')">
                 <b-card>
                     <h1 class="card-title"><fa-icon icon="business-time" /> {{$t('nav.backups')}}</h1>

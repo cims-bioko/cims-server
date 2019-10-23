@@ -8,7 +8,6 @@
             <b-navbar-nav class="mr-auto" v-if="$user.username">
                 <b-nav-item :to="{name:'home'}" exact><fa-icon icon="home"/> {{$t('nav.home')}}</b-nav-item>
                 <b-nav-item v-if="$can('VIEW_FORMS')" :to="{name:'forms'}"><fa-icon icon="file-alt"/> {{$t('nav.forms')}}</b-nav-item>
-                <b-nav-item v-if="$can('VIEW_SYNC')" :to="{name:'sync'}"><fa-icon icon="sync"/> {{$t('nav.sync')}}</b-nav-item>
                 <b-nav-item v-if="$can('VIEW_BACKUPS')" :to="{name:'backups'}"><fa-icon icon="business-time"/> {{$t('nav.backups')}}</b-nav-item>
                 <b-nav-item v-if="$can('VIEW_USERS')" :to="{name:'users'}"><fa-icon icon="user"/> {{$t('nav.users')}}</b-nav-item>
                 <b-nav-item v-if="$can('VIEW_ROLES')" :to="{name:'roles'}"><fa-icon icon="users"/> {{$t('nav.roles')}}</b-nav-item>
