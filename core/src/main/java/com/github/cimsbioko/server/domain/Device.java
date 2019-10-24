@@ -63,6 +63,10 @@ public class Device {
     @Column(name = "last_login")
     private Timestamp lastLogin;
 
+    @ManyToOne
+    @JoinColumn(name = "campaign")
+    private Campaign campaign;
+
     public void setName(String name) {
         this.name = name;
     }

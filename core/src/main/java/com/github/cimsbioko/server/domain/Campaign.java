@@ -23,8 +23,6 @@ public class Campaign {
 
     private String description;
 
-    private String version;
-
     @CreationTimestamp
     private Timestamp created;
 
@@ -37,11 +35,11 @@ public class Campaign {
     private Timestamp end;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "campaign_members",
+    @JoinTable(name = "campaign_users",
             joinColumns = @JoinColumn(name = "campaign"),
             inverseJoinColumns = @JoinColumn(name = "`user`"))
     @JsonIgnore
-    private Set<User> members = new HashSet<>();
+    private Set<User> users = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "campaign_forms",
@@ -50,10 +48,7 @@ public class Campaign {
     @JsonIgnore
     private Set<Form> forms = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "campaign_devices",
-            joinColumns = @JoinColumn(name = "campaign"),
-            inverseJoinColumns = @JoinColumn(name = "device"))
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "campaign")
     @JsonIgnore
     private Set<Device> devices = new HashSet<>();
 
@@ -79,14 +74,6 @@ public class Campaign {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
     }
 
     public Timestamp getCreated() {
@@ -129,12 +116,12 @@ public class Campaign {
         this.end = end;
     }
 
-    public Set<User> getMembers() {
-        return members;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setMembers(Set<User> members) {
-        this.members = members;
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     public Set<Form> getForms() {
