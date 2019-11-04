@@ -41,7 +41,9 @@
                 this.error = null
                 this.fieldErrors = {}
                 this.progress = null
-                this.$refs.zipInput.reset()
+                if (this.$refs.zipInput) {
+                    this.$refs.zipInput.reset()
+                }
             },
             show() {
                 this.$refs.modal.show()
@@ -77,7 +79,7 @@
             },
             async upload(formData) {
                 try {
-                    let rsp = await this.$xhr.post('/campaign', formData, {
+                    let rsp = await this.$xhr.post(`/campaign/${this.name}`, formData, {
                         onUploadProgress: (pe) => {
                             this.progress = pe.lengthComputable ? Math.round((pe.loaded * 100) / pe.total) : 100
                         }

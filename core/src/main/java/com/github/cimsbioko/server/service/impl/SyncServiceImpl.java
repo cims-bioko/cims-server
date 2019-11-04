@@ -1,163 +1,292 @@
 package com.github.cimsbioko.server.service.impl;
 
-import com.github.cimsbioko.server.dao.TaskRepository;
+import com.github.batkinson.jrsync.Metadata;
 import com.github.cimsbioko.server.domain.Task;
-import com.github.cimsbioko.server.service.MobileDbGenerator;
+import com.github.cimsbioko.server.scripting.DatabaseExport;
+import com.github.cimsbioko.server.scripting.JsConfig;
 import com.github.cimsbioko.server.service.SyncService;
+import com.github.cimsbioko.server.sqliteexport.Exporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.support.CronTrigger;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.util.Calendar;
-import java.util.Optional;
+import java.io.*;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 
-import static java.util.concurrent.TimeUnit.MINUTES;
+import static org.apache.commons.codec.binary.Hex.encodeHexString;
+
 
 public class SyncServiceImpl implements SyncService {
 
-    private static final String TASK_NAME = "Mobile DB Task";
-
     private static final Logger log = LoggerFactory.getLogger(SyncServiceImpl.class);
 
-    private String schedule;
+    private static final int DEFAULT_SYNC_BLOCK_SIZE = 8192;
+    private static final String MD5 = "MD5";
 
-    private TaskScheduler scheduler;
+    private final TaskScheduler scheduler;
 
-    private TaskRepository repo;
+    private final File dataDir;
 
-    private MobileDbGenerator generator;
+    private final Map<String, SyncTask> campaignTasks = new HashMap<>();
 
-    private ScheduledFuture scheduledTask;
+    private Exporter exporter;
 
-    private boolean running;
+    private ApplicationEventPublisher eventPublisher;
 
-    public SyncServiceImpl(TaskRepository repo, TaskScheduler scheduler, MobileDbGenerator generator) {
-        this.repo = repo;
+    public SyncServiceImpl(TaskScheduler scheduler, File dataDir, Exporter exporter, ApplicationEventPublisher eventPublisher) {
         this.scheduler = scheduler;
-        this.generator = generator;
+        this.dataDir = dataDir;
+        this.exporter = exporter;
+        this.eventPublisher = eventPublisher;
     }
 
     @EventListener
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public void onCampaignUnload(CampaignUnloaded event) {
-        log.info("unloading {}", event.getName());
-        if (event.getName() == null) {
-            cancelTask();
-            schedule = null;
-        }
+        String campaign = event.getName();
+        log.info("unloading campaign '{}'", campaign);
+        Optional.ofNullable(campaignTasks.get(campaign))
+                .ifPresent(task -> {
+                    task.cancel();
+                    campaignTasks.remove(campaign);
+                });
     }
 
     @EventListener
     @Order
     public void onCampaignLoad(CampaignLoaded event) {
-        log.info("loading {}", event.getName());
-        if (event.getName() == null) {
-            schedule = event.getConfig().getDatabaseExport().exportSchedule();
-            resumeSchedule();
-        }
-    }
-
-    public void resumeSchedule() {
-        scheduleTask(schedule);
+        String campaign = event.getName();
+        log.info("loading campaign '{}'", campaign);
+        JsConfig config = event.getConfig();
+        Optional
+                .ofNullable(config.getDatabaseExport())
+                .map(DatabaseExport::exportSchedule)
+                .map(CronTrigger::new)
+                .map(t -> scheduler.schedule(() -> { requestExport(campaign); }, t))
+                .ifPresent(future -> campaignTasks.put(campaign, new SyncTask(config, future)));
     }
 
     @EventListener
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void onExportStarted(MobileDbGeneratorStarted e) {
-        running = true;
-        Task t = getTask();
-        t.setStarted(Calendar.getInstance());
+    public void onExportStarted(ExportStarted e) {
+        SyncTask t = campaignTasks.get(e.getCampaign());
+        t.setStarted(new Date());
         t.setFinished(null);
     }
 
-
     @EventListener
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void onExportUpdate(MobileDbGeneratorUpdate e) {
-        getTask().setItemCount(e.getTablesProcessed());
+    public void onExportUpdate(ExportStatus e) {
+        campaignTasks.get(e.getCampaign()).setItemCount(e.getTablesProcessed());
     }
 
     @EventListener
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void onExportFinished(MobileDbGeneratorFinished e) {
-        running = false;
-        Task t = getTask();
-        t.setFinished(Calendar.getInstance());
+    public void onExportFinished(ExportFinished e) {
+        SyncTask t = campaignTasks.get(e.getCampaign());
+        t.setFinished(new Date());
         t.setDescriptor(e.getContentHash());
     }
 
-    @Override
-    public File getOutput() {
-        return generator.getTarget();
+    public Task getTask(String campaign) {
+        return campaignTasks.get(campaign);
     }
 
-    @Override
-    public Optional<String> getSchedule() {
-        return Optional.ofNullable(schedule);
+    public File getOutput(String campaign) {
+        return new File(dataDir, String.format("%s.db", campaign));
     }
 
-    public void scheduleTask(String schedule) {
+    @Async
+    @Transactional
+    @Override
+    public void requestExport(String campaign) {
+        try {
+            runExport(campaign);
+        }  catch (IOException | SQLException | NoSuchAlgorithmException e) {
+            log.error("failed to generate mobile db for campaign " + campaign, e);
+            eventPublisher.publishEvent(new ExportFinished(campaign));
+        }
+    }
 
-        cancelTask();
+    private void runExport(String campaign) throws IOException, SQLException, NoSuchAlgorithmException {
 
-        this.schedule = Optional.ofNullable(schedule)
-                .filter(s -> !s.trim().isEmpty())
-                .orElse(null);
+        int tablesProcessed = 0;
 
-        if (this.schedule != null) {
-            log.info("scheduling mobile db export task, schedule '{}'", this.schedule);
+        JsConfig config = campaignTasks.get(campaign).getConfig();
+        File dest = getOutput(campaign);
+        DatabaseExport export = config.getDatabaseExport();
+
+        Map<String, String> tableQueries = export.exportQueries();
+
+        eventPublisher.publishEvent(new ExportStarted(campaign));
+
+        File scratch = new File(dest.getParentFile(), dest.getName() + ".tmp");
+        File metaDest = new File(dest.getParentFile(), dest.getName() + ".jrsmd");
+        File metaScratch = new File(dest.getParentFile(), metaDest.getName() + ".tmp");
+
+        eventPublisher.publishEvent(new ExportStatus(campaign));
+
+        // run each of the export's init scripts in order
+        for (String initScriptName : export.initScripts()) {
+            log.debug("executing init script {} on {}", initScriptName, scratch);
+            exporter.scriptTarget(config.getResource(initScriptName), scratch);
+        }
+
+        // export each of the queries as a table in the target database file
+        for (Map.Entry<String, String> e : tableQueries.entrySet()) {
+            log.debug("executing query '{}' on {}", e.getValue(), scratch);
+            exporter.export(e.getValue(), e.getKey(), scratch);
+            eventPublisher.publishEvent(new ExportStatus(campaign, ++tablesProcessed));
+        }
+
+        // run each of the export's post scripts in order
+        for (String postScriptName : export.postScripts()) {
+            log.debug("executing post script {} on {}", postScriptName, scratch);
+            exporter.scriptTarget(config.getResource(postScriptName), scratch);
+        }
+
+        // Generate sync metadata
+        try (InputStream in = new FileInputStream(scratch)) {
+            Metadata.generate("", DEFAULT_SYNC_BLOCK_SIZE, MD5, MD5, in, metaScratch);
+        }
+        String md5;
+        try (DataInputStream metaStream = new DataInputStream(new FileInputStream(metaScratch))) {
+            md5 = encodeHexString(Metadata.read(metaStream).getFileHash());
+        }
+
+        // Complete the process, latching the new file contents and sync metadata
+        if (scratch.renameTo(dest) && metaScratch.renameTo(metaDest)) {
+            log.info("successfully generated {}, content signature: {}", dest.getName(), md5);
+            eventPublisher.publishEvent(new ExportFinished(campaign, md5));
         } else {
-            log.info("mobile db export task disabled by user settings");
-        }
-
-        scheduledTask = Optional.ofNullable(this.schedule)
-                .map(CronTrigger::new)
-                .map(t -> scheduler.schedule(this::requestTaskRun, t))
-                .orElse(null);
-    }
-
-    public void cancelTask() {
-        if (isTaskScheduled()) {
-            log.info("canceling mobile db export task");
-            scheduledTask.cancel(false);
-        }
-        scheduledTask = null;
-    }
-
-    @Override
-    public boolean isTaskScheduled() {
-        return Optional.ofNullable(scheduledTask)
-                .map(f -> !f.isDone())
-                .orElse(false);
-    }
-
-    @Override
-    public boolean isTaskRunning() {
-        return running;
-    }
-
-    @Override
-    public void requestTaskRun() {
-        if (!isTaskRunning()) {
-            generator.generateMobileDb();
+            eventPublisher.publishEvent(new ExportFinished(campaign));
         }
     }
 
-    public Optional<Long> getMinutesToNextRun() {
-        return Optional.ofNullable(scheduledTask)
-                .map(t -> t.getDelay(MINUTES));
-    }
+    private static class SyncTask implements Task {
 
-    @Transactional(readOnly = true)
-    public Task getTask() {
-        return repo.findByName(TASK_NAME);
+        private final JsConfig config;
+        private final ScheduledFuture taskFuture;
+        private Date started, finished;
+        private int itemCount;
+        private String descriptor;
+
+        SyncTask(JsConfig config, ScheduledFuture future) {
+            this.config = config;
+            this.taskFuture = future;
+        }
+
+        public JsConfig getConfig() {
+            return config;
+        }
+
+        public ScheduledFuture getTaskFuture() {
+            return taskFuture;
+        }
+
+        void cancel() {
+            Optional.ofNullable(taskFuture).ifPresent(t -> t.cancel(false));
+        }
+
+        @Override
+        public Date getStarted() {
+            return started;
+        }
+
+        void setStarted(Date started) {
+            this.started = started;
+        }
+
+        @Override
+        public Date getFinished() {
+            return finished;
+        }
+
+        void setFinished(Date finished) {
+            this.finished = finished;
+        }
+
+        @Override
+        public int getItemCount() {
+            return itemCount;
+        }
+
+        void setItemCount(int itemCount) {
+            this.itemCount = itemCount;
+        }
+
+        @Override
+        public String getDescriptor() {
+            return descriptor;
+        }
+
+        void setDescriptor(String descriptor) {
+            this.descriptor = descriptor;
+        }
     }
 }
+
+abstract class AbstractExportEvent implements MobileDbGeneratorEvent {
+
+    private final String name;
+
+    AbstractExportEvent(String campaign) {
+        this.name = campaign;
+    }
+
+    @Override
+    public String getCampaign() {
+        return name;
+    }
+}
+
+class ExportStarted extends AbstractExportEvent {
+
+    ExportStarted(String campaign) {
+        super(campaign);
+    }
+}
+
+class ExportStatus extends AbstractExportEvent {
+
+    private final int tablesProcessed;
+
+    ExportStatus(String campaign) {
+        this(campaign, 0);
+    }
+
+    ExportStatus(String campaign, int tablesProcessed) {
+        super(campaign);
+        this.tablesProcessed = tablesProcessed;
+    }
+
+    int getTablesProcessed() {
+        return tablesProcessed;
+    }
+}
+
+class ExportFinished extends AbstractExportEvent {
+
+    private final String contentHash;
+
+    ExportFinished(String campaign) {
+        this(campaign, "generation failed - no content");
+    }
+
+    ExportFinished(String campaign, String contentHash) {
+        super(campaign);
+        this.contentHash = contentHash;
+    }
+
+    String getContentHash() {
+        return contentHash;
+    }
+}
+

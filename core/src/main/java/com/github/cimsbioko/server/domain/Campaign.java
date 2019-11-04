@@ -32,6 +32,7 @@ public class Campaign {
 
     private Timestamp start;
 
+    @Column(name = "`end`")
     private Timestamp end;
 
     @ManyToMany(fetch = FetchType.LAZY)

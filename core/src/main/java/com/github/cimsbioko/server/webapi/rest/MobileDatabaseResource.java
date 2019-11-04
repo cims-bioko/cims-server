@@ -1,11 +1,13 @@
 package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.batkinson.jrsync.Metadata;
+import com.github.cimsbioko.server.service.CampaignService;
 import com.github.cimsbioko.server.service.SyncService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.context.request.WebRequest;
 
 import java.io.File;
@@ -25,7 +27,6 @@ import static com.github.cimsbioko.server.config.WebConfig.CACHED_FILES_PATH;
 public class MobileDatabaseResource {
 
     private static final String ACCEPT = "Accept";
-    static final String MOBILEDB_PATH = "/api/rest/mobiledb";
     static final String SQLITE_MIME_TYPE = "application/x-sqlite3";
 
     private SyncService service;
@@ -34,15 +35,24 @@ public class MobileDatabaseResource {
         this.service = service;
     }
 
-    @RequestMapping(value = MOBILEDB_PATH, method = RequestMethod.GET, produces = {SQLITE_MIME_TYPE, Metadata.MIME_TYPE})
-    @PreAuthorize("hasAuthority('MOBILE_SYNC')")
-    public String mobileDB(WebRequest request) {
+    @GetMapping(value = "/api/rest/mobiledb", produces = {SQLITE_MIME_TYPE, Metadata.MIME_TYPE})
+    @PreAuthorize("hasAuthority('MOBILE_SYNC') and @campaignService.isMember('default', #auth)")
+    public String mobileDB(WebRequest request, Authentication auth) {
+        return mobileDb(request, "default");
+    }
 
-        File cacheFile = service.getOutput();
+    @GetMapping(value = "/api/rest/mobiledb/{name}", produces = {SQLITE_MIME_TYPE, Metadata.MIME_TYPE})
+    @PreAuthorize("hasAuthority('MOBILE_SYNC') and @campaignService.isMember(#name, #auth)")
+    public String mobileDB(WebRequest request, @PathVariable String name, Authentication auth) {
+        return mobileDb(request, name);
+    }
+
+    private String mobileDb(WebRequest request, String campaign) {
+        File cacheFile = service.getOutput(campaign);
         File metadataFile = new File(cacheFile.getParentFile(), cacheFile.getName() + "." + Metadata.FILE_EXT);
         String accept = request.getHeader(ACCEPT);
 
-        if (request.checkNotModified(service.getTask().getDescriptor())) {
+        if (request.checkNotModified(service.getTask(campaign).getDescriptor())) {
             return null;
         }
 

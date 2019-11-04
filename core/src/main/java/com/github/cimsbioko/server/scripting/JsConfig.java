@@ -42,7 +42,7 @@ public class JsConfig {
             ScriptableObject scope = buildScope(ctx);
             installConstants(scope);
             Require require = enableJsModules(ctx, scope);
-            log.info("loading init module");
+            log.debug("loading init module");
             Scriptable init = require.requireMain(ctx, INIT_MODULE);
             export = ScriptableObject.getTypedProperty(init, "dbExport", DatabaseExport.class);
             return this;

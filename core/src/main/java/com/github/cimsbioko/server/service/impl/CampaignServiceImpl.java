@@ -1,12 +1,18 @@
 package com.github.cimsbioko.server.service.impl;
 
+import com.github.cimsbioko.server.dao.CampaignRepository;
+import com.github.cimsbioko.server.domain.Campaign;
+import com.github.cimsbioko.server.domain.Device;
+import com.github.cimsbioko.server.domain.User;
 import com.github.cimsbioko.server.scripting.JsConfig;
+import com.github.cimsbioko.server.security.TokenAuthentication;
 import com.github.cimsbioko.server.service.CampaignService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -15,17 +21,23 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class CampaignServiceImpl implements CampaignService {
 
     private static final Logger log = LoggerFactory.getLogger(CampaignServiceImpl.class);
 
+    private final CampaignRepository repo;
     private final File campaignsDir;
     private final ApplicationEventPublisher eventPublisher;
     private Map<String, JsConfig> loadedConfigs;
 
-    public CampaignServiceImpl(File campaignsDir, ApplicationEventPublisher publisher) {
+    public CampaignServiceImpl(CampaignRepository repo, File campaignsDir, ApplicationEventPublisher publisher) {
+        this.repo = repo;
         this.campaignsDir = campaignsDir;
         eventPublisher = publisher;
         loadedConfigs = Collections.emptyMap();
@@ -36,20 +48,20 @@ public class CampaignServiceImpl implements CampaignService {
         loadEnabledCampaigns();
     }
 
-    public void loadEnabledCampaigns() {
+    private void loadEnabledCampaigns() {
 
         Map<String, JsConfig> newlyLoaded = new LinkedHashMap<>();
 
         // pre-load enabled campaign definitions
-        for (String name : getEnabledCampaigns()) {
-            File campaignFile = getCampaignFile(name).orElseThrow(() -> new IllegalStateException(
-                    String.format("no campaign file for '%s'", name)));
-            try {
-                JsConfig config = new JsConfig(campaignFile).load();
-                newlyLoaded.put(name, config);
-            } catch (MalformedURLException | URISyntaxException e) {
-                log.warn("failed to (re)load config for campaign " + name, e);
-            }
+        for (String name : getEnabledCampaignNames()) {
+            getCampaignFile(name).ifPresent(file -> {
+                try {
+                    JsConfig config = new JsConfig(file).load();
+                    newlyLoaded.put(name, config);
+                } catch (MalformedURLException | URISyntaxException e) {
+                    log.warn("failed to load config for campaign " + name, e);
+                }
+            });
         }
 
         // send unload events for all loaded campaigns
@@ -69,27 +81,28 @@ public class CampaignServiceImpl implements CampaignService {
     @EventListener
     public void loadUploadedCampaign(CampaignUploaded event) {
         String name = event.getName();
-        try {
-            // pre-load new definition so a failing update leaves running intact
-            JsConfig config = new JsConfig(event.getFile()).load();
-            // if config loads, notify components that existing config is unloading
-            if (loadedConfigs.containsKey(name)) {
-                eventPublisher.publishEvent(new CampaignUnloaded(name, loadedConfigs.get(name)));
+        if (repo.findActiveByName(name).isPresent()) {
+            try {
+                // pre-load new definition so a failing update leaves running intact
+                JsConfig config = new JsConfig(event.getFile()).load();
+                // if config loads, notify components that existing config is unloading
+                if (loadedConfigs.containsKey(name)) {
+                    eventPublisher.publishEvent(new CampaignUnloaded(name, loadedConfigs.get(name)));
+                }
+                // install the new config
+                loadedConfigs.put(name, config);
+                // notify components that the new campaign config is loaded
+                eventPublisher.publishEvent(new CampaignLoaded(name, config));
+            } catch (URISyntaxException | MalformedURLException e) {
+                log.error("failed to load uploaded campaign", e);
             }
-            // install the new config
-            loadedConfigs.put(name, config);
-            // notify components that the new campaign config is loaded
-            eventPublisher.publishEvent(new CampaignLoaded(name, config));
-        } catch (URISyntaxException | MalformedURLException e) {
-            e.printStackTrace();
+        } else {
+            log.info("not loading campaign {} because it is inactive", name);
         }
     }
 
-    /**
-     * Just a stub for data-managed campaign management. Currently, default is always enabled.
-     */
-    private Iterable<String> getEnabledCampaigns() {
-        return Arrays.asList(new String[]{null});
+    private Iterable<String> getEnabledCampaignNames() {
+        return repo.findActive().stream().map(Campaign::getName).collect(Collectors.toList());
     }
 
     @Override
@@ -103,6 +116,24 @@ public class CampaignServiceImpl implements CampaignService {
     public Optional<File> getCampaignFile(String name) {
         File archive = getCampaignFilePath(name).toFile();
         return archive.canRead() ? Optional.of(archive) : Optional.empty();
+    }
+
+    @Override
+    public boolean isMember(String campaign, Authentication auth) {
+        // FIXME: query directly for membership rather than fetching all objects
+        if (auth instanceof TokenAuthentication) {
+            TokenAuthentication tokenAuth = (TokenAuthentication) auth;
+            if (tokenAuth.isDevice()) {
+                return repo.findActiveByName(campaign)
+                        .map(Campaign::getDevices)
+                        .map(devices -> devices.stream().map(Device::getName).collect(Collectors.toSet()))
+                        .map(deviceNames -> deviceNames.contains(tokenAuth.getName())).orElse(false);
+            }
+        }
+        return repo.findActiveByName(campaign)
+                .map(Campaign::getUsers)
+                .map(users -> users.stream().map(User::getUsername).collect(Collectors.toSet()))
+                .map(userNames -> userNames.contains(auth.getName())).orElse(false);
     }
 
     private Path getCampaignFilePath(String name) {

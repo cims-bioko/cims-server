@@ -191,13 +191,27 @@
   },
   "campaigns": {
     "upload": "Upload",
+    "create": "Create",
+    "createmodal": {
+      "title": "Create Campaign",
+      "close": "Close"
+    },
     "uploadmodal": {
       "title": "Upload Campaign '{0}'",
       "close": "Close"
     },
+    "name": "Name",
+    "description": "Description",
+    "start": "Start",
+    "end": "End",
+    "disabled": "Disabled",
+    "actions": "Actions",
     "zip": "Campaign zip",
     "zipreq": "Campaign zip file is required.",
     "success": "Uploaded succeeded.",
-    "failed": "Upload failed."
+    "failed": "Upload failed.",
+    "namereq": "Name is required.",
+    "baddate": "Invalid date.",
+    "endafterstart": "End date must be after start date."
   }
 }

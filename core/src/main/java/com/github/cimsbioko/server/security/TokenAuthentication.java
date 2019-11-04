@@ -14,23 +14,26 @@ public class TokenAuthentication implements Authentication {
     private final Collection<? extends GrantedAuthority> authorities;
     private final String credentials;
     private final String details;
-    private final String device;
+    private final String principal;
     private final boolean authenticated;
+    private final boolean device;
 
     TokenAuthentication(String credentials) {
         this.authorities = null;
         this.credentials = credentials;
         this.details = null;
-        this.device = null;
+        this.principal = null;
         this.authenticated = false;
+        this.device = false; // actually could be device, but this auth object is only a sentinel for filter
     }
 
-    TokenAuthentication(String device, String details, Collection<? extends GrantedAuthority> authorities) {
+    TokenAuthentication(String principal, String details, Collection<? extends GrantedAuthority> authorities, boolean device) {
         this.authorities = unmodifiableCollection(authorities);
         this.credentials = null;
         this.details = details;
-        this.device = device;
+        this.principal = principal;
         this.authenticated = true;
+        this.device = device;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class TokenAuthentication implements Authentication {
 
     @Override
     public Object getPrincipal() {
-        return device;
+        return principal;
     }
 
     @Override
@@ -67,6 +70,10 @@ public class TokenAuthentication implements Authentication {
 
     @Override
     public String getName() {
+        return principal;
+    }
+
+    public boolean isDevice() {
         return device;
     }
 }

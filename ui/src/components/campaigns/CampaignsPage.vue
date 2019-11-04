@@ -14,6 +14,10 @@
             <b-col class="col-auto">
                 <h1><fa-icon icon="shuttle-van"/> {{$t('nav.campaigns')}}</h1>
             </b-col>
+            <b-col v-if="$can('CREATE_CAMPAIGNS')">
+                <b-button variant="primary" @click="createItem"><fa-icon icon="plus"/> {{$t('campaigns.create')}}</b-button>
+                <create-dialog ref="createDialog" @ok="itemCreated" />
+            </b-col>
         </b-row>
         <b-row v-if="totalItems > pageSize">
             <b-col>
@@ -44,23 +48,48 @@
 <script>
     import {BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup} from 'bootstrap-vue'
     import UploadDialog from './UploadDialog'
+    import CreateDialog from './CreateDialog'
     export default {
-        name: 'devices-page',
+        name: 'campaigns-page',
         data() {
             return {
                 fields: [
-                    {key: 'name', label: this.$t('devices.name'), tdClass: 'align-middle'},
-                    {key: 'actions', label: this.$t('devices.actions'), tdClass: 'align-middle'}
+                    {key: 'name', label: this.$t('campaigns.name'), tdClass: 'align-middle'},
+                    {key: 'description', label: this.$t('campaigns.description'), tdClass: 'align-middle'},
+                    {key: 'start', label: this.$t('campaigns.start'), tdClass: 'align-middle'},
+                    {key: 'end', label: this.$t('campaigns.end'), tdClass: 'align-middle'},
+                    {key: 'actions', label: this.$t('campaigns.actions'), tdClass: 'align-middle'}
                 ],
                 errors: [],
                 messages: [],
                 totalItems: 0,
                 pageSize: 0,
                 currentPage: 1,
-                items: [{name: 'default'}]
+                items: []
             }
         },
         methods: {
+            async loadPage(page) {
+                let rsp = await this.$xhr.get('/campaigns', {params: {p: page - 1}})
+                let data = rsp.data
+                this.items = data.content
+                this.totalItems = data.totalElements
+                this.currentPage = data.pageable.pageNumber + 1
+                this.pageSize = data.size
+                if (this.items.length === 0 && this.currentPage > 1) {
+                    this.loadPage(this.currentPage - 1)
+                }
+            },
+            reloadPage() {
+                this.loadPage(this.currentPage)
+            },
+            createItem() {
+                this.$refs.createDialog.show()
+            },
+            itemCreated(rsp) {
+                this.showMessages(rsp.messages)
+                this.reloadPage()
+            },
             upload(index) {
                 this.$refs[`uploadDialog${index}`].show()
             },
@@ -73,8 +102,11 @@
                 this.showMessages(data.messages);
             }
         },
+        mounted() {
+            this.reloadPage()
+        },
         components: {
-            BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup, UploadDialog
+            BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup, UploadDialog, CreateDialog
         }
     }
 </script>

@@ -8,8 +8,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.context.request.WebRequest;
 
 import java.io.File;
@@ -28,10 +30,21 @@ public class CampaignResource {
         this.service = service;
     }
 
-    @PreAuthorize("hasAuthority('DOWNLOAD_CAMPAIGNS')")
+    @PreAuthorize("hasAuthority('DOWNLOAD_CAMPAIGNS' and @campaignService.isMember('default', #auth))")
     @GetMapping("/api/rest/campaign")
-    public ResponseEntity<InputStreamResource> downloadCampaign(WebRequest request) throws IOException, NoSuchAlgorithmException {
-        Optional<File> maybeCampaignFile = service.getCampaignFile(null);
+    public ResponseEntity<InputStreamResource> downloadCampaign(WebRequest request, Authentication auth) throws IOException, NoSuchAlgorithmException {
+        return downloadCampaign(request, "default");
+    }
+
+    @PreAuthorize("hasAuthority('DOWNLOAD_CAMPAIGNS' and @campaignService.isMember(#name, #auth))")
+    @GetMapping("/api/rest/campaign/{name}")
+    public ResponseEntity<InputStreamResource> downloadCampaign(WebRequest request, @PathVariable String name, Authentication auth) throws IOException, NoSuchAlgorithmException {
+        String campaign = Optional.ofNullable(name).orElse("default");
+        return downloadCampaign(request, campaign);
+    }
+
+    private ResponseEntity<InputStreamResource> downloadCampaign(WebRequest request, String campaign) throws IOException, NoSuchAlgorithmException {
+        Optional<File> maybeCampaignFile = service.getCampaignFile(campaign);
         if (maybeCampaignFile.isPresent()) {
             File file = maybeCampaignFile.get();
             String descriptor = fileHasher.hashFile(file);

@@ -53,13 +53,13 @@ public class TokenAuthenticationProvider implements AuthenticationProvider {
             Device device = attachedDevice.get();
             device.setLastLogin(now);
             log.debug("logged in as device {}", device.getName());
-            return new TokenAuthentication(device.getName(), device.getDescription(), roleMapper.rolesToAuthorities(device.getRoles()));
+            return new TokenAuthentication(device.getName(), device.getDescription(), roleMapper.rolesToAuthorities(device.getRoles()), true);
         } else {
             User attachedUser = userRepo.findByToken(activeToken)
                     .orElseThrow(() -> new BadCredentialsException("bad credentials"));
             attachedUser.setLastLogin(now);
             log.debug("logged in as user {}", attachedUser.getUsername());
-            return new TokenAuthentication(attachedUser.getUsername(), attachedUser.getDescription(), roleMapper.rolesToAuthorities(attachedUser.getRoles()));
+            return new TokenAuthentication(attachedUser.getUsername(), attachedUser.getDescription(), roleMapper.rolesToAuthorities(attachedUser.getRoles()), false);
         }
 
     }

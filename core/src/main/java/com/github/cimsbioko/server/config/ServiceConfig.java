@@ -8,7 +8,6 @@ import com.github.cimsbioko.server.service.impl.*;
 import com.github.cimsbioko.server.sqliteexport.Exporter;
 import com.github.cimsbioko.server.webapi.odk.FileHasher;
 import com.github.cimsbioko.server.webapi.odk.FormFileSystem;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,8 +45,8 @@ public class ServiceConfig {
     }
 
     @Bean
-    public SyncService syncService(TaskRepository repo, TaskScheduler scheduler, MobileDbGenerator generator) {
-        return new SyncServiceImpl(repo, scheduler, generator);
+    public SyncService syncService(TaskScheduler scheduler, File dataDir, Exporter exporter, ApplicationEventPublisher publisher) {
+        return new SyncServiceImpl(scheduler, dataDir, exporter, publisher);
     }
 
     @Bean
@@ -56,12 +55,7 @@ public class ServiceConfig {
     }
 
     @Bean
-    public MobileDbGenerator mobileDbGenerator(Exporter sqliteExporter, ApplicationEventPublisher eventPublisher) {
-        return new MobileDbGeneratorImpl(sqliteExporter, eventPublisher);
-    }
-
-    @Bean
-    public CampaignServiceImpl campaignService(File campaignsDir, ApplicationEventPublisher publisher) {
-        return new CampaignServiceImpl(campaignsDir, publisher);
+    public CampaignServiceImpl campaignService(CampaignRepository repo, File campaignsDir, ApplicationEventPublisher publisher) {
+        return new CampaignServiceImpl(repo, campaignsDir, publisher);
     }
 }
