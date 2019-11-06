@@ -6,9 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 @Configuration
 public class SqliteExportConfig {
@@ -36,12 +33,5 @@ public class SqliteExportConfig {
     @Bean
     Exporter exporter(Source source) {
         return new Exporter(source, target(), mapperFactory());
-    }
-
-    @Bean
-    public Properties exportQueries(@Value("classpath:/export-queries.properties") InputStream querySource) throws IOException {
-        Properties queries = new Properties();
-        queries.load(querySource);
-        return queries;
     }
 }
