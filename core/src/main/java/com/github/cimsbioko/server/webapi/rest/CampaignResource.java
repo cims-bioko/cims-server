@@ -30,13 +30,13 @@ public class CampaignResource {
         this.service = service;
     }
 
-    @PreAuthorize("hasAuthority('DOWNLOAD_CAMPAIGNS' and @campaignService.isMember('default', #auth))")
+    @PreAuthorize("hasAuthority('DOWNLOAD_CAMPAIGNS') and @campaignService.isMember('default', #auth)")
     @GetMapping("/api/rest/campaign")
     public ResponseEntity<InputStreamResource> downloadCampaign(WebRequest request, Authentication auth) throws IOException, NoSuchAlgorithmException {
         return downloadCampaign(request, "default");
     }
 
-    @PreAuthorize("hasAuthority('DOWNLOAD_CAMPAIGNS' and @campaignService.isMember(#name, #auth))")
+    @PreAuthorize("hasAuthority('DOWNLOAD_CAMPAIGNS') and @campaignService.isMember(#name, #auth)")
     @GetMapping("/api/rest/campaign/{name}")
     public ResponseEntity<InputStreamResource> downloadCampaign(WebRequest request, @PathVariable String name, Authentication auth) throws IOException, NoSuchAlgorithmException {
         String campaign = Optional.ofNullable(name).orElse("default");

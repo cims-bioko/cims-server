@@ -9,10 +9,14 @@ import com.github.cimsbioko.server.security.TokenAuthentication;
 import com.github.cimsbioko.server.service.CampaignService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -27,9 +31,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class CampaignServiceImpl implements CampaignService {
+public class CampaignServiceImpl implements CampaignService, ApplicationContextAware {
 
     private static final Logger log = LoggerFactory.getLogger(CampaignServiceImpl.class);
+
+    private ApplicationContext ctx;
 
     private final CampaignRepository repo;
     private final File campaignsDir;
@@ -52,11 +58,11 @@ public class CampaignServiceImpl implements CampaignService {
 
         Map<String, JsConfig> newlyLoaded = new LinkedHashMap<>();
 
-        // pre-load enabled campaign definitions
+        log.info("pre-loading enabled campaign definitions");
         for (String name : getEnabledCampaignNames()) {
             getCampaignFile(name).ifPresent(file -> {
                 try {
-                    JsConfig config = new JsConfig(file).load();
+                    JsConfig config = new JsConfig(file, ctx).load();
                     newlyLoaded.put(name, config);
                 } catch (MalformedURLException | URISyntaxException e) {
                     log.warn("failed to load config for campaign " + name, e);
@@ -64,15 +70,14 @@ public class CampaignServiceImpl implements CampaignService {
             });
         }
 
-        // send unload events for all loaded campaigns
+        log.info("unloading old campaigns");
         for (Map.Entry<String, JsConfig> existing : loadedConfigs.entrySet()) {
             eventPublisher.publishEvent(new CampaignUnloaded(existing.getKey(), existing.getValue()));
         }
 
-        // install the newly loaded configs
         loadedConfigs = newlyLoaded;
 
-        // send load events for newly loaded configs
+        log.info("loading new campaigns");
         for (Map.Entry<String, JsConfig> newConfig : loadedConfigs.entrySet()) {
             eventPublisher.publishEvent(new CampaignLoaded(newConfig.getKey(), newConfig.getValue()));
         }
@@ -83,15 +88,17 @@ public class CampaignServiceImpl implements CampaignService {
         String name = event.getName();
         if (repo.findActiveByName(name).isPresent()) {
             try {
-                // pre-load new definition so a failing update leaves running intact
-                JsConfig config = new JsConfig(event.getFile()).load();
-                // if config loads, notify components that existing config is unloading
+                log.info("pre-loading new definition for campaign '{}'", name);
+                JsConfig config = new JsConfig(event.getFile(), ctx).load();
+
                 if (loadedConfigs.containsKey(name)) {
+                    log.info("unloading old definition for campaign '{}'", name);
                     eventPublisher.publishEvent(new CampaignUnloaded(name, loadedConfigs.get(name)));
                 }
-                // install the new config
+
                 loadedConfigs.put(name, config);
-                // notify components that the new campaign config is loaded
+
+                log.info("loading new definition for campaign '{}'", name);
                 eventPublisher.publishEvent(new CampaignLoaded(name, config));
             } catch (URISyntaxException | MalformedURLException e) {
                 log.error("failed to load uploaded campaign", e);
@@ -119,6 +126,7 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean isMember(String campaign, Authentication auth) {
         // FIXME: query directly for membership rather than fetching all objects
         if (auth instanceof TokenAuthentication) {
@@ -139,6 +147,11 @@ public class CampaignServiceImpl implements CampaignService {
     private Path getCampaignFilePath(String name) {
         String fileName = Optional.ofNullable(name).map(n -> n + ".zip").orElse("default.zip");
         return campaignsDir.toPath().resolve(Paths.get(fileName));
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        ctx = applicationContext;
     }
 }
 

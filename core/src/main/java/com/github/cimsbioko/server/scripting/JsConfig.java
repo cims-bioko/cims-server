@@ -1,5 +1,13 @@
 package com.github.cimsbioko.server.scripting;
 
+import com.github.cimsbioko.server.dao.*;
+import com.github.cimsbioko.server.domain.Individual;
+import com.github.cimsbioko.server.domain.Location;
+import com.github.cimsbioko.server.domain.LocationHierarchy;
+import com.github.cimsbioko.server.exception.ConstraintViolations;
+import com.github.cimsbioko.server.service.GeometryService;
+import com.github.cimsbioko.server.service.LocationHierarchyService;
+import org.json.JSONObject;
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.commonjs.module.Require;
 import org.mozilla.javascript.commonjs.module.RequireBuilder;
@@ -7,13 +15,13 @@ import org.mozilla.javascript.commonjs.module.provider.SoftCachingModuleScriptPr
 import org.mozilla.javascript.commonjs.module.provider.UrlModuleSourceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static java.util.Collections.*;
 
@@ -25,15 +33,18 @@ public class JsConfig {
 
     private final ClassLoader loader;
 
+    private ApplicationContext ctx;
     private DatabaseExport export;
+    private Map<String, FormProcessor> formProcessors;
 
-    public JsConfig(File file) throws MalformedURLException {
+    public JsConfig(File file, ApplicationContext ctx) throws MalformedURLException {
         if (!file.canRead()) {
             throw new IllegalArgumentException("config file doesn't exist or is unreadable");
         }
         String base = "jar:file:" + file.getPath() + "!/";
         URL[] urls = {new URL(base + "server/"), new URL(base + "shared/")};
         this.loader = URLClassLoader.newInstance(urls);
+        this.ctx = ctx;
     }
 
     public JsConfig load() throws URISyntaxException {
@@ -45,6 +56,7 @@ public class JsConfig {
             log.debug("loading init module");
             Scriptable init = require.requireMain(ctx, INIT_MODULE);
             export = ScriptableObject.getTypedProperty(init, "dbExport", DatabaseExport.class);
+            formProcessors = ScriptableObject.getTypedProperty(init, "formProcessors", Map.class);
             return this;
         } finally {
             Context.exit();
@@ -55,6 +67,10 @@ public class JsConfig {
         return export;
     }
 
+    public Map<String, FormProcessor> getFormProcessors() {
+        return formProcessors;
+    }
+
     private static ScriptableObject buildScope(Context ctx) {
         return ctx.initSafeStandardObjects();
     }
@@ -63,6 +79,14 @@ public class JsConfig {
         installJavaAdapter(scope);
         installInterfaces(scope);
         installUtilityClasses(scope);
+        putConst(scope, "locationHierarchyService", ctx.getBean(LocationHierarchyService.class));
+        putConst(scope, "locationHierarchyRepo", ctx.getBean(LocationHierarchyRepository.class));
+        putConst(scope, "locationHierarchyLevelRepo", ctx.getBean(LocationHierarchyLevelRepository.class));
+        putConst(scope, "locationRepo", ctx.getBean(LocationRepository.class));
+        putConst(scope, "fieldWorkerRepo", ctx.getBean(FieldWorkerRepository.class));
+        putConst(scope, "individualRepo", ctx.getBean(IndividualRepository.class));
+        putConst(scope, "geometryService", ctx.getBean(GeometryService.class));
+        putConst(scope, "log", log);
     }
 
     private void installJavaAdapter(ScriptableObject scope) {
@@ -74,11 +98,11 @@ public class JsConfig {
     }
 
     private static void installUtilityClasses(ScriptableObject scope) {
-        putClasses(scope);
+        putClasses(scope, Calendar.class, ConstraintViolations.class, JSONObject.class, Location.class, LocationHierarchy.class, Individual.class);
     }
 
     private static void installInterfaces(ScriptableObject scope) {
-        putClasses(scope, DatabaseExport.class);
+        putClasses(scope, DatabaseExport.class, FormProcessor.class);
     }
 
     private static void putClasses(ScriptableObject scope, Class... classes) {

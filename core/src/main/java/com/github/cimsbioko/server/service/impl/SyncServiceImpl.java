@@ -54,11 +54,11 @@ public class SyncServiceImpl implements SyncService {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public void onCampaignUnload(CampaignUnloaded event) {
         String campaign = event.getName();
-        log.info("unloading campaign '{}'", campaign);
         Optional.ofNullable(campaignTasks.get(campaign))
                 .ifPresent(task -> {
                     task.cancel();
                     campaignTasks.remove(campaign);
+                    log.info("removed db export for campaign '{}'", campaign);
                 });
     }
 
@@ -66,14 +66,16 @@ public class SyncServiceImpl implements SyncService {
     @Order
     public void onCampaignLoad(CampaignLoaded event) {
         String campaign = event.getName();
-        log.info("loading campaign '{}'", campaign);
         JsConfig config = event.getConfig();
         Optional
                 .ofNullable(config.getDatabaseExport())
                 .map(DatabaseExport::exportSchedule)
                 .map(CronTrigger::new)
                 .map(t -> scheduler.schedule(() -> { requestExport(campaign); }, t))
-                .ifPresent(future -> campaignTasks.put(campaign, new SyncTask(config, future)));
+                .ifPresent(future -> {
+                    campaignTasks.put(campaign, new SyncTask(config, future));
+                    log.info("added db export for campaign '{}' (schedule '{}')", campaign, config.getDatabaseExport().exportSchedule());
+                });
     }
 
     @EventListener

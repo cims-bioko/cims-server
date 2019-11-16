@@ -8,6 +8,7 @@ import com.github.cimsbioko.server.service.impl.*;
 import com.github.cimsbioko.server.sqliteexport.Exporter;
 import com.github.cimsbioko.server.webapi.odk.FileHasher;
 import com.github.cimsbioko.server.webapi.odk.FormFileSystem;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,5 +58,22 @@ public class ServiceConfig {
     @Bean
     public CampaignServiceImpl campaignService(CampaignRepository repo, File campaignsDir, ApplicationEventPublisher publisher) {
         return new CampaignServiceImpl(repo, campaignsDir, publisher);
+    }
+
+    @Bean
+    public FormProcessorServiceImpl formProcessingService() {
+        return new FormProcessorServiceImpl();
+    }
+
+    @Bean
+    ScheduledFormProcessing scheduledFormProcessing(FormSubmissionService formsService,
+                                                    FormProcessorService formProcessorService,
+                                                    ErrorService errorService) {
+        return new ScheduledFormProcessing(formsService, formProcessorService, errorService);
+    }
+
+    @Bean
+    public GeometryService geometryService(GeometryFactory geometryFactory) {
+        return new GeometryServiceImpl(geometryFactory);
     }
 }
