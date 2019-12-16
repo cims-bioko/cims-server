@@ -9,14 +9,15 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.File;
@@ -47,10 +48,25 @@ public class CampaignsController {
         return repo.findAll(PageRequest.of(page, 10, Sort.by("name")));
     }
 
+    @PreAuthorize("hasAuthority('VIEW_CAMPAIGNS')")
+    @GetMapping("/campaign/{uuid}")
+    @ResponseBody
+    @Transactional
+    public CampaignForm loadDevice(@PathVariable String uuid) {
+        Campaign c = repo.findById(uuid).orElseThrow(ResourceNotFoundException::new);
+        CampaignForm form = new CampaignForm();
+        form.setName(c.getName());
+        form.setDescription(c.getDescription());
+        form.setStart(c.getStart());
+        form.setEnd(c.getEnd());
+        form.setDisabled(c.getDisabled() != null);
+        return form;
+    }
+
     @PreAuthorize("hasAuthority('CREATE_CAMPAIGNS')")
     @PostMapping("/campaigns")
     @ResponseBody
-    public ResponseEntity<AjaxResult> createDevice(@Valid @RequestBody CampaignForm form, Locale locale) {
+    public ResponseEntity<AjaxResult> createCampaign(@Valid @RequestBody CampaignForm form, Locale locale) {
 
         if (repo.findByName(form.getName()).isPresent()) {
             return ResponseEntity
@@ -83,26 +99,48 @@ public class CampaignsController {
         return messages.getMessage(key, args, locale);
     }
 
-    @PreAuthorize("hasAuthority('UPLOAD_CAMPAIGNS')")
-    @PostMapping("/campaign/{name}")
+    @PreAuthorize("hasAuthority('EDIT_CAMPAIGNS')")
+    @PutMapping("/campaign/{uuid}")
     @ResponseBody
-    public ResponseEntity uploadForm(@PathVariable(value = "name") String name, @RequestParam("campaign_file") MultipartFile file) throws IOException {
-        service.uploadCampaignFile(name, file);
+    public ResponseEntity<?> updateCampaign(@PathVariable String uuid, @Valid @RequestBody CampaignForm form, Locale locale) {
+        Campaign existing = repo.findById(uuid).orElseThrow(ResourceNotFoundException::new);
+        existing.setName(form.getName());
+        existing.setDescription(form.getDescription());
+        existing.setStart(Optional.ofNullable(form.getStart()).map(s -> new Timestamp(s.getTime())).orElse(null));
+        existing.setEnd(Optional.ofNullable(form.getEnd()).map(e -> new Timestamp(e.getTime())).orElse(null));
+        if (form.isDisabled() && existing.getDisabled() == null) {
+            Timestamp now = Timestamp.from(Instant.now());
+            existing.setDisabled(now);
+        } else if (!form.isDisabled()){
+            existing.setDisabled(null);
+        }
+        existing = repo.save(existing);
+
+        return ResponseEntity
+                .ok(new AjaxResult()
+                        .addMessage(
+                                resolveMessage("campaigns.msg.updated", locale, existing.getName())));
+    }
+
+    @PreAuthorize("hasAuthority('UPLOAD_CAMPAIGNS')")
+    @PostMapping("/campaign/{uuid}")
+    @ResponseBody
+    public ResponseEntity uploadCampaignFile(@PathVariable String uuid, @RequestParam("campaign_file") MultipartFile file) throws IOException {
+        service.uploadCampaignFile(uuid, file);
         return ResponseEntity.noContent().build();
     }
 
     @PreAuthorize("hasAuthority('DOWNLOAD_CAMPAIGNS')")
-    @GetMapping("/campaign/export/{name}")
-    public ResponseEntity downloadForm(@PathVariable("name") String name, HttpServletResponse response) throws IOException {
-        Optional<File> maybeCampaign = service.getCampaignFile(name);
+    @GetMapping("/campaign/export/{uuid}")
+    public ResponseEntity downloadCampaignFile(@PathVariable String uuid) throws IOException {
+        Optional<File> maybeCampaign = service.getCampaignFile(uuid);
         if (maybeCampaign.isPresent() && maybeCampaign.get().canRead()) {
             Resource res = new FileSystemResource(maybeCampaign.get());
-            response.setHeader("Content-Disposition", String.format("attachment; filename=%s.zip", name));
             return ResponseEntity
                     .ok()
                     .contentType(MediaType.parseMediaType("application/zip"))
                     .contentLength(res.contentLength())
-                    .header("Content-Disposition", String.format("attachment; filename=%s.zip", name))
+                    .header("Content-Disposition", String.format("attachment; filename=%s", res.getFilename()))
                     .body(res);
         }
         return ResponseEntity.notFound().build();
@@ -161,4 +199,9 @@ public class CampaignsController {
             this.disabled = disabled;
         }
     }
+}
+
+@ResponseStatus(HttpStatus.NOT_FOUND)
+class ResourceNotFoundException extends RuntimeException {
+
 }

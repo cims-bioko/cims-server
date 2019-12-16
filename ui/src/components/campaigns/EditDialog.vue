@@ -1,37 +1,27 @@
 <template>
     <b-modal ref="modal" v-model="visible" @show="initData" @ok.prevent="submit" no-enforce-focus>
-        <template slot="modal-title">{{$t('users.editmodal.title')}}</template>
+        <template slot="modal-title">{{$t('campaigns.editmodal.title')}}</template>
         <template v-for="(error, index) of errors">
             <b-alert variant="danger" :key="index" :show="5">{{error}}</b-alert>
         </template>
         <b-form ref="form" @submit.stop.prevent novalidate>
             <b-form-row>
-                <b-form-group :label="$t('users.firstName')" class="col-12 col-sm-6" :invalid-feedback="firstNameError" :state="firstNameState">
-                    <b-form-input v-model="scratch.firstName" :state="firstNameState" @input="validate"/>
+                <b-form-group :label="$t('campaigns.name')" class="col-12 col-sm-6" :invalid-feedback="nameError" :state="nameState">
+                    <b-form-input v-model="scratch.name" :state="nameState" @input="validate"/>
                 </b-form-group>
-                <b-form-group :label="$t('users.lastName')" class="col-12 col-sm-6" :invalid-feedback="lastNameError" :state="lastNameState">
-                    <b-form-input v-model="scratch.lastName" :state="lastNameState" @input="validate"/>
-                </b-form-group>
-            </b-form-row>
-            <b-form-group :label="$t('users.description')" :invalid-feedback="descriptionError" :state="descriptionState">
-                <b-form-input v-model="scratch.description" :state="descriptionState" @input="validate"/>
-            </b-form-group>
-            <b-form-row>
-                <b-form-group :label="$t('users.username')" class="col-12 col-sm-6" :invalid-feedback="usernameError" :state="usernameState">
-                    <b-form-input v-model="scratch.username" :state="usernameState" @input="validate"/>
-                </b-form-group>
-                <b-form-group :label="$t('users.roles')" class="col-12 col-sm-6" :invalid-feedback="rolesError" :state="rolesState">
-                    <b-form-select multiple v-model="scratch.roles" :options="availableRoles" :state="rolesState" @input="validate"/>
+                <b-form-group :label="$t('campaigns.description')" class="col-12 col-sm-6" :invalid-feedback="descriptionError" :state="descriptionState">
+                    <b-form-input v-model="scratch.description" :state="descriptionState" @input="validate"/>
                 </b-form-group>
             </b-form-row>
             <b-form-row>
-                <b-form-group :label="$t('users.password')" class="col-12 col-sm-6" :invalid-feedback="passwordError" :state="passwordState">
-                    <b-form-input type="password" v-model="scratch.password" :state="passwordState" @input="validate"/>
+                <b-form-group :label="$t('campaigns.start')" :invalid-feedback="startError" :state="startState">
+                    <b-form-input type="date" v-model="scratch.start" :state="startState" @input="validate"/>
                 </b-form-group>
-                <b-form-group :label="$t('users.passwordConfirmed')" class="col-12 col-sm-6" :invalid-feedback="passwordConfirmedError" :state="passwordConfirmedState">
-                    <b-form-input type="password" v-model="scratch.passwordConfirmed" :state="passwordConfirmedState" @input="validate"/>
+                <b-form-group :label="$t('campaigns.end')" class="col-12 col-sm-6" :invalid-feedback="endError" :state="endState">
+                    <b-form-input type="date" v-model="scratch.end" :state="endState" @input="validate"/>
                 </b-form-group>
             </b-form-row>
+            <b-form-checkbox v-model="scratch.disabled">{{$t('campaigns.disabled')}}</b-form-checkbox>
         </b-form>
         <template slot="modal-ok"><fa-icon icon="edit"/> {{$t('users.update')}}</template>
         <template slot="modal-cancel">{{$t('modal.cancel')}}</template>
@@ -39,16 +29,13 @@
 </template>
 
 <script>
-    import {BModal, BAlert, BForm, BFormGroup, BFormInput, BFormRow, BFormSelect} from 'bootstrap-vue'
+    import {BModal, BAlert, BForm, BFormGroup, BFormInput, BFormCheckbox, BFormRow} from 'bootstrap-vue'
+    import {isValidDate} from "../../dates";
     export default {
-        name: 'user-edit-dialog',
+        name: 'campaign-edit-dialog',
         props: {
             uuid: {
                 type: String,
-                required: true
-            },
-            availableRoles: {
-                type: Array,
                 required: true
             }
         },
@@ -56,13 +43,11 @@
             return {
                 visible: false,
                 scratch: {
-                    firstName: '',
-                    lastName: '',
+                    name: '',
                     description: '',
-                    username: '',
-                    roles: [],
-                    password: '',
-                    passwordConfirmed: ''
+                    start: null,
+                    end: null,
+                    disabled: null
                 },
                 validated: null,
                 errors: [],
@@ -71,7 +56,7 @@
         },
         methods: {
             async initData() {
-                await this.loadUser(this.uuid)
+                await this.loadCampaign(this.uuid)
                 this.validated = null
                 this.errors = []
                 this.fieldErrors = {}
@@ -86,33 +71,32 @@
                 if (this.visible) {
                     this.errors = []
                     this.fieldErrors = {}
-                    this.validateUsername()
-                    this.validateRoles()
-                    this.validatePassword()
+                    this.validateName()
+                    this.validateDescription()
+                    this.validateDates()
                     this.validated = Object.keys(this.fieldErrors).length === 0
                 }
                 return this.validated
             },
-            validateUsername() {
-                if (!this.scratch.username) {
-                    this.addFieldError('username', this.$t('users.userreq'))
+            validateName() {
+                if (!this.scratch.name) {
+                    this.addFieldError('name', this.$t('campaigns.namereq'))
                 }
             },
-            validateRoles() {
-                if (this.scratch.roles.length <= 0) {
-                    this.addFieldError('roles', this.$t('users.rolereq'))
-                }
+            validateDescription() {
             },
-            validatePassword() {
-                let password = this.scratch.password, passwordConfirmed = this.scratch.passwordConfirmed
-                if (password) {
-                    if (password !== passwordConfirmed) {
-                        this.addFieldError('passwordConfirmed', this.$t('users.passwdmatch'))
+            validateDates() {
+                if (this.end && this.start) {
+                    const startDate = new Date(this.start), endDate = new Date(this.end);
+                    const startValid = isValidDate(startDate), endValid = isValidDate(endDate);
+                    if (!startValid) {
+                        this.addFieldError('start', this.$t('campaigns.baddate'))
                     }
-                    if (password.length < 8) {
-                        this.addFieldError('password', this.$t('users.passwdshort'))
-                    } else if (password.length > 255) {
-                        this.addFieldError('password', this.$t('users.passwdlong'))
+                    if (!endValid) {
+                        this.addFieldError('end', this.$t('campaigns.baddate'))
+                    }
+                    if (startValid && endValid && startDate.getTime() >= endDate.getTime()) {
+                        this.addFieldError('start', this.$t('campaigns.endafterstart'))
                     }
                 }
             },
@@ -123,18 +107,17 @@
             buildData() {
                 let s = this.scratch
                 return {
-                    firstName: s.firstName,
-                    lastName: s.lastName,
+                    name: s.name,
                     description: s.description,
-                    username: s.username,
-                    roles: s.roles,
-                    password: s.password
+                    start: s.start,
+                    end: s.end,
+                    disabled: s.disabled
                 }
             },
             async submit(e) {
                 if (this.validate()) {
                     try {
-                        let response = await this.$xhr.put(`/user/${this.uuid}`, this.buildData())
+                        let response = await this.$xhr.put(`/campaign/${this.uuid}`, this.buildData())
                         this.hide()
                         this.$emit('ok', response.data)
                     } catch (err) {
@@ -148,23 +131,19 @@
                     e.preventDefault()
                 }
             },
-            async loadUser(uuid) {
-                let response = await this.$xhr.get(`/user/${uuid}`)
+            async loadCampaign(uuid) {
+                let response = await this.$xhr.get(`/campaign/${uuid}`)
                 this.scratch = response.data
+                this.scratch.start = this.scratch.start? new Date(this.scratch.start).toISOString().slice(0,10) : null
+                this.scratch.end = this.scratch.end? new Date(this.scratch.end).toISOString().slice(0,10) : null
             }
         },
         computed: {
-            firstNameState() {
-                return this.validated == null? null : !this.firstNameError
+            nameState() {
+                return this.validated == null? null : !this.nameError
             },
-            firstNameError() {
-                return (this.fieldErrors.firstName || []).join(' ')
-            },
-            lastNameState() {
-                return this.validated == null? null : !this.lastNameError
-            },
-            lastNameError() {
-                return (this.fieldErrors.lastName || []).join(' ')
+            nameError() {
+                return (this.fieldErrors.name || []).join(' ')
             },
             descriptionState() {
                 return this.validated == null? null : !this.descriptionError
@@ -172,33 +151,21 @@
             descriptionError() {
                 return (this.fieldErrors.description || []).join(' ')
             },
-            usernameState() {
-                return this.validated == null? null : !this.usernameError
+            startState() {
+                return this.validated == null? null : !this.startError
             },
-            usernameError() {
-                return (this.fieldErrors.username|| []).join(' ')
+            startError() {
+                return (this.fieldErrors.start || []).join(' ')
             },
-            rolesState() {
-                return this.validated == null? null : !this.rolesError
+            endState() {
+                return this.validated == null? null : !this.endError
             },
-            rolesError() {
-                return (this.fieldErrors.roles || []).join(' ')
-            },
-            passwordState() {
-                return this.validated == null? null : !this.passwordError
-            },
-            passwordError() {
-                return (this.fieldErrors.password || []).join(' ')
-            },
-            passwordConfirmedState() {
-                return this.validated == null? null : !this.passwordConfirmedError
-            },
-            passwordConfirmedError() {
-                return (this.fieldErrors.passwordConfirmed || []).join(' ')
+            endError() {
+                return (this.fieldErrors.end || []).join(' ')
             }
         },
         components: {
-            BModal, BAlert, BForm, BFormGroup, BFormInput, BFormRow, BFormSelect
+            BModal, BAlert, BForm, BFormGroup, BFormInput, BFormCheckbox, BFormRow
         }
     }
 </script>

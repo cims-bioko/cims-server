@@ -35,6 +35,9 @@ public class Campaign {
     @Column(name = "`end`")
     private Timestamp end;
 
+    @Column(name = "`default`")
+    private boolean defaultCampaign;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "campaign_users",
             joinColumns = @JoinColumn(name = "campaign"),
@@ -111,6 +114,14 @@ public class Campaign {
 
     public Timestamp getEnd() {
         return end;
+    }
+
+    public boolean isDefaultCampaign() {
+        return defaultCampaign;
+    }
+
+    public void setDefaultCampaign(boolean defaultCampaign) {
+        this.defaultCampaign = defaultCampaign;
     }
 
     public void setEnd(Timestamp end) {

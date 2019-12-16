@@ -27,9 +27,16 @@
         <b-row>
             <b-col>
                 <b-table :items="items" :fields="fields" show-empty :empty-text="$t('table.empty')">
-                    <template slot="lastLogin" slot-scope="data">{{data.value|formatDateTime}}</template>
+                    <template slot="start" slot-scope="data">{{data.value|formatDateTime}}</template>
+                    <template slot="end" slot-scope="data">{{data.value|formatDateTime}}</template>
+                    <template slot="defaultCampaign" slot-scope="data">
+                        <fa-icon v-if="data.value" icon="check"/>
+                    </template>
                     <template slot="actions" slot-scope="data">
                         <b-button-group>
+                            <b-button v-if="$can('EDIT_CAMPAIGNS')" variant="outline-primary" @click="editItem(data.index)" :disabled="data.item.deleted">
+                                <fa-icon icon="edit"/>
+                            </b-button>
                             <b-button v-if="$can('UPLOAD_CAMPAIGNS')" variant="outline-primary" @click="upload(data.index)">
                                 <fa-icon icon="upload"/>
                             </b-button>
@@ -38,6 +45,7 @@
                             </b-button>
                         </b-button-group>
                         <upload-dialog :ref="`uploadDialog${data.index}`" :name="data.item.name" @ok="itemUploaded" v-if="$can('UPLOAD_CAMPAIGNS')" />
+                        <edit-dialog :ref="`editDialog${data.index}`" v-bind="data.item" @ok="itemEdited" v-if="$can('EDIT_CAMPAIGNS') && !data.item.deleted" />
                     </template>
                 </b-table>
             </b-col>
@@ -47,6 +55,7 @@
 
 <script>
     import {BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup} from 'bootstrap-vue'
+    import EditDialog from './EditDialog'
     import UploadDialog from './UploadDialog'
     import CreateDialog from './CreateDialog'
     export default {
@@ -58,6 +67,7 @@
                     {key: 'description', label: this.$t('campaigns.description'), tdClass: 'align-middle'},
                     {key: 'start', label: this.$t('campaigns.start'), tdClass: 'align-middle'},
                     {key: 'end', label: this.$t('campaigns.end'), tdClass: 'align-middle'},
+                    {key: 'defaultCampaign', label: this.$t('campaigns.default'), tdClass: 'align-middle text-center', thClass: 'text-center'},
                     {key: 'actions', label: this.$t('campaigns.actions'), tdClass: 'align-middle'}
                 ],
                 errors: [],
@@ -90,6 +100,13 @@
                 this.showMessages(rsp.messages)
                 this.reloadPage()
             },
+            editItem(index) {
+                this.$refs[`editDialog${index}`].show()
+            },
+            itemEdited(rsp) {
+                this.showMessages(rsp.messages)
+                this.reloadPage()
+            },
             upload(index) {
                 this.$refs[`uploadDialog${index}`].show()
             },
@@ -106,7 +123,8 @@
             this.reloadPage()
         },
         components: {
-            BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup, UploadDialog, CreateDialog
+            BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup,
+            EditDialog, UploadDialog, CreateDialog
         }
     }
 </script>

@@ -194,8 +194,13 @@
       "title": "Subir Campaña '{0}'",
       "close": "Cerrar"
     },
+    "editmodal": {
+      "title": "Editar Campaña",
+      "close": "Cerrar"
+    },
     "name": "Nombre",
     "description": "Descripción",
+    "default": "Defecto",
     "start": "Comienzo",
     "end": "Fin",
     "actions": "Acciones",

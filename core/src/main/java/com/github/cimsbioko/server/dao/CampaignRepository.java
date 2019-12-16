@@ -18,4 +18,6 @@ public interface CampaignRepository extends PagingAndSortingRepository<Campaign,
             " and c.disabled is null and c.deleted is null and c.name = :name")
     Optional<Campaign> findActiveByName(@Param("name") String name);
     Optional<Campaign> findByName(String name);
+    @Query("select c from #{#entityName} c where c.defaultCampaign = TRUE")
+    Optional<Campaign> findDefault();
 }

@@ -200,7 +200,12 @@
       "title": "Upload Campaign '{0}'",
       "close": "Close"
     },
+    "editmodal": {
+      "title": "Edit Campaign",
+      "close": "Close"
+    },
     "name": "Name",
+    "default": "Default",
     "description": "Description",
     "start": "Start",
     "end": "End",
