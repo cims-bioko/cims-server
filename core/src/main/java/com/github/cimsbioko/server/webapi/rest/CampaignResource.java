@@ -1,5 +1,7 @@
 package com.github.cimsbioko.server.webapi.rest;
 
+import com.github.cimsbioko.server.dao.CampaignRepository;
+import com.github.cimsbioko.server.domain.Campaign;
 import com.github.cimsbioko.server.service.CampaignService;
 import com.github.cimsbioko.server.webapi.odk.FileHasher;
 import org.springframework.core.io.FileSystemResource;
@@ -24,10 +26,12 @@ public class CampaignResource {
 
     private final FileHasher fileHasher;
     private final CampaignService service;
+    private final CampaignRepository repo;
 
-    public CampaignResource(FileHasher fileHasher, CampaignService service) {
+    public CampaignResource(FileHasher fileHasher, CampaignService service, CampaignRepository repo) {
         this.fileHasher = fileHasher;
         this.service = service;
+        this.repo = repo;
     }
 
     @PreAuthorize("hasAuthority('DOWNLOAD_CAMPAIGNS') and @campaignService.isMember('default', #auth)")
@@ -36,15 +40,19 @@ public class CampaignResource {
         return downloadCampaign(request, "default");
     }
 
-    @PreAuthorize("hasAuthority('DOWNLOAD_CAMPAIGNS') and @campaignService.isMember(#name, #auth)")
-    @GetMapping("/api/rest/campaign/{name}")
-    public ResponseEntity<InputStreamResource> downloadCampaign(WebRequest request, @PathVariable String name, Authentication auth) throws IOException, NoSuchAlgorithmException {
-        String campaign = Optional.ofNullable(name).orElse("default");
-        return downloadCampaign(request, campaign);
+    @PreAuthorize("hasAuthority('DOWNLOAD_CAMPAIGNS') and @campaignService.isMember(#uuid, #auth)")
+    @GetMapping("/api/rest/campaign/{uuid}")
+    public ResponseEntity<InputStreamResource> downloadCampaign(WebRequest request, @PathVariable String uuid, Authentication auth) throws IOException, NoSuchAlgorithmException {
+        return downloadCampaign(request, Optional.ofNullable(uuid).orElse("default"));
     }
 
-    private ResponseEntity<InputStreamResource> downloadCampaign(WebRequest request, String campaign) throws IOException, NoSuchAlgorithmException {
-        Optional<File> maybeCampaignFile = service.getCampaignFile(campaign);
+    private ResponseEntity<InputStreamResource> downloadCampaign(WebRequest request, String uuid) throws IOException, NoSuchAlgorithmException {
+
+        if ("default".equals(uuid)) {
+            uuid = repo.findDefault().map(Campaign::getUuid).orElse(uuid);
+        }
+
+        Optional<File> maybeCampaignFile = service.getCampaignFile(uuid);
         if (maybeCampaignFile.isPresent()) {
             File file = maybeCampaignFile.get();
             String descriptor = fileHasher.hashFile(file);

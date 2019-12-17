@@ -53,46 +53,46 @@ public class SyncServiceImpl implements SyncService {
     @EventListener
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public void onCampaignUnload(CampaignUnloaded event) {
-        String campaign = event.getName();
-        Optional.ofNullable(campaignTasks.get(campaign))
+        String campaignUuid = event.getUuid();
+        Optional.ofNullable(campaignTasks.get(campaignUuid))
                 .ifPresent(task -> {
                     task.cancel();
-                    campaignTasks.remove(campaign);
-                    log.info("removed db export for campaign '{}'", campaign);
+                    campaignTasks.remove(campaignUuid);
+                    log.info("removed db export for campaign '{}'", campaignUuid);
                 });
     }
 
     @EventListener
     @Order
     public void onCampaignLoad(CampaignLoaded event) {
-        String campaign = event.getName();
+        String campaignUuid = event.getUuid();
         JsConfig config = event.getConfig();
         Optional
                 .ofNullable(config.getDatabaseExport())
                 .map(DatabaseExport::exportSchedule)
                 .map(CronTrigger::new)
-                .map(t -> scheduler.schedule(() -> { requestExport(campaign); }, t))
+                .map(t -> scheduler.schedule(() -> { requestExport(campaignUuid); }, t))
                 .ifPresent(future -> {
-                    campaignTasks.put(campaign, new SyncTask(config, future));
-                    log.info("added db export for campaign '{}' (schedule '{}')", campaign, config.getDatabaseExport().exportSchedule());
+                    campaignTasks.put(campaignUuid, new SyncTask(config, future));
+                    log.info("added db export for campaign '{}' (schedule '{}')", campaignUuid, config.getDatabaseExport().exportSchedule());
                 });
     }
 
     @EventListener
     public void onExportStarted(ExportStarted e) {
-        SyncTask t = campaignTasks.get(e.getCampaign());
+        SyncTask t = campaignTasks.get(e.getCampaignUuid());
         t.setStarted(new Date());
         t.setFinished(null);
     }
 
     @EventListener
     public void onExportUpdate(ExportStatus e) {
-        campaignTasks.get(e.getCampaign()).setItemCount(e.getTablesProcessed());
+        campaignTasks.get(e.getCampaignUuid()).setItemCount(e.getTablesProcessed());
     }
 
     @EventListener
     public void onExportFinished(ExportFinished e) {
-        SyncTask t = campaignTasks.get(e.getCampaign());
+        SyncTask t = campaignTasks.get(e.getCampaignUuid());
         t.setFinished(new Date());
         t.setDescriptor(e.getContentHash());
     }
@@ -117,23 +117,23 @@ public class SyncServiceImpl implements SyncService {
         }
     }
 
-    private void runExport(String campaign) throws IOException, SQLException, NoSuchAlgorithmException {
+    private void runExport(String campaignUuid) throws IOException, SQLException, NoSuchAlgorithmException {
 
         int tablesProcessed = 0;
 
-        JsConfig config = campaignTasks.get(campaign).getConfig();
-        File dest = getOutput(campaign);
+        JsConfig config = campaignTasks.get(campaignUuid).getConfig();
+        File dest = getOutput(campaignUuid);
         DatabaseExport export = config.getDatabaseExport();
 
         Map<String, String> tableQueries = export.exportQueries();
 
-        eventPublisher.publishEvent(new ExportStarted(campaign));
+        eventPublisher.publishEvent(new ExportStarted(campaignUuid));
 
         File scratch = new File(dest.getParentFile(), dest.getName() + ".tmp");
         File metaDest = new File(dest.getParentFile(), dest.getName() + ".jrsmd");
         File metaScratch = new File(dest.getParentFile(), metaDest.getName() + ".tmp");
 
-        eventPublisher.publishEvent(new ExportStatus(campaign));
+        eventPublisher.publishEvent(new ExportStatus(campaignUuid));
 
         // run each of the export's init scripts in order
         for (String initScriptName : export.initScripts()) {
@@ -145,7 +145,7 @@ public class SyncServiceImpl implements SyncService {
         for (Map.Entry<String, String> e : tableQueries.entrySet()) {
             log.debug("executing query '{}' on {}", e.getValue(), scratch);
             exporter.export(e.getValue(), e.getKey(), scratch);
-            eventPublisher.publishEvent(new ExportStatus(campaign, ++tablesProcessed));
+            eventPublisher.publishEvent(new ExportStatus(campaignUuid, ++tablesProcessed));
         }
 
         // run each of the export's post scripts in order
@@ -166,9 +166,9 @@ public class SyncServiceImpl implements SyncService {
         // Complete the process, latching the new file contents and sync metadata
         if (scratch.renameTo(dest) && metaScratch.renameTo(metaDest)) {
             log.info("successfully generated {}, content signature: {}", dest.getName(), md5);
-            eventPublisher.publishEvent(new ExportFinished(campaign, md5));
+            eventPublisher.publishEvent(new ExportFinished(campaignUuid, md5));
         } else {
-            eventPublisher.publishEvent(new ExportFinished(campaign));
+            eventPublisher.publishEvent(new ExportFinished(campaignUuid));
         }
     }
 
@@ -237,22 +237,22 @@ public class SyncServiceImpl implements SyncService {
 
 abstract class AbstractExportEvent implements MobileDbGeneratorEvent {
 
-    private final String name;
+    private final String campaignUuid;
 
-    AbstractExportEvent(String campaign) {
-        this.name = campaign;
+    AbstractExportEvent(String campaignUuid) {
+        this.campaignUuid = campaignUuid;
     }
 
     @Override
-    public String getCampaign() {
-        return name;
+    public String getCampaignUuid() {
+        return campaignUuid;
     }
 }
 
 class ExportStarted extends AbstractExportEvent {
 
-    ExportStarted(String campaign) {
-        super(campaign);
+    ExportStarted(String campaignUuid) {
+        super(campaignUuid);
     }
 }
 
@@ -260,12 +260,12 @@ class ExportStatus extends AbstractExportEvent {
 
     private final int tablesProcessed;
 
-    ExportStatus(String campaign) {
-        this(campaign, 0);
+    ExportStatus(String campaignUuid) {
+        this(campaignUuid, 0);
     }
 
-    ExportStatus(String campaign, int tablesProcessed) {
-        super(campaign);
+    ExportStatus(String campaignUuid, int tablesProcessed) {
+        super(campaignUuid);
         this.tablesProcessed = tablesProcessed;
     }
 
@@ -278,12 +278,12 @@ class ExportFinished extends AbstractExportEvent {
 
     private final String contentHash;
 
-    ExportFinished(String campaign) {
-        this(campaign, "generation failed - no content");
+    ExportFinished(String campaignUuid) {
+        this(campaignUuid, "generation failed - no content");
     }
 
-    ExportFinished(String campaign, String contentHash) {
-        super(campaign);
+    ExportFinished(String campaignUuid, String contentHash) {
+        super(campaignUuid);
         this.contentHash = contentHash;
     }
 

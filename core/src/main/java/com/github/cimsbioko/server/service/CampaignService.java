@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 public interface CampaignService {
-    void uploadCampaignFile(String name, MultipartFile file) throws IOException;
-    Optional<File> getCampaignFile(String name);
-    boolean isMember(String campaign, Authentication auth);
+    void uploadCampaignFile(String uuid, MultipartFile file) throws IOException;
+    Optional<File> getCampaignFile(String uuid);
+    boolean isMember(String uuid, Authentication auth);
 }

@@ -1,7 +1,8 @@
 package com.github.cimsbioko.server.webapi.rest;
 
 import com.github.batkinson.jrsync.Metadata;
-import com.github.cimsbioko.server.service.CampaignService;
+import com.github.cimsbioko.server.dao.CampaignRepository;
+import com.github.cimsbioko.server.domain.Campaign;
 import com.github.cimsbioko.server.service.SyncService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.context.request.WebRequest;
 
 import java.io.File;
+import java.util.Optional;
 
 import static com.github.cimsbioko.server.config.WebConfig.CACHED_FILES_PATH;
 
@@ -29,10 +31,12 @@ public class MobileDatabaseResource {
     private static final String ACCEPT = "Accept";
     static final String SQLITE_MIME_TYPE = "application/x-sqlite3";
 
-    private SyncService service;
+    private final SyncService service;
+    private final CampaignRepository campaignRepo;
 
-    public MobileDatabaseResource(SyncService service) {
+    public MobileDatabaseResource(SyncService service, CampaignRepository campaignRepo) {
         this.service = service;
+        this.campaignRepo = campaignRepo;
     }
 
     @GetMapping(value = "/api/rest/mobiledb", produces = {SQLITE_MIME_TYPE, Metadata.MIME_TYPE})
@@ -47,12 +51,15 @@ public class MobileDatabaseResource {
         return mobileDb(request, name);
     }
 
-    private String mobileDb(WebRequest request, String campaign) {
-        File cacheFile = service.getOutput(campaign);
+    private String mobileDb(WebRequest request, String uuid) {
+        if ("default".equals(uuid)) {
+            uuid = campaignRepo.findDefault().map(Campaign::getUuid).orElse(uuid);
+        }
+        File cacheFile = service.getOutput(uuid);
         File metadataFile = new File(cacheFile.getParentFile(), cacheFile.getName() + "." + Metadata.FILE_EXT);
         String accept = request.getHeader(ACCEPT);
 
-        if (request.checkNotModified(service.getTask(campaign).getDescriptor())) {
+        if (request.checkNotModified(service.getTask(uuid).getDescriptor())) {
             return null;
         }
 

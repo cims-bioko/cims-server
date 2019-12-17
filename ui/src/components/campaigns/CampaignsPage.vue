@@ -44,7 +44,7 @@
                                 <fa-icon icon="download"/>
                             </b-button>
                         </b-button-group>
-                        <upload-dialog :ref="`uploadDialog${data.index}`" :name="data.item.name" @ok="itemUploaded" v-if="$can('UPLOAD_CAMPAIGNS')" />
+                        <upload-dialog :ref="`uploadDialog${data.index}`" v-bind="data.item" @ok="itemUploaded" v-if="$can('UPLOAD_CAMPAIGNS')" />
                         <edit-dialog :ref="`editDialog${data.index}`" v-bind="data.item" @ok="itemEdited" v-if="$can('EDIT_CAMPAIGNS') && !data.item.deleted" />
                     </template>
                 </b-table>

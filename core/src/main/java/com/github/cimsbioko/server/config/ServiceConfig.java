@@ -61,8 +61,8 @@ public class ServiceConfig {
     }
 
     @Bean
-    public FormProcessorServiceImpl formProcessingService() {
-        return new FormProcessorServiceImpl();
+    public FormProcessorServiceImpl formProcessingService(CampaignRepository campaignRepository) {
+        return new FormProcessorServiceImpl(campaignRepository);
     }
 
     @Bean

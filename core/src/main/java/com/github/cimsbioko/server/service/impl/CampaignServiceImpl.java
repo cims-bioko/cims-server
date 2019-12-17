@@ -59,13 +59,13 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
         Map<String, JsConfig> newlyLoaded = new LinkedHashMap<>();
 
         log.info("pre-loading enabled campaign definitions");
-        for (String name : getEnabledCampaignNames()) {
-            getCampaignFile(name).ifPresent(file -> {
+        for (String uuid : getEnabledCampaignUuids()) {
+            getCampaignFile(uuid).ifPresent(file -> {
                 try {
                     JsConfig config = new JsConfig(file, ctx).load();
-                    newlyLoaded.put(name, config);
+                    newlyLoaded.put(uuid, config);
                 } catch (MalformedURLException | URISyntaxException e) {
-                    log.warn("failed to load config for campaign " + name, e);
+                    log.warn("failed to load config for campaign " + uuid, e);
                 }
             });
         }
@@ -85,67 +85,73 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
 
     @EventListener
     public void loadUploadedCampaign(CampaignUploaded event) {
-        String name = event.getName();
-        if (repo.findActiveByName(name).isPresent()) {
+        String uuid = event.getUuid();
+        if (repo.findActiveByUuid(uuid).isPresent()) {
             try {
-                log.info("pre-loading new definition for campaign '{}'", name);
+                log.info("pre-loading new definition for campaign '{}'", uuid);
                 JsConfig config = new JsConfig(event.getFile(), ctx).load();
 
-                if (loadedConfigs.containsKey(name)) {
-                    log.info("unloading old definition for campaign '{}'", name);
-                    eventPublisher.publishEvent(new CampaignUnloaded(name, loadedConfigs.get(name)));
+                if (loadedConfigs.containsKey(uuid)) {
+                    log.info("unloading old definition for campaign '{}'", uuid);
+                    eventPublisher.publishEvent(new CampaignUnloaded(uuid, loadedConfigs.get(uuid)));
                 }
 
-                loadedConfigs.put(name, config);
+                loadedConfigs.put(uuid, config);
 
-                log.info("loading new definition for campaign '{}'", name);
-                eventPublisher.publishEvent(new CampaignLoaded(name, config));
+                log.info("loading new definition for campaign '{}'", uuid);
+                eventPublisher.publishEvent(new CampaignLoaded(uuid, config));
             } catch (URISyntaxException | MalformedURLException e) {
                 log.error("failed to load uploaded campaign", e);
             }
         } else {
-            log.info("not loading campaign {} because it is inactive", name);
+            log.info("not loading campaign {} because it is inactive", uuid);
         }
     }
 
-    private Iterable<String> getEnabledCampaignNames() {
-        return repo.findActive().stream().map(Campaign::getName).collect(Collectors.toList());
+    private Iterable<String> getEnabledCampaignUuids() {
+        return repo.findActive().stream().map(Campaign::getUuid).collect(Collectors.toList());
     }
 
     @Override
-    public void uploadCampaignFile(String name, MultipartFile file) throws IOException {
-        Path target = getCampaignFilePath(name);
+    public void uploadCampaignFile(String uuid, MultipartFile file) throws IOException {
+        Path target = getCampaignFilePath(uuid);
         file.transferTo(target);
-        eventPublisher.publishEvent(new CampaignUploaded(name, target.toFile()));
+        eventPublisher.publishEvent(new CampaignUploaded(uuid, target.toFile()));
     }
 
     @Override
-    public Optional<File> getCampaignFile(String name) {
-        File archive = getCampaignFilePath(name).toFile();
+    public Optional<File> getCampaignFile(String uuid) {
+        File archive = getCampaignFilePath(uuid).toFile();
         return archive.canRead() ? Optional.of(archive) : Optional.empty();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isMember(String campaign, Authentication auth) {
+    public boolean isMember(String uuid, Authentication auth) {
+
+        if ("default".equals(uuid)) {
+            uuid = repo.findDefault().map(Campaign::getUuid).orElse(uuid);
+        }
+
         // FIXME: query directly for membership rather than fetching all objects
         if (auth instanceof TokenAuthentication) {
             TokenAuthentication tokenAuth = (TokenAuthentication) auth;
             if (tokenAuth.isDevice()) {
-                return repo.findActiveByName(campaign)
+                return repo.findActiveByUuid(uuid)
                         .map(Campaign::getDevices)
                         .map(devices -> devices.stream().map(Device::getName).collect(Collectors.toSet()))
                         .map(deviceNames -> deviceNames.contains(tokenAuth.getName())).orElse(false);
             }
         }
-        return repo.findActiveByName(campaign)
+
+        return repo.findActiveByUuid(uuid)
                 .map(Campaign::getUsers)
                 .map(users -> users.stream().map(User::getUsername).collect(Collectors.toSet()))
                 .map(userNames -> userNames.contains(auth.getName())).orElse(false);
     }
 
-    private Path getCampaignFilePath(String name) {
-        String fileName = Optional.ofNullable(name).map(n -> n + ".zip").orElse("default.zip");
+    private Path getCampaignFilePath(String uuid) {
+        String fileName = Optional.ofNullable(uuid).map(n -> n + ".zip").orElse("default.zip");
         return campaignsDir.toPath().resolve(Paths.get(fileName));
     }
 
@@ -160,16 +166,16 @@ interface CampaignEvent {
 
 class CampaignUploaded implements CampaignEvent {
 
-    private final String name;
+    private final String uuid;
     private final File file;
 
-    CampaignUploaded(String name, File file) {
-        this.name = name;
+    CampaignUploaded(String uuid, File file) {
+        this.uuid = uuid;
         this.file = file;
     }
 
-    public String getName() {
-        return name;
+    public String getUuid() {
+        return uuid;
     }
 
     public File getFile() {
@@ -179,16 +185,16 @@ class CampaignUploaded implements CampaignEvent {
 
 class CampaignLoaded implements CampaignEvent {
 
-    private final String name;
+    private final String uuid;
     private final JsConfig config;
 
-    CampaignLoaded(String name, JsConfig config) {
-        this.name = name;
+    CampaignLoaded(String uuid, JsConfig config) {
+        this.uuid = uuid;
         this.config = config;
     }
 
-    public String getName() {
-        return name;
+    public String getUuid() {
+        return uuid;
     }
 
     public JsConfig getConfig() {
@@ -198,16 +204,16 @@ class CampaignLoaded implements CampaignEvent {
 
 class CampaignUnloaded implements CampaignEvent {
 
-    private final String name;
+    private final String uuid;
     private final JsConfig config;
 
-    CampaignUnloaded(String name, JsConfig config) {
-        this.name = name;
+    CampaignUnloaded(String uuid, JsConfig config) {
+        this.uuid = uuid;
         this.config = config;
     }
 
-    public String getName() {
-        return name;
+    public String getUuid() {
+        return uuid;
     }
 
     public JsConfig getConfig() {

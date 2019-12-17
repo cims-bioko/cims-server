@@ -19,6 +19,10 @@
     export default {
         name: 'campaign-upload-dialog',
         props: {
+            uuid: {
+                type: String,
+                required: true
+            },
             name: {
                 type: String,
                 required: true
@@ -79,7 +83,7 @@
             },
             async upload(formData) {
                 try {
-                    let rsp = await this.$xhr.post(`/campaign/${this.name}`, formData, {
+                    let rsp = await this.$xhr.post(`/campaign/${this.uuid}`, formData, {
                         onUploadProgress: (pe) => {
                             this.progress = pe.lengthComputable ? Math.round((pe.loaded * 100) / pe.total) : 100
                         }
