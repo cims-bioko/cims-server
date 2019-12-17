@@ -3,6 +3,8 @@ package com.github.cimsbioko.server.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -11,6 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "campaign")
+@Indexed
 public class Campaign {
 
     @Id
@@ -19,8 +22,10 @@ public class Campaign {
     @Column(length = 32)
     private String uuid;
 
+    @Field
     private String name;
 
+    @Field
     private String description;
 
     @CreationTimestamp

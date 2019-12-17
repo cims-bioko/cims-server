@@ -192,6 +192,7 @@
   "campaigns": {
     "upload": "Upload",
     "create": "Create",
+    "searchph": "Search by name or description",
     "createmodal": {
       "title": "Create Campaign",
       "close": "Close"

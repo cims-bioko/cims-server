@@ -168,7 +168,7 @@
   "devices": {
     "create": "Crear",
     "update": "Actualizar",
-    "searchph": "Búsqueda por nombre",
+    "searchph": "Buscar por nombre o descripción",
     "name": "Nombre",
     "lastLogin": "Último Acceso",
     "actions": "Acciones",
@@ -198,6 +198,7 @@
       "title": "Editar Campaña",
       "close": "Cerrar"
     },
+    "searchph": "Buscar por nombre o descripción",
     "name": "Nombre",
     "description": "Descripción",
     "default": "Defecto",

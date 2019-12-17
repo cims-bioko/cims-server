@@ -18,6 +18,9 @@
                 <b-button variant="primary" @click="createItem"><fa-icon icon="plus"/> {{$t('campaigns.create')}}</b-button>
                 <create-dialog ref="createDialog" @ok="itemCreated" />
             </b-col>
+            <b-col>
+                <search-box :placeholder="$t('campaigns.searchph')" v-model="searchQuery" @search="search" />
+            </b-col>
         </b-row>
         <b-row v-if="totalItems > pageSize">
             <b-col>
@@ -26,7 +29,7 @@
         </b-row>
         <b-row>
             <b-col>
-                <b-table :items="items" :fields="fields" show-empty :empty-text="$t('table.empty')">
+                <b-table :items="decoratedItems" :fields="fields" show-empty :empty-text="$t('table.empty')">
                     <template slot="start" slot-scope="data">{{data.value|formatDateTime}}</template>
                     <template slot="end" slot-scope="data">{{data.value|formatDateTime}}</template>
                     <template slot="defaultCampaign" slot-scope="data">
@@ -37,7 +40,13 @@
                             <b-button v-if="$can('EDIT_CAMPAIGNS')" variant="outline-primary" @click="editItem(data.index)" :disabled="data.item.deleted">
                                 <fa-icon icon="edit"/>
                             </b-button>
-                            <b-button v-if="$can('UPLOAD_CAMPAIGNS')" variant="outline-primary" @click="upload(data.index)">
+                            <b-button v-if="!data.item.deleted && $can('DELETE_CAMPAIGNS')" variant="outline-primary" @click="deleteItem(data.item.uuid)">
+                                <fa-icon icon="trash-alt"/>
+                            </b-button>
+                            <b-button v-if="data.item.deleted && $can('RESTORE_CAMPAIGNS')" variant="outline-primary" @click="restoreItem(data.item.uuid)">
+                                <fa-icon icon="undo-alt"/>
+                            </b-button>
+                            <b-button v-if="!data.item.deleted && $can('UPLOAD_CAMPAIGNS')" variant="outline-primary" @click="upload(data.index)">
                                 <fa-icon icon="upload"/>
                             </b-button>
                             <b-button v-if="$can('DOWNLOAD_CAMPAIGNS')" variant="outline-primary" :href="`/campaign/export/${data.item.name}`" download>
@@ -58,6 +67,7 @@
     import EditDialog from './EditDialog'
     import UploadDialog from './UploadDialog'
     import CreateDialog from './CreateDialog'
+    import SearchBox from '../SearchBox'
     export default {
         name: 'campaigns-page',
         data() {
@@ -72,6 +82,7 @@
                 ],
                 errors: [],
                 messages: [],
+                searchQuery: '',
                 totalItems: 0,
                 pageSize: 0,
                 currentPage: 1,
@@ -80,7 +91,9 @@
         },
         methods: {
             async loadPage(page) {
-                let rsp = await this.$xhr.get('/campaigns', {params: {p: page - 1}})
+                let params = {p: page - 1}
+                if (this.searchQuery) { params.q = this.searchQuery }
+                let rsp = await this.$xhr.get('/campaigns', {params: params})
                 let data = rsp.data
                 this.items = data.content
                 this.totalItems = data.totalElements
@@ -117,14 +130,33 @@
             },
             itemUploaded(data) {
                 this.showMessages(data.messages);
+            },
+            async deleteItem(uuid) {
+                let response = await this.$xhr.delete(`/campaign/${uuid}`)
+                this.showMessages(response.data.messages)
+                this.reloadPage()
+            },
+            async restoreItem(uuid) {
+                let response = await this.$xhr.put(`/campaign/restore/${uuid}`)
+                this.showMessages(response.data.messages)
+                this.reloadPage()
+            },
+            search() {
+                this.reloadPage()
             }
         },
         mounted() {
             this.reloadPage()
         },
+        computed: {
+            decoratedItems() {
+                return this.items.map(
+                    item => item.deleted? Object.assign({_rowVariant:'rowclasshack deleted'}, item) : item)
+            }
+        },
         components: {
             BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup,
-            EditDialog, UploadDialog, CreateDialog
+            EditDialog, UploadDialog, CreateDialog, SearchBox
         }
     }
 </script>

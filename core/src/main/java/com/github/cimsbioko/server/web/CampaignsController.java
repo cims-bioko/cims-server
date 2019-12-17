@@ -2,6 +2,7 @@ package com.github.cimsbioko.server.web;
 
 import com.github.cimsbioko.server.dao.CampaignRepository;
 import com.github.cimsbioko.server.domain.Campaign;
+import com.github.cimsbioko.server.domain.FieldWorker;
 import com.github.cimsbioko.server.service.CampaignService;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.FileSystemResource;
@@ -24,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
@@ -44,8 +46,11 @@ public class CampaignsController {
     @PreAuthorize("hasAuthority('VIEW_CAMPAIGNS')")
     @GetMapping("/campaigns")
     @ResponseBody
-    public Page<Campaign> campaigns(@RequestParam(name = "p", defaultValue = "0") Integer page) {
-        return repo.findAll(PageRequest.of(page, 10, Sort.by("name")));
+    public Page<Campaign> campaigns(@RequestParam(name = "p", defaultValue = "0") Integer page,
+                                    @RequestParam(name = "q", defaultValue = "") String query) {
+        return query.isEmpty() ?
+                repo.findByDeletedIsNull(PageRequest.of(page, 10, Sort.by("name"))) :
+                repo.findBySearch(query, PageRequest.of(page, 10));
     }
 
     @PreAuthorize("hasAuthority('VIEW_CAMPAIGNS')")
@@ -120,6 +125,58 @@ public class CampaignsController {
                 .ok(new AjaxResult()
                         .addMessage(
                                 resolveMessage("campaigns.msg.updated", locale, existing.getName())));
+    }
+
+    @PreAuthorize("hasAuthority('DELETE_CAMPAIGNS')")
+    @DeleteMapping("/campaign/{uuid}")
+    @ResponseBody
+    public ResponseEntity<?> deleteCampaign(@PathVariable("uuid") String uuid, Locale locale) {
+
+        // FIXME: Use optional rather than null
+        Campaign c = repo.findById(uuid).orElse(null);
+
+        if (c == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new AjaxResult()
+                            .addError(resolveMessage("input.msg.errors", locale))
+                            .addFieldError("uuid",
+                                    resolveMessage("campaigns.msg.existsnot", locale, uuid)));
+        }
+
+        c.setDeleted(Timestamp.from(Instant.now()));
+        repo.save(c);
+
+        return ResponseEntity
+                .ok(new AjaxResult()
+                        .addMessage(
+                                resolveMessage("campaigns.msg.deleted", locale, uuid)));
+    }
+
+    @PreAuthorize("hasAuthority('RESTORE_CAMPAIGNS')")
+    @PutMapping("/campaign/restore/{uuid}")
+    @ResponseBody
+    public ResponseEntity<?> restoreCampaign(@PathVariable("uuid") String uuid, Locale locale) {
+
+        // FIXME: Use optional rather than null
+        Campaign c = repo.findById(uuid).orElse(null);
+
+        if (c == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new AjaxResult()
+                            .addError(resolveMessage("input.msg.errors", locale))
+                            .addFieldError("uuid",
+                                    resolveMessage("campaigns.msg.existsnot", locale, uuid)));
+        }
+
+        c.setDeleted(null);
+        repo.save(c);
+
+        return ResponseEntity
+                .ok(new AjaxResult()
+                        .addMessage(
+                                resolveMessage("campaigns.msg.restored", locale, uuid)));
     }
 
     @PreAuthorize("hasAuthority('UPLOAD_CAMPAIGNS')")
