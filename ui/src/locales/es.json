@@ -204,6 +204,7 @@
     "default": "Defecto",
     "start": "Comienzo",
     "end": "Fin",
+    "forms": "Formularios",
     "actions": "Acciones",
     "zip": "Zip de campaña",
     "zipreq": "Se requiere el archivo zip de la campaña.",

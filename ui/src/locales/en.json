@@ -211,6 +211,7 @@
     "start": "Start",
     "end": "End",
     "disabled": "Disabled",
+    "forms": "Forms",
     "actions": "Actions",
     "zip": "Campaign zip",
     "zipreq": "Campaign zip file is required.",

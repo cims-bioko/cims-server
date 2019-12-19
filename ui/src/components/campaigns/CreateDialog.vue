@@ -1,5 +1,5 @@
 <template>
-    <b-modal ref="modal" v-model="visible" @show="clearData" @ok.prevent="submit" no-enforce-focus>
+    <b-modal ref="modal" v-model="visible" @show="init" @ok.prevent="submit" no-enforce-focus>
         <template slot="modal-title">{{$t('campaigns.createmodal.title')}}</template>
         <template v-for="(error, index) of errors">
             <b-alert variant="danger" :key="index" :show="5">{{error}}</b-alert>
@@ -21,6 +21,11 @@
                     <b-form-input type="date" v-model="end" :state="endState" @input="validate"/>
                 </b-form-group>
             </b-form-row>
+            <b-form-row>
+                <b-form-group :label="$t('campaigns.forms')" :invalid-feedback="formsError" :state="formsState">
+                    <b-form-select multiple :options="availableForms" v-model="forms" />
+                </b-form-group>
+            </b-form-row>
             <b-form-checkbox v-model="disabled">{{$t('campaigns.disabled')}}</b-form-checkbox>
         </b-form>
         <template slot="modal-ok"><fa-icon icon="plus"/> {{$t('campaigns.create')}}</template>
@@ -29,7 +34,7 @@
 </template>
 
 <script>
-    import {BModal, BAlert, BForm, BFormGroup, BFormInput, BFormCheckbox, BFormRow} from 'bootstrap-vue'
+    import {BModal, BAlert, BForm, BFormGroup, BFormInput, BFormCheckbox, BFormRow, BFormSelect} from 'bootstrap-vue'
     import {isValidDate} from "../../dates";
     export default {
         name: 'campaign-create-dialog',
@@ -41,17 +46,25 @@
                 start: null,
                 end: null,
                 disabled: null,
+                forms: [],
+                availableForms: [],
                 validated: null,
                 errors: [],
                 fieldErrors: {}
             }
         },
         methods: {
+            async init() {
+                this.clearData()
+                await this.loadAvailableForms()
+            },
             clearData() {
                 this.name = ''
                 this.description = ''
                 this.start = null
                 this.end = null
+                this.forms = []
+                this.availableForms = []
                 this.disabled = null
                 this.validated = null
                 this.errors = []
@@ -106,7 +119,8 @@
                     description: this.description,
                     start: this.start,
                     end: this.end,
-                    disabled: this.disabled
+                    disabled: this.disabled,
+                    forms: this.forms.map(v => { let [id, version] = v.split('|'); return {id: id, version: version}; })
                 }
             },
             async submit(e) {
@@ -125,6 +139,10 @@
                 } else {
                     e.preventDefault()
                 }
+            },
+            async loadAvailableForms() {
+                let response = await this.$xhr.get(`/campaign/availableForms`)
+                this.availableForms = response.data.map(id => ({value: `${id.id}|${id.version}`, text: `${id.id} (${id.version})`}));
             }
         },
         computed: {
@@ -151,10 +169,16 @@
             },
             endError() {
                 return (this.fieldErrors.end || []).join(' ')
+            },
+            formsState() {
+                return this.validated == null? null : !this.formsError
+            },
+            formsError() {
+                return (this.fieldErrors.forms || []).join(' ')
             }
         },
         components: {
-            BModal, BAlert, BForm, BFormGroup, BFormInput, BFormRow, BFormCheckbox
+            BModal, BAlert, BForm, BFormGroup, BFormInput, BFormRow, BFormCheckbox, BFormSelect
         }
     }
 </script>

@@ -21,7 +21,14 @@
                     <b-form-input type="date" v-model="scratch.end" :state="endState" @input="validate"/>
                 </b-form-group>
             </b-form-row>
-            <b-form-checkbox v-model="scratch.disabled">{{$t('campaigns.disabled')}}</b-form-checkbox>
+            <b-form-row>
+                <b-form-group :label="$t('campaigns.forms')" :invalid-feedback="formsError" :state="formsState">
+                    <b-form-select multiple :options="availableForms" v-model="scratch.forms" />
+                </b-form-group>
+            </b-form-row>
+            <b-form-row>
+                <b-form-checkbox v-model="scratch.disabled">{{$t('campaigns.disabled')}}</b-form-checkbox>
+            </b-form-row>
         </b-form>
         <template slot="modal-ok"><fa-icon icon="edit"/> {{$t('users.update')}}</template>
         <template slot="modal-cancel">{{$t('modal.cancel')}}</template>
@@ -29,7 +36,7 @@
 </template>
 
 <script>
-    import {BModal, BAlert, BForm, BFormGroup, BFormInput, BFormCheckbox, BFormRow} from 'bootstrap-vue'
+    import {BModal, BAlert, BForm, BFormGroup, BFormInput, BFormCheckbox, BFormRow, BFormSelect} from 'bootstrap-vue'
     import {isValidDate} from "../../dates";
     export default {
         name: 'campaign-edit-dialog',
@@ -47,8 +54,10 @@
                     description: '',
                     start: null,
                     end: null,
-                    disabled: null
+                    disabled: null,
+                    forms: []
                 },
+                availableForms: [],
                 validated: null,
                 errors: [],
                 fieldErrors: {}
@@ -56,6 +65,7 @@
         },
         methods: {
             async initData() {
+                await this.loadAvailableForms()
                 await this.loadCampaign(this.uuid)
                 this.validated = null
                 this.errors = []
@@ -111,7 +121,8 @@
                     description: s.description,
                     start: s.start,
                     end: s.end,
-                    disabled: s.disabled
+                    disabled: s.disabled,
+                    forms: s.forms.map(v => { let [id, version] = v.split('|'); return {id: id, version: version}; })
                 }
             },
             async submit(e) {
@@ -133,9 +144,17 @@
             },
             async loadCampaign(uuid) {
                 let response = await this.$xhr.get(`/campaign/${uuid}`)
-                this.scratch = response.data
-                this.scratch.start = this.scratch.start? new Date(this.scratch.start).toISOString().slice(0,10) : null
-                this.scratch.end = this.scratch.end? new Date(this.scratch.end).toISOString().slice(0,10) : null
+                let data = response.data
+                this.scratch.disabled = data.disabled
+                this.scratch.name = data.name
+                this.scratch.description = data.description
+                this.scratch.start = data.start? new Date(data.start).toISOString().slice(0,10) : null
+                this.scratch.end = data.end? new Date(data.end).toISOString().slice(0,10) : null
+                this.scratch.forms = data.forms.map(id => `${id.id}|${id.version}`)
+            },
+            async loadAvailableForms() {
+                let response = await this.$xhr.get(`/campaign/availableForms`)
+                this.availableForms = response.data.map(id => ({value: `${id.id}|${id.version}`, text: `${id.id} (${id.version})`}));
             }
         },
         computed: {
@@ -162,10 +181,16 @@
             },
             endError() {
                 return (this.fieldErrors.end || []).join(' ')
+            },
+            formsState() {
+                return this.validated == null? null : !this.formsError
+            },
+            formsError() {
+                return (this.fieldErrors.forms || []).join(' ')
             }
         },
         components: {
-            BModal, BAlert, BForm, BFormGroup, BFormInput, BFormCheckbox, BFormRow
+            BModal, BAlert, BForm, BFormGroup, BFormInput, BFormCheckbox, BFormRow, BFormSelect
         }
     }
 </script>

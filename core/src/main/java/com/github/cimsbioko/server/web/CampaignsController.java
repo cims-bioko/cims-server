@@ -1,8 +1,11 @@
 package com.github.cimsbioko.server.web;
 
 import com.github.cimsbioko.server.dao.CampaignRepository;
+import com.github.cimsbioko.server.dao.FormRepository;
 import com.github.cimsbioko.server.domain.Campaign;
 import com.github.cimsbioko.server.domain.FieldWorker;
+import com.github.cimsbioko.server.domain.Form;
+import com.github.cimsbioko.server.domain.FormId;
 import com.github.cimsbioko.server.service.CampaignService;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.FileSystemResource;
@@ -25,20 +28,21 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Controller
 public class CampaignsController {
 
     private final CampaignRepository repo;
+    private final FormRepository formRepo;
     private final CampaignService service;
     private final MessageSource messages;
 
-    public CampaignsController(CampaignRepository repo, CampaignService service, MessageSource messages) {
+    public CampaignsController(CampaignRepository repo, FormRepository formRepo, CampaignService service, MessageSource messages) {
         this.repo = repo;
+        this.formRepo = formRepo;
         this.service = service;
         this.messages = messages;
     }
@@ -57,7 +61,7 @@ public class CampaignsController {
     @GetMapping("/campaign/{uuid}")
     @ResponseBody
     @Transactional
-    public CampaignForm loadDevice(@PathVariable String uuid) {
+    public CampaignForm loadCampaign(@PathVariable String uuid) {
         Campaign c = repo.findById(uuid).orElseThrow(ResourceNotFoundException::new);
         CampaignForm form = new CampaignForm();
         form.setName(c.getName());
@@ -65,6 +69,7 @@ public class CampaignsController {
         form.setStart(c.getStart());
         form.setEnd(c.getEnd());
         form.setDisabled(c.getDisabled() != null);
+        form.setForms(c.getForms().stream().map(Form::getFormId).collect(Collectors.toList()));
         return form;
     }
 
@@ -92,6 +97,12 @@ public class CampaignsController {
         if (form.isDisabled()) {
             initial.setDisabled(now);
         }
+        Set<Form> associatedForms = new HashSet<>();
+        Optional.ofNullable(form.getForms())
+                .map(formRepo::findAllById)
+                .orElse(Collections.emptyList())
+                .forEach(associatedForms::add);
+        initial.setForms(associatedForms);
         Campaign saved = repo.save(initial);
 
         return ResponseEntity
@@ -119,6 +130,12 @@ public class CampaignsController {
         } else if (!form.isDisabled()){
             existing.setDisabled(null);
         }
+        Set<Form> associatedForms = new HashSet<>();
+        Optional.ofNullable(form.getForms())
+                .map(formRepo::findAllById)
+                .orElse(Collections.emptyList())
+                .forEach(associatedForms::add);
+        existing.setForms(associatedForms);
         existing = repo.save(existing);
 
         return ResponseEntity
@@ -203,6 +220,16 @@ public class CampaignsController {
         return ResponseEntity.notFound().build();
     }
 
+    @PreAuthorize("hasAnyAuthority('EDIT_CAMPAIGNS', 'CREATE_CAMPAIGNS')")
+    @GetMapping("/campaign/availableForms")
+    @ResponseBody
+    public List<FormId> availableForms() {
+        return StreamSupport
+                .stream(formRepo.findAll().spliterator(), false)
+                .map(Form::getFormId)
+                .collect(Collectors.toList());
+    }
+
     @ExceptionHandler(IOException.class)
     public ResponseEntity uploadFailed() {
         return ResponseEntity.badRequest().build();
@@ -215,6 +242,7 @@ public class CampaignsController {
         String description;
         Date start, end;
         boolean disabled;
+        List<FormId> forms = Collections.emptyList();
 
         public String getName() {
             return name;
@@ -254,6 +282,14 @@ public class CampaignsController {
 
         public void setDisabled(boolean disabled) {
             this.disabled = disabled;
+        }
+
+        public List<FormId> getForms() {
+            return forms;
+        }
+
+        public void setForms(List<FormId> forms) {
+            this.forms = forms;
         }
     }
 }
