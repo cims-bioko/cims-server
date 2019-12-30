@@ -199,14 +199,14 @@ public class CampaignsController {
     @PreAuthorize("hasAuthority('UPLOAD_CAMPAIGNS')")
     @PostMapping("/campaign/{uuid}")
     @ResponseBody
-    public ResponseEntity uploadCampaignFile(@PathVariable String uuid, @RequestParam("campaign_file") MultipartFile file) throws IOException {
+    public ResponseEntity<?> uploadCampaignFile(@PathVariable String uuid, @RequestParam("campaign_file") MultipartFile file) throws IOException {
         service.uploadCampaignFile(uuid, file);
         return ResponseEntity.noContent().build();
     }
 
     @PreAuthorize("hasAuthority('DOWNLOAD_CAMPAIGNS')")
     @GetMapping("/campaign/export/{uuid}")
-    public ResponseEntity downloadCampaignFile(@PathVariable String uuid) throws IOException {
+    public ResponseEntity<?> downloadCampaignFile(@PathVariable String uuid) throws IOException {
         Optional<File> maybeCampaign = service.getCampaignFile(uuid);
         if (maybeCampaign.isPresent() && maybeCampaign.get().canRead()) {
             Resource res = new FileSystemResource(maybeCampaign.get());
@@ -231,7 +231,7 @@ public class CampaignsController {
     }
 
     @ExceptionHandler(IOException.class)
-    public ResponseEntity uploadFailed() {
+    public ResponseEntity<?> uploadFailed() {
         return ResponseEntity.badRequest().build();
     }
 
