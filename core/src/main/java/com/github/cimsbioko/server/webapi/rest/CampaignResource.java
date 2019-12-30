@@ -24,6 +24,7 @@ import java.util.Optional;
 @Controller
 public class CampaignResource {
 
+    public static final String CAMPAIGN_ID_HEADER = "CIMS-Campaign-ID";
     private final FileHasher fileHasher;
     private final CampaignService service;
     private final CampaignRepository repo;
@@ -65,7 +66,7 @@ public class CampaignResource {
                         .eTag(descriptor)
                         .contentLength(resource.contentLength())
                         .contentType(MediaType.parseMediaType("application/zip"))
-                        .header("CIMS-Campaign-ID", uuid)
+                        .header(CAMPAIGN_ID_HEADER, uuid)
                         .body(new InputStreamResource(resource.getInputStream()));
             }
         }
