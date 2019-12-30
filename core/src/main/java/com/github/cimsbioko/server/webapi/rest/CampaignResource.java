@@ -65,6 +65,7 @@ public class CampaignResource {
                         .eTag(descriptor)
                         .contentLength(resource.contentLength())
                         .contentType(MediaType.parseMediaType("application/zip"))
+                        .header("CIMS-Campaign-ID", uuid)
                         .body(new InputStreamResource(resource.getInputStream()));
             }
         }
