@@ -1,11 +1,9 @@
 package com.github.cimsbioko.server.web;
 
 import com.github.cimsbioko.server.dao.CampaignRepository;
+import com.github.cimsbioko.server.dao.DeviceRepository;
 import com.github.cimsbioko.server.dao.FormRepository;
-import com.github.cimsbioko.server.domain.Campaign;
-import com.github.cimsbioko.server.domain.FieldWorker;
-import com.github.cimsbioko.server.domain.Form;
-import com.github.cimsbioko.server.domain.FormId;
+import com.github.cimsbioko.server.domain.*;
 import com.github.cimsbioko.server.service.CampaignService;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.FileSystemResource;
@@ -37,12 +35,15 @@ public class CampaignsController {
 
     private final CampaignRepository repo;
     private final FormRepository formRepo;
+    private final DeviceRepository deviceRepo;
     private final CampaignService service;
     private final MessageSource messages;
 
-    public CampaignsController(CampaignRepository repo, FormRepository formRepo, CampaignService service, MessageSource messages) {
+    public CampaignsController(CampaignRepository repo, FormRepository formRepo, DeviceRepository deviceRepo,
+                               CampaignService service, MessageSource messages) {
         this.repo = repo;
         this.formRepo = formRepo;
+        this.deviceRepo = deviceRepo;
         this.service = service;
         this.messages = messages;
     }
@@ -70,12 +71,14 @@ public class CampaignsController {
         form.setEnd(c.getEnd());
         form.setDisabled(c.getDisabled() != null);
         form.setForms(c.getForms().stream().map(Form::getFormId).collect(Collectors.toList()));
+        form.setDevices(c.getDevices().stream().map(Device::getUuid).collect(Collectors.toList()));
         return form;
     }
 
     @PreAuthorize("hasAuthority('CREATE_CAMPAIGNS')")
     @PostMapping("/campaigns")
     @ResponseBody
+    @Transactional
     public ResponseEntity<AjaxResult> createCampaign(@Valid @RequestBody CampaignForm form, Locale locale) {
 
         if (repo.findByName(form.getName()).isPresent()) {
@@ -104,6 +107,10 @@ public class CampaignsController {
                 .forEach(associatedForms::add);
         initial.setForms(associatedForms);
         Campaign saved = repo.save(initial);
+        Optional.ofNullable(form.getDevices())
+                .map(deviceRepo::findAllById)
+                .orElse(Collections.emptyList())
+                .forEach(d -> d.setCampaign(saved));
 
         return ResponseEntity
                 .ok(new AjaxResult()
@@ -118,6 +125,7 @@ public class CampaignsController {
     @PreAuthorize("hasAuthority('EDIT_CAMPAIGNS')")
     @PutMapping("/campaign/{uuid}")
     @ResponseBody
+    @Transactional
     public ResponseEntity<?> updateCampaign(@PathVariable String uuid, @Valid @RequestBody CampaignForm form, Locale locale) {
         Campaign existing = repo.findById(uuid).orElseThrow(ResourceNotFoundException::new);
         existing.setName(form.getName());
@@ -136,7 +144,16 @@ public class CampaignsController {
                 .orElse(Collections.emptyList())
                 .forEach(associatedForms::add);
         existing.setForms(associatedForms);
-        existing = repo.save(existing);
+        Set<Device> associatedDevices = new HashSet<>();
+        Optional.ofNullable(form.getDevices())
+                .map(deviceRepo::findAllById)
+                .orElse(Collections.emptyList())
+                .forEach(associatedDevices::add);
+        Set<Device> disassociatedDevices = new HashSet<>(existing.getDevices());
+        disassociatedDevices.removeAll(associatedDevices);
+        disassociatedDevices.forEach(device -> device.setCampaign(null));
+        final Campaign saved = repo.save(existing);
+        associatedDevices.forEach(device -> device.setCampaign(saved));
 
         return ResponseEntity
                 .ok(new AjaxResult()
@@ -230,6 +247,20 @@ public class CampaignsController {
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasAnyAuthority('EDIT_CAMPAIGNS', 'CREATE_CAMPAIGNS')")
+    @GetMapping("/campaign/{uuid}/availableDevices")
+    @ResponseBody
+    public List<Device> availableDevicesForEdit(@PathVariable String uuid) {
+        return deviceRepo.findSelectableForCampaign(uuid);
+    }
+
+    @PreAuthorize("hasAnyAuthority('EDIT_CAMPAIGNS', 'CREATE_CAMPAIGNS')")
+    @GetMapping("/campaign/availableDevices")
+    @ResponseBody
+    public List<Device> availableDevicesForCreate() {
+        return deviceRepo.findSelectableForCampaign("");
+    }
+
     @ExceptionHandler(IOException.class)
     public ResponseEntity<?> uploadFailed() {
         return ResponseEntity.badRequest().build();
@@ -243,6 +274,7 @@ public class CampaignsController {
         Date start, end;
         boolean disabled;
         List<FormId> forms = Collections.emptyList();
+        List<String> devices = Collections.emptyList();
 
         public String getName() {
             return name;
@@ -290,6 +322,14 @@ public class CampaignsController {
 
         public void setForms(List<FormId> forms) {
             this.forms = forms;
+        }
+
+        public List<String> getDevices() {
+            return devices;
+        }
+
+        public void setDevices(List<String> devices) {
+            this.devices = devices;
         }
     }
 }

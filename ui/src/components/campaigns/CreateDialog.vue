@@ -26,6 +26,11 @@
                     <b-form-select multiple :options="availableForms" v-model="forms" />
                 </b-form-group>
             </b-form-row>
+            <b-form-row>
+                <b-form-group :label="$t('campaigns.devices')" :invalid-feedback="devicesError" :state="devicesState">
+                    <b-form-select multiple :options="availableDevices" v-model="devices" />
+                </b-form-group>
+            </b-form-row>
             <b-form-checkbox v-model="disabled">{{$t('campaigns.disabled')}}</b-form-checkbox>
         </b-form>
         <template slot="modal-ok"><fa-icon icon="plus"/> {{$t('campaigns.create')}}</template>
@@ -48,6 +53,8 @@
                 disabled: null,
                 forms: [],
                 availableForms: [],
+                devices: [],
+                availableDevices: [],
                 validated: null,
                 errors: [],
                 fieldErrors: {}
@@ -56,7 +63,9 @@
         methods: {
             async init() {
                 this.clearData()
-                await this.loadAvailableForms()
+                const loadForms = this.loadAvailableForms(), loadDevices = this.loadAvailableDevices()
+                await loadForms;
+                await loadDevices;
             },
             clearData() {
                 this.name = ''
@@ -65,6 +74,8 @@
                 this.end = null
                 this.forms = []
                 this.availableForms = []
+                this.devices = []
+                this.availableDevices = []
                 this.disabled = null
                 this.validated = null
                 this.errors = []
@@ -120,7 +131,8 @@
                     start: this.start,
                     end: this.end,
                     disabled: this.disabled,
-                    forms: this.forms.map(v => { let [id, version] = v.split('|'); return {id: id, version: version}; })
+                    forms: this.forms.map(v => { let [id, version] = v.split('|'); return {id: id, version: version}; }),
+                    devices: this.devices
                 }
             },
             async submit(e) {
@@ -143,6 +155,10 @@
             async loadAvailableForms() {
                 let response = await this.$xhr.get(`/campaign/availableForms`)
                 this.availableForms = response.data.map(id => ({value: `${id.id}|${id.version}`, text: `${id.id} (${id.version})`}));
+            },
+            async loadAvailableDevices() {
+                let response = await this.$xhr.get(`/campaign/availableDevices`)
+                this.availableDevices = response.data.map(device => ({value: `${device.uuid}`, text: `${device.name} (${device.description})`}));
             }
         },
         computed: {
@@ -175,6 +191,12 @@
             },
             formsError() {
                 return (this.fieldErrors.forms || []).join(' ')
+            },
+            devicesState() {
+                return this.validated == null? null : !this.devicesError
+            },
+            devicesError() {
+                return (this.fieldErrors.devices || []).join(' ')
             }
         },
         components: {

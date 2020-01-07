@@ -142,4 +142,12 @@ public class Device {
     public void setLastLogin(Timestamp lastLogin) {
         this.lastLogin = lastLogin;
     }
+
+    public Campaign getCampaign() {
+        return campaign;
+    }
+
+    public void setCampaign(Campaign campaign) {
+        this.campaign = campaign;
+    }
 }

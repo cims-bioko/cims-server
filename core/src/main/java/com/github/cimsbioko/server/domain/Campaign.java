@@ -152,8 +152,4 @@ public class Campaign {
     public Set<Device> getDevices() {
         return devices;
     }
-
-    public void setDevices(Set<Device> devices) {
-        this.devices = devices;
-    }
 }
