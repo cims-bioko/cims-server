@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.context.request.WebRequest;
 
 import java.io.File;
-import java.util.Optional;
 
 import static com.github.cimsbioko.server.config.WebConfig.CACHED_FILES_PATH;
 
