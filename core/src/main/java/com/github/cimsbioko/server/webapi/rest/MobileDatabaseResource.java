@@ -45,10 +45,10 @@ public class MobileDatabaseResource {
         return mobileDb(request, "default");
     }
 
-    @GetMapping(value = "/api/rest/mobiledb/{name}", produces = {SQLITE_MIME_TYPE, Metadata.MIME_TYPE})
-    @PreAuthorize("hasAuthority('MOBILE_SYNC') and @campaignService.isMember(#name, #auth)")
-    public String mobileDB(WebRequest request, @PathVariable String name, Authentication auth) {
-        return mobileDb(request, name);
+    @GetMapping(value = "/api/rest/mobiledb/{uuid}", produces = {SQLITE_MIME_TYPE, Metadata.MIME_TYPE})
+    @PreAuthorize("hasAuthority('MOBILE_SYNC') and @campaignService.isMember(#uuid, #auth)")
+    public String mobileDB(WebRequest request, @PathVariable String uuid, Authentication auth) {
+        return mobileDb(request, uuid);
     }
 
     private String mobileDb(WebRequest request, String uuid) {
