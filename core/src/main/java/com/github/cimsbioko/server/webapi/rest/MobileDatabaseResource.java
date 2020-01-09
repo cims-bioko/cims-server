@@ -51,9 +51,11 @@ public class MobileDatabaseResource {
     }
 
     private String mobileDb(WebRequest request, String uuid) {
+
         if ("default".equals(uuid)) {
             uuid = campaignRepo.findDefault().map(Campaign::getUuid).orElse(uuid);
         }
+
         File cacheFile = service.getOutput(uuid);
         File metadataFile = new File(cacheFile.getParentFile(), cacheFile.getName() + "." + Metadata.FILE_EXT);
         String accept = request.getHeader(ACCEPT);
