@@ -29,6 +29,7 @@ public class Constants {
     public static final String SUBMISSION_DATE = "submissionDate";
     public static final String META = "meta";
     public static final String CIMS_BINDING = "cims-binding";
+    public static final String CIMS_CAMPAIGN = "cims-campaign";
     public static final String XML_SUBMISSION_FILE = "xml_submission_file";
     public static final String DEVICE_ID = "deviceID";
 }

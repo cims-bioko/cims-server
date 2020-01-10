@@ -46,13 +46,19 @@ public class FormProcessorServiceImpl implements FormProcessorService {
     @Override
     @Transactional
     public void process(FormSubmission submission) {
-        String campaign = campaignRepo.findDefault()
+        Optional.ofNullable(submission.getCampaignId())
+                .flatMap(campaignRepo::findActiveByUuid)
                 .map(Campaign::getUuid)
-                .orElseThrow(() -> new RuntimeException("no default campaign found"));
-        FormProcessor processor = Optional.ofNullable(campaignProcessors.get(campaign))
+                .map(campaignProcessors::get)
                 .map(pm -> pm.get(submission.getFormBinding()))
-                .orElse((fs) -> { log.info("ignoring submission {}: no processor for binding '{}'",
-                                           submission.getInstanceId(), submission.getFormBinding()); });
-        processor.process(submission);
+                .orElse(new DefaultProcessor())
+                .process(submission);
+    }
+
+    static class DefaultProcessor implements FormProcessor {
+        @Override
+        public void process(FormSubmission submission) {
+            log.info("ignoring submission {}: no processor for binding '{}'", submission.getInstanceId(), submission.getFormBinding());
+        }
     }
 }

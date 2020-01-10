@@ -1,11 +1,14 @@
 package com.github.cimsbioko.server.webapi.odk;
 
+import com.github.cimsbioko.server.dao.CampaignRepository;
 import com.github.cimsbioko.server.dao.FormRepository;
 import com.github.cimsbioko.server.dao.FormSubmissionRepository;
+import com.github.cimsbioko.server.domain.Campaign;
 import com.github.cimsbioko.server.domain.Form;
 import com.github.cimsbioko.server.domain.FormId;
 import com.github.cimsbioko.server.domain.FormSubmission;
 import com.github.cimsbioko.server.exception.ExistingSubmissionException;
+import com.github.cimsbioko.server.service.CampaignService;
 import com.github.cimsbioko.server.service.FormSubmissionService;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -28,6 +31,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +48,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -74,6 +79,12 @@ public class SubmissionResource {
 
     @Autowired
     private FormRepository formDao;
+
+    @Autowired
+    private CampaignRepository campaignRepo;
+
+    @Autowired
+    private CampaignService campaignService;
 
     @Autowired
     private FileHasher hasher;
@@ -268,7 +279,7 @@ public class SubmissionResource {
     @PreAuthorize("hasAuthority('ODK_SUBMISSION_UPLOAD')")
     public ResponseEntity<ByteArrayResource> handleSubmission(@RequestParam(value = DEVICE_ID, defaultValue = "unknown") String deviceId,
                                                               @RequestParam(XML_SUBMISSION_FILE) MultipartFile xmlFile,
-                                                              MultipartHttpServletRequest req)
+                                                              MultipartHttpServletRequest req, Authentication auth)
             throws IOException, URISyntaxException, JDOMException {
 
         log.info("received submission from device '{}'", deviceId);
@@ -357,6 +368,18 @@ public class SubmissionResource {
                 binding = id;
             }
 
+            String campaign = Optional.ofNullable(rootElem.getAttributeValue(CIMS_CAMPAIGN))
+                    .orElseGet(() -> campaignRepo.findDefault().map(Campaign::getUuid).orElse(null));
+
+            if (!campaignService.isMember(campaign, auth)) {
+                log.warn("rejected {}, no suitable campaign", instanceId);
+                return ResponseEntity
+                        .status(HttpStatus.FORBIDDEN)
+                        .headers(helper.openRosaHeaders())
+                        .contentType(MediaType.TEXT_XML)
+                        .body(new ByteArrayResource(responseBuilder.response("no suitable campaign").getBytes()));
+            }
+
             /*
                Get submission date if supplied. Its presence implies previously submitted/processed (briefcase upload).
                We can not infer whether the processing failed or succeeded because this CIMS concept is not present in
@@ -373,7 +396,7 @@ public class SubmissionResource {
             log.debug("converted json:\n{}", json);
 
             // Create a database record for the submission
-            FormSubmission submission = new FormSubmission(instanceId, xmlDoc, json, id, version, binding,
+            FormSubmission submission = new FormSubmission(instanceId, xmlDoc, json, id, version, binding, campaign,
                     deviceId, collected, submitted, processed, null);
             boolean isDuplicateSubmission = false;
             try {

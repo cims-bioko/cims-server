@@ -37,6 +37,9 @@ public class FormSubmission {
     @Column(name = "form_binding")
     private String formBinding;
 
+    @Column(name = "campaign")
+    private String campaignId;
+
     @Column(name = "from_device")
     private String deviceId;
 
@@ -63,7 +66,7 @@ public class FormSubmission {
     }
 
     public FormSubmission(String instanceId, Document xml, JSONObject json, String formId, String formVersion,
-                          String formBinding, String deviceId, Timestamp collected, Timestamp submitted, Timestamp processed,
+                          String formBinding, String campaignId, String deviceId, Timestamp collected, Timestamp submitted, Timestamp processed,
                           Boolean processedOk) {
         this.instanceId = instanceId;
         this.xml = xml;
@@ -71,6 +74,7 @@ public class FormSubmission {
         this.formId = formId;
         this.formVersion = formVersion;
         this.formBinding = formBinding;
+        this.campaignId = campaignId;
         this.deviceId = deviceId;
         this.collected = collected;
         this.submitted = submitted;
@@ -100,6 +104,10 @@ public class FormSubmission {
 
     public String getFormBinding() {
         return formBinding;
+    }
+
+    public String getCampaignId() {
+        return campaignId;
     }
 
     public String getDeviceId() {
@@ -136,6 +144,10 @@ public class FormSubmission {
 
     public void setFormBinding(String formBinding) {
         this.formBinding = formBinding;
+    }
+
+    public void setCampaignId(String campaignId) {
+        this.campaignId = campaignId;
     }
 
     public void setDeviceId(String deviceId) {
