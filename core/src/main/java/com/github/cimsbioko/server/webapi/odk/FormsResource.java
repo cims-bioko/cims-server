@@ -97,7 +97,8 @@ public class FormsResource {
     @GetMapping(path = {"/forms", "/formList"})
     @PreAuthorize("hasAuthority('ODK_FORM_LIST')")
     public ResponseEntity<ByteArrayResource> formList(@RequestParam(value = "campaign", required = false) String campaign, HttpServletRequest req) {
-        String formList = buildFormList(downloadableForms(campaign), buildFullRequestUrl(req));
+        String reqUrlNoQuery = buildFullRequestUrl(req.getScheme(), req.getServerName(), req.getServerPort(), req.getRequestURI(),  null);
+        String formList = buildFormList(downloadableForms(campaign), reqUrlNoQuery);
         return ResponseEntity
                 .ok()
                 .headers(helper.openRosaHeaders())
