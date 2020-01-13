@@ -163,6 +163,7 @@
                 this.scratch.start = data.start? new Date(data.start).toISOString().slice(0,10) : null
                 this.scratch.end = data.end? new Date(data.end).toISOString().slice(0,10) : null
                 this.scratch.forms = data.forms.map(id => `${id.id}|${id.version}`)
+                this.scratch.devices = data.devices
             },
             async loadAvailableForms() {
                 let response = await this.$xhr.get(`/campaign/availableForms`)
