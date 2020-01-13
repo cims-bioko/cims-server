@@ -38,6 +38,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.github.cimsbioko.server.util.JDOMUtil.getOutputter;
@@ -95,8 +96,8 @@ public class FormsResource {
 
     @GetMapping(path = {"/forms", "/formList"})
     @PreAuthorize("hasAuthority('ODK_FORM_LIST')")
-    public ResponseEntity<ByteArrayResource> formList(HttpServletRequest req) {
-        String formList = buildFormList(downloadableForms(), buildFullRequestUrl(req));
+    public ResponseEntity<ByteArrayResource> formList(@RequestParam(value = "campaign", required = false) String campaign, HttpServletRequest req) {
+        String formList = buildFormList(downloadableForms(campaign), buildFullRequestUrl(req));
         return ResponseEntity
                 .ok()
                 .headers(helper.openRosaHeaders())
@@ -200,10 +201,12 @@ public class FormsResource {
     /**
      * Scans the application form directory and returns the list of detected (valid) form definitions found.
      */
-    private Stream<OpenRosaFormDef> downloadableForms() {
+    private Stream<OpenRosaFormDef> downloadableForms(String campaign) {
         if (formsDir.exists()) {
             Path formsPath = formsDir.toPath();
-            return formDao.findDownloadable()
+            return Optional.ofNullable(campaign)
+                    .map(formDao::findDownloadableByCampaign)
+                    .orElseGet(formDao::findDownloadable)
                     .stream()
                     .map(form -> formFileSystem.getXmlFormPath(form.getFormId().getId(), form.getFormId().getVersion()))
                     .map(formsPath::resolve)
