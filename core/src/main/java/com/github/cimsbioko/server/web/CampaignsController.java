@@ -184,7 +184,7 @@ public class CampaignsController {
         return ResponseEntity
                 .ok(new AjaxResult()
                         .addMessage(
-                                resolveMessage("campaigns.msg.deleted", locale, uuid)));
+                                resolveMessage("campaigns.msg.deleted", locale, c.getName())));
     }
 
     @PreAuthorize("hasAuthority('RESTORE_CAMPAIGNS')")
@@ -210,7 +210,7 @@ public class CampaignsController {
         return ResponseEntity
                 .ok(new AjaxResult()
                         .addMessage(
-                                resolveMessage("campaigns.msg.restored", locale, uuid)));
+                                resolveMessage("campaigns.msg.restored", locale, c.getName())));
     }
 
     @PreAuthorize("hasAuthority('UPLOAD_CAMPAIGNS')")
