@@ -83,6 +83,8 @@ public class DevicesController {
 
         return ResponseEntity
                 .ok(new AjaxResult()
+                        .addData("device", saved.getName())
+                        .addData("secret", initialSecret)
                         .addMessage(
                                 resolveMessage("devices.msg.created", locale, saved.getName(), initialSecret)));
     }

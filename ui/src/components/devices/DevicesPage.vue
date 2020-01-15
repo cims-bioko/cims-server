@@ -133,6 +133,7 @@
                 this.$refs.createDialog.show()
             },
             itemCreated(rsp) {
+                this.saveSecret(rsp.data)
                 this.showMessages(rsp.messages)
                 this.reloadPage()
             },
