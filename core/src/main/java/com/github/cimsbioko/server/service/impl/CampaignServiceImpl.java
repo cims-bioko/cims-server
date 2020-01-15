@@ -23,8 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -88,19 +87,25 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
         String uuid = event.getUuid();
         if (repo.findActiveByUuid(uuid).isPresent()) {
             try {
-                log.info("pre-loading new definition for campaign '{}'", uuid);
+                log.info("pre-loading new config for campaign '{}'", uuid);
                 JsConfig config = new JsConfig(event.getFile(), ctx).load();
 
+                Path campaignFilePath = getCampaignFilePath(uuid);
+                log.info("pre-loading succeeded, installing to {}", campaignFilePath);
+                Files.copy(event.getFile().toPath(), campaignFilePath, StandardCopyOption.REPLACE_EXISTING);
+
                 if (loadedConfigs.containsKey(uuid)) {
-                    log.info("unloading old definition for campaign '{}'", uuid);
-                    eventPublisher.publishEvent(new CampaignUnloaded(uuid, loadedConfigs.get(uuid)));
+                    log.info("unloading old config for campaign '{}'", uuid);
+                    try (JsConfig oldConfig = loadedConfigs.get(uuid)) {
+                        eventPublisher.publishEvent(new CampaignUnloaded(uuid, oldConfig));
+                    }
                 }
 
                 loadedConfigs.put(uuid, config);
 
-                log.info("loading new definition for campaign '{}'", uuid);
+                log.info("loading new config for campaign '{}'", uuid);
                 eventPublisher.publishEvent(new CampaignLoaded(uuid, config));
-            } catch (URISyntaxException | MalformedURLException e) {
+            } catch (URISyntaxException | IOException e) {
                 log.error("failed to load uploaded campaign", e);
             }
         } else {
@@ -114,7 +119,7 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
 
     @Override
     public void uploadCampaignFile(String uuid, MultipartFile file) throws IOException {
-        Path target = getCampaignFilePath(uuid);
+        Path target = Files.createTempFile("campaign_upload", null);
         file.transferTo(target);
         eventPublisher.publishEvent(new CampaignUploaded(uuid, target.toFile()));
     }
