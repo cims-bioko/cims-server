@@ -49,7 +49,7 @@
                             <b-button v-if="!data.item.deleted && $can('UPLOAD_CAMPAIGNS')" variant="outline-primary" @click="upload(data.index)">
                                 <fa-icon icon="upload"/>
                             </b-button>
-                            <b-button v-if="$can('DOWNLOAD_CAMPAIGNS')" variant="outline-primary" :href="`/campaign/export/${data.item.name}`" download>
+                            <b-button v-if="$can('DOWNLOAD_CAMPAIGNS')" variant="outline-primary" :href="`/campaign/export/${data.item.uuid}`" download>
                                 <fa-icon icon="download"/>
                             </b-button>
                         </b-button-group>
