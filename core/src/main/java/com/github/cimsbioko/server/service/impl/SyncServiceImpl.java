@@ -175,12 +175,12 @@ public class SyncServiceImpl implements SyncService {
     private static class SyncTask implements Task {
 
         private final JsConfig config;
-        private final ScheduledFuture taskFuture;
+        private final ScheduledFuture<?> taskFuture;
         private Date started, finished;
         private int itemCount;
         private String descriptor;
 
-        SyncTask(JsConfig config, ScheduledFuture future) {
+        SyncTask(JsConfig config, ScheduledFuture<?> future) {
             this.config = config;
             this.taskFuture = future;
         }
@@ -189,7 +189,7 @@ public class SyncServiceImpl implements SyncService {
             return config;
         }
 
-        public ScheduledFuture getTaskFuture() {
+        public ScheduledFuture<?> getTaskFuture() {
             return taskFuture;
         }
 
