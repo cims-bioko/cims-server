@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,13 +26,13 @@ import java.util.*;
 
 import static java.util.Collections.*;
 
-public class JsConfig {
+public class JsConfig implements Closeable {
 
     private static final Logger log = LoggerFactory.getLogger(JsConfig.class);
 
     private static final String INIT_MODULE = "init";
 
-    private final ClassLoader loader;
+    private final URLClassLoader loader;
 
     private ApplicationContext ctx;
     private DatabaseExport export;
@@ -164,6 +165,14 @@ public class JsConfig {
         URLConnection c = url.openConnection();
         c.setUseCaches(false);
         return c;
+    }
+
+    @Override
+    public void close() throws IOException {
+        ctx = null;
+        loader.close();
+        export = null;
+        formProcessors = null;
     }
 
     private static class NonCachingModuleSourceProvider extends UrlModuleSourceProvider {
