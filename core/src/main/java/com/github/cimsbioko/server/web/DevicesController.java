@@ -171,7 +171,7 @@ public class DevicesController {
         return ResponseEntity
                 .ok(new AjaxResult()
                         .addMessage(
-                                resolveMessage("devices.msg.deleted", locale, uuid)));
+                                resolveMessage("devices.msg.deleted", locale, d.getName())));
     }
 
     @PreAuthorize("hasAuthority('RESTORE_DEVICES')")
@@ -197,7 +197,7 @@ public class DevicesController {
         return ResponseEntity
                 .ok(new AjaxResult()
                         .addMessage(
-                                resolveMessage("devices.msg.restored", locale, uuid)));
+                                resolveMessage("devices.msg.restored", locale, u.getName())));
     }
 
     @ExceptionHandler
