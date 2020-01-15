@@ -128,18 +128,12 @@ public class JsConfig implements Closeable {
     }
 
     private List<URI> getJsModulePath() throws URISyntaxException {
-        if (loader instanceof URLClassLoader) {
-            URLClassLoader urlClassLoader = (URLClassLoader) loader;
+        if (loader != null) {
             List<URI> uris = new ArrayList<>();
-            for (URL u : urlClassLoader.getURLs()) {
+            for (URL u : loader.getURLs()) {
                 uris.add(u.toURI());
             }
             return unmodifiableList(uris);
-        } else {
-            URL root = loader.getResource(INIT_MODULE + ".js");
-            if (root != null) {
-                return singletonList(root.toURI());
-            }
         }
         return emptyList();
     }
