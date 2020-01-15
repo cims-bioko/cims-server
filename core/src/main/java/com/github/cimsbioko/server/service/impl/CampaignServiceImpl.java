@@ -50,31 +50,26 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
 
     @EventListener
     public void onStartup(ApplicationStartedEvent event) {
-        loadEnabledCampaigns();
+        loadInitialCampaigns();
     }
 
-    private void loadEnabledCampaigns() {
+    private void loadInitialCampaigns() {
 
-        Map<String, JsConfig> newlyLoaded = new LinkedHashMap<>();
+        Map<String, JsConfig> loaded = new LinkedHashMap<>();
 
-        log.info("pre-loading enabled campaign definitions");
+        log.info("loading enabled campaign configs");
         for (String uuid : getEnabledCampaignUuids()) {
             getCampaignFile(uuid).ifPresent(file -> {
                 try {
                     JsConfig config = new JsConfig(file, ctx).load();
-                    newlyLoaded.put(uuid, config);
+                    loaded.put(uuid, config);
                 } catch (MalformedURLException | URISyntaxException e) {
                     log.warn("failed to load config for campaign " + uuid, e);
                 }
             });
         }
 
-        log.info("unloading old campaigns");
-        for (Map.Entry<String, JsConfig> existing : loadedConfigs.entrySet()) {
-            eventPublisher.publishEvent(new CampaignUnloaded(existing.getKey(), existing.getValue()));
-        }
-
-        loadedConfigs = newlyLoaded;
+        loadedConfigs = loaded;
 
         log.info("loading new campaigns");
         for (Map.Entry<String, JsConfig> newConfig : loadedConfigs.entrySet()) {
