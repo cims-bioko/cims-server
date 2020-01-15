@@ -34,8 +34,8 @@ public class Exporter {
 
     public void scriptTarget(InputStream script, File target) throws SQLException, IOException {
         if (script != null) {
-            BufferedReader ddlCmds = new BufferedReader(new InputStreamReader(script));
-            try (Connection dst = this.dst.createConnection(target, true);
+            try (BufferedReader ddlCmds = new BufferedReader(new InputStreamReader(script));
+                 Connection dst = this.dst.createConnection(target, true);
                  Statement d = this.dst.createStatement(dst)) {
                 String ddlCmd;
                 while ((ddlCmd = ddlCmds.readLine()) != null && ddlCmd.trim().length() > 0) {
