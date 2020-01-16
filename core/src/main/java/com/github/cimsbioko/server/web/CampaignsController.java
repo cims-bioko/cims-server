@@ -3,6 +3,7 @@ package com.github.cimsbioko.server.web;
 import com.github.cimsbioko.server.dao.CampaignRepository;
 import com.github.cimsbioko.server.dao.DeviceRepository;
 import com.github.cimsbioko.server.dao.FormRepository;
+import com.github.cimsbioko.server.dao.UserRepository;
 import com.github.cimsbioko.server.domain.*;
 import com.github.cimsbioko.server.service.CampaignService;
 import org.springframework.context.MessageSource;
@@ -36,14 +37,16 @@ public class CampaignsController {
     private final CampaignRepository repo;
     private final FormRepository formRepo;
     private final DeviceRepository deviceRepo;
+    private final UserRepository userRepo;
     private final CampaignService service;
     private final MessageSource messages;
 
     public CampaignsController(CampaignRepository repo, FormRepository formRepo, DeviceRepository deviceRepo,
-                               CampaignService service, MessageSource messages) {
+                               UserRepository userRepo, CampaignService service, MessageSource messages) {
         this.repo = repo;
         this.formRepo = formRepo;
         this.deviceRepo = deviceRepo;
+        this.userRepo = userRepo;
         this.service = service;
         this.messages = messages;
     }
@@ -72,6 +75,7 @@ public class CampaignsController {
         form.setDisabled(c.getDisabled() != null);
         form.setForms(c.getForms().stream().map(Form::getFormId).collect(Collectors.toList()));
         form.setDevices(c.getDevices().stream().map(Device::getUuid).collect(Collectors.toList()));
+        form.setUsers(c.getUsers().stream().map(User::getUuid).collect(Collectors.toList()));
         return form;
     }
 
@@ -92,21 +96,33 @@ public class CampaignsController {
 
         Timestamp now = Timestamp.from(Instant.now());
         final Campaign initial = new Campaign();
+
         initial.setName(form.getName());
         initial.setDescription(form.getDescription());
         initial.setCreated(now);
+
         Optional.ofNullable(form.getStart()).map(s -> new Timestamp(s.getTime())).ifPresent(initial::setStart);
         Optional.ofNullable(form.getEnd()).map(e -> new Timestamp(e.getTime())).ifPresent(initial::setEnd);
         if (form.isDisabled()) {
             initial.setDisabled(now);
         }
+
         Set<Form> associatedForms = new HashSet<>();
         Optional.ofNullable(form.getForms())
                 .map(formRepo::findAllById)
                 .orElse(Collections.emptyList())
                 .forEach(associatedForms::add);
         initial.setForms(associatedForms);
+
+        Set<User> associatedUsers = new HashSet<>();
+        Optional.ofNullable(form.getUsers())
+                .map(userRepo::findAllById)
+                .orElse(Collections.emptyList())
+                .forEach(associatedUsers::add);
+        initial.setUsers(associatedUsers);
+
         Campaign saved = repo.save(initial);
+
         Optional.ofNullable(form.getDevices())
                 .map(deviceRepo::findAllById)
                 .orElse(Collections.emptyList())
@@ -127,23 +143,28 @@ public class CampaignsController {
     @ResponseBody
     @Transactional
     public ResponseEntity<?> updateCampaign(@PathVariable String uuid, @Valid @RequestBody CampaignForm form, Locale locale) {
+
         Campaign existing = repo.findById(uuid).orElseThrow(ResourceNotFoundException::new);
+
         existing.setName(form.getName());
         existing.setDescription(form.getDescription());
         existing.setStart(Optional.ofNullable(form.getStart()).map(s -> new Timestamp(s.getTime())).orElse(null));
         existing.setEnd(Optional.ofNullable(form.getEnd()).map(e -> new Timestamp(e.getTime())).orElse(null));
+
         if (form.isDisabled() && existing.getDisabled() == null) {
             Timestamp now = Timestamp.from(Instant.now());
             existing.setDisabled(now);
         } else if (!form.isDisabled()){
             existing.setDisabled(null);
         }
+
         Set<Form> associatedForms = new HashSet<>();
         Optional.ofNullable(form.getForms())
                 .map(formRepo::findAllById)
                 .orElse(Collections.emptyList())
                 .forEach(associatedForms::add);
         existing.setForms(associatedForms);
+
         Set<Device> associatedDevices = new HashSet<>();
         Optional.ofNullable(form.getDevices())
                 .map(deviceRepo::findAllById)
@@ -154,6 +175,13 @@ public class CampaignsController {
         disassociatedDevices.forEach(device -> device.setCampaign(null));
         final Campaign saved = repo.save(existing);
         associatedDevices.forEach(device -> device.setCampaign(saved));
+
+        Set<User> associatedUsers = new HashSet<>();
+        Optional.ofNullable(form.getUsers())
+                .map(userRepo::findAllById)
+                .orElse(Collections.emptyList())
+                .forEach(associatedUsers::add);
+        existing.setUsers(associatedUsers);
 
         return ResponseEntity
                 .ok(new AjaxResult()
@@ -255,6 +283,13 @@ public class CampaignsController {
     }
 
     @PreAuthorize("hasAnyAuthority('EDIT_CAMPAIGNS', 'CREATE_CAMPAIGNS')")
+    @GetMapping("/campaign/availableUsers")
+    @ResponseBody
+    public List<User> availableUsers() {
+        return userRepo.findSelectableForCampaign();
+    }
+
+    @PreAuthorize("hasAnyAuthority('EDIT_CAMPAIGNS', 'CREATE_CAMPAIGNS')")
     @GetMapping("/campaign/availableDevices")
     @ResponseBody
     public List<Device> availableDevicesForCreate() {
@@ -275,6 +310,7 @@ public class CampaignsController {
         boolean disabled;
         List<FormId> forms = Collections.emptyList();
         List<String> devices = Collections.emptyList();
+        List<String> users = Collections.emptyList();
 
         public String getName() {
             return name;
@@ -330,6 +366,14 @@ public class CampaignsController {
 
         public void setDevices(List<String> devices) {
             this.devices = devices;
+        }
+
+        public List<String> getUsers() {
+            return users;
+        }
+
+        public void setUsers(List<String> users) {
+            this.users = users;
         }
     }
 }

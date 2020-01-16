@@ -32,6 +32,11 @@
                 </b-form-group>
             </b-form-row>
             <b-form-row>
+                <b-form-group :label="$t('campaigns.users')" :invalid-feedback="usersError" :state="usersState">
+                    <b-form-select multiple :options="availableUsers" v-model="scratch.users" />
+                </b-form-group>
+            </b-form-row>
+            <b-form-row>
                 <b-form-checkbox v-model="scratch.disabled">{{$t('campaigns.disabled')}}</b-form-checkbox>
             </b-form-row>
         </b-form>
@@ -61,10 +66,12 @@
                     end: null,
                     disabled: null,
                     forms: [],
-                    devices: []
+                    devices: [],
+                    users: []
                 },
                 availableForms: [],
                 availableDevices: [],
+                availableUsers: [],
                 validated: null,
                 errors: [],
                 fieldErrors: {}
@@ -74,9 +81,11 @@
             async initData() {
                 const loadForms = this.loadAvailableForms()
                 const loadDevices = this.loadAvailableDevices()
+                const loadUsers = this.loadAvailableUsers()
                 const loadCampaign = this.loadCampaign(this.uuid)
                 await loadForms
                 await loadDevices
+                await loadUsers
                 await loadCampaign
                 this.validated = null
                 this.errors = []
@@ -134,7 +143,8 @@
                     end: s.end,
                     disabled: s.disabled,
                     forms: s.forms.map(v => { let [id, version] = v.split('|'); return {id: id, version: version}; }),
-                    devices: s.devices
+                    devices: s.devices,
+                    users: s.users
                 }
             },
             async submit(e) {
@@ -164,6 +174,7 @@
                 this.scratch.end = data.end? new Date(data.end).toISOString().slice(0,10) : null
                 this.scratch.forms = data.forms.map(id => `${id.id}|${id.version}`)
                 this.scratch.devices = data.devices
+                this.scratch.users = data.users
             },
             async loadAvailableForms() {
                 let response = await this.$xhr.get(`/campaign/availableForms`)
@@ -172,6 +183,10 @@
             async loadAvailableDevices() {
                 let response = await this.$xhr.get(`/campaign/${this.uuid}/availableDevices`)
                 this.availableDevices = response.data.map(device => ({value: `${device.uuid}`, text: `${device.name} (${device.description})`}));
+            },
+            async loadAvailableUsers() {
+                let response = await this.$xhr.get(`/campaign/availableUsers`)
+                this.availableUsers = response.data.map(user => ({value: `${user.uuid}`, text: `${user.username} (${user.fullName})`}));
             }
         },
         computed: {
@@ -210,6 +225,12 @@
             },
             devicesError() {
                 return (this.fieldErrors.devices || []).join(' ')
+            },
+            usersState() {
+                return this.validated == null? null : !this.usersError
+            },
+            usersError() {
+                return (this.fieldErrors.users || []).join(' ')
             }
         },
         components: {

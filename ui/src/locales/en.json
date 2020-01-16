@@ -213,6 +213,7 @@
     "disabled": "Disabled",
     "forms": "Forms",
     "devices": "Devices",
+    "users": "Users",
     "actions": "Actions",
     "zip": "Campaign zip",
     "zipreq": "Campaign zip file is required.",

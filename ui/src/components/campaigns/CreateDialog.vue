@@ -31,6 +31,11 @@
                     <b-form-select multiple :options="availableDevices" v-model="devices" />
                 </b-form-group>
             </b-form-row>
+            <b-form-row>
+                <b-form-group :label="$t('campaigns.users')" :invalid-feedback="usersError" :state="usersState">
+                    <b-form-select multiple :options="availableUsers" v-model="users" />
+                </b-form-group>
+            </b-form-row>
             <b-form-checkbox v-model="disabled">{{$t('campaigns.disabled')}}</b-form-checkbox>
         </b-form>
         <template slot="modal-ok"><fa-icon icon="plus"/> {{$t('campaigns.create')}}</template>
@@ -55,6 +60,8 @@
                 availableForms: [],
                 devices: [],
                 availableDevices: [],
+                users: [],
+                availableUsers: [],
                 validated: null,
                 errors: [],
                 fieldErrors: {}
@@ -63,9 +70,12 @@
         methods: {
             async init() {
                 this.clearData()
-                const loadForms = this.loadAvailableForms(), loadDevices = this.loadAvailableDevices()
-                await loadForms;
-                await loadDevices;
+                const loadForms = this.loadAvailableForms()
+                const loadDevices = this.loadAvailableDevices()
+                const loadUsers = this.loadAvailableUsers()
+                await loadForms
+                await loadDevices
+                await loadUsers
             },
             clearData() {
                 this.name = ''
@@ -76,6 +86,8 @@
                 this.availableForms = []
                 this.devices = []
                 this.availableDevices = []
+                this.users = []
+                this.availableUsers = []
                 this.disabled = null
                 this.validated = null
                 this.errors = []
@@ -132,7 +144,8 @@
                     end: this.end,
                     disabled: this.disabled,
                     forms: this.forms.map(v => { let [id, version] = v.split('|'); return {id: id, version: version}; }),
-                    devices: this.devices
+                    devices: this.devices,
+                    users: this.users
                 }
             },
             async submit(e) {
@@ -159,6 +172,10 @@
             async loadAvailableDevices() {
                 let response = await this.$xhr.get(`/campaign/availableDevices`)
                 this.availableDevices = response.data.map(device => ({value: `${device.uuid}`, text: `${device.name} (${device.description})`}));
+            },
+            async loadAvailableUsers() {
+                let response = await this.$xhr.get(`/campaign/availableUsers`)
+                this.availableUsers = response.data.map(user => ({value: `${user.uuid}`, text: `${user.username} (${user.fullName})`}));
             }
         },
         computed: {
@@ -197,6 +214,12 @@
             },
             devicesError() {
                 return (this.fieldErrors.devices || []).join(' ')
+            },
+            usersState() {
+                return this.validated == null? null : !this.usersError
+            },
+            usersError() {
+                return (this.fieldErrors.users || []).join(' ')
             }
         },
         components: {
