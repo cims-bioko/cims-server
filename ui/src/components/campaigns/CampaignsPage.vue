@@ -33,6 +33,10 @@
                     <template slot="start" slot-scope="data">{{data.value|formatDateTime}}</template>
                     <template slot="end" slot-scope="data">{{data.value|formatDateTime}}</template>
                     <template slot="defaultCampaign" slot-scope="data">
+                        <b-button v-if="$can('SET_DEFAULT_CAMPAIGN') && !data.value && !data.item.deleted"
+                                  variant="outline-primary" @click="setDefault(data.item.uuid)">
+                            <fa-icon icon="check"/>
+                        </b-button>
                         <fa-icon v-if="data.value" icon="check"/>
                     </template>
                     <template slot="actions" slot-scope="data">
@@ -139,6 +143,10 @@
             async restoreItem(uuid) {
                 let response = await this.$xhr.put(`/campaign/restore/${uuid}`)
                 this.showMessages(response.data.messages)
+                this.reloadPage()
+            },
+            async setDefault(uuid) {
+                await this.$xhr.put(`/campaign/${uuid}/default`)
                 this.reloadPage()
             },
             search() {

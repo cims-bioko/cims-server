@@ -79,6 +79,33 @@ public class CampaignsController {
         return form;
     }
 
+    @PreAuthorize("hasAuthority('SET_DEFAULT_CAMPAIGN')")
+    @PutMapping("/campaign/{uuid}/default")
+    @ResponseBody
+    @Transactional
+    public ResponseEntity<AjaxResult> setDefaultCampaign(@PathVariable String uuid, Locale locale) {
+        Optional<Campaign> maybeNewDefault = repo.findById(uuid);
+        if (!maybeNewDefault.isPresent()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new AjaxResult()
+                            .addError(resolveMessage("input.msg.errors", locale))
+                            .addFieldError("name",
+                                    resolveMessage("campaigns.msg.existsnot", locale, uuid)));
+        } else {
+            Campaign newDefault = maybeNewDefault.get(), oldDefault = repo.findDefault().orElse(null);
+            if (oldDefault != null && !oldDefault.equals(newDefault)) {
+                oldDefault.setDefaultCampaign(false);
+                repo.flush(); // ordering not guaranteed, flush to avoid unique constraint violation
+            }
+            newDefault.setDefaultCampaign(true);
+            return ResponseEntity
+                    .ok(new AjaxResult()
+                            .addMessage(
+                                    resolveMessage("campaigns.msg.setdefault", locale, newDefault.getName())));
+        }
+    }
+
     @PreAuthorize("hasAuthority('CREATE_CAMPAIGNS')")
     @PostMapping("/campaigns")
     @ResponseBody
