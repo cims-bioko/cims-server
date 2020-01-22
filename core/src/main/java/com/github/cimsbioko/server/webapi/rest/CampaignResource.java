@@ -14,11 +14,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -45,6 +47,13 @@ public class CampaignResource {
     @GetMapping("/api/rest/campaign/{uuid}")
     public ResponseEntity<InputStreamResource> downloadCampaign(WebRequest request, @PathVariable String uuid, Authentication auth) throws IOException, NoSuchAlgorithmException {
         return downloadCampaign(request, Optional.ofNullable(uuid).orElse("default"));
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/api/rest/mycampaigns")
+    @ResponseBody
+    public List<Campaign> myCampaigns(Authentication auth) {
+        return service.getMyCampaigns(auth);
     }
 
     private ResponseEntity<InputStreamResource> downloadCampaign(WebRequest request, String uuid) throws IOException, NoSuchAlgorithmException {

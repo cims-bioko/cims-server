@@ -23,4 +23,14 @@ public interface CampaignRepository extends JpaRepository<Campaign, String>, Cam
     @Query("select c from #{#entityName} c where c.defaultCampaign = TRUE")
     Optional<Campaign> findDefault();
     Page<Campaign> findByDeletedIsNull(Pageable pageable);
+    @Query("select c from #{#entityName} c where" +
+            " (c.end is null or current_date() < c.end) and (c.start is null or current_date() > c.start)" +
+            " and c.disabled is null and c.deleted is null" +
+            " and exists (select d from Device d where d.name = :deviceName and d member of c.devices)")
+    List<Campaign> findActiveForDevice(@Param("deviceName") String deviceName);
+    @Query("select c from #{#entityName} c where" +
+            " (c.end is null or current_date() < c.end) and (c.start is null or current_date() > c.start)" +
+            " and c.disabled is null and c.deleted is null" +
+            " and exists (select u from User u where u.username = :userName and u member of c.users)")
+    List<Campaign> findActiveForUser(String userName);
 }

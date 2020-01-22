@@ -24,10 +24,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.nio.file.*;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CampaignServiceImpl implements CampaignService, ApplicationContextAware {
@@ -148,6 +145,17 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
                 .map(Campaign::getUsers)
                 .map(users -> users.stream().map(User::getUsername).collect(Collectors.toSet()))
                 .map(userNames -> userNames.contains(auth.getName())).orElse(false);
+    }
+
+    @Override
+    public List<Campaign> getMyCampaigns(Authentication auth) {
+        if (auth instanceof TokenAuthentication) {
+            TokenAuthentication tokenAuth = (TokenAuthentication) auth;
+            if (tokenAuth.isDevice()) {
+                return repo.findActiveForDevice(tokenAuth.getName());
+            }
+        }
+        return repo.findActiveForUser(auth.getName());
     }
 
     private Path getCampaignFilePath(String uuid) {
