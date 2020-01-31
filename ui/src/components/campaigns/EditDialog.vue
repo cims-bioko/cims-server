@@ -14,6 +14,11 @@
                 </b-form-group>
             </b-form-row>
             <b-form-row>
+                <b-form-group :label="$t('campaigns.zip')" :invalid-feedback="campaignFileError" :state="campaignFileState">
+                    <b-form-file ref="campaignFileInput" v-model="campaignFile" accept="application/zip" :state="campaignFileState"/>
+                </b-form-group>
+            </b-form-row>
+            <b-form-row>
                 <b-form-group :label="$t('campaigns.start')" :invalid-feedback="startError" :state="startState">
                     <b-form-input type="date" v-model="scratch.start" :state="startState" @input="validate"/>
                 </b-form-group>
@@ -46,7 +51,7 @@
 </template>
 
 <script>
-    import {BModal, BAlert, BForm, BFormGroup, BFormInput, BFormCheckbox, BFormRow, BFormSelect} from 'bootstrap-vue'
+    import {BModal, BAlert, BForm, BFormGroup, BFormInput, BFormCheckbox, BFormRow, BFormSelect, BFormFile} from 'bootstrap-vue'
     import {isValidDate} from "../../dates";
     export default {
         name: 'campaign-edit-dialog',
@@ -69,6 +74,7 @@
                     devices: [],
                     users: []
                 },
+                campaignFile: null,
                 availableForms: [],
                 availableDevices: [],
                 availableUsers: [],
@@ -87,6 +93,7 @@
                 await loadDevices
                 await loadUsers
                 await loadCampaign
+                this.campaignFile = null
                 this.validated = null
                 this.errors = []
                 this.fieldErrors = {}
@@ -136,7 +143,7 @@
             },
             buildData() {
                 let s = this.scratch
-                return {
+                let form = {
                     name: s.name,
                     description: s.description,
                     start: s.start,
@@ -146,6 +153,13 @@
                     devices: s.devices,
                     users: s.users
                 }
+                let formBlob = new Blob([JSON.stringify(form)], {type: 'application/json'})
+                let data = new FormData()
+                data.append('form', formBlob)
+                if (this.campaignFile) {
+                    data.append('campaign_file', this.campaignFile, this.campaignFile.name)
+                }
+                return data
             },
             async submit(e) {
                 if (this.validate()) {
@@ -202,6 +216,12 @@
             descriptionError() {
                 return (this.fieldErrors.description || []).join(' ')
             },
+            campaignFileState() {
+                return this.validated == null? null : !this.campaignFileError
+            },
+            campaignFileError() {
+                return (this.fieldErrors['campaign_file'] || []).join(' ')
+            },
             startState() {
                 return this.validated == null? null : !this.startError
             },
@@ -234,7 +254,7 @@
             }
         },
         components: {
-            BModal, BAlert, BForm, BFormGroup, BFormInput, BFormCheckbox, BFormRow, BFormSelect
+            BModal, BAlert, BForm, BFormGroup, BFormInput, BFormCheckbox, BFormRow, BFormSelect, BFormFile
         }
     }
 </script>

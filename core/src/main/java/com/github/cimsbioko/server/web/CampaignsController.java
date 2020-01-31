@@ -110,7 +110,9 @@ public class CampaignsController {
     @PostMapping("/campaigns")
     @ResponseBody
     @Transactional
-    public ResponseEntity<AjaxResult> createCampaign(@Valid @RequestBody CampaignForm form, Locale locale) {
+    public ResponseEntity<AjaxResult> createCampaign(@Valid @RequestPart CampaignForm form,
+                                                     @RequestPart("campaign_file") MultipartFile campaignFile,
+                                                     Locale locale) throws IOException {
 
         if (repo.findByName(form.getName()).isPresent()) {
             return ResponseEntity
@@ -155,6 +157,8 @@ public class CampaignsController {
                 .orElse(Collections.emptyList())
                 .forEach(d -> d.setCampaign(saved));
 
+        service.uploadCampaignFile(saved.getUuid(), campaignFile);
+
         return ResponseEntity
                 .ok(new AjaxResult()
                         .addMessage(
@@ -169,7 +173,9 @@ public class CampaignsController {
     @PutMapping("/campaign/{uuid}")
     @ResponseBody
     @Transactional
-    public ResponseEntity<?> updateCampaign(@PathVariable String uuid, @Valid @RequestBody CampaignForm form, Locale locale) {
+    public ResponseEntity<?> updateCampaign(@PathVariable String uuid, @Valid @RequestPart CampaignForm form,
+                                            @RequestPart(value = "campaign_file", required = false) MultipartFile campaignFile,
+                                            Locale locale) throws IOException {
 
         Campaign existing = repo.findById(uuid).orElseThrow(ResourceNotFoundException::new);
 
@@ -209,6 +215,10 @@ public class CampaignsController {
                 .orElse(Collections.emptyList())
                 .forEach(associatedUsers::add);
         existing.setUsers(associatedUsers);
+
+        if (campaignFile != null) {
+            service.uploadCampaignFile(saved.getUuid(), campaignFile);
+        }
 
         return ResponseEntity
                 .ok(new AjaxResult()
@@ -266,14 +276,6 @@ public class CampaignsController {
                 .ok(new AjaxResult()
                         .addMessage(
                                 resolveMessage("campaigns.msg.restored", locale, c.getName())));
-    }
-
-    @PreAuthorize("hasAuthority('UPLOAD_CAMPAIGNS')")
-    @PostMapping("/campaign/{uuid}")
-    @ResponseBody
-    public ResponseEntity<?> uploadCampaignFile(@PathVariable String uuid, @RequestParam("campaign_file") MultipartFile file) throws IOException {
-        service.uploadCampaignFile(uuid, file);
-        return ResponseEntity.noContent().build();
     }
 
     @PreAuthorize("hasAuthority('DOWNLOAD_CAMPAIGNS')")

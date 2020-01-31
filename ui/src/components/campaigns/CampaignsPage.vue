@@ -50,14 +50,10 @@
                             <b-button v-if="data.item.deleted && $can('RESTORE_CAMPAIGNS')" variant="outline-primary" @click="restoreItem(data.item.uuid)">
                                 <fa-icon icon="undo-alt"/>
                             </b-button>
-                            <b-button v-if="!data.item.deleted && $can('UPLOAD_CAMPAIGNS')" variant="outline-primary" @click="upload(data.index)">
-                                <fa-icon icon="upload"/>
-                            </b-button>
                             <b-button v-if="$can('DOWNLOAD_CAMPAIGNS')" variant="outline-primary" :href="`/campaign/export/${data.item.uuid}`" download>
                                 <fa-icon icon="download"/>
                             </b-button>
                         </b-button-group>
-                        <upload-dialog :ref="`uploadDialog${data.index}`" v-bind="data.item" @ok="itemUploaded" v-if="$can('UPLOAD_CAMPAIGNS')" />
                         <edit-dialog :ref="`editDialog${data.index}`" v-bind="data.item" @ok="itemEdited" v-if="$can('EDIT_CAMPAIGNS') && !data.item.deleted" />
                     </template>
                 </b-table>
@@ -69,7 +65,6 @@
 <script>
     import {BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup} from 'bootstrap-vue'
     import EditDialog from './EditDialog'
-    import UploadDialog from './UploadDialog'
     import CreateDialog from './CreateDialog'
     import SearchBox from '../SearchBox'
     export default {
@@ -124,16 +119,10 @@
                 this.showMessages(rsp.messages)
                 this.reloadPage()
             },
-            upload(index) {
-                this.$refs[`uploadDialog${index}`].show()
-            },
             showMessages(messages) {
                 // ensures same message triggers new alert
                 this.messages = []
                 this.$nextTick(() => this.messages = messages || [])
-            },
-            itemUploaded(data) {
-                this.showMessages(data.messages);
             },
             async deleteItem(uuid) {
                 let response = await this.$xhr.delete(`/campaign/${uuid}`)
@@ -164,7 +153,7 @@
         },
         components: {
             BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup,
-            EditDialog, UploadDialog, CreateDialog, SearchBox
+            EditDialog, CreateDialog, SearchBox
         }
     }
 </script>

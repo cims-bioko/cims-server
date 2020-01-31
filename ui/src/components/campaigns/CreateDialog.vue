@@ -14,6 +14,11 @@
                 </b-form-group>
             </b-form-row>
             <b-form-row>
+                <b-form-group :label="$t('campaigns.zip')" :invalid-feedback="campaignFileError" :state="campaignFileState">
+                    <b-form-file ref="campaignFileInput" v-model="campaignFile" accept="application/zip" :state="campaignFileState"/>
+                </b-form-group>
+            </b-form-row>
+            <b-form-row>
                 <b-form-group :label="$t('campaigns.start')" :invalid-feedback="startError" :state="startState">
                     <b-form-input type="date" v-model="start" :state="startState" @input="validate"/>
                 </b-form-group>
@@ -44,7 +49,7 @@
 </template>
 
 <script>
-    import {BModal, BAlert, BForm, BFormGroup, BFormInput, BFormCheckbox, BFormRow, BFormSelect} from 'bootstrap-vue'
+    import {BModal, BAlert, BForm, BFormGroup, BFormInput, BFormCheckbox, BFormRow, BFormSelect, BFormFile} from 'bootstrap-vue'
     import {isValidDate} from "../../dates";
     export default {
         name: 'campaign-create-dialog',
@@ -52,6 +57,7 @@
             return {
                 visible: false,
                 name: '',
+                campaignFile: null,
                 description: '',
                 start: null,
                 end: null,
@@ -80,6 +86,7 @@
             clearData() {
                 this.name = ''
                 this.description = ''
+                this.campaignFile = null
                 this.start = null
                 this.end = null
                 this.forms = []
@@ -105,6 +112,9 @@
                     this.fieldErrors = {}
                     this.validateName()
                     this.validateDescription()
+                    if (!this.campaignFile) {
+                        this.addFieldError('campaign_file', this.$t('campaigns.zipreq'))
+                    }
                     this.validateDates()
                     this.validated = Object.keys(this.fieldErrors).length === 0
                 }
@@ -137,7 +147,7 @@
                 this.fieldErrors[field].push(error)
             },
             buildData() {
-                return {
+                let form = {
                     name: this.name,
                     description: this.description,
                     start: this.start,
@@ -147,6 +157,11 @@
                     devices: this.devices,
                     users: this.users
                 }
+                let formBlob = new Blob([JSON.stringify(form)], {type: 'application/json'})
+                let data = new FormData()
+                data.append('form', formBlob)
+                data.append('campaign_file', this.campaignFile, this.campaignFile.name)
+                return data
             },
             async submit(e) {
                 if (this.validate()) {
@@ -191,6 +206,12 @@
             descriptionError() {
                 return (this.fieldErrors.description || []).join(' ')
             },
+            campaignFileState() {
+                return this.validated == null? null : !this.campaignFileError
+            },
+            campaignFileError() {
+                return (this.fieldErrors['campaign_file'] || []).join(' ')
+            },
             startState() {
                 return this.validated == null? null : !this.startError
             },
@@ -223,7 +244,7 @@
             }
         },
         components: {
-            BModal, BAlert, BForm, BFormGroup, BFormInput, BFormRow, BFormCheckbox, BFormSelect
+            BModal, BAlert, BForm, BFormGroup, BFormInput, BFormRow, BFormCheckbox, BFormSelect, BFormFile
         }
     }
 </script>
