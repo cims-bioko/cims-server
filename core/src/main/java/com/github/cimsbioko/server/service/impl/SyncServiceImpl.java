@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 
+import static com.github.cimsbioko.server.util.TimeUtil.describeDuration;
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
 
 
@@ -129,6 +130,8 @@ public class SyncServiceImpl implements SyncService {
 
     private void runExport(Campaign campaign) throws IOException, SQLException, NoSuchAlgorithmException {
 
+        long start = System.currentTimeMillis();
+
         String campaignUuid = campaign.getUuid();
 
         int tablesProcessed = 0;
@@ -177,7 +180,8 @@ public class SyncServiceImpl implements SyncService {
 
         // Complete the process, latching the new file contents and sync metadata
         if (scratch.renameTo(dest) && metaScratch.renameTo(metaDest)) {
-            log.info("successfully generated {}, content signature: {}", dest.getName(), md5);
+            log.info("exported {} for campaign '{}' with signature: {} in {}",
+                    dest.getName(), campaign.getName(), md5, describeDuration(System.currentTimeMillis() - start));
             eventPublisher.publishEvent(new ExportFinished(campaignUuid, md5));
         } else {
             eventPublisher.publishEvent(new ExportFinished(campaignUuid));
