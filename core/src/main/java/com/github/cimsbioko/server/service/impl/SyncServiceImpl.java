@@ -1,6 +1,8 @@
 package com.github.cimsbioko.server.service.impl;
 
 import com.github.batkinson.jrsync.Metadata;
+import com.github.cimsbioko.server.dao.CampaignRepository;
+import com.github.cimsbioko.server.domain.Campaign;
 import com.github.cimsbioko.server.domain.Task;
 import com.github.cimsbioko.server.scripting.DatabaseExport;
 import com.github.cimsbioko.server.scripting.JsConfig;
@@ -43,11 +45,15 @@ public class SyncServiceImpl implements SyncService {
 
     private ApplicationEventPublisher eventPublisher;
 
-    public SyncServiceImpl(TaskScheduler scheduler, File dataDir, Exporter exporter, ApplicationEventPublisher eventPublisher) {
+    private CampaignRepository repo;
+
+    public SyncServiceImpl(TaskScheduler scheduler, CampaignRepository repo, File dataDir, Exporter exporter,
+                           ApplicationEventPublisher eventPublisher) {
         this.scheduler = scheduler;
         this.dataDir = dataDir;
         this.exporter = exporter;
         this.eventPublisher = eventPublisher;
+        this.repo = repo;
     }
 
     @EventListener
@@ -71,7 +77,7 @@ public class SyncServiceImpl implements SyncService {
                 .ofNullable(config.getDatabaseExport())
                 .map(DatabaseExport::exportSchedule)
                 .map(CronTrigger::new)
-                .map(t -> scheduler.schedule(() -> { requestExport(campaignUuid); }, t))
+                .map(t -> scheduler.schedule(() -> requestExport(campaignUuid), t))
                 .ifPresent(future -> {
                     campaignTasks.put(campaignUuid, new SyncTask(config, future));
                     log.info("added db export for campaign '{}' ({}), schedule '{}'",
@@ -111,14 +117,19 @@ public class SyncServiceImpl implements SyncService {
     @Override
     public void requestExport(String campaign) {
         try {
-            runExport(campaign);
+            Optional<Campaign> optionalActiveCampaign = repo.findActiveByUuid(campaign);
+            if (optionalActiveCampaign.isPresent()) {
+                runExport(optionalActiveCampaign.get());
+            }
         }  catch (IOException | SQLException | NoSuchAlgorithmException e) {
             log.error("failed to generate mobile db for campaign " + campaign, e);
             eventPublisher.publishEvent(new ExportFinished(campaign));
         }
     }
 
-    private void runExport(String campaignUuid) throws IOException, SQLException, NoSuchAlgorithmException {
+    private void runExport(Campaign campaign) throws IOException, SQLException, NoSuchAlgorithmException {
+
+        String campaignUuid = campaign.getUuid();
 
         int tablesProcessed = 0;
 

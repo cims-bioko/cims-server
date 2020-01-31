@@ -46,8 +46,8 @@ public class ServiceConfig {
     }
 
     @Bean
-    public SyncService syncService(TaskScheduler scheduler, File dataDir, Exporter exporter, ApplicationEventPublisher publisher) {
-        return new SyncServiceImpl(scheduler, dataDir, exporter, publisher);
+    public SyncService syncService(TaskScheduler scheduler, CampaignRepository repo, File dataDir, Exporter exporter, ApplicationEventPublisher publisher) {
+        return new SyncServiceImpl(scheduler, repo, dataDir, exporter, publisher);
     }
 
     @Bean
