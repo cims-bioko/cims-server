@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class CampaignServiceImpl implements CampaignService, ApplicationContextAware {
@@ -55,13 +56,16 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
         Map<String, JsConfig> loaded = new LinkedHashMap<>();
 
         log.info("loading enabled campaign configs");
-        for (String uuid : getEnabledCampaignUuids()) {
-            getCampaignFile(uuid).ifPresent(file -> {
+        Map<String, Campaign> enabledCampaigns = getEnabledCampaigns();
+        for (Map.Entry<String, Campaign> campaignEntry : enabledCampaigns.entrySet()) {
+            String campaignUuid = campaignEntry.getKey();
+            Campaign campaign = campaignEntry.getValue();
+            getCampaignFile(campaignUuid).ifPresent(file -> {
                 try {
                     JsConfig config = new JsConfig(file, ctx).load();
-                    loaded.put(uuid, config);
+                    loaded.put(campaignUuid, config);
                 } catch (MalformedURLException | URISyntaxException e) {
-                    log.warn("failed to load config for campaign " + uuid, e);
+                    log.warn("failed to load config for campaign " + campaign.getName() + " (" + campaignUuid + ")", e);
                 }
             });
         }
@@ -70,16 +74,19 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
 
         log.info("loading new campaigns");
         for (Map.Entry<String, JsConfig> newConfig : loadedConfigs.entrySet()) {
-            eventPublisher.publishEvent(new CampaignLoaded(newConfig.getKey(), newConfig.getValue()));
+            String campaignName = enabledCampaigns.get(newConfig.getKey()).getName();
+            eventPublisher.publishEvent(new CampaignLoaded(newConfig.getKey(), campaignName, newConfig.getValue()));
         }
     }
 
     @EventListener
     public void loadUploadedCampaign(CampaignUploaded event) {
         String uuid = event.getUuid();
-        if (repo.findActiveByUuid(uuid).isPresent()) {
+        Optional<Campaign> optionalActiveCampaign = repo.findActiveByUuid(uuid);
+        if (optionalActiveCampaign.isPresent()) {
+            Campaign campaign = optionalActiveCampaign.get();
             try {
-                log.info("pre-loading new config for campaign '{}'", uuid);
+                log.info("pre-loading new config for campaign '{}' ({})", campaign.getName(), uuid);
                 JsConfig config = new JsConfig(event.getFile(), ctx).load();
 
                 Path campaignFilePath = getCampaignFilePath(uuid);
@@ -89,14 +96,14 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
                 if (loadedConfigs.containsKey(uuid)) {
                     log.info("unloading old config for campaign '{}'", uuid);
                     try (JsConfig oldConfig = loadedConfigs.get(uuid)) {
-                        eventPublisher.publishEvent(new CampaignUnloaded(uuid, oldConfig));
+                        eventPublisher.publishEvent(new CampaignUnloaded(uuid, campaign.getName(), oldConfig));
                     }
                 }
 
                 loadedConfigs.put(uuid, config);
 
-                log.info("loading new config for campaign '{}'", uuid);
-                eventPublisher.publishEvent(new CampaignLoaded(uuid, config));
+                log.info("loading new config for campaign '{}' ({})", campaign.getName(), uuid);
+                eventPublisher.publishEvent(new CampaignLoaded(uuid, campaign.getName(), config));
             } catch (URISyntaxException | IOException e) {
                 log.error("failed to load uploaded campaign", e);
             }
@@ -105,8 +112,8 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
         }
     }
 
-    private Iterable<String> getEnabledCampaignUuids() {
-        return repo.findActive().stream().map(Campaign::getUuid).collect(Collectors.toList());
+    private Map<String, Campaign> getEnabledCampaigns() {
+        return repo.findActive().stream().collect(Collectors.toMap(Campaign::getUuid, Function.identity()));
     }
 
     @Override
@@ -194,15 +201,21 @@ class CampaignUploaded implements CampaignEvent {
 class CampaignLoaded implements CampaignEvent {
 
     private final String uuid;
+    private final String name;
     private final JsConfig config;
 
-    CampaignLoaded(String uuid, JsConfig config) {
+    CampaignLoaded(String uuid, String name, JsConfig config) {
         this.uuid = uuid;
+        this.name = name;
         this.config = config;
     }
 
     public String getUuid() {
         return uuid;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public JsConfig getConfig() {
@@ -213,15 +226,21 @@ class CampaignLoaded implements CampaignEvent {
 class CampaignUnloaded implements CampaignEvent {
 
     private final String uuid;
+    private final String name;
     private final JsConfig config;
 
-    CampaignUnloaded(String uuid, JsConfig config) {
+    CampaignUnloaded(String uuid, String name, JsConfig config) {
         this.uuid = uuid;
+        this.name = name;
         this.config = config;
     }
 
     public String getUuid() {
         return uuid;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public JsConfig getConfig() {

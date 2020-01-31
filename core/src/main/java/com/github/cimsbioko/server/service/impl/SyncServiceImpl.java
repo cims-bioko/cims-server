@@ -58,7 +58,7 @@ public class SyncServiceImpl implements SyncService {
                 .ifPresent(task -> {
                     task.cancel();
                     campaignTasks.remove(campaignUuid);
-                    log.info("removed db export for campaign '{}'", campaignUuid);
+                    log.info("removed db export for campaign '{}' ({})", event.getName(), campaignUuid);
                 });
     }
 
@@ -74,7 +74,8 @@ public class SyncServiceImpl implements SyncService {
                 .map(t -> scheduler.schedule(() -> { requestExport(campaignUuid); }, t))
                 .ifPresent(future -> {
                     campaignTasks.put(campaignUuid, new SyncTask(config, future));
-                    log.info("added db export for campaign '{}' (schedule '{}')", campaignUuid, config.getDatabaseExport().exportSchedule());
+                    log.info("added db export for campaign '{}' ({}), schedule '{}'",
+                            event.getName(), campaignUuid, config.getDatabaseExport().exportSchedule());
                 });
     }
 

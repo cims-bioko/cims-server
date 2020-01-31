@@ -31,7 +31,7 @@ public class FormProcessorServiceImpl implements FormProcessorService {
         JsConfig config = event.getConfig();
         Optional.ofNullable(config.getFormProcessors()).ifPresent(fps -> {
             campaignProcessors.put(event.getUuid(), fps);
-            log.info("added {} form processors for campaign '{}'", fps.size(), event.getUuid());
+            log.info("added {} form processors for campaign '{}' ({})", fps.size(), event.getName(), event.getUuid());
         });
     }
 
@@ -39,7 +39,7 @@ public class FormProcessorServiceImpl implements FormProcessorService {
     public void onCampaignUnloaded(CampaignUnloaded event) {
         if (campaignProcessors.containsKey(event.getUuid())) {
             campaignProcessors.remove(event.getUuid());
-            log.info("removed form processors for campaign '{}'", event.getUuid());
+            log.info("removed form processors for campaign '{}' ({})", event.getName(), event.getUuid());
         }
     }
 
