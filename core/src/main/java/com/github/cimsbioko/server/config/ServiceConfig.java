@@ -36,8 +36,8 @@ public class ServiceConfig {
     }
 
     @Bean
-    public LocationHierarchyService locationHierarchyService(EntityManager em, LocationHierarchyRepository repo) {
-        return new LocationHierarchyServiceImpl(em, repo);
+    public StoredProcService storedProcService(EntityManager em) {
+        return new StoredProcServiceImpl(em);
     }
 
     @Bean

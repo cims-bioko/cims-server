@@ -6,7 +6,7 @@ import com.github.cimsbioko.server.domain.Location;
 import com.github.cimsbioko.server.domain.LocationHierarchy;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.GeometryService;
-import com.github.cimsbioko.server.service.LocationHierarchyService;
+import com.github.cimsbioko.server.service.StoredProcService;
 import org.json.JSONObject;
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.commonjs.module.Require;
@@ -80,7 +80,7 @@ public class JsConfig implements Closeable {
         installJavaAdapter(scope);
         installInterfaces(scope);
         installUtilityClasses(scope);
-        putConst(scope, "locationHierarchyService", ctx.getBean(LocationHierarchyService.class));
+        putConst(scope, "storedProcService", ctx.getBean(StoredProcService.class));
         putConst(scope, "locationHierarchyRepo", ctx.getBean(LocationHierarchyRepository.class));
         putConst(scope, "locationHierarchyLevelRepo", ctx.getBean(LocationHierarchyLevelRepository.class));
         putConst(scope, "locationRepo", ctx.getBean(LocationRepository.class));
