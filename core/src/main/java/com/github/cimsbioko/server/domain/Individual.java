@@ -72,7 +72,7 @@ public class Individual implements Serializable {
     private String contactPhone;
 
     @Field
-    private int dip;
+    private Integer dip;
 
     private String nationality;
 
@@ -205,11 +205,11 @@ public class Individual implements Serializable {
         return contactPhone;
     }
 
-    public void setDip(int dip) {
+    public void setDip(Integer dip) {
         this.dip = dip;
     }
 
-    public int getDip() {
+    public Integer getDip() {
         return dip;
     }
 
