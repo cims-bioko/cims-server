@@ -13,5 +13,5 @@ documentation](https://github.com/cims-bioko/cims-bioko.github.io/wiki/Backgroun
 The cims-server application is a web application written in Java. For setup
 information, please read [the server setup section of the general CIMS
 deployment
-instructions](https://github.com/cims-bioko/cims-bioko.github.io/wiki/Deployment#server-setup).
+instructions](https://github.com/cims-bioko/cims-server/wiki/Deploying-via-Docker).
 
