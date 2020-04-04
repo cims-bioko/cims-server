@@ -21,8 +21,8 @@
     "webstomp-client": "^1.2.6"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.9.2",
-    "@vue/cli-plugin-eslint": "^3.9.2",
+    "@vue/cli-plugin-babel": "^4.3.0",
+    "@vue/cli-plugin-eslint": "^4.3.0",
     "@vue/cli-service": "^4.1.1",
     "babel-eslint": "^10.0.2",
     "eslint": "^5.16.0",
