@@ -33,4 +33,18 @@ public interface CampaignRepository extends JpaRepository<Campaign, String>, Cam
             " and c.disabled is null and c.deleted is null" +
             " and exists (select u from User u where u.username = :userName and u member of c.users)")
     List<Campaign> findActiveForUser(String userName);
+    @Query("select case when count(c) > 0 then true else false end" +
+            " from #{#entityName} c" +
+            " join c.devices d where" +
+            " (c.end is null or current_date() < c.end) and (c.start is null or current_date() > c.start)" +
+            " and c.disabled is null and c.deleted is null" +
+            " and c.uuid = :campaignUuid and d.name = :deviceName")
+    boolean isDeviceActiveMember(String campaignUuid, String deviceName);
+    @Query("select case when count(c) > 0 then true else false end" +
+            " from #{#entityName} c" +
+            " join c.users u where" +
+            " (c.end is null or current_date() < c.end) and (c.start is null or current_date() > c.start)" +
+            " and c.disabled is null and c.deleted is null" +
+            " and c.uuid = :campaignUuid and u.username = :userName")
+    boolean isUserActiveMember(String campaignUuid, String userName);
 }

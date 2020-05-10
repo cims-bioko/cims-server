@@ -22,4 +22,5 @@ public interface UserRepository extends PagingAndSortingRepository<User, String>
 
     @Query("select distinct u from #{#entityName} u join u.tokens t where :token = t")
     Optional<User> findByToken(@NotNull AccessToken token);
+
 }

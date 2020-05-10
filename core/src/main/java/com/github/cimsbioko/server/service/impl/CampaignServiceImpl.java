@@ -137,21 +137,13 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
             uuid = repo.findDefault().map(Campaign::getUuid).orElse(uuid);
         }
 
-        // FIXME: query directly for membership rather than fetching all objects
         if (auth instanceof TokenAuthentication) {
             TokenAuthentication tokenAuth = (TokenAuthentication) auth;
             if (tokenAuth.isDevice()) {
-                return repo.findActiveByUuid(uuid)
-                        .map(Campaign::getDevices)
-                        .map(devices -> devices.stream().map(Device::getName).collect(Collectors.toSet()))
-                        .map(deviceNames -> deviceNames.contains(tokenAuth.getName())).orElse(false);
+                return repo.isDeviceActiveMember(uuid, tokenAuth.getName());
             }
         }
-
-        return repo.findActiveByUuid(uuid)
-                .map(Campaign::getUsers)
-                .map(users -> users.stream().map(User::getUsername).collect(Collectors.toSet()))
-                .map(userNames -> userNames.contains(auth.getName())).orElse(false);
+        return repo.isUserActiveMember(uuid, auth.getName());
     }
 
     @Override
