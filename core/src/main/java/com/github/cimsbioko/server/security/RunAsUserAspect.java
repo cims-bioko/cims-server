@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserCache;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -21,10 +22,12 @@ public class RunAsUserAspect {
 
     private static final Logger log = LoggerFactory.getLogger(RunAsUserAspect.class);
 
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
+    private final UserCache userCache;
 
-    public RunAsUserAspect(UserDetailsService service) {
+    public RunAsUserAspect(UserDetailsService service, UserCache userCache) {
         this.userDetailsService = service;
+        this.userCache = userCache;
     }
 
     @Around("@annotation(annotation))")
@@ -41,7 +44,15 @@ public class RunAsUserAspect {
     }
 
     private Authentication getUserAuthentication(String username) {
-        UserDetails user = userDetailsService.loadUserByUsername(username);
+        UserDetails user = userCache.getUserFromCache(username);
+        if (user == null) {
+            user = userDetailsService.loadUserByUsername(username);
+            if (user != null) {
+                userCache.putUserInCache(user);
+            } else {
+                throw new SecurityException("could not load user " + username);
+            }
+        }
         return new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
     }
 

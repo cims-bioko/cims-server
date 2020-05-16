@@ -5,16 +5,19 @@ import com.github.cimsbioko.server.dao.DeviceRepository;
 import com.github.cimsbioko.server.dao.TokenRepository;
 import com.github.cimsbioko.server.dao.UserRepository;
 import com.github.cimsbioko.server.security.*;
+import com.github.cimsbioko.server.service.PermissionsService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserCache;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +30,16 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService,
+                                                         PasswordEncoder passwordEncoder, UserCache userCache) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserCache(userCache);
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return provider;
+    }
 
     @Bean
     public RoleMapper roleMapper() {
@@ -59,8 +72,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    RunAsUserAspect runAsUserAspect(UserDetailsService userDetailsService) {
-        return new RunAsUserAspect(userDetailsService);
+    RunAsUserAspect runAsUserAspect(UserDetailsService userDetailsService, UserCache userCache) {
+        return new RunAsUserAspect(userDetailsService, userCache);
     }
 
     @Bean
@@ -84,8 +97,14 @@ public class SecurityConfig {
     }
 
     @Bean
-    TokenAuthenticationProvider tokenAuthProvider(DeviceRepository deviceRepo, UserRepository userRepo, TokenRepository tokenRepo) {
-        return new TokenAuthenticationProvider(deviceRepo, userRepo, tokenRepo, roleMapper(), tokenHasher());
+    TokenAuthenticationService tokenAuthService(DeviceRepository deviceRepo, UserRepository userRepo,
+                                                TokenRepository tokenRepo, PermissionsService permService) {
+        return new TokenAuthenticationServiceImpl(deviceRepo, userRepo, tokenRepo, tokenHasher(), permService);
+    }
+
+    @Bean
+    TokenAuthenticationProvider tokenAuthProvider(TokenAuthenticationService tokenAuthService) {
+        return new TokenAuthenticationProvider(tokenAuthService);
     }
 
     @Bean
@@ -102,17 +121,15 @@ public class SecurityConfig {
     @Order(1)
     public static class DeviceBasicAuthConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
-        private final TokenHasher tokenHasher;
-        private final DeviceDetailsService deviceDetailsService;
+        private final DaoAuthenticationProvider authProvider;
 
-        public DeviceBasicAuthConfigurationAdapter(TokenHasher tokenHasher, DeviceDetailsService deviceDetailsService) {
-            this.tokenHasher = tokenHasher;
-            this.deviceDetailsService = deviceDetailsService;
+        public DeviceBasicAuthConfigurationAdapter(DaoAuthenticationProvider authProvider) {
+            this.authProvider = authProvider;
         }
 
         @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(deviceDetailsService).passwordEncoder(new SHAPasswordEncoder(tokenHasher));
+        protected void configure(AuthenticationManagerBuilder auth) {
+            auth.authenticationProvider(authProvider);
         }
 
         protected void configure(HttpSecurity http) throws Exception {
@@ -134,19 +151,20 @@ public class SecurityConfig {
     @Order(2)
     public static class ApiTokenAuthConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
+        private final DaoAuthenticationProvider daoAuthProvider;
         private final TokenAuthenticationProvider tokenAuthProvider;
-        private final UserDetailsService detailsService;
 
-        public ApiTokenAuthConfigurationAdapter(TokenAuthenticationProvider tokenAuthProvider,
-                                                UserDetailsService detailsService) {
+        public ApiTokenAuthConfigurationAdapter(DaoAuthenticationProvider daoAuthProvider,
+                                                TokenAuthenticationProvider tokenAuthProvider) {
+            this.daoAuthProvider = daoAuthProvider;
             this.tokenAuthProvider = tokenAuthProvider;
-            this.detailsService = detailsService;
         }
 
         @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.authenticationProvider(tokenAuthProvider);
-            auth.userDetailsService(detailsService);
+        protected void configure(AuthenticationManagerBuilder auth) {
+            auth.authenticationProvider(daoAuthProvider)
+                    .authenticationProvider(tokenAuthProvider)
+                    .eraseCredentials(false);
         }
 
         protected void configure(HttpSecurity http) throws Exception {
@@ -168,24 +186,20 @@ public class SecurityConfig {
     @Configuration
     public static class FormWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
+        private final DaoAuthenticationProvider authProvider;
         private final AuthenticationSuccessHandler authSuccessHandler;
         private final AuthenticationEntryPoint authEntryPoint;
-        private final UserDetailsService detailsService;
-        private final PasswordEncoder encoder;
 
-        public FormWebSecurityConfigurerAdapter(AuthenticationSuccessHandler successHandler,
-                                                AuthenticationEntryPoint entryPoint,
-                                                UserDetailsService detailsService, PasswordEncoder encoder) {
+        public FormWebSecurityConfigurerAdapter(DaoAuthenticationProvider authProvider,
+                                                AuthenticationSuccessHandler successHandler,
+                                                AuthenticationEntryPoint entryPoint) {
+            this.authProvider = authProvider;
             this.authSuccessHandler = successHandler;
             this.authEntryPoint = entryPoint;
-            this.detailsService = detailsService;
-            this.encoder = encoder;
         }
 
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.eraseCredentials(false)
-                    .userDetailsService(detailsService)
-                    .passwordEncoder(encoder);
+        protected void configure(AuthenticationManagerBuilder auth) {
+            auth.authenticationProvider(authProvider).eraseCredentials(false);
         }
 
         protected void configure(HttpSecurity http) throws Exception {

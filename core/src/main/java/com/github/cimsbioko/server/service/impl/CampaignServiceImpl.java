@@ -2,8 +2,6 @@ package com.github.cimsbioko.server.service.impl;
 
 import com.github.cimsbioko.server.dao.CampaignRepository;
 import com.github.cimsbioko.server.domain.Campaign;
-import com.github.cimsbioko.server.domain.Device;
-import com.github.cimsbioko.server.domain.User;
 import com.github.cimsbioko.server.scripting.JsConfig;
 import com.github.cimsbioko.server.security.TokenAuthentication;
 import com.github.cimsbioko.server.service.CampaignService;
@@ -11,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEventPublisher;
@@ -27,6 +26,9 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static com.github.cimsbioko.server.config.CachingConfig.CAMPAIGN_MEMBERSHIP_CACHE;
+import static com.github.cimsbioko.server.config.CachingConfig.MY_CAMPAIGNS_CACHE;
 
 public class CampaignServiceImpl implements CampaignService, ApplicationContextAware {
 
@@ -131,6 +133,7 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = CAMPAIGN_MEMBERSHIP_CACHE, key = "{ #uuid, #auth.name }")
     public boolean isMember(String uuid, Authentication auth) {
 
         if ("default".equals(uuid)) {
@@ -147,6 +150,7 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
     }
 
     @Override
+    @Cacheable(value = MY_CAMPAIGNS_CACHE, key = "#auth.name")
     public List<Campaign> getMyCampaigns(Authentication auth) {
         if (auth instanceof TokenAuthentication) {
             TokenAuthentication tokenAuth = (TokenAuthentication) auth;

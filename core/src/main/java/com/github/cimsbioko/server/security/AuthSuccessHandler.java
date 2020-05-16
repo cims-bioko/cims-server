@@ -39,7 +39,6 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
         if (authentication instanceof UsernamePasswordAuthenticationToken && authentication.getCredentials() != null) {
             UsernamePasswordAuthenticationToken authToken = (UsernamePasswordAuthenticationToken) authentication;
             user.setPassword(encoder.encode((CharSequence) authToken.getCredentials()));
-            authToken.eraseCredentials();
         }
         userDao.save(user);
         super.onAuthenticationSuccess(request, response, authentication);

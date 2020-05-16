@@ -4,6 +4,7 @@ import com.github.cimsbioko.server.dao.RoleRepository;
 import com.github.cimsbioko.server.dao.UserRepository;
 import com.github.cimsbioko.server.domain.Role;
 import com.github.cimsbioko.server.domain.User;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +27,7 @@ import javax.validation.constraints.Size;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.github.cimsbioko.server.config.CachingConfig.USER_CACHE;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Controller
@@ -117,6 +119,7 @@ public class UsersController {
     @PreAuthorize("hasAuthority('EDIT_USERS')")
     @PutMapping("/user/{uuid}")
     @ResponseBody
+    @CacheEvict(value = USER_CACHE, key = "#form.username")
     public ResponseEntity<?> updateUser(@PathVariable("uuid") String uuid, @Valid @RequestBody UserForm form, Locale locale) {
 
         // FIXME: Use optional rather than null

@@ -6,6 +6,7 @@ import com.github.cimsbioko.server.dao.FormRepository;
 import com.github.cimsbioko.server.dao.UserRepository;
 import com.github.cimsbioko.server.domain.*;
 import com.github.cimsbioko.server.service.CampaignService;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -30,6 +31,9 @@ import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import static com.github.cimsbioko.server.config.CachingConfig.CAMPAIGN_MEMBERSHIP_CACHE;
+import static com.github.cimsbioko.server.config.CachingConfig.MY_CAMPAIGNS_CACHE;
 
 @Controller
 public class CampaignsController {
@@ -83,6 +87,7 @@ public class CampaignsController {
     @PutMapping("/campaign/{uuid}/default")
     @ResponseBody
     @Transactional
+    @CacheEvict(value = CAMPAIGN_MEMBERSHIP_CACHE, key = "'default'")
     public ResponseEntity<AjaxResult> setDefaultCampaign(@PathVariable String uuid, Locale locale) {
         Optional<Campaign> maybeNewDefault = repo.findById(uuid);
         if (!maybeNewDefault.isPresent()) {
@@ -173,6 +178,7 @@ public class CampaignsController {
     @PutMapping("/campaign/{uuid}")
     @ResponseBody
     @Transactional
+    @CacheEvict(cacheNames = {CAMPAIGN_MEMBERSHIP_CACHE, MY_CAMPAIGNS_CACHE}, allEntries = true)
     public ResponseEntity<?> updateCampaign(@PathVariable String uuid, @Valid @RequestPart CampaignForm form,
                                             @RequestPart(value = "campaign_file", required = false) MultipartFile campaignFile,
                                             Locale locale) throws IOException {
@@ -229,6 +235,7 @@ public class CampaignsController {
     @PreAuthorize("hasAuthority('DELETE_CAMPAIGNS')")
     @DeleteMapping("/campaign/{uuid}")
     @ResponseBody
+    @CacheEvict(cacheNames = {CAMPAIGN_MEMBERSHIP_CACHE, MY_CAMPAIGNS_CACHE}, allEntries = true)
     public ResponseEntity<?> deleteCampaign(@PathVariable("uuid") String uuid, Locale locale) {
 
         // FIXME: Use optional rather than null
@@ -255,6 +262,7 @@ public class CampaignsController {
     @PreAuthorize("hasAuthority('RESTORE_CAMPAIGNS')")
     @PutMapping("/campaign/restore/{uuid}")
     @ResponseBody
+    @CacheEvict(cacheNames = {CAMPAIGN_MEMBERSHIP_CACHE, MY_CAMPAIGNS_CACHE}, allEntries = true)
     public ResponseEntity<?> restoreCampaign(@PathVariable("uuid") String uuid, Locale locale) {
 
         // FIXME: Use optional rather than null

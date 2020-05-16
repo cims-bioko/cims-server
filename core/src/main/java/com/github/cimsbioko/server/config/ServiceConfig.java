@@ -1,6 +1,7 @@
 package com.github.cimsbioko.server.config;
 
 import com.github.cimsbioko.server.dao.*;
+import com.github.cimsbioko.server.security.RoleMapper;
 import com.github.cimsbioko.server.security.TokenGenerator;
 import com.github.cimsbioko.server.security.TokenHasher;
 import com.github.cimsbioko.server.service.*;
@@ -75,5 +76,10 @@ public class ServiceConfig {
     @Bean
     public GeometryService geometryService(GeometryFactory geometryFactory) {
         return new GeometryServiceImpl(geometryFactory);
+    }
+
+    @Bean
+    PermissionsService permissionsService(DeviceRepository deviceRepo, UserRepository userRepo, RoleMapper roleMapper) {
+        return new PermissionsServiceImpl(deviceRepo, userRepo, roleMapper);
     }
 }
