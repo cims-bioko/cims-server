@@ -49,7 +49,7 @@ public class FormsController {
     @PreAuthorize("hasAuthority('FORM_UPLOAD')")
     @PostMapping("/uploadXmlForm")
     @ResponseBody
-    public ResponseEntity uploadForm(@RequestParam(FORM_DEF_FILE) MultipartFile xmlForm,
+    public ResponseEntity<?> uploadForm(@RequestParam(FORM_DEF_FILE) MultipartFile xmlForm,
                            @RequestParam(value = XLSFORM_DEF_FILE, required = false) MultipartFile xlsform,
                            MultipartHttpServletRequest req) throws JDOMException, IOException, NoSuchAlgorithmException {
         service.uploadForm(xmlForm, xlsform, req.getMultiFileMap());
@@ -59,7 +59,7 @@ public class FormsController {
     @PreAuthorize("hasAuthority('FORM_UPLOAD_XLS')")
     @PostMapping(value = "/uploadXlsForm")
     @ResponseBody
-    public ResponseEntity uploadForm(@RequestParam(value = XLSFORM_DEF_FILE) MultipartFile xlsform, MultipartHttpServletRequest req)
+    public ResponseEntity<?> uploadForm(@RequestParam(value = XLSFORM_DEF_FILE) MultipartFile xlsform, MultipartHttpServletRequest req)
             throws JDOMException, IOException, NoSuchAlgorithmException {
         try {
             service.uploadXlsform(xlsform, req.getMultiFileMap());
@@ -107,7 +107,7 @@ public class FormsController {
     @PreAuthorize("hasAuthority('MANAGE_FORMS')")
     @PatchMapping("/forms/manage/{id}/{version}")
     @ResponseBody
-    public ResponseEntity manageForm(@PathVariable("id") String id, @PathVariable("version") String version, @RequestBody ManageForm form) {
+    public ResponseEntity<?> manageForm(@PathVariable("id") String id, @PathVariable("version") String version, @RequestBody ManageForm form) {
         service.manageForm(id, version, form.isDownloads(), form.isSubmissions());
         return ResponseEntity.noContent().build();
     }
