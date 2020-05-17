@@ -118,6 +118,12 @@
       "delete": "Delete",
       "cancel": "Cancel"
     },
+    "deletemodal": {
+      "title": "Delete Form",
+      "desc": "Delete form '{0}' version '{1}'?",
+      "delete": "Delete",
+      "cancel": "Cancel"
+    },
     "xmlreq": "XML form is required.",
     "xlsreq": "XLSForm is required.",
     "success": "Upload succeeded",

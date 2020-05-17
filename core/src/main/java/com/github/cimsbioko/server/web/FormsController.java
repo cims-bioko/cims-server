@@ -71,6 +71,16 @@ public class FormsController {
         }
     }
 
+    @PreAuthorize("hasAuthority('DELETE_FORMS')")
+    @DeleteMapping("/forms/{id}/{version}")
+    @ResponseBody
+    public ResponseEntity<AjaxResult> deleteForm(@PathVariable("id") String id,
+                                                 @PathVariable("version") String version, Locale locale) {
+        service.deleteForm(id, version);
+        return ResponseEntity.ok(new AjaxResult()
+                .addMessage(resolveMessage("forms.msg.deleted", locale, id, version)));
+    }
+
     @PreAuthorize("hasAuthority('WIPE_FORM_SUBMISSIONS')")
     @DeleteMapping("/forms/submissions/{id}/{version}")
     @ResponseBody

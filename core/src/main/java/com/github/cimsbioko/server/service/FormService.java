@@ -15,4 +15,5 @@ public interface FormService {
     void exportToStream(String id, String version, OutputStream outputStream) throws IOException;
     void manageForm(String id, String version, boolean downloads, boolean submissions);
     void wipeSubmissions(String id, String version);
+    void deleteForm(String id, String version);
 }

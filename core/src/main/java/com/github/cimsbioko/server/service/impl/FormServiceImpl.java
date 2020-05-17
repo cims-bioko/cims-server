@@ -123,6 +123,15 @@ public class FormServiceImpl implements FormService {
         });
     }
 
+    @Override
+    @Transactional
+    public void deleteForm(String id, String version) {
+        formDao.findById(new FormId(id, version)).ifPresent((form) -> {
+            log.info("deleting form {} version {}", id, version);
+            formDao.delete(form);
+        });
+    }
+
     private void installConvertedFormWithMedia(MultipartFile xlsform, MultiValueMap<String, MultipartFile> uploadedFiles, ZipFile converted)
             throws JDOMException, IOException, NoSuchAlgorithmException {
         try (InputStream xmlInput = converted.getInputStream(new ZipEntry(CONVERTED_XML_NAME))) {

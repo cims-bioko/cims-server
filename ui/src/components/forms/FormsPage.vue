@@ -47,8 +47,14 @@
                             <b-button v-if="$can('WIPE_FORM_SUBMISSIONS')" variant="outline-primary" @click="showResetDialog(data.index)">
                                 <fa-icon icon="folder-minus"/>
                             </b-button>
+                            <b-button v-if="$can('DELETE_FORMS')" variant="outline-primary" @click="showDeleteDialog(data.index)">
+                                <fa-icon icon="trash-alt"/>
+                            </b-button>
                         </b-button-group>
                         <form-reset-dialog v-if="$can('WIPE_FORM_SUBMISSIONS')" :ref="`resetDialog${data.index}`"
+                                           :id="data.item.formId.id" :version="data.item.formId.version"
+                                           @ok="formReset"/>
+                        <form-delete-dialog v-if="$can('DELETE_FORMS')" :ref="`deleteDialog${data.index}`"
                                            :id="data.item.formId.id" :version="data.item.formId.version"
                                            @ok="formReset"/>
                     </template>
@@ -62,6 +68,7 @@
     import {BAlert, BContainer, BRow, BCol, BButton, BButtonGroup, BPagination, BTable} from 'bootstrap-vue'
     import UploadDialog from './UploadDialog'
     import FormResetDialog from './ResetDialog'
+    import FormDeleteDialog from './DeleteDialog'
     export default {
         name: 'forms-page',
         data() {
@@ -116,6 +123,9 @@
             showResetDialog(index) {
                 this.$refs[`resetDialog${index}`].show()
             },
+            showDeleteDialog(index) {
+                this.$refs[`deleteDialog${index}`].show()
+            },
             formReset(rsp) {
                 this.showMessages(rsp.messages)
                 this.reloadPage()
@@ -130,7 +140,8 @@
             this.reloadPage()
         },
         components: {
-            BAlert, BContainer, BRow, BCol, BButton, BButtonGroup, BPagination, BTable, UploadDialog, FormResetDialog
+            BAlert, BContainer, BRow, BCol, BButton, BButtonGroup, BPagination, BTable, UploadDialog, FormResetDialog,
+            FormDeleteDialog
         }
     }
 </script>
