@@ -27,10 +27,10 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRES_NE
 @Controller
 public class BackupsController {
 
-    private BackupService service;
-    private BackupRepository repo;
-    private SimpMessagingTemplate simpMsgTemplate;
-    private MessageSource messages;
+    private final BackupService service;
+    private final BackupRepository repo;
+    private final SimpMessagingTemplate simpMsgTemplate;
+    private final MessageSource messages;
 
     BackupsController(BackupService service, BackupRepository repo, SimpMessagingTemplate simpTemplate, MessageSource messages) {
         this.service = service;

@@ -28,9 +28,9 @@ import static com.github.cimsbioko.server.webapi.odk.Constants.XLSFORM_DEF_FILE;
 @Controller
 public class FormsController {
 
-    private FormRepository repo;
-    private FormService service;
-    private MessageSource messages;
+    private final FormRepository repo;
+    private final FormService service;
+    private final MessageSource messages;
 
     @Autowired
     public FormsController(FormRepository repo, FormService service, MessageSource messages) {

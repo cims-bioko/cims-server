@@ -33,10 +33,10 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Controller
 public class UsersController {
 
-    private UserRepository userRepo;
-    private RoleRepository roleRepo;
-    private PasswordEncoder encoder;
-    private MessageSource messages;
+    private final UserRepository userRepo;
+    private final RoleRepository roleRepo;
+    private final PasswordEncoder encoder;
+    private final MessageSource messages;
 
     public UsersController(UserRepository userRepo, RoleRepository roleRepo, PasswordEncoder encoder, MessageSource messages) {
         this.userRepo = userRepo;

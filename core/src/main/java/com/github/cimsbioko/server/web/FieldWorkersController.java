@@ -26,9 +26,9 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Controller
 public class FieldWorkersController {
 
-    private FieldWorkerRepository repo;
-    private MessageSource messages;
-    private PasswordEncoder encoder;
+    private final FieldWorkerRepository repo;
+    private final MessageSource messages;
+    private final PasswordEncoder encoder;
 
     public FieldWorkersController(FieldWorkerRepository repo, @Qualifier("fieldworkerPasswordEncoder") PasswordEncoder encoder, MessageSource messages) {
         this.repo = repo;

@@ -28,9 +28,9 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Controller
 public class RolesController {
 
-    private RoleRepository roleRepo;
-    private PrivilegeRepository privRepo;
-    private MessageSource messages;
+    private final RoleRepository roleRepo;
+    private final PrivilegeRepository privRepo;
+    private final MessageSource messages;
 
     public RolesController(RoleRepository roleRepo, PrivilegeRepository privRepo, MessageSource messages) {
         this.roleRepo = roleRepo;

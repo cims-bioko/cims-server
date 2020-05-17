@@ -11,10 +11,10 @@ import static java.util.stream.Collectors.toList;
 
 class AjaxResult {
 
-    private List<String> messages = new ArrayList<>();
-    private List<String> errors = new ArrayList<>();
-    private Map<String, List<String>> fieldErrors = new HashMap<>();
-    private Map<String, String> data = new HashMap<>();
+    private final List<String> messages = new ArrayList<>();
+    private final List<String> errors = new ArrayList<>();
+    private final Map<String, List<String>> fieldErrors = new HashMap<>();
+    private final Map<String, String> data = new HashMap<>();
 
     AjaxResult addMessage(String message) {
         messages.add(message);
