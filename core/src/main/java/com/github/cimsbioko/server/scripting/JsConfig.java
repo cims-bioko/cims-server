@@ -48,6 +48,7 @@ public class JsConfig implements Closeable {
         this.ctx = ctx;
     }
 
+    @SuppressWarnings("unchecked")
     public JsConfig load() throws URISyntaxException {
         Context ctx = Context.enter();
         try {
