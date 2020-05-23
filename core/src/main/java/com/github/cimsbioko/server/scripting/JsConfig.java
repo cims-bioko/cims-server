@@ -106,13 +106,13 @@ public class JsConfig implements Closeable {
         putClasses(scope, DatabaseExport.class, FormProcessor.class);
     }
 
-    private static void putClasses(ScriptableObject scope, Class... classes) {
-        for (Class c : classes) {
+    private static void putClasses(ScriptableObject scope, Class<?>... classes) {
+        for (Class<?> c : classes) {
             putClass(scope, c);
         }
     }
 
-    private static void putClass(ScriptableObject scope, Class clazz) {
+    private static void putClass(ScriptableObject scope, Class<?> clazz) {
         scope.putConst(clazz.getSimpleName(), scope, new NativeJavaClass(scope, clazz));
     }
 
