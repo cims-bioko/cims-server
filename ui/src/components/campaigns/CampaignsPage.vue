@@ -53,8 +53,12 @@
                             <b-button v-if="$can('DOWNLOAD_CAMPAIGNS')" variant="outline-primary" :href="`/campaign/export/${data.item.uuid}`" download>
                                 <fa-icon icon="download"/>
                             </b-button>
+                            <b-button v-if="$can('VIEW_SYNC')" variant="outline-primary" @click="showSync(data.index)" :disabled="data.item.deleted">
+                                <fa-icon icon="sync"/>
+                            </b-button>
                         </b-button-group>
                         <edit-dialog :ref="`editDialog${data.index}`" v-bind="data.item" @ok="itemEdited" v-if="$can('EDIT_CAMPAIGNS') && !data.item.deleted" />
+                        <sync-dialog :ref="`syncDialog${data.index}`" v-bind="data.item" v-if="$can('VIEW_SYNC') && !data.item.deleted"/>
                     </template>
                 </b-table>
             </b-col>
@@ -67,6 +71,7 @@
     import EditDialog from './EditDialog'
     import CreateDialog from './CreateDialog'
     import SearchBox from '../SearchBox'
+    import SyncDialog from './SyncDialog'
     export default {
         name: 'campaigns-page',
         data() {
@@ -138,6 +143,9 @@
                 await this.$xhr.put(`/campaign/${uuid}/default`)
                 this.reloadPage()
             },
+            showSync(index) {
+                this.$refs[`syncDialog${index}`].show()
+            },
             search() {
                 this.reloadPage()
             }
@@ -152,8 +160,8 @@
             }
         },
         components: {
-            BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup,
-            EditDialog, CreateDialog, SearchBox
+            BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup, EditDialog, CreateDialog,
+            SearchBox, SyncDialog
         }
     }
 </script>

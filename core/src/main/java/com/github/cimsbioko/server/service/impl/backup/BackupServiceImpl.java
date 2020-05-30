@@ -1,7 +1,9 @@
-package com.github.cimsbioko.server.service.impl;
+package com.github.cimsbioko.server.service.impl.backup;
 
 import com.github.cimsbioko.server.domain.Backup;
 import com.github.cimsbioko.server.service.BackupService;
+import com.github.cimsbioko.server.service.impl.backup.BackupCreatedEvent;
+import com.github.cimsbioko.server.service.impl.backup.BackupFailedEvent;
 import org.hibernate.Session;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
@@ -12,9 +14,9 @@ import java.sql.CallableStatement;
 
 public class BackupServiceImpl implements BackupService {
 
-    private EntityManager em;
+    private final EntityManager em;
 
-    private ApplicationEventPublisher eventPublisher;
+    private final ApplicationEventPublisher eventPublisher;
 
     public BackupServiceImpl(EntityManager em, ApplicationEventPublisher publisher) {
         this.em = em;

@@ -60,7 +60,10 @@ public class MobileDatabaseResource {
         File metadataFile = new File(cacheFile.getParentFile(), cacheFile.getName() + "." + Metadata.FILE_EXT);
         String accept = request.getHeader(ACCEPT);
 
-        if (request.checkNotModified(service.getTask(uuid).getDescriptor())) {
+        if (service.getTask(uuid)
+                .map(SyncService.Task::getContentHash)
+                .map(request::checkNotModified)
+                .orElse(false)) {
             return null;
         }
 

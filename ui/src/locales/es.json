@@ -198,6 +198,12 @@
       "title": "Editar Campaña",
       "close": "Cerrar"
     },
+    "syncmodal": {
+      "title": "Sincronización",
+      "nextrun": "Próxima ejecución en {0} minutos",
+      "contenthash": "Firma de contenido: {0}",
+      "close": "Cerrar"
+    },
     "searchph": "Buscar por nombre o descripción",
     "name": "Nombre",
     "description": "Descripción",

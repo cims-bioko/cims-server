@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.service.impl;
+package com.github.cimsbioko.server.service.impl.backup;
 
 public class BackupCreatedEvent implements BackupServiceEvent {
 

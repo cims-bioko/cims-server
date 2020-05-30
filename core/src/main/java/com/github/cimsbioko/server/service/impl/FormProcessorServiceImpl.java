@@ -6,6 +6,8 @@ import com.github.cimsbioko.server.domain.FormSubmission;
 import com.github.cimsbioko.server.scripting.FormProcessor;
 import com.github.cimsbioko.server.scripting.JsConfig;
 import com.github.cimsbioko.server.service.FormProcessorService;
+import com.github.cimsbioko.server.service.impl.campaign.CampaignLoadedEvent;
+import com.github.cimsbioko.server.service.impl.campaign.CampaignUnloadedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
@@ -27,7 +29,7 @@ public class FormProcessorServiceImpl implements FormProcessorService {
     }
 
     @EventListener
-    public void onCampaignLoaded(CampaignLoaded event) {
+    public void onCampaignLoaded(CampaignLoadedEvent event) {
         JsConfig config = event.getConfig();
         Optional.ofNullable(config.getFormProcessors()).ifPresent(fps -> {
             campaignProcessors.put(event.getUuid(), fps);
@@ -36,7 +38,7 @@ public class FormProcessorServiceImpl implements FormProcessorService {
     }
 
     @EventListener
-    public void onCampaignUnloaded(CampaignUnloaded event) {
+    public void onCampaignUnloaded(CampaignUnloadedEvent event) {
         if (campaignProcessors.containsKey(event.getUuid())) {
             campaignProcessors.remove(event.getUuid());
             log.info("removed form processors for campaign '{}' ({})", event.getName(), event.getUuid());

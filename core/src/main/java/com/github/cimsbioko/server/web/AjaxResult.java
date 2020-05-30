@@ -37,6 +37,12 @@ class AjaxResult {
         return this;
     }
 
+    AjaxResult addAllData(Map<String, String> data) {
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+            addData(entry.getKey(), entry.getValue());
+        }
+        return this;
+    }
     public List<String> getMessages() {
         return messages;
     }

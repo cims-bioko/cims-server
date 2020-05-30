@@ -211,6 +211,12 @@
       "title": "Edit Campaign",
       "close": "Close"
     },
+    "syncmodal": {
+      "title": "Sync",
+      "nextrun": "Next run in {0} minutes",
+      "contenthash": "Content signature: {0}",
+      "close": "Close"
+    },
     "name": "Name",
     "default": "Default",
     "description": "Description",

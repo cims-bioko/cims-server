@@ -3,8 +3,8 @@ package com.github.cimsbioko.server.web;
 import com.github.cimsbioko.server.dao.BackupRepository;
 import com.github.cimsbioko.server.domain.Backup;
 import com.github.cimsbioko.server.service.BackupService;
-import com.github.cimsbioko.server.service.impl.BackupCreatedEvent;
-import com.github.cimsbioko.server.service.impl.BackupFailedEvent;
+import com.github.cimsbioko.server.service.impl.backup.BackupCreatedEvent;
+import com.github.cimsbioko.server.service.impl.backup.BackupFailedEvent;
 import org.springframework.context.MessageSource;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.domain.Page;
@@ -41,7 +41,7 @@ public class BackupsController {
 
     @EventListener
     @Transactional(propagation = REQUIRES_NEW)
-    public void status(BackupCreatedEvent event) {
+    public void publishStatus(BackupCreatedEvent event) {
         Map<String, Object> msg = new HashMap<>();
         msg.put("backup", event.getBackupName());
         msg.put("status", "created");

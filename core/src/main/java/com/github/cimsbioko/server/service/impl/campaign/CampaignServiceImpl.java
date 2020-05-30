@@ -1,4 +1,4 @@
-package com.github.cimsbioko.server.service.impl;
+package com.github.cimsbioko.server.service.impl.campaign;
 
 import com.github.cimsbioko.server.dao.CampaignRepository;
 import com.github.cimsbioko.server.domain.Campaign;
@@ -77,12 +77,12 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
         log.info("loading new campaigns");
         for (Map.Entry<String, JsConfig> newConfig : loadedConfigs.entrySet()) {
             String campaignName = enabledCampaigns.get(newConfig.getKey()).getName();
-            eventPublisher.publishEvent(new CampaignLoaded(newConfig.getKey(), campaignName, newConfig.getValue()));
+            eventPublisher.publishEvent(new CampaignLoadedEvent(newConfig.getKey(), campaignName, newConfig.getValue()));
         }
     }
 
     @EventListener
-    public void loadUploadedCampaign(CampaignUploaded event) {
+    public void loadUploadedCampaign(CampaignUploadedEvent event) {
         String uuid = event.getUuid();
         Optional<Campaign> optionalActiveCampaign = repo.findActiveByUuid(uuid);
         if (optionalActiveCampaign.isPresent()) {
@@ -98,14 +98,14 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
                 if (loadedConfigs.containsKey(uuid)) {
                     log.info("unloading old config for campaign '{}'", uuid);
                     try (JsConfig oldConfig = loadedConfigs.get(uuid)) {
-                        eventPublisher.publishEvent(new CampaignUnloaded(uuid, campaign.getName(), oldConfig));
+                        eventPublisher.publishEvent(new CampaignUnloadedEvent(uuid, campaign.getName(), oldConfig));
                     }
                 }
 
                 loadedConfigs.put(uuid, config);
 
                 log.info("loading new config for campaign '{}' ({})", campaign.getName(), uuid);
-                eventPublisher.publishEvent(new CampaignLoaded(uuid, campaign.getName(), config));
+                eventPublisher.publishEvent(new CampaignLoadedEvent(uuid, campaign.getName(), config));
             } catch (URISyntaxException | IOException e) {
                 log.error("failed to load uploaded campaign", e);
             }
@@ -122,7 +122,7 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
     public void uploadCampaignFile(String uuid, MultipartFile file) throws IOException {
         Path target = Files.createTempFile("campaign_upload", null);
         file.transferTo(target);
-        eventPublisher.publishEvent(new CampaignUploaded(uuid, target.toFile()));
+        eventPublisher.publishEvent(new CampaignUploadedEvent(uuid, target.toFile()));
     }
 
     @Override
@@ -172,74 +172,3 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
     }
 }
 
-interface CampaignEvent {
-}
-
-class CampaignUploaded implements CampaignEvent {
-
-    private final String uuid;
-    private final File file;
-
-    CampaignUploaded(String uuid, File file) {
-        this.uuid = uuid;
-        this.file = file;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public File getFile() {
-        return file;
-    }
-}
-
-class CampaignLoaded implements CampaignEvent {
-
-    private final String uuid;
-    private final String name;
-    private final JsConfig config;
-
-    CampaignLoaded(String uuid, String name, JsConfig config) {
-        this.uuid = uuid;
-        this.name = name;
-        this.config = config;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public JsConfig getConfig() {
-        return config;
-    }
-}
-
-class CampaignUnloaded implements CampaignEvent {
-
-    private final String uuid;
-    private final String name;
-    private final JsConfig config;
-
-    CampaignUnloaded(String uuid, String name, JsConfig config) {
-        this.uuid = uuid;
-        this.name = name;
-        this.config = config;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public JsConfig getConfig() {
-        return config;
-    }
-}
