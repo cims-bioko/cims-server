@@ -5,9 +5,9 @@ import java.sql.*;
 
 public class Exporter {
 
-    private Source src;
-    private Target dst;
-    private MapperFactory mapperFactory;
+    private final Source src;
+    private final Target dst;
+    private final MapperFactory mapperFactory;
 
 
     public Exporter(Source source, Target target, MapperFactory mapperFactory) {

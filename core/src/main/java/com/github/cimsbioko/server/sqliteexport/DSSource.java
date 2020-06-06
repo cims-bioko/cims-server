@@ -10,8 +10,8 @@ import java.sql.Statement;
  */
 public class DSSource implements Source {
 
-    private DataSource ds;
-    private int fetchSize;
+    private final DataSource ds;
+    private final int fetchSize;
 
     public DSSource(DataSource ds) {
         this(ds, 0);

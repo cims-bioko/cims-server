@@ -15,9 +15,9 @@ class SqliteMapper implements Mapper {
 
     public static final String DEFAULT_COL_TYPE = "TEXT";
 
-    private ResultSetMetaData md;
-    private String table;
-    private Map<Integer, String> typeMap;
+    private final ResultSetMetaData md;
+    private final String table;
+    private final Map<Integer, String> typeMap;
 
     SqliteMapper(ResultSetMetaData md, String table, Map<Integer, String> typeMap) {
         this.md = md;

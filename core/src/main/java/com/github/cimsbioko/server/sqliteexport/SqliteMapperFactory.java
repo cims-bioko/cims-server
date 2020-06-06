@@ -9,7 +9,7 @@ import java.sql.SQLException;
  */
 public class SqliteMapperFactory implements MapperFactory {
 
-    private TypeExtractor typeExtractor;
+    private final TypeExtractor typeExtractor;
 
     public SqliteMapperFactory(TypeExtractor extractor) {
         this.typeExtractor = extractor;
