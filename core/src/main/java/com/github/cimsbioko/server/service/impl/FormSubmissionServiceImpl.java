@@ -8,16 +8,17 @@ import com.github.cimsbioko.server.domain.FormSubmission;
 import com.github.cimsbioko.server.exception.ExistingSubmissionException;
 import com.github.cimsbioko.server.service.FormSubmissionService;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.List;
+import java.util.stream.Stream;
 
 public class FormSubmissionServiceImpl implements FormSubmissionService {
 
-    private FormSubmissionRepository submissionDao;
-    private FormRepository formDao;
+    private final FormSubmissionRepository submissionDao;
+    private final FormRepository formDao;
 
     public FormSubmissionServiceImpl(FormSubmissionRepository submissionDao, FormRepository formDao) {
         this.submissionDao = submissionDao;
@@ -43,13 +44,12 @@ public class FormSubmissionServiceImpl implements FormSubmissionService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<FormSubmission> getUnprocessed(int batchSize) {
-        return submissionDao.findByProcessedNullOrderByCollected(PageRequest.of(0, batchSize));
+    public Stream<FormSubmission> getUnprocessed(int batchSize) {
+        return submissionDao.findUnprocessed(PageRequest.of(0, batchSize));
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void markProcessed(FormSubmission submission, Boolean processedOk) {
         submission.setProcessedOk(processedOk);
         submission.setProcessed(Timestamp.from(Instant.now()));

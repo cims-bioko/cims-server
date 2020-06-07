@@ -11,6 +11,7 @@ import com.github.cimsbioko.server.service.impl.campaign.CampaignUnloadedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
@@ -46,7 +47,7 @@ public class FormProcessorServiceImpl implements FormProcessorService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     public void process(FormSubmission submission) {
         Optional.ofNullable(submission.getCampaignId())
                 .flatMap(campaignRepo::findActiveByUuid)

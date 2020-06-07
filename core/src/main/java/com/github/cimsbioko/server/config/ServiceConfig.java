@@ -70,10 +70,10 @@ public class ServiceConfig {
     }
 
     @Bean
-    ScheduledFormProcessing scheduledFormProcessing(FormSubmissionService formsService,
+    ScheduledFormProcessing scheduledFormProcessing(EntityManager entityManager, FormSubmissionService formsService,
                                                     FormProcessorService formProcessorService,
                                                     ErrorService errorService) {
-        return new ScheduledFormProcessing(formsService, formProcessorService, errorService);
+        return new ScheduledFormProcessing(entityManager, formsService, formProcessorService, errorService);
     }
 
     @Bean

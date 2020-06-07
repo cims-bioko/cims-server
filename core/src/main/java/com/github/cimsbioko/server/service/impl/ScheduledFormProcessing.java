@@ -7,35 +7,52 @@ import com.github.cimsbioko.server.service.FormProcessorService;
 import com.github.cimsbioko.server.service.FormSubmissionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import javax.persistence.EntityManager;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Stream;
 
 public class ScheduledFormProcessing {
 
     private static final Logger log = LoggerFactory.getLogger(FormProcessorServiceImpl.class);
 
+    private final EntityManager entityManager;
     private final FormSubmissionService formsService;
     private final FormProcessorService formProcessorService;
     private final ErrorService errorService;
 
-    public ScheduledFormProcessing(FormSubmissionService formsService, FormProcessorService formProcessorService,
-                                   ErrorService errorService) {
+    private int batchSize;
+
+    public ScheduledFormProcessing(EntityManager entityManager, FormSubmissionService formsService,
+                                   FormProcessorService formProcessorService, ErrorService errorService) {
+        this.entityManager = entityManager;
         this.formsService = formsService;
         this.formProcessorService = formProcessorService;
         this.errorService = errorService;
     }
 
+    public int getBatchSize() {
+        return batchSize;
+    }
+
+    @Value("${app.formproc.batchSize:1000}")
+    public void setBatchSize(int batchSize) {
+        this.batchSize = batchSize;
+    }
+
     @RunAsUser("system")
     @Scheduled(fixedDelay = 30000)
     @Async
+    @Transactional(readOnly = true)
     public void processForms() {
-        List<FormSubmission> forms = formsService.getUnprocessed(300);
-        if (forms.size() > 0) {
-            log.info("processing {} submissions", forms.size());
-            int failures = 0;
-            for (FormSubmission f : forms) {
+        try (Stream<FormSubmission> forms = formsService.getUnprocessed(batchSize)) {
+            log.info("attempting to process submissions");
+            AtomicLong totalProcessed = new AtomicLong(), totalFailures = new AtomicLong();
+            forms.forEachOrdered(f -> {
                 boolean processedOk = false;
                 try {
                     formProcessorService.process(f);
@@ -43,14 +60,19 @@ public class ScheduledFormProcessing {
                 } catch (Exception e) {
                     log.error("failed to process submission", e);
                     errorService.logError(f, e.toString());
-                    failures++;
+                    totalFailures.incrementAndGet();
                 }
                 formsService.markProcessed(f, processedOk);
-            }
+                totalProcessed.incrementAndGet();
+                entityManager.detach(f);
+            });
+            String finalMessage = "processing completed: processed {} forms with {} failures";
+            long processed = totalProcessed.get(), failures = totalFailures.get();
             if (failures > 0) {
-                log.warn("processing completed with {} failures", failures);
+                log.warn(finalMessage, processed, failures);
+            } else {
+                log.info(finalMessage, processed, failures);
             }
         }
     }
-
 }

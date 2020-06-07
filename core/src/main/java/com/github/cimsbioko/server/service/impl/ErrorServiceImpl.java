@@ -4,6 +4,7 @@ import com.github.cimsbioko.server.dao.ErrorRepository;
 import com.github.cimsbioko.server.domain.Error;
 import com.github.cimsbioko.server.domain.FormSubmission;
 import com.github.cimsbioko.server.service.ErrorService;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 public class ErrorServiceImpl implements ErrorService {
@@ -15,7 +16,7 @@ public class ErrorServiceImpl implements ErrorService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void logError(FormSubmission submission, String message) {
         Error e = new Error();
         e.setSubmission(submission);
