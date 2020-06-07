@@ -9,6 +9,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import javax.annotation.PostConstruct;
 import java.util.concurrent.Executor;
 
+import static java.lang.Thread.MIN_PRIORITY;
+import static java.lang.Thread.NORM_PRIORITY;
+
 @Configuration
 @EnableAsync
 public class AsyncConfig extends AsyncConfigurerSupport {
@@ -24,6 +27,7 @@ public class AsyncConfig extends AsyncConfigurerSupport {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setQueueCapacity(25);
         executor.initialize();
+        executor.setThreadPriority(MIN_PRIORITY + (NORM_PRIORITY - MIN_PRIORITY) / 2);
         return executor;
     }
 }
