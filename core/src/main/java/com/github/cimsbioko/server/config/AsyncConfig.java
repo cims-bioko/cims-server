@@ -25,7 +25,6 @@ public class AsyncConfig extends AsyncConfigurerSupport {
     @Override
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setQueueCapacity(25);
         executor.initialize();
         executor.setThreadPriority(MIN_PRIORITY + (NORM_PRIORITY - MIN_PRIORITY) / 2);
         return executor;
