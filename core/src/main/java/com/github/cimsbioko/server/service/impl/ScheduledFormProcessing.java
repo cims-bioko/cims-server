@@ -49,6 +49,7 @@ public class ScheduledFormProcessing {
     @Async
     @Transactional(readOnly = true)
     public void processForms() {
+        long start = System.currentTimeMillis();
         try (Stream<FormSubmission> forms = formsService.getUnprocessed(batchSize)) {
             log.info("attempting to process submissions");
             AtomicLong totalProcessed = new AtomicLong(), totalFailures = new AtomicLong();
@@ -66,12 +67,13 @@ public class ScheduledFormProcessing {
                 totalProcessed.incrementAndGet();
                 entityManager.detach(f);
             });
-            String finalMessage = "processing completed: processed {} forms with {} failures";
+            float duration = (System.currentTimeMillis() - start) / 1000f;
+            String finalMessage = "processing completed: processed {} forms with {} failures ({}s)";
             long processed = totalProcessed.get(), failures = totalFailures.get();
             if (failures > 0) {
-                log.warn(finalMessage, processed, failures);
+                log.warn(finalMessage, processed, failures, duration);
             } else {
-                log.info(finalMessage, processed, failures);
+                log.info(finalMessage, processed, failures, duration);
             }
         }
     }
