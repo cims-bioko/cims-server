@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 
 public class ScheduledFormProcessing {
 
+    private static final float MILLIS_PER_SECOND = 1000f;
     private static final Logger log = LoggerFactory.getLogger(FormProcessorServiceImpl.class);
 
     private final EntityManager entityManager;
@@ -54,6 +55,9 @@ public class ScheduledFormProcessing {
             log.info("attempting to process submissions");
             AtomicLong totalProcessed = new AtomicLong(), totalFailures = new AtomicLong();
             forms.forEachOrdered(f -> {
+                if (totalProcessed.get() == 0) {
+                    log.info("time to first submission {}s", (System.currentTimeMillis() - start) / MILLIS_PER_SECOND);
+                }
                 boolean processedOk = false;
                 try {
                     formProcessorService.process(f);
@@ -67,7 +71,7 @@ public class ScheduledFormProcessing {
                 totalProcessed.incrementAndGet();
                 entityManager.detach(f);
             });
-            float duration = (System.currentTimeMillis() - start) / 1000f;
+            float duration = (System.currentTimeMillis() - start) / MILLIS_PER_SECOND;
             String finalMessage = "processing completed: processed {} forms with {} failures ({}s)";
             long processed = totalProcessed.get(), failures = totalFailures.get();
             if (failures > 0) {
