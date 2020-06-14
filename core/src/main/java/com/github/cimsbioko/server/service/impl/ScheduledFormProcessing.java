@@ -54,22 +54,22 @@ public class ScheduledFormProcessing {
         try (Stream<FormSubmission> forms = formsService.getUnprocessed(batchSize)) {
             log.info("attempting to process submissions");
             AtomicLong totalProcessed = new AtomicLong(), totalFailures = new AtomicLong();
-            forms.forEachOrdered(f -> {
+            forms.forEachOrdered(form -> {
                 if (totalProcessed.get() == 0) {
                     log.info("time to first submission {}s", (System.currentTimeMillis() - start) / MILLIS_PER_SECOND);
                 }
                 boolean processedOk = false;
                 try {
-                    formProcessorService.process(f);
+                    formProcessorService.process(form);
                     processedOk = true;
                 } catch (Exception e) {
                     log.error("failed to process submission", e);
-                    errorService.logError(f, e.toString());
+                    errorService.logError(form, e.toString());
                     totalFailures.incrementAndGet();
                 }
-                formsService.markProcessed(f, processedOk);
+                formsService.markProcessed(form, processedOk);
                 totalProcessed.incrementAndGet();
-                entityManager.detach(f);
+                entityManager.detach(form);
             });
             float duration = (System.currentTimeMillis() - start) / MILLIS_PER_SECOND;
             String finalMessage = "processing completed: processed {} forms with {} failures ({}s)";
