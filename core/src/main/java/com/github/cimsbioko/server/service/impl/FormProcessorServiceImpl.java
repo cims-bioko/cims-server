@@ -53,7 +53,7 @@ public class FormProcessorServiceImpl implements FormProcessorService {
                 .flatMap(campaignRepo::findActiveByUuid)
                 .map(Campaign::getUuid)
                 .map(campaignProcessors::get)
-                .map(pm -> pm.get(submission.getFormBinding()))
+                .map(processorMap -> processorMap.get(submission.getFormBinding()))
                 .orElse(new DefaultProcessor())
                 .process(submission);
     }
