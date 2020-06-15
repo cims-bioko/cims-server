@@ -1,0 +1,1 @@
+alter table error alter column message type text;

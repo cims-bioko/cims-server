@@ -13,7 +13,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ScheduledFormProcessing {
@@ -63,8 +66,8 @@ public class ScheduledFormProcessing {
                     formProcessorService.process(form);
                     processedOk = true;
                 } catch (Exception e) {
-                    log.error("failed to process submission", e);
-                    errorService.logError(form, e.toString());
+                    log.error("failed to process submission {}: {}", form.getInstanceId(), e.getMessage());
+                    errorService.logError(form, causes(e).stream().map(Throwable::getMessage).collect(Collectors.joining("\n")));
                     totalFailures.incrementAndGet();
                 }
                 formsService.markProcessed(form, processedOk);
@@ -80,5 +83,13 @@ public class ScheduledFormProcessing {
                 log.info(finalMessage, processed, failures, duration);
             }
         }
+    }
+
+    private List<Throwable> causes(Throwable throwable) {
+        List<Throwable> causes = new ArrayList<>();
+        for (Throwable t = throwable; t != null; t = t.getCause()) {
+            causes.add(t);
+        }
+        return causes;
     }
 }
