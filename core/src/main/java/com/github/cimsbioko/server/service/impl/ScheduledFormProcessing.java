@@ -49,7 +49,7 @@ public class ScheduledFormProcessing {
     }
 
     @RunAsUser("system")
-    @Scheduled(fixedDelay = 30000)
+    @Scheduled(fixedDelayString = "${app.formproc.interval:PT1M}")
     @Async
     @Transactional(readOnly = true)
     public void processForms() {
