@@ -189,6 +189,11 @@
     "forget": "Olvidar"
   },
   "campaigns": {
+    "title": "Campaña '{0}'",
+    "bindingName": "Enlace",
+    "binding": {
+      "reprocessed": "{0} formularios marcados para reprocesamiento"
+    },
     "upload": "Subir",
     "uploadmodal": {
       "title": "Subir Campaña '{0}'",
@@ -203,6 +208,12 @@
       "nextrun": "Próxima ejecución en {0} minutos",
       "contenthash": "Firma de contenido: {0}",
       "close": "Cerrar"
+    },
+    "reprocessmodal": {
+      "title": "¿Reprocesar {0}?",
+      "desc": "¿Volver a procesar los envíos de formularios para el enlace '{0}'? Dependiendo de la cantidad de envíos, el reprocesamiento puede llevar mucho tiempo. Además, si el procesamiento no es idempotente, el reprocesamiento puede causar problemas de datos no deseados.",
+      "cancel": "Cancelar",
+      "reprocess": "Reprocesar"
     },
     "searchph": "Buscar por nombre o descripción",
     "name": "Nombre",

@@ -9,6 +9,8 @@ const UsersPage = () => import('./components/users/UsersPage.vue')
 const RolesPage = () => import('./components/roles/RolesPage.vue')
 const DevicesPage = () => import('./components/devices/DevicesPage.vue')
 const CampaignsPage = () => import('./components/campaigns/CampaignsPage.vue')
+const Campaign = () => import('./components/campaigns/Campaign.vue')
+const CampaignBindings = () => import('./components/campaigns/CampaignBindings.vue')
 const FieldworkersPage = () => import('./components/fieldworkers/FieldworkersPage.vue')
 
 export const Router = new VueRouter({
@@ -20,6 +22,12 @@ export const Router = new VueRouter({
         { name: 'roles', path: '/roles', component: RolesPage },
         { name: 'devices', path: '/devices', component: DevicesPage },
         { name: 'campaigns', path: '/campaigns', component: CampaignsPage },
+        {
+            path: '/campaigns/:campaign', component: Campaign, props: true, children: [
+                {path: '', redirect: 'bindings'},
+                {path: 'bindings', component: CampaignBindings, props: true}
+            ]
+        },
         { name: 'fieldworkers', path: '/fieldworkers', component: FieldworkersPage },
     ]
 })

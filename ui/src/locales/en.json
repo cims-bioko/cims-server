@@ -196,6 +196,11 @@
     "forget": "Forget"
   },
   "campaigns": {
+    "title": "Campaign '{0}'",
+    "bindingName": "Binding",
+    "binding": {
+      "reprocessed": "Marked {0} submissions for reprocessing"
+    },
     "upload": "Upload",
     "create": "Create",
     "searchph": "Search by name or description",
@@ -216,6 +221,12 @@
       "nextrun": "Next run in {0} minutes",
       "contenthash": "Content signature: {0}",
       "close": "Close"
+    },
+    "reprocessmodal": {
+      "title": "Reprocess {0}?",
+      "desc": "Reprocess form submissions for binding '{0}'? Depending on the number of submissions, reprocessing can take a long time. Also, if processing is non-idempotent, reprocessing can cause unintended data issues.",
+      "cancel": "Cancel",
+      "reprocess": "Reprocess"
     },
     "name": "Name",
     "default": "Default",

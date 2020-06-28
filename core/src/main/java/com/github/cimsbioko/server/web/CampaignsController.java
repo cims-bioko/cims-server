@@ -1,11 +1,9 @@
 package com.github.cimsbioko.server.web;
 
-import com.github.cimsbioko.server.dao.CampaignRepository;
-import com.github.cimsbioko.server.dao.DeviceRepository;
-import com.github.cimsbioko.server.dao.FormRepository;
-import com.github.cimsbioko.server.dao.UserRepository;
+import com.github.cimsbioko.server.dao.*;
 import com.github.cimsbioko.server.domain.*;
 import com.github.cimsbioko.server.service.CampaignService;
+import com.github.cimsbioko.server.service.FormProcessorService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.FileSystemResource;
@@ -40,15 +38,20 @@ public class CampaignsController {
 
     private final CampaignRepository repo;
     private final FormRepository formRepo;
+    private final FormProcessorService formProcessorService;
+    private final FormSubmissionRepository submissionRepo;
     private final DeviceRepository deviceRepo;
     private final UserRepository userRepo;
     private final CampaignService service;
     private final MessageSource messages;
 
-    public CampaignsController(CampaignRepository repo, FormRepository formRepo, DeviceRepository deviceRepo,
+    public CampaignsController(CampaignRepository repo, FormRepository formRepo, FormProcessorService formProcessorService,
+                               FormSubmissionRepository submissionRepo, DeviceRepository deviceRepo,
                                UserRepository userRepo, CampaignService service, MessageSource messages) {
         this.repo = repo;
         this.formRepo = formRepo;
+        this.formProcessorService = formProcessorService;
+        this.submissionRepo = submissionRepo;
         this.deviceRepo = deviceRepo;
         this.userRepo = userRepo;
         this.service = service;
@@ -193,7 +196,7 @@ public class CampaignsController {
         if (form.isDisabled() && existing.getDisabled() == null) {
             Timestamp now = Timestamp.from(Instant.now());
             existing.setDisabled(now);
-        } else if (!form.isDisabled()){
+        } else if (!form.isDisabled()) {
             existing.setDisabled(null);
         }
 
@@ -331,6 +334,23 @@ public class CampaignsController {
     @ResponseBody
     public List<Device> availableDevicesForCreate() {
         return deviceRepo.findSelectableForCampaign("");
+    }
+
+    @PreAuthorize("hasAnyAuthority('REPROCESS_SUBMISSIONS')")
+    @GetMapping("/campaign/{uuid}/bindings")
+    @ResponseBody
+    public List<String> bindingsForCampaign(@PathVariable String uuid) {
+        return formProcessorService.getBindings(uuid);
+    }
+
+    @PreAuthorize("hasAuthority('REPROCESS_SUBMISSIONS')")
+    @DeleteMapping("/campaign/{uuid}/binding/{binding}")
+    @ResponseBody
+    @Transactional
+    public Map<String, Object> reprocessCampaignForms(@PathVariable String uuid, @PathVariable String binding) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("affected", submissionRepo.markUnprocessed(uuid, binding));
+        return result;
     }
 
     @ExceptionHandler(IOException.class)

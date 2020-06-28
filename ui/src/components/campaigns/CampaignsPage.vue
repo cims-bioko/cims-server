@@ -56,6 +56,9 @@
                             <b-button v-if="$can('VIEW_SYNC')" variant="outline-primary" @click="showSync(data.index)" :disabled="data.item.deleted">
                                 <fa-icon icon="sync"/>
                             </b-button>
+                            <b-button v-if="$can('REPROCESS_SUBMISSIONS')" variant="outline-primary" :disabled="data.item.deleted" :to="`/campaigns/${data.item.uuid}`">
+                                <fa-icon icon="cogs"/>
+                            </b-button>
                         </b-button-group>
                         <edit-dialog :ref="`editDialog${data.index}`" v-bind="data.item" @ok="itemEdited" v-if="$can('EDIT_CAMPAIGNS') && !data.item.deleted" />
                         <sync-dialog :ref="`syncDialog${data.index}`" v-bind="data.item" v-if="$can('VIEW_SYNC') && !data.item.deleted"/>

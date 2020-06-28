@@ -14,9 +14,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class FormProcessorServiceImpl implements FormProcessorService {
 
@@ -44,6 +42,16 @@ public class FormProcessorServiceImpl implements FormProcessorService {
             campaignProcessors.remove(event.getUuid());
             log.info("removed form processors for campaign '{}' ({})", event.getName(), event.getUuid());
         }
+    }
+
+    @Override
+    public List<String> getBindings(String campaignUuid) {
+        List<String> bindings = new ArrayList<>();
+        if (campaignProcessors.containsKey(campaignUuid)) {
+            bindings.addAll(campaignProcessors.get(campaignUuid).keySet());
+            Collections.sort(bindings);
+        }
+        return bindings;
     }
 
     @Override
