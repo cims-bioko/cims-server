@@ -33,7 +33,7 @@ public class SecurityConfig {
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService,
-                                                         PasswordEncoder passwordEncoder, UserCache userCache) {
+                                                            PasswordEncoder passwordEncoder, UserCache userCache) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserCache(userCache);
         provider.setUserDetailsService(userDetailsService);
@@ -121,15 +121,18 @@ public class SecurityConfig {
     @Order(1)
     public static class DeviceBasicAuthConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
-        private final DaoAuthenticationProvider authProvider;
+        private final TokenHasher tokenHasher;
+        private final DeviceDetailsService deviceDetailsService;
 
-        public DeviceBasicAuthConfigurationAdapter(DaoAuthenticationProvider authProvider) {
-            this.authProvider = authProvider;
+
+        public DeviceBasicAuthConfigurationAdapter(TokenHasher tokenHasher, DeviceDetailsService deviceDetailsService) {
+            this.tokenHasher = tokenHasher;
+            this.deviceDetailsService = deviceDetailsService;
         }
 
         @Override
-        protected void configure(AuthenticationManagerBuilder auth) {
-            auth.authenticationProvider(authProvider);
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.userDetailsService(deviceDetailsService).passwordEncoder(new SHAPasswordEncoder(tokenHasher));
         }
 
         protected void configure(HttpSecurity http) throws Exception {
