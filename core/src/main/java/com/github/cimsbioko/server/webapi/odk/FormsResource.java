@@ -53,7 +53,7 @@ import static org.springframework.security.web.util.UrlUtils.buildFullRequestUrl
 @RequestMapping(ODK_API_PATH)
 public class FormsResource {
 
-    private static Logger log = LoggerFactory.getLogger(FormsResource.class);
+    private static final Logger log = LoggerFactory.getLogger(FormsResource.class);
 
     @Resource
     private File formsDir;
@@ -74,7 +74,7 @@ public class FormsResource {
     private FormService formService;
 
     @RequestMapping(value = {"/upload", "/forms", "/formUpload"}, method = RequestMethod.HEAD)
-    public ResponseEntity headForBriefcasePush(HttpServletRequest req) {
+    public ResponseEntity<?> headForBriefcasePush(HttpServletRequest req) {
         return ResponseEntity
                 .noContent()
                 .headers(helper.openRosaHeaders())
