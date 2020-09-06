@@ -55,7 +55,6 @@ import java.util.regex.Pattern;
 import static com.github.cimsbioko.server.util.JDOMUtil.*;
 import static com.github.cimsbioko.server.webapi.odk.Constants.*;
 import static java.time.Instant.now;
-import static org.json.XML.toJSONObject;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.*;
@@ -66,7 +65,7 @@ import static org.springframework.util.StringUtils.isEmpty;
 @RequestMapping(ODK_API_PATH)
 public class SubmissionResource {
 
-    private static Logger log = LoggerFactory.getLogger(SubmissionResource.class);
+    private static final Logger log = LoggerFactory.getLogger(SubmissionResource.class);
 
     @Autowired
     SubmissionFileSystem submissionFileSystem;
@@ -100,6 +99,9 @@ public class SubmissionResource {
 
     @Autowired
     private DateFormatter dateFormatter;
+
+    @Autowired
+    private SubmissionJSONConverter jsonConverter;
 
     @RequestMapping(value = {"/submission"}, method = RequestMethod.HEAD)
     public ResponseEntity submissionPreAuth(HttpServletRequest req) {
@@ -265,7 +267,7 @@ public class SubmissionResource {
         return b.toString();
     }
 
-    private static Pattern SUBMIT_KEY_PATTERN = Pattern.compile("/([^\\[]+)\\[@key=([^\\]]+)\\]$");
+    private static final Pattern SUBMIT_KEY_PATTERN = Pattern.compile("/([^\\[]+)\\[@key=([^\\]]+)\\]$");
 
     private String[] getInfoFromSubmissionKey(String key) {
         Matcher m = SUBMIT_KEY_PATTERN.matcher(key);
@@ -392,7 +394,7 @@ public class SubmissionResource {
                 log.warn("failed to parse submission date", e);
             }
 
-            JSONObject json = toJSONObject(stringFromDoc(xmlDoc));
+            JSONObject json = jsonConverter.convert(xmlDoc);
             log.debug("converted json:\n{}", json);
 
             // Create a database record for the submission

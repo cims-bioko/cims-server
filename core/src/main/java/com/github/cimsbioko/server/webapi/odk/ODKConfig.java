@@ -40,4 +40,9 @@ public class ODKConfig {
     DateFormatter odkDateFormatter() {
         return new DefaultDateFormatter();
     }
+
+    @Bean
+    SubmissionJSONConverter submissionJSONConverter() {
+        return new DefaultSubmissionJSONConverter();
+    }
 }
