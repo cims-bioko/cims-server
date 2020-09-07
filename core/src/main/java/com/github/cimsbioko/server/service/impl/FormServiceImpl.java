@@ -8,6 +8,7 @@ import com.github.cimsbioko.server.service.FormService;
 import com.github.cimsbioko.server.service.XLSFormService;
 import com.github.cimsbioko.server.webapi.odk.FileHasher;
 import com.github.cimsbioko.server.webapi.odk.FormFileSystem;
+import com.github.cimsbioko.server.webapi.odk.RepeatExtractor;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -22,9 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -35,29 +36,38 @@ import java.util.zip.ZipOutputStream;
 import static com.github.cimsbioko.server.util.JDOMUtil.getBuilder;
 import static com.github.cimsbioko.server.util.JDOMUtil.getOutputter;
 import static com.github.cimsbioko.server.webapi.odk.Constants.*;
+import static java.util.Collections.emptyList;
 import static org.springframework.util.FileCopyUtils.copy;
 
 public class FormServiceImpl implements FormService {
 
     private static final Logger log = LoggerFactory.getLogger(FormServiceImpl.class);
     public static final String CONVERTED_XML_NAME = "form.xml";
+    public static final Namespace XFORMS_NS = Namespace.getNamespace("http://www.w3.org/2002/xforms");
+    public static final Namespace XHTML_NS = Namespace.getNamespace("http://www.w3.org/1999/xhtml");
+    public static final Namespace MANIFEST_NS = Namespace.getNamespace("http://openrosa.org/xforms/xformsManifest");
 
-    private FormRepository formDao;
+    private final FormRepository formDao;
 
-    private FormSubmissionRepository submissionDao;
+    private final FormSubmissionRepository submissionDao;
 
-    private FileHasher hasher;
+    private final FileHasher hasher;
 
-    private FormFileSystem formFileSystem;
+    private final FormFileSystem formFileSystem;
 
-    private XLSFormService xlsformService;
+    private final XLSFormService xlsformService;
 
-    public FormServiceImpl(FormRepository repo, FormSubmissionRepository submissionDao, FileHasher hasher, FormFileSystem fs, XLSFormService xlsformService) {
+    private final ConcurrentMap<FormId, List<String[]>> repeatPaths = new ConcurrentHashMap<>();
+
+    private final RepeatExtractor repeatExtractor;
+
+    public FormServiceImpl(FormRepository repo, FormSubmissionRepository submissionDao, FileHasher hasher, FormFileSystem fs, XLSFormService xlsformService, RepeatExtractor repeatExtractor) {
         this.formDao = repo;
         this.submissionDao = submissionDao;
         this.hasher = hasher;
         this.formFileSystem = fs;
         this.xlsformService = xlsformService;
+        this.repeatExtractor = repeatExtractor;
     }
 
     @Override
@@ -132,6 +142,14 @@ public class FormServiceImpl implements FormService {
         });
     }
 
+    @Override
+    public List<String[]> getRepeatPaths(FormId formId) {
+        return repeatPaths.computeIfAbsent(formId, id -> formDao.findById(id)
+                .map(Form::getXml)
+                .map(repeatExtractor::extractRepeats)
+                .orElse(emptyList()));
+    }
+
     private void installConvertedFormWithMedia(MultipartFile xlsform, MultiValueMap<String, MultipartFile> uploadedFiles, ZipFile converted)
             throws JDOMException, IOException, NoSuchAlgorithmException {
         try (InputStream xmlInput = converted.getInputStream(new ZipEntry(CONVERTED_XML_NAME))) {
@@ -199,15 +217,11 @@ public class FormServiceImpl implements FormService {
         // make xml into dom object
         Document formDoc = getBuilder().build(xmlStream);
 
-        // create namespaces to we can unambiguously reference elements using dom api
-        Namespace xformsNs = Namespace.getNamespace("http://www.w3.org/2002/xforms"),
-                xhtmlNs = Namespace.getNamespace("http://www.w3.org/1999/xhtml");
-
         // grab the first data instance document (our data)
         Element firstInstance = formDoc.getRootElement()
-                .getChild(HEAD, xhtmlNs)
-                .getChild(MODEL, xformsNs)
-                .getChild(INSTANCE, xformsNs)
+                .getChild(HEAD, XHTML_NS)
+                .getChild(MODEL, XFORMS_NS)
+                .getChild(INSTANCE, XFORMS_NS)
                 .getChildren()
                 .get(0);
 
@@ -261,8 +275,7 @@ public class FormServiceImpl implements FormService {
 
         // create a new dom object for the form's media manifest
         Document manifestDoc = new Document();
-        Namespace manifestNs = Namespace.getNamespace("http://openrosa.org/xforms/xformsManifest");
-        Element manifestElem = new Element(MANIFEST, manifestNs);
+        Element manifestElem = new Element(MANIFEST, MANIFEST_NS);
         manifestDoc.setRootElement(manifestElem);
 
         for (String mediaFileName : mediaFileNames) {
@@ -270,16 +283,16 @@ public class FormServiceImpl implements FormService {
             File mediaFile = new File(formDir, mediaFileName);
 
             // add mediaFile element to the manifest for the file
-            Element mediaFileElem = new Element(MEDIA_FILE, manifestNs);
+            Element mediaFileElem = new Element(MEDIA_FILE, MANIFEST_NS);
             manifestElem.addContent(mediaFileElem);
 
             // add filename element to mediaFile element
-            Element fileNameElem = new Element(FILENAME, manifestNs);
+            Element fileNameElem = new Element(FILENAME, MANIFEST_NS);
             fileNameElem.setText(mediaFile.getName());
             mediaFileElem.addContent(fileNameElem);
 
             // add hash element to the mediafile element
-            Element hashElem = new Element(HASH, manifestNs);
+            Element hashElem = new Element(HASH, MANIFEST_NS);
             hashElem.setText(hasher.hashFile(mediaFile));
             mediaFileElem.addContent(hashElem);
         }

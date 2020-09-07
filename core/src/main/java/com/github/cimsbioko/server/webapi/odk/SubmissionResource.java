@@ -104,7 +104,7 @@ public class SubmissionResource {
     private SubmissionJSONConverter jsonConverter;
 
     @RequestMapping(value = {"/submission"}, method = RequestMethod.HEAD)
-    public ResponseEntity submissionPreAuth(HttpServletRequest req) {
+    public ResponseEntity<?> submissionPreAuth(HttpServletRequest req) {
         return ResponseEntity
                 .noContent()
                 .headers(helper.openRosaHeaders())
@@ -343,8 +343,10 @@ public class SubmissionResource {
             rootElem.setAttribute(VERSION, version);
         }
 
+        FormId formId = new FormId(id, version);
+
         // FIXME: Use optional rather than null
-        Form form = formDao.findById(new FormId(id, version)).orElse(null);
+        Form form = formDao.findById(formId).orElse(null);
 
         if (form == null) {
             log.warn("rejected {}, unknown form id={}, version={}", instanceId, id, version);
@@ -394,7 +396,7 @@ public class SubmissionResource {
                 log.warn("failed to parse submission date", e);
             }
 
-            JSONObject json = jsonConverter.convert(xmlDoc);
+            JSONObject json = jsonConverter.convert(xmlDoc, formId);
             log.debug("converted json:\n{}", json);
 
             // Create a database record for the submission

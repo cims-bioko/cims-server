@@ -1,5 +1,6 @@
 package com.github.cimsbioko.server.webapi.odk;
 
+import com.github.cimsbioko.server.service.FormService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -42,7 +43,12 @@ public class ODKConfig {
     }
 
     @Bean
-    SubmissionJSONConverter submissionJSONConverter() {
-        return new DefaultSubmissionJSONConverter();
+    SubmissionJSONConverter submissionJSONConverter(FormService formService) {
+        return new DefaultSubmissionJSONConverter(formService);
+    }
+
+    @Bean
+    RepeatExtractor repeatExtractor() {
+        return new RepeatExtractorImpl();
     }
 }

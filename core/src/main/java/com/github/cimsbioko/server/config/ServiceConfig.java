@@ -12,6 +12,7 @@ import com.github.cimsbioko.server.service.impl.sync.SyncServiceImpl;
 import com.github.cimsbioko.server.sqliteexport.Exporter;
 import com.github.cimsbioko.server.webapi.odk.FileHasher;
 import com.github.cimsbioko.server.webapi.odk.FormFileSystem;
+import com.github.cimsbioko.server.webapi.odk.RepeatExtractor;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -35,8 +36,9 @@ public class ServiceConfig {
     }
 
     @Bean
-    public FormService formService(FormRepository repo, FormSubmissionRepository submissionRepo, FileHasher hasher, FormFileSystem fs, XLSFormService xlsformService) {
-        return new FormServiceImpl(repo, submissionRepo, hasher, fs, xlsformService);
+    public FormService formService(FormRepository repo, FormSubmissionRepository submissionRepo, FileHasher hasher,
+                                   FormFileSystem fs, XLSFormService xlsformService, RepeatExtractor repeatExtractor) {
+        return new FormServiceImpl(repo, submissionRepo, hasher, fs, xlsformService, repeatExtractor);
     }
 
     @Bean
