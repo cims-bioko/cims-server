@@ -42,6 +42,7 @@ import static org.springframework.util.FileCopyUtils.copy;
 public class FormServiceImpl implements FormService {
 
     private static final Logger log = LoggerFactory.getLogger(FormServiceImpl.class);
+
     public static final String CONVERTED_XML_NAME = "form.xml";
     public static final Namespace XFORMS_NS = Namespace.getNamespace("http://www.w3.org/2002/xforms");
     public static final Namespace XHTML_NS = Namespace.getNamespace("http://www.w3.org/1999/xhtml");
@@ -193,6 +194,11 @@ public class FormServiceImpl implements FormService {
         writeUploadedMediaFiles(id, mediaFiles);
         writeManifest(id, mediaFiles.keySet());
         writeXlsform(id, xlsform);
+        invalidateRepeats(id);
+    }
+
+    private void invalidateRepeats(FormId id) {
+        repeatPaths.remove(id);
     }
 
     private void writeXlsform(FormId id, MultipartFile xlsform) throws IOException {
