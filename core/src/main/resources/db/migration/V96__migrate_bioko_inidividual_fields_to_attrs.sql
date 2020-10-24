@@ -20,16 +20,7 @@ select
   gender,
   last_name as lastname,
   home as currentresidence,
-  attrs->>'home_role' as relationshiptohead,
   middle_name as othernames,
-  attrs->>'phone1' as phonenumber,
-  attrs->>'phone2' as otherphonenumber,
-  attrs->>'contact_name' as pointofcontactname,
-  attrs->>'contact_phone' as pointofcontactphonenumber,
-  attrs->>'language' as languagepreference,
-  attrs->>'status' as status,
-  attrs->>'nationality' as nationality,
-  attrs->>'dip' as otherid,
   attrs::text AS attrs
 from
   individual
