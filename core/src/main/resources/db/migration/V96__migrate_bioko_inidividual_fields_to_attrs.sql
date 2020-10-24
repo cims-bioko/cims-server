@@ -30,7 +30,7 @@ select
   attrs->>'status' as status,
   attrs->>'nationality' as nationality,
   attrs->>'dip' as otherid,
-  (((((((((attrs - 'home_role')-'phone1')-'phone2')-'contact_name')-'contact_phone')-'language')-'status')-'nationality')-'dip') AS attrs
+  attrs::text AS attrs
 from
   individual
 where
