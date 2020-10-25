@@ -55,27 +55,6 @@ public class Individual implements Serializable {
     @Temporal(TemporalType.DATE)
     private Calendar dob;
 
-    @Field
-    private String phone1;
-
-    @Field
-    private String phone2;
-
-    private String language;
-
-    @Column(name = "contact_name")
-    @Field
-    private String contactName;
-
-    @Column(name = "contact_phone")
-    @Field
-    private String contactPhone;
-
-    @Field
-    private Integer dip;
-
-    private String nationality;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "home")
     private Location home;
@@ -84,11 +63,6 @@ public class Individual implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "collector")
     protected FieldWorker collector;
-
-    @Column(name = "home_role")
-    private String homeRole;
-
-    private String status;
 
     @Type(type = "json")
     private JSONObject attrs;
@@ -165,62 +139,6 @@ public class Individual implements Serializable {
         dob = date;
     }
 
-    public void setPhone1(String phone1) {
-        this.phone1 = phone1;
-    }
-
-    public String getPhone1() {
-        return phone1;
-    }
-
-    public void setPhone2(String phone2) {
-        this.phone2 = phone2;
-    }
-
-    public String getPhone2() {
-        return phone2;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
-    }
-
-    public String getContactName() {
-        return contactName;
-    }
-
-    public void setContactPhone(String contactPhone) {
-        this.contactPhone = contactPhone;
-    }
-
-    public String getContactPhone() {
-        return contactPhone;
-    }
-
-    public void setDip(Integer dip) {
-        this.dip = dip;
-    }
-
-    public Integer getDip() {
-        return dip;
-    }
-
-    public String getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
     public Location getHome() {
         return home;
     }
@@ -235,22 +153,6 @@ public class Individual implements Serializable {
 
     public void setCollector(FieldWorker collector) {
         this.collector = collector;
-    }
-
-    public String getHomeRole() {
-        return homeRole;
-    }
-
-    public void setHomeRole(String homeRole) {
-        this.homeRole = homeRole;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public JSONObject getAttrs() {
