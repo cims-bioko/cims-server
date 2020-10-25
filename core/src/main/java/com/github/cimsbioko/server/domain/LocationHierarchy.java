@@ -83,6 +83,13 @@ public class LocationHierarchy implements Serializable {
         this.attrs = attrs;
     }
 
+    public JSONObject getAttrsForUpdate() {
+        if (attrs == null) {
+            attrs = new JSONObject();
+        }
+        return attrs;
+    }
+
     @Override
     public int hashCode() {
         if (null == uuid) {
