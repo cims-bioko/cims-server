@@ -28,7 +28,12 @@ public class StoredProcServiceImpl implements StoredProcService {
     @Override
     @Transactional
     public void callProcedure(String procName, Object... args) {
-        getSession().doWork(
+        Session s = getSession();
+        // ensure any pending updates/deletes are applied before we call the procedure
+        if (s.isDirty()) {
+            s.flush();
+        }
+        s.doWork(
                 c -> {
                     try (CallableStatement f = c.prepareCall(getProcedureCall(procName, getParamString(args.length)))) {
                         for (int a = 0; a < args.length; a++) {
