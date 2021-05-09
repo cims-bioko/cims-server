@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Stream;
 
-public interface FormSubmissionRepository extends PagingAndSortingRepository<FormSubmission, String> {
+public interface FormSubmissionRepository extends PagingAndSortingRepository<FormSubmission, String>, FormSubmissionSearch  {
     @Query("select f from #{#entityName} f where f.processed is null order by date_trunc('hour', f.submitted), f.collected")
     Stream<FormSubmission> findUnprocessed(Pageable pageable);
     List<FormSubmission> findByFormIdAndSubmittedAfter(String formId, Timestamp submitted, Pageable pageable);

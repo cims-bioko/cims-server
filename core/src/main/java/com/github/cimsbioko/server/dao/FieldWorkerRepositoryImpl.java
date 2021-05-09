@@ -16,7 +16,7 @@ import java.util.List;
 
 public class FieldWorkerRepositoryImpl implements FieldworkerSearch {
 
-    private EntityManager em;
+    private final EntityManager em;
 
     public FieldWorkerRepositoryImpl(EntityManager em) {
         this.em = em;

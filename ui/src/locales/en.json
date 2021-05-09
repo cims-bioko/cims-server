@@ -12,6 +12,7 @@
     "fieldworkers": "Fieldworkers",
     "devices": "Devices",
     "campaigns": "Campaigns",
+    "submissions": "Submissions",
     "logout": "Logout"
   },
   "table": {
@@ -48,6 +49,10 @@
     "campaigns": {
       "desc": "Create, configure, and manage campaign definitions for customizing mobile data collection.",
       "btn": "Go to Campaigns"
+    },
+    "submissions": {
+      "desc": "Search and manage submitted form submissions.",
+      "btn": "Go to Submissions"
     }
   },
   "backups": {
@@ -245,5 +250,20 @@
     "namereq": "Name is required.",
     "baddate": "Invalid date.",
     "endafterstart": "End date must be after start date."
+  },
+  "submissions": {
+    "deletemodal": {
+      "title": "Delete Submission?",
+      "desc": "Delete submission '{0}'? This action is irreversible.",
+      "delete": "Delete",
+      "cancel": "Cancel"
+    },
+    "searchph": "Search submissions by content",
+    "id": "ID",
+    "form": "Form",
+    "device": "Device",
+    "submitted": "Submitted",
+    "processed": "Processed",
+    "actions": "Actions"
   }
 }

@@ -3,6 +3,7 @@ package com.github.cimsbioko.server.util;
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 import java.io.IOException;
@@ -35,6 +36,9 @@ public class JDOMUtil {
         return value == null ? null : getOutputter().outputString(value);
     }
 
+    public static String stringFromDoc(Document value, boolean makePretty) {
+        return value == null ? null : getOutputter(makePretty).outputString(value);
+    }
 
     public static SAXBuilder getBuilder() {
         SAXBuilder result = builderForThread.get();
@@ -46,9 +50,13 @@ public class JDOMUtil {
     }
 
     public static XMLOutputter getOutputter() {
+        return getOutputter(false);
+    }
+
+    public static XMLOutputter getOutputter(boolean makePretty) {
         XMLOutputter result = outputterForThread.get();
         if (result == null) {
-            result = new XMLOutputter();
+            result = makePretty ? new XMLOutputter(Format.getPrettyFormat()) : new XMLOutputter();
             outputterForThread.set(result);
         }
         return result;

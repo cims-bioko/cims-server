@@ -232,5 +232,20 @@
     "namereq": "Se requiere el nombre.",
     "baddate": "Fecha invalida.",
     "endafterstart": "La fecha de finalización debe ser posterior a la fecha de inicio."
+  },
+  "submissions": {
+    "deletemodal": {
+      "title": "¿Eliminar envío de formulario?",
+      "desc": "¿Eliminar el envío del formulario '{0}'? Esta acción es irreversible.",
+      "delete": "Eliminar",
+      "cancel": "Cancelar"
+    },
+    "searchph": "Envíos de formularios de búsqueda por contenido",
+    "id": "ID",
+    "form": "Formulario",
+    "device": "Dispositivo",
+    "submitted": "Enviado",
+    "processed": "Procesada",
+    "actions": "Acciónes"
   }
 }

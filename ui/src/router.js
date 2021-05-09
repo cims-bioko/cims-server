@@ -12,6 +12,7 @@ const CampaignsPage = () => import('./components/campaigns/CampaignsPage.vue')
 const Campaign = () => import('./components/campaigns/Campaign.vue')
 const CampaignBindings = () => import('./components/campaigns/CampaignBindings.vue')
 const FieldworkersPage = () => import('./components/fieldworkers/FieldworkersPage.vue')
+const SubmissionsPage = () => import('./components/submissions/SubmissionsPage.vue')
 
 export const Router = new VueRouter({
     routes: [
@@ -29,6 +30,7 @@ export const Router = new VueRouter({
             ]
         },
         { name: 'fieldworkers', path: '/fieldworkers', component: FieldworkersPage },
+        { name: 'submissions', path: '/submissions', component: SubmissionsPage }
     ]
 })
 

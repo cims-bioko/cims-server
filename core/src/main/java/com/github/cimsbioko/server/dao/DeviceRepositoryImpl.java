@@ -16,7 +16,7 @@ import java.util.List;
 
 public class DeviceRepositoryImpl implements DeviceSearch {
 
-    private EntityManager em;
+    private final EntityManager em;
 
     public DeviceRepositoryImpl(EntityManager em) {
         this.em = em;

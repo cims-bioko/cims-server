@@ -16,7 +16,7 @@ import java.util.List;
 
 public class UserRepositoryImpl implements UserSearch {
 
-    private EntityManager em;
+    private final EntityManager em;
 
     public UserRepositoryImpl(EntityManager em) {
         this.em = em;
