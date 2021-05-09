@@ -22,7 +22,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -82,16 +85,16 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
     }
 
     @EventListener
-    public void loadUploadedCampaign(CampaignUploadedEvent event) {
+    public void handleUploadedCampaign(CampaignUploadedEvent event) {
         String uuid = event.getUuid();
-        Optional<Campaign> optionalActiveCampaign = repo.findActiveByUuid(uuid);
-        if (optionalActiveCampaign.isPresent()) {
-            Campaign campaign = optionalActiveCampaign.get();
+        Optional<Campaign> maybeCampaign = repo.findById(uuid);
+        if (maybeCampaign.isPresent()) {
+            Campaign campaign = maybeCampaign.get();
             try {
-                log.info("pre-loading new config for campaign '{}' ({})", campaign.getName(), uuid);
+                log.info("pre-loading uploaded config for campaign '{}' ({})", campaign.getName(), uuid);
                 JsConfig config = new JsConfig(event.getFile(), ctx).load();
-
                 Path campaignFilePath = getCampaignFilePath(uuid);
+
                 log.info("pre-loading succeeded, installing to {}", campaignFilePath);
                 Files.copy(event.getFile().toPath(), campaignFilePath, StandardCopyOption.REPLACE_EXISTING);
 
@@ -102,10 +105,12 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
                     }
                 }
 
-                loadedConfigs.put(uuid, config);
+                if (campaign.isActive()) {
+                    loadedConfigs.put(uuid, config);
+                    log.info("loading new config for campaign '{}' ({})", campaign.getName(), uuid);
+                    eventPublisher.publishEvent(new CampaignLoadedEvent(uuid, campaign.getName(), config));
+                }
 
-                log.info("loading new config for campaign '{}' ({})", campaign.getName(), uuid);
-                eventPublisher.publishEvent(new CampaignLoadedEvent(uuid, campaign.getName(), config));
             } catch (URISyntaxException | IOException e) {
                 log.error("failed to load uploaded campaign", e);
             }
@@ -159,6 +164,35 @@ public class CampaignServiceImpl implements CampaignService, ApplicationContextA
             }
         }
         return repo.findActiveForUser(auth.getName());
+    }
+
+    @Override
+    public void loadCampaign(Campaign campaign) {
+        String uuid = campaign.getUuid();
+        if (loadedConfigs.containsKey(campaign.getUuid())) {
+            log.info("ignoring load request for campaign '{}' ({}), already loaded", campaign.getName(), uuid);
+        } else {
+            try {
+                log.info("loading config for campaign '{}' ({})", campaign.getName(), uuid);
+                JsConfig config = new JsConfig(getCampaignFilePath(uuid).toFile(), ctx).load();
+                loadedConfigs.put(uuid, config);
+                eventPublisher.publishEvent(new CampaignLoadedEvent(uuid, campaign.getName(), config));
+            } catch (URISyntaxException | IOException e) {
+                log.error("failed to load uploaded campaign", e);
+            }
+        }
+    }
+
+    @Override
+    public void unloadCampaign(Campaign campaign) {
+        String uuid = campaign.getUuid();
+        if (loadedConfigs.containsKey(campaign.getUuid())) {
+            log.info("unloading config for campaign '{}' ({})", campaign.getName(), uuid);
+            JsConfig removed = loadedConfigs.remove(uuid);
+            eventPublisher.publishEvent(new CampaignUnloadedEvent(uuid, campaign.getName(), removed));
+        } else {
+            log.info("ignoring unload request for campaign '{}' ({}), not loaded", campaign.getName(), uuid);
+        }
     }
 
     private Path getCampaignFilePath(String uuid) {

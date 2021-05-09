@@ -8,6 +8,7 @@ import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -151,5 +152,10 @@ public class Campaign {
 
     public Set<Device> getDevices() {
         return devices;
+    }
+
+    public boolean isActive() {
+        Timestamp now = Timestamp.from(Instant.now());
+        return (end == null || now.before(end)) && (start == null || now.after(start)) && disabled == null && deleted == null;
     }
 }

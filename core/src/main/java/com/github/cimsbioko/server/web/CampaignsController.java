@@ -188,6 +188,8 @@ public class CampaignsController {
 
         Campaign existing = repo.findById(uuid).orElseThrow(ResourceNotFoundException::new);
 
+        boolean wasActive = existing.isActive();
+
         existing.setName(form.getName());
         existing.setDescription(form.getDescription());
         existing.setStart(Optional.ofNullable(form.getStart()).map(s -> new Timestamp(s.getTime())).orElse(null));
@@ -196,7 +198,7 @@ public class CampaignsController {
         if (form.isDisabled() && existing.getDisabled() == null) {
             Timestamp now = Timestamp.from(Instant.now());
             existing.setDisabled(now);
-        } else if (!form.isDisabled()) {
+        } else if (!form.isDisabled() && existing.getDisabled() != null) {
             existing.setDisabled(null);
         }
 
@@ -227,6 +229,14 @@ public class CampaignsController {
 
         if (campaignFile != null) {
             service.uploadCampaignFile(saved.getUuid(), campaignFile);
+        }
+
+        boolean isActive = saved.isActive();
+
+        if (!wasActive && isActive) {
+            service.loadCampaign(saved);
+        } else if (wasActive && !isActive) {
+            service.unloadCampaign(saved);
         }
 
         return ResponseEntity

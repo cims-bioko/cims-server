@@ -14,4 +14,6 @@ public interface CampaignService {
     Optional<File> getCampaignFile(String uuid);
     boolean isMember(String uuid, Authentication auth);
     List<Campaign> getMyCampaigns(Authentication auth);
+    void loadCampaign(Campaign campaign);
+    void unloadCampaign(Campaign campaign);
 }
