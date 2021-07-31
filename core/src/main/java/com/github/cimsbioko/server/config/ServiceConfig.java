@@ -17,6 +17,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.scheduling.TaskScheduler;
 
 import javax.persistence.EntityManager;
@@ -86,5 +87,25 @@ public class ServiceConfig {
     @Bean
     PermissionsService permissionsService(DeviceRepository deviceRepo, UserRepository userRepo, RoleMapper roleMapper) {
         return new PermissionsServiceImpl(deviceRepo, userRepo, roleMapper);
+    }
+
+    @Bean
+    ExportSQLBuilder exportSQLBuilder(IdNamingStrategy idNamingStrategy, ParamNamingStrategy paramNamingStrategy) {
+        return new ExportSQLBuilderImpl(idNamingStrategy, paramNamingStrategy);
+    }
+
+    @Bean
+    SubmissionExportService submissionExportService(ExportSQLBuilder sqlBuilder, NamedParameterJdbcTemplate jdbcTemplate) {
+        return new SubmissionExportServiceImpl(sqlBuilder, jdbcTemplate);
+    }
+
+    @Bean
+    ParamNamingStrategy paramNamingStrategy() {
+        return new JdbcParamNamingStrategy();
+    }
+
+    @Bean
+    IdNamingStrategy idNamingStrategy() {
+        return new PostgresqlIdNamingStrategy();
     }
 }

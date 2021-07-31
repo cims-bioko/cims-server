@@ -7,6 +7,8 @@ import com.github.cimsbioko.server.domain.LocationHierarchy;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.GeometryService;
 import com.github.cimsbioko.server.service.StoredProcService;
+import com.github.cimsbioko.server.service.SubmissionExportService;
+import com.github.cimsbioko.server.util.IdUtil;
 import org.json.JSONObject;
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.commonjs.module.Require;
@@ -22,9 +24,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
-import static java.util.Collections.*;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.unmodifiableList;
 
 public class JsConfig implements Closeable {
 
@@ -88,6 +94,8 @@ public class JsConfig implements Closeable {
         putConst(scope, "fieldWorkerRepo", ctx.getBean(FieldWorkerRepository.class));
         putConst(scope, "individualRepo", ctx.getBean(IndividualRepository.class));
         putConst(scope, "geometryService", ctx.getBean(GeometryService.class));
+        putConst(scope, "submissionExportService", ctx.getBean(SubmissionExportService.class));
+        putConst(scope, "IdUtil", IdUtil.INSTANCE);
         putConst(scope, "log", log);
     }
 
@@ -104,7 +112,7 @@ public class JsConfig implements Closeable {
     }
 
     private static void installInterfaces(ScriptableObject scope) {
-        putClasses(scope, DatabaseExport.class, FormProcessor.class);
+        putClasses(scope, DatabaseExport.class, FormProcessor.class, SubmissionRecord.class);
     }
 
     private static void putClasses(ScriptableObject scope, Class<?>... classes) {
