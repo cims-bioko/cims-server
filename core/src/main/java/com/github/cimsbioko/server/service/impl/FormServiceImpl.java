@@ -280,7 +280,9 @@ public class FormServiceImpl implements FormService {
         File formDir = formFile.getParentFile();
 
         // ensure the directory exists prior to attempting to write the file
-        formDir.mkdirs();
+        if (formDir.mkdirs()) {
+            log.debug("created parent directories for {}", formDir);
+        }
 
         // write the form definition file
         try (FileWriter writer = new FileWriter(formFile)) {
