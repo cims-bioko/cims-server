@@ -96,13 +96,16 @@ public class FormServiceImpl implements FormService {
         File formDir = formFileSystem.getFormDirPath(id, version).toFile();
         if (formDir.exists() && formDir.isDirectory()) {
             try (ZipOutputStream zOut = new ZipOutputStream(outputStream)) {
-                for (File file : formDir.listFiles((f) -> !f.isHidden())) {
-                    try (FileInputStream fileIn = new FileInputStream(file)) {
-                        ZipEntry e = new ZipEntry(file.getName());
-                        e.setSize(file.length());
-                        e.setTime(file.lastModified());
-                        zOut.putNextEntry(e);
-                        StreamUtils.copy(fileIn, zOut);
+                File[] nonHiddenFiles = formDir.listFiles((f) -> !f.isHidden());
+                if (nonHiddenFiles != null) {
+                    for (File file : nonHiddenFiles) {
+                        try (FileInputStream fileIn = new FileInputStream(file)) {
+                            ZipEntry e = new ZipEntry(file.getName());
+                            e.setSize(file.length());
+                            e.setTime(file.lastModified());
+                            zOut.putNextEntry(e);
+                            StreamUtils.copy(fileIn, zOut);
+                        }
                     }
                 }
                 zOut.closeEntry();
@@ -110,6 +113,7 @@ public class FormServiceImpl implements FormService {
             }
         }
     }
+
 
     @Override
     @Transactional
@@ -281,7 +285,7 @@ public class FormServiceImpl implements FormService {
 
         clearMetadata(formId);
 
-        return formId;  
+        return formId;
     }
 
     @CacheEvict(value = FORM_METADATA_CACHE, key = "{#formId.id,#formId.version}")
