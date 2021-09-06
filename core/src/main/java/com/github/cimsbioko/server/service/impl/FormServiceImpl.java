@@ -15,6 +15,8 @@ import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StreamUtils;
@@ -23,7 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
@@ -33,6 +37,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+import static com.github.cimsbioko.server.config.CachingConfig.FORM_METADATA_CACHE;
 import static com.github.cimsbioko.server.util.JDOMUtil.getBuilder;
 import static com.github.cimsbioko.server.util.JDOMUtil.getOutputter;
 import static com.github.cimsbioko.server.webapi.odk.Constants.*;
@@ -136,6 +141,7 @@ public class FormServiceImpl implements FormService {
 
     @Override
     @Transactional
+    @CacheEvict(value = FORM_METADATA_CACHE, key = "{#id,#version}")
     public void deleteForm(String id, String version) {
         formDao.findById(new FormId(id, version)).ifPresent((form) -> {
             log.info("deleting form {} version {}", id, version);
@@ -144,6 +150,7 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
+    @Cacheable(value = FORM_METADATA_CACHE, key = "{#formId.id,#formId.version}")
     public List<String[]> getRepeatPaths(FormId formId) {
         return repeatPaths.computeIfAbsent(formId, id -> formDao.findById(id)
                 .map(Form::getXml)
@@ -272,7 +279,14 @@ public class FormServiceImpl implements FormService {
             getOutputter().output(formDoc, writer);
         }
 
-        return formId;
+        clearMetadata(formId);
+
+        return formId;  
+    }
+
+    @CacheEvict(value = FORM_METADATA_CACHE, key = "{#formId.id,#formId.version}")
+    public void clearMetadata(FormId formId) {
+        log.debug("cleared metadata for form {}", formId);
     }
 
     private void writeManifest(FormId formId, Collection<String> mediaFileNames) throws IOException, NoSuchAlgorithmException {

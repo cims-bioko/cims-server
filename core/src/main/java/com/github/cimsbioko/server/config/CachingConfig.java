@@ -16,6 +16,7 @@ public class CachingConfig {
     public static final String USER_CACHE = "userCache";
     public static final String CAMPAIGN_MEMBERSHIP_CACHE = "campaignMembershipCache";
     public static final String MY_CAMPAIGNS_CACHE = "campaignMembershipCache";
+    public static final String FORM_METADATA_CACHE = "formMetadataCache";
 
     @Bean
     public CacheManager cacheManager(@Value("${app.caffeine.spec:expireAfterAccess=5m}") String cacheSpec) {
