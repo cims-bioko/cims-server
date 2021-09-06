@@ -28,6 +28,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
@@ -213,7 +214,10 @@ public class FormServiceImpl implements FormService {
     }
 
     private void writeXlsform(FormId id, MultipartFile xlsform) throws IOException {
-        if (!(xlsform == null || xlsform.getOriginalFilename().isEmpty())) {
+        if (Optional.ofNullable(xlsform)
+                .map(MultipartFile::getOriginalFilename)
+                .filter(ofn -> !ofn.isEmpty())
+                .isPresent()) {
             xlsform.transferTo(formFileSystem.getXlsformPath(id.getId(), id.getVersion()).toFile());
         }
     }
@@ -224,7 +228,7 @@ public class FormServiceImpl implements FormService {
                 .filter(e -> !FORM_DEF_FILE.equalsIgnoreCase(e.getKey()))
                 .filter(e -> !XLSFORM_DEF_FILE.equalsIgnoreCase(e.getKey()))
                 .flatMap(e -> e.getValue().stream())
-                .filter(f -> !f.getOriginalFilename().isEmpty())
+                .filter(f -> f.getOriginalFilename() != null && !f.getOriginalFilename().isEmpty())
                 .filter(f -> !MEDIA_MANIFEST.equalsIgnoreCase(f.getOriginalFilename()))
                 .collect(Collectors.toMap(MultipartFile::getOriginalFilename, Function.identity()));
     }
