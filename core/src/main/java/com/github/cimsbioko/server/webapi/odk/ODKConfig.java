@@ -46,9 +46,4 @@ public class ODKConfig {
     SubmissionJSONConverter submissionJSONConverter(FormMetadataService metadataService) {
         return new DefaultSubmissionJSONConverter(metadataService);
     }
-
-    @Bean
-    RepeatExtractor repeatExtractor() {
-        return new RepeatExtractorImpl();
-    }
 }

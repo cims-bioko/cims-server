@@ -3,8 +3,6 @@ package com.github.cimsbioko.server.service
 import com.github.cimsbioko.server.dao.FormRepository
 import com.github.cimsbioko.server.domain.Form
 import com.github.cimsbioko.server.domain.FormId
-import com.github.cimsbioko.server.webapi.odk.RepeatExtractor
-import com.github.cimsbioko.server.webapi.odk.RepeatExtractorImpl
 import io.mockk.every
 import io.mockk.mockk
 import org.jdom2.Document
@@ -21,7 +19,6 @@ class FormMetadataServiceTest {
         private var doc: Document? = null
         private var metadataService: FormMetadataServiceImpl? = null
         private var formRepo: FormRepository = mockk()
-        private var repeatExtractor: RepeatExtractor? = null
 
         @BeforeClass
         @JvmStatic
@@ -29,7 +26,6 @@ class FormMetadataServiceTest {
             doc = loadForm("/malaria_indicator_survey.xml")
             metadataService = FormMetadataServiceImpl(formRepo, SchemaExtractorImpl())
             every { formRepo.findById(any()) } returns Optional.of(Form(FormId("whatever", "don't care"), doc))
-            repeatExtractor = RepeatExtractorImpl()
         }
 
         private fun loadForm(s: String): Document? {
@@ -53,15 +49,4 @@ class FormMetadataServiceTest {
             assertArrayEquals(e, result?.get(i))
         }
     }
-
-    @Test
-    fun `can replace repeat extractor`() {
-        val expected = doc?.let { repeatExtractor?.extractRepeats(it) } ?: error("repeat extraction failed")
-        val result = metadataService?.getRepeats(FormId("something", "orother"))
-        assertEquals(expected.size, result?.size)
-        for ((i,e) in expected.withIndex()) {
-            assertArrayEquals(e, result?.get(i))
-        }
-    }
-
 }

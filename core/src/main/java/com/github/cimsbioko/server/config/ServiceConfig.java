@@ -12,7 +12,6 @@ import com.github.cimsbioko.server.service.impl.sync.SyncServiceImpl;
 import com.github.cimsbioko.server.sqliteexport.Exporter;
 import com.github.cimsbioko.server.webapi.odk.FileHasher;
 import com.github.cimsbioko.server.webapi.odk.FormFileSystem;
-import com.github.cimsbioko.server.webapi.odk.RepeatExtractor;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
