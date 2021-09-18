@@ -123,7 +123,7 @@ class ExportSQLBuilderImpl(
     override fun createTableDdl(submission: SubmissionRecord): String {
         return with(submission) {
             buildString {
-                append("create table if not exists cims.${idNamingStrategy.safeIdName(table)} (")
+                append("create table if not exists ${idNamingStrategy.safeIdName(schema)}.${idNamingStrategy.safeIdName(table)} (")
                 append("$ID_COL varchar primary key")
                 for (key in fields.keys) {
                     append(",")
@@ -132,13 +132,16 @@ class ExportSQLBuilderImpl(
                 parent?.also { parent ->
                     append(",")
                     append(
-                        "$PARENT_COL varchar not null references cims.${idNamingStrategy.safeIdName(parent.table)}($ID_COL) on delete cascade"
+                        "$PARENT_COL varchar not null references " +
+                                "${idNamingStrategy.safeIdName(schema)}.${idNamingStrategy.safeIdName(parent.table)}($ID_COL)" +
+                                " on delete cascade"
                     )
                 }
                 refs.forEach { (name, ref) ->
-                    append(",")
                     append(
-                        "${idNamingStrategy.safeIdName(name)} varchar references cims.${idNamingStrategy.safeIdName(ref.table)}($ID_COL) on delete set null"
+                        ",${idNamingStrategy.safeIdName(name)} varchar references " +
+                                "${idNamingStrategy.safeIdName(schema)}.${idNamingStrategy.safeIdName(ref.table)}($ID_COL)" +
+                                " on delete set null"
                     )
                 }
                 append(")")
@@ -154,7 +157,7 @@ class ExportSQLBuilderImpl(
                 addAll(refs.keys)
             }
             buildString {
-                append("insert into cims.${idNamingStrategy.safeIdName(table)} ($ID_COL")
+                append("insert into ${idNamingStrategy.safeIdName(schema)}.${idNamingStrategy.safeIdName(table)} ($ID_COL")
                 for (col in cols) {
                     append(",")
                     append(idNamingStrategy.safeIdName(col))
