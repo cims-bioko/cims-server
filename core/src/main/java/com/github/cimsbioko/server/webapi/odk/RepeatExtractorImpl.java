@@ -23,7 +23,7 @@ public class RepeatExtractorImpl implements RepeatExtractor {
 
     @Override
     public List<String[]> extractRepeats(Document formDoc) {
-        return repeatExpression.evaluate(formDoc)
+        return repeatExpression.clone().evaluate(formDoc)
                 .stream()
                 .map(Attribute::getValue)
                 .filter(path -> path.startsWith("/"))
