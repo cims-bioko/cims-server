@@ -6,6 +6,7 @@ import com.github.cimsbioko.server.domain.Location;
 import com.github.cimsbioko.server.domain.LocationHierarchy;
 import com.github.cimsbioko.server.exception.ConstraintViolations;
 import com.github.cimsbioko.server.service.GeometryService;
+import com.github.cimsbioko.server.service.ScriptableFormMetadataService;
 import com.github.cimsbioko.server.service.StoredProcService;
 import com.github.cimsbioko.server.service.SubmissionExportService;
 import com.github.cimsbioko.server.util.IdUtil;
@@ -94,6 +95,7 @@ public class JsConfig implements Closeable {
         putConst(scope, "fieldWorkerRepo", ctx.getBean(FieldWorkerRepository.class));
         putConst(scope, "individualRepo", ctx.getBean(IndividualRepository.class));
         putConst(scope, "geometryService", ctx.getBean(GeometryService.class));
+        putConst(scope, "formMetadataService", ctx.getBean(ScriptableFormMetadataService.class));
         putConst(scope, "submissionExportService", ctx.getBean(SubmissionExportService.class));
         putConst(scope, "IdUtil", IdUtil.INSTANCE);
         putConst(scope, "log", log);

@@ -24,8 +24,10 @@ enum class Type {
     BARCODE,
     INTENT,
     REPEAT,
+
     @Deprecated("not a type in recent odk xforms spec")
     SELECT,
+
     @Deprecated("not a type in recent odk xforms spec")
     SELECT_ONE,
     STRUCTURE,
@@ -49,11 +51,17 @@ interface FormFieldExtractor {
     fun extractFields(doc: Document): List<FormField>
 }
 
+interface FormXmlExtractor {
+    fun extractModel(doc: Document): Element?
+    fun extractMainInstance(model: Element): Element?
+    fun extractBinds(model: Element): List<Element>
+    fun extractRepeats(doc: Document): List<Attribute>
+}
 
 private val XFORMS_NS = Namespace.getNamespace("xforms", "http://www.w3.org/2002/xforms")
 private val XHTML_NS = Namespace.getNamespace("xhtml", "http://www.w3.org/1999/xhtml")
 
-class FormFieldExtractorImpl : FormFieldExtractor {
+class FormXmlExtractorImpl : FormXmlExtractor {
 
     /* xpath expressions to extract form metadata, not threadsafe so clone */
     private var modelExpression: XPathExpression<Element>
@@ -71,21 +79,15 @@ class FormFieldExtractorImpl : FormFieldExtractor {
         )
     }
 
-    fun extractModel(doc: Document): Element? {
-        return modelExpression.clone().evaluateFirst(doc)
-    }
+    override fun extractModel(doc: Document): Element? = modelExpression.clone().evaluateFirst(doc)
+    override fun extractMainInstance(model: Element): Element? = mainInstanceExpression.clone().evaluateFirst(model)
+    override fun extractBinds(model: Element): List<Element> = bindExpression.clone().evaluate(model)
+    override fun extractRepeats(doc: Document): List<Attribute> = repeatExpression.clone().evaluate(doc)
+}
 
-    fun extractMainInstance(model: Element): Element? {
-        return mainInstanceExpression.clone().evaluateFirst(model)
-    }
-
-    fun extractBinds(model: Element): List<Element> {
-        return bindExpression.clone().evaluate(model)
-    }
-
-    fun extractRepeats(doc: Document): List<Attribute> {
-        return repeatExpression.clone().evaluate(doc)
-    }
+class FormFieldExtractorImpl(
+    private val xmlExtractor: FormXmlExtractor = FormXmlExtractorImpl()
+) : FormFieldExtractor {
 
     private fun String.absolute(root: String): String = if (startsWith("/")) this else "$root/$this"
     private val Element.hasChildren
@@ -120,14 +122,15 @@ class FormFieldExtractorImpl : FormFieldExtractor {
     }
 
     override fun extractFields(doc: Document): List<FormField> {
-        val model = extractModel(doc)
-        val instance = model?.let { extractMainInstance(model) }
-        val bindings = model?.let { extractBinds(it) }?.mapNotNull { it.toBinding() }
-        val repeats = extractRepeats(doc).map { it.value }.toSet()
-        return if (instance == null || bindings == null) emptyList()
-        else formFields(instance, bindings, repeats)
+        with(xmlExtractor) {
+            val model = extractModel(doc)
+            val instance = model?.let { extractMainInstance(model) }
+            val bindings = model?.let { extractBinds(it) }?.mapNotNull { it.toBinding() }
+            val repeats = extractRepeats(doc).map { it.value }.toSet()
+            return if (instance == null || bindings == null) emptyList()
+            else formFields(instance, bindings, repeats)
+        }
     }
-
 
     private fun formFields(
         instance: Element,

@@ -38,8 +38,18 @@ public class ServiceConfig {
 
     @Bean
     public FormService formService(FormRepository repo, FormSubmissionRepository submissionRepo, FileHasher hasher,
-                                   FormFileSystem fs, XLSFormService xlsformService, RepeatExtractor repeatExtractor) {
-        return new FormServiceImpl(repo, submissionRepo, hasher, fs, xlsformService, repeatExtractor);
+                                   FormFileSystem fs, XLSFormService xlsformService, FormMetadataService metadataService) {
+        return new FormServiceImpl(repo, submissionRepo, hasher, fs, xlsformService, metadataService);
+    }
+
+    @Bean
+    public FormMetadataService metadataService(FormRepository formRepository) {
+        return new FormMetadataServiceImpl(formRepository, new SchemaExtractorImpl());
+    }
+
+    @Bean
+    public ScriptableFormMetadataService scriptableFormMetadataService(FormMetadataService metadataService) {
+        return new ScriptableFormMetadataServiceImpl(metadataService);
     }
 
     @Bean

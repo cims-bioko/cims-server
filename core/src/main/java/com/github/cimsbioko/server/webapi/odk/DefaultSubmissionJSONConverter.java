@@ -1,7 +1,7 @@
 package com.github.cimsbioko.server.webapi.odk;
 
 import com.github.cimsbioko.server.domain.FormId;
-import com.github.cimsbioko.server.service.FormService;
+import com.github.cimsbioko.server.service.FormMetadataService;
 import org.jdom2.Document;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -13,16 +13,16 @@ import static com.github.cimsbioko.server.util.JDOMUtil.stringFromDoc;
 
 public class DefaultSubmissionJSONConverter implements SubmissionJSONConverter {
 
-    private final FormService formService;
+    private final FormMetadataService metadataService;
 
-    public DefaultSubmissionJSONConverter(FormService formService) {
-        this.formService = formService;
+    public DefaultSubmissionJSONConverter(FormMetadataService metadataService) {
+        this.metadataService = metadataService;
     }
 
     @Override
     public JSONObject convert(Document xmlDoc, FormId formId) {
         JSONObject converted = XML.toJSONObject(stringFromDoc(xmlDoc));
-        for (String[] path : formService.getRepeatPaths(formId)) {
+        for (String[] path : metadataService.getRepeats(formId)) {
             fixRepeats(converted, path);
         }
         return converted;

@@ -1,7 +1,7 @@
 package com.github.cimsbioko.server.webapi.odk;
 
 import com.github.cimsbioko.server.domain.FormId;
-import com.github.cimsbioko.server.service.FormService;
+import com.github.cimsbioko.server.service.FormMetadataService;
 import org.jdom2.JDOMException;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,12 +31,12 @@ public class DefaultJSONSubmissionConverterTest {
     private SubmissionJSONConverter converter;
 
     @Mock
-    private FormService formService;
+    private FormMetadataService metadataService;
 
     @Before
     public void setup() {
-        converter = new DefaultSubmissionJSONConverter(formService);
-        when(formService.getRepeatPaths(DEFAULT_FORM_ID)).thenReturn(emptyList());
+        converter = new DefaultSubmissionJSONConverter(metadataService);
+        when(metadataService.getRepeats(DEFAULT_FORM_ID)).thenReturn(emptyList());
     }
 
     private JSONObject convert(String s) throws JDOMException, SQLException, IOException {
@@ -89,7 +89,7 @@ public class DefaultJSONSubmissionConverterTest {
     public void singleRepeat() throws JDOMException, SQLException, IOException {
         String[] repeatPath = {"data", "field1"};
         List<String[]> repeatPaths = Collections.singletonList(repeatPath);
-        when(formService.getRepeatPaths(DEFAULT_FORM_ID)).thenReturn(repeatPaths);
+        when(metadataService.getRepeats(DEFAULT_FORM_ID)).thenReturn(repeatPaths);
         JSONObject result = convert("<data><field1>value1</field1><field2>value2</field2></data>");
         JSONArray field1s = result.getJSONObject("data").getJSONArray("field1");
         assertEquals(1, field1s.length());
@@ -102,7 +102,7 @@ public class DefaultJSONSubmissionConverterTest {
         String[] repeat1 = {"data", "house", "person"};
         String[] repeat2 = {"data", "house"};
         List<String[]> repeatPaths = asList(repeat1, repeat2);
-        when(formService.getRepeatPaths(DEFAULT_FORM_ID)).thenReturn(repeatPaths);
+        when(metadataService.getRepeats(DEFAULT_FORM_ID)).thenReturn(repeatPaths);
         JSONObject result = convert("<data><house><person>value1</person></house></data>");
         JSONArray houses = result.getJSONObject("data").getJSONArray("house");
         assertEquals(1, houses.length());
@@ -115,7 +115,7 @@ public class DefaultJSONSubmissionConverterTest {
     public void repeatUnderArray() throws JDOMException, SQLException, IOException {
         String[] repeat1 = {"data", "house", "person"};
         List<String[]> repeatPaths = Collections.singletonList(repeat1);
-        when(formService.getRepeatPaths(DEFAULT_FORM_ID)).thenReturn(repeatPaths);
+        when(metadataService.getRepeats(DEFAULT_FORM_ID)).thenReturn(repeatPaths);
         JSONObject result = convert("<data>" +
                 "<house><person>value1</person><person>value2</person></house>" +
                 "<house><person>value3</person></house>" +

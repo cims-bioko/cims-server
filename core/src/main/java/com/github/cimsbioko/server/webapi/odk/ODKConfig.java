@@ -1,6 +1,6 @@
 package com.github.cimsbioko.server.webapi.odk;
 
-import com.github.cimsbioko.server.service.FormService;
+import com.github.cimsbioko.server.service.FormMetadataService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -43,8 +43,8 @@ public class ODKConfig {
     }
 
     @Bean
-    SubmissionJSONConverter submissionJSONConverter(FormService formService) {
-        return new DefaultSubmissionJSONConverter(formService);
+    SubmissionJSONConverter submissionJSONConverter(FormMetadataService metadataService) {
+        return new DefaultSubmissionJSONConverter(metadataService);
     }
 
     @Bean

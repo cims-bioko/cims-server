@@ -4,11 +4,11 @@ import com.github.cimsbioko.server.dao.FormRepository;
 import com.github.cimsbioko.server.dao.FormSubmissionRepository;
 import com.github.cimsbioko.server.domain.Form;
 import com.github.cimsbioko.server.domain.FormId;
+import com.github.cimsbioko.server.service.FormMetadataService;
 import com.github.cimsbioko.server.service.FormService;
 import com.github.cimsbioko.server.service.XLSFormService;
 import com.github.cimsbioko.server.webapi.odk.FileHasher;
 import com.github.cimsbioko.server.webapi.odk.FormFileSystem;
-import com.github.cimsbioko.server.webapi.odk.RepeatExtractor;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -16,7 +16,6 @@ import org.jdom2.Namespace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StreamUtils;
@@ -29,8 +28,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -42,7 +39,6 @@ import static com.github.cimsbioko.server.config.CachingConfig.FORM_METADATA_CAC
 import static com.github.cimsbioko.server.util.JDOMUtil.getBuilder;
 import static com.github.cimsbioko.server.util.JDOMUtil.getOutputter;
 import static com.github.cimsbioko.server.webapi.odk.Constants.*;
-import static java.util.Collections.emptyList;
 import static org.springframework.util.FileCopyUtils.copy;
 
 public class FormServiceImpl implements FormService {
@@ -64,17 +60,15 @@ public class FormServiceImpl implements FormService {
 
     private final XLSFormService xlsformService;
 
-    private final ConcurrentMap<FormId, List<String[]>> repeatPaths = new ConcurrentHashMap<>();
+    private final FormMetadataService metadataService;
 
-    private final RepeatExtractor repeatExtractor;
-
-    public FormServiceImpl(FormRepository repo, FormSubmissionRepository submissionDao, FileHasher hasher, FormFileSystem fs, XLSFormService xlsformService, RepeatExtractor repeatExtractor) {
+    public FormServiceImpl(FormRepository repo, FormSubmissionRepository submissionDao, FileHasher hasher, FormFileSystem fs, XLSFormService xlsformService, FormMetadataService metadataService) {
         this.formDao = repo;
         this.submissionDao = submissionDao;
         this.hasher = hasher;
         this.formFileSystem = fs;
         this.xlsformService = xlsformService;
-        this.repeatExtractor = repeatExtractor;
+        this.metadataService = metadataService;
     }
 
     @Override
@@ -148,19 +142,12 @@ public class FormServiceImpl implements FormService {
     @Transactional
     @CacheEvict(value = FORM_METADATA_CACHE, key = "{#id,#version}")
     public void deleteForm(String id, String version) {
-        formDao.findById(new FormId(id, version)).ifPresent((form) -> {
+        FormId formId = new FormId(id, version);
+        formDao.findById(formId).ifPresent((form) -> {
             log.info("deleting form {} version {}", id, version);
             formDao.delete(form);
+            metadataService.invalidateMetadata(formId);
         });
-    }
-
-    @Override
-    @Cacheable(value = FORM_METADATA_CACHE, key = "{#formId.id,#formId.version}")
-    public List<String[]> getRepeatPaths(FormId formId) {
-        return repeatPaths.computeIfAbsent(formId, id -> formDao.findById(id)
-                .map(Form::getXml)
-                .map(repeatExtractor::extractRepeats)
-                .orElse(emptyList()));
     }
 
     private void installConvertedFormWithMedia(MultipartFile xlsform, MultiValueMap<String, MultipartFile> uploadedFiles, ZipFile converted)
@@ -206,11 +193,6 @@ public class FormServiceImpl implements FormService {
         writeUploadedMediaFiles(id, mediaFiles);
         writeManifest(id, mediaFiles.keySet());
         writeXlsform(id, xlsform);
-        invalidateRepeats(id);
-    }
-
-    private void invalidateRepeats(FormId id) {
-        repeatPaths.remove(id);
     }
 
     private void writeXlsform(FormId id, MultipartFile xlsform) throws IOException {
@@ -289,14 +271,10 @@ public class FormServiceImpl implements FormService {
             getOutputter().output(formDoc, writer);
         }
 
-        clearMetadata(formId);
+        // ensure any stale metadata is invalidated after storing form
+        metadataService.invalidateMetadata(formId);
 
         return formId;
-    }
-
-    @CacheEvict(value = FORM_METADATA_CACHE, key = "{#formId.id,#formId.version}")
-    public void clearMetadata(FormId formId) {
-        log.debug("cleared metadata for form {}", formId);
     }
 
     private void writeManifest(FormId formId, Collection<String> mediaFileNames) throws IOException, NoSuchAlgorithmException {

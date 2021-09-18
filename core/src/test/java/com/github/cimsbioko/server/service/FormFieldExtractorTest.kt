@@ -3,7 +3,6 @@ package com.github.cimsbioko.server.service
 import org.jdom2.Document
 import org.jdom2.input.SAXBuilder
 import org.junit.Assert
-import org.junit.Assert.assertEquals
 import org.junit.BeforeClass
 import org.junit.Test
 
@@ -26,43 +25,6 @@ class FormFieldExtractorTest {
         }
     }
 
-    @Test
-    fun testExtractModel() {
-        val model = doc?.let { extractor?.extractModel(it) }
-        Assert.assertNotNull(model)
-        Assert.assertEquals("model", model?.name)
-    }
-
-    @Test
-    fun testExtractMainInstance() {
-        val mainInstance = doc?.let { extractor?.extractModel(it) }?.let { extractor?.extractMainInstance(it) }
-        Assert.assertNotNull(mainInstance)
-        Assert.assertEquals("data", mainInstance?.name)
-    }
-
-    @Test
-    fun testExtractBinds() {
-        val binds = doc?.let { extractor?.extractModel(it) }?.let { extractor?.extractBinds(it) }
-        Assert.assertNotNull(binds)
-        binds?.also {
-            Assert.assertTrue(binds.isNotEmpty())
-            for (bind in binds) {
-                Assert.assertTrue(bind.getAttributeValue("type") != null)
-            }
-        }
-    }
-
-    @Test
-    fun testExtractRepeats() {
-        val repeats = doc?.let { extractor?.extractRepeats(it) }
-        Assert.assertNotNull(repeats)
-        repeats?.also {
-            Assert.assertTrue(repeats.isNotEmpty())
-            for (repeat in repeats) {
-                Assert.assertTrue(repeat.value.isNotBlank())
-            }
-        }
-    }
 
     @Test
     fun testExtractFields() {
@@ -71,7 +33,7 @@ class FormFieldExtractorTest {
         fields?.also {
             Assert.assertTrue(fields.isNotEmpty())
             for ((idx, field) in MIS_DATA.withIndex()) {
-                assertEquals(field, fields[idx])
+                Assert.assertEquals(field, fields[idx])
             }
         }
     }
