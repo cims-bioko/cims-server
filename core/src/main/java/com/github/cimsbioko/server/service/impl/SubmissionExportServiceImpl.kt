@@ -13,19 +13,29 @@ open class SubmissionExportServiceImpl(
 
     private val log = LoggerFactory.getLogger(SubmissionExportServiceImpl::class.java)
 
+    private val currentSchema by lazy {
+        var schema: String? = null
+        jdbcTemplate.query("select current_schema") { resultSet -> schema = resultSet.getString(1) }
+        schema ?: throw error("failed to retrieve current schema from database")
+    }
+
     @Transactional
     override fun export(record: SubmissionRecord) {
-        log.info("persisting record id: ${record.id}")
-        with(sqlBuilder) {
-            val tableDdl = createTableDdl(record)
-            val exportSql = exportSubmissionSql(record)
-            val parameters = exportSubmissionParams(record)
-            with(jdbcTemplate) {
-                log.info("table: {}", tableDdl)
-                execute(tableDdl) { stmt -> stmt.execute() }
-                log.info("record: {}", exportSql)
-                val affected = update(exportSql, parameters)
-                log.info("$affected records affected")
+        if (record.schema.equals(currentSchema, ignoreCase = true)) {
+            log.warn("ignoring submission export to ${record.schema}.${record.table}, export into $currentSchema not allowed")
+        } else {
+            log.info("persisting record id: ${record.id}")
+            with(sqlBuilder) {
+                val tableDdl = createTableDdl(record)
+                val exportSql = exportSubmissionSql(record)
+                val parameters = exportSubmissionParams(record)
+                with(jdbcTemplate) {
+                    log.info("table: {}", tableDdl)
+                    execute(tableDdl) { stmt -> stmt.execute() }
+                    log.info("record: {}", exportSql)
+                    val affected = update(exportSql, parameters)
+                    log.info("$affected records affected")
+                }
             }
         }
     }
