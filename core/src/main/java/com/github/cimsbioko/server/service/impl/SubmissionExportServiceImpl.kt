@@ -22,7 +22,7 @@ open class SubmissionExportServiceImpl(
             val parameters = exportSubmissionParams(record)
             with(jdbcTemplate) {
                 log.info("table: {}", tableDdl)
-                execute(tableDdl) { it.execute() }
+                execute(tableDdl) { stmt -> stmt.execute() }
                 log.info("record: {}", exportSql)
                 val affected = update(exportSql, parameters)
                 log.info("$affected records affected")
