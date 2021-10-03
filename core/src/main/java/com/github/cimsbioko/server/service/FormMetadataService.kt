@@ -27,12 +27,23 @@ fun List<Field>.findRecursive(matches: (Field) -> Boolean): List<Field> = flatMa
     listOfNotNull(field.takeIf(matches)) + (field.takeUnless { it.isLeaf }?.children?.findRecursive(matches) ?: emptyList())
 }
 
+interface Choice {
+    val value: String
+    val label: String
+}
+
+data class ChoiceImpl(
+    override val value: String,
+    override val label: String
+) : Choice
+
 interface Field {
     val name: String
     val path: String
     val order: Int
     val type: String
     val children: List<Field>
+    val choices: List<Choice>
     val isLeaf: Boolean
         get() = children.isEmpty()
 }
@@ -42,7 +53,8 @@ data class FieldImpl(
     override val path: String,
     override val order: Int,
     override val type: String,
-    override val children: MutableList<FieldImpl> = mutableListOf()
+    override val children: MutableList<FieldImpl> = mutableListOf(),
+    override val choices: MutableList<ChoiceImpl> = mutableListOf()
 ) : Field
 
 private fun FormField.toFieldImpl() = FieldImpl(
