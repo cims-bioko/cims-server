@@ -56,6 +56,7 @@ interface FormXmlExtractor {
     fun extractMainInstance(model: Element): Element?
     fun extractBinds(model: Element): List<Element>
     fun extractRepeats(doc: Document): List<Attribute>
+    fun extractChoices(doc: Document, ): Map<String, List<Choice>>
 }
 
 private val XFORMS_NS = Namespace.getNamespace("xforms", "http://www.w3.org/2002/xforms")
@@ -83,6 +84,7 @@ class FormXmlExtractorImpl : FormXmlExtractor {
     override fun extractMainInstance(model: Element): Element? = mainInstanceExpression.clone().evaluateFirst(model)
     override fun extractBinds(model: Element): List<Element> = bindExpression.clone().evaluate(model)
     override fun extractRepeats(doc: Document): List<Attribute> = repeatExpression.clone().evaluate(doc)
+    override fun extractChoices(doc: Document): Map<String, List<Choice>> = emptyMap()
 }
 
 class FormFieldExtractorImpl(
