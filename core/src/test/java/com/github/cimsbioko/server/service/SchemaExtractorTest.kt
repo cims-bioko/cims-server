@@ -51,4 +51,12 @@ class SchemaExtractorTest {
             }
         }
     }
+
+    @Test
+    fun `choices are populated`() {
+        doc?.let { doc ->
+            val schema = schemaExtractor?.extractSchema(doc)
+            assertTrue("some fields should have choices populated", schema?.fields?.any { field -> field.choices.isNotEmpty() } == true)
+        }
+    }
 }

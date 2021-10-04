@@ -56,7 +56,7 @@ interface FormXmlExtractor {
     fun extractMainInstance(model: Element): Element?
     fun extractBinds(model: Element): List<Element>
     fun extractRepeats(doc: Document): List<Attribute>
-    fun extractChoices(doc: Document, ): Map<String, List<Choice>>
+    fun extractChoices(doc: Document): Map<String, List<Choice>>
 }
 
 private val XFORMS_NS = Namespace.getNamespace("xforms", "http://www.w3.org/2002/xforms")
@@ -69,6 +69,10 @@ class FormXmlExtractorImpl : FormXmlExtractor {
     private var mainInstanceExpression: XPathExpression<Element>
     private var bindExpression: XPathExpression<Element>
     private var repeatExpression: XPathExpression<Attribute>
+    private var defaultTranslationExpression: XPathExpression<Element>
+    private var firstTranslationExpression: XPathExpression<Element>
+    private var selectsExpression: XPathExpression<Element>
+    private val labelRefRegex = "jr[:]itext[(]['\"](.*?)['\"][)]".toRegex()
 
     init {
         val xpath = XPathFactory.instance()
@@ -78,13 +82,44 @@ class FormXmlExtractorImpl : FormXmlExtractor {
         repeatExpression = xpath.compile(
             "/xhtml:html/xhtml:body//xforms:repeat[@nodeset]/@nodeset", Filters.attribute(), null, XHTML_NS, XFORMS_NS
         )
+        defaultTranslationExpression =
+            xpath.compile("//xforms:translation[@default='true()']/xforms:text", Filters.element(), null, XFORMS_NS)
+        firstTranslationExpression = xpath.compile("//xforms:translation[1]/xforms:text", Filters.element(), null, XFORMS_NS)
+        selectsExpression = xpath.compile("//xforms:select|//xforms:select1", Filters.element(), null, XFORMS_NS)
     }
 
     override fun extractModel(doc: Document): Element? = modelExpression.clone().evaluateFirst(doc)
     override fun extractMainInstance(model: Element): Element? = mainInstanceExpression.clone().evaluateFirst(model)
     override fun extractBinds(model: Element): List<Element> = bindExpression.clone().evaluate(model)
     override fun extractRepeats(doc: Document): List<Attribute> = repeatExpression.clone().evaluate(doc)
-    override fun extractChoices(doc: Document): Map<String, List<Choice>> = emptyMap()
+    override fun extractChoices(doc: Document): Map<String, List<Choice>> {
+        val rootPath = extractModel(doc)?.let { extractMainInstance(it)?.name }?.let { "/$it" } ?: ""
+        val translations = (defaultTranslationExpression.clone().evaluate(doc)
+            ?.takeIf { it.isNotEmpty() } ?: firstTranslationExpression.clone().evaluate(doc))
+            ?.associateBy({ it.getAttributeValue("id") }, { it.getChildText("value", XFORMS_NS) }) ?: emptyMap()
+        return selectsExpression.clone().evaluate(doc).associateBy(
+            keySelector = { it.getAttributeValue("ref")?.replaceFirst(rootPath, "", false) ?: "" },
+            valueTransform = { select ->
+                select
+                    .getChildren("item", XFORMS_NS)
+                    .mapNotNull { item ->
+                        val label = item.getChild("label", XFORMS_NS)?.let { label ->
+                            label.getAttributeValue("ref")
+                                ?.let { ref ->
+                                    labelRefRegex
+                                        .find(ref)
+                                        ?.destructured
+                                        ?.component1()
+                                        ?.let { translations[it] }
+                                } ?: label.value
+                        }
+                        val value = item.getChildText("value", XFORMS_NS)
+                        if (label != null && value != null) ChoiceImpl(label = label, value = value)
+                        else null
+                    }
+            }
+        )
+    }
 }
 
 class FormFieldExtractorImpl(

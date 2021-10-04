@@ -33,8 +33,8 @@ interface Choice {
 }
 
 data class ChoiceImpl(
-    override val value: String,
-    override val label: String
+    override val label: String,
+    override val value: String
 ) : Choice
 
 interface Field {
@@ -53,8 +53,8 @@ data class FieldImpl(
     override val path: String,
     override val order: Int,
     override val type: String,
-    override val children: MutableList<FieldImpl> = mutableListOf(),
-    override val choices: MutableList<ChoiceImpl> = mutableListOf()
+    override val children: MutableList<Field> = mutableListOf(),
+    override val choices: MutableList<Choice> = mutableListOf()
 ) : Field
 
 private fun FormField.toFieldImpl() = FieldImpl(
@@ -79,8 +79,10 @@ class SchemaExtractorImpl(
     override fun extractSchema(doc: Document): Schema {
         val resultFields: MutableList<FieldImpl> = mutableListOf()
         val parents: ArrayDeque<FieldImpl> = ArrayDeque()
+        val choices: Map<String, List<Choice>> = xmlExtractor.extractChoices(doc)
+        val rootName = with(xmlExtractor) { extractModel(doc)?.let { extractMainInstance(it) }?.name ?: "" }
         for (field in fieldExtractor.extractFields(doc)) {
-            val f = field.toFieldImpl()
+            val f = field.toFieldImpl().apply { choices[this.path]?.also { this.choices.addAll(it) } }
             parents.dropLast { !f.path.startsWith(it.path) }
             parents.lastOrNull()?.children?.add(f) ?: resultFields.add(f)
             when (field.type) {
@@ -91,7 +93,6 @@ class SchemaExtractorImpl(
                 }
             }
         }
-        val rootName = with(xmlExtractor) { extractModel(doc)?.let { extractMainInstance(it) }?.name ?: "" }
         return SchemaImpl(rootName, resultFields)
     }
 }
