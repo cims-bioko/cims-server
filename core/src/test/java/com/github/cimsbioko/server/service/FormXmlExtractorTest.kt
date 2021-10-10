@@ -67,7 +67,7 @@ class FormXmlExtractorTest {
     fun testExtractChoices() {
         val choices = doc?.let { xmlExtractor?.extractChoices(it) }
         Assert.assertNotNull(choices)
-        val sample = choices?.get("/data/Nt/net/WhyNotUseNet")
+        val sample = choices?.get("/Nt/net/WhyNotUseNet")
         Assert.assertNotNull(sample)
         Assert.assertEquals(15, sample?.size)
         val firstChoice = sample?.get(0)
