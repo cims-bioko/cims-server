@@ -15,6 +15,7 @@ public class JDOMUtil {
 
     private static final ThreadLocal<SAXBuilder> builderForThread = new ThreadLocal<>();
     private static final ThreadLocal<XMLOutputter> outputterForThread = new ThreadLocal<>();
+    private static final ThreadLocal<XMLOutputter> prettyOutputterForThread = new ThreadLocal<>();
 
     public static Document docFromObj(Object value) throws JDOMException, IOException, SQLException {
         return value == null ? null : getBuilder().build(new StringReader(stringFromObject(value)));
@@ -54,11 +55,18 @@ public class JDOMUtil {
     }
 
     public static XMLOutputter getOutputter(boolean makePretty) {
-        XMLOutputter result = outputterForThread.get();
-        if (result == null) {
-            result = makePretty ? new XMLOutputter(Format.getPrettyFormat()) : new XMLOutputter();
-            outputterForThread.set(result);
+        XMLOutputter o;
+        if (makePretty) {
+            o = prettyOutputterForThread.get();
+            if (o == null) {
+                prettyOutputterForThread.set(o = new XMLOutputter(Format.getPrettyFormat()));
+            }
+        } else {
+            o = outputterForThread.get();
+            if (o == null) {
+                outputterForThread.set(o = new XMLOutputter());
+            }
         }
-        return result;
+        return o;
     }
 }
