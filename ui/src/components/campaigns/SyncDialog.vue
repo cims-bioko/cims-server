@@ -1,7 +1,14 @@
 <template>
     <b-modal ref="modal" @show="init" @hide="deinit" ok-only>
         <template slot="modal-title">{{$t('campaigns.syncmodal.title')}}</template>
-        <b-container fluid>
+        <b-container fluid v-if="!enabled">
+          <b-row class="text-center">
+            <b-col>
+              {{$t("campaigns.syncmodal.disabled")}}
+            </b-col>
+          </b-row>
+        </b-container>
+        <b-container fluid v-if="enabled">
             <b-row v-if="inProgress">
                 <b-col><b-progress :value="progress" striped animated/></b-col>
             </b-row>
@@ -56,6 +63,7 @@
         },
         data() {
             return {
+                enabled: false,
                 nextRun: null,
                 status: null,
                 contentHash: null,
@@ -92,9 +100,10 @@
             },
             async load(uuid) {
                 let response = await this.$xhr.get(`/sync/${uuid}`)
-                this.updateData(response.data)
+                if (response.status === 200) this.updateData(response.data)
             },
             updateData(data) {
+                this.enabled = true
                 this.nextRun = data.nextRun
                 this.status = data.status
                 this.contentHash = data.contentHash

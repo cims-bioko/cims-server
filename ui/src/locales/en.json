@@ -222,6 +222,7 @@
       "close": "Close"
     },
     "syncmodal": {
+      "disabled": "Campaign disabled, sync controls not available",
       "title": "Sync",
       "nextrun": "Next run in {0} minutes",
       "contenthash": "Content signature: {0}",

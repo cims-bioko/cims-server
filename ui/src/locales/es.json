@@ -204,6 +204,7 @@
       "close": "Cerrar"
     },
     "syncmodal": {
+      "disabled": "Campaña inhabilitada, controles de sincronización no disponibles",
       "title": "Sincronización",
       "nextrun": "Próxima ejecución en {0} minutos",
       "contenthash": "Firma de contenido: {0}",
