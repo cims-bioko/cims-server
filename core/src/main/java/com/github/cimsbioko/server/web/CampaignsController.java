@@ -322,6 +322,7 @@ public class CampaignsController {
         return StreamSupport
                 .stream(formRepo.findAll().spliterator(), false)
                 .map(Form::getFormId)
+                .sorted()
                 .collect(Collectors.toList());
     }
 
