@@ -16,6 +16,6 @@ public interface DeviceRepository extends PagingAndSortingRepository<Device, Str
     Optional<Device> findByName(@NotNull String name);
     Page<Device> findByDeletedIsNull(Pageable pageable);
     Optional<Device> findByNameAndDeletedIsNull(String name);
-    @Query("select d from #{#entityName} d where (d.campaign is null or d.campaign.uuid = :uuid) and d.deleted is null")
+    @Query("select d from #{#entityName} d where (d.campaign is null or d.campaign.uuid = :uuid) and d.deleted is null order by d.name")
     List<Device> findSelectableForCampaign(String uuid);
 }
