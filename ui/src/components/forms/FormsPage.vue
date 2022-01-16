@@ -15,6 +15,9 @@
                 <b-button variant="primary" @click="showUploadDialog"><fa-icon icon="plus"/> {{$t('forms.add')}}</b-button>
                 <upload-dialog ref="uploadDialog" @formUploaded="formUploaded"/>
             </b-col>
+            <b-col>
+                <search-box :placeholder="$t('forms.searchph')" v-model="searchQuery" @search="search" />
+            </b-col>
         </b-row>
         <b-row v-if="totalItems > pageSize">
             <b-col>
@@ -69,6 +72,7 @@
     import UploadDialog from './UploadDialog'
     import FormResetDialog from './ResetDialog'
     import FormDeleteDialog from './DeleteDialog'
+    import SearchBox from "../SearchBox";
     export default {
         name: 'forms-page',
         data() {
@@ -85,12 +89,17 @@
                 pageSize: 0,
                 currentPage: 1,
                 items: [],
-                messages: []
+                messages: [],
+                searchQuery: ''
             }
         },
         methods: {
             async loadPage(page) {
-                let rsp = await this.$xhr.get('/forms', {params: {p: page - 1}})
+                let params = {p: page - 1}
+                if (this.searchQuery) {
+                    params.q = this.searchQuery
+                }
+                let rsp = await this.$xhr.get('/forms', {params: params})
                 let data = rsp.data
                 this.items = data.content
                 this.totalItems = data.totalElements
@@ -135,13 +144,16 @@
                 this.messages = []
                 this.$nextTick(() => this.messages = messages || [])
             },
+            search() {
+                this.reloadPage()
+            }
         },
         mounted() {
             this.reloadPage()
         },
         components: {
             BAlert, BContainer, BRow, BCol, BButton, BButtonGroup, BPagination, BTable, UploadDialog, FormResetDialog,
-            FormDeleteDialog
+            FormDeleteDialog, SearchBox
         }
     }
 </script>

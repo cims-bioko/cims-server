@@ -1,8 +1,13 @@
 package com.github.cimsbioko.server.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.cimsbioko.server.search.FormIdBridge;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.Type;
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.FieldBridge;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.jdom2.Document;
 
 import javax.persistence.Column;
@@ -14,9 +19,12 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "form")
 @DynamicInsert
+@Indexed
 public class Form {
 
     @EmbeddedId
+    @IndexedEmbedded
+    @FieldBridge(impl = FormIdBridge.class)
     private FormId formId;
 
     @Type(type = "xml")

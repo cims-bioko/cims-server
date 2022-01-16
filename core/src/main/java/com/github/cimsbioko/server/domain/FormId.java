@@ -1,5 +1,6 @@
 package com.github.cimsbioko.server.domain;
 
+import org.hibernate.search.annotations.Field;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.Column;
@@ -12,10 +13,12 @@ public class FormId implements Serializable, Comparable<FormId> {
 
     @NotNull
     @Column(name = "id")
+    @Field
     private String id;
 
     @NotNull
     @Column(name = "version")
+    @Field
     private String version;
 
     FormId() {

@@ -120,7 +120,8 @@
     "xmlreq": "Se requiere formulario XML.",
     "xlsreq": "Se requiere XLSForm.",
     "success": "Subida exitosa",
-    "failed": "Subida fallida"
+    "failed": "Subida fallida",
+    "searchph": "Buscar formularios por nombre o versión"
   },
   "roles": {
     "create": "Crear",

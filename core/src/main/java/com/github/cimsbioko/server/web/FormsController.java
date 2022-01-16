@@ -42,8 +42,10 @@ public class FormsController {
     @PreAuthorize("hasAuthority('VIEW_FORMS')")
     @GetMapping("/forms")
     @ResponseBody
-    public Page<Form> forms(@RequestParam(name = "p", defaultValue = "0") Integer page) {
-        return repo.findAll(PageRequest.of(page, 10, Sort.by("formId")));
+    public Page<Form> forms(@RequestParam(name = "p", defaultValue = "0") Integer page,
+                            @RequestParam(name = "q", defaultValue = "") String query) {
+        PageRequest pageObj = PageRequest.of(page, 10, Sort.by("formId"));
+        return query.isEmpty() ? repo.findAll(pageObj) : repo.findBySearch(query, pageObj);
     }
 
     @PreAuthorize("hasAuthority('FORM_UPLOAD')")

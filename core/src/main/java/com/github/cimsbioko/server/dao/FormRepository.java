@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface FormRepository extends PagingAndSortingRepository<Form, FormId> {
+public interface FormRepository extends PagingAndSortingRepository<Form, FormId>, FormSearch {
 
     @Query("select f from #{#entityName} f where downloads = true")
     List<Form> findDownloadable();

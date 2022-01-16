@@ -132,7 +132,8 @@
     "xmlreq": "XML form is required.",
     "xlsreq": "XLSForm is required.",
     "success": "Upload succeeded",
-    "failed": "Upload failed"
+    "failed": "Upload failed",
+    "searchph": "Search forms by name or version"
   },
   "roles": {
     "create": "Create",
