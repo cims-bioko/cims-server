@@ -206,10 +206,10 @@ public class FormsResource {
         if (formsDir.exists()) {
             Path formsPath = formsDir.toPath();
             return Optional.ofNullable(campaign)
-                    .map(formDao::findDownloadableByCampaign)
-                    .orElseGet(formDao::findDownloadable)
+                    .map(formDao::findDownloadableFormIdsByCampaign)
+                    .orElseGet(formDao::findDownloadableFormIds)
                     .stream()
-                    .map(form -> formFileSystem.getXmlFormPath(form.getFormId().getId(), form.getFormId().getVersion()))
+                    .map(formId -> formFileSystem.getXmlFormPath(formId.getId(), formId.getVersion()))
                     .map(formsPath::resolve)
                     .filter(path -> path.toFile().exists())
                     .map(path -> {

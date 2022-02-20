@@ -11,11 +11,14 @@ import java.util.List;
 
 public interface FormRepository extends PagingAndSortingRepository<Form, FormId>, FormSearch {
 
-    @Query("select f from #{#entityName} f where downloads = true")
-    List<Form> findDownloadable();
+    @Query("select f.id from #{#entityName} f where downloads = true or submissions = true order by f.id")
+    List<FormId> findUsableFormIds();
 
-    @Query("select f from #{#entityName} f where exists (select c from Campaign c where c.uuid = :campaign and f member of c.forms)")
-    List<Form> findDownloadableByCampaign(@Param("campaign") String campaign);
+    @Query("select f.id from #{#entityName} f where downloads = true")
+    List<FormId> findDownloadableFormIds();
+
+    @Query("select f.id from #{#entityName} f where exists (select c from Campaign c where c.uuid = :campaign and f member of c.forms)")
+    List<FormId> findDownloadableFormIdsByCampaign(@Param("campaign") String campaign);
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("update #{#entityName} f set f.downloads = false where f.formId.id = :formId and f.formId.version <> :version")

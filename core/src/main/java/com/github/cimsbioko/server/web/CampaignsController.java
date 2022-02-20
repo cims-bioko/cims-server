@@ -319,11 +319,7 @@ public class CampaignsController {
     @GetMapping("/campaign/availableForms")
     @ResponseBody
     public List<FormId> availableForms() {
-        return StreamSupport
-                .stream(formRepo.findAll().spliterator(), false)
-                .map(Form::getFormId)
-                .sorted()
-                .collect(Collectors.toList());
+        return formRepo.findUsableFormIds();
     }
 
     @PreAuthorize("hasAnyAuthority('EDIT_CAMPAIGNS', 'CREATE_CAMPAIGNS')")
