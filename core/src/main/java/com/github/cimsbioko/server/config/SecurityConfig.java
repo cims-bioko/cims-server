@@ -151,6 +151,23 @@ public class SecurityConfig {
     }
 
     @Configuration
+    @Order(3)
+    public static class ActuatorAuthConfigurationAdapter extends WebSecurityConfigurerAdapter {
+        protected void configure(HttpSecurity http) throws Exception {
+            http.antMatcher("/actuator/**")
+                    .headers().disable()
+                    .csrf().disable()
+                    .sessionManagement()
+                    .sessionCreationPolicy(STATELESS)
+                    .and()
+                    .authorizeRequests()
+                    .antMatchers("/actuator/info", "/actuator/health").permitAll()
+                    .antMatchers("/actuator/metrics", "/actuator/metrics/jvm.memory.*").permitAll()
+                    .anyRequest().denyAll();
+        }
+    }
+
+    @Configuration
     @Order(2)
     public static class ApiTokenAuthConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
