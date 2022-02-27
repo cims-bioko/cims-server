@@ -9,4 +9,4 @@ COPY application.properties /
 VOLUME "/shared-storage"
 VOLUME "/app-storage"
 
-CMD java -jar app/${jarFilename}
+CMD java $JAVA_OPTS -jar app/${jarFilename}
