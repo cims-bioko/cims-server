@@ -31,13 +31,8 @@ public class SubmissionsController {
     @GetMapping("/submissions")
     @ResponseBody
     public Page<FormSubmission> submissions(
-            @RequestParam(name = "p", defaultValue = "0") Integer page,
-            @RequestParam(name = "q", defaultValue = "") String query) {
-        if (!query.isEmpty()) {
-            return submissionsRepo.findBySearch(query, PageRequest.of(page, 10));
-        } else {
-            return submissionsRepo.findAll(PageRequest.of(page, 10, Sort.Direction.DESC, "submitted"));
-        }
+            @RequestParam(name = "p", defaultValue = "0") Integer page) {
+        return submissionsRepo.findAll(PageRequest.of(page, 10, Sort.Direction.DESC, "submitted"));
     }
 
     @PreAuthorize("hasAuthority('VIEW_SUBMISSIONS')")

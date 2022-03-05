@@ -3,12 +3,8 @@ package com.github.cimsbioko.server.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.github.cimsbioko.server.search.XmlDocumentBridge;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.Type;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.FieldBridge;
-import org.hibernate.search.annotations.Indexed;
 import org.jdom2.Document;
 import org.json.JSONObject;
 
@@ -21,7 +17,6 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "form_submission")
 @DynamicInsert
-@Indexed
 public class FormSubmission {
 
     @Id
@@ -46,8 +41,6 @@ public class FormSubmission {
     @JsonIgnore
     @Type(type = "xml")
     @Column(name = "as_xml")
-    @Field
-    @FieldBridge(impl = XmlDocumentBridge.class)
     private Document xml;
 
     @JsonIgnore
