@@ -162,7 +162,7 @@ public class SecurityConfig {
                     .and()
                     .authorizeRequests()
                     .antMatchers("/actuator/info", "/actuator/health").permitAll()
-                    .antMatchers("/actuator/metrics", "/actuator/metrics/jvm.memory.*").permitAll()
+                    .antMatchers("/actuator/metrics", "/actuator/metrics/*").permitAll()
                     .anyRequest().denyAll();
         }
     }
