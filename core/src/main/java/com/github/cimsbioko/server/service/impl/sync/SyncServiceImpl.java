@@ -201,7 +201,7 @@ public class SyncServiceImpl implements SyncService {
             exporter.scriptTarget(config.getResource(postScriptName), scratch);
         }
 
-        // Generate sync metadata
+        log.debug("generating sync metadata");
         try (InputStream in = new FileInputStream(scratch)) {
             Metadata.generate("", DEFAULT_SYNC_BLOCK_SIZE, MD5, MD5, in, metaScratch);
         }
@@ -293,4 +293,3 @@ public class SyncServiceImpl implements SyncService {
         }
     }
 }
-
