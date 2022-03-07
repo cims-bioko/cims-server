@@ -11,6 +11,9 @@
       <b-col class="col-auto">
         <h1><fa-icon icon="file-upload"/> {{$t('nav.submissions')}}</h1>
       </b-col>
+      <b-col>
+        <search-box :placeholder="$t('submissions.searchph')" v-model="searchQuery" @search="search" />
+      </b-col>
     </b-row>
     <b-row v-if="totalItems > pageSize">
       <b-col>
@@ -48,6 +51,7 @@
 
 <script>
 import {BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup} from 'bootstrap-vue'
+import SearchBox from '../SearchBox'
 import SubmissionDetails from './SubmissionDetails'
 import SubmissionDeleteDialog from "./DeleteDialog";
 export default {
@@ -64,6 +68,7 @@ export default {
       ],
       errors: [],
       messages: [],
+      searchQuery: '',
       totalItems: 0,
       pageSize: 0,
       currentPage: 1,
@@ -73,6 +78,9 @@ export default {
   methods: {
     async loadPage(page) {
       let params = {p: page - 1}
+      if (this.searchQuery) {
+        params.q = this.searchQuery
+      }
       let rsp = await this.$xhr.get('/submissions', {params: params})
       let data = rsp.data
       this.items = data.content
@@ -98,12 +106,15 @@ export default {
       this.showMessages(rsp.messages)
       this.reloadPage()
     },
+    search() {
+      this.reloadPage()
+    }
   },
   mounted() {
     this.reloadPage()
   },
   components: {
-    BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup, SubmissionDetails, SubmissionDeleteDialog
+    BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup, SearchBox, SubmissionDetails, SubmissionDeleteDialog
   }
 }
 </script>
