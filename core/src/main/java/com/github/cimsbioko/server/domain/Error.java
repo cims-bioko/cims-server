@@ -26,7 +26,7 @@ public class Error implements Serializable {
     @Column(length = 65535)
     private String payload;
 
-    @Column
+    @Column(name = "entitytype")
     private String entityType;
 
     private String message;

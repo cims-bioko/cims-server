@@ -1,5 +1,6 @@
 package com.github.cimsbioko.server.web;
 
+import com.github.cimsbioko.server.dao.ErrorRepository;
 import com.github.cimsbioko.server.dao.FormSubmissionRepository;
 import com.github.cimsbioko.server.domain.FormSubmission;
 import org.springframework.context.MessageSource;
@@ -12,7 +13,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.github.cimsbioko.server.util.JDOMUtil.stringFromDoc;
 
@@ -20,10 +23,12 @@ import static com.github.cimsbioko.server.util.JDOMUtil.stringFromDoc;
 public class SubmissionsController {
 
     private final FormSubmissionRepository submissionsRepo;
+    private final ErrorRepository errorRepo;
     private final MessageSource messages;
 
-    public SubmissionsController(FormSubmissionRepository submissionsRepo, MessageSource messages) {
+    public SubmissionsController(FormSubmissionRepository submissionsRepo, ErrorRepository errorRepo, MessageSource messages) {
         this.submissionsRepo = submissionsRepo;
+        this.errorRepo = errorRepo;
         this.messages = messages;
     }
 
@@ -50,6 +55,21 @@ public class SubmissionsController {
                 .map(xml -> ResponseEntity.ok()
                         .contentType(MediaType.APPLICATION_XML)
                         .body(xml))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PreAuthorize("hasAuthority('VIEW_SUBMISSIONS')")
+    @GetMapping("/submissions/error/{instanceId}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> lastSubmissionError(@PathVariable("instanceId") String instanceId) {
+        return errorRepo
+                .findFirstBySubmissionInstanceIdOrderByCreatedDesc(instanceId)
+                .map(msg -> {
+                    Map<String, Object> result = new HashMap<>();
+                    result.put("error", msg.getMessage());
+                    result.put("created", msg.getCreated());
+                    return ResponseEntity.ok().body(result);
+                })
                 .orElse(ResponseEntity.notFound().build());
     }
 

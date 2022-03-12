@@ -27,7 +27,8 @@
             {{ data.value === data.item.formBinding? data.value : $t("forms.nameFormat", [data.value, data.item.formBinding]) }}
           </template>
           <template slot="processedOk" slot-scope="data">
-            <fa-icon :icon="data.value? 'check-circle' : 'times-circle'"/>
+            <fa-icon :id="`processed-icon-${data.item.instanceId}`" :icon="data.value? 'check-circle' : 'times-circle'"/>
+            <submission-error v-if="!data.value" :target="`processed-icon-${data.item.instanceId}`" :id="data.item.instanceId"/>
           </template>
           <template slot="submitted" slot-scope="data">{{data.value|formatDateTime}}</template>
           <template slot="actions" slot-scope="data">
@@ -53,7 +54,8 @@
 import {BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup} from 'bootstrap-vue'
 import SearchBox from '../SearchBox'
 import SubmissionDetails from './SubmissionDetails'
-import SubmissionDeleteDialog from "./DeleteDialog";
+import SubmissionDeleteDialog from "./DeleteDialog"
+import SubmissionError from "./SubmissionError"
 export default {
   name: 'submissions-page',
   data() {
@@ -114,7 +116,8 @@ export default {
     this.reloadPage()
   },
   components: {
-    BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup, SearchBox, SubmissionDetails, SubmissionDeleteDialog
+    BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup, SearchBox, SubmissionDetails, SubmissionDeleteDialog,
+    SubmissionError
   }
 }
 </script>
