@@ -260,6 +260,12 @@
       "delete": "Delete",
       "cancel": "Cancel"
     },
+    "reprocessmodal": {
+      "title": "Reprocess Submission?",
+      "desc": "If processing is not idempotent, reprocessing can cause unintended data issues.",
+      "delete": "Reprocess",
+      "cancel": "Cancel"
+    },
     "searchph": "Search submissions by content",
     "id": "ID",
     "form": "Form",

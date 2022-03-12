@@ -242,6 +242,12 @@
       "delete": "Eliminar",
       "cancel": "Cancelar"
     },
+    "reprocessmodal": {
+      "title": "¿Reprocesar envío?",
+      "desc": "Si el procesamiento no es idempotente, el reprocesamiento puede causar problemas de datos no deseados.",
+      "delete": "Reprocesar",
+      "cancel": "Cancelar"
+    },
     "searchph": "Envíos de formularios de búsqueda por contenido",
     "id": "ID",
     "form": "Formulario",

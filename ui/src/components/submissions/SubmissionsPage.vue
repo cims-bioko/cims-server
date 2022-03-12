@@ -36,10 +36,15 @@
               <b-button v-if="$can('DELETE_SUBMISSIONS') && !data.item.deleted" variant="outline-primary" @click="showDeleteDialog(data.index)">
                 <fa-icon icon="trash-alt"/>
               </b-button>
+              <b-button v-if="$can('REPROCESS_SUBMISSIONS')" variant="outline-primary" @click="showReprocessDialog(data.index)">
+                <fa-icon icon="cogs"/>
+              </b-button>
               <b-button variant="outline-primary" @click="data.toggleDetails"><fa-icon :icon="data.detailsShowing? 'angle-up' : 'angle-down'"/></b-button>
             </b-button-group>
             <submission-delete-dialog v-if="$can('DELETE_SUBMISSIONS')" :ref="`deleteDialog${data.index}`"
                                       :id="data.item.instanceId" @ok="deleteOk"/>
+            <submission-reprocess-dialog v-if="$can('REPROCESS_SUBMISSIONS')" :ref="`reprocessDialog${data.index}`"
+                                      :id="data.item.instanceId" @ok="reprocessOk"/>
           </template>
           <template slot="row-details" slot-scope="data">
             <submission-details :id="data.item.instanceId"/>
@@ -55,6 +60,7 @@ import {BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGro
 import SearchBox from '../SearchBox'
 import SubmissionDetails from './SubmissionDetails'
 import SubmissionDeleteDialog from "./DeleteDialog"
+import SubmissionReprocessDialog from './ReprocessDialog'
 import SubmissionError from "./SubmissionError"
 export default {
   name: 'submissions-page',
@@ -104,7 +110,14 @@ export default {
     showDeleteDialog(index) {
       this.$refs[`deleteDialog${index}`].show()
     },
+    showReprocessDialog(index) {
+      this.$refs[`reprocessDialog${index}`].show()
+    },
     deleteOk(rsp) {
+      this.showMessages(rsp.messages)
+      this.reloadPage()
+    },
+    reprocessOk(rsp) {
       this.showMessages(rsp.messages)
       this.reloadPage()
     },
@@ -117,7 +130,7 @@ export default {
   },
   components: {
     BContainer, BRow, BCol, BAlert, BButton, BPagination, BTable, BButtonGroup, SearchBox, SubmissionDetails, SubmissionDeleteDialog,
-    SubmissionError
+    SubmissionError, SubmissionReprocessDialog
   }
 }
 </script>

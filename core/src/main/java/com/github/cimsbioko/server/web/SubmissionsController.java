@@ -73,6 +73,17 @@ public class SubmissionsController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PreAuthorize("hasAuthority('REPROCESS_SUBMISSIONS')")
+    @PostMapping("submissions/{instanceId}/reprocess")
+    @ResponseBody
+    public ResponseEntity<?> reprocessSubmission(@PathVariable("instanceId") String instanceId, Locale locale) {
+        return submissionsRepo.findById(instanceId).map(submission -> {
+            submission.setProcessed(null);
+            submissionsRepo.save(submission);
+            return ResponseEntity.ok(new AjaxResult().addMessage(resolveMessage("submissions.msg.reprocessing", locale, instanceId)));
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
     @PreAuthorize("hasAuthority('DELETE_SUBMISSIONS')")
     @DeleteMapping("/submissions/{uuid}")
     @ResponseBody
