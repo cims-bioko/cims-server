@@ -282,7 +282,9 @@
     "reindex": "Reindex",
     "percentcomplete": "{0}% complete",
     "docspersec": "{0} documents/second",
-    "progress": "{0}/{1} ({2})"
+    "progress": "{0}/{1} ({2})",
+    "needsindex": "Search results will be limited: index needs to be rebuilt",
+    "indexrun": "Rebuilding search index, results will be limited"
   },
   "metrics": {
     "K": "K",

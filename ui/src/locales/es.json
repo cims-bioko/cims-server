@@ -264,7 +264,9 @@
     "reindex": "Reindexar",
     "percentcomplete": "{0}% completo",
     "docspersec": "{0} documentos/segundo",
-    "progress": "{0}/{1} ({2})"
+    "progress": "{0}/{1} ({2})",
+    "needsindex": "Los resultados de búsqueda serán limitados: el índice debe reconstruirse",
+    "indexrun": "Reconstruyendo el índice de búsqueda, los resultados serán limitados"
   },
   "metrics": {
     "K": "K",
