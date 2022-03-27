@@ -13,6 +13,7 @@ const Campaign = () => import('./components/campaigns/Campaign.vue')
 const CampaignBindings = () => import('./components/campaigns/CampaignBindings.vue')
 const FieldworkersPage = () => import('./components/fieldworkers/FieldworkersPage.vue')
 const SubmissionsPage = () => import('./components/submissions/SubmissionsPage.vue')
+const RebuildIndexPage = () => import('./components/search/RebuildIndexPage.vue')
 
 export const Router = new VueRouter({
     routes: [
@@ -25,12 +26,13 @@ export const Router = new VueRouter({
         { name: 'campaigns', path: '/campaigns', component: CampaignsPage },
         {
             path: '/campaigns/:campaign', component: Campaign, props: true, children: [
-                {path: '', redirect: 'bindings'},
-                {path: 'bindings', component: CampaignBindings, props: true}
+                { path: '', redirect: 'bindings' },
+                { path: 'bindings', component: CampaignBindings, props: true }
             ]
         },
         { name: 'fieldworkers', path: '/fieldworkers', component: FieldworkersPage },
-        { name: 'submissions', path: '/submissions', component: SubmissionsPage }
+        { name: 'submissions', path: '/submissions', component: SubmissionsPage },
+        { name: 'rebuildindex', path: '/rebuildindex', component: RebuildIndexPage }
     ]
 })
 

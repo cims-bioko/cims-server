@@ -1,20 +1,9 @@
-import i18n from './i18n'
+import {formatDate, formatDateTime, formatLargeNumber} from './formatting'
 
-function toDateObj(v) {
-    return typeof v === 'string'? new Date(v) : v
-}
-
-let filters = {
-    formatDate(v) {
-        if (v) {
-            return i18n.d(toDateObj(v), 'short')
-        }
-    },
-    formatDateTime(v) {
-        if (v) {
-            return i18n.d(toDateObj(v), 'long')
-        }
-    }
+const filters = {
+    formatDate: formatDate,
+    formatDateTime: formatDateTime,
+    formatLargeNumber: formatLargeNumber
 }
 
 export default {

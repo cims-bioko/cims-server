@@ -21,6 +21,7 @@
                         <fa-icon icon="user" /> {{$user.username}}
                     </template>
                     <b-dropdown-item @click="$emit('logout')">{{$t('nav.logout')}}</b-dropdown-item>
+                    <b-dropdown-item v-if="$can('REBUILD_INDEX')" :to="{name:'rebuildindex'}">{{$t('nav.rebuildindex')}}</b-dropdown-item>
                 </b-nav-item-dropdown>
             </b-navbar-nav>
         </b-collapse>

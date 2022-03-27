@@ -8,6 +8,7 @@ import com.github.cimsbioko.server.service.*;
 import com.github.cimsbioko.server.service.impl.*;
 import com.github.cimsbioko.server.service.impl.backup.BackupServiceImpl;
 import com.github.cimsbioko.server.service.impl.campaign.CampaignServiceImpl;
+import com.github.cimsbioko.server.service.impl.indexing.IndexingServiceImpl;
 import com.github.cimsbioko.server.service.impl.sync.SyncServiceImpl;
 import com.github.cimsbioko.server.sqliteexport.Exporter;
 import com.github.cimsbioko.server.webapi.odk.FileHasher;
@@ -106,6 +107,11 @@ public class ServiceConfig {
     @Bean
     SubmissionExportService submissionExportService(ExportSQLBuilder sqlBuilder, NamedParameterJdbcTemplate jdbcTemplate) {
         return new SubmissionExportServiceImpl(sqlBuilder, jdbcTemplate);
+    }
+
+    @Bean
+    IndexingService indexingService(EntityManager em, ApplicationEventPublisher eventPublisher) {
+        return new IndexingServiceImpl(em, eventPublisher);
     }
 
     @Bean

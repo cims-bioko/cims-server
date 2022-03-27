@@ -11,7 +11,8 @@
     "fieldworkers": "Trabajadores de Campo",
     "devices": "Dispositivos",
     "campaigns": "Campañas",
-    "logout": "Cerrar Sesión"
+    "logout": "Cerrar Sesión",
+    "rebuildindex": "Reconstruir Índice"
   },
   "table": {
     "empty": "No hay registros para mostrar"
@@ -255,5 +256,22 @@
     "submitted": "Enviado",
     "processed": "Procesada",
     "actions": "Acciónes"
+  },
+  "rebuildindex": {
+    "lastcompleted": "Completado por última vez a {0}",
+    "needsindexing": "Necesita indexación",
+    "indexing":  "Indexación",
+    "reindex": "Reindexar",
+    "percentcomplete": "{0}% completo",
+    "docspersec": "{0} documentos/segundo",
+    "progress": "{0}/{1} ({2})"
+  },
+  "metrics": {
+    "K": "K",
+    "M": "M",
+    "B": "B",
+    "t": "t",
+    "q": "q",
+    "Q": "Q"
   }
 }

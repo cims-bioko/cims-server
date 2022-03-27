@@ -13,7 +13,8 @@
     "devices": "Devices",
     "campaigns": "Campaigns",
     "submissions": "Submissions",
-    "logout": "Logout"
+    "logout": "Logout",
+    "rebuildindex": "Rebuild Index"
   },
   "table": {
     "empty": "There are no records to show"
@@ -273,5 +274,22 @@
     "submitted": "Submitted",
     "processed": "Processed",
     "actions": "Actions"
+  },
+  "rebuildindex": {
+    "lastcompleted": "Last completed at {0}",
+    "needsindexing": "Needs indexing",
+    "indexing":  "Indexing",
+    "reindex": "Reindex",
+    "percentcomplete": "{0}% complete",
+    "docspersec": "{0} documents/second",
+    "progress": "{0}/{1} ({2})"
+  },
+  "metrics": {
+    "K": "K",
+    "M": "M",
+    "B": "B",
+    "t": "t",
+    "q": "q",
+    "Q": "Q"
   }
 }
