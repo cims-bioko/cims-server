@@ -1,48 +1,64 @@
 package com.github.cimsbioko.server.search;
 
-import org.hibernate.search.batchindexing.impl.SimpleIndexingProgressMonitor;
-import org.hibernate.search.jpa.Search;
+import com.github.cimsbioko.server.service.IndexingService;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import java.time.Duration;
+import java.time.Instant;
 
 public class InitialIndexer implements ApplicationListener<ApplicationReadyEvent> {
 
     private static final Logger log = LoggerFactory.getLogger(InitialIndexer.class);
 
-    private boolean reindexOnStartup;
+    private final IndexingService indexingService;
 
-    private EntityManager em;
+    private final boolean reindexOnStartup;
 
-    public InitialIndexer(EntityManager em, boolean reindexOnStartup) {
-        this.em = em;
+    private final long delayInMinutes;
+
+    private final TaskScheduler scheduler;
+
+    public InitialIndexer(TaskScheduler scheduler, IndexingService indexingService, boolean reindexOnStartup, long delayInMinutes) {
+        this.scheduler = scheduler;
+        this.indexingService = indexingService;
         this.reindexOnStartup = reindexOnStartup;
+        this.delayInMinutes = delayInMinutes;
     }
 
     @Override
     @Transactional
-    public void onApplicationEvent(final ApplicationReadyEvent event) {
+    public void onApplicationEvent(@NotNull final ApplicationReadyEvent event) {
         if (reindexOnStartup) {
-            reindexAll();
+            scheduleIndexing();
         } else {
             log.info("not reindexing db, disabled by user settings");
         }
     }
 
-    private void reindexAll() {
-        log.info("building index for full-text search");
-        try {
-            Search.getFullTextEntityManager(em)
-                    .createIndexer()
-                    .progressMonitor(new SimpleIndexingProgressMonitor(10000))
-                    .startAndWait();
-        } catch (InterruptedException e) {
-            log.error("interrupted while building search indexes", e);
-        }
+    private void scheduleIndexing() {
+        Instant startTime = Instant.now().plus(Duration.ofMinutes(delayInMinutes));
+        log.info("scheduling deferred indexing run for {}", startTime);
+        scheduler.schedule(new IndexingTask(indexingService), startTime);
     }
 
+}
+
+class IndexingTask implements Runnable {
+
+    private final IndexingService indexingService;
+
+    public IndexingTask(IndexingService indexingService) {
+        this.indexingService = indexingService;
+    }
+
+    @Override
+    public void run() {
+        indexingService.requestRebuild();
+    }
 }
