@@ -11,17 +11,21 @@ import com.github.cimsbioko.server.service.impl.campaign.CampaignServiceImpl;
 import com.github.cimsbioko.server.service.impl.indexing.IndexingServiceImpl;
 import com.github.cimsbioko.server.service.impl.sync.SyncServiceImpl;
 import com.github.cimsbioko.server.sqliteexport.Exporter;
+import com.github.cimsbioko.server.webapi.odk.EndpointHelper;
 import com.github.cimsbioko.server.webapi.odk.FileHasher;
 import com.github.cimsbioko.server.webapi.odk.FormFileSystem;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.scheduling.TaskScheduler;
+import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
 import java.io.File;
+import java.net.URI;
 
 @Configuration
 public class ServiceConfig {
@@ -122,5 +126,11 @@ public class ServiceConfig {
     @Bean
     IdNamingStrategy idNamingStrategy() {
         return new PostgresqlIdNamingStrategy();
+    }
+
+    @Bean
+    EnketoService enketoService(@Value("${app.enketo.url}") URI enketoUrl, @Value("${app.enketo.key}") String enketoKey,
+                                EndpointHelper endpointHelper, RestTemplate template, FormSubmissionRepository submissionDao) {
+        return new EnketoServiceImpl(enketoUrl, enketoKey, endpointHelper, template, submissionDao);
     }
 }

@@ -3,6 +3,7 @@ package com.github.cimsbioko.server.web;
 import com.github.cimsbioko.server.dao.ErrorRepository;
 import com.github.cimsbioko.server.dao.FormSubmissionRepository;
 import com.github.cimsbioko.server.domain.FormSubmission;
+import com.github.cimsbioko.server.service.EnketoService;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -25,10 +27,12 @@ public class SubmissionsController {
     private final FormSubmissionRepository submissionsRepo;
     private final ErrorRepository errorRepo;
     private final MessageSource messages;
+    private final EnketoService enketoService;
 
-    public SubmissionsController(FormSubmissionRepository submissionsRepo, ErrorRepository errorRepo, MessageSource messages) {
+    public SubmissionsController(FormSubmissionRepository submissionsRepo, ErrorRepository errorRepo, EnketoService enketoService, MessageSource messages) {
         this.submissionsRepo = submissionsRepo;
         this.errorRepo = errorRepo;
+        this.enketoService = enketoService;
         this.messages = messages;
     }
 
@@ -82,6 +86,15 @@ public class SubmissionsController {
             submissionsRepo.save(submission);
             return ResponseEntity.ok(new AjaxResult().addMessage(resolveMessage("submissions.msg.reprocessing", locale, instanceId)));
         }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @PreAuthorize("hasAuthority('EDIT_SUBMISSIONS')")
+    @PostMapping("submissions/{instanceId}/edit")
+    @ResponseBody
+    public ResponseEntity<?> editSubmission(@PathVariable("instanceId") String instanceId, Locale locale, HttpServletRequest req) {
+        return enketoService.editSubmission(req, instanceId)
+                .map(uri -> ResponseEntity.ok(new AjaxResult().addData("uri", uri.toString())))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PreAuthorize("hasAuthority('DELETE_SUBMISSIONS')")

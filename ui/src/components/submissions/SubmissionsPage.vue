@@ -33,6 +33,9 @@
           <template slot="submitted" slot-scope="data">{{data.value|formatDateTime}}</template>
           <template slot="actions" slot-scope="data">
             <b-button-group>
+              <b-button v-if="$can('EDIT_SUBMISSIONS') && !data.item.deleted" variant="outline-primary" @click="launchEditor(data.item.instanceId)">
+                <fa-icon icon="edit"/>
+              </b-button>
               <b-button v-if="$can('DELETE_SUBMISSIONS') && !data.item.deleted" variant="outline-primary" @click="showDeleteDialog(data.index)">
                 <fa-icon icon="trash-alt"/>
               </b-button>
@@ -123,6 +126,10 @@ export default {
     },
     search() {
       this.reloadPage()
+    },
+    async launchEditor(instanceId) {
+      let rsp = await this.$xhr.post(`/submissions/${instanceId}/edit`)
+      window.location.href = rsp.data.data.uri
     }
   },
   mounted() {

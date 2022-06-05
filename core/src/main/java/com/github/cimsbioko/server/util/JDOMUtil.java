@@ -38,7 +38,11 @@ public class JDOMUtil {
     }
 
     public static String stringFromDoc(Document value, boolean makePretty) {
-        return value == null ? null : getOutputter(makePretty).outputString(value);
+        return value == null ? null : getOutputter(makePretty, false).outputString(value);
+    }
+
+    public static String stringFromDoc(Document value, boolean makePretty, boolean omitDeclaration) {
+        return value == null? null : getOutputter(makePretty, omitDeclaration).outputString(value);
     }
 
     public static SAXBuilder getBuilder() {
@@ -51,15 +55,15 @@ public class JDOMUtil {
     }
 
     public static XMLOutputter getOutputter() {
-        return getOutputter(false);
+        return getOutputter(false, false);
     }
 
-    public static XMLOutputter getOutputter(boolean makePretty) {
+    public static XMLOutputter getOutputter(boolean makePretty, boolean omitDeclaration) {
         XMLOutputter o;
         if (makePretty) {
             o = prettyOutputterForThread.get();
             if (o == null) {
-                prettyOutputterForThread.set(o = new XMLOutputter(Format.getPrettyFormat()));
+                prettyOutputterForThread.set(o = new XMLOutputter(Format.getPrettyFormat().setOmitDeclaration(omitDeclaration)));
             }
         } else {
             o = outputterForThread.get();
