@@ -12,11 +12,9 @@ import org.hibernate.search.annotations.Indexed;
 import org.jdom2.Document;
 import org.json.JSONObject;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 @Table(name = "form_submission")
@@ -62,12 +60,16 @@ public class FormSubmission {
     @Column(name = "processed_ok")
     private Boolean processedOk;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "deprecated_by")
+    private FormSubmission deprecatedBy;
+
     public FormSubmission() {
     }
 
     public FormSubmission(String instanceId, Document xml, JSONObject json, String formId, String formVersion,
                           String formBinding, String campaignId, String deviceId, Timestamp collected, Timestamp submitted, Timestamp processed,
-                          Boolean processedOk) {
+                          Boolean processedOk, FormSubmission deprecatedBy) {
         this.instanceId = instanceId;
         this.xml = xml;
         this.json = json;
@@ -80,6 +82,7 @@ public class FormSubmission {
         this.submitted = submitted;
         this.processed = processed;
         this.processedOk = processedOk;
+        this.deprecatedBy = deprecatedBy;
     }
 
     public String getInstanceId() {
@@ -178,4 +181,24 @@ public class FormSubmission {
         this.processedOk = processedOk;
     }
 
+    public FormSubmission getDeprecatedBy() {
+        return deprecatedBy;
+    }
+
+    public void setDeprecatedBy(FormSubmission deprecatedBy) {
+        this.deprecatedBy = deprecatedBy;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FormSubmission that = (FormSubmission) o;
+        return getInstanceId().equals(that.getInstanceId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getInstanceId());
+    }
 }

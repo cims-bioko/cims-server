@@ -32,4 +32,5 @@ public class Constants {
     public static final String CIMS_CAMPAIGN = "cims-campaign";
     public static final String XML_SUBMISSION_FILE = "xml_submission_file";
     public static final String DEVICE_ID = "deviceID";
+    public static final String DEPRECATED_ID = "deprecatedID";
 }

@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 public interface FormSubmissionService {
 
-    FormSubmission recordSubmission(FormSubmission submission) throws ExistingSubmissionException;
+    FormSubmission recordSubmission(FormSubmission submission, String deprecatedId) throws ExistingSubmissionException;
 
     Stream<FormSubmission> getUnprocessed(int batchSize);
 

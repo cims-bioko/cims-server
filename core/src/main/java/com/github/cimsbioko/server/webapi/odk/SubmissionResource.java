@@ -401,10 +401,11 @@ public class SubmissionResource {
 
             // Create a database record for the submission
             FormSubmission submission = new FormSubmission(instanceId, xmlDoc, json, id, version, binding, campaign,
-                    deviceId, collected, submitted, processed, null);
+                    deviceId, collected, submitted, processed, null, null);
             boolean isDuplicateSubmission = false;
             try {
-                submission = submissionService.recordSubmission(submission);
+                String deprecatedId = metaElem.getChildText(DEPRECATED_ID, metaElemNs);
+                submission = submissionService.recordSubmission(submission, deprecatedId);
             } catch (ExistingSubmissionException e) {
                 log.debug("duplicate submission, only uploading attachments");
                 isDuplicateSubmission = true;

@@ -1,0 +1,1 @@
+alter table form_submission add column deprecated_by varchar(255) references form_submission(instanceid);
