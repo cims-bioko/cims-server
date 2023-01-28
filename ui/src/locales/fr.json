@@ -1,0 +1,297 @@
+{
+  "app": {
+    "name": "Serveur CIMS",
+    "copyright": "© Medical Care Development International 2021"
+  },
+  "nav": {
+    "home": "D'accueil",
+    "forms": "Formulaires",
+    "backups": "Sauvegardes",
+    "users": "Utilisateurs",
+    "roles": "Rôles",
+    "fieldworkers": "Agents de terrain",
+    "devices": "Dispositifs",
+    "campaigns": "Campagnes",
+    "submissions": "Soumissions",
+    "logout": "Se déconnecter",
+    "rebuildindex": "Reconstruire l'index"
+  },
+  "table": {
+    "empty": "Il n'y a aucun enregistrement à afficher"
+  },
+  "modal": {
+    "cancel": "Annuler"
+  },
+  "home": {
+    "forms": {
+      "desc": "Téléchargez et publiez des formulaires de collecte de données basés sur ODK à utiliser avec l'application mobile.",
+      "btn": "Aller aux formulaires"
+    },
+    "backups": {
+      "desc": "Créez et gérez des instantanés historiques via des sauvegardes de l'ensemble de la base de données du serveur CIMS.",
+      "btn": "Aller aux sauvegardes"
+    },
+    "users": {
+      "desc": "Créer et gérer des comptes d'utilisateurs pour CIMS Server (comptes superviseurs pour l'application mobile).",
+      "btn": "Aller aux utilisateurs"
+    },
+    "roles": {
+      "desc": "Créer et gérer des rôles de sécurité pour CIMS Server. Les privilèges sont accordés aux utilisateurs par rôles.",
+      "btn": "Aller à Rôles"
+    },
+    "fieldworkers": {
+      "desc": "Créez et gérez des comptes d'utilisateurs hors ligne pour les travailleurs sur le terrain qui collectent des données à l'aide de l'application mobile.",
+      "btn": "Aller aux agents de terrain"
+    },
+    "devices": {
+      "desc": "Créez et gérez des identités pour les appareils mobiles partagés.",
+      "btn": "Aller aux appareils"
+    },
+    "campaigns": {
+      "desc": "Créez, configurez et gérez des définitions de campagne pour personnaliser la collecte de données mobiles.",
+      "btn": "Aller aux campagnes"
+    },
+    "submissions": {
+      "desc": "Rechercher et gérer les soumissions de formulaire soumises.",
+      "btn": "Aller aux Soumissions"
+    }
+  },
+  "backups": {
+    "create": "Créer",
+    "update": "Mettre à jour",
+    "name": "Nom",
+    "description": "La description",
+    "created": "Créé",
+    "actions": "Actions",
+    "success": "La création de la sauvegarde {0} s'est terminée avec succès.",
+    "error": "La création de la sauvegarde {0} a échoué. Erreur: {1}",
+    "createmodal": {
+      "title": "Créer une sauvegarde"
+    },
+    "editmodal": {
+      "title": "Modifier la sauvegarde"
+    },
+    "namereq": "Le nom est requis.",
+    "namefmt": "Le nom doit être composé de lettres minuscules, de chiffres et de '_' et doit commencer par une lettre.",
+    "descreq": "Une description est requise."
+  },
+  "fieldworkers": {
+    "create": "Créer",
+    "update": "Mettre à jour",
+    "searchph": "Rechercher par nom ou identifiant de travailleur de terrain",
+    "createmodal": {
+      "title": "Créer un agent de terrain"
+    },
+    "editmodal": {
+      "title": "Modifier l'agent de terrain"
+    },
+    "id": "ID",
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "actions": "Actions",
+    "password": "Mot de passe",
+    "passwordConfirmed": "Confirmez le mot de passe",
+    "idreq": "Une pièce d'identité est requise.",
+    "fnamereq": "Le prénom est requis.",
+    "lnamereq": "Le nom de famille est requis.",
+    "passwdreq": "Mot de passe requis.",
+    "idfmt": "Format d'identifiant non valide.",
+    "passwdmatch": "Les mots de passe ne correspondent pas.",
+    "passwdlong": "Le mot de passe est trop long.",
+    "passwdshort": "Le mot de passe est trop court."
+  },
+  "forms": {
+    "label": "Formulaire",
+    "nameFormat": "{0} ({1})",
+    "actions": "Actions",
+    "add": "Ajouter",
+    "upload": "Télécharger",
+    "id": "ID",
+    "version": "Version",
+    "downloads": "Téléchargements",
+    "submissions": "Soumissions",
+    "uploaded": "Téléchargé",
+    "lastSubmission": "Dernière soumission",
+    "uploadType": "Type de téléchargement",
+    "mediaFiles": "Fichiers multimédias",
+    "uploadmodal": {
+      "title": "Télécharger le formulaire",
+      "close": "Fermer"
+    },
+    "resetmodal": {
+      "title": "Supprimer les soumissions de formulaire",
+      "desc": "Supprimer toutes les soumissions pour '{0}' version '{1}'?",
+      "delete": "Supprimer",
+      "cancel": "Annuler"
+    },
+    "deletemodal": {
+      "title": "Supprimer le formulaire",
+      "desc": "Supprimer le formulaire '{0}' version '{1}'?",
+      "delete": "Supprimer",
+      "cancel": "Annuler"
+    },
+    "xmlreq": "Le formulaire XML est requis.",
+    "xlsreq": "XLSForm est requis.",
+    "success": "Téléchargement réussi",
+    "failed": "Le téléchargement a échoué",
+    "searchph": "Rechercher des formulaires par nom ou version"
+  },
+  "roles": {
+    "create": "Créer",
+    "update": "Mettre à jour",
+    "name": "Nom",
+    "description": "La description",
+    "privileges": "Privilège",
+    "actions": "Actions",
+    "createmodal": {
+      "title": "Créer un rôle"
+    },
+    "editmodal": {
+      "title": "Modifier le rôle"
+    },
+    "namereq": "Le nom est requis.",
+    "privreq": "Au moins un privilège est requis."
+  },
+  "users": {
+    "create": "Créer",
+    "update": "Mettre à jour",
+    "searchph": "Rechercher par nom ou nom d'utilisateur",
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "fullName": "Nom et prénom",
+    "lastLogin": "Dernière connexion",
+    "actions": "Actions",
+    "description": "La description",
+    "username": "Nom d'utilisateur",
+    "roles": "Rôles",
+    "password": "Mot de passe",
+    "passwordConfirmed": "Confirmez le mot de passe",
+    "createmodal": {
+      "title": "Créer un utilisateur"
+    },
+    "editmodal": {
+      "title": "Modifier l'utilisateur"
+    },
+    "userreq": "Nom d'utilisateur est nécessaire.",
+    "rolereq": "Au moins un rôle est requis.",
+    "passwdreq": "Mot de passe requis.",
+    "passwdmatch": "Les mots de passe ne correspondent pas.",
+    "passwdshort": "Le mot de passe est trop court.",
+    "passwdlong": "Le mot de passe est trop long."
+  },
+  "devices": {
+    "create": "Créer",
+    "update": "Mettre à jour",
+    "searchph": "Rechercher par nom ou description",
+    "name": "Nom",
+    "lastLogin": "Dernière connexion",
+    "actions": "Actions",
+    "description": "La description",
+    "resetSecret": "Réinitialiser le secret",
+    "createmodal": {
+      "title": "Créer un appareil"
+    },
+    "editmodal": {
+      "title": "Modifier l'appareil"
+    },
+    "namereq": "Le nom est requis."
+  },
+  "qrcode": {
+    "title": "Configuration pour l'appareil '{0}'",
+    "onetime": "Attention : le code est valable pour un usage unique.",
+    "hide": "Cacher",
+    "forget": "Oublier"
+  },
+  "campaigns": {
+    "title": "Campagne '{0}'",
+    "bindingName": "Reliure",
+    "binding": {
+      "reprocessed": "{0} soumissions marquées pour retraitement"
+    },
+    "upload": "Télécharger",
+    "create": "Créer",
+    "searchph": "Rechercher par nom ou description",
+    "createmodal": {
+      "title": "Créer une campagne",
+      "close": "Fermer"
+    },
+    "uploadmodal": {
+      "title": "Charger la campagne '{0}'",
+      "close": "Fermer"
+    },
+    "editmodal": {
+      "title": "Modifier la campagne",
+      "close": "Fermer"
+    },
+    "syncmodal": {
+      "disabled": "Campagne désactivée, commandes de synchronisation non disponibles",
+      "title": "Synchronisation",
+      "nextrun": "Prochaine exécution dans {0} minutes",
+      "contenthash": "Signature de contenu: {0}",
+      "close": "Fermer"
+    },
+    "reprocessmodal": {
+      "title": "Retraiter {0}?",
+      "desc": "Retraiter les soumissions de formulaire pour la liaison '{0}'? Selon le nombre de soumissions, le retraitement peut prendre beaucoup de temps. De plus, si le traitement n'est pas idempotent, le retraitement peut entraîner des problèmes de données involontaires.",
+      "cancel": "Annuler",
+      "reprocess": "Retraiter"
+    },
+    "name": "Nom",
+    "default": "Défaut",
+    "description": "La description",
+    "start": "Début",
+    "end": "Finir",
+    "disabled": "Désactivé",
+    "forms": "Formulaires",
+    "devices": "Dispositifs",
+    "users": "Utilisateurs",
+    "actions": "Actions",
+    "zip": "Fichier de campagne",
+    "zipreq": "Le fichier zip de la campagne est requis.",
+    "success": "Téléchargement réussi.",
+    "failed": "Le téléchargement a échoué.",
+    "namereq": "Le nom est requis.",
+    "baddate": "Date invalide.",
+    "endafterstart": "La date de fin doit être postérieure à la date de début."
+  },
+  "submissions": {
+    "deletemodal": {
+      "title": "Supprimer la soumission?",
+      "desc": "Supprimer la soumission '{0}'? Cette action est irréversible.",
+      "delete": "Supprimer",
+      "cancel": "Annuler"
+    },
+    "reprocessmodal": {
+      "title": "Retraiter la soumission?",
+      "desc": "Si le traitement n'est pas idempotent, le retraitement peut entraîner des problèmes de données imprévus.",
+      "delete": "Retraiter",
+      "cancel": "Annuler"
+    },
+    "searchph": "Rechercher des soumissions par contenu",
+    "id": "ID",
+    "form": "Formulaire",
+    "device": "Appareil",
+    "submitted": "Soumis",
+    "processed": "Traité",
+    "actions": "Actions"
+  },
+  "rebuildindex": {
+    "lastcompleted": "Terminé pour la dernière fois à {0}",
+    "needsindexing": "Doit être indexé",
+    "indexing":  "Indexage",
+    "reindex": "Réindexer",
+    "percentcomplete": "{0}% terminé",
+    "docspersec": "{0} documents/seconde",
+    "progress": "{0}/{1} ({2})",
+    "needsindex": "Les résultats de la recherche seront limités: l'index doit être reconstruit",
+    "indexrun": "Reconstruction de l'index de recherche, les résultats seront limités"
+  },
+  "metrics": {
+    "K": "K",
+    "M": "M",
+    "B": "B",
+    "t": "t",
+    "q": "q",
+    "Q": "Q"
+  }
+}
